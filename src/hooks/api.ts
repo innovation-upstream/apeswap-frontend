@@ -284,24 +284,24 @@ export const fetchPools = async () => {
   const url = `https://raw.githubusercontent.com/ApeSwapFinance/-apeswap-yields/main/config/pools.json?time=${Date.now()}`
   const resp = await fetch(url)
   const data = await resp.json()
-  const poolsList = data.map((pool) => (
-    {
-      sousId: Number(pool.sousId),
-      tokenName: pool.tokenName,
-      image: pool.image,
-      stakingToken: pool.stakingToken,
-      rewardToken: pool.rewardToken,
-      contractAddress: pool.contractAddress,
-      poolCategory: 'CORE',
-      projectLink: pool.projectLink,
-      harvest: pool.harvest,
-      sortOrder: pool.sortOrder,
-      reflect: pool.reflect,
-      isFinished: pool.isFinished,
-      tokenDecimals: pool.tokenDecimals,
-      tokenPerBlock: (new BigNumber(Number(pool.rewardPerBlock)).dividedBy(new BigNumber(10).pow(new BigNumber(Number(pool.tokenDecimals))))).toString(),
-    }
-  ))
+  const poolsList = data.map((pool) => ({
+    sousId: Number(pool.sousId),
+    tokenName: pool.tokenName,
+    image: pool.image,
+    stakingToken: pool.stakingToken,
+    rewardToken: pool.rewardToken,
+    contractAddress: pool.contractAddress,
+    poolCategory: 'CORE',
+    projectLink: pool.projectLink,
+    harvest: pool.harvest,
+    sortOrder: pool.sortOrder,
+    reflect: pool.reflect,
+    isFinished: pool.isFinished,
+    tokenDecimals: pool.tokenDecimals,
+    tokenPerBlock: new BigNumber(Number(pool.rewardPerBlock))
+      .dividedBy(new BigNumber(10).pow(new BigNumber(Number(pool.tokenDecimals))))
+      .toString(),
+  }))
   return poolsList
 }
 
