@@ -276,3 +276,39 @@ export const getPromosHome = async () => {
 
   return promos
 }
+
+let poolPromise
+
+export const fetchPools = async () => {
+  const url = `https://raw.githubusercontent.com/ApeSwapFinance/-apeswap-yields/main/config/pools.json?time=${Date.now()}`
+  const resp = await fetch(url)
+  const data = await resp.json()
+  // const poolsList = []
+  // console.log(data)
+  
+  const poolsList = data.map((pool) => (
+    {
+      "sousId": Number(pool.sousId),
+      "tokenName": pool.tokenName,
+      "image": pool.image,
+      "stakingToken": pool.stakingToken,
+      "rewardToken": pool.rewardToken,
+      "contractAddress": pool.contractAddress,
+      "poolCategory": "CORE",
+      "projectLink": pool.projectLink,
+      "harvest": pool.harvest,
+      "sortOrder": pool.sortOrder,
+      "reflect": pool.reflect,
+      "isFinished": pool.isFinished,
+      "tokenDecimals": pool.tokenDecimals
+    }
+  ));
+  
+  return poolsList
+}
+
+export const getPools = async () => {
+  if (!poolPromise) poolPromise = fetchPools()
+
+  return poolPromise
+}

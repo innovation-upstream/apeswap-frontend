@@ -12,6 +12,7 @@ import {
   useStatsOverall,
   useFetchAuctions,
   useFetchTokenPrices,
+  useFetchAndSetPools,
 } from 'state/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
@@ -65,6 +66,7 @@ const App: React.FC = () => {
     if (account) dataLayer?.push({ event: 'wallet_connect', user_id: account })
   }, [account])
 
+  useFetchAndSetPools()
   useEagerConnect()
   useFetchTokenPrices()
   useFetchPublicData()

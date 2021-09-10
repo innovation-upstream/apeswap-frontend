@@ -169,7 +169,8 @@ export interface FarmsState {
 }
 
 export interface PoolsState {
-  data: Pool[]
+  data: Pool[],
+  isLoading: boolean
 }
 
 export interface ProfileState {

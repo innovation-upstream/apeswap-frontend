@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
 import poolsConfig from 'config/constants/pools'
-import { fetchReserveData } from 'hooks/api'
+import { fetchReserveData, getPools } from 'hooks/api'
 import { fetchPoolsBlockLimits, fetchPoolsTotalStatking, fetchPoolTokenStatsAndApr } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -11,7 +11,7 @@ import {
 } from './fetchPoolsUser'
 import { PoolsState, Pool, TokenPrices } from '../types'
 
-const initialState: PoolsState = { data: [...poolsConfig] }
+const initialState: PoolsState = { data: [...poolsConfig], isLoading: true }
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
 export const PoolsSlice = createSlice({
@@ -37,11 +37,21 @@ export const PoolsSlice = createSlice({
       const index = state.data.findIndex((p) => p.sousId === sousId)
       state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
     },
+    setPools: (state, action) => {
+      state.data = action.payload
+      state.isLoading = false
+    },
+    setPoolsFetchStart: (state) => {
+      state.isLoading = true
+    },
+    setPoolsFetchFailed: (state) => {
+      state.isLoading = false
+    },
   },
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
+export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setPools, setPoolsFetchStart, setPoolsFetchFailed } = PoolsSlice.actions
 
 // Thunks
 export const fetchPoolsPublicDataAsync = (tokenPrices: TokenPrices[]) => async (dispatch) => {
@@ -101,3 +111,13 @@ export const updateUserPendingReward = (sousId: string, account: string) => asyn
 }
 
 export default PoolsSlice.reducer
+
+export const fetchAndSetPools = () => async (dispatch) => {
+  try {
+    dispatch(setPoolsFetchStart())
+    const pools = await getPools()
+    // dispatch(setPools(pools))
+  } catch (error) {
+    dispatch(setPoolsFetchFailed())
+  }
+}

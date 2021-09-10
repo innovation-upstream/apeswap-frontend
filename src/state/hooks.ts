@@ -36,6 +36,7 @@ import { fetchStatsOverall } from './statsOverall'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAuctions } from './auction'
 import { fetchTokenPrices } from './tokenPrices'
+import { fetchAndSetPools } from './pools'
 
 const ZERO = new BigNumber(0)
 
@@ -322,4 +323,13 @@ export const useTeams = () => {
   }, [dispatch])
 
   return { teams: data, isInitialized, isLoading }
+}
+
+export const useFetchAndSetPools = () => {
+ 
+    const dispatch = useDispatch()
+  
+    useEffect(() => {
+      dispatch(fetchAndSetPools())
+    }, [dispatch])
 }
