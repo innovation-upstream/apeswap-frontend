@@ -326,10 +326,9 @@ export const useTeams = () => {
 }
 
 export const useFetchAndSetPools = () => {
- 
-    const dispatch = useDispatch()
-  
-    useEffect(() => {
-      dispatch(fetchAndSetPools())
-    }, [dispatch])
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchAndSetPools())
+  }, [dispatch])
 }

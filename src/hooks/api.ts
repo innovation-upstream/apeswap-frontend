@@ -285,25 +285,23 @@ export const fetchPools = async () => {
   const data = await resp.json()
   // const poolsList = []
   // console.log(data)
-  
-  const poolsList = data.map((pool) => (
-    {
-      "sousId": Number(pool.sousId),
-      "tokenName": pool.tokenName,
-      "image": pool.image,
-      "stakingToken": pool.stakingToken,
-      "rewardToken": pool.rewardToken,
-      "contractAddress": pool.contractAddress,
-      "poolCategory": "CORE",
-      "projectLink": pool.projectLink,
-      "harvest": pool.harvest,
-      "sortOrder": pool.sortOrder,
-      "reflect": pool.reflect,
-      "isFinished": pool.isFinished,
-      "tokenDecimals": pool.tokenDecimals
-    }
-  ));
-  
+
+  const poolsList = data.map((pool) => ({
+    sousId: Number(pool.sousId),
+    tokenName: pool.tokenName,
+    image: pool.image,
+    stakingToken: pool.stakingToken,
+    rewardToken: pool.rewardToken,
+    contractAddress: pool.contractAddress,
+    poolCategory: 'CORE',
+    projectLink: pool.projectLink,
+    harvest: pool.harvest,
+    sortOrder: pool.sortOrder,
+    reflect: pool.reflect,
+    isFinished: pool.isFinished,
+    tokenDecimals: pool.tokenDecimals,
+  }))
+
   return poolsList
 }
 
