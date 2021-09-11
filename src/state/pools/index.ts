@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
 import poolsConfig from 'config/constants/pools'
-import { fetchReserveData, getPools } from 'hooks/api'
+import { getPools } from 'hooks/api'
 import { fetchPoolsBlockLimits, fetchPoolsTotalStatking, fetchPoolTokenStatsAndApr } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -12,7 +12,6 @@ import {
 import { PoolsState, Pool, TokenPrices } from '../types'
 
 const initialState: PoolsState = { data: [...poolsConfig], isLoading: true }
-const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
 export const PoolsSlice = createSlice({
   name: 'Pools',
@@ -62,11 +61,12 @@ export const {
 
 // Thunks
 export const fetchPoolsPublicDataAsync = (tokenPrices: TokenPrices[]) => async (dispatch) => {
+  const pools = await getPools()
   const blockLimits = await fetchPoolsBlockLimits()
   const totalStakings = await fetchPoolsTotalStatking()
   const tokenStatsAndAprs = await fetchPoolTokenStatsAndApr(tokenPrices, totalStakings)
   const liveData = await Promise.all(
-    poolsConfig.map(async (pool) => {
+    pools.map(async (pool) => {
       const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
       const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
       const tokenStatsAndApr = tokenStatsAndAprs.find((entry) => entry.sousId === pool.sousId)
@@ -82,12 +82,12 @@ export const fetchPoolsPublicDataAsync = (tokenPrices: TokenPrices[]) => async (
 }
 
 export const fetchPoolsUserDataAsync = (account) => async (dispatch) => {
+  const pools = await getPools()
   const allowances = await fetchPoolsAllowance(account)
   const stakingTokenBalances = await fetchUserBalances(account)
   const stakedBalances = await fetchUserStakeBalances(account)
   const pendingRewards = await fetchUserPendingRewards(account)
-
-  const userData = poolsConfig.map((pool) => ({
+  const userData = pools.map((pool) => ({
     sousId: pool.sousId,
     allowance: allowances[pool.sousId],
     stakingTokenBalance: stakingTokenBalances[pool.sousId],
@@ -123,7 +123,7 @@ export const fetchAndSetPools = () => async (dispatch) => {
   try {
     dispatch(setPoolsFetchStart())
     const pools = await getPools()
-    // dispatch(setPools(pools))
+    dispatch(setPools(pools))
   } catch (error) {
     dispatch(setPoolsFetchFailed())
   }

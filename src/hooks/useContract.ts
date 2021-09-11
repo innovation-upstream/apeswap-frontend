@@ -15,7 +15,6 @@ import {
   getAuctionAddress,
   getApePriceGetterAddress,
 } from 'utils/addressHelpers'
-import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
@@ -30,6 +29,8 @@ import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/bananaProfile.json'
 import auction from 'config/abi/auction.json'
 import apePriceGetter from 'config/abi/apePriceGetter.json'
+import { useSelector } from 'react-redux'
+import { State } from 'state/types'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -122,8 +123,9 @@ export const useMasterchef = () => {
 }
 
 export const useSousChef = (id) => {
-  const config = poolsConfig.find((pool) => pool.sousId === id)
-  const rawAbi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
+  const pools = useSelector((state: State) => state.pools.data)
+  const config = pools.find((pool) => pool.sousId === id)
+  const rawAbi = config?.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
   const abi = (rawAbi as unknown) as AbiItem
   return useContract(abi, config.contractAddress[process.env.REACT_APP_CHAIN_ID])
 }
