@@ -620,6 +620,7 @@ const Pools: React.FC = () => {
       const lowercaseQuery = searchQuery.toLowerCase()
       chosenPools = chosenPools.filter((pool) => pool.tokenName.toLowerCase().includes(lowercaseQuery))
     }
+
     return sortPools(chosenPools).slice(0, numberOfPoolsVisible)
   }
 

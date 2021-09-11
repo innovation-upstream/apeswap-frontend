@@ -8,18 +8,21 @@ import multicall from 'utils/multicall'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import { getWeb3 } from 'utils/web3'
 import BigNumber from 'bignumber.js'
+import { getPools } from 'hooks/api'
 
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
-const nonBnbPools = poolsConfig.filter((p) => p.stakingToken.address !== QuoteToken.BNB)
-const bnbPools = poolsConfig.filter((p) => p.stakingToken.address === QuoteToken.BNB)
-const nonMasterPools = poolsConfig.filter((p) => p.sousId !== 0)
+// const nonBnbPools = poolsConfig.filter((p) => p.stakingToken.address !== QuoteToken.BNB)
+// const bnbPools = poolsConfig.filter((p) => p.stakingToken.address === QuoteToken.BNB)
+// const nonMasterPools = poolsConfig.filter((p) => p.sousId !== 0)
 const web3 = getWeb3()
 const masterChefContract = new web3.eth.Contract((masterChefABI as unknown) as AbiItem, getMasterChefAddress())
 
 export const fetchPoolsAllowance = async (account) => {
+  const pools = await getPools()
+  const nonBnbPools = pools.filter((p) => p.stakingToken.address !== QuoteToken.BNB)
   const calls = nonBnbPools.map((p) => ({
     address: p.stakingToken.address[CHAIN_ID],
     name: 'allowance',
@@ -35,6 +38,9 @@ export const fetchPoolsAllowance = async (account) => {
 
 export const fetchUserBalances = async (account) => {
   // Non BNB pools
+  const pools = await getPools()
+  const nonBnbPools = pools.filter((p) => p.stakingToken.address !== QuoteToken.BNB)
+  const bnbPools = pools.filter((p) => p.stakingToken.address === QuoteToken.BNB)
   const calls = nonBnbPools.map((p) => ({
     address: p.stakingToken.address[CHAIN_ID],
     name: 'balanceOf',
@@ -57,6 +63,8 @@ export const fetchUserBalances = async (account) => {
 }
 
 export const fetchUserStakeBalances = async (account) => {
+  const pools = await getPools()
+  const nonMasterPools = pools.filter((p) => p.sousId !== 0)
   const calls = nonMasterPools.map((p) => ({
     address: p.contractAddress[CHAIN_ID],
     name: 'userInfo',
@@ -78,6 +86,8 @@ export const fetchUserStakeBalances = async (account) => {
 }
 
 export const fetchUserPendingRewards = async (account) => {
+  const pools = await getPools()
+  const nonMasterPools = pools.filter((p) => p.sousId !== 0)
   const calls = nonMasterPools.map((p) => ({
     address: p.contractAddress[CHAIN_ID],
     name: 'pendingReward',

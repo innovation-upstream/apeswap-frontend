@@ -9,11 +9,13 @@ import multicall from 'utils/multicall'
 import { getWbnbAddress } from 'utils/addressHelpers'
 import BigNumber from 'bignumber.js'
 import { TokenPrices } from 'state/types'
+import { getPools } from 'hooks/api'
 
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
 export const fetchPoolsBlockLimits = async () => {
-  const poolsWithEnd = poolsConfig.filter((p) => p.sousId !== 0)
+  const pools = await getPools()
+  const poolsWithEnd = pools.filter((p) => p.sousId !== 0)
   const callsStartBlock = poolsWithEnd.map((poolConfig) => {
     return {
       address: poolConfig.contractAddress[CHAIN_ID],
@@ -42,8 +44,9 @@ export const fetchPoolsBlockLimits = async () => {
 }
 
 export const fetchPoolsTotalStatking = async () => {
-  const nonBnbPools = poolsConfig.filter((p) => p.stakingToken.symbol !== QuoteToken.BNB)
-  const bnbPool = poolsConfig.filter((p) => p.stakingToken.symbol === QuoteToken.BNB)
+  const pools = await getPools()
+  const nonBnbPools = pools.filter((p) => p.stakingToken.symbol !== QuoteToken.BNB)
+  const bnbPool = pools.filter((p) => p.stakingToken.symbol === QuoteToken.BNB)
 
   const callsNonBnbPools = nonBnbPools.map((poolConfig) => {
     if (poolConfig.reflect || poolConfig.stakingToken.symbol === 'GNANA') {
@@ -83,7 +86,8 @@ export const fetchPoolsTotalStatking = async () => {
 }
 
 export const fetchPoolTokenStatsAndApr = async (tokenPrices: TokenPrices[], totalStakingList) => {
-  const mappedValues = poolsConfig.map((pool) => {
+  const pools = await getPools()
+  const mappedValues = pools.map((pool) => {
     // Get values needed to calculate apr
     const curPool = pool
     const rewardToken = tokenPrices
