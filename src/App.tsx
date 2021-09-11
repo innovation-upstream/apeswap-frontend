@@ -9,7 +9,6 @@ import {
   useFetchStats,
   useFetchPublicData,
   useFetchStatsOverall,
-  useStatsOverall,
   useFetchAuctions,
   useFetchTokenPrices,
   useFetchAndSetPools,
@@ -74,8 +73,6 @@ const App: React.FC = () => {
   useFetchStatsOverall()
   useFetchAuctions()
 
-  const { statsOverall } = useStatsOverall()
-
   const scrollToTop = (): void => {
     window.scrollTo({
       top: 0,
@@ -96,7 +93,9 @@ const App: React.FC = () => {
             <Route path="/" exact>
               <Home />
             </Route>
-            <Route path="/farms">{statsOverall && <Farms />}</Route>
+            <Route path="/farms">
+              <Farms />
+            </Route>
             <Route path="/pools">
               <Pools />
             </Route>
