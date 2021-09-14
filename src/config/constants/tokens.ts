@@ -351,7 +351,7 @@ const tokens = {
     address: {
       56: '0x308bfaeAaC8BDab6e9Fc5Ead8EdCb5f95b0599d9',
     },
-    decimals: 18,
+    decimals: 9,
   },
   ydr: {
     symbol: 'YDR',

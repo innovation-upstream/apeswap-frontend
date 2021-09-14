@@ -3,38 +3,43 @@ import multicall from 'utils/multicall'
 import tokens from 'config/constants/tokens'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getApePriceGetterAddress } from 'utils/addressHelpers'
+import { getPools } from 'hooks/api'
 
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
 const fetchPrices = async () => {
   const apePriceGetter = getApePriceGetterAddress()
-  const calls = Object.keys(tokens).map((token, i) => {
-    if (tokens[token].lpToken) {
+  const pools = await getPools()
+  const tokenList = pools.filter((p) => (p.isFinished === false)).reduce((a,v)=> ({ ...a, [v.rewardToken.symbol.toLowerCase()]: v.rewardToken}), {}) 
+  
+  const calls = Object.keys(tokenList).map((token, i) => {
+    if (tokenList[token].lpToken) {
       return {
         address: apePriceGetter,
         name: 'getLPPrice',
-        params: [tokens[token].address[CHAIN_ID], tokens[token].decimals],
+        params: [tokenList[token].address[CHAIN_ID], tokenList[token].decimals],
       }
     }
     return {
       address: apePriceGetter,
       name: 'getPrice',
-      params: [tokens[token].address[CHAIN_ID], tokens[token].decimals],
+      params: [tokenList[token].address[CHAIN_ID], tokenList[token].decimals],
     }
   })
   const tokenPrices = await multicall(apePriceGetterABI, calls)
-  // Banana should always be the first token
-  const mappedTokenPrices = Object.keys(tokens).map((token, i) => {
+
+  const mappedTokenPrices = Object.keys(tokenList).map((token, i) => {
     return {
-      symbol: tokens[token].symbol,
-      address: tokens[token].address,
+      symbol: tokenList[token].symbol,
+      address: tokenList[token].address,
       price:
-        tokens[token].symbol === 'GNANA'
-          ? getBalanceNumber(tokenPrices[0], tokens[token].decimals) * 1.389
-          : getBalanceNumber(tokenPrices[i], tokens[token].decimals),
-      decimals: tokens[token].decimals,
+        tokenList[token].symbol === 'GNANA'
+          ? getBalanceNumber(tokenPrices[0], tokenList[token].decimals) * 1.389
+          : getBalanceNumber(tokenPrices[i], tokenList[token].decimals),
+      decimals: tokenList[token].decimals,
     }
   })
+
   return mappedTokenPrices
 }
 
