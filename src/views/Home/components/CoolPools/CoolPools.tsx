@@ -57,7 +57,9 @@ const DEFAULT_POOL = 0
 const CoolPools = () => {
   const { poolsData, loading } = useFetchPoolsHome()
   const pools = useSelector((state: State) => state.pools.data)
-  const poolMustBeUnder = pools.length ? pools.reduce((prev, curr) => (prev.sousId > curr.sousId ? prev : curr)).sousId : -1
+  const poolMustBeUnder = pools.length
+    ? pools.reduce((prev, curr) => (prev.sousId > curr.sousId ? prev : curr)).sousId
+    : -1
 
   let sousId1 = parseInt(poolsData[0]?.sousId1) || DEFAULT_POOL
   let sousId2 = parseInt(poolsData[0]?.sousId2) || DEFAULT_POOL
