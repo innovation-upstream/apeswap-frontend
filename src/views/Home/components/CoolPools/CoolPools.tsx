@@ -2,9 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
 import { useFetchPoolsHome } from 'state/strapi/fetchStrapi'
-import pools from 'config/constants/pools'
 import { usePoolFromPid } from 'state/hooks'
 import PoolCardForHome from './PoolCardForHome'
+import { useSelector } from 'react-redux'
+import { State } from 'state/types'
 
 const CoolPoolsWrapper = styled.div`
   position: relative;
@@ -55,7 +56,7 @@ const DEFAULT_POOL = 0
 
 const CoolPools = () => {
   const { poolsData, loading } = useFetchPoolsHome()
-
+  const pools = useSelector((state: State) => state.pools.data)
   const poolMustBeUnder = pools.reduce((prev, curr) => (prev.sousId > curr.sousId ? prev : curr)).sousId
 
   let sousId1 = parseInt(poolsData[0]?.sousId1) || DEFAULT_POOL
