@@ -10,8 +10,7 @@ const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 const fetchPrices = async () => {
   const apePriceGetter = getApePriceGetterAddress()
   const pools = await getPools()
-  let tokenList = pools
-    .reduce((a, v) => ({ ...a, [v.rewardToken.symbol.toLowerCase()]: v.rewardToken }), {})
+  let tokenList = pools.reduce((a, v) => ({ ...a, [v.rewardToken.symbol.toLowerCase()]: v.rewardToken }), {})
   tokenList = {
     ...tokens,
     ...tokenList,
