@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
 import { useFetchPoolsHome } from 'state/strapi/fetchStrapi'
 import { usePoolFromPid } from 'state/hooks'
-import PoolCardForHome from './PoolCardForHome'
 import { useSelector } from 'react-redux'
 import { State } from 'state/types'
+import PoolCardForHome from './PoolCardForHome'
 
 const CoolPoolsWrapper = styled.div`
   position: relative;
