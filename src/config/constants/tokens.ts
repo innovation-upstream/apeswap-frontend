@@ -1,13 +1,5 @@
 const tokens = {
   // BANANA should always be first token for GNANA calculation
-  banana: {
-    symbol: 'BANANA',
-    address: {
-      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
-      56: '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95',
-    },
-    decimals: 18,
-  },
   gnana: {
     symbol: 'GNANA',
     address: {
@@ -194,20 +186,6 @@ const tokens = {
     symbol: 'LMT',
     address: {
       56: '0x9617857e191354dbea0b714d78bc59e57c411087',
-    },
-    decimals: 18,
-  },
-  revv: {
-    symbol: 'REVV',
-    address: {
-      56: '0x833f307ac507d47309fd8cdd1f835bef8d702a93',
-    },
-    decimals: 18,
-  },
-  wizard: {
-    symbol: 'WIZARD',
-    address: {
-      56: '0x5066c68cae3b9bdacd6a1a37c90f2d1723559d18',
     },
     decimals: 18,
   },

@@ -10,9 +10,13 @@ const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 const fetchPrices = async () => {
   const apePriceGetter = getApePriceGetterAddress()
   const pools = await getPools()
-  const tokenList = pools
+  let tokenList = pools
     .filter((p) => p.isFinished === false)
     .reduce((a, v) => ({ ...a, [v.rewardToken.symbol.toLowerCase()]: v.rewardToken }), {})
+  tokenList = {
+    ...tokenList,
+    ...tokens,
+  }
 
   const calls = Object.keys(tokenList).map((token, i) => {
     if (tokenList[token].lpToken) {
@@ -28,6 +32,7 @@ const fetchPrices = async () => {
       params: [tokenList[token].address[CHAIN_ID], tokenList[token].decimals],
     }
   })
+
   const tokenPrices = await multicall(apePriceGetterABI, calls)
 
   const mappedTokenPrices = Object.keys(tokenList).map((token, i) => {
