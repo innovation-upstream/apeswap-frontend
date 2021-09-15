@@ -60,11 +60,10 @@ export const {
 } = PoolsSlice.actions
 
 // Thunks
-export const fetchPoolsPublicDataAsync = (tokenPrices: TokenPrices[]) => async (dispatch) => {
-  const pools = await getPools()
-  const blockLimits = await fetchPoolsBlockLimits()
-  const totalStakings = await fetchPoolsTotalStatking()
-  const tokenStatsAndAprs = await fetchPoolTokenStatsAndApr(tokenPrices, totalStakings)
+export const fetchPoolsPublicDataAsync = (tokenPrices: TokenPrices[], pools) => async (dispatch) => {
+  const blockLimits = await fetchPoolsBlockLimits(pools)
+  const totalStakings = await fetchPoolsTotalStatking(pools)
+  const tokenStatsAndAprs = await fetchPoolTokenStatsAndApr(tokenPrices, totalStakings, pools)
   const liveData = await Promise.all(
     pools.map(async (pool) => {
       const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)

@@ -94,7 +94,7 @@ const fetchFarms = async () => {
         multiplier = `${allocPoint.div(100).toString()}X`
         // eslint-disable-next-line no-empty
       } catch (error) {
-        console.log('Error fetching farm', error, farmConfig)
+        // console.log('Error fetching farm', error, farmConfig)
       }
 
       return {

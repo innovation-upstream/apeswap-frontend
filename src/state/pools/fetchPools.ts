@@ -13,8 +13,7 @@ import { getPools } from 'hooks/api'
 
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
-export const fetchPoolsBlockLimits = async () => {
-  const pools = await getPools()
+export const fetchPoolsBlockLimits = async (pools) => {
   const poolsWithEnd = pools.filter((p) => p.sousId !== 0)
   const callsStartBlock = poolsWithEnd.map((poolConfig) => {
     return {
@@ -43,8 +42,7 @@ export const fetchPoolsBlockLimits = async () => {
   })
 }
 
-export const fetchPoolsTotalStatking = async () => {
-  const pools = await getPools()
+export const fetchPoolsTotalStatking = async (pools) => {
   const nonBnbPools = pools.filter((p) => p.stakingToken.symbol !== QuoteToken.BNB)
   const bnbPool = pools.filter((p) => p.stakingToken.symbol === QuoteToken.BNB)
 
@@ -85,8 +83,7 @@ export const fetchPoolsTotalStatking = async () => {
   ]
 }
 
-export const fetchPoolTokenStatsAndApr = async (tokenPrices: TokenPrices[], totalStakingList) => {
-  const pools = await getPools()
+export const fetchPoolTokenStatsAndApr = async (tokenPrices: TokenPrices[], totalStakingList, pools) => {
   const mappedValues = pools.map((pool) => {
     // Get values needed to calculate apr
     const curPool = pool

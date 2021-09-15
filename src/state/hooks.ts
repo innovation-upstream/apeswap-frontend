@@ -44,10 +44,11 @@ export const useFetchPublicData = () => {
   const dispatch = useDispatch()
   const { slowRefresh } = useRefresh()
   const { tokenPrices } = useTokenPrices()
+  const pools = useSelector((state: State) => state.pools.data)
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
-    dispatch(fetchPoolsPublicDataAsync(tokenPrices))
-  }, [dispatch, slowRefresh, tokenPrices])
+    dispatch(fetchPoolsPublicDataAsync(tokenPrices, pools))
+  }, [dispatch, slowRefresh, tokenPrices, pools])
 }
 
 // Farms

@@ -11,13 +11,11 @@ const fetchPrices = async () => {
   const apePriceGetter = getApePriceGetterAddress()
   const pools = await getPools()
   let tokenList = pools
-    .filter((p) => p.isFinished === false)
     .reduce((a, v) => ({ ...a, [v.rewardToken.symbol.toLowerCase()]: v.rewardToken }), {})
   tokenList = {
-    ...tokenList,
     ...tokens,
+    ...tokenList,
   }
-
   const calls = Object.keys(tokenList).map((token, i) => {
     if (tokenList[token].lpToken) {
       return {
