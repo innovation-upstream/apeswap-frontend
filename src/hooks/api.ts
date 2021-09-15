@@ -312,7 +312,7 @@ export const getPools = async () => {
 }
 
 export const getNewsHome = async () => {
-  const url = `${baseUrlStrapi}/home-news?_sort=created_at:desc`
+  const url = `${baseUrlStrapi}/home-news?_sort=published_at:desc`
   const resp = await fetch(url)
   const data = await resp.json()
   const news = data.map((curNews) => {
@@ -355,7 +355,7 @@ export const getPoolsHome = async () => {
 }
 
 export const getHeadersHome = async () => {
-  const url = `${baseUrlStrapi}/home-banners?_sort=created_at:desc`
+  const url = `${baseUrlStrapi}/home-banners?_sort=published_at:desc`
   const resp = await fetch(url)
   const data = await resp.json()
   const headers = data.map((header) => {

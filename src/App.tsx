@@ -12,6 +12,7 @@ import {
   useFetchAuctions,
   useFetchTokenPrices,
   useFetchAndSetPools,
+  useFetchProfile,
 } from 'state/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
@@ -69,6 +70,7 @@ const App: React.FC = () => {
   useEagerConnect()
   useFetchTokenPrices()
   useFetchPublicData()
+  useFetchProfile()
   useFetchStats()
   useFetchStatsOverall()
   useFetchAuctions()

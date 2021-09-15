@@ -367,6 +367,41 @@ const tokens = {
     },
     decimals: 18,
   },
+  rsun: {
+    symbol: 'RSUN',
+    address: {
+      56: '0x917841c010b3d86ed886f36f2c9807e07a2e3093',
+    },
+    decimals: 9,
+  },
+  txl: {
+    symbol: 'TXL',
+    address: {
+      56: '0x1ffd0b47127fdd4097e54521c9e2c7f0d66aafc5',
+    },
+    decimals: 18,
+  },
+  sfund: {
+    symbol: 'SFUND',
+    address: {
+      56: '0x477bc8d23c634c154061869478bce96be6045d12',
+    },
+    decimals: 18,
+  },
+  phx: {
+    symbol: 'PHX',
+    address: {
+      56: '0xac86e5f9bA48d680516df50C72928c2ec50F3025',
+    },
+    decimals: 18,
+  },
+  pots: {
+    symbol: 'POTS',
+    address: {
+      56: '0x3Fcca8648651E5b974DD6d3e50F61567779772A8',
+    },
+    decimals: 18,
+  },
 }
 
 export default tokens

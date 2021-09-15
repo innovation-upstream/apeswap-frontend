@@ -1705,6 +1705,66 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wbnb,
   },
   {
+    pid: 121,
+    lpSymbol: 'RSUN-BNB LP',
+    lpAddresses: {
+      97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
+      56: '0x6b8e6F32C703e90F23515AE12ad14f6ceA67C766',
+    },
+    tokenSymbol: 'RSUN',
+    tokenAddresses: {
+      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
+      56: '0x917841c010b3d86ED886F36F2C9807E07a2e3093',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
+  {
+    pid: 122,
+    lpSymbol: 'TXL-BNB LP',
+    lpAddresses: {
+      97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
+      56: '0xd2fd92bb7aee4d15ffa68d39ebbfc937f2b3970d',
+    },
+    tokenSymbol: 'TXL',
+    tokenAddresses: {
+      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
+      56: '0x1ffd0b47127fdd4097e54521c9e2c7f0d66aafc5',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
+  {
+    pid: 123,
+    lpSymbol: 'SFUND-BNB LP',
+    lpAddresses: {
+      97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
+      56: '0xB5eC4777Ac976cf221c5451e62115b790f9B44b7',
+    },
+    tokenSymbol: 'SFUND',
+    tokenAddresses: {
+      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
+      56: '0x477bc8d23c634c154061869478bce96be6045d12',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
+  {
+    pid: 124,
+    lpSymbol: 'PHX-BNB LP',
+    lpAddresses: {
+      97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
+      56: '0xd6252ec3a5928d79f4211afdc0dd831a0fc97cdd',
+    },
+    tokenSymbol: 'PHX',
+    tokenAddresses: {
+      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
+      56: '0xac86e5f9ba48d680516df50c72928c2ec50f3025',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
+  {
     pid: 7, // NOTE: Inactive Farm
     lpSymbol: 'BANANA-BAKE LP',
     lpAddresses: {
