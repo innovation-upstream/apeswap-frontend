@@ -281,7 +281,7 @@ export const getPromosHome = async () => {
 let poolPromise
 
 export const fetchPools = async () => {
-  const url = `https://raw.githubusercontent.com/ApeSwapFinance/-apeswap-yields/main/config/pools.json?time=${Date.now()}`
+  const url = `https://raw.githubusercontent.com/ApeSwapFinance/apeswap-yields/main/config/pools.json?time=${Date.now()}`
   const resp = await fetch(url)
   const data = await resp.json()
   const poolsList = data.map((pool) => ({
