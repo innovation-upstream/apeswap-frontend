@@ -402,6 +402,20 @@ const tokens = {
     },
     decimals: 18,
   },
+  frmx: {
+    symbol: 'FRMx',
+    address: {
+      56: '0x8523518001ad5d24b2a04e8729743c0643a316c0',
+    },
+    decimals: 18,
+  },
+  exp: {
+    symbol: 'EXP',
+    address: {
+      56: '0x639d4C62F58a4048AD0F69B8CE675dB1A3e8e00e',
+    },
+    decimals: 18,
+  },
 }
 
 export default tokens
