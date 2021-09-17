@@ -13,7 +13,7 @@ export const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://ape-swa
 export const baseUrlStrapi = 'https://apeswap-strapi.herokuapp.com'
 const EXCHANGE_SUBGRAPH_URL = 'https://graph.apeswap.finance/subgraphs/name/ape-swap/apeswap-subgraph'
 const EXCHANGE_POLYGON_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/apeswapfinance/dex-polygon'
-
+const POOL_LIST_URL = process.env.POOL_LIST_URL || 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-yields/staging/config/pools.json'
 /* eslint-disable camelcase */
 
 export interface TradePair {
@@ -281,7 +281,7 @@ export const getPromosHome = async () => {
 let poolPromise
 
 export const fetchPools = async () => {
-  const url = `https://raw.githubusercontent.com/ApeSwapFinance/apeswap-yields/main/config/pools.json?time=${Date.now()}`
+  const url = `${POOL_LIST_URL}?time=${Date.now()}`
   const resp = await fetch(url)
   const data = await resp.json()
   const poolsList = data.map((pool) => ({

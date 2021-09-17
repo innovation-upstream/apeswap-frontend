@@ -42,7 +42,7 @@ const PoolHeading: React.FunctionComponent<PoolProps> = ({ stakeToken, earnToken
         <IconImage src={`/images/tokens/${stakeToken}.svg`} alt={stakeToken} width={50} height={50} marginLeft="5px" />
         <IconImage src="/images/arrow.svg" alt="arrow" width={20} height={20} />
         <IconImage
-          src={`/images/tokens/${earnTokenImage || `${earnToken}.svg`}`}
+          src={earnTokenImage}
           alt={earnToken}
           width={50}
           height={50}
