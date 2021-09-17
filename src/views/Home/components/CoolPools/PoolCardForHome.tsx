@@ -113,7 +113,7 @@ const PoolCardForHome: React.FC<HarvestProps> = ({ pool }) => {
       <StyledBackground>
         <StyledImage src={`/images/tokens/${stakingToken.symbol}.svg`} alt={stakingToken.symbol} />
         <StyledArrow src="/images/arrow.svg" alt="arrow" />
-        <StyledImage src={`/images/tokens/${image || `${tokenName}.svg`}`} alt={tokenName} />
+        <StyledImage src={image} alt={tokenName} />
       </StyledBackground>
       <DescriptionContainer>
         <StyledHeading>{tokenName}</StyledHeading>
