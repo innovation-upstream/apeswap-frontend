@@ -41,13 +41,7 @@ const PoolHeading: React.FunctionComponent<PoolProps> = ({ stakeToken, earnToken
       <StyledBackground>
         <IconImage src={`/images/tokens/${stakeToken}.svg`} alt={stakeToken} width={50} height={50} marginLeft="5px" />
         <IconImage src="/images/arrow.svg" alt="arrow" width={20} height={20} />
-        <IconImage
-          src={earnTokenImage}
-          alt={earnToken}
-          width={50}
-          height={50}
-          marginRight="5px"
-        />
+        <IconImage src={earnTokenImage} alt={earnToken} width={50} height={50} marginRight="5px" />
       </StyledBackground>
       <div>
         <Text fontSize="20px" bold>
