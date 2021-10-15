@@ -1,3 +1,4 @@
+import pRetry from "p-retry";
 import BigNumber from 'bignumber.js'
 import { useEffect, useState } from 'react'
 import useRefresh from './useRefresh'
@@ -10,10 +11,9 @@ export const baseUrlStrapi = 'https://apeswap-strapi.herokuapp.com'
 const EXCHANGE_SUBGRAPH_URL = 'https://graph.apeswap.finance/subgraphs/name/ape-swap/apeswap-subgraph'
 const EXCHANGE_POLYGON_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/apeswapfinance/dex-polygon'
 const POOL_LIST_URL =
-  process.env.POOL_LIST_URL ||
-  'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-yields/staging/config/pools.json'
+  process.env.REACT_APP_POOL_LIST_URL ||
+  'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-yields/main/config/pools.json'
 /* eslint-disable camelcase */
-
 export interface TradePair {
   swap_pair_contract: string
   base_symbol: string
@@ -279,29 +279,41 @@ export const getPromosHome = async () => {
 let poolPromise
 
 export const fetchPools = async () => {
-  const url = `${POOL_LIST_URL}?time=${Date.now()}`
-  const resp = await fetch(url)
-  const data = await resp.json()
-  const poolsList = data.map((pool) => ({
-    sousId: Number(pool.sousId),
-    tokenName: pool.tokenName,
-    image: pool.image,
-    stakingToken: pool.stakingToken,
-    rewardToken: pool.rewardToken,
-    contractAddress: pool.contractAddress,
-    poolCategory: 'CORE',
-    projectLink: pool.projectLink,
-    harvest: pool.harvest,
-    sortOrder: pool.sortOrder,
-    reflect: pool.reflect,
-    isFinished: pool.isFinished,
-    tokenDecimals: pool.tokenDecimals,
-    tokenPerBlock: new BigNumber(Number(pool.rewardPerBlock))
-      .dividedBy(new BigNumber(10).pow(new BigNumber(Number(pool.tokenDecimals))))
-      .toString(),
-  }))
-  return poolsList
+  try {
+    const url = `${POOL_LIST_URL}?time=${Date.now()}`
+    const resp = await fetch(url)
+    if (!resp.ok) {
+      throw new Error(resp.statusText);
+    }
+    const data = await resp.json()
+    const poolsList = data.map((pool) => ({
+      sousId: Number(pool.sousId),
+      tokenName: pool.tokenName,
+      image: pool.image,
+      stakingToken: pool.stakingToken,
+      rewardToken: pool.rewardToken,
+      contractAddress: pool.contractAddress,
+      poolCategory: pool.poolCategory,
+      projectLink: pool.projectLink,
+      harvest: pool.harvest,
+      sortOrder: pool.sortOrder,
+      reflect: pool.reflect,
+      isFinished: pool.isFinished,
+      tokenDecimals: pool.tokenDecimals,
+      tokenPerBlock: new BigNumber(Number(pool.rewardPerBlock))
+        .dividedBy(new BigNumber(10).pow(new BigNumber(Number(pool.tokenDecimals))))
+        .toString(),
+    }))
+    return poolsList
+  } catch (error) {
+    return [];
+  }
+  
 }
+
+(async () => {
+	await pRetry(fetchPools, {retries: 5});
+})();
 
 export const getPools = async () => {
   if (!poolPromise) poolPromise = fetchPools()

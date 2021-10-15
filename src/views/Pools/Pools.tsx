@@ -481,6 +481,11 @@ const TableWrapper = styled.div`
 const TableContainer = styled.div`
   position: relative;
 `
+
+const AlertErrorList = styled.div`
+  text-align:center;
+`
+
 const NUMBER_OF_POOLS_VISIBLE = 12
 
 const Pools: React.FC = () => {
@@ -627,7 +632,7 @@ const Pools: React.FC = () => {
   const cardLayout = (
     <CardContainer>
       <FlexLayout>
-        {poolsToShow().map((pool) => (
+        {openPools.length > 0 && poolsToShow().map((pool) => (
           <PoolCard key={pool.sousId} pool={pool} removed={!isActive} />
         ))}
       </FlexLayout>
@@ -639,7 +644,7 @@ const Pools: React.FC = () => {
       <TableContainer>
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
-            {poolsToShow().map((pool) => (
+            {openPools.length > 0 && poolsToShow().map((pool) => (
               <PoolTable key={pool.sousId} pool={pool} removed={!isActive} />
             ))}
           </StyledTable>
@@ -727,6 +732,9 @@ const Pools: React.FC = () => {
             </StyledLabel>
           </StyledLabelContainerEarned>
         </ContainerLabels>
+        {
+          openPools.length === 0 && <AlertErrorList>Oops something went wrong, please refresh the page</AlertErrorList>
+        }
         {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
         <div ref={loadMoreRef} />
       </StyledPage>
