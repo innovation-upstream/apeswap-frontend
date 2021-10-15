@@ -1,4 +1,4 @@
-import pRetry from "p-retry";
+import pRetry from 'p-retry'
 import BigNumber from 'bignumber.js'
 import { useEffect, useState } from 'react'
 import useRefresh from './useRefresh'
@@ -283,7 +283,7 @@ export const fetchPools = async () => {
     const url = `${POOL_LIST_URL}?time=${Date.now()}`
     const resp = await fetch(url)
     if (!resp.ok) {
-      throw new Error(resp.statusText);
+      throw new Error(resp.statusText)
     }
     const data = await resp.json()
     const poolsList = data.map((pool) => ({
@@ -306,14 +306,13 @@ export const fetchPools = async () => {
     }))
     return poolsList
   } catch (error) {
-    return [];
+    return []
   }
-  
 }
 
-(async () => {
-	await pRetry(fetchPools, {retries: 5});
-})();
+;(async () => {
+  await pRetry(fetchPools, { retries: 5 })
+})()
 
 export const getPools = async () => {
   if (!poolPromise) poolPromise = fetchPools()

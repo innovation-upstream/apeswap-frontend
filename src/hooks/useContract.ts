@@ -126,7 +126,7 @@ export const useSousChef = (id) => {
   const pools = useSelector((state: State) => state.pools.data)
   const config = pools.find((pool) => pool.sousId === id)
   const rawAbi = config?.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
-  const abi = (rawAbi as unknown) as AbiItem
+  const abi = rawAbi as unknown as AbiItem
   return useContract(abi, config.contractAddress[process.env.REACT_APP_CHAIN_ID])
 }
 
