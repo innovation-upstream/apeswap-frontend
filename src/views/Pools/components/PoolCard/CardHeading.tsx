@@ -316,7 +316,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       <StyledBackground>
         <StyledImage src={`/images/tokens/${stakeToken}.svg`} alt={tokenSymbol} />
         <StyledArrow src="/images/arrow.svg" alt="arrow" />
-        <StyledImage src={`/images/tokens/${earnTokenImage || `${earnToken}.svg`}`} alt={earnToken} />
+        <StyledImage src={earnTokenImage} alt={earnToken} />
       </StyledBackground>
       <StyledFlexContainer>
         <LabelContainer>
