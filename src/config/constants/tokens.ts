@@ -511,6 +511,13 @@ const tokens = {
     },
     decimals: 18,
   },
+  wsg: {
+    symbol: 'WSG',
+    address: {
+      56: '0xA58950F05FeA2277d2608748412bf9F802eA4901',
+    },
+    decimals: 18,
+  },
 }
 
 export default tokens

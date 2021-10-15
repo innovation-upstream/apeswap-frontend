@@ -15,6 +15,7 @@ import {
   getAuctionAddress,
   getApePriceGetterAddress,
 } from 'utils/addressHelpers'
+import nfaStakingPools from 'config/constants/nfaStakingPools'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
@@ -25,6 +26,7 @@ import treasuryAbi from 'config/abi/treasury.json'
 import lotteryTicket from 'config/abi/lotteryNft.json'
 import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
+import nfaStakingAbi from 'config/abi/nfaStaking.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/bananaProfile.json'
 import auction from 'config/abi/auction.json'
@@ -126,6 +128,13 @@ export const useSousChef = (id) => {
   const pools = useSelector((state: State) => state.pools.data)
   const config = pools.find((pool) => pool.sousId === id)
   const rawAbi = config?.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
+  const abi = rawAbi as unknown as AbiItem
+  return useContract(abi, config.contractAddress[process.env.REACT_APP_CHAIN_ID])
+}
+
+export const useNfaStakingChef = (id) => {
+  const config = nfaStakingPools.find((pool) => pool.sousId === id)
+  const rawAbi = nfaStakingAbi
   const abi = rawAbi as unknown as AbiItem
   return useContract(abi, config.contractAddress[process.env.REACT_APP_CHAIN_ID])
 }
