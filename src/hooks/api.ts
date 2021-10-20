@@ -303,6 +303,7 @@ export const fetchPools = async () => {
       tokenPerBlock: new BigNumber(Number(pool.rewardPerBlock))
         .dividedBy(new BigNumber(10).pow(new BigNumber(Number(pool.tokenDecimals))))
         .toString(),
+      forAdmins: pool.forAdmins,
     }))
     return poolsList
   } catch (error) {
