@@ -31,7 +31,7 @@ import {
   TokenPricesState,
   NfaStakingPool,
 } from './types'
-import { fetchNfaStakingPoolsUserDataAsync } from './nfaStakingPools'
+import { fetchNfaStakingPoolsPublicDataAsync, fetchNfaStakingPoolsUserDataAsync } from './nfaStakingPools'
 import { fetchProfile } from './profile'
 import { fetchStats } from './stats'
 import { fetchStatsOverall } from './statsOverall'
@@ -50,8 +50,7 @@ export const useFetchPublicData = () => {
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
     dispatch(fetchPoolsPublicDataAsync(tokenPrices, pools))
-    // Will un-comment on nfa staking release
-    // dispatch(fetchNfaStakingPoolsPublicDataAsync(tokenPrices))
+    dispatch(fetchNfaStakingPoolsPublicDataAsync(tokenPrices))
   }, [dispatch, slowRefresh, tokenPrices, pools])
 }
 
