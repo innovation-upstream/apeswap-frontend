@@ -311,7 +311,7 @@ export const fetchPools = async () => {
   }
 }
 
-;(async () => {
+(async () => {
   await pRetry(fetchPools, { retries: 5 })
 })()
 
