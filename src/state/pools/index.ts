@@ -11,7 +11,7 @@ import {
 } from './fetchPoolsUser'
 import { PoolsState, Pool, TokenPrices } from '../types'
 
-const initialState: PoolsState = { data: [...poolsConfig], isLoading: true }
+const initialState: PoolsState = { data: [], isLoading: true }
 
 export const PoolsSlice = createSlice({
   name: 'Pools',
