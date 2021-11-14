@@ -33,7 +33,7 @@ sync:
     - git remote set-url origin git@gitlab-iu:apeswap/apeswap-frontend.git
     - git checkout origin-upstream/main
     - git pull origin-upstream main
-    - git switch -c main-downstream
+    - git switch -c main-downstream-$(git log -n 1 --pretty=format:"%H")
     - git push -u origin main-downstream
   rules:
     - if: '($CI_PIPELINE_SOURCE == "schedule" && $JOB_TYPE == "sync")'
