@@ -21,12 +21,16 @@ sync:
       Host github.com-apeswap
         Hostname github.com
         IdentityFile=$APESWAP_SSH_KEY_PRIVATE
+      Host gitlab-iu
+        Hostname gitlab.innovationup.stream
+        IdentityFile=$APESWAP_SSH_KEY_PRIVATE
       EOT
     - chmod 0600 $APESWAP_SSH_KEY_PRIVATE
     - git config pull.rebase true
     - git config pull.ff false
   script:
     - git remote get-url origin-upstream || git remote add origin-upstream git@github.com-apeswap:ApeSwapFinance/apeswap-dex.git
+    - git remote set-url origin git@gitlab-iu:apeswap/apeswap-frontend.git
     - git checkout origin-upstream/main
     - git pull origin-upstream main
     - git switch -c main-downstream
