@@ -13,6 +13,7 @@ sync:
   image:
     name: nixos/nix
   before_script:
+    - git config pull.ff only
     - nix-channel --update
     - nix-env -iA nixpkgs.git nixpkgs.openssh
     - \[ -d ~/.ssh \] || mkdir ~/.ssh
