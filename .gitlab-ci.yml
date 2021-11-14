@@ -25,7 +25,7 @@ sync:
     - chmod 0600 $APESWAP_SSH_KEY_PRIVATE
     - git config pull.ff only
   script:
-    - git remote add origin-upstream git@github.com-apeswap:ApeSwapFinance/apeswap-dex.git
+    - git remote get-url origin-upstream || git remote add origin-upstream git@github.com-apeswap:ApeSwapFinance/apeswap-dex.git
     - git pull origin-upstream main
     - git checkout origin-upstream/main
     - git switch -c main-downstream
