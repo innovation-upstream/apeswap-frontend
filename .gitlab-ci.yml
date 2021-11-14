@@ -14,7 +14,7 @@ sync:
     name: nixos/nix
   before_script:
     - nix-channel --update
-    - nix-env -iA nixpkgs.git
+    - nix-env -iA nixpkgs.git nixpkgs.openssh
     - \[ -d ~/.ssh \] || mkdir ~/.ssh
     - |-
       cat <<EOT >> ~/.ssh/config
