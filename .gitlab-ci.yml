@@ -24,6 +24,7 @@ sync:
       EOT
     - chmod 0600 $APESWAP_SSH_KEY_PRIVATE
     - git config pull.rebase true
+    - git config pull.ff false
   script:
     - git remote get-url origin-upstream || git remote add origin-upstream git@github.com-apeswap:ApeSwapFinance/apeswap-dex.git
     - git pull origin-upstream main
