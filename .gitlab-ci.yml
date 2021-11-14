@@ -1,0 +1,33 @@
+stages:
+  - sync
+
+sync:
+  stage: sync
+  variables:
+    # Skip host key verification prompt
+    GIT_SSH_COMMAND: "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    GIT_AUTHOR_NAME: "Innovation Upstream CI Bot"
+    GIT_AUTHOR_EMAIL: "zach+ci@innovationupstream.com"
+    GIT_COMMITTER_NAME: "Innovation Upstream CI Bot"
+    GIT_COMMITTER_EMAIL: "zach+ci@innovationupstream.com"
+  image:
+    name: alpine/git
+    entrypoint: ["sh"]
+  before_script:
+    - \[ -d ~/.ssh \] || mkdir ~/.ssh
+    - |-
+      cat <<EOT >> ~/.ssh/config
+      Host github.com-apeswap
+        Hostname github.com
+        IdentityFile=$APESWAP_SSH_KEY_PRIVATE
+      EOT
+    - chmod 0600 $APESWAP_SSH_KEY_PRIVATE
+  script:
+    - git remote add origin-upstream git@github.com-apeswap:ApeSwapFinance/apeswap-dex.git
+    - git pull origin-upstream main
+    - git checkout origin-upstream/main
+    - git switch -c main-downstream
+    - git push -u origin main-downstream
+  rules:
+    - if: '($CI_PIPELINE_SOURCE == "schedule" && $JOB_TYPE == "sync")'
+      when: on_success
