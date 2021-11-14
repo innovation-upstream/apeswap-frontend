@@ -11,9 +11,10 @@ sync:
     GIT_COMMITTER_NAME: "Innovation Upstream CI Bot"
     GIT_COMMITTER_EMAIL: "zach+ci@innovationupstream.com"
   image:
-    name: alpine/git
-    entrypoint: ["sh"]
+    name: nixos/nix
   before_script:
+    - nix-channel --update
+    - nix-env -iA nixpkgs.git
     - \[ -d ~/.ssh \] || mkdir ~/.ssh
     - |-
       cat <<EOT >> ~/.ssh/config
