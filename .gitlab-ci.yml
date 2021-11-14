@@ -23,7 +23,7 @@ sync:
         IdentityFile=$APESWAP_SSH_KEY_PRIVATE
       EOT
     - chmod 0600 $APESWAP_SSH_KEY_PRIVATE
-    - git config pull.ff only
+    - git config pull.rebase true
   script:
     - git remote get-url origin-upstream || git remote add origin-upstream git@github.com-apeswap:ApeSwapFinance/apeswap-dex.git
     - git pull origin-upstream main
