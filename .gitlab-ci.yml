@@ -33,7 +33,7 @@ sync:
     - export LAST_COMMIT_MAIN_DOWNSTREAM=$(git log main-downstream -n 1 --pretty=format:"%H" || echo "000000")
     - git remote add origin-upstream git@github.com-apeswap:ApeSwapFinance/apeswap-dex.git
     - git remote set-url origin git@gitlab-iu:apeswap/apeswap-frontend.git
-    - git pull origin-upstream
+    - git fetch origin-upstream
     - git checkout origin-upstream/main
     - export LAST_COMMIT_UPSTREAM_MAIN=$(git log -n 1 --pretty=format:"%H")
     - git switch -c main-downstream-$LAST_COMMIT_UPSTREAM_MAIN
