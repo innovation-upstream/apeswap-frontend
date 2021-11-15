@@ -29,12 +29,14 @@ sync:
     - git config pull.rebase false
     - git config pull.ff false
   script:
+    - export LAST_COMMIT_IU_MAIN=$(git log -n 1 --pretty=format:"%H")
     - git remote get-url origin-upstream || git remote add origin-upstream git@github.com-apeswap:ApeSwapFinance/apeswap-dex.git
     - git remote set-url origin git@gitlab-iu:apeswap/apeswap-frontend.git
     - git checkout origin-upstream/main
     - git pull origin-upstream main
-    - git switch -c main-downstream-$(git log -n 1 --pretty=format:"%H")
-    - git push -u origin main-downstream
+    - export LAST_COMMIT_UPSTREAM_MAIN=$(git log -n 1 --pretty=format:"%H")
+    - git switch -c main-downstream-$LAST_COMMIT_UPSTREAM_MAIN
+    - [ "$LAST_COMMIT_UPSTREAM_MAIN" = "$LAST_COMMIT_IU_MAIN" ] || git push -u origin main-downstream -o merge_request.create -o merge_request.target=main-iu
   rules:
     - if: '($CI_PIPELINE_SOURCE == "schedule" && $JOB_TYPE == "sync")'
       when: on_success
