@@ -30,7 +30,7 @@ sync:
     - git config pull.rebase false
     - git config pull.ff false
   script:
-    - export LAST_COMMIT_MAIN_DOWNSTREAM=$(git log main-downstream -n 1 --pretty=format:"%H" || echo "000000")
+    - export LAST_COMMIT_MAIN_DOWNSTREAM=$(git log origin/main-downstream -n 1 --pretty=format:"%H" || echo "000000")
     - git remote add origin-upstream git@github.com-apeswap:ApeSwapFinance/apeswap-frontend.git
     - git remote set-url origin git@gitlab-iu:apeswap/apeswap-frontend.git
     - git fetch origin-upstream
