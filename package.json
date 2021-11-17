@@ -9,7 +9,24 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'"
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
+    "postbuild": "react-snap"
+  },
+  "reactSnap": {
+    "include": ["/gnana"],
+    "concurrency": 4,
+    "headless": true,
+    "puppeteer": {
+      
+    },
+    "puppeteerArgs": [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-web-security",
+      "--disable-features=IsolateOrigins",
+      "--disable-site-isolation-trials"
+    ]
   },
   "husky": {
     "hooks": {
@@ -74,6 +91,7 @@
     "eslint": "^7.26.0",
     "husky": "^4.3.0",
     "prettier": "^2.1.2",
+    "react-snap": "^1.23.0",
     "source-map-explorer": "^2.5.1"
   }
 }
