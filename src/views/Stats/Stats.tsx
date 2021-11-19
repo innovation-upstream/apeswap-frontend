@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import styled from 'styled-components'
-import { Heading, BaseLayout, Image, Text } from '@apeswapfinance/uikit'
+import { Heading, BaseLayout, Image, Text, Skeleton } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
-import BananaStats from 'views/Stats/components/BananaStats'
 import { useFetchStats, useFetchStatsOverall, useStats } from 'state/hooks'
 import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
 import CardStats from './components/CardStats'
 import PageLoader from '../../components/PageLoader'
+
+const BananaStats = lazy(() => import('views/Stats/components/BananaStats'))
 
 const Hero = styled.div`
   align-items: center;
@@ -90,10 +91,12 @@ const Stats: React.FC = () => {
         <div>
           {stats !== null ? (
             <div>
-              <Cards>
-                <BananaStats stats={stats} />
-                {stats?.pools[0] && <CardStats data={stats.pools[0]} type="pool" forceDetails />}
-              </Cards>
+              <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+                <Cards>
+                  <BananaStats stats={stats} />
+                  {stats?.pools[0] && <CardStats data={stats.pools[0]} type="pool" forceDetails />}
+                </Cards>
+              </Suspense>
               <Cards>
                 {[...stats.incentivizedPools]
                   .sort((poolA, poolB) => poolB.stakedTvl - poolA.stakedTvl)

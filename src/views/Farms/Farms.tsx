@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react'
+import React, { useEffect, useCallback, useState, useMemo, Suspense, lazy } from 'react'
 import { Route, useRouteMatch, useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, RowType, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
+import { Heading, RowType, Text, Card, Checkbox, ArrowDropDownIcon, Skeleton } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 import { BLOCKS_PER_YEAR, BANANA_PER_BLOCK, BANANA_POOL_PID } from 'config'
 import Page from 'components/layout/Page'
@@ -14,13 +14,15 @@ import { Farm } from 'state/types'
 import { QuoteToken } from 'config/constants/types'
 import { orderBy } from 'lodash'
 import useI18n from 'hooks/useI18n'
-import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
+import { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import FarmTabButtons from './components/FarmTabButtons'
-import Table from './components/FarmTable/FarmTable'
 import SearchInput from './components/SearchInput'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, ViewMode } from './components/types'
+
+const Table = lazy(() => import('./components/FarmTable/FarmTable'))
+const FarmCard = lazy(() => import('./components/FarmCard/FarmCard'))
 
 interface LabelProps {
   active?: boolean
@@ -608,22 +610,30 @@ const Farms: React.FC = () => {
         sortable: column.sortable,
       }))
 
-      return <Table data={rowData} columns={columns} />
+      return (
+        <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+          <Table data={rowData} columns={columns} />
+        </Suspense>
+      )
     }
 
     return (
       <CardContainer>
         <FlexLayout>
-          <Route exact path={`${path}`}>
-            {farmsStakedMemoized.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed={false} />
-            ))}
-          </Route>
-          <Route exact path={`${path}/history`}>
-            {farmsStakedMemoized.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed />
-            ))}
-          </Route>
+          <switch>
+            <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+              <Route exact path={`${path}`}>
+                {farmsStakedMemoized.map((farm) => (
+                  <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed={false} />
+                ))}
+              </Route>
+              <Route exact path={`${path}/history`}>
+                {farmsStakedMemoized.map((farm) => (
+                  <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed />
+                ))}
+              </Route>
+            </Suspense>
+          </switch>
         </FlexLayout>
       </CardContainer>
     )

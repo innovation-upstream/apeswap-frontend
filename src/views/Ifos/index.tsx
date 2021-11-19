@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
+import { Skeleton } from '@apeswapfinance/uikit'
 import Container from 'components/layout/Container'
 import IfoTabButtons from './components/IfoTabButtons'
 import Hero from './components/Hero'
-import CurrentIfo from './CurrentIfo'
-import PastIfo from './PastIfo'
+
+const CurrentIfo = lazy(() => import('./CurrentIfo'))
+const PastIfo = lazy(() => import('./PastIfo'))
 
 const Ifos = () => {
   const { path } = useRouteMatch()
@@ -14,12 +16,16 @@ const Ifos = () => {
       <Hero />
       <Container>
         <IfoTabButtons />
-        <Route exact path={`${path}`}>
-          <CurrentIfo />
-        </Route>
-        <Route path={`${path}/history`}>
-          <PastIfo />
-        </Route>
+        <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+          <switch>
+            <Route exact path={`${path}`}>
+              <CurrentIfo />
+            </Route>
+            <Route path={`${path}/history`}>
+              <PastIfo />
+            </Route>
+          </switch>
+        </Suspense>
       </Container>
     </>
   )

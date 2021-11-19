@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Text, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { Text, useMatchBreakpoints, Skeleton } from '@apeswapfinance/uikit'
 import SwiperProvider from 'contexts/SwiperProvider'
 import { useAuctions, useFetchAuctions } from 'state/hooks'
-import Positions from './components/Positions'
 import Container from './components/Container'
 import History from './components/History'
 import ListYourNfa from './components/Actions/ListYourNfa'
+
+const Positions = lazy(() => import('./components/Positions'))
 
 const float = keyframes`
   0% {transform: translate3d(0px, 0px, 0px);}
@@ -229,9 +230,17 @@ const Auction: React.FC = () => {
               <ListYourNfa />
             </ButtonHolder>
           </MoreInfoWrapper>
-          <SplitWrapper>
-            <AuctionCardsWrapper>{auctions && <Positions auctions={auctions} />}</AuctionCardsWrapper>
-          </SplitWrapper>
+          <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+            <SplitWrapper>
+              <AuctionCardsWrapper>
+                {auctions && (
+                  <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+                    <Positions auctions={auctions} />
+                  </Suspense>
+                )}
+              </AuctionCardsWrapper>
+            </SplitWrapper>
+          </Suspense>
           {isDesktop && <History />}
         </PageWrapper>
       </Container>

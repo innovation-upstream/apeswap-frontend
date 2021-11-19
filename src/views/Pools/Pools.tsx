@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, Suspense, lazy } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
+import { Heading, Text, Card, Checkbox, ArrowDropDownIcon, Skeleton } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
@@ -16,9 +16,10 @@ import Page from 'components/layout/Page'
 import ToggleView from './components/ToggleView/ToggleView'
 import SearchInput from './components/SearchInput'
 import PoolTabButtons from './components/PoolTabButtons'
-import PoolCard from './components/PoolCard/PoolCard'
 import PoolTable from './components/PoolTable/PoolTable'
 import { ViewMode } from './components/types'
+
+const PoolCard = lazy(() => import('./components/PoolCard/PoolCard'))
 
 interface LabelProps {
   active?: boolean
@@ -658,13 +659,15 @@ const Pools: React.FC = () => {
   }
 
   const cardLayout = (
-    <CardContainer>
-      <FlexLayout>
-        {poolsToShow().map((pool) => (
-          <PoolCard key={pool.sousId} pool={pool} removed={!isActive} />
-        ))}
-      </FlexLayout>
-    </CardContainer>
+    <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+      <CardContainer>
+        <FlexLayout>
+          {poolsToShow().map((pool) => (
+            <PoolCard key={pool.sousId} pool={pool} removed={!isActive} />
+          ))}
+        </FlexLayout>
+      </CardContainer>
+    </Suspense>
   )
 
   const tableLayout = (

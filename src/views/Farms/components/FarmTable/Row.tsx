@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, lazy, Suspense } from 'react'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
-import { useMatchBreakpoints, Flex } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints, Flex, Skeleton } from '@apeswapfinance/uikit'
 import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import UnlockButton from 'components/UnlockButton'
@@ -16,11 +16,12 @@ import Details from './Details'
 import Multiplier, { MultiplierProps } from './Multiplier'
 import Liquidity, { LiquidityProps } from './Liquidity'
 
-import ActionPanel from './Actions/ActionPanel'
 import CellLayout from './CellLayout'
 import { DesktopColumnSchema, MobileColumnSchema } from '../types'
 
 import HarvestAction from '../FarmCard/HarvestAction'
+
+const ActionPanel = lazy(() => import('./Actions/ActionPanel'))
 
 export interface RowProps {
   apr: AprProps
@@ -212,7 +213,9 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
             })}
           </StyledFlex>
           {actionPanelToggled && details && (
-            <ActionPanel {...props} account={account} addLiquidityUrl={addLiquidityUrl} liquidity={liquidity} />
+            <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+              <ActionPanel {...props} account={account} addLiquidityUrl={addLiquidityUrl} liquidity={liquidity} />
+            </Suspense>
           )}
         </StyledTr>
       )

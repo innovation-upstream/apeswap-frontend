@@ -1,12 +1,13 @@
-import React from 'react'
-import { BaseLayout, Card, Heading, Text } from '@apeswapfinance/uikit'
+import React, { lazy, Suspense } from 'react'
+import { BaseLayout, Card, Heading, Text, Skeleton } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 import { TranslateString } from 'utils/translateTextHelpers'
 import Divider from './components/Divider'
 import BuyCard from './components/BuyCard'
 import SellCard from './components/SellCard'
-import Iao from './components/IAO/CurrentIao'
 import Description from './components/Description/Description'
+
+const Iao = lazy(() => import('./components/IAO/CurrentIao'))
 
 const StyledHeroSection = styled.div`
   max-width: 1200px;
@@ -44,7 +45,6 @@ const PaddedCard = styled(Card)`
 `
 
 const Zone = () => {
-
   return (
     <>
       <Description />
@@ -70,7 +70,9 @@ const Zone = () => {
           </Cards>
         </MarginContainer>
       </StyledHeroSection>
-      <Iao />
+      <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+        <Iao />
+      </Suspense>
       <Divider />
     </>
   )

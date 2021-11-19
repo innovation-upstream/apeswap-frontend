@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import styled from 'styled-components'
-import { Text } from '@apeswapfinance/uikit'
+import { Text, Skeleton } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import nfts from 'config/constants/nfts'
-import SortNfts from './components/SortNfts'
-import OwnedNfts from './components/OwnedNft'
+
+const OwnedNfts = lazy(() => import('./components/OwnedNft'))
+const SortNfts = lazy(() => import('./components/SortNfts'))
 
 const StyledHero = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.textSubtle};
@@ -25,14 +26,18 @@ const Nft = () => {
             {TranslateString(999, 'More Info')}
           </a>
         </Text>
-        <OwnedNfts />
+        <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+          <OwnedNfts />
+        </Suspense>
         <Text fontSize="25px" style={{ textDecoration: 'underline', marginTop: '25px', color: 'subtle' }}>
           <a href="https://nftkey.app/collections/nfas/?nfasTab=forSale" target="_blank" rel="noopener noreferrer">
             {TranslateString(999, 'Checkout the NFA aftermarket on NFTKEY!')}
           </a>
         </Text>
       </StyledHero>
-      <SortNfts nftSet={nfts} />
+      <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+        <SortNfts nftSet={nfts} />
+      </Suspense>
     </Page>
   )
 }

@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, Suspense, lazy } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Heading, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
+import { Heading, Text, Card, Checkbox, ArrowDropDownIcon, Skeleton } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
@@ -14,9 +14,10 @@ import Page from 'components/layout/Page'
 import ToggleView from './components/ToggleView/ToggleView'
 import SearchInput from './components/SearchInput'
 import VaultTabButtons from './components/VaultTabButtons'
-import VaultCard from './components/VaultCard/VaultCard'
 import VaultTable from './components/VaultTable/VaultTable'
 import { ViewMode } from './components/types'
+
+const VaultCard = lazy(() => import('./components/VaultCard/VaultCard'))
 
 interface LabelProps {
   active?: boolean
@@ -565,13 +566,15 @@ const Vaults: React.FC = () => {
   }
 
   const cardLayout = (
-    <CardContainer>
-      <FlexLayout>
-        {vaultsToShow().map((vault) => (
-          <VaultCard key={vault.pid} vault={vault} removed={!isActive} />
-        ))}
-      </FlexLayout>
-    </CardContainer>
+    <Suspense fallback={<Skeleton width="100%" height="52px" />}>
+      <CardContainer>
+        <FlexLayout>
+          {vaultsToShow().map((vault) => (
+            <VaultCard key={vault.pid} vault={vault} removed={!isActive} />
+          ))}
+        </FlexLayout>
+      </CardContainer>
+    </Suspense>
   )
 
   const tableLayout = (
