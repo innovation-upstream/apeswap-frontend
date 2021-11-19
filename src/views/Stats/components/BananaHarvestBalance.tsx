@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from '@apeswapfinance/uikit'
 import { useWeb3React } from '@web3-react/core'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import useAllEarnings from 'hooks/useAllEarnings'
 import CardValue from './CardValue'

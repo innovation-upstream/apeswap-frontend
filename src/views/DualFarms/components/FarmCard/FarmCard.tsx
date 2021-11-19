@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import styled from 'styled-components'
 import { useStats } from 'state/hooks'
 import { DualFarm, Farm } from 'state/types'

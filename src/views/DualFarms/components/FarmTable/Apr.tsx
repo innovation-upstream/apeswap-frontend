@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Address } from 'config/constants/types'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { Flex } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
 import ApyButton from '../../../../components/ApyCalculator/ApyButton'

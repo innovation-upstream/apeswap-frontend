@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { ResetCSS, ChevronUpIcon } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { CHAIN_ID } from 'config/constants/chains'
 import {
   useFetchPublicData,

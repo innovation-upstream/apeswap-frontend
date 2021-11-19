@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Text } from '@apeswapfinance/uikit'

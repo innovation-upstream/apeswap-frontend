@@ -1,7 +1,7 @@
 import React from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { useNetworkChainId } from 'state/hooks'
 import { Text, Flex, Link, LinkExternal } from '@apeswapfinance/uikit'
 import { NETWORK_LABEL } from 'config/constants/chains'

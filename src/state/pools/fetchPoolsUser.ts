@@ -7,7 +7,7 @@ import multicallABI from 'config/abi/Multicall.json'
 import { getMasterChefAddress, getMulticallAddress } from 'utils/addressHelper'
 import { getContract, getWeb3 } from 'utils/web3'
 import multicall from 'utils/multicall'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)

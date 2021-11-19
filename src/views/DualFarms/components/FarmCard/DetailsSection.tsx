@@ -1,5 +1,5 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { BLOCK_EXPLORER, NETWORK_LABEL } from 'config/constants/chains'

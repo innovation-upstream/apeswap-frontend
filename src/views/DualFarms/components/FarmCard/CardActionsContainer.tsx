@@ -1,5 +1,5 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { Flex } from '@apeswapfinance/uikit'
 import { DualFarm, Farm } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'

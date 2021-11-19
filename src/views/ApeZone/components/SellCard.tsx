@@ -9,7 +9,7 @@ import {
   Flex,
   Text,
 } from '@apeswapfinance/uikit'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import useApproveTransaction from 'hooks/useApproveTransaction'
 import { useGoldenBanana, useTreasury } from 'hooks/useContract'
 import { useSellGoldenBanana } from 'hooks/useGoldenBanana'

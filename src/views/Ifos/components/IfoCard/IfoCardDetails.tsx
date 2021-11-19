@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { Text, LinkExternal, Link } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { useNetworkChainId, useStats } from 'state/hooks'
 import { Farm } from 'state/types'

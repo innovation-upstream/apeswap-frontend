@@ -9,7 +9,7 @@ import { getContract } from 'utils/web3'
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { QuoteToken } from 'config/constants/types'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { TokenPrices } from 'state/types'
 
 export const fetchPoolsBlockLimits = async (chainId: number) => {

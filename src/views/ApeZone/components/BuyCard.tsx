@@ -10,7 +10,7 @@ import {
   Flex,
   Checkbox,
 } from '@apeswapfinance/uikit'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import useApproveTransaction from 'hooks/useApproveTransaction'
 import { useBanana, useTreasury } from 'hooks/useContract'
 import { useBuyGoldenBanana } from 'hooks/useGoldenBanana'

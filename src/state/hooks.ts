@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import BigNumber from 'bignumber.js'
-import { kebabCase } from 'lodash'
+import { BigNumber } from 'bignumber.js'
+import kebabCase from 'lodash/kebabCase'
 import { useWeb3React } from '@web3-react/core'
 import { Toast, toastTypes } from '@apeswapfinance/uikit'
 import { useSelector, useDispatch } from 'react-redux'

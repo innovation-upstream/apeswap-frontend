@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useTokenBalance from 'hooks/useTokenBalance'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { ZERO_ADDRESS } from 'config'
 import SubmitBid from './SubmitBid'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import styled from 'styled-components'
 import { CalculateIcon, IconButton, useModal } from '@apeswapfinance/uikit'
 import ApyCalculatorModal from './ApyCalculatorModal'

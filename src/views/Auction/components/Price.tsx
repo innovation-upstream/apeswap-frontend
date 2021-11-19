@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { usePriceBnbBusd } from 'state/hooks'
 

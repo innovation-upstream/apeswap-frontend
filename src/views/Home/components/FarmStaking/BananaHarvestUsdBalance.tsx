@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import { usePriceBananaBusd } from 'state/hooks'
 import useAllEarnings from 'hooks/useAllEarnings'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import CardValue from '../CardValue'
 
 const BananaHarvestUsdBalance = () => {

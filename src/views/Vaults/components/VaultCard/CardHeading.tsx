@@ -1,5 +1,5 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import { useWeb3React } from '@web3-react/core'

@@ -5,7 +5,7 @@ import multicallABI from 'config/abi/Multicall.json'
 import { getMulticallAddress, getAuctionAddress } from 'utils/addressHelper'
 import { getContract } from 'utils/web3'
 import Nfts from 'config/constants/nfts'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { ZERO_ADDRESS } from 'config'
 import multicall from 'utils/multicall'
 

@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useRef } from 'react'
-import { noop } from 'lodash'
+import noop from 'lodash/noop'
 import { useWeb3React } from '@web3-react/core'
 
 type Web3Payload = Record<string, unknown> | null

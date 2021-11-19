@@ -1,5 +1,5 @@
 import { Toast } from '@apeswapfinance/uikit'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import {
   Address,
   FarmConfig,

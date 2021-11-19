@@ -14,7 +14,7 @@ import {
   Text,
   ButtonSquare,
 } from '@apeswapfinance/uikit'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'

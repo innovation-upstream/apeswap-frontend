@@ -7,7 +7,7 @@ import { getMulticallAddress, getNonFungibleApesAddress } from 'utils/addressHel
 import { getContract } from 'utils/web3'
 import { getBalanceNumber } from 'utils/formatBalance'
 import multicall from 'utils/multicall'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { TokenPrices } from 'state/types'
 
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID

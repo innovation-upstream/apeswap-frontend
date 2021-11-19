@@ -5,7 +5,7 @@ import multicallABI from 'config/abi/Multicall.json'
 import { getMulticallAddress, getNonFungibleApesAddress } from 'utils/addressHelper'
 import { getContract } from 'utils/web3'
 import multicall from 'utils/multicall'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 
 export const fetchPoolsAllowance = async (chainId, account) => {
   const multicallContractAddress = getMulticallAddress(chainId)

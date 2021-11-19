@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import erc20ABI from 'config/abi/erc20.json'
 import { useWeb3React } from '@web3-react/core'
 import { getTokenBalance } from 'utils/erc20'

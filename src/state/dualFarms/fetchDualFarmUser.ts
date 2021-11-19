@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import erc20ABI from 'config/abi/erc20.json'
 import miniChefABI from 'config/abi/miniApeV2.json'
 import rewarderABI from 'config/abi/miniComplexRewarder.json'

@@ -1,7 +1,7 @@
 import React from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { Text, Flex, Link, LinkExternal } from '@apeswapfinance/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'

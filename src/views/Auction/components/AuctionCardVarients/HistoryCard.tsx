@@ -6,7 +6,7 @@ import { Auction } from 'state/types'
 import { usePriceBnbBusd } from 'state/hooks'
 import { ZERO_ADDRESS } from 'config'
 import { Text } from '@apeswapfinance/uikit'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import Image from '../../../Nft/components/Image'
 
 interface HistoryCardProps {

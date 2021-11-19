@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { BLOCKS_PER_YEAR, BANANA_PER_YEAR, SECONDS_PER_YEAR } from 'config'
 
 export const getPoolApr = (

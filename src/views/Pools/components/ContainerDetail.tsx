@@ -1,5 +1,5 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import styled from 'styled-components'
 import { Flex } from '@apeswapfinance/uikit'
 import { FarmPool } from 'state/types'

@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useTreasury } from 'hooks/useContract'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from 'bignumber.js'
 import { CHAIN_ID } from 'config/constants'
 import track from 'utils/track'
 
