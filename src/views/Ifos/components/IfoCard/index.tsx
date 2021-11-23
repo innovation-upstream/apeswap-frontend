@@ -218,7 +218,11 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, notLp, gnana }) => {
       })
     }
 
-    fetchProgress()
+    fetchProgress().catch((error) => {
+      if (navigator.userAgent !== 'ReactSnap') {
+        throw error
+      }
+    })
   }, [currentBlock, contract, releaseBlockNumber, setState, start, address, multicallAddress, chainId])
 
   const isActive = state.status === 'live'
