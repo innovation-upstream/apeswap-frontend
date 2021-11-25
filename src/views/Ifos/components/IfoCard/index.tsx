@@ -123,10 +123,11 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, notLp, gnana }) => {
   const Ribbon = getRibbonComponent(state.status, TranslateString)
   const chainId = useNetworkChainId()
   const multicallAddress = getMulticallAddress(chainId)
-  const multicallContract = getContract(multicallABI, multicallAddress, chainId)
 
   useEffect(() => {
     const fetchProgress = async () => {
+      const multicallContract = getContract(multicallABI, multicallAddress, chainId)
+
       if (!address) {
         // Allow IAO details to be shown before contracts are deployed
         return
@@ -222,7 +223,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, notLp, gnana }) => {
         throw error
       }
     })
-  }, [currentBlock, contract, releaseBlockNumber, setState, start, address, multicallContract])
+  }, [currentBlock, contract, releaseBlockNumber, setState, start, address, multicallAddress, chainId])
 
   const isActive = state.status === 'live'
   const isFinished = state.status === 'finished'
@@ -280,4 +281,4 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, notLp, gnana }) => {
   )
 }
 
-export default IfoCard
+export default React.memo(IfoCard)
