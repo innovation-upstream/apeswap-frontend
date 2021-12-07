@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Image } from '@apeswapfinance/uikit'
+import styles from '../farmcomponents.module.css'
 
 export interface FarmProps {
   label: string
@@ -10,13 +11,11 @@ export interface FarmProps {
   image?: string
 }
 
-const IconImage = styled(Image)`
+const IconImage = styled(Image).attrs({
+  className: styles.iconImage,
+})`
   width: 24px;
   height: 24px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 57px;
-    height: 57px;
-  }
 `
 
 const Container = styled.div`

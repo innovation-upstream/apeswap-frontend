@@ -6,8 +6,11 @@ import { Pool } from 'state/types'
 import pools from 'config/constants/pools'
 import { usePoolFromPid } from 'state/hooks'
 import PoolCardForHome from './PoolCardForHome'
+import styles from '../homecomponents.module.css'
 
-const CoolPoolsWrapper = styled.div`
+const CoolPoolsWrapper = styled.div.attrs({
+  className: styles.coolPoolsWrapper,
+})`
   position: relative;
   height: 321px;
   width: 336px;
@@ -17,13 +20,6 @@ const CoolPoolsWrapper = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   margin-top: 40px;
-  @media screen and (max-width: 350px) {
-    width: 300px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 718px;
-    height: 203px;
-  }
 `
 
 const CoolPoolsText = styled(Text)`
@@ -33,23 +29,15 @@ const CoolPoolsText = styled(Text)`
   color: #ffffff;
 `
 
-const PoolWrapper = styled.div`
+const PoolWrapper = styled.div.attrs({
+  className: styles.poolWrapper,
+})`
   margin-top: 5px;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  @media screen and (max-width: 350px) {
-    width: 310px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    justify-content: space-between;
-    padding-left: 25px;
-    padding-right: 25px;
-    flex-direction: row;
-    margin-top: 20px;
-  }
 `
 
 const DEFAULT_POOL = 0
