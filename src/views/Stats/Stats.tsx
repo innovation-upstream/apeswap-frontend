@@ -9,8 +9,11 @@ import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
 import CardStats from './components/CardStats'
 import PageLoader from '../../components/PageLoader'
+import styles from './stats.module.css'
 
-const Cards = styled(BaseLayout)`
+const Cards = styled(BaseLayout).attrs({
+  className: styles.cards
+})`
   align-items: stretch;
   justify-content: stretch;
   margin-bottom: 32px;
@@ -18,18 +21,6 @@ const Cards = styled(BaseLayout)`
   & > div {
     grid-column: span 6;
     width: 100%;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    & > div {
-      grid-column: span 8;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    & > div {
-      grid-column: span 6;
-    }
   }
 `
 

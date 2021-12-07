@@ -1,0 +1,11 @@
+@value xs, sm, md, lg from "../../style/breakpoints.module.css";
+
+.launchIfoCallout {
+  composes: baseLayout from "../../style/global.module.css";
+}
+
+@media sm {
+  .launchIfoCallout {
+    grid-template-columns: 1fr 1fr;
+  }
+}

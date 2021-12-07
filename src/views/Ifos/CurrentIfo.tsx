@@ -6,18 +6,17 @@ import useI18n from 'hooks/useI18n'
 import IfoCard from './components/IfoCard'
 import Title from './components/Title'
 import IfoCards from './components/IfoCards'
+import styles from './ifo.module.css'
 
-const LaunchIfoCallout = styled(BaseLayout)`
+const LaunchIfoCallout = styled(BaseLayout).attrs({
+  className: styles.launchIfoCallout,
+})`
   border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 60px;
   margin: 0 auto;
   padding: 32px 0;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    grid-template-columns: 1fr 1fr;
-  }
 `
 
 const List = styled.ul`

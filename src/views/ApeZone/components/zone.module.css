@@ -1,0 +1,112 @@
+@value sm, md, lg from "../../../style/breakpoints.module.css";
+
+.cards {
+  composes: baseLayout from "../../../style/global.module.css";
+}
+
+@media sm {
+  .styledBananaBuy {
+    width: 100px;
+    right: -15px;
+    bottom: -25px;
+  }
+  .styledBananaPairBuy {
+    width: 80px;
+    left: -20px;
+    bottom: -10px;
+  }
+  .styledBananaSell {
+    width: 110px;
+    top: -30px;
+    left: -20px;
+  }
+  .styledBananaPairSell {
+    width: 100px;
+    right: -10px;
+    bottom: -5px;
+  }
+  .styledFlex {
+    max-width: 1200px;
+    padding-left: 53px;
+    padding-right: 53px;
+    margin: auto;
+  }
+  .styledTextContainer {
+    margin-top: 89px;
+    margin-bottom: 89px;
+  }
+  .styledImg {
+    width: 80px;
+    height: 100%;
+    display: inline-block;
+  }
+  .styledCircle {
+    background-color: #333333;
+    width: 120px;
+    height: 120px;
+    filter: drop-shadow(0px 0px 20px #ebb02a);
+    position: relative;
+    margin: auto auto;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .styledCard {
+    width: 220px;
+    height: 170px;
+    margin-top: 176px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+  }
+  .currentIaoStyledFlex {
+    margin-top: -90px;
+    padding-left: 53px;
+    padding-right: 53px;
+  }
+  .cards > div {
+    grid-column: span 8;
+  }
+}
+
+@media md {
+  .styledImg {
+    width: 95px;
+  }
+  .styledCircle {
+    width: 140px;
+    height: 140px;
+  }
+  .styledCard {
+    width: 200px;
+    height: 190px;
+  }
+  .styledMonkey {
+    top: -250px;
+  }
+}
+
+@media lg {
+  .styledImg {
+    width: 115px;
+  }
+  .styledCircle {
+    width: 174px;
+    height: 174px;
+  }
+  .styledCard {
+    width: 269px;
+    height: 256px;
+  }
+  .styledMonkey {
+    width: 900px;
+    top: -350px;
+  }
+  .cards > div {
+    grid-column: span 6;
+  }
+  .styledGoldenMonkey {
+    height: 300px;
+  }
+}

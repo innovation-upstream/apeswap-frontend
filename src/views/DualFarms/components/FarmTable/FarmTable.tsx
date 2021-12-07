@@ -3,13 +3,16 @@ import styled from 'styled-components'
 import { useTable, ColumnType } from '@apeswapfinance/uikit'
 
 import Row, { RowProps } from './Row'
+import globalStyle from '../../../../style/global.module.css'
 
 export interface ITableProps {
   data: RowProps[]
   columns: ColumnType<RowProps>[]
 }
 
-const Container = styled.div`
+const Container = styled.div.attrs({
+  className: globalStyle.bigScreenOnly,
+})`
   background: ${({ theme }) => theme.card.background};
   border-radius: 16px;
   margin: 16px 0px;

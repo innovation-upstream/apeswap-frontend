@@ -1,0 +1,11 @@
+@value sm, md, lg from "../../../style/breakpoints.module.css";
+
+.nftGrid {
+  composes: baseLayout from "../../../style/global.module.css";
+}
+
+@media sm {
+  .nftGrid > div {
+    grid-column: span 4;
+  }
+}

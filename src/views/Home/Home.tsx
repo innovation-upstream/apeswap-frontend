@@ -12,126 +12,67 @@ import CoolPools from './components/CoolPools/CoolPools'
 import WhenNewsSer from './components/WhenNewsSer/WhenNewsSer'
 import DualHotFarms from './components/DualFarms/DualHotFarms'
 import VauluableVaults from './components/ValuableVaults/ValuableVaults'
+import styles from './home.module.css'
 
 export interface GridWidth {
   spanFirst?: number
   spanLast?: number
 }
 
-const BannerContainer = styled.div`
+const BannerContainer = styled.div.attrs({
+  className: styles.bannerContainer,
+})`
   display: flex;
   align-items: center;
   justify-content: center;
   padding-right: 5px;
-  @media screen and (max-width: 350px) {
-    width: 300px;
-    padding-right: 0px;
-  }
 `
 
-const PageContainer = styled.div`
+const PageContainer = styled.div.attrs({
+  className: styles.pageContainer,
+})`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
   justify-content: center;
   margin-bottom: 50px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-bottom: 0px;
-  }
 `
 
-const FrontRowWrapper = styled.div`
+const FrontRowWrapper = styled.div.attrs({
+  className: styles.frontRowWrapper,
+})`
   display: flex;
   width: auto;
   height: auto;
   flex-direction: column;
   margin-bottom: 40px;
-  @media screen and (max-width: 350px) {
-    width: 300px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 720px;
-    height: 500px;
-    margin-bottom: 0px;
-    flex-direction: row;
-  }
 `
-const FarmAndPoolsWrapper = styled.div`
+const FarmAndPoolsWrapper = styled.div.attrs({
+  className: styles.farmAndPoolsWrapper,
+})`
   display: flex;
   flex-direction: column;
   width: auto;
   height: auto;
-  @media screen and (max-width: 350px) {
-    width: 300px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 720px;
-    height: 495px;
-  }
 `
-const LeftSideFlexWrapper = styled.div`
+const LeftSideFlexWrapper = styled.div.attrs({
+  className: styles.leftSideFlexWrapper,
+})`
   display: flex;
   width: auto;
   height: auto;
   flex-direction: column;
-  @media screen and (max-width: 350px) {
-    width: 342px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 720px;
-    height: 970px;
-  }
 `
 
-const RightSideFlexWrapper = styled.div`
+const RightSideFlexWrapper = styled.div.attrs({
+  className: styles.rightSideFlexWrapper,
+})`
   display: flex;
   width: auto;
   height: 950px;
   margin-top: 40px;
   flex-direction: column;
-  @media screen and (max-width: 350px) {
-    width: 320px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 336px;
-    height: 935px;
-    margin-left: 10px;
-    margin-top: 0px;
-    flex-direction: column;
-  }
-
-  @media screen and (max-width: 730px) {
-    width: 346px;
-    margin-left: 0px;
-    margin-top: 40px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 720px;
-    height: 935px;
-    margin-left: 0px;
-    margin-top: 0px;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  @media screen and (min-width: 852px) {
-    width: 720px;
-    height: 935px;
-    margin-left: 0px;
-    margin-top: 0px;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  @media screen and (min-width: 1375px) {
-    width: 336px;
-    height: 935px;
-    margin-left: 32px;
-    margin-top: 0px;
-    flex-direction: column;
-  }
 `
 
 const Home: React.FC = () => {
