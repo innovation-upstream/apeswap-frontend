@@ -9,8 +9,11 @@ import { Farm } from 'state/types'
 import { useFetchFarmsHome } from 'state/strapi/fetchStrapi'
 import { useFarmFromPid, usePriceBnbBusd, usePriceEthBusd, usePriceBananaBusd } from 'state/hooks'
 import FarmCardForHome from './FarmCardForHome'
+import styles from '../homecomponents.module.css'
 
-const HotFarmsWrapper = styled.div`
+const HotFarmsWrapper = styled.div.attrs({
+  className: styles.hotFarmsWrapper,
+})`
   position: relative;
   height: 321px;
   width: 336px;
@@ -19,18 +22,11 @@ const HotFarmsWrapper = styled.div`
   border-radius: 30px;
   background-repeat: no-repeat;
   background-size: cover;
-  @media screen and (max-width: 350px) {
-    width: 300px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 718px;
-    height: 203px;
-    background-image: ${({ theme }) =>
-      theme.isDark ? 'url(/images/ape-home-hot-farms-dark.svg)' : 'url(/images/ape-home-hot-farms-light.svg)'};
-  }
 `
 
-const CardHeaderImage = styled.div`
+const CardHeaderImage = styled.div.attrs({
+  className: styles.cardHeaderImage,
+})`
   position: absolute;
   background: ${({ theme }) => !theme.isDark && `linear-gradient(53.53deg, #a16552 15.88%, #e1b242 92.56%)`};
   opacity: 0.3;
@@ -38,9 +34,6 @@ const CardHeaderImage = styled.div`
   width: 100%;
   border-radius: 30px;
   z-index: 0;
-  ${({ theme }) => theme.mediaQueries.md} {
-    height: 203px;
-  }
 `
 
 const HotFarmsText = styled(Text)`
@@ -52,23 +45,15 @@ const HotFarmsText = styled(Text)`
   z-index: 1;
 `
 
-const FarmWrapper = styled.div`
+const FarmWrapper = styled.div.attrs({
+  className: styles.farmWrapper,
+})`
   margin-top: 5px;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  @media screen and (max-width: 350px) {
-    width: 310px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    justify-content: space-between;
-    padding-left: 25px;
-    padding-right: 25px;
-    flex-direction: row;
-    margin-top: 20px;
-  }
 `
 
 const DEFAULT_FARM = 1

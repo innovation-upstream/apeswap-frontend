@@ -7,3 +7,8 @@ interface WindowChain {
     request?: (...args: any[]) => void
   }
 }
+
+declare module '*.module.css' {
+  const classes: { [key: string]: string }
+  export default classes
+}

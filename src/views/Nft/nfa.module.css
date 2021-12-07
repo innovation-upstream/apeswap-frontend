@@ -1,0 +1,33 @@
+@value xs, sm, md, lg from "../../style/breakpoints.module.css";
+
+@media xs {
+  .nfaImageHolder {
+    height: 335px;
+  }
+  .nfaHolder {
+    width: 350px;
+  }
+  .detailsHolder {
+    margin-left: 0px;
+    width: 350px;
+  }
+  .boxShadow {
+    width: 350px;
+  }
+}
+
+@media sm {
+  .nfaImageHolder {
+    height: 435px;
+  }
+  .nfaHolder {
+    width: 450px;
+  }
+  .detailsHolder {
+    margin-left: 25px;
+    width: 450px;
+  }
+  .boxShadow {
+    width: 450px;
+  }
+}

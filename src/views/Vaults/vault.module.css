@@ -1,0 +1,205 @@
+@value sm, md, xs, lg from "../../style/breakpoints.module.css";
+
+@media xs {
+  .containerLabels {
+    margin-top: 34px;
+  }
+  .styledLabelContainerHot {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .styledLabelContainerLP {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .styledLabelContainerYearlyAPY {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .styledLabelContainerTotalStaked {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .styledLabelContainerDailyAPY {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .styledHeading {
+    font-size: 36px;
+    max-width: 240px !important;
+  }
+  .styledPage {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+@media sm {
+  .styledLabelContainerHot {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .styledLabelContainerLP {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .styledLabelContainerYearlyAPY {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .styledLabelContainerTotalStaked {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .styledLabelContainerDailyAPY {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}
+
+@media md {
+  .controlContainer {
+    flex-direction: row;
+    height: 59px;
+    padding: 0px;
+    justify-content: flex-start;
+    padding-left: 50px;
+    transform: translateY(-60px);
+  }
+  .toggleText {
+    margin-left: 8px;
+  }
+  .toggleContainer {
+    position: relative;
+    height: auto;
+    margin-left: 0px;
+    align-items: center;
+    justify-content: space-between;
+    width: 180px;
+    transform: translateY(0px);
+    flex-direction: row;
+  }
+  .labelWrapper {
+    flex-direction: row;
+    margin-left: 0px;
+    align-items: center;
+  }
+  .viewControls {
+    justify-content: center;
+    align-items: center;
+    width: auto;
+  }
+  .viewControls > div {
+    padding: 0;
+  }
+  .header {
+    padding-left: 24px;
+    padding-right: 24px;
+    height: 300px;
+  }
+  .styledImage {
+    bottom: 0px;
+    right: 0px;
+  }
+  .containerLabels {
+    transform: translateY(-60px);
+  }
+  .styledLabelContainerHot {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+  .styledLabelContainerLP {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+  .styledLabelContainerYearlyAPY {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+  .styledLabelContainerTotalStaked {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+  .styledLabelContainerDailyAPY {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+  .cardContainer {
+    transform: translateY(-60px);
+  }
+  .buttonCheckWrapper {
+    width: fit-content;
+  }
+  .styledHeading {
+    font-size: 44px;
+    max-width: 400px !important;
+  }
+  .styledPage {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .container {
+    transform: translateY(-60px);
+  }
+}
+
+@media lg {
+  .toggleContainer {
+    width: 200px;
+  }
+  .header {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .styledText {
+    font-size: 15px !important;
+  }
+  .styledLabelContainerHot {
+    position: absolute;
+    top: 6px;
+    left: 38px;
+    margin: 0px;
+  }
+  .styledLabelContainerLP {
+    position: absolute;
+    top: 6px;
+    left: 169px;
+    margin: 0px;
+  }
+  .styledLabelContainerYearlyAPY {
+    position: absolute;
+    top: 6px;
+    left: 500px;
+    margin: 0px;
+  }
+  .styledLabelContainerTotalStaked {
+    margin: 0px;
+    position: absolute;
+    top: 6px;
+    left: 651px;
+  }
+  .styledLabelContainerDailyAPY {
+    position: absolute;
+    top: 6px;
+    left: 365px;
+    margin: 0px;
+  }
+}
+@media xl {
+  .toggleContainer {
+    width: 225px;
+  }
+  .styledLabelContainerYearlyAPY {
+    left: 565px;
+  }
+  .styledLabelContainerTotalStaked {
+    left: 740px;
+  }
+  .styledLabelContainerDailyAPY {
+    left: 389px;
+  }
+  .styledHeading {
+    font-size: 60px;
+    max-width: 600px !important;
+  }
+}

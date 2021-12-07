@@ -16,6 +16,7 @@ import ActionPanel from './ActionPanel'
 import Staked from './Liquidity'
 import ApprovalAction from './CardActions/ApprovalAction'
 import StakeAction from './CardActions/StakeActions'
+import globalStyle from '../../../../style/global.module.css'
 
 export interface VaultWithStakedValue extends Vault {
   apr?: BigNumber
@@ -29,7 +30,9 @@ interface HarvestProps {
   removed: boolean
 }
 
-const StyledTr = styled.div`
+const StyledTr = styled.div.attrs({
+  className: globalStyle.bigScreenOnly,
+})`
   cursor: pointer;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
   border-radius: 20px;

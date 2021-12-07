@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { useTable, ColumnType } from '@apeswapfinance/uikit'
+import globalStyle from '../../../../style/global.module.css'
 
 import Row, { RowProps } from './Row'
 
@@ -9,7 +10,9 @@ export interface ITableProps {
   columns: ColumnType<RowProps>[]
 }
 
-const Container = styled.div`
+const Container = styled.div.attrs({
+  className: globalStyle.bigScreenOnly,
+})`
   background: ${({ theme }) => theme.card.background};
   border-radius: 16px;
   margin: 16px 0px;

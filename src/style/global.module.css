@@ -1,0 +1,49 @@
+@value xs, sm, md, lg from "./breakpoints.module.css";
+
+@media xs {
+  .mobileOnly {
+    display: initial;
+  }
+  .desktopOnly {
+    display: none;
+  }
+  .bigScreenOnly {
+    display: none;
+  }
+  .smallToMidOnly {
+    display: initial;
+  }
+}
+
+@media sm {
+  .baseLayout {
+    grid-template-columns: repeat(8,1fr);
+    grid-gap: 24px;
+  }
+}
+
+@media md {
+  .baseLayout {
+    grid-template-columns: repeat(12,1fr);
+    grid-gap: 24px;
+  }
+  .mobileOnly {
+    display: none;
+  }
+  .desktopOnly {
+    display: initial;
+  }
+}
+
+@media lg {
+  .baseLayout {
+    grid-template-columns: repeat(12,1fr);
+    grid-gap: 32px
+  }
+  .bigScreenOnly {
+    display: initial;
+  }
+  .smallToMidOnly {
+    display: none
+  }
+}

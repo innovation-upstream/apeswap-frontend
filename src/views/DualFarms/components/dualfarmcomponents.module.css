@@ -1,0 +1,8 @@
+@value sm, md, xs, lg from "../../../style/breakpoints.module.css";
+
+@media sm {
+  .iconImage {
+    width: 57px;
+    height: 57px;
+  }
+}
