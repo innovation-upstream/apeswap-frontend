@@ -13,6 +13,7 @@ import Page from 'components/layout/Page'
 import SearchInput from '../../../Pools/components/SearchInput'
 import PoolTabButtons from '../../../Pools/components/PoolTabButtons'
 import PoolCard from '../../../Pools/components/PoolCard/PoolCard'
+import styles from '../zone.module.css'
 
 const float = keyframes`
   0% {transform: translate3d(0px, 0px, 0px);}

@@ -1,0 +1,10 @@
+@value xs, sm, md, lg from "../../../style/breakpoints.module.css";
+
+@media md {
+  .ifoCardWrapperSingle {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .ifoCardWrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

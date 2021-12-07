@@ -16,7 +16,11 @@
   },
   "reactSnap": {
     "concurrency": 1,
-    "skipThirdPartyRequests": true
+    "skipThirdPartyRequests": true,
+    "viewport": {
+      "width": 1440,
+      "height": 1080
+    }
   },
   "husky": {
     "hooks": {
@@ -83,6 +87,7 @@
     "husky": "^7.0.4",
     "prettier": "^2.1.2",
     "react-snap": "1.10.0",
-    "source-map-explorer": "^2.5.1"
+    "source-map-explorer": "^2.5.1",
+    "typescript-plugin-css-modules": "^3.4.0"
   }
 }

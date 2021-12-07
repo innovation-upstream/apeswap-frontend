@@ -10,6 +10,7 @@ import { useWeb3React } from '@web3-react/core'
 import HarvestAction from './HarvestAction'
 import ApyButton from '../../../../components/ApyCalculator/ApyButton'
 import ExpandableSectionButton from './ExpandableSectionButton'
+import styles from './farmcard.module.css'
 
 export interface ExpandableSectionProps {
   lpLabel?: string
@@ -27,7 +28,9 @@ export interface ExpandableSectionProps {
   showExpandableSection?: boolean
 }
 
-const StyledBackground = styled.div`
+const StyledBackground = styled.div.attrs({
+  className: styles.labelWrapper,
+})`
   width: 120px;
   height: 93px;
   background: rgb(255, 179, 0, 0.4);
@@ -36,29 +39,19 @@ const StyledBackground = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-right: 5px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    height: 120px;
-    width: 180px;
-  }
 `
 
-const StyledHeading = styled(Heading)`
+const StyledHeading = styled(Heading).attrs({
+  className: styles.styledHeading,
+})`
   font-size: 12px;
-  ${({ theme }) => theme.mediaQueries.xs} {
-    text-align: start;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 22px;
-  }
 `
 
-const StyledText1 = styled(Text)`
+const StyledText1 = styled(Text).attrs({
+  className: styles.styledText1,
+})`
   font-weight: 700;
   font-size: 12px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 15px;
-  }
 `
 
 const StyledText2 = styled(Text)`
@@ -67,27 +60,25 @@ const StyledText2 = styled(Text)`
   margin-top: 1px;
 `
 
-const StyledText3 = styled(Text)`
+const StyledText3 = styled(Text).attrs({
+  className: styles.styledText3,
+})`
   font-size: 12px;
   color: #38a611;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 25px;
-    line-height: 29px;
-  }
 `
 
-const StyledText4 = styled(Text)`
+const StyledText4 = styled(Text).attrs({
+  className: styles.styledText4,
+})`
   font-size: 12px;
   font-weight: 700;
   margin-top: 1px;
   display: none;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: flex;
-  }
 `
 
-const StyledFlexContainer = styled(Flex)`
+const StyledFlexContainer = styled(Flex).attrs({
+  className: styles.styledFlexContainer,
+})`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -95,135 +86,92 @@ const StyledFlexContainer = styled(Flex)`
   margin-right: 8px;
   align-items: center;
   flex: 1;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-right: 5px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
 `
 
-const StyledFlexEarned = styled(Flex)`
+const StyledFlexEarned = styled(Flex).attrs({
+  className: styles.styledFlexEarned,
+})`
   display: none;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    margin-right: 0px;
-    flex-direction: column;
-  }
 `
 
-const StyledFlexEarnedSmall = styled(Flex)`
+const StyledFlexEarnedSmall = styled(Flex).attrs({
+  className: styles.styledFlexEarnedSmall,
+})`
   margin-right: 10px;
   flex-direction: row;
   justify-content: center;
   margin-bottom: 10px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: none;
-  }
 `
 
-const LabelContainer = styled.div`
+const LabelContainer = styled.div.attrs({
+  className: styles.labelContainer,
+})`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-top: 10px;
   width: 110px;
   margin-right: 5px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
 `
 
-const LabelContainer2 = styled.div`
+const LabelContainer2 = styled.div.attrs({
+  className: styles.labelContainer2,
+})`
   display: flex;
   align-items: flex-start;
   width: 100%;
   justify-content: flex-end;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-  }
 `
 
-const FlexSwitch = styled.div`
+const FlexSwitch = styled.div.attrs({
+  className: styles.flexSwitch,
+})`
   display: flex;
   flex-direction: row-reverse;
   justify-content: center;
   align-items: center;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row-reverse;
-  }
 `
 
-const StyledAPRText = styled.div`
+const StyledAPRText = styled.div.attrs({
+  className: styles.styledAPRText,
+})`
   font-size: 12px;
   line-height: 11px;
   letter-spacing: 1px;
   margin-left: 5px;
   margin-bottom: 2px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 20px;
-    line-height: 23px;
-  }
 `
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled.div.attrs({
+  className: styles.buttonContainer,
+})`
   width: 100px;
   display: flex;
   justify-content: flex-end;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 150px;
-  }
 `
 
-const IconImage = styled(Image)`
+const IconImage = styled(Image).attrs({
+  className: styles.iconImage,
+})`
   align: center;
   width: 40px;
   height: 40px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 70px;
-    height: 70px;
-  }
 `
 
-const IconQuoteToken = styled(Image)`
+const IconQuoteToken = styled(Image).attrs({
+  className: styles.iconQuoteToken,
+})`
   align: center;
   width: 20px;
   height: 20px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 35px;
-    height: 35px;
-  }
 `
 
-const IconArrow = styled(Image)`
+const IconArrow = styled(Image).attrs({
+  className: styles.iconArrow,
+})`
   align: center;
   width: 5px;
   height: 5px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 10px;
-    height: 10px;
-  }
 `
 
 const Container = styled.div`

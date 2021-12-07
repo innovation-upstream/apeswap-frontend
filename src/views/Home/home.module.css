@@ -1,0 +1,87 @@
+@value sm, md from "../../style/breakpoints.module.css";
+
+@media screen and (max-width: 350px) {
+  .bannerContainer{
+    width: 300px;
+    padding-right: 0px;
+  }
+  .frontRowWrapper {
+    width: 300px;
+  }
+  .farmAndPoolsWrapper {
+    width: 300px;
+  }
+  .leftSideFlexWrapper {
+    width: 342px;
+  }
+  .rightSideFlexWrapper {
+    width: 320px;
+  }
+}
+
+@media sm {
+  .rightSideFlexWrapper {
+    width: 336px;
+    height: 935px;
+    margin-left: 10px;
+    margin-top: 0px;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 730px) {
+  .rightSideFlexWrapper {
+    width: 346px;
+    margin-left: 0px;
+    margin-top: 40px;
+  }
+}
+
+@media md {
+  .pageContainer {
+    margin-bottom: 0px;
+  }
+  .frontRowWrapper {
+    width: 720px;
+    height: 500px;
+    margin-bottom: 0px;
+    flex-direction: row;
+  }
+  .farmAndPoolsWrapper {
+    width: 720px;
+    height: 495px;
+  }
+  .leftSideFlexWrapper {
+    width: 720px;
+    height: 970px;
+  }
+  .rightSideFlexWrapper {
+    width: 720px;
+    height: 935px;
+    margin-left: 0px;
+    margin-top: 0px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (min-width: 852px) {
+  .rightSideFlexWrapper {
+    width: 720px;
+    height: 935px;
+    margin-left: 0px;
+    margin-top: 0px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (min-width: 1375px) {
+  .rightSideFlexWrapper {
+    width: 336px;
+    height: 935px;
+    margin-left: 32px;
+    margin-top: 0px;
+    flex-direction: column;
+  }
+}
