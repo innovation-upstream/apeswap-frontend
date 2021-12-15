@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {lazy} from 'react'
 import styled from 'styled-components'
 import { Card, Text } from '@apeswapfinance/uikit'
-import NewsFeed from './NewsFeed'
+
+const NewsFeed = lazy(() => import('./NewsFeed'))
 
 const WhenNewsSerWrapper = styled(Card)`
   width: 336px;

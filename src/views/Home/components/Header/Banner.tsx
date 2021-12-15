@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { useMatchBreakpoints, Skeleton } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints } from '@apeswapfinance/uikit'
 import { useFetchHeadersHome } from 'state/strapi/fetchStrapi'
 import { useNetworkChainId } from 'state/hooks'
 import { NETWORK_LABEL } from 'config/constants/chains'
@@ -56,10 +56,6 @@ const LinkArea = styled.a`
   z-index: 1;
 `
 
-const StyledSkeleton = styled(Skeleton)`
-  border-radius: 30px;
-`
-
 const SLIDETIME = 6000
 
 const Banner = () => {
@@ -71,51 +67,42 @@ const Banner = () => {
   const timeoutRef = useRef(null)
 
   const getImageSize = (image: any) => {
-    if (isXl) {
-      return image?.desktop[0]?.url
-    }
-    if (isMd || isLg) {
-      return image?.tablet[0]?.url
-    }
-    return image?.mobile[0]?.url
+    let url = "";
+    if (isXl) url = image?.desktop[0]?.url
+    else if(isMd || isLg) url = image?.tablet[0]?.url
+    else url = image?.mobile[0]?.url
+
+    return url
   }
 
   const resetTimeout = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
   }
+
   useEffect(() => {
     resetTimeout()
     timeoutRef.current = setTimeout(
       () => setActiveIndex((prevIndex) => (prevIndex === filteredBanners.length - 1 ? 0 : prevIndex + 1)),
       SLIDETIME,
     )
-    return () => {
-      resetTimeout()
-    }
+    return () => resetTimeout()
   }, [activeIndex, filteredBanners])
 
-  useEffect(() => {
-    setActiveIndex(0)
-  }, [chainId])
+  useEffect(() => setActiveIndex(0), [chainId])
+
+  const headerBubbles = [...Array(filteredBanners?.length)].map((e, i) => <HeaderBubble live={i === activeIndex} onClick={() => setActiveIndex(i)} key={filteredBanners[i]?.link} />)
 
   return (
     <>
-      {loading ? (
-        <Header image="">
-          <StyledSkeleton width={1} height={300} />
-        </Header>
-      ) : (
+      {
+        loading ? <Header image="" /> : 
         <Header image={getImageSize(filteredBanners[activeIndex])}>
           <LinkArea href={filteredBanners[activeIndex]?.link} target="_blank" rel="noopener noreferrer" />
           <CurrentHeaderHolder>
-            {[...Array(filteredBanners?.length)].map((e, i) => (
-              <HeaderBubble live={i === activeIndex} onClick={() => setActiveIndex(i)} key={filteredBanners[i]?.link} />
-            ))}
+            {headerBubbles}
           </CurrentHeaderHolder>
         </Header>
-      )}
+      }
     </>
   )
 }

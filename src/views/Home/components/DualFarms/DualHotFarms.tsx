@@ -1,16 +1,17 @@
-import React from 'react'
+import React, {lazy} from 'react'
 import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
 import { DualFarm } from 'state/types'
 import { useDualFarmsFromPid, usePollDualFarms } from 'state/hooks'
-import FarmCardForHome from './FarmCardForHome'
+
+const FarmCardForHome = lazy(() => import('./FarmCardForHome'))
 
 const HotFarmsWrapper = styled.div`
   position: relative;
   height: 321px;
   width: 336px;
   background-image: ${({ theme }) =>
-    theme.isDark ? 'url(/images/ape-home-hot-farms-dark.svg)' : 'url(/images/ape-home-hot-farms-mobile-light.svg)'};
+    theme.isDark ? 'url(/images/ape-home-hot-farms-dark.webp)' : 'url(/images/ape-home-hot-farms-mobile-light.svg)'};
   border-radius: 30px;
   background-repeat: no-repeat;
   background-size: cover;
@@ -21,7 +22,7 @@ const HotFarmsWrapper = styled.div`
     width: 718px;
     height: 203px;
     background-image: ${({ theme }) =>
-      theme.isDark ? 'url(/images/ape-home-hot-farms-dark.svg)' : 'url(/images/ape-home-hot-farms-light.svg)'};
+      theme.isDark ? 'url(/images/ape-home-hot-farms-dark.webp)' : 'url(/images/ape-home-hot-farms-light.svg)'};
   }
 `
 

@@ -1,15 +1,16 @@
 import styled from 'styled-components'
 import { BaseLayout } from '@apeswapfinance/uikit'
-import style from './nft.module.css'
 
-const NftGrid = styled(BaseLayout).attrs({
-  className: style.nftGrid,
-})`
+const NftGrid = styled(BaseLayout)`
   padding-bottom: 24px;
   padding-top: 24px;
 
   & > div {
     grid-column: 2 / 6;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+      grid-column: span 4;
+    }
   }
 `
 

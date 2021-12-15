@@ -19,16 +19,12 @@ import SearchInput from './components/SearchInput'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema, ViewMode } from './components/types'
-import styles from './dualfarms.module.css'
-import globalStyle from '../../style/global.module.css'
 
 interface LabelProps {
   active?: boolean
 }
 
-const ControlContainer = styled(Card).attrs({
-  className: styles.controlContainer,
-})`
+const ControlContainer = styled(Card)`
   display: flex;
   width: 100%;
   align-items: center;
@@ -39,11 +35,16 @@ const ControlContainer = styled(Card).attrs({
   overflow: visible;
   padding-bottom: 10px;
   transform: translateY(-85px);
-`
 
-const ToggleText = styled(Text).attrs({
-  className: styles.ToggleText,
-})``
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+    height: 59px;
+    padding: 0px;
+    justify-content: flex-start;
+    padding-left: 50px;
+    transform: translateY(-60px);
+  }
+`
 
 const ToggleWrapper = styled.div`
   display: flex;
@@ -52,14 +53,13 @@ const ToggleWrapper = styled.div`
   margin-left: 10px;
   cursor: pointer;
 
-  ${ToggleText} {
+  ${Text} {
     margin-left: 4px;
+  ${({ theme }) => theme.mediaQueries.md} { margin-left: 8px;}
   }
 `
 
-const LabelWrapper = styled.div.attrs({
-  className: styles.labelWrapper,
-})`
+const LabelWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -68,11 +68,15 @@ const LabelWrapper = styled.div.attrs({
   }
 
   margin-left: 30px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+    margin-left: 0px;
+    align-items: center;
+  }
 `
 
-const ViewControls = styled.div.attrs({
-  className: styles.viewControls,
-})`
+const ViewControls = styled.div`
   flex-wrap: wrap;
   justify-content: flex-start;
   display: flex;
@@ -82,6 +86,16 @@ const ViewControls = styled.div.attrs({
   > div {
     padding: 8px 0px;
   }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    justify-content: center;
+    align-items: center;
+    width: auto;
+
+    > div {
+      padding: 0;
+    }
+  }
 `
 
 const HeadingContainer = styled.div`
@@ -90,25 +104,31 @@ const HeadingContainer = styled.div`
   margin-right: auto;
 `
 
-const Header = styled.div.attrs({
-  className: styles.header,
-})`
+const Header = styled.div`
   padding-top: 36px;
   padding-left: 10px;
   padding-right: 10px;
   background-image: ${({ theme }) =>
-    theme.isDark ? 'url(/images/farm-polygon-night.svg)' : 'url(/images/farm-polygon-day.svg)'};
+    theme.isDark ? 'url(/images/farm-polygon-night.svg)' : 'url(/images/farm-polygon-day.webp)'};
   background-repeat: no-repeat;
   background-size: cover;
   height: 250px;
   background-position: center;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-left: 24px;
+    padding-right: 24px;
+    height: 300px;
+  }
 `
 
-const StyledText = styled(Text).attrs({
-  className: styles.styledText,
-})`
+const StyledText = styled(Text)`
   font-weight: 700;
   font-size: 12px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 15px !important;
+  }
 `
 
 interface CheckboxProps {
@@ -120,19 +140,29 @@ const StyledCheckbox = styled(Checkbox)<CheckboxProps>`
   width: 21px;
 `
 
-const StyledImage = styled.img.attrs({
-  className: styles.styledImage,
-})`
+const StyledImage = styled.img`
   height: 187px;
   width: 134px;
   position: absolute;
   right: 0px;
   bottom: 51px;
+
+  @media screen and (min-width: 340px) {
+    right: 20px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    bottom: 51px;
+    right: 0px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    bottom: 0px;
+    right: 0px;
+  }
 `
 
-const ContainerLabels = styled.div.attrs({
-  className: styles.containerLabels,
-})`
+const ContainerLabels = styled.div`
   background: ${({ theme }) => theme.card.background};
   border-radius: 16px;
   margin-top: 24px;
@@ -143,68 +173,191 @@ const ContainerLabels = styled.div.attrs({
   justify-content: center;
   align-items: center;
   transform: translateY(-85px);
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-top: 34px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    transform: translateY(-60px);
+  }
 `
 
-const StyledLabelContainerHot = styled.div.attrs({
-  className: styles.styledLabelContainerHot,
-})`
+const StyledLabelContainerHot = styled.div`
   cursor: pointer;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    position: absolute;
+    top: 6px;
+    left: 38px;
+    margin: 0px;
+  }
 `
 
-const StyledLabelContainerLP = styled.div.attrs({
-  className: styles.styledLabelContainerLP,
-})``
+const StyledLabelContainerLP = styled.div`
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    position: absolute;
+    top: 6px;
+    left: 169px;
+    margin: 0px;
+  }
+`
 
-const StyledLabelContainerAPR = styled.div.attrs({
-  className: styles.styledLabelContainerAPR,
-})`
+const StyledLabelContainerAPR = styled.div`
   cursor: pointer;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    position: absolute;
+    top: 6px;
+    left: 365px;
+    margin: 0px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    left: 409px;
+  }
 `
 
-const StyledLabelContainerLiquidity = styled.div.attrs({
-  className: styles.styledLabelContainerLiquidity,
-})`
+const StyledLabelContainerLiquidity = styled.div`
   cursor: pointer;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    position: absolute;
+    top: 6px;
+    left: 500px;
+    margin: 0px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    left: 621px;
+  }
 `
 
-const StyledLabelContainerEarned = styled.div.attrs({
-  className: styles.styledLabelContainerEarned,
-})`
+const StyledLabelContainerEarned = styled.div`
   cursor: pointer;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin: 0px;
+    position: absolute;
+    top: 6px;
+    left: 651px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    left: 801px;
+  }
 `
 
-const CardContainer = styled.div.attrs({
-  className: `${styles.cardContainer} ${globalStyle.smallToMidOnly}`,
-})`
+const CardContainer = styled.div`
   margin-top: 17px;
 
   transform: translateY(-85px);
+  ${({ theme }) => theme.mediaQueries.md} {
+    transform: translateY(-60px);
+  }
 `
 
-const ButtonCheckWrapper = styled.div.attrs({
-  className: styles.buttonCheckWrapper,
-})`
+const ButtonCheckWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   display: flex;
   width: 100%;
   margin-right: 30px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: fit-content;
+  }
 `
 
-const StyledHeading = styled(Heading).attrs({
-  className: styles.styledHeading,
-})`
+const StyledHeading = styled(Heading)`
   font-size: 30px;
   max-width: 176px !important;
   color: white;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    font-size: 30px;
+    max-width: 240px !important;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 44px;
+    max-width: 400px !important;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    font-size: 60px;
+    max-width: 600px !important;
+  }
 `
 
-const StyledPage = styled(Page).attrs({
-  className: styles.styledPage,
-})`
+const StyledPage = styled(Page)`
   padding-left: 5px;
   padding-right: 5px;
   width: 100vw;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 `
 
 const StyledLabel = styled.div<LabelProps>`
@@ -379,7 +532,7 @@ const DualFarms: React.FC = () => {
     return row
   })
 
-  const getColumns = (): any[] => {
+  const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
       const columnSchema = DesktopColumnSchema
 
@@ -405,36 +558,24 @@ const DualFarms: React.FC = () => {
         sortable: column.sortable,
       }))
 
-      return columns
+      return <Table data={rowData} columns={columns} />
     }
 
-    return []
-  }
-
-  const renderContent = (): JSX.Element => {
-    const columns = getColumns()
-    const isSnap = navigator.userAgent === 'ReactSnap'
-
     return (
-      <>
-        {(isSnap || (viewMode === ViewMode.TABLE && rowData.length)) && <Table data={rowData} columns={columns} />}
-        {(isSnap || viewMode !== ViewMode.TABLE) && (
-          <CardContainer>
-            <FlexLayout>
-              <Route exact path={`${path}`}>
-                {farmsStakedMemoized.map((farm) => (
-                  <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed={false} />
-                ))}
-              </Route>
-              <Route exact path={`${path}/history`}>
-                {farmsStakedMemoized.map((farm) => (
-                  <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed />
-                ))}
-              </Route>
-            </FlexLayout>
-          </CardContainer>
-        )}
-      </>
+      <CardContainer>
+        <FlexLayout>
+          <Route exact path={`${path}`}>
+            {farmsStakedMemoized.map((farm) => (
+              <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed={false} />
+            ))}
+          </Route>
+          <Route exact path={`${path}/history`}>
+            {farmsStakedMemoized.map((farm) => (
+              <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed />
+            ))}
+          </Route>
+        </FlexLayout>
+      </CardContainer>
     )
   }
 

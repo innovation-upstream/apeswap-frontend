@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, lazy } from 'react'
 import Reward from 'react-rewards'
 import rewards from 'config/constants/rewards'
 import useReward from 'hooks/useReward'
@@ -10,23 +10,27 @@ import useI18n from 'hooks/useI18n'
 import { useAllHarvest } from 'hooks/useHarvest'
 import { useNetworkChainId } from 'state/hooks'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import UnlockButton from './UnlockButton'
-import BananaHarvestBalance from './BananaHarvestBalance'
-import BananaHarvestUsdBalance from './BananaHarvestUsdBalance'
-import BananaWalletUsdBalance from './BananaWalletUsdBalance'
-import BananaWalletBalance from './BananaWalletBalance'
-import CardHeader from './CardHeader'
-import styles from '../homecomponents.module.css'
 
-const StyledFarmStakingCard = styled(Card).attrs({
-  className: styles.styledFarmStakingCard,
-})`
+const UnlockButton = lazy(() => import('./UnlockButton'))
+const BananaHarvestBalance = lazy(() => import('./BananaHarvestBalance'))
+const BananaHarvestUsdBalance = lazy(() => import('./BananaHarvestUsdBalance'))
+const BananaWalletUsdBalance = lazy(() => import('./BananaWalletUsdBalance'))
+const BananaWalletBalance = lazy(() => import('./BananaWalletBalance'))
+const CardHeader = lazy(() => import('./CardHeader'))
+
+const StyledFarmStakingCard = styled(Card)`
   background-repeat: no-repeat;
   background-position: top right;
   width: 332px;
   height: 436px;
   text-align: center;
   overflow: visible;
+  @media screen and (max-width: 350px) {
+    width: 300px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-left: 50px;
+  }
 `
 
 const Block = styled.div`
@@ -119,6 +123,7 @@ const FarmedStakingCard = () => {
   const TranslateString = useI18n()
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
+  const {MATIC, MATIC_TESTNET} = CHAIN_ID
 
   const onReward = useReward(
     rewardRef,
@@ -142,10 +147,11 @@ const FarmedStakingCard = () => {
   }, [onReward])
 
   const renderHarvestHeader = () => {
-    if (networkChainId === CHAIN_ID.MATIC || networkChainId === CHAIN_ID.MATIC_TESTNET) {
-      return <CardHeaderImagePoly />
-    }
-    return <CardHeaderImage />
+    return (
+      [MATIC, MATIC_TESTNET].indexOf(networkChainId) ?
+      <CardHeaderImagePoly /> :
+      <CardHeaderImage />
+    )
   }
 
   return (
@@ -159,7 +165,8 @@ const FarmedStakingCard = () => {
         </HeaderText>
       </CardHeader>
       <CardBody>
-        {account ? (
+        {
+          account ? 
           <HarvestDiv>
             <Block>
               <BananaHarvestBalance />
@@ -175,14 +182,14 @@ const FarmedStakingCard = () => {
                 <StyledLabel>{TranslateString(546, 'in BANANA in Wallet')}</StyledLabel>
               </FlexRow>
             </Block>
-          </HarvestDiv>
-        ) : (
+          </HarvestDiv> : 
           <FlexRow>
             <StyledTextLock>LOCKED</StyledTextLock>
           </FlexRow>
-        )}
+        }
         <Actions>
-          {account ? (
+          {
+            account ? 
             <Reward ref={rewardRef} type="emoji" config={rewards[typeOfReward]}>
               <StyledButton
                 id="harvest-all"
@@ -194,10 +201,8 @@ const FarmedStakingCard = () => {
                   ? TranslateString(548, 'COLLECTING BANANA')
                   : TranslateString(999, `HARVEST ALL (${balancesWithValue.length})`)}
               </StyledButton>
-            </Reward>
-          ) : (
-            <UnlockButton fullWidth />
-          )}
+            </Reward> : <UnlockButton fullWidth />
+          }
         </Actions>
       </CardBody>
     </StyledFarmStakingCard>

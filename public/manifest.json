@@ -4,9 +4,14 @@
   "description": "Farm BANANA with ApeSwap LP Tokens",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "favicon.webp",
       "type": "image/x-icon",
       "sizes": "256x256"
+    },
+    {
+      "src": "favicon144.webp",
+      "type": "image/x-icon",
+      "sizes": "144x144"
     }
   ],
   "start_url": ".",

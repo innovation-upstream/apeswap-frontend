@@ -5,7 +5,6 @@ import { zoneIfo } from 'config/constants'
 import useI18n from 'hooks/useI18n'
 import IfoCard from '../../../Ifos/components/IfoCard'
 import Title from '../Description/Title'
-import styles from '../zone.module.css'
 
 const List = styled.ul`
   color: ${({ theme }) => theme.colors.text};
@@ -30,9 +29,7 @@ const StyledHeroSection = styled.div`
   background-color: #a16552;
 `
 
-const StyledFlex = styled(Flex).attrs({
-  className: styles.currentIaoStyledFlex,
-})`
+const StyledFlex = styled(Flex)`
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -40,17 +37,33 @@ const StyledFlex = styled(Flex).attrs({
   margin-top: -100px;
   padding-left: 20px;
   padding-right: 20px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: -90px;
+    padding-left: 53px;
+    padding-right: 53px;
+  }
 `
 
-const Cards = styled(BaseLayout).attrs({
-  className: styles.cards,
-})`
+const Cards = styled(BaseLayout)`
   align-items: stretch;
   justify-content: stretch;
   margin: 32px 0px;
   & > div {
     grid-column: span 6;
     width: 100%;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    & > div {
+      grid-column: span 8;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    & > div {
+      grid-column: span 6;
+    }
   }
 `
 
@@ -63,13 +76,15 @@ const StyledTextContainer = styled.div`
   margin-bottom: 28px;
 `
 
-const StyledGoldenMonkey = styled.img.attrs({
-  className: styles.styledGoldenMonkey,
-})`
+const StyledGoldenMonkey = styled.img`
   width: 100%;
   height: 200px;
   margin-left: auto;
   margin-right: auto;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    height: 300px;
+  }
 `
 
 /**

@@ -247,7 +247,7 @@ const vaults: VaultConfig[] = [
   },
   {
     pid: 27,
-    image: 'BBQ.png',
+    image: 'BBQ.webp',
     network: CHAIN_ID.BSC,
     strat: '0xa141151a455c551df2b3f8a4cf062f80e323dc1f',
     stakeTokenAddress: '0xd9a88f9b7101046786490baf433f0f6ab3d753e2',
@@ -267,7 +267,7 @@ const vaults: VaultConfig[] = [
   },
   {
     pid: 28,
-    image: 'BBQ.svg',
+    image: 'BBQ.webp',
     network: CHAIN_ID.BSC,
     strat: '0x2Fc69f48964160Db0c16bEFf4aDEC417D8994842',
     stakeTokenAddress: '0x3d6a067dc8a5b6657749905eeaaa39b43af4f294',
@@ -287,7 +287,7 @@ const vaults: VaultConfig[] = [
   },
   {
     pid: 29,
-    image: 'BBQ.svg',
+    image: 'BBQ.webp',
     network: CHAIN_ID.BSC,
     strat: '0x77233cda97df6e9ddc1bd1bbaa938b50b937b391',
     stakeTokenAddress: '0x376d38a381919f9d1c61715d34f8163c28bb23e5',

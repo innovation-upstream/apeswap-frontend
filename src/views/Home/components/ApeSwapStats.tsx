@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {lazy} from 'react'
 import { Card, CardBody, Heading, Text } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 import { useFetchHomepageStats, useHomepageStats } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import { BANANA_PER_BLOCK } from 'config'
-import CardValue from './CardValue'
+
+const CardValue = lazy(() => import('./CardValue'))
 
 const StyledBananaStats = styled(Card)`
   width: 336px;

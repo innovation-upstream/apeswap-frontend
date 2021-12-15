@@ -3,7 +3,6 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Flex, Heading, Text, Skeleton, Image } from '@apeswapfinance/uikit'
 import { Farm } from 'state/types'
-import styles from '../homecomponents.module.css'
 
 export interface FarmWithStakedValue extends Farm {
   apr?: BigNumber
@@ -15,9 +14,7 @@ interface HarvestProps {
   farm: FarmWithStakedValue
 }
 
-const PCard = styled.div.attrs({
-  className: styles.pCard,
-})`
+const PCard = styled.div`
   align-self: baseline;
   background: ${(props) => props.theme.card.background};
   display: flex;
@@ -32,6 +29,13 @@ const PCard = styled.div.attrs({
   border-radius: 20px;
   overflow: hidden;
   margin-top: 15px;
+  @media screen and (max-width: 350px) {
+    width: 295px;
+    margin-right: 8px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-top: 0px;
+  }
 `
 
 const StyledBackground = styled(Flex)`
@@ -45,28 +49,37 @@ const StyledBackground = styled(Flex)`
   margin-right: 20px;
 `
 
-const IconImage = styled(Image).attrs({
-  className: styles.iconImage,
-})`
+const IconImage = styled(Image)`
   align: center;
   width: 40px;
   height: 40px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 70px;
+    height: 70px;
+  }
 `
 
-const IconQuoteToken = styled(Image).attrs({
-  className: styles.iconQuoteToken,
-})`
+const IconQuoteToken = styled(Image)`
   align: center;
   width: 20px;
   height: 20px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 35px;
+    height: 35px;
+  }
 `
 
-const IconArrow = styled(Image).attrs({
-  className: styles.iconArrow,
-})`
+const IconArrow = styled(Image)`
   align: center;
   width: 5px;
   height: 5px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 10px;
+    height: 10px;
+  }
 `
 const DescriptionContainer = styled.div`
   position: absolute;
@@ -109,10 +122,11 @@ const ApyNumber = styled(Text)`
   letter-spacing: 1px;
 `
 
-const StyledHeading = styled(Heading).attrs({
-  className: styles.styledHeading,
-})`
+const StyledHeading = styled(Heading)`
   font-size: 20px;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    text-align: start;
+  }
 `
 
 const FarmCardForHome: React.FC<HarvestProps> = ({ farm }) => {

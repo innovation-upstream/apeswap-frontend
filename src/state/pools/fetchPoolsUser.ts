@@ -59,8 +59,8 @@ export const fetchUserBalances = async (chainId: number, account) => {
 
 export const fetchUserStakeBalances = async (chainId: number, account) => {
   const multicallContractAddress = getMulticallAddress(chainId)
-  const masterChefAddress = getMasterChefAddress(chainId)
   const multicallContract = getContract(multicallABI, multicallContractAddress, chainId)
+  const masterChefAddress = getMasterChefAddress(chainId)
   const masterChefContract = getContract(masterChefABI, masterChefAddress, chainId)
   const calls = nonMasterPools.map((p) => ({
     address: p.contractAddress[chainId],

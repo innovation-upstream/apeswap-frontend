@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, Image } from '@apeswapfinance/uikit'
 import Tooltip from 'components/Tooltip/Tooltip'
-import styles from '../vaultcomponents.module.css'
 
 export interface PoolProps {
   token0?: string
@@ -12,12 +11,15 @@ export interface PoolProps {
   isBurning?: boolean
 }
 
-const IconImage = styled(Image).attrs({
-  className: styles.iconImage,
-})`
+const IconImage = styled(Image)`
   width: 24px;
   height: 24px;
   align: center;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 57px;
+    height: 57px;
+  }
 `
 
 const Container = styled.div`

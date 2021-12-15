@@ -31,9 +31,6 @@ const Nfa = lazy(() => import('./views/Nft/Nfa'))
 const ApeZone = lazy(() => import('./views/ApeZone'))
 const Stats = lazy(() => import('./views/Stats'))
 const Auction = lazy(() => import('./views/Auction'))
-const Iazos = lazy(() => import('./views/Iazos'))
-const CreateIazo = lazy(() => import('./views/Iazos/components/CreateIazo'))
-const IazoPage = lazy(() => import('./views/Iazos/components/IazoPage'))
 const AdminPools = lazy(() => import('./views/AdminPools'))
 const Vaults = lazy(() => import('./views/Vaults'))
 const NfaStaking = lazy(() => import('./views/NfaStaking'))
@@ -71,6 +68,7 @@ const App: React.FC = () => {
   }, [account])
 
   const appChainId = useNetworkChainId()
+  const {pathname} = window.location;
 
   useUpdateNetwork()
   useEagerConnect()
@@ -87,71 +85,57 @@ const App: React.FC = () => {
 
   const loadMenu = () => {
     // MATIC routes
-    if (appChainId === CHAIN_ID.MATIC || appChainId === CHAIN_ID.MATIC_TESTNET) {
-      return (
-        <Menu>
-          <Suspense fallback={<PageLoader />}>
-            <Switch>
-              <Route path="/" exact>
-                <Home />
-              </Route>
-              <Route path="/admin-pools">
-                <AdminPools />
-              </Route>
-              <Route path="/farms">
-                <DualFarms />
-              </Route>
-              <Route path="/vaults">
-                <Vaults />
-              </Route>
-              {/* Redirects */}
-              <Route exact path="/nft">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/farms">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/pools">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/admin-pools">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/iao">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/auction">
-                <Redirect to="/" />
-              </Route>
-              <Route exact path="/nft">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/nft/:id">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/gnana">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/stats">
-                <Redirect to="/" />
-              </Route>
-              <Route exact path="/ss-iao">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/create">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/:id">
-                <Redirect to="/" />
-              </Route>
-              <Route component={NotFound} />
-            </Switch>
-          </Suspense>
-        </Menu>
-      )
-    }
-    // Default BSC routes
-    return (
+    return(appChainId === CHAIN_ID.MATIC || appChainId === CHAIN_ID.MATIC_TESTNET ?
+      <Menu>
+        <Suspense fallback={<PageLoader />}>
+          <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Route path="/admin-pools">
+              <AdminPools />
+            </Route>
+            <Route path="/farms">
+              <DualFarms />
+            </Route>
+            <Route path="/vaults">
+              <Vaults />
+            </Route>
+            {/* Redirects */}
+            <Route exact path="/nft">
+              <Redirect to="/" />
+            </Route>
+            <Route path="/farms">
+              <Redirect to="/" />
+            </Route>
+            <Route path="/pools">
+              <Redirect to="/" />
+            </Route>
+            <Route path="/admin-pools">
+              <Redirect to="/" />
+            </Route>
+            <Route path="/iao">
+              <Redirect to="/" />
+            </Route>
+            <Route path="/auction">
+              <Redirect to="/" />
+            </Route>
+            <Route exact path="/nft">
+              <Redirect to="/" />
+            </Route>
+            <Route path="/nft/:id">
+              <Redirect to="/" />
+            </Route>
+            <Route path="/gnana">
+              <Redirect to="/" />
+            </Route>
+            <Route path="/stats">
+              <Redirect to="/" />
+            </Route>
+            <Route component={NotFound} />
+          </Switch>
+        </Suspense>
+      </Menu> :
       <Menu>
         <Suspense fallback={<PageLoader />}>
           <Switch>
@@ -178,15 +162,6 @@ const App: React.FC = () => {
             </Route>
             <Route path="/auction">
               <Auction />
-            </Route>
-            <Route exact path="/ss-iao">
-              <Iazos />
-            </Route>
-            <Route path="/ss-iao/create">
-              <CreateIazo />
-            </Route>
-            <Route path="/ss-iao/:id">
-              <IazoPage />
             </Route>
             <Route exact path="/nft">
               <Nft />
@@ -215,17 +190,14 @@ const App: React.FC = () => {
           </Switch>
         </Suspense>
       </Menu>
-    )
+    );
   }
 
   return (
     <Router>
       <ResetCSS />
       <GlobalStyle />
-      {(window.location.pathname === '/farms' ||
-        window.location.pathname === '/pools' ||
-        window.location.pathname === '/vaults' ||
-        window.location.pathname === '/iazos') && <StyledChevronUpIcon onClick={scrollToTop} />}
+      {['/farms', '/pools', '/vaults'].indexOf(pathname) >= 0 && <StyledChevronUpIcon onClick={scrollToTop} />}
       {loadMenu()}
       <ToastListener />
     </Router>

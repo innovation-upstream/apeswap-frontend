@@ -2,15 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Text, Skeleton, Image } from '@apeswapfinance/uikit'
 import { Pool } from 'state/types'
-import styles from '../homecomponents.module.css'
 
 interface HarvestProps {
   pool: Pool
 }
 
-const PCard = styled.div.attrs({
-  className: styles.pCard,
-})`
+const PCard = styled.div`
   align-self: baseline;
   background: ${(props) => props.theme.card.background};
   display: flex;
@@ -25,6 +22,13 @@ const PCard = styled.div.attrs({
   border-radius: 20px;
   overflow: hidden;
   margin-top: 15px;
+  @media screen and (max-width: 350px) {
+    width: 295px;
+    margin-right: 8px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-top: 0px;
+  }
 `
 
 const StyledBackground = styled(Flex)`
@@ -38,20 +42,26 @@ const StyledBackground = styled(Flex)`
   margin-right: 20px;
 `
 
-const IconImage = styled(Image).attrs({
-  className: styles.iconImagePool,
-})`
+const IconImage = styled(Image)`
   align: center;
   width: 50px;
   height: 50px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 50px;
+    height: 50px;
+  }
 `
 
-const IconArrow = styled(Image).attrs({
-  className: styles.iconArrow,
-})`
+const IconArrow = styled(Image)`
   align: center;
   width: 5px;
   height: 5px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 10px;
+    height: 10px;
+  }
 `
 
 const DescriptionContainer = styled.div`
@@ -94,10 +104,11 @@ const ApyNumber = styled(Text)`
   letter-spacing: 1px;
 `
 
-const StyledHeading = styled(Heading).attrs({
-  className: styles.styledHeading,
-})`
+const StyledHeading = styled(Heading)`
   font-size: 22px;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    text-align: start;
+  }
 `
 
 const PoolCardForHome: React.FC<HarvestProps> = ({ pool }) => {

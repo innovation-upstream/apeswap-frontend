@@ -58,8 +58,8 @@ const Header = styled.div`
   padding-top: 36px;
   background-image: ${({ theme }) =>
     theme.isDark
-      ? 'url(/images/mobile-nfa-auction-banner-dark.svg)'
-      : 'url(/images/mobile-nfa-auction-banner-light.svg)'};
+      ? 'url(/images/mobile-nfa-auction-banner-dark.webp)'
+      : 'url(/images/mobile-nfa-auction-banner-light.webp)'};
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -69,7 +69,7 @@ const Header = styled.div`
   ${({ theme }) => theme.mediaQueries.xl} {
     height: 300px;
     background-image: ${({ theme }) =>
-      theme.isDark ? 'url(/images/nfa-auction-banner-dark.svg)' : 'url(/images/nfa-auction-banner-light.svg)'};
+      theme.isDark ? 'url(/images/nfa-auction-banner-dark.webp)' : 'url(/images/nfa-auction-banner-light.webp)'};
   }
 `
 
@@ -81,7 +81,7 @@ const AuctionFrame = styled.div`
   height: 161px;
   margin-right: 120px;
   margin-top: 40px;
-  background-image: url(/images/auction-frame.svg);
+  background-image: url(/images/auction-frame.webp);
   background-repeat: no-repeat;
   background-size: cover;
   ${({ theme }) => theme.mediaQueries.xl} {

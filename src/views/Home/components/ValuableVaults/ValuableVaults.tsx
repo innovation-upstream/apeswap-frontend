@@ -1,16 +1,17 @@
-import React from 'react'
+import React, {lazy} from 'react'
 import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
 import { Vault } from 'state/types'
 import { usePollVaultsData, useVaultFromPid } from 'state/hooks'
-import VaultCardForHome from './VaultsCardForHome'
+
+const VaultCardForHome = lazy(() => import('./VaultsCardForHome'))
 
 const ValuableVaultsWrapper = styled.div`
   position: relative;
   height: 321px;
   width: 336px;
   background-image: ${({ theme }) =>
-    theme.isDark ? 'url(/images/burning-vaults-polygon-dark.svg)' : 'url(/images/burning-vaults-polygon-dark.svg)'};
+    theme.isDark ? 'url(/images/burning-vaults-polygon-dark.webp)' : 'url(/images/burning-vaults-polygon-light.webp)'};
   border-radius: 30px;
   background-repeat: no-repeat;
   background-size: cover;

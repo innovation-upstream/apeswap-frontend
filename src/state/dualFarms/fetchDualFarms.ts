@@ -190,8 +190,7 @@ const fetchDualFarms = async (tokenPrices: TokenPrices[], chainId: number) => {
         rewardToken0Price: miniChefRewarderToken?.price,
         rewardToken1Price: rewarderToken?.price,
         poolWeight: alloc,
-        // TODO Remove - HIDE MATIC/CRYTL farm with 1 alloc point while SINGULAR Vault withdraws
-        multiplier: dualFarmConfig.pid === 7 ? '0X' : multiplier,
+        multiplier,
         apr,
       }
     }),

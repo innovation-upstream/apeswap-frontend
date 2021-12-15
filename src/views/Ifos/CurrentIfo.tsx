@@ -6,17 +6,18 @@ import useI18n from 'hooks/useI18n'
 import IfoCard from './components/IfoCard'
 import Title from './components/Title'
 import IfoCards from './components/IfoCards'
-import styles from './ifo.module.css'
 
-const LaunchIfoCallout = styled(BaseLayout).attrs({
-  className: styles.launchIfoCallout,
-})`
+const LaunchIfoCallout = styled(BaseLayout)`
   border-top: 2px solid ${({ theme }) => theme.colors.textSubtle};
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 60px;
   margin: 0 auto;
   padding: 32px 0;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    grid-template-columns: 1fr 1fr;
+  }
 `
 
 const List = styled.ul`
@@ -92,7 +93,7 @@ const Ifo = () => {
           </Text>
         </div>
         <div>
-          <Image src="/images/ape.png" alt="iao ape" width={537} height={370} responsive />
+          <Image src="/images/ape.webp" alt="iao ape" width={537} height={370} responsive />
           <div>
             <Title as="h2">{TranslateString(512, 'Want to launch your own IAO?')}</Title>
             <Text mb={3}>

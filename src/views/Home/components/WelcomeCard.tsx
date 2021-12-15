@@ -4,23 +4,39 @@ import { Card, CardBody, Heading, Text, Flex, Button } from '@apeswapfinance/uik
 import useI18n from 'hooks/useI18n'
 import { useNetworkChainId } from 'state/hooks'
 import { CHAIN_ID } from 'config/constants/chains'
-import styles from './homecomponents.module.css'
 
-const WalcomeWrapper = styled.div.attrs({
-  className: styles.walcomeWrapper,
-})`
+const WalcomeWrapper = styled.div`
   height: 436px;
   width: 100%;
   margin-bottom: 57px;
+  @media screen and (max-width: 350px) {
+    width: 300px;
+  }
+  ${({ theme }) => theme.mediaQueries.xs} {
+    width: 336px;
+    margin-bottom: 20px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-bottom: 0px;
+  }
 `
 
-const StyledWelcomeCard = styled(Card).attrs({
-  className: styles.styledWelcomeCard,
-})`
+const StyledWelcomeCard = styled(Card)`
   text-align: center;
   height: 207px;
   width: 360px;
   overflow: visible;
+  @media screen and (max-width: 350px) {
+    width: 300px;
+  }
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-bottom: 64px;
+    width: 336px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    width: 360px;
+  }
 `
 
 const StyledFlex = styled(Flex)`
@@ -34,14 +50,27 @@ const StyledText = styled(Text)`
   color: ${({ theme }) => theme.colors.text};
 `
 
-const StyledImg = styled.img.attrs({
-  className: styles.styledImg,
-})`
+const StyledImg = styled.img`
   margin-top: -75px;
   width: 300px;
   margin-left: 10px;
   height: 100%;
   max-height: 220px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-top: -55px;
+    max-height: 240px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-top: -65px;
+    max-height: 250px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-top: -75px;
+    max-height: 285px;
+  }
 `
 
 const StyledButton = styled(Button)`
@@ -71,17 +100,22 @@ const StyledButton = styled(Button)`
 const WelcomeCard = () => {
   const TranslateString = useI18n()
   const chainId = useNetworkChainId()
+  const {BSC, BSC_TESTNET, MATIC, MATIC_TESTNET} = CHAIN_ID
+
+  const styledImg = () => {
+    let imgDiv = null;
+    if([BSC, BSC_TESTNET].indexOf(chainId) >= 0) imgDiv = <StyledImg src="/images/ape-home.webp" width="965" height="918" alt="banana frenzy" />
+    else if([MATIC, MATIC_TESTNET].indexOf(chainId) >= 0) imgDiv = <StyledImg src="/images/ape-home-polygon.webp" width="965" height="918" alt="banana frenzy" />
+
+    return imgDiv;
+  }
+
   return (
     <WalcomeWrapper>
       <StyledFlex flexDirection="column" alignItems="center">
         <StyledWelcomeCard>
           <CardBody>
-            {(chainId === CHAIN_ID.BSC || chainId === CHAIN_ID.BSC_TESTNET) && (
-              <StyledImg src="/images/ape-home.svg" alt="banana frenzy" />
-            )}
-            {(chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) && (
-              <StyledImg src="/images/ape-home-polygon.svg" alt="banana frenzy" />
-            )}
+            {styledImg()}
           </CardBody>
         </StyledWelcomeCard>
         <Heading as="h1" size="lg" mb="6px" color="contrast">

@@ -166,7 +166,7 @@ const Header = styled.div`
 `
 
 const PoolMonkey = styled.div`
-  background-image: ${({ theme }) => (theme.isDark ? 'url(/images/pool-ape-night.svg)' : 'url(/images/pool-ape.svg)')};
+  background-image: ${({ theme }) => (theme.isDark ? 'url(/images/pool-ape-night.webp)' : 'url(/images/pool-ape.webp)')};
   width: 100%;
   height: 100%;
   background-size: contain;

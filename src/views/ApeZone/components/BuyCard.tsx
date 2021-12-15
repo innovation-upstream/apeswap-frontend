@@ -23,26 +23,27 @@ import styled from 'styled-components'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import CardValue from 'views/Home/components/CardValue'
 import { useWeb3React } from '@web3-react/core'
-import styles from './zone.module.css'
 
 const StyledCard = styled(Card)`
   overflow: visible;
 `
 
-const StyledBanana = styled(BananaGoldenIcon).attrs({
-  className: styles.styledBananaBuy,
-})`
+const StyledBanana = styled(BananaGoldenIcon)`
   width: 60px;
   position: absolute;
   right: -5px;
   bottom: -15px;
   z-index: 100;
   filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.25));
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 100px;
+    right: -15px;
+    bottom: -25px;
+  }
 `
 
-const StyledBananaPair = styled(BananaGoldenPairIcon).attrs({
-  className: styles.styledBananaPairBuy,
-})`
+const StyledBananaPair = styled(BananaGoldenPairIcon)`
   width: 60px;
   position: absolute;
   left: -15px;
@@ -50,6 +51,12 @@ const StyledBananaPair = styled(BananaGoldenPairIcon).attrs({
   z-index: 100;
   transform: rotate(80deg);
   filter: drop-shadow(0px 4px 2px rgba(0, 0, 0, 0.25));
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 80px;
+    left: -20px;
+    bottom: -10px;
+  }
 `
 const StyledText = styled(Text)`
   z-index: 199;

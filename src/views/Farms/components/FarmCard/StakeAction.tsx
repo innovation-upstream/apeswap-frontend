@@ -11,7 +11,6 @@ import useUnstake from 'hooks/useUnstake'
 import { getBalanceNumber } from 'utils/formatBalance'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
-import styles from './farmcard.module.css'
 
 interface FarmCardActionsProps {
   stakedBalance?: BigNumber
@@ -32,11 +31,14 @@ const StyledIconButtonSquare = styled(IconButtonSquare)`
   height: 34px;
 `
 
-const StyledHeadingGreen = styled(Heading).attrs({
-  className: styles.styledHeadingGreen,
-})`
+const StyledHeadingGreen = styled(Heading)`
   font-size: 14px;
   color: #38a611;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 20px;
+    color: #38a611;
+  }
 `
 
 const StyledText = styled(Text)`
@@ -44,11 +46,12 @@ const StyledText = styled(Text)`
   font-size: 12px;
 `
 
-const StyledFlex = styled(Flex).attrs({
-  className: styles.styledFlex,
-})`
+const StyledFlex = styled(Flex)`
   width: 100%;
   margin-left: 117px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-right: 30px;
+  }
 `
 
 const StakeAction: React.FC<FarmCardActionsProps> = ({

@@ -13,7 +13,6 @@ import Page from 'components/layout/Page'
 import SearchInput from '../../../Pools/components/SearchInput'
 import PoolTabButtons from '../../../Pools/components/PoolTabButtons'
 import PoolCard from '../../../Pools/components/PoolCard/PoolCard'
-import styles from '../zone.module.css'
 
 const float = keyframes`
   0% {transform: translate3d(0px, 0px, 0px);}
@@ -156,7 +155,7 @@ const Header = styled.div`
 `
 
 const PoolMonkey = styled.div`
-  background-image: ${({ theme }) => (theme.isDark ? 'url(/images/pool-ape-night.svg)' : 'url(/images/pool-ape.svg)')};
+  background-image: ${({ theme }) => (theme.isDark ? 'url(/images/pool-ape-night.webp)' : 'url(/images/pool-ape.webp)')};
   width: 100%;
   height: 100%;
   background-size: contain;

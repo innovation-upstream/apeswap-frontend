@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { CardHeader as UIKitCardHeader } from '@apeswapfinance/uikit'
 
 const CardHeader = styled(UIKitCardHeader)`
-  background-image: url(/images/ape-home-earnings.png);
+  background-image: url(/images/ape-home-earnings.webp);
   position: relative;
   text-align: center;
   height: 111px;

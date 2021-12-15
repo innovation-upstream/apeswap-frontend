@@ -1,21 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ArrowDropDownIcon, ArrowDropUpIcon } from '@apeswapfinance/uikit'
-import styles from '../farmcard.module.css'
 
 export interface ExpandableSectionButtonProps {
   onClick?: () => void
   expanded?: boolean
 }
 
-const Wrapper = styled.div.attrs({
-  className: styles.wrapper,
-})`
+const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   margin-left: 5px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-left: 10px;
+  }
 
   svg {
     fill: ${({ theme }) => theme.colors.primary};

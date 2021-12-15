@@ -65,15 +65,3 @@ export const useVaultApeAddress = () => {
 export const useMiniChefAddress = () => {
   return useAddress(addresses.miniApeV2)
 }
-
-export const useIazoExposerAddress = () => {
-  return useAddress(addresses.iazoExposer)
-}
-
-export const useIazoSettingsAddress = () => {
-  return useAddress(addresses.iazoSettings)
-}
-
-export const useIazoFactoryAddress = () => {
-  return useAddress(addresses.iazoFactoryProxy)
-}

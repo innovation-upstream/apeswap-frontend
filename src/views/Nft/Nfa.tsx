@@ -9,18 +9,25 @@ import useI18n from 'hooks/useI18n'
 import NfaAttributes from './components/NfaAttributes'
 import NfaSales from './components/NfaSales'
 import Image from './components/Image'
-import styles from './nfa.module.css'
 
-const NfaImageHolder = styled.div.attrs({
-  className: styles.nfaImageHolder,
-})`
+const NfaImageHolder = styled.div`
   overflow: hidden;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    height: 335px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 435px;
+  }
 `
 
-const NfaHolder = styled.div.attrs({
-  className: styles.nfaHolder,
-})`
+const NfaHolder = styled.div`
   margin-top: 35px;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    width: 350px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 450px;
+  }
 `
 
 const PageHolder = styled.div`
@@ -30,22 +37,32 @@ const PageHolder = styled.div`
   justify-content: center;
 `
 
-const DetailsHolder = styled.div.attrs({
-  className: styles.detailsHolder,
-})`
+const DetailsHolder = styled.div`
   margin-top: 35px;
   display: flex;
   flex-direction: column;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin-left: 0px;
+    width: 350px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 25px;
+    width: 450px;
+  }
   align-items: center;
 `
 
-const BoxShadow = styled.div.attrs({
-  className: styles.boxShadow,
-})`
+const BoxShadow = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${(props) => props.theme.colors.card};
   box-shadow: 0px 0px 10px ${(props) => props.theme.colors.textSubtle};
+  ${({ theme }) => theme.mediaQueries.xs} {
+    width: 350px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 450px;
+  }
   align-items: center;
 `
 
