@@ -12,7 +12,7 @@ sync:
     GIT_COMMITTER_EMAIL: "zach+ci@innovationupstream.com"
     GIT_STRATEGY: clone
   image:
-    name: nixos/nix
+    name: nixos/nix:2.3.12
   before_script:
     - nix-channel --update
     - nix-env -iA nixpkgs.git nixpkgs.openssh
