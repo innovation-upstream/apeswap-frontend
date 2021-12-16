@@ -1,18 +1,18 @@
-import React, {lazy, Suspense} from 'react'
+import React, {lazy} from 'react'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
 import { CHAIN_ID } from 'config/constants/chains'
 import { useNetworkChainId } from 'state/hooks'
 
-const FarmStakingCard = lazy(() => import('views/Home/components/FarmStaking/FarmStakingCard'))
-const ApeSwapStats = lazy(() => import('views/Home/components/ApeSwapStats'))
-const WelcomeCard = lazy(() => import('./components/WelcomeCard'))
 const Banner = lazy(() => import('./components/Header/Banner'))
+const WelcomeCard = lazy(() => import('./components/WelcomeCard'))
 const HotFarms = lazy(() => import('./components/HotFarms/HotFarms'))
 const CoolPools = lazy(() => import('./components/CoolPools/CoolPools'))
+const ApeSwapStats = lazy(() => import('views/Home/components/ApeSwapStats'))
 const WhenNewsSer = lazy(() => import('./components/WhenNewsSer/WhenNewsSer'))
 const DualHotFarms = lazy(() => import('./components/DualFarms/DualHotFarms'))
 const VauluableVaults = lazy(() => import('./components/ValuableVaults/ValuableVaults'))
+const FarmStakingCard = lazy(() => import('views/Home/components/FarmStaking/FarmStakingCard'))
 
 export interface GridWidth {
   spanFirst?: number
@@ -139,8 +139,6 @@ const Home: React.FC = () => {
   const appChainId = useNetworkChainId()
   const {MATIC, MATIC_TESTNET} = CHAIN_ID;
 
-  const renderLoad = () => console.log('rendering');
-
   return (
     <Page width="1200px">
       <BannerContainer>
@@ -149,22 +147,20 @@ const Home: React.FC = () => {
       <PageContainer>
         <LeftSideFlexWrapper>
           <FrontRowWrapper>
-            <Suspense fallback={renderLoad}>
-              <WelcomeCard />
-              <FarmStakingCard />
-            </Suspense>
+            <WelcomeCard />
+            <FarmStakingCard />
           </FrontRowWrapper>
           <FarmAndPoolsWrapper>
           {
             [MATIC, MATIC_TESTNET].indexOf(appChainId) >= 0 ?
-            <Suspense fallback={renderLoad}>
+            <>
               <DualHotFarms />
               <VauluableVaults />
-            </Suspense> : 
-            <Suspense fallback={renderLoad}>
+            </> : 
+            <>
               <HotFarms />
               <CoolPools />
-            </Suspense>
+            </>
           }
           </FarmAndPoolsWrapper>
         </LeftSideFlexWrapper>

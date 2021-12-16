@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import ifoAbi from 'config/abi/ifo.json'
 import multicallABI from 'config/abi/Multicall.json'
@@ -124,10 +124,13 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, notLp, gnana }) => {
   const chainId = useNetworkChainId()
   const multicallAddress = getMulticallAddress(chainId)
 
+  const multicallContract = useMemo(
+    () => getContract(multicallABI, multicallAddress, chainId),
+    [multicallAddress, chainId]
+  )
+
   useEffect(() => {
     const fetchProgress = async () => {
-      const multicallContract = getContract(multicallABI, multicallAddress, chainId)
-
       if (!address) {
         // Allow IAO details to be shown before contracts are deployed
         return
@@ -223,7 +226,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, notLp, gnana }) => {
         throw error
       }
     })
-  }, [currentBlock, contract, releaseBlockNumber, setState, start, address, multicallAddress, chainId])
+  }, [currentBlock, contract, releaseBlockNumber, setState, start, address, multicallContract])
 
   const isActive = state.status === 'live'
   const isFinished = state.status === 'finished'

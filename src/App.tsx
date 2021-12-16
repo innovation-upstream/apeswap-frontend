@@ -13,6 +13,7 @@ import {
   useNetworkChainId,
   useUpdateNetwork,
 } from 'state/hooks'
+
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'

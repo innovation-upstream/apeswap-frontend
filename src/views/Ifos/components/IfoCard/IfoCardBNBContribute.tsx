@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import ifoAbi from 'config/abi/ifo.json'
 import multicallABI from 'config/abi/Multicall.json'
@@ -150,10 +150,13 @@ const IfoCardBNBContribute: React.FC<Props> = ({
   const harvestTwoTime = getTimePeriods(harvestTwoBlockRelease, true)
   const harvestThreeTime = getTimePeriods(harvestThreeBlockRelease, true)
   const harvestFourTime = getTimePeriods(harvestFourBlockRelease, true)
-
+  
+  const multicallContract = useMemo(
+    () => getContract(multicallABI, multicallAddress, chainId),
+    [multicallAddress, chainId]
+  )
   useEffect(() => {
     const fetch = async () => {
-      const multicallContract = getContract(multicallABI, multicallAddress, chainId)
       const calls = [
         {
           address,
@@ -217,7 +220,7 @@ const IfoCardBNBContribute: React.FC<Props> = ({
     if (account) {
       fetch()
     }
-  }, [account, contract, address, pendingTx, fastRefresh, multicallAddress, chainId])
+  }, [account, contract, address, pendingTx, fastRefresh, multicallContract])
 
   const claim = async (harvestPeriod: number) => {
     setPendingTx(true)

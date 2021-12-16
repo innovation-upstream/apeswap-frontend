@@ -153,4 +153,4 @@ const HotFarms = () => {
   )
 }
 
-export default HotFarms
+export default React.memo(HotFarms);

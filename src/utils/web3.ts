@@ -7,7 +7,6 @@ import getRpcUrl from 'utils/getRpcUrl'
 /**
  * Provides a web3 instance using our own private provider httpProver
  */
-
 const activeWeb3Instance = {}
 
 const getWeb3 = (chainId: number) => {

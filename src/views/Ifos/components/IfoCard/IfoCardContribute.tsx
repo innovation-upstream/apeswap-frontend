@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import ifoAbi from 'config/abi/ifo.json'
 import multicallABI from 'config/abi/Multicall.json'
@@ -160,9 +160,12 @@ const IfoCardContribute: React.FC<Props> = ({
   const chainId = useNetworkChainId()
   const multicallAddress = getMulticallAddress(chainId)
 
+  const multicallContract = useMemo(
+    () => getContract(multicallABI, multicallAddress, chainId),
+    [multicallAddress, chainId]
+  )
   useEffect(() => {
     const fetch = async () => {
-      const multicallContract = getContract(multicallABI, multicallAddress, chainId)
       const calls = [
         {
           address,
@@ -226,7 +229,7 @@ const IfoCardContribute: React.FC<Props> = ({
     if (account) {
       fetch()
     }
-  }, [account, contract, address, pendingTx, slowRefresh, multicallAddress, chainId])
+  }, [account, contract, address, pendingTx, slowRefresh, multicallContract])
 
   if (allowance === null) {
     return null

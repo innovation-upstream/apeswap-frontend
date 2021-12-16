@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import erc20ABI from 'config/abi/erc20.json'
 import { useWeb3React } from '@web3-react/core'
@@ -13,19 +13,24 @@ const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account, library, chainId } = useWeb3React()
   const { fastRefresh } = useRefresh()
+  const tokenContract = useMemo(
+    () => getContract(erc20ABI, tokenAddress, chainId),
+    [tokenAddress, chainId]
+  )
 
   useEffect(() => {
-    const fetchBalance = async () => {
-      const web3 = getWeb3(chainId)
-      const tokenContract = getContract(erc20ABI, tokenAddress, chainId)
-      const res = await getTokenBalance(web3, tokenAddress, account, tokenContract)
-      setBalance(new BigNumber(res))
-    }
-
     if (account && library) {
+      
+      
+      const fetchBalance = async () => {
+        const web3 = getWeb3(chainId)
+        const res = await getTokenBalance(web3, tokenAddress, account, tokenContract)
+        setBalance(new BigNumber(res))
+      }
+
       fetchBalance()
     }
-  }, [account, library, tokenAddress, fastRefresh, chainId])
+  }, [account, library, tokenAddress, fastRefresh, chainId, tokenContract])
 
   return balance
 }

@@ -113,4 +113,4 @@ const Stats: React.FC = () => {
   )
 }
 
-export default Stats
+export default React.memo(Stats);
