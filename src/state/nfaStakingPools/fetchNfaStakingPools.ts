@@ -13,55 +13,70 @@ import { TokenPrices } from 'state/types'
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
 
 export const fetchPoolsBlockLimits = async (chainId) => {
-  const multicallContractAddress = getMulticallAddress(chainId)
-  const multicallContract = getContract(multicallABI, multicallContractAddress, chainId)
-  const callsStartBlock = nfaStakingPoolsConfig.map((nfaStakingPool) => {
-    return {
-      address: nfaStakingPool.contractAddress[CHAIN_ID],
-      name: 'startBlock',
-    }
-  })
-  const callsEndBlock = nfaStakingPoolsConfig.map((nfaStakingPool) => {
-    return {
-      address: nfaStakingPool.contractAddress[CHAIN_ID],
-      name: 'bonusEndBlock',
-    }
-  })
+  try {
+    const multicallContractAddress = getMulticallAddress(chainId)
+    const multicallContract = getContract(multicallABI, multicallContractAddress, chainId)
+    const callsStartBlock = nfaStakingPoolsConfig.map((nfaStakingPool) => {
+      return {
+        address: nfaStakingPool.contractAddress[CHAIN_ID],
+        name: 'startBlock',
+      }
+    })
+    const callsEndBlock = nfaStakingPoolsConfig.map((nfaStakingPool) => {
+      return {
+        address: nfaStakingPool.contractAddress[CHAIN_ID],
+        name: 'bonusEndBlock',
+      }
+    })
 
-  const starts = await multicall(multicallContract, nfaStakingAbi, callsStartBlock)
-  const ends = await multicall(multicallContract, nfaStakingAbi, callsEndBlock)
+  
+    const starts = await multicall(multicallContract, nfaStakingAbi, callsStartBlock)
+    const ends = await multicall(multicallContract, nfaStakingAbi, callsEndBlock)
 
-  return nfaStakingPoolsConfig.map((nfaStakingPool, index) => {
-    const startBlock = starts[index]
-    const endBlock = ends[index]
-    return {
-      sousId: nfaStakingPool.sousId,
-      startBlock: new BigNumber(startBlock).toJSON(),
-      endBlock: new BigNumber(endBlock).toJSON(),
+    return nfaStakingPoolsConfig.map((nfaStakingPool, index) => {
+      const startBlock = starts[index]
+      const endBlock = ends[index]
+      return {
+        sousId: nfaStakingPool.sousId,
+        startBlock: new BigNumber(startBlock).toJSON(),
+        endBlock: new BigNumber(endBlock).toJSON(),
+      }
+    })
+  } catch (e) {
+    if (navigator.userAgent === 'ReactSnap') {
+      return []
     }
-  })
+    throw e
+  }
 }
 
 export const fetchPoolsTotalStatking = async (chainId) => {
-  const multicallContractAddress = getMulticallAddress(chainId)
-  const multicallContract = getContract(multicallABI, multicallContractAddress, chainId)
-  const nfaAddress = getNonFungibleApesAddress(chainId)
-  const calls = nfaStakingPoolsConfig.map((poolConfig) => {
-    return {
-      address: nfaAddress,
-      name: 'balanceOf',
-      params: [poolConfig.contractAddress[CHAIN_ID]],
+  try {
+    const multicallContractAddress = getMulticallAddress(chainId)
+    const multicallContract = getContract(multicallABI, multicallContractAddress, chainId)
+    const nfaAddress = getNonFungibleApesAddress(chainId)
+    const calls = nfaStakingPoolsConfig.map((poolConfig) => {
+      return {
+        address: nfaAddress,
+        name: 'balanceOf',
+        params: [poolConfig.contractAddress[CHAIN_ID]],
+      }
+    })
+
+    const nfaStakingPoolTotalStaked = await multicall(multicallContract, nonFungibleApesAbi, calls)
+
+    return [
+      ...nfaStakingPoolsConfig.map((p, index) => ({
+        sousId: p.sousId,
+        totalStaked: new BigNumber(nfaStakingPoolTotalStaked[index]).toJSON(),
+      })),
+    ]
+  } catch (e) {
+    if (navigator.userAgent === 'ReactSnap') {
+      return []
     }
-  })
-
-  const nfaStakingPoolTotalStaked = await multicall(multicallContract, nonFungibleApesAbi, calls)
-
-  return [
-    ...nfaStakingPoolsConfig.map((p, index) => ({
-      sousId: p.sousId,
-      totalStaked: new BigNumber(nfaStakingPoolTotalStaked[index]).toJSON(),
-    })),
-  ]
+    throw e
+  }
 }
 
 export const fetchPoolTokenStatsAndApr = async (tokenPrices: TokenPrices[], totalStakingList) => {
