@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Menu as UikitMenu } from '@apeswapfinance/uikit'
 
 import { useWeb3React } from '@web3-react/core'
@@ -19,15 +19,18 @@ const Menu = (props) => {
   const { tokenPrices } = useTokenPrices()
   const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const { profile } = useProfile()
-  const currentMenu = () => {
+  const [menu, setMenu] = useState(bscConfig)
+  const [network, setNetwork] = useState(CHAIN_ID.BSC)
+
+  useEffect(() => {
     if (chainId === CHAIN_ID.BSC) {
-      return bscConfig
+      setMenu(bscConfig)
     }
     if (chainId === CHAIN_ID.MATIC) {
-      return maticConfig
+      setMenu(maticConfig)
     }
-    return bscConfig
-  }
+    setNetwork(chainId)
+  }, [chainId])
 
   return (
     <UikitMenu
@@ -37,8 +40,8 @@ const Menu = (props) => {
       isDark={isDark}
       toggleTheme={toggleTheme}
       bananaPriceUsd={bananaPriceUsd}
-      links={currentMenu()}
-      chainId={chainId}
+      links={menu}
+      chainId={network}
       switchNetwork={switchNetwork}
       profile={{
         image: profile ? profile?.rarestNft.image : null,

@@ -86,133 +86,115 @@ const App: React.FC = () => {
   }
 
   const loadMenu = () => {
-    // MATIC routes
-    if (appChainId === CHAIN_ID.MATIC || appChainId === CHAIN_ID.MATIC_TESTNET) {
-      return (
-        <Menu>
-          <Suspense fallback={<PageLoader />}>
-            <Switch>
-              <Route path="/" exact>
-                <Home />
-              </Route>
-              <Route path="/admin-pools">
-                <AdminPools />
-              </Route>
-              <Route path="/farms">
-                <DualFarms />
-              </Route>
-              <Route path="/vaults">
-                <Vaults />
-              </Route>
-              {/* Redirects */}
-              <Route exact path="/nft">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/farms">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/pools">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/admin-pools">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/iao">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/auction">
-                <Redirect to="/" />
-              </Route>
-              <Route exact path="/nft">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/nft/:id">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/gnana">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/stats">
-                <Redirect to="/" />
-              </Route>
-              <Route exact path="/ss-iao">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/create">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/:id">
-                <Redirect to="/" />
-              </Route>
-              <Route component={NotFound} />
-            </Switch>
-          </Suspense>
-        </Menu>
-      )
-    }
+    const isMatic = appChainId === CHAIN_ID.MATIC || appChainId === CHAIN_ID.MATIC_TESTNET
+    
+    const maticMenu = (
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/admin-pools">
+          <AdminPools />
+        </Route>
+        <Route path="/farms">
+          <DualFarms />
+        </Route>
+        <Route path="/vaults">
+          <Vaults />
+        </Route>
+        {/* Redirects */}
+        <Route exact path="/nft">
+          <Redirect to="/" />
+        </Route>
+        <Route path="/farms">
+          <Redirect to="/" />
+        </Route>
+        <Route path="/pools">
+          <Redirect to="/" />
+        </Route>
+        <Route path="/admin-pools">
+          <Redirect to="/" />
+        </Route>
+        <Route path="/iao">
+          <Redirect to="/" />
+        </Route>
+        <Route path="/auction">
+          <Redirect to="/" />
+        </Route>
+        <Route exact path="/nft">
+          <Redirect to="/" />
+        </Route>
+        <Route path="/nft/:id">
+          <Redirect to="/" />
+        </Route>
+        <Route path="/gnana">
+          <Redirect to="/" />
+        </Route>
+        <Route path="/stats">
+          <Redirect to="/" />
+        </Route>
+        <Route component={NotFound} />
+      </Switch>
+    )
+    
     // Default BSC routes
+    const bscMenu = (
+      <Switch>
+        <Route exact path="/nft">
+          <Nft />
+        </Route>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/farms">
+          <Farms />
+        </Route>
+        <Route path="/pools">
+          <Pools />
+        </Route>
+        <Route path="/vaults">
+          <Vaults />
+        </Route>
+        <Route path="/admin-pools">
+          <AdminPools />
+        </Route>
+        <Route path="/iao">
+          <Ifos />
+        </Route>
+        <Route path="/auction">
+          <Auction />
+        </Route>
+        <Route exact path="/nft">
+          <Nft />
+        </Route>
+        <Route path="/nft/:id">
+          <Nfa />
+        </Route>
+        <Route path="/staking">
+          <NfaStaking />
+        </Route>
+        <Route path="/gnana">
+          <ApeZone />
+        </Route>
+        <Route path="/stats">
+          <Stats />
+        </Route>
+        {/* Redirect */}
+        <Route path="/staking">
+          <Redirect to="/pools" />
+        </Route>
+        <Route path="/syrup">
+          <Redirect to="/pools" />
+        </Route>
+        {/* 404 */}
+        <Route component={NotFound} />
+      </Switch>
+    )
+
     return (
       <Menu>
         <Suspense fallback={<PageLoader />}>
-          <Switch>
-            <Route exact path="/nft">
-              <Nft />
-            </Route>
-            <Route path="/" exact>
-              <Home />
-            </Route>
-            <Route path="/farms">
-              <Farms />
-            </Route>
-            <Route path="/pools">
-              <Pools />
-            </Route>
-            <Route path="/vaults">
-              <Vaults />
-            </Route>
-            <Route path="/admin-pools">
-              <AdminPools />
-            </Route>
-            <Route path="/iao">
-              <Ifos />
-            </Route>
-            <Route path="/auction">
-              <Auction />
-            </Route>
-            <Route exact path="/ss-iao">
-              <Iazos />
-            </Route>
-            <Route path="/ss-iao/create">
-              <CreateIazo />
-            </Route>
-            <Route path="/ss-iao/:id">
-              <IazoPage />
-            </Route>
-            <Route exact path="/nft">
-              <Nft />
-            </Route>
-            <Route path="/nft/:id">
-              <Nfa />
-            </Route>
-            <Route path="/staking">
-              <NfaStaking />
-            </Route>
-            <Route path="/gnana">
-              <ApeZone />
-            </Route>
-            <Route path="/stats">
-              <Stats />
-            </Route>
-            {/* Redirect */}
-            <Route path="/staking">
-              <Redirect to="/pools" />
-            </Route>
-            <Route path="/syrup">
-              <Redirect to="/pools" />
-            </Route>
-            {/* 404 */}
-            <Route component={NotFound} />
-          </Switch>
+          {isMatic ? maticMenu : bscMenu}
         </Suspense>
       </Menu>
     )
