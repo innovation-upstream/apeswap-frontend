@@ -849,6 +849,27 @@ const tokens = {
     },
     decimals: 18,
   },
+  dose: {
+    symbol: 'DOSE',
+    address: {
+      56: '0x7837fd820bA38f95c54D6dAC4ca3751b81511357',
+    },
+    decimals: 18,
+  },
+  ore: {
+    symbol: 'ORE',
+    address: {
+      56: '0x91F006ee672F8f39C6E63cA75B1cA14067b3c366',
+    },
+    decimals: 8,
+  },
+  myra: {
+    symbol: 'MYRA',
+    address: {
+      56: '0x6ef238E9E8CD2A96740897761C18894Fc086B9d0',
+    },
+    decimals: 18,
+  },
 }
 
 export default tokens

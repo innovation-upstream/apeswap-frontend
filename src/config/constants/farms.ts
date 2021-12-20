@@ -2822,6 +2822,57 @@ const farms: FarmConfig[] = [
     projectLink: 'https://kardiachain.io/',
   },
   {
+    pid: 176,
+    image: 'DOSE.svg',
+    lpSymbol: 'DOSE-BNB LP',
+    lpAddresses: {
+      97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
+      56: '0xB69d0311dDff8EAc8AA9B426Ff2b7F8eE73bEe15',
+    },
+    tokenSymbol: 'DOSE',
+    tokenAddresses: {
+      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
+      56: '0x7837fd820bA38f95c54D6dAC4ca3751b81511357',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    projectLink: 'https://dosetoken.com/',
+  },
+  {
+    pid: 177,
+    image: 'ORE.png',
+    lpSymbol: 'ORE-BNB LP',
+    lpAddresses: {
+      97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
+      56: '0x7E025d2E3e97890FAB1113a527B88a39F02e3922',
+    },
+    tokenSymbol: 'ORE',
+    tokenAddresses: {
+      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
+      56: '0x91F006ee672F8f39C6E63cA75B1cA14067b3c366',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    projectLink: 'https://outrace.game/',
+  },
+  {
+    pid: 178,
+    image: 'MYRA.svg',
+    lpSymbol: 'MYRA-BNB LP',
+    lpAddresses: {
+      97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
+      56: '0x490d7932387692b54865a24ebb6903b38fef884c',
+    },
+    tokenSymbol: 'MYRA',
+    tokenAddresses: {
+      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
+      56: '0x6ef238e9e8cd2a96740897761c18894fc086b9d0',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    projectLink: 'https://mytheria.io/',
+  },
+  {
     pid: 7, // NOTE: Inactive Farm
     image: 'BAKE.svg',
     lpSymbol: 'BAKE-BANANA',
