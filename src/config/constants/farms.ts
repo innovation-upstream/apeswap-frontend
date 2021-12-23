@@ -2873,6 +2873,40 @@ const farms: FarmConfig[] = [
     projectLink: 'https://mytheria.io/',
   },
   {
+    pid: 179,
+    image: 'GODZ.svg',
+    lpSymbol: 'GODZ-BNB LP',
+    lpAddresses: {
+      97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
+      56: '0xDE60997a41A224215857a3F2cC46E190B4EB7a8C',
+    },
+    tokenSymbol: 'GODZ',
+    tokenAddresses: {
+      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
+      56: '0xF0A8EcBCE8caADB7A07d1FcD0f87Ae1Bd688dF43',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    projectLink: 'https://cryptogodz.io/',
+  },
+  {
+    pid: 180,
+    image: 'MNFT.png',
+    lpSymbol: 'MNFT-BNB LP',
+    lpAddresses: {
+      97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
+      56: '0x1a9db0d17369933d9f2d2c1a6af7f0f4261c4af7',
+    },
+    tokenSymbol: 'MNFT',
+    tokenAddresses: {
+      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
+      56: '0x36953b5ec00a13edceceb3af258d034913d2a79d',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    projectLink: 'https://manufactory.gg/',
+  },
+  {
     pid: 7, // NOTE: Inactive Farm
     image: 'BAKE.svg',
     lpSymbol: 'BAKE-BANANA',

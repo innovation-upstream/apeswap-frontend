@@ -870,6 +870,20 @@ const tokens = {
     },
     decimals: 18,
   },
+  godz: {
+    symbol: 'GODZ',
+    address: {
+      56: '0xF0A8EcBCE8caADB7A07d1FcD0f87Ae1Bd688dF43',
+    },
+    decimals: 18,
+  },
+  mnft: {
+    symbol: 'MNFT',
+    address: {
+      56: '0x36953b5ec00a13edceceb3af258d034913d2a79d',
+    },
+    decimals: 18,
+  },
 }
 
 export default tokens
