@@ -1,0 +1,38 @@
+@value sm, md, xs, lg, xl from "../../../style/breakpoints.module.css";
+
+@media sm {
+  .iconImage {
+    width: 57px;
+    height: 57px;
+  }
+}
+
+@media md {
+  .farmTabButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 64px;
+    margin-right: 44px;
+  }
+}
+
+@media lg {
+  .farmTabButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 54px;
+    margin-right: 34px;
+  }
+}
+
+@media xl {
+  .farmTabButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 84px;
+    margin-right: 74px;
+  }
+}

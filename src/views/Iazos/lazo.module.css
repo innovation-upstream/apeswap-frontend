@@ -1,0 +1,17 @@
+@value sm, md, lg, xl from "../../style/breakpoints.module.css";
+
+@media md {
+  .settingsWrapper {
+    height: 60px;
+    margin-top: 40px;
+  }
+}
+
+@media lg {
+  .topNavWrapper {
+    width: 856px;
+  }
+  .styledHeader {
+    font-size: 45px;
+  }
+}

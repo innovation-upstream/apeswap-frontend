@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Image } from '@apeswapfinance/uikit'
+import styles from '../poolscomponents.module.css'
 
 export interface PoolProps {
   stakeToken?: string
@@ -8,15 +9,12 @@ export interface PoolProps {
   earnTokenImage?: string
 }
 
-const IconImage = styled(Image)`
+const IconImage = styled(Image).attrs({
+  className: styles.iconImage
+})`
   width: 24px;
   height: 24px;
   align: center;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 57px;
-    height: 57px;
-  }
 `
 
 const Container = styled.div`

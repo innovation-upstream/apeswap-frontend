@@ -5,6 +5,7 @@ import { Text, Button } from '@apeswapfinance/uikit'
 import CheckMarkIcon from './Icons/CheckMarkIcon'
 import CalendarIcon from './Icons/CalendarIcon'
 import GraphIcon from './Icons/GraphIcon'
+import styles from './lazocomponents.module.css'
 
 interface IconButtonProps {
   text?: string
@@ -37,7 +38,9 @@ const IconButton: React.FC<IconButtonProps> = ({ icon, text, onClick, active }) 
   )
 }
 
-const StyledButton = styled(Button)<{ active?: boolean }>`
+const StyledButton = styled(Button).attrs({
+  className: styles.styledButton
+})<{ active?: boolean }>`
   height: 44px;
   border-radius: 10px;
   background: ${(props) => (props.theme.isDark ? '#333333' : 'rgba(240, 240, 240, 1)')};
@@ -53,12 +56,11 @@ const StyledButton = styled(Button)<{ active?: boolean }>`
     background: ${(props) => (props.theme.isDark ? '#333333' : 'rgba(240, 240, 240, 1)')};
   }
   margin-top: 25px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-top: 0px;
-  }
 `
 
-const IconText = styled(Text)`
+const IconText = styled(Text).attrs({
+  className: styles.iconText
+})`
   font-family: Poppins;
   font-style: normal;
   font-weight: normal;
@@ -66,9 +68,6 @@ const IconText = styled(Text)`
   line-height: 15px;
   padding-left: 10px;
   font-weight: 500;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 13px;
-  }
 `
 
 export default IconButton

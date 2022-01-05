@@ -1,0 +1,38 @@
+@value xs, sm, md, lg from "../../style/breakpoints.module.css";
+
+@media sm {
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .styledPage {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  .styledPageMax1130 {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  .styledPageMax1200 {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+@media lg {
+  .styledPage {
+    padding-top: 32px;
+    padding-bottom: 32px;
+    max-width: 992px;
+  }
+  .styledPageMax1130 {
+    padding-top: 32px;
+    padding-bottom: 32px;
+    max-width: 1130px !important;
+  }
+  .styledPageMax1200 {
+    padding-top: 32px;
+    padding-bottom: 32px;
+    max-width: 1200px !important;
+  }
+}

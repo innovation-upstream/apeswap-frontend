@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useRouteMatch, Link } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
+import styles from '../poolscomponents.module.css'
 
 const PoolTabButtons = () => {
   const { url, isExact } = useRouteMatch()
@@ -24,28 +25,9 @@ const PoolTabButtons = () => {
 
 export default PoolTabButtons
 
-const Wrapper = styled.div`
+const Wrapper = styled.div.attrs({
+  className: styles.poolTabButtons
+})`
   margin-right: 10px;
   margin-left: 20px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 44px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 34px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 55px;
-  }
 `

@@ -1,0 +1,41 @@
+@value md from "../../../../style/breakpoints.module.css";
+
+
+@media md {
+  .styledHeading {
+    font-size: 45px;
+    margin-bottom: 20px;
+  }
+  .styledText {
+    font-size: 16px;
+  }
+  .warningWrapper {
+    width: 796px;
+    padding: 50px;
+  }
+  .beforeSaleWrapper {
+    width: 796px;
+  }
+  .iazoCardWrapper {
+    width: 796px;
+  }
+  .cardMonkey {
+    width: 796px;
+  }
+  .tokenImage {
+    width: 71px;
+    height: 71px;
+    margin-left: 25px;
+  }
+  .tokenName {
+    font-size: 24px;
+  }
+  .tokenButtonsWrapper {
+    width: 330px;
+  }
+  .tokenInfoButton {
+    font-size: 16px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

@@ -1,7 +1,10 @@
 import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
+import styles from './lazocomponents.module.css'
 
-export const BoldAfterText = styled(Text)<{ boldContent?: string }>`
+export const BoldAfterText = styled(Text).attrs({
+  className: styles.boldAfterText
+})<{ boldContent?: string }>`
   font-family: poppins;
   font-weight: 400;
   font-size: 11px;
@@ -9,41 +12,32 @@ export const BoldAfterText = styled(Text)<{ boldContent?: string }>`
     font-weight: 700;
     content: '${(props) => props.boldContent}';
   }
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 16px;
-  }
 `
 
-export const BoldAfterTextLarge = styled(Text)<{ boldContent?: string }>`
+export const BoldAfterTextLarge = styled(Text).attrs({
+  className: styles.boldAfterTextLarge
+})<{ boldContent?: string }>`
   font-family: poppins;
   font-weight: 400;
   font-size: 13px;
   &:after {
     font-weight: 700;
     font-size: 14px;
-    ${({ theme }) => theme.mediaQueries.md} {
-      font-size: 17px;
-    }
     content: '${(props) => props.boldContent}';
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 16px;
   }
 `
 
-export const Heading = styled(Text)`
+export const Heading = styled(Text).attrs({
+  className: styles.heading
+})`
   font-family: Poppins;
   font-weight: 700;
   font-size: 25px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 30px;
-  }
 `
 
-export const StyledText = styled(Text)`
+export const StyledText = styled(Text).attrs({
+  className: styles.styledText
+})`
   font-family: Poppins;
   font-size: 12px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 16px;
-  }
 `

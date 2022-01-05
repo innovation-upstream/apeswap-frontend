@@ -1,0 +1,35 @@
+@value sm, md, xs, lg, xl from "../../../style/breakpoints.module.css";
+
+@media sm {
+  .iconImage {
+    width: 57px;
+    height: 57px;
+  }
+}
+
+@media md {
+  .poolTabButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 44px;
+  }
+}
+
+@media lg {
+  .poolTabButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 34px;
+  }
+}
+
+@media xl {
+  .poolTabButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 55px;
+  }
+}

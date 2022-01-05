@@ -16,20 +16,17 @@ import BananaHarvestUsdBalance from './BananaHarvestUsdBalance'
 import BananaWalletUsdBalance from './BananaWalletUsdBalance'
 import BananaWalletBalance from './BananaWalletBalance'
 import CardHeader from './CardHeader'
+import styles from '../homecomponents.module.css'
 
-const StyledFarmStakingCard = styled(Card)`
+const StyledFarmStakingCard = styled(Card).attrs({
+  className: styles.styledFarmStakingCard,
+})`
   background-repeat: no-repeat;
   background-position: top right;
   width: 332px;
   height: 436px;
   text-align: center;
   overflow: visible;
-  @media screen and (max-width: 350px) {
-    width: 300px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 50px;
-  }
 `
 
 const Block = styled.div`

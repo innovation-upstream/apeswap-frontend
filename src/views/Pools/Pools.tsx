@@ -19,6 +19,7 @@ import PoolTabButtons from './components/PoolTabButtons'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolTable from './components/PoolTable/PoolTable'
 import { ViewMode } from './components/types'
+import styles from './pools.module.css'
 
 interface LabelProps {
   active?: boolean
@@ -35,7 +36,9 @@ const floatSM = keyframes`
   100% {transform: translate3d(0px, 0px, 0px);}
 `
 
-const ControlContainer = styled(Card)`
+const ControlContainer = styled(Card).attrs({
+  className: styles.controlContainer
+})`
   display: flex;
   width: 100%;
   align-items: center;
@@ -45,16 +48,11 @@ const ControlContainer = styled(Card)`
   overflow: visible;
   padding-bottom: 10px;
   transform: translateY(-85px);
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-direction: row;
-    height: 59px;
-    padding: 0px;
-    justify-content: flex-start;
-    padding-left: 50px;
-    transform: translateY(-60px);
-  }
 `
+
+const ToggleText = styled(Text).attrs({
+  className: styles.toggleText,
+})``
 
 const ToggleWrapper = styled.div`
   display: flex;
@@ -62,15 +60,14 @@ const ToggleWrapper = styled.div`
   justify-content: center;
   margin-left: 0px;
   cursor: pointer;
-  ${Text} {
+  ${ToggleText} {
     margin-left: 4px;
-    ${({ theme }) => theme.mediaQueries.md} {
-      margin-left: 8px;
-    }
   }
 `
 
-const ToggleContainer = styled.div<{ size: number }>`
+const ToggleContainer = styled.div.attrs({
+  className: styles.toggleContainer
+})<{ size: number }>`
   position: absolute;
   right: 5%;
   display: flex;
@@ -79,26 +76,11 @@ const ToggleContainer = styled.div<{ size: number }>`
   margin-left: 15px;
   justify-content: space-between;
   transform: translateY(-25px);
-  ${({ theme }) => theme.mediaQueries.md} {
-    position: relative;
-    height: auto;
-    margin-left: 0px;
-    align-items: center;
-    justify-content: space-between;
-    width: 180px;
-    transform: translateY(0px);
-    flex-direction: row;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    width: 250px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    width: 340px;
-  }
 `
 
-const LabelWrapper = styled.div`
+const LabelWrapper = styled.div.attrs({
+  className: styles.labelWrapper
+})`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -107,15 +89,11 @@ const LabelWrapper = styled.div`
   }
 
   margin-left: 30px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-direction: row;
-    margin-left: 0px;
-    align-items: center;
-  }
 `
 
-const ViewControls = styled.div`
+const ViewControls = styled.div.attrs({
+  className: styles.viewControls
+})`
   flex-wrap: wrap;
   justify-content: flex-start;
   display: flex;
@@ -125,16 +103,6 @@ const ViewControls = styled.div`
   > div {
     padding: 8px 0px;
   }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    justify-content: center;
-    align-items: center;
-    width: auto;
-
-    > div {
-      padding: 0;
-    }
-  }
 `
 
 const HeadingContainer = styled.div`
@@ -143,7 +111,9 @@ const HeadingContainer = styled.div`
   margin-right: auto;
 `
 
-const Header = styled.div`
+const Header = styled.div.attrs({
+  className: styles.header
+})`
   position: relative;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -156,18 +126,6 @@ const Header = styled.div`
   background-size: cover;
   height: 250px;
   background-position: center;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    height: 300px;
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-left: 10px;
-    padding-right: 10px;
-    height: 300px;
-  }
 `
 
 const PoolMonkey = styled.div`
@@ -178,7 +136,9 @@ const PoolMonkey = styled.div`
   background-repeat: no-repeat;
 `
 
-const MonkeyWrapper = styled.div`
+const MonkeyWrapper = styled.div.attrs({
+  className: styles.monkeyWrapper
+})`
   position: absolute;
   width: 225px;
   height: 275px;
@@ -187,27 +147,13 @@ const MonkeyWrapper = styled.div`
   bottom: 0px;
   right: 0px;
   animation: 5s ${floatSM} linear infinite;
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding-left: 24px;
-    padding-right: 24px;
-    animation: 10s ${float} linear infinite;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    width: 575px;
-    height: 800px;
-    top: ${({ theme }) => (theme.isDark ? '-120px' : '-80px')};
-    right: 0;
-    animation: 10s ${float} linear infinite;
-  }
 `
 
-const StyledText = styled(Text)`
+const StyledText = styled(Text).attrs({
+  className: styles.styledText
+})`
   font-weight: 700;
   font-size: 12px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 15px !important;
-  }
 `
 
 interface CheckboxProps {
@@ -219,7 +165,9 @@ const StyledCheckbox = styled(Checkbox)<CheckboxProps>`
   width: 21px;
 `
 
-const ContainerLabels = styled.div`
+const ContainerLabels = styled.div.attrs({
+  className: styles.containerLabels
+})`
   background: ${({ theme }) => theme.card.background};
   border-radius: 16px;
   margin-top: 24px;
@@ -230,189 +178,65 @@ const ContainerLabels = styled.div`
   justify-content: center;
   align-items: center;
   transform: translateY(-85px);
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-top: 34px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    transform: translateY(-60px);
-  }
 `
 
-const StyledLabelContainerHot = styled.div`
+const StyledLabelContainerHot = styled.div.attrs({
+  className: styles.styledLabelContainerHot
+})`
   cursor: pointer;
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 35px;
-    margin-right: 35px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    position: absolute;
-    top: 6px;
-    left: 38px;
-    margin: 0px;
-  }
 `
 
-const StyledLabelContainerLP = styled.div`
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 35px;
-    margin-right: 35px;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    position: absolute;
-    top: 6px;
-    left: 169px;
-    margin: 0px;
-  }
-`
+const StyledLabelContainerLP = styled.div.attrs({
+  className: styles.styledLabelContainerLP
+})``
 
-const StyledLabelContainerAPR = styled.div`
+const StyledLabelContainerAPR = styled.div.attrs({
+  className: styles.styledLabelContainerAPR
+})`
   cursor: pointer;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 35px;
-    margin-right: 35px;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    position: absolute;
-    top: 6px;
-    left: 365px;
-    margin: 0px;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    left: 409px;
-  }
 `
 
-const StyledLabelContainerLiquidity = styled.div`
+const StyledLabelContainerLiquidity = styled.div.attrs({
+  className: styles.styledLabelContainerLiquidity
+})`
   cursor: pointer;
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 35px;
-    margin-right: 35px;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    position: absolute;
-    top: 6px;
-    left: 500px;
-    margin: 0px;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    left: 610px;
-  }
 `
 
-const StyledLabelContainerEarned = styled.div`
+const StyledLabelContainerEarned = styled.div.attrs({
+  className: styles.styledLabelContainerEarned
+})`
   cursor: pointer;
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 35px;
-    margin-right: 35px;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin: 0px;
-    position: absolute;
-    top: 6px;
-    left: 651px;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    left: 801px;
-  }
 `
 
-const CardContainer = styled.div`
+const CardContainer = styled.div.attrs({
+  className: styles.cardContainer
+})`
   margin-top: 17px;
-
   transform: translateY(-85px);
-  ${({ theme }) => theme.mediaQueries.md} {
-    transform: translateY(-60px);
-  }
 `
 
-const ButtonCheckWrapper = styled.div`
+const ButtonCheckWrapper = styled.div.attrs({
+  className: styles.buttonCheckWrapper
+})`
   justify-content: space-between;
   align-items: center;
   display: flex;
   width: 100%;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: fit-content;
-  }
 `
 
-const StyledHeading = styled(Heading)`
+const StyledHeading = styled(Heading).attrs({
+  className: styles.styledHeading
+})`
   font-size: 32px;
   max-width: 176px !important;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    font-size: 36px;
-    max-width: 240px !important;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 44px;
-    max-width: 400px !important;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    font-size: 60px;
-    max-width: 600px !important;
-  }
 `
 
-const StyledPage = styled(Page)`
+const StyledPage = styled(Page).attrs({
+  className: styles.styledPage
+})`
   padding-left: 5px;
   padding-right: 5px;
   width: 100vw;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
 `
 
 const StyledLabel = styled.div<LabelProps>`
@@ -459,16 +283,14 @@ const StyledTable = styled.div`
   background-color: ${({ theme }) => (theme.isDark ? 'black' : '#faf9fa')};
 `
 
-const Container = styled.div`
+const Container = styled.div.attrs({
+  className: styles.container
+})`
   background: ${({ theme }) => theme.card.background};
   border-radius: 16px;
   margin: 16px 0px;
   position: relative;
-
   transform: translateY(-85px);
-  ${({ theme }) => theme.mediaQueries.md} {
-    transform: translateY(-60px);
-  }
 `
 
 const TableWrapper = styled.div`

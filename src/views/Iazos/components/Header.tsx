@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
+import styles from './lazocomponents.module.css'
 
 const Header: React.FC = () => {
   return (
@@ -10,7 +11,9 @@ const Header: React.FC = () => {
   )
 }
 
-const HeaderWrapper = styled.div`
+const HeaderWrapper = styled.div.attrs(props => ({
+  className: props.theme.isDark ? styles.headerWrapperDark : styles.headerWrapper
+}))`
   position: relative;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -25,18 +28,11 @@ const HeaderWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    background-image: ${(props) =>
-      props.theme.isDark ? 'url(/images/ss-iao-tablet-night.svg)' : 'url(/images/ss-iao-tablet.svg)'};
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    height: 300px;
-    background-image: ${(props) =>
-      props.theme.isDark ? 'url(/images/ss-iao-dark.svg)' : 'url(/images/ss-iao-light.svg)'};
-  }
 `
 
-const HeadingText = styled(Text)`
+const HeadingText = styled(Text).attrs({
+  className: styles.headingText
+})`
   position: absolute;
   text-align: center;
   letter-spacing: 0.05em;
@@ -52,22 +48,6 @@ const HeadingText = styled(Text)`
   letter-spacing: 0.05em;
   top: 40px;
   left: -45px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    top: 80px;
-    margin-right: 525px;
-    width: 585px;
-    height: 80px;
-    font-size: 40px;
-    line-height: 20px;
-  ${({ theme }) => theme.mediaQueries.xl} {
-    top: 80px;
-    margin-right: 525px;
-    width: 585px;
-    height: 80px;
-    font-size: 60px;
-    line-height: 20px;
-    left: 250px;
-  }
 `
 
 export default Header

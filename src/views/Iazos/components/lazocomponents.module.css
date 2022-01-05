@@ -1,0 +1,62 @@
+@value sm, md, xl from "../../../style/breakpoints.module.css";
+
+@media sm {
+  .headerWrapper {
+    background-image: url('/images/ss-iao-tablet.svg');
+  }
+  .headerWrapperDark {
+    background-image: url('/images/ss-iao-tablet-night.svg');
+  }
+  .headingText {
+    top: 80px;
+    margin-right: 525px;
+    width: 585px;
+    height: 80px;
+    font-size: 40px;
+    line-height: 20px;
+  }
+}
+
+@media md {
+  .boldAfterText {
+    font-size: 16px;
+  }
+  .boldAfterTextLarge {
+    font-size: 16px;
+  }
+  .boldAfterTextLarge::after {
+    font-size: 17px;
+  }
+  .heading {
+    font-size: 30px;
+  }
+  .styledText {
+    font-size: 16px;
+  }
+  .styledButton {
+    margin-top: 0px;
+  }
+  .iconText {
+    font-size: 13px;
+  }
+}
+
+@media xl {
+  .headerWrapper {
+    height: 300px;
+    background-image: url('/images/ss-iao-light.svg');
+  }
+  .headerWrapperDark {
+    height: 300px;
+    background-image: url('/images/ss-iao-dark.svg');
+  }
+  .headingText {
+    top: 80px;
+    margin-right: 525px;
+    width: 585px;
+    height: 80px;
+    font-size: 60px;
+    line-height: 20px;
+    left: 250px;
+  }
+}

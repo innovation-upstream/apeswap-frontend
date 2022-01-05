@@ -5,26 +5,24 @@ import { useLocation } from 'react-router'
 import { customMeta, DEFAULT_META } from 'config/constants/meta'
 import { usePriceBananaBusd } from 'state/hooks'
 import Container from './Container'
+import styles from './layout.module.css'
 
 interface SizeProps {
   width?: string
 }
 
-const StyledPage = styled(Container)<SizeProps>`
+const StyledPage = styled(Container).attrs<SizeProps>((props) => {
+  if (props.width === '1130px') return {className: styles.styledPageMax1130}
+  if (props.width === '1200px') return {className: styles.styledPageMax1200}
+  return {className: styles.styledPage}
+})<SizeProps>`
   min-height: calc(100vh - 64px);
   padding-top: 16px;
   padding-bottom: 16px;
   margin-left: auto;
   margin-right: auto;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-top: 24px;
-    padding-bottom: 24px;
-  }
-
   ${({ theme }) => theme.mediaQueries.lg} {
-    padding-top: 32px;
-    padding-bottom: 32px;
     max-width: ${({ width }) => width || '992px'};
   }
 `

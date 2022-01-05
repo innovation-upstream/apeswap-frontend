@@ -1,0 +1,117 @@
+@value xs, sm, md, lg, xl from "../../../style/breakpoints.module.css";
+
+@media screen and (max-width: 350px) {
+  .walcomeWrapper {
+    width: 300px;
+  }
+  .styledFarmStakingCard {
+    width: 300px;
+  }
+  .hotFarmsWrapper {
+    width: 300px;
+  }
+  .farmWrapper {
+    width: 310px;
+  }
+  .pCard {
+    width: 295px;
+    margin-right: 8px;
+  }
+  .coolPoolsWrapper {
+    width: 300px;
+  }
+  .poolWrapper {
+    width: 310px;
+  }
+}
+
+@media xs {
+  .walcomeWrapper {
+    width: 336px;
+    margin-bottom: 20px;
+  }
+  .styledWelcomeCard {
+    margin-bottom: 64px;
+    width: 336px;
+  }
+  .styledImg {
+    margin-top: -55px;
+    max-height: 240px;
+  }
+  .styledHeading {
+    text-align: start;
+  }
+}
+
+@media sm {
+  .iconImage {
+    width: 70px;
+    height: 70px;
+  }
+  .iconQuoteToken {
+    width: 35px;
+    height: 35px;
+  }
+  .iconArrow {
+    width: 10px;
+    height: 10px;
+  }
+  .iconImagePool {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media md {
+  .walcomeWrapper {
+    margin-bottom: 0px;
+  }
+  .styledImg {
+    margin-top: -55px;
+    max-height: 240px;
+  }
+  .styledFarmStakingCard {
+    margin-left: 50px;
+  }
+  .hotFarmsWrapper {
+    width: 718px;
+    height: 203px;
+  }
+  .cardHeaderImage {
+    height: 203px;
+  }
+  .farmWrapper {
+    justify-content: space-between;
+    padding-left: 25px;
+    padding-right: 25px;
+    flex-direction: row;
+    margin-top: 20px;
+  }
+  .pCard {
+    margin-top: 0px;
+  }
+  .coolPoolsWrapper {
+    width: 718px;
+    height: 203px;
+  }
+  .poolWrapper {
+    justify-content: space-between;
+    padding-left: 25px;
+    padding-right: 25px;
+    flex-direction: row;
+    margin-top: 20px;
+  }
+}
+
+@media lg {
+  .styledImg {
+    margin-top: -55px;
+    max-height: 240px;
+  }
+}
+
+@media xl {
+  .styledWelcomeCard {
+    width: 360px;
+  }
+}

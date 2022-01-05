@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
+import styles from './lazopage.module.css'
 
 export const PageWrapper = styled.div`
   display: none;
@@ -19,26 +20,25 @@ export const LaunchPadWrapper = styled.div`
   z-index: 1;
 `
 
-export const StyledHeader = styled(Text)`
+export const StyledHeader = styled(Text).attrs({
+  className: styles.styledHeader
+})`
   font-family: Poppins;
   font-weight: 700;
   font-size: 30px;
   font-style: normal;
   line-height: 52px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 45px;
-    margin-bottom: 20px;
-  }
 `
-export const StyledText = styled(Text)`
+export const StyledText = styled(Text).attrs({
+  className: styles.styledText
+})`
   font-family: Poppins;
   font-size: 12px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 16px;
-  }
 `
 
-export const WarningWrapper = styled.div`
+export const WarningWrapper = styled.div.attrs({
+  className: styles.warningWrapper
+})`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,21 +51,16 @@ export const WarningWrapper = styled.div`
   margin-top: 20px;
   z-index: 0;
   padding: 25px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 796px;
-    padding: 50px;
-  }
 `
 
-export const BeforeSaleWrapper = styled.div`
+export const BeforeSaleWrapper = styled.div.attrs({
+  className: styles.beforeSaleWrapper
+})`
   background: ${(props) => (props.theme.isDark ? ' rgba(51, 51, 51, 1)' : 'rgba(240, 240, 240, 1)')};
   border-radius: 10px;
   width: 300px;
   margin-top: 40px;
   margin-bottom: 40px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 796px;
-  }
 `
 
 export const SpinnerHolder = styled.div`
@@ -79,7 +74,9 @@ export const SpinnerHolder = styled.div`
   margin-left: 20px;
 `
 
-export const IazoCardWrapper = styled.div`
+export const IazoCardWrapper = styled.div.attrs({
+  className: styles.iazoCardWrapper
+})`
   position: relative;
   display: flex;
   flex-direction: row;
@@ -89,20 +86,16 @@ export const IazoCardWrapper = styled.div`
   border-radius: 10px;
   margin-bottom: 12.5px;
   background: ${(props) => (props.theme.isDark ? ' rgba(65, 65, 65, 1)' : 'rgba(161, 101, 82, 1)')};
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 796px;
-  }
 `
-export const CardMonkey = styled.div`
+export const CardMonkey = styled.div.attrs({
+  className: styles.cardMonkey
+})`
   position: absolute;
   height: 110px;
   width: 300px;
   overflow: hidden;
   background: url(images/card-ape.svg) no-repeat 425px 0px;
   opacity: 0.2;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 796px;
-  }
 `
 
 export const TokenHeaderInformationWrapper = styled.div`
@@ -114,39 +107,36 @@ export const TokenHeaderInformationWrapper = styled.div`
   margin-left: 20px;
 `
 
-export const TokenImage = styled.img`
+export const TokenImage = styled.img.attrs({
+  className: styles.tokenImage
+})`
   border-radius: 50%;
   width: 60px;
   height: 60px;
   margin-left: 10px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 71px;
-    height: 71px;
-    margin-left: 25px;
-  }
 `
 
-export const TokenName = styled(Text)`
+export const TokenName = styled(Text).attrs({
+  className: styles.TokenName
+})`
   font-family: Poppins;
   font-weight: 700;
   font-size: 19px;
   padding-left: 2px;
   align-self: flex-start;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 24px;
-  }
 `
 
-export const TokenButtonsWrapper = styled.div`
+export const TokenButtonsWrapper = styled.div.attrs({
+  className: styles.tokenButtonsWrapper
+})`
   display: flex;
   justify-content: space-between;
   width: 200px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 330px;
-  }
 `
 
-export const TokenInfoButton = styled.div<{ opacity: string }>`
+export const TokenInfoButton = styled.div.attrs({
+  className: styles.tokenInfoButton
+})<{ opacity: string }>`
   display: flex;
   align-items: center;
   padding-left: 5px;
@@ -158,9 +148,4 @@ export const TokenInfoButton = styled.div<{ opacity: string }>`
   background-color: rgba(255, 179, 0, ${(props) => props.opacity});
   color: white;
   z-index: 1;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 16px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
 `

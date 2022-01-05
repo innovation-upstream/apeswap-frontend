@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
+import styles from './lazo.module.css'
 
 export const PageWrapper = styled.div`
   display: none;
@@ -26,17 +27,15 @@ export const HeaderWrapper = styled.div`
   flex-direction: column;
 `
 
-export const SettingsWrapper = styled.div`
+export const SettingsWrapper = styled.div.attrs({
+  className: styles.settingsWrapper
+})`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  ${({ theme }) => theme.mediaQueries.md} {
-    height: 60px;
-    margin-top: 40px;
-  }
 `
 
 export const IlosWrapper = styled.div`
@@ -50,7 +49,9 @@ export const IlosWrapper = styled.div`
   justify-content: center;
 `
 
-export const TopNavWrapper = styled.div`
+export const TopNavWrapper = styled.div.attrs({
+  className: styles.topNavWrapper
+})`
   position: relative;
   height: 0px;
   width: 320px;
@@ -59,12 +60,11 @@ export const TopNavWrapper = styled.div`
   align-items: center;
   padding-left: 30px;
   z-index: 0;
-  ${({ theme }) => theme.mediaQueries.lg} {
-    width: 856px;
-  }
 `
 
-export const StyledHeader = styled(Text)`
+export const StyledHeader = styled(Text).attrs({
+  className: styles.styledHeader
+})`
   font-family: Poppins;
   font-size: 30px;
   font-style: normal;
@@ -72,9 +72,6 @@ export const StyledHeader = styled(Text)`
   text-align: center;
   width: 100%;
   font-weight: 700;
-  ${({ theme }) => theme.mediaQueries.lg} {
-    font-size: 45px;
-  }
 `
 
 export const StyledButton = styled.button`

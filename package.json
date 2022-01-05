@@ -4,12 +4,27 @@
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "CI=false craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'"
+    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
+    "ganache": "ganache-cli -q",
+    "snap": "react-snap",
+    "postbuild": "./postbuild.sh"
+  },
+  "reactSnap": {
+    "concurrency": 1,
+    "skipThirdPartyRequests": true,
+    "puppeteerArgs": [
+      "--disable-setuid-sandbox",
+      "--no-sandbox"
+    ],
+    "viewport": {
+      "width": 1440,
+      "height": 1080
+    }
   },
   "husky": {
     "hooks": {
@@ -72,11 +87,16 @@
     "@apeswapfinance/eslint-config-apeswap": "1.0.0",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
+    "@craco/craco": "^6.4.3",
+    "@innovationupstream/eslint-plugin-styled-components": "^0.2.0",
     "@types/jest": "^26.0.19",
     "@types/react-datepicker": "^4.3.2",
     "eslint": "^7.26.0",
+    "ganache-cli": "6.12.2",
     "husky": "^7.0.4",
     "prettier": "^2.1.2",
-    "source-map-explorer": "^2.5.1"
+    "react-snap": "1.10.0",
+    "source-map-explorer": "^2.5.1",
+    "typescript-plugin-css-modules": "^3.4.0"
   }
 }

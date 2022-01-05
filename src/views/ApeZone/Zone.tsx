@@ -7,6 +7,7 @@ import BuyCard from './components/BuyCard'
 import SellCard from './components/SellCard'
 import Iao from './components/IAO/CurrentIao'
 import Description from './components/Description/Description'
+import styles from './apezone.module.css'
 
 const StyledHeroSection = styled.div`
   max-width: 1200px;
@@ -18,25 +19,15 @@ const MarginContainer = styled.div`
   margin: 53px 30px;
 `
 
-const Cards = styled(BaseLayout)`
+const Cards = styled(BaseLayout).attrs({
+  className: styles.cards,
+})`
   align-items: stretch;
   justify-content: stretch;
   margin: 32px 0px;
   & > div {
     grid-column: span 6;
     width: 100%;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    & > div {
-      grid-column: span 8;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    & > div {
-      grid-column: span 6;
-    }
   }
 `
 const PaddedCard = styled(Card)`

@@ -1,0 +1,17 @@
+@value xs, sm, md, lg from "../../style/breakpoints.module.css";
+
+.cards {
+  composes: baseLayout from "../../style/global.module.css";
+}
+
+@media sm {
+  .cards > div {
+    grid-column: span 8;
+  }
+}
+
+@media lg {
+  .cards > div {
+    grid-column: span 6;
+  }
+}

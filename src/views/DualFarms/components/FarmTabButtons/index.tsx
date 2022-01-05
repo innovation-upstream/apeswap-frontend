@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useRouteMatch, Link } from 'react-router-dom'
 import { ButtonMenu, ButtonMenuItem } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
+import styles from '../dualfarmcomponents.module.css'
 
 const FarmTabButtons = () => {
   const { url, isExact } = useRouteMatch()
@@ -24,31 +25,9 @@ const FarmTabButtons = () => {
 
 export default FarmTabButtons
 
-const Wrapper = styled.div`
+const Wrapper = styled.div.attrs({
+  className: styles.farmTabButtons
+})`
   margin-right: 10px;
   margin-left: 30px;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 64px;
-    margin-right: 44px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 54px;
-    margin-right: 34px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 84px;
-    margin-right: 74px;
-  }
 `

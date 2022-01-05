@@ -12,6 +12,7 @@
     "jest": true
   },
   "extends": "@apeswapfinance/eslint-config-apeswap",
+  "plugins": ["@innovationupstream/styled-components"],
   "rules": {
     "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
     "no-plusplus": 0,
@@ -27,7 +28,9 @@
     "radix": 0,
     "import/no-extraneous-dependencies": 0,
     "react/require-default-props": 0, 
-    "react/no-unused-prop-types": 0
+    "react/no-unused-prop-types": 0,
+    "@innovationupstream/styled-components/no-media-query": 1,
+    "@innovationupstream/styled-components/no-expression": 1
     // End temporary rules
   }
 }

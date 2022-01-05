@@ -34,12 +34,12 @@ export const NETWORK_INFO_LINK = {
 
 // Network RPC nodes
 export const NETWORK_RPC = {
-  [CHAIN_ID.BSC]: [
-    'https://bsc-dataseed1.ninicoin.io',
-    'https://bsc-dataseed1.defibit.io',
-    'https://bsc-dataseed.binance.org/',
+  [CHAIN_ID.BSC]: getBSCNetworkRPC(),
+  [CHAIN_ID.BSC_TESTNET]: [
+    'https://data-seed-prebsc-1-s1.binance.org:8545/',
+    'https://data-seed-prebsc-2-s1.binance.org:8545/',
+    'https://data-seed-prebsc-1-s2.binance.org:8545/',
   ],
-  [CHAIN_ID.BSC_TESTNET]: ['https://data-seed-prebsc-2-s3.binance.org:8545/'],
   [CHAIN_ID.MATIC]: ['https://polygon-rpc.com/'],
   [CHAIN_ID.MATIC_TESTNET]: ['https://matic-mumbai.chainstacklabs.com'],
 }
@@ -98,4 +98,14 @@ export const CHAIN_PARAMS = {
     rpcUrls: NETWORK_RPC[CHAIN_ID.MATIC_TESTNET],
     blockExplorerUrls: [BLOCK_EXPLORER[CHAIN_ID.MATIC_TESTNET]],
   },
+}
+
+export function getBSCNetworkRPC() {
+  // Check if we are generating snapshots
+  const rpc =
+    navigator.userAgent === 'ReactSnap'
+      ? ['http://127.0.0.1:8545']
+      : ['https://bsc-dataseed1.ninicoin.io', 'https://bsc-dataseed1.defibit.io', 'https://bsc-dataseed.binance.org/']
+
+  return rpc
 }
