@@ -9,6 +9,7 @@ import getRpcUrl from 'utils/getRpcUrl'
  */
 
 const activeWeb3Instance = {}
+const activeContracts = {}
 
 const getWeb3 = (chainId: number) => {
   if (!activeWeb3Instance[chainId]) {
@@ -20,8 +21,13 @@ const getWeb3 = (chainId: number) => {
 }
 
 const getContract = (abi: any, address: string, chainId: number, contractOptions?: ContractOptions) => {
-  const web3 = getWeb3(chainId)
-  return new web3.eth.Contract(abi as unknown as AbiItem, address, contractOptions)
+  if (!activeContracts[chainId] || !activeContracts[chainId][address]) {
+    const web3 = getWeb3(chainId)
+    const contract = new web3.eth.Contract(abi as unknown as AbiItem, address, contractOptions)
+    activeContracts[chainId] = {[address]: contract}
+    return contract
+  }
+  return activeContracts[chainId][address]
 }
 
 export { getWeb3, getContract }

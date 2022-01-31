@@ -12,12 +12,17 @@ import useRefresh from './useRefresh'
 
 const useAllEarnings = () => {
   const [balances, setBalance] = useState([])
+  const [multicallContract, setMulticallContract] = useState()
   const { account, chainId } = useWeb3React()
   const { fastRefresh } = useRefresh()
   const masterChefAddress = getMasterChefAddress(chainId)
   const multicallAddress = getMulticallAddress(chainId)
-  const multicallContract = getContract(multicallABI, multicallAddress, chainId)
   const miniChefAddress = getMiniChefAddress(chainId)
+
+  useEffect(() => {
+    const contract = getContract(multicallABI, multicallAddress, chainId)
+    setMulticallContract(contract)
+  }, [chainId, multicallAddress])
 
   useEffect(() => {
     const fetchAllBSCBalances = async () => {
