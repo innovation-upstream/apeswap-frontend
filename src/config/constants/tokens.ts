@@ -905,6 +905,42 @@ const tokens = {
     },
     decimals: 18,
   },
+  bcmc: {
+    symbol: 'BCMC',
+    address: {
+      56: '0xc10358f062663448a3489fC258139944534592ac',
+    },
+    decimals: 18,
+  },
+  ari: {
+    symbol: 'ARI',
+    address: {
+      56: '0xc80A0A55CAF6a7bfB4Ee22f9380C4077312c4a35',
+    },
+    decimals: 18,
+  },
+  nfty2: {
+    symbol: 'NFTY ',
+    address: {
+      56: '0x8623e66Bea0DCe41B6d47f9C44e806A115baBae0',
+      137: '0x8623e66bea0dce41b6d47f9c44e806a115babae0',
+    },
+    decimals: 18,
+  },
+  kom: {
+    symbol: 'KOM',
+    address: {
+      137: '0xC004e2318722EA2b15499D6375905d75Ee5390B8',
+    },
+    decimals: 8,
+  },
+  lunr: {
+    symbol: 'LUNR',
+    address: {
+      56: '0x37807D4fbEB84124347B8899Dd99616090D3e304',
+    },
+    decimals: 4,
+  },
 }
 
 export default tokens

@@ -1,3 +1,5 @@
+import { ThunkAction } from 'redux-thunk'
+import { AnyAction } from '@reduxjs/toolkit'
 import { Toast } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import {
@@ -10,6 +12,8 @@ import {
   VaultConfig,
   DualFarmConfig,
 } from 'config/constants/types'
+
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
 export interface Farm extends FarmConfig {
   tokenAmount?: BigNumber
@@ -108,6 +112,11 @@ export interface Profile {
 export interface Network {
   chainId: number
   chainIdFromUrl?: boolean
+}
+
+export interface BlockState {
+  currentBlock: number
+  initialBlock: number
 }
 
 export interface Stats {
@@ -334,6 +343,14 @@ export interface TokenPrices {
   decimals: number
 }
 
+export interface LpTokenPrices {
+  symbol: string
+  pid: number
+  address: Address
+  price: number
+  decimals: number
+}
+
 // Slices states
 
 export interface ToastsState {
@@ -392,6 +409,11 @@ export interface TokenPricesState {
   isLoading: boolean
   data: TokenPrices[]
 }
+export interface LpTokenPricesState {
+  isInitialized: boolean
+  isLoading: boolean
+  data: LpTokenPrices[]
+}
 
 export interface StatsOverallState {
   isInitialized: boolean
@@ -428,6 +450,7 @@ export interface TeamsState {
 
 export interface State {
   farms: FarmsState
+  block: BlockState
   toasts: ToastsState
   pools: PoolsState
   profile: ProfileState
@@ -437,6 +460,7 @@ export interface State {
   auctions: AuctionsState
   vaults: VaultsState
   tokenPrices: TokenPricesState
+  lpTokenPrices: LpTokenPricesState
   iazos: IazosState
   network: NetworkState
   nfaStakingPools: NfaStakingPoolsState
