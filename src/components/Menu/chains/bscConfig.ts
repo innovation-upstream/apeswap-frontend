@@ -1,86 +1,86 @@
-import { MenuEntry } from '@apeswapfinance/uikit'
+import { MenuItem, icons } from '@isioma/uikit'
 import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
 import { HOME, EXCHANGE, MORE_INFO } from '../constants'
 
-const bscConfig: MenuEntry[] = [
+const bscConfig: MenuItem[] = [
   HOME,
   EXCHANGE,
   {
     label: 'Farms',
-    icon: 'FarmIcon',
-    href: '/farms',
+    icon: icons.FARM,
+    path: '/farms',
   },
   {
     label: 'Pools',
-    icon: 'PoolIcon',
-    href: '/pools',
+    icon: icons.POOL,
+    path: '/pools',
   },
   {
     label: 'Vaults',
-    icon: 'Vaults',
-    href: '/vaults',
+    icon: icons.VAULT,
+    path: '/vaults',
   },
   {
     label: 'IAO',
-    icon: 'IfoIcon',
-    items: [
+    icon: icons.ROCKET,
+    subMenu: [
       {
         label: 'Official',
-        href: '/iao',
+        path: '/iao',
       },
       {
         label: 'Self-Serve',
-        href: '/ss-iao',
+        path: '/ss-iao',
       },
     ],
   },
   {
     label: 'NFA',
-    icon: 'apeNFTIcon',
-    items: [
+    icon: icons.NFA,
+    subMenu: [
       {
         label: 'Collection',
-        href: '/nft',
+        path: '/nft',
       },
       {
         label: 'Auction',
-        href: '/auction',
+        path: '/auction',
       },
       {
         label: 'Staking',
-        href: '/staking',
+        path: '/staking',
       },
     ],
   },
   {
     label: 'GNANA',
-    icon: 'ApeZone',
-    href: '/gnana',
+    icon: icons.GNANA,
+    path: '/gnana',
   },
   {
-    label: 'Lending',
-    icon: 'LendingIcon',
-    href: 'https://lending.apeswap.finance/markets',
+    label: 'Burn',
+    icon: icons.VAULT,
+    path: '/burn',
   },
   {
     label: 'Info',
-    icon: 'InfoIcon',
-    items: [
+    icon: icons.INFO,
+    subMenu: [
       {
         label: 'Overview',
-        href: NETWORK_INFO_LINK[CHAIN_ID.BSC],
+        path: NETWORK_INFO_LINK[CHAIN_ID.BSC],
       },
       {
         label: 'Tokens',
-        href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/tokens`,
+        path: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/tokens`,
       },
       {
         label: 'Pairs',
-        href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/pairs`,
+        path: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/pairs`,
       },
       {
         label: 'Accounts',
-        href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/accounts`,
+        path: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/accounts`,
       },
     ],
   },

@@ -8,26 +8,30 @@ import { ThemeContextProvider } from 'contexts/ThemeContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
 import NftProvider from 'views/Nft/contexts/NftProvider'
-import { NetworkContextName } from 'config/constants'
-
-const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
+import { ThemeProvider } from 'theme-ui'
+import { Apeswap, MenuContextProvider } from '@isioma/uikit'
+import { Web3ProviderNetworkSSR } from './components/NoSSR'
 
 const Providers: React.FC = ({ children }) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
-      <Web3ProviderNetwork getLibrary={getLibrary}>
+      <Web3ProviderNetworkSSR getLibrary={getLibrary}>
         <Provider store={store}>
           <HelmetProvider>
             <ThemeContextProvider>
-              <NftProvider>
-                <RefreshContextProvider>
-                  <ModalProvider>{children}</ModalProvider>
-                </RefreshContextProvider>
-              </NftProvider>
+              <ThemeProvider theme={Apeswap}>
+                <NftProvider>
+                  <RefreshContextProvider>
+                    <ModalProvider>
+                      <MenuContextProvider>{children}</MenuContextProvider>
+                    </ModalProvider>
+                  </RefreshContextProvider>
+                </NftProvider>
+              </ThemeProvider>
             </ThemeContextProvider>
           </HelmetProvider>
         </Provider>
-      </Web3ProviderNetwork>
+      </Web3ProviderNetworkSSR>
     </Web3ReactProvider>
   )
 }

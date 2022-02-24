@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { Helmet } from 'react-helmet-async'
-import { useLocation } from 'react-router'
 import { customMeta, DEFAULT_META } from 'config/constants/meta'
 import { usePriceBananaBusd } from 'state/hooks'
+import Head from 'next/head'
+import { MenuContext } from '@isioma/uikit'
+import { Box } from 'theme-ui'
 import Container from './Container'
 
 interface SizeProps {
@@ -30,7 +32,7 @@ const StyledPage = styled(Container)<SizeProps>`
 `
 
 const PageMeta = () => {
-  const { pathname } = useLocation()
+  const { pathname } = useRouter()
   const bananaPriceUsd = usePriceBananaBusd()
   const bananaPriceUsdDisplay = bananaPriceUsd.toNumber()
     ? `$${bananaPriceUsd.toNumber().toLocaleString(undefined, {
@@ -43,20 +45,28 @@ const PageMeta = () => {
   const pageTitle = bananaPriceUsdDisplay ? [bananaPriceUsdDisplay, title].join(' - ') : title
 
   return (
-    <Helmet>
+    <Head>
       <title>{pageTitle}</title>
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
-    </Helmet>
+    </Head>
   )
 }
 
 const Page: React.FC<SizeProps> = ({ children, ...props }) => {
+  const { collapse } = useContext(MenuContext)
+
   return (
     <>
       <PageMeta />
-      <StyledPage {...props}>{children}</StyledPage>
+      <Box
+        sx={{
+          marginLeft: collapse ? [0, 0, '56px'] : '240px',
+        }}
+      >
+        <StyledPage {...props}>{children}</StyledPage>
+      </Box>
     </>
   )
 }

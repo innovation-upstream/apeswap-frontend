@@ -1,20 +1,17 @@
 import React from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { MarketingModal, useWalletModal } from '@apeswapfinance/uikit'
 import useAuth from 'hooks/useAuth'
 
 const MarketingModalCheck = () => {
-  const location = useLocation()
-  const history = useHistory()
+  const { push, query, pathname } = useRouter()
   const { login, logout } = useAuth()
 
   const { onPresentConnectModal } = useWalletModal(login, logout)
-  const correctDisplayRoute = location.search.includes('modal=1')
+  const correctDisplayRoute = query?.modal === '1'
 
   const onDismiss = () => {
-    history.push({
-      pathname: location.pathname,
-    })
+    push({ pathname })
   }
 
   const openFarmsLink = () => {

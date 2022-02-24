@@ -1,59 +1,62 @@
-export const HOME = {
+import { MenuItem, icons } from '@isioma/uikit'
+import { BASE_EXCHANGE_URL, BASE_LIQUIDITY_POOL_URL } from 'config'
+
+export const HOME: MenuItem = {
   label: 'Home',
-  icon: 'HomeIcon',
-  href: '/',
+  icon: icons.HOME,
+  path: '/',
 }
 
-export const EXCHANGE = {
+export const EXCHANGE: MenuItem = {
   label: 'Trade',
-  icon: 'TradeIcon',
-  items: [
+  icon: icons.TRADE,
+  subMenu: [
     {
       label: 'Exchange',
-      href: '/swap',
+      path: BASE_EXCHANGE_URL,
     },
     {
       label: 'Liquidity',
-      href: '/pool',
+      path: BASE_LIQUIDITY_POOL_URL,
     },
   ],
 }
 
-export const MORE_INFO = {
+export const MORE_INFO: MenuItem = {
   label: 'More',
-  icon: 'MoreIcon',
-  items: [
+  icon: icons.MORE,
+  subMenu: [
     {
       label: 'Governance',
-      href: 'https://vote.apeswap.finance',
+      path: 'https://vote.apeswap.finance',
     },
     {
       label: 'Github',
-      href: 'https://github.com/apeswapfinance',
+      path: 'https://github.com/apeswapfinance',
     },
     {
       label: 'Docs',
-      href: 'https://apeswap.gitbook.io/apeswap-finance/',
+      path: 'https://apeswap.gitbook.io/apeswap-finance/',
     },
     {
       label: 'Blog',
-      href: 'https://ape-swap.medium.com/',
+      path: 'https://ape-swap.medium.com/',
     },
     {
       label: 'Partnership Application',
-      href: 'https://docs.google.com/forms/d/e/1FAIpQLSdiC4jpKQAYD4iALGrm9ErmDIs1xtsOENu9GsvgdczVwe_uOw/viewform?usp=sf_link',
+      path: 'https://docs.google.com/forms/d/e/1FAIpQLSdiC4jpKQAYD4iALGrm9ErmDIs1xtsOENu9GsvgdczVwe_uOw/viewform?usp=sf_link',
     },
     {
       label: 'ApeTV',
-      href: 'https://anchor.fm/apetv',
+      path: 'https://anchor.fm/apetv',
     },
     {
       label: 'ApeLabs',
-      href: 'https://www.apelabs.education',
+      path: 'https://www.apelabs.education',
     },
     {
       label: 'Bug Bounty Program',
-      href: 'https://apeswap.gitbook.io/apeswap-finance/security/bug-bounty-program',
+      path: 'https://apeswap.gitbook.io/apeswap-finance/security/bug-bounty-program',
     },
   ],
 }

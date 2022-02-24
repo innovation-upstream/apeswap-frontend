@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
-const VISIBILITY_STATE_SUPPORTED = 'visibilityState' in document
+const isBrowser = typeof window === 'object'
+const VISIBILITY_STATE_SUPPORTED = isBrowser ? 'visibilityState' in document : undefined
 
 function isWindowVisible() {
   if (!VISIBILITY_STATE_SUPPORTED) {

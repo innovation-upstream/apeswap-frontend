@@ -4,13 +4,17 @@ import { CHAIN_ID, NETWORK_LABEL } from 'config/constants/chains'
 import { Network, NetworkState } from 'state/types'
 import fetchAndUpdateNetwork from './fetchNetwork'
 
+const isBrowser = typeof window === 'object'
+
 const chainIdSafeCheck = (): { chainId: number; chainIdFromUrl: boolean } => {
-  const { search } = window.location
+  const search = isBrowser ? window.location.search : ''
   const params = new URLSearchParams(search)
   const chainStr = params.get('chain')
-  const removeChainParamUrl = window.location.href.split('?chain')[0]
-  window.history.pushState({}, document.title, removeChainParamUrl)
-  const localStorageChain = parseInt(window.localStorage.getItem('chainIdStatus'))
+  const removeChainParamUrl = isBrowser ? window.location.href.split('?chain')[0] : ''
+  if (isBrowser) window.history.pushState({}, document.title, removeChainParamUrl)
+  const localStorageChain = parseInt(
+    isBrowser ? window.localStorage.getItem('chainIdStatus') || CHAIN_ID.BSC.toString() : CHAIN_ID.BSC.toString(),
+  )
   if (chainStr) {
     if (chainStr.toLowerCase() === NETWORK_LABEL[CHAIN_ID.BSC].toLowerCase()) {
       return { chainId: CHAIN_ID.BSC, chainIdFromUrl: true }

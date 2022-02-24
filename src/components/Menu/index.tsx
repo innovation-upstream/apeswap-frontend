@@ -1,16 +1,18 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
-import { Menu as UikitMenu } from '@apeswapfinance/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Menu as MenuV2, MenuContextProvider, MenuBody, MenuFooter, MenuLink, Text, Icon } from '@isioma/uikit'
+import { useWeb3React } from '@web3-react/core'
 import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
 import useTheme from 'hooks/useTheme'
-import { useProfile, useTokenPrices } from 'state/hooks'
+import { useNetworkChainId, useProfile, useTokenPrices } from 'state/hooks'
 import useSelectNetwork from 'hooks/useSelectNetwork'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 
 const Menu = (props) => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useWeb3React()
+  const chainId = useNetworkChainId()
   const { login, logout } = useAuth()
   const { switchNetwork } = useSelectNetwork()
   const { isDark, toggleTheme } = useTheme()
@@ -28,22 +30,28 @@ const Menu = (props) => {
   }
 
   return (
-    <UikitMenu
-      account={account}
-      login={login}
-      logout={logout}
-      isDark={isDark}
-      toggleTheme={toggleTheme}
-      bananaPriceUsd={bananaPriceUsd}
-      links={currentMenu()}
-      chainId={chainId}
-      switchNetwork={switchNetwork}
-      profile={{
-        image: profile ? profile?.rarestNft.image : null,
-        noProfileLink: '/nft',
-      }}
-      {...props}
-    />
+    <MenuContextProvider>
+      <MenuV2>
+        <MenuBody>
+          {currentMenu().map((item, index) => (
+            <MenuLink item={item} key={`${item}-${index + 1}`} />
+          ))}
+        </MenuBody>
+
+        <MenuFooter>
+          <div sx={{ display: 'flex', justifyContent: 'space-between', ml: '19px', mr: '26px', mb: '70px' }}>
+            <div sx={{ display: 'flex', alignItems: 'center', columnGap: '8px' }}>
+              <Icon icon="ellipse" />
+              <Text sx={{ color: 'brown', fontSize: '14px' }} weight="bold">
+                $3.747
+              </Text>
+            </div>
+            <Icon icon="ellipse" />
+            <Icon icon="ellipse" />
+          </div>
+        </MenuFooter>
+      </MenuV2>
+    </MenuContextProvider>
   )
 }
 
