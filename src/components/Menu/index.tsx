@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Menu as MenuV2, MenuContextProvider, MenuBody, MenuFooter, MenuLink, Text, Icon } from '@isioma/uikit'
+import { Menu as MenuV2, MenuBody, MenuFooter, MenuLink, Text, Icon } from '@isioma/uikit'
 import { useWeb3React } from '@web3-react/core'
 import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
@@ -30,28 +30,26 @@ const Menu = (props) => {
   }
 
   return (
-    <MenuContextProvider>
-      <MenuV2>
-        <MenuBody>
-          {currentMenu().map((item, index) => (
-            <MenuLink item={item} key={`${item}-${index + 1}`} />
-          ))}
-        </MenuBody>
+    <MenuV2>
+      <MenuBody>
+        {currentMenu().map((item, index) => (
+          <MenuLink item={item} key={`${item}-${index + 1}`} />
+        ))}
+      </MenuBody>
 
-        <MenuFooter>
-          <div sx={{ display: 'flex', justifyContent: 'space-between', ml: '19px', mr: '26px', mb: '70px' }}>
-            <div sx={{ display: 'flex', alignItems: 'center', columnGap: '8px' }}>
-              <Icon icon="ellipse" />
-              <Text sx={{ color: 'brown', fontSize: '14px' }} weight="bold">
-                $3.747
-              </Text>
-            </div>
+      <MenuFooter>
+        <div sx={{ display: 'flex', justifyContent: 'space-between', ml: '19px', mr: '26px', mb: '70px' }}>
+          <div sx={{ display: 'flex', alignItems: 'center', columnGap: '8px' }}>
             <Icon icon="ellipse" />
-            <Icon icon="ellipse" />
+            <Text sx={{ color: 'brown', fontSize: '14px' }} weight="bold">
+              $3.747
+            </Text>
           </div>
-        </MenuFooter>
-      </MenuV2>
-    </MenuContextProvider>
+          <Icon icon="ellipse" />
+          <Icon icon="ellipse" />
+        </div>
+      </MenuFooter>
+    </MenuV2>
   )
 }
 
