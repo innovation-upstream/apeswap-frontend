@@ -3,7 +3,8 @@ import Page from 'components/layout/Page'
 import { useGetNfaSales } from 'hooks/api'
 import styled from 'styled-components'
 import { Text, Button } from '@apeswapfinance/uikit'
-import { Link, Redirect, useParams } from 'react-router-dom'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import nfts from 'config/constants/nfts'
 import useI18n from 'hooks/useI18n'
 import NfaAttributes from './components/NfaAttributes'
@@ -66,20 +67,19 @@ const BoxShadow = styled.div`
   align-items: center;
 `
 
-const Nfa = () => {
-  const { id: idStr }: { id: string } = useParams()
-  const id = Number(idStr)
+const Nfa: React.FC<{ nft: number }> = ({ nft: id }) => {
+  const router = useRouter()
   const TranslateString = useI18n()
   const nfa = nfts.find((nft) => nft.index === id)
   const sales = useGetNfaSales(id)
 
   if (!nfa) {
-    return <Redirect to="/404" />
+    router.push('/404')
   }
 
   return (
     <Page>
-      <Link to="/nft">
+      <Link href="/nft">
         <Button size="sm" style={{ marginTop: '25px' }}>
           {TranslateString(999, 'Back')}
         </Button>
