@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '@apeswapfinance/uikit'
 import useTheme from 'hooks/useTheme'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 
 import {
   FeatureBox,
@@ -30,10 +30,10 @@ const Icon = ({ name }: Props) => {
 }
 
 const HowItWorks = () => {
-  const history = useHistory()
+  const router = useRouter()
 
   const handleDoOwnClick = () => {
-    history.push('/ss-iao')
+    router.push('/ss-iao')
   }
 
   return (

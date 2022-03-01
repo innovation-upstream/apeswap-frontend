@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { Text } from '@apeswapfinance/uikit'
 
 const TopNav: React.FC = () => {
   return (
     <TopNavWrapper>
       <TopNavMonkey />
-      <Link to="/ss-iao">
+      <Link href="/ss-iao">
         <BackWrapper>
           <BackArrow src="/images/left-arrow.svg" />
           <StyledText color="white">Back to Self-Serve Launchpad</StyledText>
