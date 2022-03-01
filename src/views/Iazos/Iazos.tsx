@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { useFetchIazos, useIazos } from 'state/hooks'
 import useCurrentTime from 'hooks/useTimer'
 import TextInput from 'components/TextInput'
@@ -81,7 +81,7 @@ const Iazos: React.FC = () => {
           <TopNavWrapper />
           <HeaderWrapper>
             <StyledHeader>Self-Serve Launchpad</StyledHeader>
-            <Link to="/ss-iao/create">
+            <Link href="/ss-iao/create" passHref>
               <StyledButton> CREATE </StyledButton>
             </Link>
           </HeaderWrapper>
@@ -107,7 +107,7 @@ const Iazos: React.FC = () => {
             {isInitialized || iazos ? (
               renderIazos()?.map((iazo) => {
                 return (
-                  <Link to={`/ss-iao/${iazo.iazoContractAddress}`} key={iazo.iazoContractAddress}>
+                  <Link href={`/ss-iao/${iazo.iazoContractAddress}`} key={iazo.iazoContractAddress}>
                     <IazoCard iazo={iazo} key={iazo.iazoContractAddress} />
                   </Link>
                 )
