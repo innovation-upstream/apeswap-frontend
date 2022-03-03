@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { customMeta, DEFAULT_META } from 'config/constants/meta'
 import { usePriceBananaBusd } from 'state/hooks'
 import Head from 'next/head'
-import { MenuContext } from '@isioma/uikit'
+import { MenuContext } from '@innovationupstream/apeswap-uikit'
 import { Box } from 'theme-ui'
 import Container from './Container'
 

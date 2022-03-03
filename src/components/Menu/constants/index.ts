@@ -1,13 +1,13 @@
-import { MenuItem, icons } from '@isioma/uikit'
+import { icons } from '@innovationupstream/apeswap-uikit'
 import { BASE_EXCHANGE_URL, BASE_LIQUIDITY_POOL_URL } from 'config'
 
-export const HOME: MenuItem = {
+export const HOME = {
   label: 'Home',
   icon: icons.HOME,
   path: '/',
 }
 
-export const EXCHANGE: MenuItem = {
+export const EXCHANGE = {
   label: 'Trade',
   icon: icons.TRADE,
   subMenu: [
@@ -22,7 +22,7 @@ export const EXCHANGE: MenuItem = {
   ],
 }
 
-export const MORE_INFO: MenuItem = {
+export const MORE_INFO = {
   label: 'More',
   icon: icons.MORE,
   subMenu: [

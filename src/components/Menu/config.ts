@@ -1,8 +1,7 @@
-import { MenuEntry } from '@apeswapfinance/uikit'
-import { MenuItem, icons } from '@isioma/uikit'
+import { icons } from '@innovationupstream/apeswap-uikit'
 import { BASE_EXCHANGE_URL, BASE_LIQUIDITY_POOL_URL } from 'config'
 
-const config: MenuItem[] = [
+const config = [
   {
     label: 'Home',
     icon: icons.HOME,

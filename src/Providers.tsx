@@ -9,7 +9,7 @@ import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
 import NftProvider from 'views/Nft/contexts/NftProvider'
 import { ThemeProvider } from 'theme-ui'
-import { Apeswap, MenuContextProvider } from '@isioma/uikit'
+import { Apeswap, MenuContextProvider } from '@innovationupstream/apeswap-uikit'
 import { Web3ProviderNetworkSSR } from './components/NoSSR'
 
 const Providers: React.FC = ({ children }) => {

@@ -1,8 +1,8 @@
-import { MenuItem, icons } from '@isioma/uikit'
+import { icons } from '@innovationupstream/apeswap-uikit'
 import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
 import { HOME, EXCHANGE, MORE_INFO } from '../constants'
 
-const bscConfig: MenuItem[] = [
+const bscConfig = [
   HOME,
   EXCHANGE,
   {

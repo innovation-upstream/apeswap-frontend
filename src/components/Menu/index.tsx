@@ -1,6 +1,17 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /** @jsxImportSource theme-ui */
-import React from 'react'
-import { Menu as MenuV2, MenuBody, MenuFooter, MenuLink, Text, Icon } from '@isioma/uikit'
+import React, { useEffect, useContext } from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import {
+  Menu as MenuV2,
+  MenuBody,
+  MenuItem,
+  MenuFooter,
+  MenuContext,
+  Icon,
+  Text,
+} from '@innovationupstream/apeswap-uikit'
 import { useWeb3React } from '@web3-react/core'
 import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
@@ -11,6 +22,8 @@ import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 
 const Menu = (props) => {
+  const router = useRouter()
+  const { setActive } = useContext(MenuContext)
   const { account } = useWeb3React()
   const chainId = useNetworkChainId()
   const { login, logout } = useAuth()
@@ -29,11 +42,55 @@ const Menu = (props) => {
     return bscConfig
   }
 
+  useEffect(() => {
+    if (!router) return
+    router.events.on('routeChangeComplete', (url) => {
+      setActive?.(url)
+    })
+  }, [router, setActive])
+
+  const NextLink: React.FC<{ path: string }> = ({ children, path }) => (
+    <Link href={path} passHref>
+      <a
+        sx={{
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            left: 0,
+            top: 0,
+          },
+        }}
+      >
+        <Text
+          sx={{
+            color: 'text',
+            paddingLeft: '10px',
+            fontWeight: '400',
+          }}
+        >
+          {children}
+        </Text>
+      </a>
+    </Link>
+  )
+
   return (
     <MenuV2>
       <MenuBody>
-        {currentMenu().map((item, index) => (
-          <MenuLink item={item} key={`${item}-${index + 1}`} />
+        {currentMenu().map((item: any, index) => (
+          <MenuItem hasSubmenu={!!item.subMenu} {...item} key={`${item}-${index + 1}`}>
+            {!item.subMenu ? (
+              <NextLink path={item.path}>{item.label}</NextLink>
+            ) : (
+              item.subMenu?.map((link) => (
+                <MenuItem isSubmenu {...link}>
+                  <NextLink path={link.path}>{link.label}</NextLink>
+                </MenuItem>
+              ))
+            )}
+          </MenuItem>
         ))}
       </MenuBody>
 

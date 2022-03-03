@@ -1869,6 +1869,24 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@innovationupstream/apeswap-uikit@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@innovationupstream/apeswap-uikit/-/apeswap-uikit-1.0.4.tgz#e0485ff9189d63ec85cf39e1838bce1c384e9220"
+  integrity sha512-Bg6mco8ELQuR/OoBr5a6cOs1tyyVxRNa7Q/zap/sYn1Szc3kMe/B1qnsZuSVKbnTIegp6O6lhhvj+YjrRISbqQ==
+  dependencies:
+    "@emotion/react" "^11.7.1"
+    "@emotion/styled" "^11.8.1"
+    "@mdx-js/react" "1.6.22"
+    "@types/lodash" "^4.14.162"
+    "@types/styled-system" "^5.1.10"
+    framer-motion "^4.1.17"
+    lodash "^4.17.20"
+    lottie-react "^2.2.1"
+    react-transition-group "^4.4.1"
+    styled-system "^5.1.5"
+    theme-ui "^0.13.1"
+    yalc "^1.0.0-pre.53"
+
 "@isioma/uikit@^1.0.8":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@isioma/uikit/-/uikit-1.0.8.tgz#04cce24356bf3e9c8d32082fae81adc172efc44e"
