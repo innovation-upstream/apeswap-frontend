@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /** @jsxImportSource theme-ui */
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { NavLink, Flex, Box } from 'theme-ui'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   Menu as MenuV2,
   MenuBody,
@@ -20,6 +22,133 @@ import { useNetworkChainId, useProfile, useTokenPrices } from 'state/hooks'
 import useSelectNetwork from 'hooks/useSelectNetwork'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
+
+const menuItemContainer = {
+  alignItems: 'center',
+  height: '48px',
+  pl: '17px',
+  pr: '20px',
+  flexShrink: 0,
+  boxShadow: 'none',
+  fontSize: '16px',
+  '&:hover': {
+    cursor: 'pointer',
+    backgroundColor: 'white4',
+  },
+} as any
+
+const linkStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  width: '100%',
+  height: '100%',
+  justifyContent: 'space-between',
+}
+
+const NextLink: React.FC<{ path: string }> = ({ children, path }) => (
+  <Link href={path} passHref>
+    <a>
+      <Text
+        sx={{
+          color: 'text',
+          paddingLeft: '10px',
+          fontWeight: '400',
+        }}
+      >
+        {children}
+      </Text>
+    </a>
+  </Link>
+)
+
+const MenuComponent = ({ icon, label, path }) => {
+  const { active } = useContext(MenuContext)
+
+  return (
+    <Flex
+      sx={{
+        ...menuItemContainer,
+        boxShadow: path === active ? 'rgb(175, 110, 90) 4px 0px 0px inset' : '',
+      }}
+    >
+      <Flex sx={linkStyle}>
+        <Flex sx={{ alignItems: 'center' }}>
+          <Flex sx={{ flexShrink: 0 }}>{typeof icon === 'string' ? <Icon width={24} icon={icon as any} /> : icon}</Flex>
+          <Flex sx={{ flexShrink: 0, marginLeft: '10px' }}>
+            <NextLink path={path}>{label}</NextLink>
+          </Flex>
+        </Flex>
+      </Flex>
+    </Flex>
+  )
+}
+
+const Submenu = ({ icon, label, items }) => {
+  const [open, setOpen] = useState(false)
+  const { active, collapse } = useContext(MenuContext)
+
+  return (
+    <>
+      <Flex
+        onClick={() => setOpen((prev) => !prev)}
+        sx={{
+          ...menuItemContainer,
+        }}
+      >
+        <Flex sx={linkStyle}>
+          <Flex sx={{ alignItems: 'center' }}>
+            <Flex sx={{ flexShrink: 0 }}>
+              {typeof icon === 'string' ? <Icon width={24} icon={icon as any} /> : icon}
+            </Flex>
+            <Flex sx={{ flexShrink: 0, marginLeft: '10px' }}>
+              <Text
+                sx={{
+                  color: 'text',
+                  paddingLeft: '10px',
+                  fontWeight: '400',
+                }}
+              >
+                {label}
+              </Text>
+            </Flex>
+          </Flex>
+          <Box sx={{ display: collapse ? 'none' : null }}>
+            <Icon icon="caret" direction={open ? 'up' : 'down'} />
+          </Box>
+        </Flex>
+      </Flex>
+      <AnimatePresence>
+        {!collapse && open && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: 'fit-content' }}
+            transition={{ height: { duration: 0.3 } }}
+            exit={{ height: 0 }}
+            sx={{ overflow: 'hidden' }}
+          >
+            {items?.map((link, index) => (
+              <Flex
+                sx={{
+                  ...menuItemContainer,
+                  position: 'relative',
+                  boxShadow: link.path === active ? 'rgb(175, 110, 90) 4px 0px 0px inset' : '',
+                }}
+              >
+                <Flex key={`${link.label}-${index + 1}`} sx={linkStyle}>
+                  <Flex sx={{ alignItems: 'center' }}>
+                    <Flex sx={{ flexShrink: 0, marginLeft: '10px' }}>
+                      <NextLink path={link.path}>{link.label}</NextLink>
+                    </Flex>
+                  </Flex>
+                </Flex>
+              </Flex>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
 
 const Menu = (props) => {
   const router = useRouter()
@@ -49,46 +178,15 @@ const Menu = (props) => {
     })
   }, [router, setActive])
 
-  const NextLink: React.FC<{ path: string }> = ({ children, path }) => (
-    <Link href={path} passHref>
-      <a
-        sx={{
-          '&::after': {
-            content: '""',
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            left: 0,
-            top: 0,
-          },
-        }}
-      >
-        <Text
-          sx={{
-            color: 'text',
-            paddingLeft: '10px',
-            fontWeight: '400',
-          }}
-        >
-          {children}
-        </Text>
-      </a>
-    </Link>
-  )
-
   return (
     <MenuV2>
       <MenuBody>
         {currentMenu().map((item: any, index) => (
-          <MenuItem hasSubmenu={!!item.subMenu} {...item} key={`${item}-${index + 1}`}>
+          <MenuItem key={`${item}-${index + 1}`}>
             {!item.subMenu ? (
-              <NextLink path={item.path}>{item.label}</NextLink>
+              <MenuComponent label={item.label} icon={item.icon} path={item.path} />
             ) : (
-              item.subMenu?.map((link) => (
-                <MenuItem isSubmenu {...link}>
-                  <NextLink path={link.path}>{link.label}</NextLink>
-                </MenuItem>
-              ))
+              <Submenu items={item.subMenu} label={item.label} icon={item.icon} />
             )}
           </MenuItem>
         ))}
