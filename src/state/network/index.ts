@@ -1,10 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import Cookies from 'universal-cookie'
 import { CHAIN_ID, NETWORK_LABEL } from 'config/constants/chains'
 import { Network, NetworkState } from 'state/types'
 import fetchAndUpdateNetwork from './fetchNetwork'
 
 const isBrowser = typeof window === 'object'
+const cookies = new Cookies()
 
 const chainIdSafeCheck = (): { chainId: number; chainIdFromUrl: boolean } => {
   const search = isBrowser ? window.location.search : ''
@@ -12,9 +14,7 @@ const chainIdSafeCheck = (): { chainId: number; chainIdFromUrl: boolean } => {
   const chainStr = params.get('chain')
   const removeChainParamUrl = isBrowser ? window.location.href.split('?chain')[0] : ''
   if (isBrowser) window.history.pushState({}, document.title, removeChainParamUrl)
-  const localStorageChain = parseInt(
-    isBrowser ? window.localStorage.getItem('chainIdStatus') || CHAIN_ID.BSC.toString() : CHAIN_ID.BSC.toString(),
-  )
+  const cookieChain = parseInt(cookies.get('chainIdStatus') || CHAIN_ID.BSC.toString())
   if (chainStr) {
     if (chainStr.toLowerCase() === NETWORK_LABEL[CHAIN_ID.BSC].toLowerCase()) {
       return { chainId: CHAIN_ID.BSC, chainIdFromUrl: true }
@@ -22,9 +22,9 @@ const chainIdSafeCheck = (): { chainId: number; chainIdFromUrl: boolean } => {
     if (chainStr.toLowerCase() === NETWORK_LABEL[CHAIN_ID.MATIC].toLowerCase()) {
       return { chainId: CHAIN_ID.MATIC, chainIdFromUrl: true }
     }
-    return { chainId: localStorageChain || CHAIN_ID.BSC, chainIdFromUrl: false }
+    return { chainId: cookieChain || CHAIN_ID.BSC, chainIdFromUrl: false }
   }
-  return { chainId: localStorageChain || CHAIN_ID.BSC, chainIdFromUrl: false }
+  return { chainId: cookieChain || CHAIN_ID.BSC, chainIdFromUrl: false }
 }
 
 const { chainId: initChainId, chainIdFromUrl } = chainIdSafeCheck()
@@ -74,6 +74,7 @@ export const fetchUserNetwork = (web3ChainId: number, account: string, chainId: 
     dispatch(networkFetchStart())
     const network = fetchAndUpdateNetwork(web3ChainId, account, chainId)
     dispatch(setNetwork(network))
+    new Cookies().set('chainIdStatus', network.chainId)
     localStorage.setItem(`chainIdStatus`, JSON.stringify(network.chainId))
   } catch (error) {
     dispatch(networkFetchFailed())

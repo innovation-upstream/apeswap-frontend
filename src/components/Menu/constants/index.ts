@@ -13,7 +13,7 @@ export const EXCHANGE = {
   subMenu: [
     {
       label: 'Exchange',
-      path: BASE_EXCHANGE_URL,
+      path: `${BASE_EXCHANGE_URL}/swap`,
     },
     {
       label: 'Liquidity',
