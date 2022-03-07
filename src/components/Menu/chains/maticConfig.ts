@@ -7,53 +7,53 @@ const maticConfig = [
   // {
   //   label: 'Ape Stats',
   //   icon: 'StatsIcon',
-  //   path: '/stats',
+  //   href: '/stats',
   // },
   EXCHANGE,
   {
     label: 'Farms',
     icon: icons.FARM,
-    path: '/farms',
+    href: '/farms',
   },
   {
     label: 'Vaults',
     icon: icons.VAULT,
-    path: '/vaults',
+    href: '/vaults',
   },
   //   {
   //     label: 'Pools',
   //     icon: 'PoolIcon',
-  //     path: '/pools',
+  //     href: '/pools',
   //   },
   //   {
   //     label: 'IAO',
   //     icon: 'IfoIcon',
-  //     path: '/iao',
+  //     href: '/iao',
   //   },
   //   {
   //     label: 'GNANA',
   //     icon: 'ApeZone',
-  //     path: '/gnana',
+  //     href: '/gnana',
   //   },
   {
     label: 'Info',
     icon: icons.MORE,
-    subMenu: [
+    items: [
       {
         label: 'Overview',
-        path: NETWORK_INFO_LINK[CHAIN_ID.MATIC],
+        href: NETWORK_INFO_LINK[CHAIN_ID.MATIC],
       },
       {
         label: 'Tokens',
-        path: `${NETWORK_INFO_LINK[CHAIN_ID.MATIC]}/tokens`,
+        href: `${NETWORK_INFO_LINK[CHAIN_ID.MATIC]}/tokens`,
       },
       {
         label: 'Pairs',
-        path: `${NETWORK_INFO_LINK[CHAIN_ID.MATIC]}/pairs`,
+        href: `${NETWORK_INFO_LINK[CHAIN_ID.MATIC]}/pairs`,
       },
       {
         label: 'Accounts',
-        path: `${NETWORK_INFO_LINK[CHAIN_ID.MATIC]}/accounts`,
+        href: `${NETWORK_INFO_LINK[CHAIN_ID.MATIC]}/accounts`,
       },
     ],
   },

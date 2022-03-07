@@ -8,79 +8,79 @@ const bscConfig = [
   {
     label: 'Farms',
     icon: icons.FARM,
-    path: '/farms',
+    href: '/farms',
   },
   {
     label: 'Pools',
     icon: icons.POOL,
-    path: '/pools',
+    href: '/pools',
   },
   {
     label: 'Vaults',
     icon: icons.VAULT,
-    path: '/vaults',
+    href: '/vaults',
   },
   {
     label: 'IAO',
     icon: icons.ROCKET,
-    subMenu: [
+    items: [
       {
         label: 'Official',
-        path: '/iao',
+        href: '/iao',
       },
       {
         label: 'Self-Serve',
-        path: '/ss-iao',
+        href: '/ss-iao',
       },
     ],
   },
   {
     label: 'NFA',
     icon: icons.NFA,
-    subMenu: [
+    items: [
       {
         label: 'Collection',
-        path: '/nft',
+        href: '/nft',
       },
       {
         label: 'Auction',
-        path: '/auction',
+        href: '/auction',
       },
       {
         label: 'Staking',
-        path: '/staking',
+        href: '/staking',
       },
     ],
   },
   {
     label: 'GNANA',
     icon: icons.GNANA,
-    path: '/gnana',
+    href: '/gnana',
   },
   {
     label: 'Burn',
     icon: icons.VAULT,
-    path: '/burn',
+    href: '/burn',
   },
   {
     label: 'Info',
     icon: icons.INFO,
-    subMenu: [
+    items: [
       {
         label: 'Overview',
-        path: NETWORK_INFO_LINK[CHAIN_ID.BSC],
+        href: NETWORK_INFO_LINK[CHAIN_ID.BSC],
       },
       {
         label: 'Tokens',
-        path: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/tokens`,
+        href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/tokens`,
       },
       {
         label: 'Pairs',
-        path: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/pairs`,
+        href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/pairs`,
       },
       {
         label: 'Accounts',
-        path: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/accounts`,
+        href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/accounts`,
       },
     ],
   },

@@ -3,7 +3,7 @@
 import React, { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { NavLink, Flex, Box } from 'theme-ui'
+import { Flex, Box } from 'theme-ui'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Menu as MenuV2,
@@ -45,14 +45,16 @@ const linkStyle = {
   justifyContent: 'space-between',
 }
 
-const NextLink: React.FC<{ path: string }> = ({ children, path }) => (
-  <Link href={path} passHref>
+const NextLink: React.FC<{ href: string; csx?: any }> = ({ children, href, csx = {} }) => (
+  <Link href={href} passHref>
     <a>
       <Text
         sx={{
           color: 'text',
           paddingLeft: '10px',
           fontWeight: '400',
+          fontSize: 2,
+          ...csx,
         }}
       >
         {children}
@@ -61,21 +63,21 @@ const NextLink: React.FC<{ path: string }> = ({ children, path }) => (
   </Link>
 )
 
-const MenuComponent = ({ icon, label, path }) => {
+const MenuComponent = ({ icon, label, href }) => {
   const { active } = useContext(MenuContext)
 
   return (
     <Flex
       sx={{
         ...menuItemContainer,
-        boxShadow: path === active ? 'rgb(175, 110, 90) 4px 0px 0px inset' : '',
+        boxShadow: href === active ? 'rgb(77 64 64) 4px 0px 0px inset;' : '',
       }}
     >
       <Flex sx={linkStyle}>
         <Flex sx={{ alignItems: 'center' }}>
-          <Flex sx={{ flexShrink: 0 }}>{typeof icon === 'string' ? <Icon width={24} icon={icon as any} /> : icon}</Flex>
-          <Flex sx={{ flexShrink: 0, marginLeft: '10px' }}>
-            <NextLink path={path}>{label}</NextLink>
+          <Flex sx={{ flexShrink: 0 }}>{typeof icon === 'string' ? <Icon width={20} icon={icon as any} /> : icon}</Flex>
+          <Flex sx={{ flexShrink: 0 }}>
+            <NextLink href={href}>{label}</NextLink>
           </Flex>
         </Flex>
       </Flex>
@@ -98,14 +100,14 @@ const Submenu = ({ icon, label, items }) => {
         <Flex sx={linkStyle}>
           <Flex sx={{ alignItems: 'center' }}>
             <Flex sx={{ flexShrink: 0 }}>
-              {typeof icon === 'string' ? <Icon width={24} icon={icon as any} /> : icon}
+              {typeof icon === 'string' ? <Icon width={20} icon={icon as any} /> : icon}
             </Flex>
             <Flex sx={{ flexShrink: 0, marginLeft: '10px' }}>
               <Text
                 sx={{
                   color: 'text',
-                  paddingLeft: '10px',
                   fontWeight: '400',
+                  fontSize: 2,
                 }}
               >
                 {label}
@@ -113,7 +115,7 @@ const Submenu = ({ icon, label, items }) => {
             </Flex>
           </Flex>
           <Box sx={{ display: collapse ? 'none' : null }}>
-            <Icon icon="caret" direction={open ? 'up' : 'down'} />
+            <Icon icon="caret" width={7} direction={open ? 'up' : 'down'} />
           </Box>
         </Flex>
       </Flex>
@@ -131,13 +133,16 @@ const Submenu = ({ icon, label, items }) => {
                 sx={{
                   ...menuItemContainer,
                   position: 'relative',
-                  boxShadow: link.path === active ? 'rgb(175, 110, 90) 4px 0px 0px inset' : '',
+                  background: 'primaryBright',
+                  boxShadow: link.href === active ? 'rgb(77 64 64) 4px 0px 0px inset' : '',
                 }}
               >
                 <Flex key={`${link.label}-${index + 1}`} sx={linkStyle}>
                   <Flex sx={{ alignItems: 'center' }}>
                     <Flex sx={{ flexShrink: 0, marginLeft: '10px' }}>
-                      <NextLink path={link.path}>{link.label}</NextLink>
+                      <NextLink href={link.href} csx={{ fontSize: 1 }}>
+                        {link.label}
+                      </NextLink>
                     </Flex>
                   </Flex>
                 </Flex>
@@ -183,10 +188,10 @@ const Menu = (props) => {
       <MenuBody>
         {currentMenu().map((item: any, index) => (
           <MenuItem key={`${item}-${index + 1}`}>
-            {!item.subMenu ? (
-              <MenuComponent label={item.label} icon={item.icon} path={item.path} />
+            {!item.items ? (
+              <MenuComponent label={item.label} icon={item.icon} href={item.href} />
             ) : (
-              <Submenu items={item.subMenu} label={item.label} icon={item.icon} />
+              <Submenu items={item.items} label={item.label} icon={item.icon} />
             )}
           </MenuItem>
         ))}
