@@ -8,7 +8,16 @@ const bscConfig = [
   {
     label: 'Farms',
     icon: icons.FARM,
-    href: '/farms',
+    items: [
+      {
+        label: 'BANANA',
+        href: '/farms',
+      },
+      {
+        label: 'Jungle',
+        href: '/jungle-farms',
+      },
+    ],
   },
   {
     label: 'Pools',
