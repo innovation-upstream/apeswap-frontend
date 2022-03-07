@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
@@ -452,7 +452,7 @@ const JunglePools: React.FC = () => {
   const [sortOption, setSortOption] = useState('hot')
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { account } = useWeb3React()
-  const { pathname } = useLocation()
+  const { pathname } = useRouter()
   const size: Size = useWindowSize()
   const allPools = usePools(account)
   const TranslateString = useI18n()
