@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import { Route, useRouteMatch, useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useWeb3React } from '@web3-react/core'
@@ -395,11 +395,10 @@ const FlexLayout = styled.div`
   }
 `
 
-const DualFarms: React.FC = () => {
+const DualFarms: React.FC<{ showHistory?: boolean }> = ({ showHistory }) => {
   usePollDualFarms()
   const size: Size = useWindowSize()
-  const { path } = useRouteMatch()
-  const { pathname } = useLocation()
+  const { pathname } = useRouter()
   const TranslateString = useI18n()
   const bananaPrice = usePriceBananaBusd()
   const { account } = useWeb3React()
@@ -565,16 +564,19 @@ const DualFarms: React.FC = () => {
     return (
       <CardContainer>
         <FlexLayout>
-          <Route exact path={`${path}`}>
-            {farmsStakedMemoized.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed={false} />
-            ))}
-          </Route>
-          <Route exact path={`${path}/history`}>
-            {farmsStakedMemoized.map((farm) => (
-              <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed />
-            ))}
-          </Route>
+          {showHistory ? (
+            <>
+              {farmsStakedMemoized.map((farm) => (
+                <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed />
+              ))}
+            </>
+          ) : (
+            <>
+              {farmsStakedMemoized.map((farm) => (
+                <FarmCard key={farm.pid} farm={farm} bananaPrice={bananaPrice} account={account} removed={false} />
+              ))}
+            </>
+          )}
         </FlexLayout>
       </CardContainer>
     )

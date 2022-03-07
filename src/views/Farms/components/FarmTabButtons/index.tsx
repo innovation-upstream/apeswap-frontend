@@ -1,21 +1,30 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useRouteMatch, Link } from 'react-router-dom'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { ButtonMenu, ButtonMenuItem } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
 
+const LinkWrapper = styled.a`
+  color: inherit;
+`
+
 const FarmTabButtons = () => {
-  const { url, isExact } = useRouteMatch()
+  const { pathname: url } = useRouter()
   const TranslateString = useI18n()
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={!isExact ? 1 : 0} size="sm" variant="yellow">
-        <ButtonMenuItem as={Link} to={`${url}`} fontSize="12px">
-          {TranslateString(999, 'Active')}
+      <ButtonMenu activeIndex={url.includes('history') ? 1 : 0} size="sm" variant="yellow">
+        <ButtonMenuItem fontSize="12px">
+          <Link href={`${url}`} passHref>
+            <LinkWrapper>{TranslateString(999, 'Active')}</LinkWrapper>
+          </Link>
         </ButtonMenuItem>
-        <ButtonMenuItem as={Link} to={`${url}/history`} fontSize="12px">
-          {TranslateString(999, 'Inactive')}
+        <ButtonMenuItem fontSize="12px">
+          <Link href={`${url}/history`} passHref>
+            <LinkWrapper>{TranslateString(999, 'Inactive')}</LinkWrapper>
+          </Link>
         </ButtonMenuItem>
       </ButtonMenu>
     </Wrapper>

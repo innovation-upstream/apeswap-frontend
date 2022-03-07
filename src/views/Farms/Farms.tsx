@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
-import { Route, useRouteMatch, useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useWeb3React } from '@web3-react/core'
@@ -56,11 +56,10 @@ import {
 
 const NUMBER_OF_FARMS_VISIBLE = 12
 
-const Farms: React.FC = () => {
+const Farms: React.FC<{ showHistory?: boolean }> = ({ showHistory }) => {
   usePollFarms()
   const size: Size = useWindowSize()
-  const { path } = useRouteMatch()
-  const { pathname } = useLocation()
+  const { pathname } = useRouter()
   const TranslateString = useI18n()
   const bananaPrice = usePriceBananaBusd()
   const [observerIsSet, setObserverIsSet] = useState(false)
@@ -300,30 +299,33 @@ const Farms: React.FC = () => {
     return (
       <CardContainer>
         <FlexLayout>
-          <Route exact path={`${path}`}>
-            {farmsStakedMemoized.map((farm) => (
-              <FarmCard
-                key={farm.pid}
-                farm={farm}
-                bananaPrice={bananaPrice}
-                account={account}
-                removed={false}
-                farmsPrices={lpTokenPrices}
-              />
-            ))}
-          </Route>
-          <Route exact path={`${path}/history`}>
-            {farmsStakedMemoized.map((farm) => (
-              <FarmCard
-                key={farm.pid}
-                farm={farm}
-                bananaPrice={bananaPrice}
-                account={account}
-                removed
-                farmsPrices={lpTokenPrices}
-              />
-            ))}
-          </Route>
+          {showHistory ? (
+            <>
+              {farmsStakedMemoized.map((farm) => (
+                <FarmCard
+                  key={farm.pid}
+                  farm={farm}
+                  bananaPrice={bananaPrice}
+                  account={account}
+                  removed
+                  farmsPrices={lpTokenPrices}
+                />
+              ))}
+            </>
+          ) : (
+            <>
+              {farmsStakedMemoized.map((farm) => (
+                <FarmCard
+                  key={farm.pid}
+                  farm={farm}
+                  bananaPrice={bananaPrice}
+                  account={account}
+                  removed={false}
+                  farmsPrices={lpTokenPrices}
+                />
+              ))}
+            </>
+          )}
         </FlexLayout>
       </CardContainer>
     )
