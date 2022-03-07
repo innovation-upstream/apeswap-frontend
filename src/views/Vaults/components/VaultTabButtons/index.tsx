@@ -1,22 +1,31 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useRouteMatch, Link } from 'react-router-dom'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { ButtonMenu, ButtonMenuItem } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
 
+const LinkWrapper = styled.a`
+  color: inherit;
+`
+
 const VaultTabButtons = () => {
-  const { url, isExact } = useRouteMatch()
+  const { pathname: url } = useRouter()
   const TranslateString = useI18n()
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={!isExact ? 1 : 0} size="sm" variant="yellow">
-        <ButtonMenuItem as={Link} to={`${url}`} fontSize="12px">
-          {TranslateString(999, 'Active')}
-        </ButtonMenuItem>
-        <ButtonMenuItem as={Link} to={`${url}/history`} fontSize="12px">
-          {TranslateString(999, 'Inactive')}
-        </ButtonMenuItem>
+      <ButtonMenu activeIndex={url.includes('history') ? 1 : 0} size="sm" variant="yellow">
+        <Link href={`${url}`} passHref>
+          <LinkWrapper>
+            <ButtonMenuItem fontSize="12px">{TranslateString(999, 'Active')}</ButtonMenuItem>
+          </LinkWrapper>
+        </Link>
+        <Link href={`${url}/history`}>
+          <LinkWrapper>
+            <ButtonMenuItem fontSize="12px">{TranslateString(999, 'Inactive')}</ButtonMenuItem>
+          </LinkWrapper>
+        </Link>
       </ButtonMenu>
     </Wrapper>
   )
