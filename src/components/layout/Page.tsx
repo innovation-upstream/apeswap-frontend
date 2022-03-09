@@ -62,7 +62,7 @@ const Page: React.FC<SizeProps> = ({ children, ...props }) => {
       <PageMeta />
       <Box
         sx={{
-          marginLeft: collapse ? [0, 0, '56px'] : '240px',
+          marginLeft: collapse ? [0, 0, '56px'] : [0, 0, '240px'],
         }}
       >
         <StyledPage {...props}>{children}</StyledPage>
