@@ -10,8 +10,9 @@ const LinkWrapper = styled.a`
 `
 
 const FarmTabButtons = () => {
-  const { pathname: url } = useRouter()
+  const { pathname } = useRouter()
   const TranslateString = useI18n()
+  const url = `/${pathname.split('/')?.[1]}`
 
   return (
     <Wrapper>
