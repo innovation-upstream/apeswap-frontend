@@ -1,13 +1,13 @@
 import React from 'react'
 import { useFetchSwapBanners } from 'state/strapi/fetchStrapi'
-import { useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 const SwapBanner: React.FC = () => {
   const banners = useFetchSwapBanners()
-  const location = useLocation()
+  const { query } = useRouter()
   const bannerToDisplay = banners.swapBannersData.find((banner) => {
-    if (location.search.includes(`banner=${banner?.param}`)) {
+    if (query?.banner === banner?.param) {
       return banner
     }
     return null

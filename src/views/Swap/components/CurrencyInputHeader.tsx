@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { Flex, ButtonSquare, ButtonMenu, ButtonMenuItem, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
-import { Link, useLocation } from 'react-router-dom'
 
 interface Props {
   title?: string
@@ -21,19 +22,30 @@ const CurrencyInputContainer = styled(Flex)`
   margin-bottom: 20px;
 `
 
+const LinkWrapper = styled.a`
+  color: inherit;
+  display: inline-block;
+  z-index: 20;
+  width: 100%;
+`
+
 const CurrencyInputHeader: React.FC<Props> = () => {
   const { isMd, isSm, isXs } = useMatchBreakpoints()
   const isMobile = isMd || isSm || isXs
-  const path = useLocation()
+  const path = useRouter()
   const swapActive = path.pathname.includes('swap')
   return (
     <CurrencyInputContainer>
       <ButtonMenu activeIndex={swapActive ? 0 : 1} size="mds" variant="yellow">
-        <ButtonMenuItem as={Link} to="/swap" fontSize="14px" isMobile={isMobile}>
-          SWAP
+        <ButtonMenuItem fontSize="14px" isMobile={isMobile}>
+          <Link href="/swap" passHref>
+            <LinkWrapper>SWAP</LinkWrapper>
+          </Link>
         </ButtonMenuItem>
-        <ButtonMenuItem as={Link} to="/pool" fontSize="14px" isMobile={isMobile}>
-          LIQUIDITY
+        <ButtonMenuItem fontSize="14px" isMobile={isMobile}>
+          <Link href="/pool" passHref>
+            <LinkWrapper>LIQUIDITY</LinkWrapper>
+          </Link>
         </ButtonMenuItem>
       </ButtonMenu>
       <Flex>
