@@ -395,7 +395,11 @@ const FlexLayout = styled.div`
   }
 `
 
-const DualFarms: React.FC<{ showHistory?: boolean }> = ({ showHistory }) => {
+interface IDualFarms {
+  showHistory?: boolean
+}
+
+const DualFarms: React.FC<IDualFarms> = ({ showHistory }) => {
   usePollDualFarms()
   const size: Size = useWindowSize()
   const { pathname } = useRouter()

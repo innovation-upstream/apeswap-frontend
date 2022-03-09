@@ -10,12 +10,13 @@ const LinkWrapper = styled.a`
 `
 
 const FarmTabButtons = () => {
-  const { pathname: url } = useRouter()
+  const { pathname } = useRouter()
   const TranslateString = useI18n()
+  const url = `/${pathname.split('/')?.[1]}`
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={url.includes('history') ? 1 : 0} size="sm" variant="yellow">
+      <ButtonMenu activeIndex={pathname.includes('history') ? 1 : 0} size="sm" variant="yellow">
         <ButtonMenuItem fontSize="12px">
           <Link href={`${url}`} passHref>
             <LinkWrapper href="#">{TranslateString(999, 'Active')}</LinkWrapper>

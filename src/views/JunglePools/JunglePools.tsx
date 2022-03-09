@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
@@ -441,7 +440,11 @@ const TableContainer = styled.div`
 `
 const NUMBER_OF_POOLS_VISIBLE = 12
 
-const JunglePools: React.FC = () => {
+interface IJunglePools {
+  showHistory?: boolean
+}
+
+const JunglePools: React.FC<IJunglePools> = ({ showHistory }) => {
   usePollPools()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [gnanaOnly] = useState(false)
@@ -452,12 +455,11 @@ const JunglePools: React.FC = () => {
   const [sortOption, setSortOption] = useState('hot')
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { account } = useWeb3React()
-  const { pathname } = useRouter()
   const size: Size = useWindowSize()
   const allPools = usePools(account)
   const TranslateString = useI18n()
   const { currentBlock } = useBlock()
-  const isActive = !pathname.includes('history')
+  const isActive = !showHistory
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const loadMoreRef = useRef<HTMLDivElement>(null)

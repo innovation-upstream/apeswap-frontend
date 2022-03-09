@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Heading, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
@@ -443,7 +442,11 @@ const TableContainer = styled.div`
 `
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
-const Vaults: React.FC = () => {
+interface IVaults {
+  showHistory?: boolean
+}
+
+const Vaults: React.FC<IVaults> = ({ showHistory }) => {
   usePollVaultsData()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [burnOnly, setBurnOnly] = useState(false)
@@ -452,13 +455,12 @@ const Vaults: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const [numberOfVaultsVisible, setNumberOfVaultsVisible] = useState(NUMBER_OF_VAULTS_VISIBLE)
-  const { pathname } = useRouter()
   const size: Size = useWindowSize()
   const { vaults: initVaults } = useVaults()
   const [allVaults, setAllVaults] = useState(initVaults)
   const TranslateString = useI18n()
   const chainId = useNetworkChainId()
-  const isActive = !pathname.includes('history')
+  const isActive = !showHistory
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const loadMoreRef = useRef<HTMLDivElement>(null)

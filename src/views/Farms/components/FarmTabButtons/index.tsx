@@ -16,7 +16,7 @@ const FarmTabButtons = () => {
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={url.includes('history') ? 1 : 0} size="sm" variant="yellow">
+      <ButtonMenu activeIndex={pathname.includes('history') ? 1 : 0} size="sm" variant="yellow">
         <ButtonMenuItem fontSize="12px">
           <Link href={`${url}`} passHref>
             <LinkWrapper>{TranslateString(999, 'Active')}</LinkWrapper>
