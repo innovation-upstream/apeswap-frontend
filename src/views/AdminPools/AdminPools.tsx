@@ -13,6 +13,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { usePools } from 'state/hooks'
 import { Pool } from 'state/types'
 import Page from 'components/layout/Page'
+import HeaderSection from 'components/layout/HeaderSection'
 import SearchInput from '../Pools/components/SearchInput'
 import PoolTabButtons from '../Pools/components/PoolTabButtons'
 import PoolCard from '../Pools/components/PoolCard/PoolCard'
@@ -401,7 +402,6 @@ const StyledHeading = styled(Heading)`
 const StyledPage = styled(Page)`
   padding-left: 5px;
   padding-right: 5px;
-  width: 100vw;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     padding-left: 10px;
@@ -572,22 +572,24 @@ const AdminPools: React.FC = () => {
 
   return (
     <>
-      <Header>
-        <HeadingContainer>
-          <StyledHeading as="h1" mb="8px" mt={0} color="white">
-            {TranslateString(999, 'Admin Pools')}
-          </StyledHeading>
-          {size.width > 968 && (
-            <AdminText>
-              Stake OBIE to earn new tokens. <br /> Admins will be allocated OBIE tokens from grandpa Obie Dobo. <br />{' '}
-              Your own personal pools page to reward your hard work ❤️
-            </AdminText>
-          )}
-        </HeadingContainer>
-        <MonkeyWrapper>
-          <PoolMonkey />
-        </MonkeyWrapper>
-      </Header>
+      <HeaderSection>
+        <Header>
+          <HeadingContainer>
+            <StyledHeading as="h1" mb="8px" mt={0} color="white">
+              {TranslateString(999, 'Admin Pools')}
+            </StyledHeading>
+            {size.width > 968 && (
+              <AdminText>
+                Stake OBIE to earn new tokens. <br /> Admins will be allocated OBIE tokens from grandpa Obie Dobo.{' '}
+                <br /> Your own personal pools page to reward your hard work ❤️
+              </AdminText>
+            )}
+          </HeadingContainer>
+          <MonkeyWrapper>
+            <PoolMonkey />
+          </MonkeyWrapper>
+        </Header>
+      </HeaderSection>
       <StyledPage width="1130px">
         <ControlContainer>
           <ViewControls>

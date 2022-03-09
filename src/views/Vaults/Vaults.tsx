@@ -10,6 +10,7 @@ import useWindowSize, { Size } from 'hooks/useDimensions'
 import { useVaults, useNetworkChainId, usePollVaultsData } from 'state/hooks'
 import { Vault } from 'state/types'
 import Page from 'components/layout/Page'
+import HeaderSection from 'components/layout/HeaderSection'
 import ToggleView from './components/ToggleView/ToggleView'
 import SearchInput from './components/SearchInput'
 import VaultTabButtons from './components/VaultTabButtons'
@@ -336,7 +337,6 @@ const StyledHeading = styled(Heading)`
 const StyledPage = styled(Page)`
   padding-left: 5px;
   padding-right: 5px;
-  width: 100vw;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     padding-left: 10px;
@@ -593,11 +593,13 @@ const Vaults: React.FC<IVaults> = ({ showHistory }) => {
 
   const renderHeader = () => {
     const headerContents = (
-      <HeadingContainer>
-        <StyledHeading as="h1" mb="8px" mt={0} color="white" fontWeight={800}>
-          {TranslateString(999, 'Burning Vaults')}
-        </StyledHeading>
-      </HeadingContainer>
+      <HeaderSection>
+        <HeadingContainer>
+          <StyledHeading as="h1" mb="8px" mt={0} color="white" fontWeight={800}>
+            {TranslateString(999, 'Burning Vaults')}
+          </StyledHeading>
+        </HeadingContainer>
+      </HeaderSection>
     )
     if (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
       return <HeaderPolygon>{headerContents}</HeaderPolygon>

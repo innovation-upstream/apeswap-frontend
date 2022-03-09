@@ -6,6 +6,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Heading, RowType, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
+import HeaderSection from 'components/layout/HeaderSection'
 import { usePriceBananaBusd, useDualFarms, usePollDualFarms } from 'state/hooks'
 import useTheme from 'hooks/useTheme'
 import useWindowSize, { Size } from 'hooks/useDimensions'
@@ -350,7 +351,6 @@ const StyledHeading = styled(Heading)`
 const StyledPage = styled(Page)`
   padding-left: 5px;
   padding-right: 5px;
-  width: 100vw;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     padding-left: 10px;
@@ -599,14 +599,15 @@ const DualFarms: React.FC<IDualFarms> = ({ showHistory }) => {
 
   return (
     <>
-      <Header>
-        <HeadingContainer>
-          <StyledHeading as="h1" mb="12px" mt={0} fontWeight={800}>
-            {TranslateString(999, 'Stake LP tokens to earn Rewards')}
-          </StyledHeading>
-        </HeadingContainer>
-      </Header>
-
+      <HeaderSection>
+        <Header>
+          <HeadingContainer>
+            <StyledHeading as="h1" mb="12px" mt={0} fontWeight={800}>
+              {TranslateString(999, 'Stake LP tokens to earn Rewards')}
+            </StyledHeading>
+          </HeadingContainer>
+        </Header>
+      </HeaderSection>
       <StyledPage width="1130px">
         <ControlContainer>
           <ViewControls>

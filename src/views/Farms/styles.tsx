@@ -330,7 +330,6 @@ export const StyledHeading = styled(Heading)`
 export const StyledPage = styled(Page)`
   padding-left: 5px;
   padding-right: 5px;
-  width: 100vw;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     padding-left: 10px;

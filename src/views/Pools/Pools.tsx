@@ -13,6 +13,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { usePollPools, usePools } from 'state/hooks'
 import { Pool } from 'state/types'
 import Page from 'components/layout/Page'
+import HeaderSection from 'components/layout/HeaderSection'
 import ToggleView from './components/ToggleView/ToggleView'
 import SearchInput from './components/SearchInput'
 import PoolTabButtons from './components/PoolTabButtons'
@@ -408,7 +409,6 @@ const StyledHeading = styled(Heading)`
 const StyledPage = styled(Page)`
   padding-left: 5px;
   padding-right: 5px;
-  width: 100vw;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     padding-left: 10px;
@@ -692,22 +692,24 @@ const Pools: React.FC<IPools> = ({ showHistory }) => {
 
   return (
     <>
-      <Header>
-        <HeadingContainer>
-          <StyledHeading as="h1" mb="8px" mt={0} color="white" fontWeight={800}>
-            {TranslateString(999, 'Banana Pools')}
-          </StyledHeading>
-          {size.width > 968 && (
-            <Text fontSize="22px" fontWeight={400} color="white">
-              Stake BANANA to earn new tokens. <br /> You can unstake at any time. <br /> Rewards are calculated per
-              block.
-            </Text>
-          )}
-        </HeadingContainer>
-        <MonkeyWrapper>
-          <PoolMonkey />
-        </MonkeyWrapper>
-      </Header>
+      <HeaderSection>
+        <Header>
+          <HeadingContainer>
+            <StyledHeading as="h1" mb="8px" mt={0} color="white" fontWeight={800}>
+              {TranslateString(999, 'Banana Pools')}
+            </StyledHeading>
+            {size.width > 968 && (
+              <Text fontSize="22px" fontWeight={400} color="white">
+                Stake BANANA to earn new tokens. <br /> You can unstake at any time. <br /> Rewards are calculated per
+                block.
+              </Text>
+            )}
+          </HeadingContainer>
+          <MonkeyWrapper>
+            <PoolMonkey />
+          </MonkeyWrapper>
+        </Header>
+      </HeaderSection>
       <StyledPage width="1130px">
         <ControlContainer>
           <ViewControls>

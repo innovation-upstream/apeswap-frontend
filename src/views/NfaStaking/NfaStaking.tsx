@@ -8,6 +8,7 @@ import { partition } from 'lodash'
 import useWindowSize, { Size } from 'hooks/useDimensions'
 import { useNfaStakingPools, usePollNfaStakingData } from 'state/hooks'
 import Page from 'components/layout/Page'
+import HeaderSection from 'components/layout/HeaderSection'
 import SearchInput from '../Pools/components/SearchInput'
 import PoolCard from './components/PoolCard/PoolCard'
 
@@ -253,7 +254,6 @@ const StyledHeading = styled(Heading)`
 const StyledPage = styled(Page)`
   padding-left: 5px;
   padding-right: 5px;
-  width: 100vw;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     padding-left: 10px;
@@ -329,17 +329,19 @@ const NfaStaking: React.FC = () => {
 
   return (
     <>
-      <Header>
-        <HeadingContainer>
-          <StyledHeading as="h1" mb="8px" mt={0} color="white">
-            {TranslateString(999, 'NFA Staking')}
-          </StyledHeading>
-          {size.width > 968 && <AdminText>Stake Non Fungible Apes to earn BANANA</AdminText>}
-        </HeadingContainer>
-        <MonkeyWrapper>
-          <PoolMonkey />
-        </MonkeyWrapper>
-      </Header>
+      <HeaderSection>
+        <Header>
+          <HeadingContainer>
+            <StyledHeading as="h1" mb="8px" mt={0} color="white">
+              {TranslateString(999, 'NFA Staking')}
+            </StyledHeading>
+            {size.width > 968 && <AdminText>Stake Non Fungible Apes to earn BANANA</AdminText>}
+          </HeadingContainer>
+          <MonkeyWrapper>
+            <PoolMonkey />
+          </MonkeyWrapper>
+        </Header>
+      </HeaderSection>
       <StyledPage width="1130px">
         <ControlContainer>
           <ViewControls>

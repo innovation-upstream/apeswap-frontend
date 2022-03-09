@@ -21,6 +21,7 @@ import { QuoteToken } from 'config/constants/types'
 import { orderBy } from 'lodash'
 import useI18n from 'hooks/useI18n'
 import MarketingModalCheck from 'components/MarketingModalCheck'
+import HeaderSection from 'components/layout/HeaderSection'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import FarmTabButtons from './components/FarmTabButtons'
 import Table from './components/FarmTable/FarmTable'
@@ -345,14 +346,15 @@ const Farms: React.FC<{ showHistory?: boolean }> = ({ showHistory }) => {
   return (
     <>
       <MarketingModalCheck />
-      <Header>
-        <HeadingContainer>
-          <StyledHeading as="h1" mb="12px" mt={0} fontWeight={800}>
-            {TranslateString(999, 'Stake LP tokens to earn BANANA')}
-          </StyledHeading>
-        </HeadingContainer>
-      </Header>
-
+      <HeaderSection>
+        <Header>
+          <HeadingContainer>
+            <StyledHeading as="h1" mb="12px" mt={0} fontWeight={800}>
+              {TranslateString(999, 'Stake LP tokens to earn BANANA')}
+            </StyledHeading>
+          </HeadingContainer>
+        </Header>
+      </HeaderSection>
       <StyledPage width="1130px">
         <ControlContainer>
           <ViewControls>
