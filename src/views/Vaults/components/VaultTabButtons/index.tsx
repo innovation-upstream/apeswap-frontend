@@ -4,28 +4,30 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ButtonMenu, ButtonMenuItem } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
+import { lastIndexOf } from 'lodash'
 
 const LinkWrapper = styled.a`
   color: inherit;
 `
 
 const VaultTabButtons = () => {
-  const { pathname: url } = useRouter()
+  const { pathname } = useRouter()
+  const url = `/${pathname.split('/')?.[1]}`
   const TranslateString = useI18n()
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={url.includes('history') ? 1 : 0} size="sm" variant="yellow">
-        <Link href={`${url}`} passHref>
-          <LinkWrapper>
-            <ButtonMenuItem fontSize="12px">{TranslateString(999, 'Active')}</ButtonMenuItem>
-          </LinkWrapper>
-        </Link>
-        <Link href={`${url}/history`}>
-          <LinkWrapper>
-            <ButtonMenuItem fontSize="12px">{TranslateString(999, 'Inactive')}</ButtonMenuItem>
-          </LinkWrapper>
-        </Link>
+      <ButtonMenu activeIndex={pathname.includes('history') ? 1 : 0} size="sm" variant="yellow">
+        <ButtonMenuItem fontSize="12px">
+          <Link href={`${url}`} passHref>
+            <LinkWrapper>{TranslateString(999, 'Active')}</LinkWrapper>
+          </Link>
+        </ButtonMenuItem>
+        <ButtonMenuItem fontSize="12px">
+          <Link href={`${url}/history`} passHref>
+            <LinkWrapper>{TranslateString(999, 'Inactive')}</LinkWrapper>
+          </Link>
+        </ButtonMenuItem>
       </ButtonMenu>
     </Wrapper>
   )
