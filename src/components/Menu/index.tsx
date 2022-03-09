@@ -75,7 +75,7 @@ const MenuComponent = ({ icon, label, href }) => {
     >
       <Flex sx={linkStyle}>
         <Flex sx={{ alignItems: 'center' }}>
-          <Flex sx={{ flexShrink: 0 }}>{typeof icon === 'string' ? <Icon width={20} icon={icon as any} /> : icon}</Flex>
+          <Flex sx={{ flexShrink: 0 }}>{typeof icon === 'string' ? <Icon width={24} icon={icon as any} /> : icon}</Flex>
           <Flex sx={{ flexShrink: 0 }}>
             <NextLink href={href}>{label}</NextLink>
           </Flex>
@@ -100,7 +100,7 @@ const Submenu = ({ icon, label, items }) => {
         <Flex sx={linkStyle}>
           <Flex sx={{ alignItems: 'center' }}>
             <Flex sx={{ flexShrink: 0 }}>
-              {typeof icon === 'string' ? <Icon width={20} icon={icon as any} /> : icon}
+              {typeof icon === 'string' ? <Icon width={24} icon={icon as any} /> : icon}
             </Flex>
             <Flex sx={{ flexShrink: 0, marginLeft: '10px' }}>
               <Text

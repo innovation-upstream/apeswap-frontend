@@ -1,6 +1,8 @@
+import React from 'react'
 import { icons } from '@innovationupstream/apeswap-uikit'
 import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
 import { HOME, EXCHANGE, MORE_INFO } from '../constants'
+import Lending from '../../Icons/Lending'
 
 const bscConfig = [
   HOME,
@@ -67,13 +69,13 @@ const bscConfig = [
     href: '/gnana',
   },
   {
-    label: 'Burn',
-    icon: icons.VAULT,
-    href: '/burn',
+    label: 'Lending',
+    icon: <Lending width="24px" />,
+    href: 'https://lending.apeswap.finance/markets',
   },
   {
     label: 'Info',
-    icon: icons.INFO,
+    icon: icons.CHART,
     items: [
       {
         label: 'Overview',
