@@ -11,7 +11,7 @@ import {
   MenuItem,
   MenuFooter,
   MenuContext,
-  Icon,
+  Svg,
   Text,
 } from '@innovationupstream/apeswap-uikit'
 import { useWeb3React } from '@web3-react/core'
@@ -75,7 +75,7 @@ const MenuComponent = ({ icon, label, href }) => {
     >
       <Flex sx={linkStyle}>
         <Flex sx={{ alignItems: 'center' }}>
-          <Flex sx={{ flexShrink: 0 }}>{typeof icon === 'string' ? <Icon width={24} icon={icon as any} /> : icon}</Flex>
+          <Flex sx={{ flexShrink: 0 }}>{typeof icon === 'string' ? <Svg width={24} icon={icon as any} /> : icon}</Flex>
           <Flex sx={{ flexShrink: 0 }}>
             <NextLink href={href}>{label}</NextLink>
           </Flex>
@@ -100,7 +100,7 @@ const Submenu = ({ icon, label, items }) => {
         <Flex sx={linkStyle}>
           <Flex sx={{ alignItems: 'center' }}>
             <Flex sx={{ flexShrink: 0 }}>
-              {typeof icon === 'string' ? <Icon width={24} icon={icon as any} /> : icon}
+              {typeof icon === 'string' ? <Svg width={24} icon={icon as any} /> : icon}
             </Flex>
             <Flex sx={{ flexShrink: 0, marginLeft: '10px' }}>
               <Text
@@ -115,7 +115,7 @@ const Submenu = ({ icon, label, items }) => {
             </Flex>
           </Flex>
           <Box sx={{ display: collapse ? 'none' : null }}>
-            <Icon icon="caret" width={7} direction={open ? 'up' : 'down'} />
+            <Svg icon="caret" width={7} direction={open ? 'up' : 'down'} />
           </Box>
         </Flex>
       </Flex>
@@ -200,13 +200,13 @@ const Menu = (props) => {
       <MenuFooter>
         <div sx={{ display: 'flex', justifyContent: 'space-between', ml: '19px', mr: '26px', mb: '70px' }}>
           <div sx={{ display: 'flex', alignItems: 'center', columnGap: '8px' }}>
-            <Icon icon="ellipse" />
+            <Svg icon="ellipse" />
             <Text sx={{ color: 'brown', fontSize: '14px' }} weight="bold">
               $3.747
             </Text>
           </div>
-          <Icon icon="ellipse" />
-          <Icon icon="ellipse" />
+          <Svg icon="ellipse" />
+          <Svg icon="ellipse" />
         </div>
       </MenuFooter>
     </MenuV2>

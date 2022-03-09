@@ -1,6 +1,7 @@
 import React from 'react'
 import { ModalProvider } from '@apeswapfinance/uikit'
-import { Web3ReactProvider, createWeb3ReactRoot } from '@web3-react/core'
+import { useRouter } from 'next/router'
+import { Web3ReactProvider } from '@web3-react/core'
 import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
 import { getLibrary } from 'utils/web3React'
@@ -13,6 +14,8 @@ import { Apeswap, MenuContextProvider } from '@innovationupstream/apeswap-uikit'
 import { Web3ProviderNetworkSSR } from './components/NoSSR'
 
 const Providers: React.FC = ({ children }) => {
+  const { pathname } = useRouter()
+
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetworkSSR getLibrary={getLibrary}>
@@ -23,7 +26,7 @@ const Providers: React.FC = ({ children }) => {
                 <NftProvider>
                   <RefreshContextProvider>
                     <ModalProvider>
-                      <MenuContextProvider>{children}</MenuContextProvider>
+                      <MenuContextProvider active={pathname}>{children}</MenuContextProvider>
                     </ModalProvider>
                   </RefreshContextProvider>
                 </NftProvider>
