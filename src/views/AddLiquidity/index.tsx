@@ -4,7 +4,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, ETHER, TokenAmount, ROUTER_ADDRESS, Token } from '@apeswapfinance/sdk'
 import { Text, Flex, AddIcon, useModal } from '@apeswapfinance/uikit'
-import { RouteComponentProps } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -53,13 +53,9 @@ const Title = styled(Text)`
   }
 `
 
-export default function AddLiquidity({
-  match: {
-    params: { currencyIdA, currencyIdB },
-  },
-  history,
-}: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
+export default function AddLiquidity({ currencyIdA, currencyIdB }: { currencyIdA?: string; currencyIdB?: string }) {
   const { account, chainId, library } = useActiveWeb3React()
+  const nextRouter = useRouter()
   const dispatch = useDispatch<AppDispatch>()
   // Either use the url params or the user swap state for initial liquidity add
   const { INPUT, OUTPUT } = useSwapState()
@@ -318,29 +314,29 @@ export default function AddLiquidity({
     (currencyA_: Currency) => {
       const newCurrencyIdA = currencyId(currencyA_)
       if (newCurrencyIdA === loadCurrencyIdB) {
-        history.push(`/add/${loadCurrencyIdB}/${loadCurrencyIdA}`)
+        nextRouter.push(`/add/${loadCurrencyIdB}/${loadCurrencyIdA}`)
       } else if (loadCurrencyIdB) {
-        history.push(`/add/${newCurrencyIdA}/${loadCurrencyIdB}`)
+        nextRouter.push(`/add/${newCurrencyIdA}/${loadCurrencyIdB}`)
       } else {
-        history.push(`/add/${newCurrencyIdA}`)
+        nextRouter.push(`/add/${newCurrencyIdA}`)
       }
     },
-    [loadCurrencyIdB, history, loadCurrencyIdA],
+    [loadCurrencyIdB, nextRouter, loadCurrencyIdA],
   )
   const handleCurrencyBSelect = useCallback(
     (currencyB_: Currency) => {
       const newCurrencyIdB = currencyId(currencyB_)
       if (loadCurrencyIdA === newCurrencyIdB) {
         if (loadCurrencyIdB) {
-          history.push(`/add/${loadCurrencyIdB}/${newCurrencyIdB}`)
+          nextRouter.push(`/add/${loadCurrencyIdB}/${newCurrencyIdB}`)
         } else {
-          history.push(`/add/${newCurrencyIdB}`)
+          nextRouter.push(`/add/${newCurrencyIdB}`)
         }
       } else {
-        history.push(`/add/${loadCurrencyIdA || 'ETH'}/${newCurrencyIdB}`)
+        nextRouter.push(`/add/${loadCurrencyIdA || 'ETH'}/${newCurrencyIdB}`)
       }
     },
-    [loadCurrencyIdA, history, loadCurrencyIdB],
+    [loadCurrencyIdA, nextRouter, loadCurrencyIdB],
   )
 
   const handleDismissConfirmation = useCallback(() => {

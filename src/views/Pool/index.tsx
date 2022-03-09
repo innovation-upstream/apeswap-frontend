@@ -4,7 +4,7 @@ import { Pair } from '@apeswapfinance/sdk'
 import { Text, Flex, AddIcon, ButtonSquare, Card } from '@apeswapfinance/uikit'
 import { Wrapper } from 'views/Swap/components/styled'
 import CurrencyInputHeader from 'views/Swap/components/CurrencyInputHeader'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import Page from 'components/layout/Page'
 import UnlockButton from 'components/UnlockButton'
 import SwapBanner from 'components/SwapBanner'
@@ -34,6 +34,10 @@ const StyledFlex = styled(Flex)`
 `
 const InnerFlex = styled(Flex)`
   background: ${({ theme }) => theme.colors.white3};
+`
+
+const LinkWrapper = styled.a`
+  color: inherit;
 `
 
 export default function Pool() {
@@ -117,15 +121,18 @@ export default function Pool() {
                 style={{ height: '100%' }}
               >
                 <StyledText fontWeight={700}>Add liquidity to receive LP tokens</StyledText>
-                <ButtonSquare
-                  id="join-pool-button"
-                  as={Link}
-                  to="/add"
-                  startIcon={<AddIcon color="white" />}
-                  style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px' }}
-                >
-                  Add Liquidity
-                </ButtonSquare>
+
+                <Link href="/add" passHref>
+                  <LinkWrapper>
+                    <ButtonSquare
+                      id="join-pool-button"
+                      startIcon={<AddIcon color="white" />}
+                      style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px' }}
+                    >
+                      Add Liquidity
+                    </ButtonSquare>
+                  </LinkWrapper>
+                </Link>
               </InnerFlex>
             </StyledCard>
             {renderBody()}
@@ -133,21 +140,23 @@ export default function Pool() {
           {account && !v2IsLoading && (
             <StyledFlex flexDirection="column" alignItems="center" pt="20px" pb="10px">
               <Text mb="8px">Dont see a pool you joined?</Text>
-              <ButtonSquare
-                id="import-pool-link"
-                as={Link}
-                to="/find"
-                style={{
-                  backgroundColor: 'rgb(0,0,0,0)',
-                  fontSize: '16px',
-                  color: 'Primary',
-                }}
-              >
-                <Text style={{ textDecoration: 'underline' }} mb="8px">
-                  {' '}
-                  Find other LP tokens
-                </Text>
-              </ButtonSquare>
+              <Link href="/find" passHref>
+                <LinkWrapper>
+                  <ButtonSquare
+                    id="import-pool-link"
+                    style={{
+                      backgroundColor: 'rgb(0,0,0,0)',
+                      fontSize: '16px',
+                      color: 'Primary',
+                    }}
+                  >
+                    <Text style={{ textDecoration: 'underline' }} mb="8px">
+                      {' '}
+                      Find other LP tokens
+                    </Text>
+                  </ButtonSquare>
+                </LinkWrapper>
+              </Link>
             </StyledFlex>
           )}
         </AppBody>

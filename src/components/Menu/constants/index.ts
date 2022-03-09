@@ -13,7 +13,7 @@ export const EXCHANGE = {
   items: [
     {
       label: 'Exchange',
-      href: `${BASE_EXCHANGE_URL}/swap`,
+      href: '/swap',
     },
     {
       label: 'Liquidity',

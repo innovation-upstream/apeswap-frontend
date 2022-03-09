@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ButtonMenu, ButtonMenuItem } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
-import Banner from 'views/Home/components/Header/Banner'
 
 const LinkWrapper = styled.a`
   color: inherit;

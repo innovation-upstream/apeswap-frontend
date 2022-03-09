@@ -8,7 +8,7 @@ import SwapBanner from 'components/SwapBanner'
 import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
 import track from 'utils/track'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { RouteComponentProps } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import AddressInputPanel from './components/AddressInputPanel'
 import Column, { AutoColumn } from '../../components/layout/Column'
 import ConfirmSwapModal from './components/ConfirmSwapModal'
@@ -52,7 +52,8 @@ const Label = styled(Text)`
   font-weight: bold;
 `
 
-export default function Swap({ history }: RouteComponentProps) {
+export default function Swap() {
+  const router = useRouter()
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { chainId } = useActiveWeb3React()
   const [tradeValueUsd, setTradeValueUsd] = useState<number>(null)
@@ -292,7 +293,7 @@ export default function Swap({ history }: RouteComponentProps) {
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
   const [onPresentImportTokenWarningModal] = useModal(
-    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap/')} />,
+    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => router.push('/swap/')} />,
   )
 
   useEffect(() => {
