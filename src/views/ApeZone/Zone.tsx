@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { TranslateString } from 'utils/translateTextHelpers'
 import Page from 'components/layout/Page'
+import HeaderSection from 'components/layout/HeaderSection'
 import Spacer from 'components/Spacer'
 import GnanaUtility from './components/GnanaUtility/GnanaUtility'
 import GnanaDisclaimers from './components/GnanaDisclaimers/GnanaDisclaimers'
@@ -34,17 +35,18 @@ const Zone = () => {
 
   return (
     <>
-      <Header>
-        <HeaderContainer>
-          <StyledHeading as="h1" mt={0} color="white">
-            {TranslateString(999, 'Golden')}
-          </StyledHeading>
-          <StyledHeading as="h1" mb="8px" mt={1} color="white">
-            {TranslateString(999, 'Banana')}
-          </StyledHeading>
-        </HeaderContainer>
-      </Header>
-
+      <HeaderSection>
+        <Header>
+          <HeaderContainer>
+            <StyledHeading as="h1" mt={0} color="white">
+              {TranslateString(999, 'Golden')}
+            </StyledHeading>
+            <StyledHeading as="h1" mb="8px" mt={1} color="white">
+              {TranslateString(999, 'Banana')}
+            </StyledHeading>
+          </HeaderContainer>
+        </Header>
+      </HeaderSection>
       <Page>
         <PaddedCard>
           <TopCon>

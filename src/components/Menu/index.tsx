@@ -51,7 +51,7 @@ const NextLink: React.FC<{ href: string; csx?: any }> = ({ children, href, csx =
       <Text
         sx={{
           color: 'text',
-          paddingLeft: '10px',
+          paddingLeft: '16px',
           fontWeight: '400',
           fontSize: 2,
           ...csx,
@@ -102,7 +102,7 @@ const Submenu = ({ icon, label, items }) => {
             <Flex sx={{ flexShrink: 0 }}>
               {typeof icon === 'string' ? <Svg width={24} icon={icon as any} /> : icon}
             </Flex>
-            <Flex sx={{ flexShrink: 0, marginLeft: '10px' }}>
+            <Flex sx={{ flexShrink: 0, marginLeft: '16px' }}>
               <Text
                 sx={{
                   color: 'text',
@@ -130,6 +130,7 @@ const Submenu = ({ icon, label, items }) => {
           >
             {items?.map((link, index) => (
               <Flex
+                key={`${link.label}-${index + 1}`}
                 sx={{
                   ...menuItemContainer,
                   position: 'relative',
@@ -178,16 +179,18 @@ const Menu = (props) => {
 
   useEffect(() => {
     if (!router) return
-    router.events.on('routeChangeComplete', (url) => {
-      setActive?.(url)
-    })
+    const handleChange = (url) => setActive?.(url)
+    router.events.on('routeChangeComplete', handleChange)
+
+    // eslint-disable-next-line consistent-return
+    return () => router.events.off('routeChangeComplete', handleChange)
   }, [router, setActive])
 
   return (
     <MenuV2>
       <MenuBody>
         {currentMenu().map((item: any, index) => (
-          <MenuItem key={`${item}-${index + 1}`}>
+          <MenuItem key={`${item.label}-${index + 1}`}>
             {!item.items ? (
               <MenuComponent label={item.label} icon={item.icon} href={item.href} />
             ) : (
