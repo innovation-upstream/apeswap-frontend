@@ -169,7 +169,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, bananaPrice, account
           />
           <DetailsSection
             removed={removed}
-            bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+            bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.NEXT_PUBLIC_CHAIN_ID]}`}
             totalValueFormated={totalValueFormated}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}
@@ -177,7 +177,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, bananaPrice, account
             multiplier={farm.multiplier}
             liquidity={farm.liquidity}
             pid={farm.pid}
-            farmLp={farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}
+            farmLp={farm.lpAddresses[process.env.NEXT_PUBLIC_CHAIN_ID]}
             farm={farm}
           />
         </ExpandingWrapper>

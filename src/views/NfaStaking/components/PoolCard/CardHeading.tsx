@@ -14,7 +14,7 @@ import ApprovalAction from './CardActions/ApprovalAction'
 import StakeAction from './CardActions/StakeActions'
 import Image from '../../../Nft/components/Image'
 
-const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
+const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID
 
 export interface ExpandableSectionProps {
   lpLabel?: string

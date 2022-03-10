@@ -8,7 +8,7 @@ import multicall from 'utils/multicall'
 import BigNumber from 'bignumber.js'
 import { TokenPrices } from 'state/types'
 
-const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
+const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID
 
 export const fetchPoolsBlockLimits = async () => {
   return nfaStakingPoolsConfig.map((nfaStakingPool) => {

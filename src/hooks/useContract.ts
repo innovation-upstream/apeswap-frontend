@@ -136,7 +136,7 @@ export const useSousChef = (id) => {
 export const useNfaStakingChef = (id) => {
   const config = nfaStakingPools.find((pool) => pool.sousId === id)
   const rawAbi = nfaStakingAbi
-  return useContract(rawAbi, config.contractAddress[process.env.REACT_APP_CHAIN_ID]) as NfaStaking
+  return useContract(rawAbi, config.contractAddress[process.env.NEXT_PUBLIC_CHAIN_ID]) as NfaStaking
 }
 
 export const useAuction = () => {

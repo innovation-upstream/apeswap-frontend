@@ -26,7 +26,9 @@ const Providers: React.FC = ({ children }) => {
                 <NftProvider>
                   <RefreshContextProvider>
                     <ModalProvider>
-                      <MenuContextProvider active={pathname}>{children}</MenuContextProvider>
+                      <MenuContextProvider collapse active={pathname}>
+                        {children}
+                      </MenuContextProvider>
                     </ModalProvider>
                   </RefreshContextProvider>
                 </NftProvider>
