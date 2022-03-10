@@ -10,7 +10,7 @@ import DetailsSection from './DetailsSection'
 import CardHeading from './CardHeading'
 import StakeAction from './CardActions/StakeActions'
 
-const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
+const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID
 
 interface HarvestProps {
   pool: NfaStakingPool
