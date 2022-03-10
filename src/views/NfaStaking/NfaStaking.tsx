@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { Heading, Text, Card, Checkbox } from '@apeswapfinance/uikit'
@@ -285,7 +285,7 @@ const NfaStaking: React.FC = () => {
   usePollNfaStakingData()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
-  const { pathname } = useLocation()
+  const { pathname } = useRouter()
   const isActive = !pathname.includes('history')
   const size: Size = useWindowSize()
   const allNfaStakingPools = useNfaStakingPools()
