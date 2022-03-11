@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Currency, Pair, Token } from '@apeswapfinance/sdk'
-import {
-  Button,
-  Text,
-  useModal,
-  Flex,
-  ButtonSquare,
-  ArrowDropDownIcon,
-  useMatchBreakpoints,
-} from '@apeswapfinance/uikit'
+import { Button, Text, useModal, Flex, ButtonSquare, ArrowDropDownIcon } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import styled from 'styled-components'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'

@@ -4,13 +4,13 @@ import { light, dark } from '@apeswapfinance/uikit'
 import { useColorMode } from 'theme-ui'
 
 const CACHE_KEY = 'IS_DARK'
-
+const isBrowser = typeof window === 'object'
 const ThemeContext = React.createContext({ isDark: null, toggleTheme: () => null })
 
 const ThemeContextProvider = ({ children }) => {
   const [_, setColorMode] = useColorMode()
   const [isDark, setIsDark] = useState(() => {
-    const isDarkUserSetting = localStorage.getItem(CACHE_KEY)
+    const isDarkUserSetting = isBrowser ? localStorage.getItem(CACHE_KEY) : 'false'
     return isDarkUserSetting ? JSON.parse(isDarkUserSetting) : true
   })
 

@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { Flex, ButtonSquare, ButtonMenu, ButtonMenuItem, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { Flex, ButtonSquare, ButtonMenu, ButtonMenuItem } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 
 interface Props {

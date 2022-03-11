@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Text, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { Text } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import SwiperProvider from 'contexts/SwiperProvider'
 import { useAuctions, useFetchAuctions } from 'state/hooks'
 import Positions from './components/Positions'

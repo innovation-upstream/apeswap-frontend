@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { Skeleton, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { Skeleton } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import { useFetchHeadersHome } from 'state/strapi/fetchStrapi'
 import { useNetworkChainId } from 'state/hooks'
 import { NETWORK_LABEL } from 'config/constants/chains'
