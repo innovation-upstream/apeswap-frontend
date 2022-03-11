@@ -70,7 +70,8 @@ const MenuComponent = ({ icon, label, href }) => {
     <Flex
       sx={{
         ...menuItemContainer,
-        boxShadow: href === active ? 'rgb(77 64 64) 4px 0px 0px inset;' : '',
+        borderColor: 'text',
+        borderLeft: href === active ? '4px solid' : '',
       }}
     >
       <Flex sx={linkStyle}>
@@ -126,7 +127,7 @@ const Submenu = ({ icon, label, items }) => {
             animate={{ height: 'fit-content' }}
             transition={{ height: { duration: 0.3 } }}
             exit={{ height: 0 }}
-            sx={{ overflow: 'hidden' }}
+            sx={{ overflow: 'hidden', background: 'body' }}
           >
             {items?.map((link, index) => (
               <Flex
@@ -134,8 +135,8 @@ const Submenu = ({ icon, label, items }) => {
                 sx={{
                   ...menuItemContainer,
                   position: 'relative',
-                  background: 'primaryBright',
-                  boxShadow: link.href === active ? 'rgb(77 64 64) 4px 0px 0px inset' : '',
+                  borderColor: 'text',
+                  borderLeft: link.href === active ? '4px solid' : '',
                 }}
               >
                 <Flex key={`${link.label}-${index + 1}`} sx={linkStyle}>
