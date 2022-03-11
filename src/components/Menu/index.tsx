@@ -71,6 +71,7 @@ const MenuComponent = ({ icon, label, href }) => {
       sx={{
         ...menuItemContainer,
         borderColor: 'text',
+        paddingLeft: href === active ? '13px' : undefined,
         borderLeft: href === active ? '4px solid' : '',
       }}
     >
@@ -136,6 +137,7 @@ const Submenu = ({ icon, label, items }) => {
                   ...menuItemContainer,
                   position: 'relative',
                   borderColor: 'text',
+                  paddingLeft: link.href === active ? '13px' : undefined,
                   borderLeft: link.href === active ? '4px solid' : '',
                 }}
               >

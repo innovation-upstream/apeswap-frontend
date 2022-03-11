@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ThemeProvider as SCThemeProvider } from 'styled-components'
 import { light, dark } from '@apeswapfinance/uikit'
+import { useColorMode } from 'theme-ui'
 
 const CACHE_KEY = 'IS_DARK'
 
 const ThemeContext = React.createContext({ isDark: null, toggleTheme: () => null })
 
 const ThemeContextProvider = ({ children }) => {
+  const [_, setColorMode] = useColorMode()
   const [isDark, setIsDark] = useState(() => {
     const isDarkUserSetting = localStorage.getItem(CACHE_KEY)
     return isDarkUserSetting ? JSON.parse(isDarkUserSetting) : true
@@ -18,6 +20,10 @@ const ThemeContextProvider = ({ children }) => {
       return !prevState
     })
   }
+
+  useEffect(() => {
+    setColorMode(isDark ? 'dark' : 'light')
+  }, [isDark, setColorMode])
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>

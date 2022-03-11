@@ -21,8 +21,8 @@ const Providers: React.FC = ({ children }) => {
       <Web3ProviderNetworkSSR getLibrary={getLibrary}>
         <Provider store={store}>
           <HelmetProvider>
-            <ThemeContextProvider>
-              <ThemeProvider theme={Apeswap}>
+            <ThemeProvider theme={Apeswap}>
+              <ThemeContextProvider>
                 <NftProvider>
                   <RefreshContextProvider>
                     <ModalProvider>
@@ -32,8 +32,8 @@ const Providers: React.FC = ({ children }) => {
                     </ModalProvider>
                   </RefreshContextProvider>
                 </NftProvider>
-              </ThemeProvider>
-            </ThemeContextProvider>
+              </ThemeContextProvider>
+            </ThemeProvider>
           </HelmetProvider>
         </Provider>
       </Web3ProviderNetworkSSR>
