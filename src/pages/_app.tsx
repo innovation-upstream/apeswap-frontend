@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GlobalStyle />
       <MarketingModalCheck />
       <PageWrapper>
-        <Menu />
+        <Menu chain={pageProps?.chainId} />
         {loading ? <PageLoader /> : <Component {...pageProps} />}
       </PageWrapper>
       <ToastListener />

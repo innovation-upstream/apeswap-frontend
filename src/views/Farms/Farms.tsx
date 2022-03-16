@@ -57,7 +57,13 @@ import {
 
 const NUMBER_OF_FARMS_VISIBLE = 12
 
-const Farms: React.FC<{ showHistory?: boolean }> = ({ showHistory }) => {
+interface FarmsProps {
+  showHistory?: boolean
+  farmData?: any[]
+  view?: any
+}
+
+const Farms: React.FC<FarmsProps> = ({ showHistory, farmData, view }) => {
   usePollFarms()
   const size: Size = useWindowSize()
   const { pathname } = useRouter()
@@ -67,9 +73,10 @@ const Farms: React.FC<{ showHistory?: boolean }> = ({ showHistory }) => {
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const bnbPrice = usePriceBnbBusd()
   const { account } = useWeb3React()
-  const farmsLP = useFarms(account)
+  const allFarms = useFarms(account)
+  const [farmsLP, setFarmsLP] = useState(farmData)
   const [query, setQuery] = useState('')
-  const [viewMode, setViewMode] = useState(null)
+  const [viewMode, setViewMode] = useState(view)
   const [sortOption, setSortOption] = useState('hot')
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
   const loadMoreRef = useRef<HTMLDivElement>(null)
@@ -78,6 +85,10 @@ const Farms: React.FC<{ showHistory?: boolean }> = ({ showHistory }) => {
   const { lpTokenPrices } = useLpTokenPrices()
 
   const ethPriceUsd = usePriceEthBusd()
+
+  useEffect(() => {
+    setFarmsLP(allFarms)
+  }, [allFarms])
 
   useEffect(() => {
     if (size.width !== undefined) {

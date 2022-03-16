@@ -1,15 +1,13 @@
 import React from 'react'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { getServerSideGenericProps } from 'components/getServersideProps'
 import fetchPools from 'state/pools/fetchPools'
 import fetchPrices from 'state/tokenPrices/fetchPrices'
-import Cookies from 'universal-cookie'
 import Pools from '../../views/Pools'
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const { req } = context
-  const cookies = new Cookies(req.cookies)
-  const chainIdStr = cookies.get('chainIdStatus')
-  const chainId = parseInt(chainIdStr)
+  const initialProps = await getServerSideGenericProps(context)
+  const chainId = initialProps?.props?.chainId
 
   let poolData = []
   try {
@@ -21,10 +19,12 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
 
   return {
     props: {
+      ...initialProps?.props,
       poolData: JSON.parse(JSON.stringify(poolData)),
     },
   }
 }
+
 const PoolsPage: React.FC<{ poolData: any[] }> = ({ poolData }) => {
   return <Pools poolData={poolData} />
 }

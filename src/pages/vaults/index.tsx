@@ -1,15 +1,13 @@
 import React from 'react'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { getServerSideGenericProps } from 'components/getServersideProps'
 import Vaults from 'views/Vaults'
 import fetchVaultData from 'state/vaults/fetchVaultData'
 import fetchPrices from 'state/tokenPrices/fetchPrices'
-import Cookies from 'universal-cookie'
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const { req } = context
-  const cookies = new Cookies(req.cookies)
-  const chainIdStr = cookies.get('chainIdStatus')
-  const chainId = parseInt(chainIdStr)
+  const initialProps = await getServerSideGenericProps(context)
+  const chainId = initialProps?.props?.chainId
 
   let vaultData = []
   try {
@@ -21,6 +19,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
 
   return {
     props: {
+      ...initialProps?.props,
       vaultData: JSON.parse(JSON.stringify(vaultData)),
     },
   }
