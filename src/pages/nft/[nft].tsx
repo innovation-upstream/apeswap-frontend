@@ -1,8 +1,10 @@
 import React from 'react'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { getServerSideGenericProps } from 'components/getServersideProps'
 import Nfa from '../../views/Nft/Nfa'
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+  const initialProps = await getServerSideGenericProps(context)
   const { params } = context
 
   if (!params.nft) {
@@ -16,6 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
 
   return {
     props: {
+      ...initialProps?.props,
       nft: parseInt(params.nft as string),
     },
   }

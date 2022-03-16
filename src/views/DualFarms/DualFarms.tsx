@@ -397,20 +397,27 @@ const FlexLayout = styled.div`
 
 interface IDualFarms {
   showHistory?: boolean
+  farmData?: any[]
+  view?: any
 }
 
-const DualFarms: React.FC<IDualFarms> = ({ showHistory }) => {
+const DualFarms: React.FC<IDualFarms> = ({ showHistory, farmData, view }) => {
   usePollDualFarms()
   const size: Size = useWindowSize()
   const { pathname } = useRouter()
   const TranslateString = useI18n()
   const bananaPrice = usePriceBananaBusd()
   const { account } = useWeb3React()
-  const farmsLP = useDualFarms()
+  const allFarms = useDualFarms()
+  const [farmsLP, setFarmsLP] = useState(farmData)
   const [query, setQuery] = useState('')
-  const [viewMode, setViewMode] = useState(null)
+  const [viewMode, setViewMode] = useState(view)
   const [sortOption, setSortOption] = useState('hot')
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
+
+  useEffect(() => {
+    setFarmsLP(allFarms)
+  }, [allFarms])
 
   useEffect(() => {
     if (size.width !== undefined) {
