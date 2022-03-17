@@ -1,11 +1,13 @@
 import React from 'react'
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { GetServerSideProps } from 'next'
 import { getServerSideGenericProps } from 'components/getServersideProps'
 import Vaults from 'views/Vaults'
 import fetchVaultData from 'state/vaults/fetchVaultData'
 import fetchPrices from 'state/tokenPrices/fetchPrices'
+import { setVaults } from '../../state/vaults'
+import { wrapper } from '../../state'
 
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   const initialProps = await getServerSideGenericProps(context)
   const chainId = initialProps?.props?.chainId
 
@@ -16,17 +18,13 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   } catch (e) {
     console.error(e)
   }
+  store.dispatch(setVaults(vaultData))
 
-  return {
-    props: {
-      ...initialProps?.props,
-      vaultData: JSON.parse(JSON.stringify(vaultData)),
-    },
-  }
-}
+  return initialProps
+})
 
-const VaultsHistory: React.FC<{ vaultData: any[] }> = ({ vaultData }) => {
-  return <Vaults showHistory vaultData={vaultData} />
+const VaultsHistory: React.FC = () => {
+  return <Vaults showHistory />
 }
 
 export default VaultsHistory

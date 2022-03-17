@@ -489,10 +489,9 @@ const NUMBER_OF_POOLS_VISIBLE = 12
 
 interface IPools {
   showHistory?: boolean
-  poolData?: any[]
 }
 
-const Pools: React.FC<IPools> = ({ showHistory, poolData }) => {
+const Pools: React.FC<IPools> = ({ showHistory }) => {
   usePollPools()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [gnanaOnly, setGnanaOnly] = useState(false)
@@ -504,8 +503,7 @@ const Pools: React.FC<IPools> = ({ showHistory, poolData }) => {
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { account } = useWeb3React()
   const size: Size = useWindowSize()
-  const pools = usePools(account)
-  const [allPools, setAllPools] = useState(poolData || pools)
+  const allPools = usePools(account)
   const TranslateString = useI18n()
   const { currentBlock } = useBlock()
   const isActive = !showHistory
@@ -515,10 +513,6 @@ const Pools: React.FC<IPools> = ({ showHistory, poolData }) => {
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
   }
-
-  useEffect(() => {
-    setAllPools(pools)
-  }, [pools])
 
   useEffect(() => {
     if (size.width !== undefined) {

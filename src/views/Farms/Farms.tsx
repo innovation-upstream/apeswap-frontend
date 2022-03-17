@@ -59,11 +59,10 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 
 interface FarmsProps {
   showHistory?: boolean
-  farmData?: any[]
   view?: any
 }
 
-const Farms: React.FC<FarmsProps> = ({ showHistory, farmData, view }) => {
+const Farms: React.FC<FarmsProps> = ({ showHistory, view }) => {
   usePollFarms()
   const size: Size = useWindowSize()
   const { pathname } = useRouter()
@@ -73,8 +72,7 @@ const Farms: React.FC<FarmsProps> = ({ showHistory, farmData, view }) => {
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const bnbPrice = usePriceBnbBusd()
   const { account } = useWeb3React()
-  const allFarms = useFarms(account)
-  const [farmsLP, setFarmsLP] = useState(farmData)
+  const farmsLP = useFarms(account)
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useState(view)
   const [sortOption, setSortOption] = useState('hot')
@@ -85,10 +83,6 @@ const Farms: React.FC<FarmsProps> = ({ showHistory, farmData, view }) => {
   const { lpTokenPrices } = useLpTokenPrices()
 
   const ethPriceUsd = usePriceEthBusd()
-
-  useEffect(() => {
-    setFarmsLP(allFarms)
-  }, [allFarms])
 
   useEffect(() => {
     if (size.width !== undefined) {

@@ -17,11 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     }
   }
 
-  return {
-    props: {
-      ...initialProps?.props,
-    },
-  }
+  return initialProps
 }
 
 const FarmsPage: React.FC = () => {
