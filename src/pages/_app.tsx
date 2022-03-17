@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { ResetCSS } from '@apeswapfinance/uikit'
@@ -7,6 +7,7 @@ import ToastListener from 'components/ToastListener'
 import MarketingModalCheck from 'components/MarketingModalCheck'
 import { PageWrapper } from 'components/PageWrapper'
 import Menu from 'components/Menu'
+import { TopMenu } from 'components/TopMenu'
 import PageLoader from 'components/PageLoader'
 import Providers from '../Providers'
 
@@ -36,6 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GlobalStyle />
       <MarketingModalCheck />
       <PageWrapper>
+        <TopMenu />
         <Menu />
         {loading ? <PageLoader /> : <Component {...pageProps} />}
       </PageWrapper>
