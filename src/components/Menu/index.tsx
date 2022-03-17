@@ -159,11 +159,12 @@ const Submenu = ({ icon, label, items }) => {
   )
 }
 
-const Menu = (props) => {
+const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
   const router = useRouter()
   const { setActive } = useContext(MenuContext)
+  const [chainId, setChainId] = useState(chain)
   const { account } = useWeb3React()
-  const chainId = useNetworkChainId()
+  const networkChain = useNetworkChainId()
   const { login, logout } = useAuth()
   const { switchNetwork } = useSelectNetwork()
   const { isDark, toggleTheme } = useTheme()
@@ -179,6 +180,12 @@ const Menu = (props) => {
     }
     return bscConfig
   }
+
+  useEffect(() => {
+    if (networkChain) {
+      setChainId(networkChain)
+    }
+  }, [networkChain])
 
   useEffect(() => {
     if (!router) return

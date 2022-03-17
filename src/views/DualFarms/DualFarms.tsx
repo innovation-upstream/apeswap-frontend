@@ -397,9 +397,10 @@ const FlexLayout = styled.div`
 
 interface IDualFarms {
   showHistory?: boolean
+  view?: any
 }
 
-const DualFarms: React.FC<IDualFarms> = ({ showHistory }) => {
+const DualFarms: React.FC<IDualFarms> = ({ showHistory, view }) => {
   usePollDualFarms()
   const size: Size = useWindowSize()
   const { pathname } = useRouter()
@@ -408,7 +409,7 @@ const DualFarms: React.FC<IDualFarms> = ({ showHistory }) => {
   const { account } = useWeb3React()
   const farmsLP = useDualFarms()
   const [query, setQuery] = useState('')
-  const [viewMode, setViewMode] = useState(null)
+  const [viewMode, setViewMode] = useState(view)
   const [sortOption, setSortOption] = useState('hot')
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
 

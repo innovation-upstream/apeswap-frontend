@@ -1,12 +1,16 @@
 import React from 'react'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { getServerSideGenericProps } from 'components/getServersideProps'
 import AddLiquidity from '../../views/AddLiquidity'
 
 const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40}|BNB)-(0x[a-fA-F0-9]{40}|BNB)$/
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
+  const initialProps = await getServerSideGenericProps(context)
   const { params } = context
-  let props = {}
+  let props = {
+    ...initialProps?.props,
+  }
 
   const currencies = params?.currency
 
@@ -21,6 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
       }
     }
     props = {
+      ...props,
       currencyIdA: currencies[0],
     }
   }
@@ -35,6 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
       }
     }
     props = {
+      ...props,
       currencyIdA: currencies[0],
       currencyIdB: currencies[1],
     }

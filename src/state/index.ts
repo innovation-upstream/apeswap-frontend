@@ -1,6 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { load, save } from 'redux-localstorage-simple'
 import { useDispatch } from 'react-redux'
+import { createWrapper } from 'next-redux-wrapper'
 import { updateVersion } from './global/actions'
 import farmsReducer from './farms'
 import toastsReducer from './toasts'
@@ -61,5 +62,6 @@ store.dispatch(updateVersion())
 export type AppState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch()
+export const wrapper = createWrapper(() => store)
 
 export default store
