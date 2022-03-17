@@ -444,10 +444,9 @@ const NUMBER_OF_VAULTS_VISIBLE = 12
 
 interface IVaults {
   showHistory?: boolean
-  vaultData?: any[]
 }
 
-const Vaults: React.FC<IVaults> = ({ showHistory, vaultData }) => {
+const Vaults: React.FC<IVaults> = ({ showHistory }) => {
   usePollVaultsData()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [burnOnly, setBurnOnly] = useState(false)
@@ -458,7 +457,7 @@ const Vaults: React.FC<IVaults> = ({ showHistory, vaultData }) => {
   const [numberOfVaultsVisible, setNumberOfVaultsVisible] = useState(NUMBER_OF_VAULTS_VISIBLE)
   const size: Size = useWindowSize()
   const { vaults: initVaults } = useVaults()
-  const [allVaults, setAllVaults] = useState(vaultData || initVaults)
+  const [allVaults, setAllVaults] = useState(initVaults)
   const TranslateString = useI18n()
   const chainId = useNetworkChainId()
   const isActive = !showHistory
