@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import styled from 'styled-components'
 import { Skeleton } from '@apeswapfinance/uikit'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
-import { useFetchHeadersHome } from 'state/strapi/fetchStrapi'
 import { useNetworkChainId } from 'state/hooks'
 import { NETWORK_LABEL } from 'config/constants/chains'
+import { HomeContext } from 'contexts/SSRContext'
 
 const Header = styled.div<{ image: string }>`
   position: relative;
@@ -66,7 +66,9 @@ const SLIDETIME = 6000
 const Banner = () => {
   const [activeIndex, setActiveIndex] = useState(0)
   const chainId = useNetworkChainId()
-  const { headersData, loading } = useFetchHeadersHome()
+  const {
+    header: { headersData, loading },
+  } = useContext(HomeContext)
   const filteredBanners = headersData.filter((banner) => !banner?.chain || banner?.chain === NETWORK_LABEL[chainId])
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const timeoutRef = useRef(null)
