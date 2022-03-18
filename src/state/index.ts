@@ -53,7 +53,10 @@ const store = configureStore({
     burn,
     mint,
   },
-  middleware: [...getDefaultMiddleware({ thunk: true }), save({ states: PERSISTED_KEYS })],
+  middleware: [
+    ...getDefaultMiddleware({ thunk: true }),
+    ...(typeof window === 'object' ? [save({ states: PERSISTED_KEYS })] : []),
+  ],
   preloadedState: load({ states: PERSISTED_KEYS }),
 })
 
