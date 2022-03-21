@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Flex, Text, useMatchBreakpoints, Skeleton } from '@apeswapfinance/uikit'
+import { Flex, Text, Skeleton } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import CountUp from 'react-countup'
 import { useTheme } from 'styled-components'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'

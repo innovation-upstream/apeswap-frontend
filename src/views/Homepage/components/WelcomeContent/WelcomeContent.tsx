@@ -1,5 +1,6 @@
 import React from 'react'
-import { ApeSwapRoundIcon, Flex, Text, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { ApeSwapRoundIcon, Flex, Text } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import { BuyBanana, ContentContainer, HeadingText, LearnMore } from './styles'
 
 const WelcomeContent: React.FC = () => {

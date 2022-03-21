@@ -15,7 +15,7 @@ import { CHAIN_ID } from 'config/constants/chains'
 import { HomeContextProvider } from 'contexts/SSRContext'
 import { getFarmsHome, getPoolsHome, getNewsHome, getHeadersHome } from 'hooks/api'
 import { wrapper } from 'state'
-import Home from 'views/Home'
+import Home from 'views/Homepage'
 import getHomepageStats from 'state/stats/getHomepageStats'
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
