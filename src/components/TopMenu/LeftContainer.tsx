@@ -1,10 +1,14 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import { Box } from 'theme-ui'
 import { Link, BrowserRouter as Router } from 'react-router-dom'
-import { IconButton, MenuContext, Svg } from '@innovationupstream/apeswap-uikit'
+import { IconButton, Svg } from '@innovationupstream/apeswap-uikit'
 
-const LeftContainer: React.FC<any> = () => {
-  const { collapse, setCollapse } = useContext(MenuContext)
+interface Props {
+  collapse: boolean
+  setCollapse: () => void
+}
+
+const LeftContainer: React.FC<Props> = (props: Props) => {
   return (
     <Box
       sx={{
@@ -24,8 +28,8 @@ const LeftContainer: React.FC<any> = () => {
     >
       <IconButton
         variant="transparent"
-        onClick={() => setCollapse(!collapse)}
-        icon={collapse ? 'hamburger' : 'collapse'}
+        onClick={() => props.setCollapse()}
+        icon={props.collapse ? 'hamburger' : 'collapse'}
         color="info"
         sx={{ width: '24' }}
       />

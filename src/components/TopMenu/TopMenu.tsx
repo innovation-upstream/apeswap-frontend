@@ -1,10 +1,12 @@
 /** @jsxImportSource theme-ui */
-import React from 'react'
+import React, { useContext } from 'react'
+import { MenuContext } from '@innovationupstream/apeswap-uikit'
 import { Flex, Box } from 'theme-ui'
 import LeftContainer from './LeftContainer'
 import RightContainer from './RightContainer'
 
 const TopMenu: React.FC<any> = () => {
+  const { collapse, setCollapse } = useContext(MenuContext)
   return (
     <Flex
       sx={{
@@ -19,7 +21,7 @@ const TopMenu: React.FC<any> = () => {
       }}
     >
       <Box>
-        <LeftContainer />
+        <LeftContainer collapse={collapse} setCollapse={() => setCollapse(!collapse)} />
       </Box>
       <Box>
         <RightContainer />

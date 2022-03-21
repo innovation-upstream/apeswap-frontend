@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
+import BNBButton from './BNBButton'
+import ConnectButton from './ConnectButton'
 import { Box } from 'theme-ui'
-import { IconButton, Svg, Button, Text } from '@innovationupstream/apeswap-uikit'
+import {
+  IconButton,
+  Svg,
+  Button,
+  Text,
+  Modal,
+  ModalHeader,
+  Heading,
+  ModalFooter,
+} from '@innovationupstream/apeswap-uikit'
+import { setNetwork } from 'state/network'
 
 const RightContainer: React.FC<any> = () => {
+  const [showNetworkPopup, setShowNetwork] = useState(false)
   return (
     <Box
       sx={{
@@ -15,35 +28,8 @@ const RightContainer: React.FC<any> = () => {
         },
       }}
     >
-      <Button
-        colorMode="light"
-        csx={{
-          background: 'white4',
-          border: 0,
-          '&:hover': {
-            background: 'white4',
-          },
-        }}
-        size="sm"
-        variant="primary"
-      >
-        <Svg color="yellow" direction="down" icon="bnb_token" width={18} />
-        <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-          BNB
-        </Text>
-        <Svg
-          color="info"
-          direction="down"
-          icon="caret"
-          // width={40}
-        />
-      </Button>
-
-      <Button colorMode="dark" csx={{}} size="sm" variant="primary">
-        <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-          CONNECT
-        </Text>
-      </Button>
+      <BNBButton />
+      <ConnectButton />
 
       <IconButton
         background="info"
