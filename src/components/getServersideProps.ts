@@ -11,6 +11,7 @@ export const getServerSideGenericProps = async (
 ): Promise<{ props: any }> => {
   const { req } = context
   const cookies = new Cookies(req.cookies)
+  const account = cookies.get('account')
   const chainIdStr = cookies.get('chainIdStatus')
   const chainId = chainIdStr ? parseInt(chainIdStr) : CHAIN_ID.BSC
   context.store?.dispatch(setNetwork({ chainId }))
@@ -20,8 +21,11 @@ export const getServerSideGenericProps = async (
   }
 
   return {
-    props: {
-      chainId,
-    },
+    props: JSON.parse(
+      JSON.stringify({
+        account,
+        chainId,
+      }),
+    ),
   }
 }
