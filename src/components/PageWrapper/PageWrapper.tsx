@@ -4,6 +4,8 @@ import useEagerConnect from 'hooks/useEagerConnect'
 import { useFetchTokenPrices, useFetchProfile, useUpdateNetwork } from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
 
+const isBrowser = typeof window === 'object'
+
 const PageWrapper: React.FC = ({ children }) => {
   const { account } = useWeb3React()
 
@@ -12,7 +14,7 @@ const PageWrapper: React.FC = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    if (account) dataLayer?.push({ event: 'wallet_connect', user_id: account })
+    if (isBrowser && account) dataLayer?.push({ event: 'wallet_connect', user_id: account })
   }, [account])
 
   useUpdateNetwork()
