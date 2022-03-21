@@ -1,24 +1,36 @@
 import { icons } from '@innovationupstream/apeswap-uikit'
 import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
-import { HOME, EXCHANGE, MORE_INFO } from '../constants'
+import { EXCHANGE } from '../constants'
 
 const maticConfig = [
-  HOME,
-  // {
-  //   label: 'Ape Stats',
-  //   icon: 'StatsIcon',
-  //   href: '/stats',
-  // },
   EXCHANGE,
   {
     label: 'Farms',
-    icon: icons.FARM,
     href: '/farms',
   },
   {
     label: 'Vaults',
-    icon: icons.VAULT,
     href: '/vaults',
+  },
+  {
+    label: 'More',
+    icon: icons.MORE,
+    lightIcon: 'MoreLightImage',
+    darkIcon: 'MoreDarkImage',
+    items: [
+      {
+        label: 'Docs',
+        href: 'https://apeswap.gitbook.io/apeswap-finance/',
+      },
+      {
+        label: 'Charts',
+        href: NETWORK_INFO_LINK[CHAIN_ID.MATIC],
+      },
+      {
+        label: 'Governance',
+        href: 'https://vote.apeswap.finance',
+      },
+    ],
   },
   //   {
   //     label: 'Pools',
@@ -35,29 +47,6 @@ const maticConfig = [
   //     icon: 'ApeZone',
   //     href: '/gnana',
   //   },
-  {
-    label: 'Info',
-    icon: icons.MORE,
-    items: [
-      {
-        label: 'Overview',
-        href: NETWORK_INFO_LINK[CHAIN_ID.MATIC],
-      },
-      {
-        label: 'Tokens',
-        href: `${NETWORK_INFO_LINK[CHAIN_ID.MATIC]}/tokens`,
-      },
-      {
-        label: 'Pairs',
-        href: `${NETWORK_INFO_LINK[CHAIN_ID.MATIC]}/pairs`,
-      },
-      {
-        label: 'Accounts',
-        href: `${NETWORK_INFO_LINK[CHAIN_ID.MATIC]}/accounts`,
-      },
-    ],
-  },
-  MORE_INFO,
 ]
 
 export default maticConfig

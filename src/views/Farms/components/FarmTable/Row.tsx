@@ -146,7 +146,7 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
     setActionPanelToggled(!actionPanelToggled)
   }
 
-  const { isXl, isXs } = useMatchBreakpoints()
+  const { isXxl, isXl, isXs } = useMatchBreakpoints()
 
   const { account } = useWeb3React()
 
@@ -159,7 +159,7 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
-  const isMobile = !isXl
+  const isMobile = !isXxl && !isXl
   const tableSchema = isMobile ? MobileColumnSchema : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)
 
@@ -204,7 +204,8 @@ const Row: React.FunctionComponent<RowProps> = (props) => {
                 case 'liquidity':
                   return (
                     <LiquidtyContainer key={key}>
-                      {React.createElement(cells[key], { ...props[key] })}
+                      <Liquidity {...props.liquidity} />
+                      {/* {React.createElement(cells[key], { ...props[key] })} */}
                     </LiquidtyContainer>
                   )
                 case 'earned':
