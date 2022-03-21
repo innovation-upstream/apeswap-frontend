@@ -1,16 +1,14 @@
 import React from 'react'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import { getServerSideGenericProps } from 'components/getServersideProps'
 import JunglePools from 'views/JunglePools'
-import Cookies from 'universal-cookie'
 import { CHAIN_ID } from 'config/constants/chains'
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const { req } = context
-  const cookies = new Cookies(req.cookies)
-  const chainIdStr = cookies.get('chainIdStatus')
-  const chainId = chainIdStr ? parseInt(chainIdStr) : undefined
+  const initialProps = await getServerSideGenericProps(context)
+  const chainId = initialProps?.props?.chainId
 
-  if (!chainIdStr || chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
+  if (!chainId || chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
     return {
       redirect: {
         destination: '/',
@@ -19,9 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     }
   }
 
-  return {
-    props: {},
-  }
+  return initialProps
 }
 
 const FarmsPage: React.FC = () => {

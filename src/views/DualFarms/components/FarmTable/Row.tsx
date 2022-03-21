@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useMatchBreakpoints, Flex } from '@apeswapfinance/uikit'
+import { Flex } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import { useWeb3React } from '@web3-react/core'
 import useI18n from 'hooks/useI18n'
 import UnlockButton from 'components/UnlockButton'

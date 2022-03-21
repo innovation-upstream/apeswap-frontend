@@ -57,7 +57,12 @@ import {
 
 const NUMBER_OF_FARMS_VISIBLE = 12
 
-const Farms: React.FC<{ showHistory?: boolean }> = ({ showHistory }) => {
+interface FarmsProps {
+  showHistory?: boolean
+  view?: any
+}
+
+const Farms: React.FC<FarmsProps> = ({ showHistory, view }) => {
   usePollFarms()
   const size: Size = useWindowSize()
   const { pathname } = useRouter()
@@ -69,7 +74,7 @@ const Farms: React.FC<{ showHistory?: boolean }> = ({ showHistory }) => {
   const { account } = useWeb3React()
   const farmsLP = useFarms(account)
   const [query, setQuery] = useState('')
-  const [viewMode, setViewMode] = useState(null)
+  const [viewMode, setViewMode] = useState(view)
   const [sortOption, setSortOption] = useState('hot')
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
   const loadMoreRef = useRef<HTMLDivElement>(null)
