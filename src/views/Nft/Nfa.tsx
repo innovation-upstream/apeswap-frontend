@@ -76,7 +76,7 @@ const Nfa: React.FC<{ nft: number }> = ({ nft: id }) => {
   const sales = useGetNfaSales(id)
 
   if (!nfa) {
-    router.push('/404')
+    return null
   }
 
   return (
