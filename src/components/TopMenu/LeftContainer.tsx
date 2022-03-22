@@ -9,6 +9,8 @@ interface Props {
 }
 
 const LeftContainer: React.FC<Props> = (props: Props) => {
+  const { setCollapse, collapse } = props
+  console.log('props', props)
   return (
     <Box
       sx={{
@@ -28,8 +30,8 @@ const LeftContainer: React.FC<Props> = (props: Props) => {
     >
       <IconButton
         variant="transparent"
-        onClick={() => props.setCollapse()}
-        icon={props.collapse ? 'hamburger' : 'collapse'}
+        onClick={() => setCollapse()}
+        icon={collapse ? 'hamburger' : 'collapse'}
         color="info"
         sx={{ width: '24' }}
       />

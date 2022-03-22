@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import BNBButton from './BNBButton'
-import ConnectButton from './ConnectButton'
 import { Box } from 'theme-ui'
 import {
   IconButton,
@@ -13,6 +11,8 @@ import {
   ModalFooter,
 } from '@innovationupstream/apeswap-uikit'
 import { setNetwork } from 'state/network'
+import ConnectButton from './ConnectButton'
+import BNBButton from './BNBButton'
 
 const RightContainer: React.FC<any> = () => {
   const [showNetworkPopup, setShowNetwork] = useState(false)
