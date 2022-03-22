@@ -5,6 +5,7 @@ import Farms from 'views/Farms'
 import DualFarms from 'views/DualFarms'
 import { ViewMode } from 'views/Farms/components/types'
 import { setFarmsPublicData } from 'state/farms'
+import { setDualFarmsPublicData } from 'state/dualFarms'
 import fetchPrices from 'state/tokenPrices/fetchPrices'
 import fetchFarms from 'state/farms/fetchFarms'
 import fetchDualFarms from 'state/dualFarms/fetchDualFarms'
@@ -17,10 +18,11 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   const chainId = initialProps?.props?.chainId
 
   let farmData = []
+  let dualFarmsData = []
   try {
     const tokenPrices = await fetchPrices(chainId)
     if (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
-      farmData = await fetchDualFarms(tokenPrices, chainId)
+      dualFarmsData = await fetchDualFarms(tokenPrices, chainId)
     } else {
       farmData = await fetchFarms(chainId)
     }
@@ -28,6 +30,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     console.warn(e)
   }
   store.dispatch(setFarmsPublicData(JSON.parse(JSON.stringify(farmData))))
+  store.dispatch(setDualFarmsPublicData(JSON.parse(JSON.stringify(dualFarmsData))))
 
   let view = ViewMode.TABLE
   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(req.headers.userAgent as string)) {

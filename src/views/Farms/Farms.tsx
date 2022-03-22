@@ -20,7 +20,6 @@ import { Farm } from 'state/types'
 import { QuoteToken } from 'config/constants/types'
 import { orderBy } from 'lodash'
 import useI18n from 'hooks/useI18n'
-import MarketingModalCheck from 'components/MarketingModalCheck'
 import HeaderSection from 'components/layout/HeaderSection'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import FarmTabButtons from './components/FarmTabButtons'
@@ -350,7 +349,6 @@ const Farms: React.FC<FarmsProps> = ({ showHistory, view }) => {
 
   return (
     <>
-      <MarketingModalCheck />
       <HeaderSection>
         <Header>
           <HeadingContainer>

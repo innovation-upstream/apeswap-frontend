@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Text, Button } from '@apeswapfinance/uikit'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import nfts from 'config/constants/nfts'
+import { useFetchNfas, useNfas } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
 import NfaAttributes from './components/NfaAttributes'
 import NfaSales from './components/NfaSales'
@@ -69,12 +69,14 @@ const BoxShadow = styled.div`
 
 const Nfa: React.FC<{ nft: number }> = ({ nft: id }) => {
   const router = useRouter()
+  useFetchNfas()
+  const { nfas } = useNfas()
   const TranslateString = useI18n()
-  const nfa = nfts.find((nft) => nft.index === id)
+  const nfa = nfas?.find((nft) => nft.index === id)
   const sales = useGetNfaSales(id)
 
   if (!nfa) {
-    router.push('/404')
+    return null
   }
 
   return (

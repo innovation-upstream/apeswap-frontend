@@ -1,39 +1,42 @@
 import React from 'react'
 import { icons } from '@innovationupstream/apeswap-uikit'
 import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
-import { HOME, EXCHANGE, MORE_INFO } from '../constants'
-import Lending from '../../Icons/Lending'
+import { EXCHANGE } from '../constants'
 
 const bscConfig = [
-  HOME,
   EXCHANGE,
   {
-    label: 'Farms',
+    label: 'Stake',
     icon: icons.FARM,
+    lightIcon: 'StakeLightImage',
+    darkIcon: 'StakeDarkImage',
     items: [
       {
-        label: 'BANANA',
+        label: 'BANANA Farms',
         href: '/farms',
       },
       {
-        label: 'Jungle',
+        label: 'Pools',
+        href: '/pools',
+      },
+      {
+        label: 'Jungle Farms',
         href: '/jungle-farms',
+      },
+      {
+        label: 'Vaults',
+        href: '/vaults',
+      },
+      {
+        label: 'GNANA',
+        href: '/gnana',
       },
     ],
   },
   {
-    label: 'Pools',
-    icon: icons.POOL,
-    href: '/pools',
-  },
-  {
-    label: 'Vaults',
-    icon: icons.VAULT,
-    href: '/vaults',
-  },
-  {
-    label: 'IAO',
-    icon: icons.ROCKET,
+    label: 'Offerings',
+    lightIcon: 'OfferingsLightImage',
+    darkIcon: 'OfferingsDarkImage',
     items: [
       {
         label: 'Official',
@@ -46,56 +49,81 @@ const bscConfig = [
     ],
   },
   {
-    label: 'NFA',
+    label: 'NFTs',
     icon: icons.NFA,
+    lightIcon: 'NfaLightImage',
+    darkIcon: 'NfaDarkImage',
     items: [
       {
-        label: 'Collection',
+        label: 'NFA Collection',
         href: '/nft',
       },
       {
-        label: 'Auction',
+        label: 'NFA Auction',
         href: '/auction',
       },
       {
-        label: 'Staking',
+        label: 'NFA Staking',
         href: '/staking',
       },
+      {
+        label: 'Liquid Collectibles',
+        href: 'https://liquidcollectibles.io/',
+      },
     ],
-  },
-  {
-    label: 'GNANA',
-    icon: icons.GNANA,
-    href: '/gnana',
   },
   {
     label: 'Lending',
-    icon: <Lending width="24px" />,
-    href: 'https://lending.apeswap.finance/markets',
+    href: 'https://lending.apeswap.finance/',
   },
   {
-    label: 'Info',
-    icon: icons.CHART,
+    label: 'More',
+    icon: icons.MORE,
+    lightIcon: 'MoreLightImage',
+    darkIcon: 'MoreDarkImage',
     items: [
       {
-        label: 'Overview',
+        label: 'Docs',
+        href: 'https://apeswap.gitbook.io/apeswap-finance/',
+      },
+      {
+        label: 'Charts',
         href: NETWORK_INFO_LINK[CHAIN_ID.BSC],
       },
       {
-        label: 'Tokens',
-        href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/tokens`,
-      },
-      {
-        label: 'Pairs',
-        href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/pairs`,
-      },
-      {
-        label: 'Accounts',
-        href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/accounts`,
+        label: 'Governance',
+        href: 'https://vote.apeswap.finance',
       },
     ],
   },
-  MORE_INFO,
+
+  // {
+  //   label: 'Burn',
+  //   icon: 'GameBurnIcon',
+  //   href: '/burn',
+  // },
+  // {
+  //   label: 'Info',
+  //   icon: 'InfoIcon',
+  //   items: [
+  //     {
+  //       label: 'Overview',
+  //       href: NETWORK_INFO_LINK[CHAIN_ID.BSC],
+  //     },
+  //     {
+  //       label: 'Tokens',
+  //       href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/tokens`,
+  //     },
+  //     {
+  //       label: 'Pairs',
+  //       href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/pairs`,
+  //     },
+  //     {
+  //       label: 'Accounts',
+  //       href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/accounts`,
+  //     },
+  //   ],
+  // },
 ]
 
 export default bscConfig

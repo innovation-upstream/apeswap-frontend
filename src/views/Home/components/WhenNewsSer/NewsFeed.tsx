@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
-import { useFetchNewsHome } from 'state/strapi/fetchStrapi'
+import { HomeContext } from 'contexts/SSRContext'
 
 interface NewsContainerProps {
   border: boolean
@@ -67,7 +67,9 @@ const ImageContainer = styled.div<{ image: string }>`
 `
 
 const NewsFeed = () => {
-  const { newsData, loading } = useFetchNewsHome()
+  const {
+    news: { newsData, loading },
+  } = useContext(HomeContext)
   return (
     <>
       {loading ? (

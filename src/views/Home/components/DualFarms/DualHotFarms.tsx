@@ -74,7 +74,6 @@ const DualHotFarms = () => {
   const pid2 = DEFAULT_FARM_TWO
 
   const farmsToDisplay = [useDualFarmsFromPid(pid1), useDualFarmsFromPid(pid2)]
-
   return (
     <>
       <HotFarmsWrapper>

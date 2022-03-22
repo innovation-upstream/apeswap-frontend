@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { customMeta, DEFAULT_META } from 'config/constants/meta'
-import { usePriceBananaBusd } from 'state/hooks'
 import Head from 'next/head'
 import { MenuContext } from '@innovationupstream/apeswap-uikit'
 import { Box } from 'theme-ui'
@@ -33,20 +32,12 @@ const StyledPage = styled(Container)<SizeProps>`
 
 const PageMeta = () => {
   const { pathname } = useRouter()
-  const bananaPriceUsd = usePriceBananaBusd()
-  const bananaPriceUsdDisplay = bananaPriceUsd.toNumber()
-    ? `$${bananaPriceUsd.toNumber().toLocaleString(undefined, {
-        minimumFractionDigits: 3,
-        maximumFractionDigits: 3,
-      })}`
-    : ''
   const pageMeta = customMeta[pathname] || {}
   const { title, description, image } = { ...DEFAULT_META, ...pageMeta }
-  const pageTitle = bananaPriceUsdDisplay ? [bananaPriceUsdDisplay, title].join(' - ') : title
 
   return (
     <Head>
-      <title>{pageTitle}</title>
+      <title>{title}</title>
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />

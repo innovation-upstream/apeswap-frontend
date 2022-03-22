@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
-import { useFetchPoolsHome } from 'state/strapi/fetchStrapi'
 import { Pool } from 'state/types'
 import pools from 'config/constants/pools'
 import { usePollPools, usePoolFromPid } from 'state/hooks'
+import { HomeContext } from 'contexts/SSRContext'
 import PoolCardForHome from './PoolCardForHome'
 
 const CoolPoolsWrapper = styled.div`
@@ -56,7 +56,9 @@ const DEFAULT_POOL = 0
 
 const CoolPools = () => {
   usePollPools()
-  const { poolsData, loading } = useFetchPoolsHome()
+  const {
+    pools: { poolsData, loading },
+  } = useContext(HomeContext)
 
   const poolMustBeUnder = pools.reduce((prev, curr) => (prev.sousId > curr.sousId ? prev : curr)).sousId
 

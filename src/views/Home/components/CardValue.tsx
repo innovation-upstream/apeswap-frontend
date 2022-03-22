@@ -16,6 +16,8 @@ interface CardValueProps {
   top?: string
 }
 
+const isBrowser = typeof window === 'object'
+
 const CardValue: React.FC<CardValueProps> = ({
   value,
   decimals,
@@ -28,7 +30,7 @@ const CardValue: React.FC<CardValueProps> = ({
   differentFontSize,
 }) => {
   const { countUp, update } = useCountUp({
-    start: 0,
+    start: isBrowser ? 0 : value,
     end: value,
     duration: 1,
     separator: ',',

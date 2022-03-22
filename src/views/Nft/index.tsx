@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading } from '@apeswapfinance/uikit'
+import { Text, Heading, Spinner, Flex } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import HeaderSection from 'components/layout/HeaderSection'
-import nfts from 'config/constants/nfts'
+import { useFetchNfas, useNfas } from 'state/hooks'
 import SortNfts from './components/SortNfts'
 import OwnedNfts from './components/OwnedNft'
 
@@ -73,6 +73,8 @@ const StyledAnchor = styled.a`
 `
 
 const Nft = () => {
+  useFetchNfas()
+  const { nfas, isInitialized } = useNfas()
   const TranslateString = useI18n()
 
   return (
@@ -111,7 +113,13 @@ const Nft = () => {
             </StyledAnchor>
           </Text>
         </StyledHero>
-        <SortNfts nftSet={nfts} />
+        {isInitialized ? (
+          <SortNfts nftSet={nfas} />
+        ) : (
+          <Flex alignItems="center" justifyContent="center">
+            <Spinner />
+          </Flex>
+        )}
       </Page>
     </>
   )
