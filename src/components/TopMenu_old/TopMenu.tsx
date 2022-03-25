@@ -8,18 +8,18 @@ import RightContainer from './RightContainer'
 const TopMenu: React.FC<any> = () => {
   const { collapse, setCollapse } = useContext(MenuContext)
   return (
-    <Flex
-      sx={{
-        color: 'text',
-        backgroundColor: 'white3',
-        position: 'relative',
-        zIndex: 101,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexShrink: 0,
-        height: '60px',
-      }}
-    >
+      <Flex
+        sx={{
+          color: 'text',
+          backgroundColor: 'white3',
+          position: 'relative',
+          zIndex: 101,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexShrink: 0,
+          height: '60px',
+        }}
+      >
       <Box>
         <LeftContainer collapse={collapse} setCollapse={() => setCollapse(!collapse)} />
       </Box>

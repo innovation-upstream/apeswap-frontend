@@ -10,6 +10,7 @@ export const menuItemContainer = {
     cursor: 'pointer',
     backgroundColor: 'white4',
   },
+
 } as any
 
 export const linkStyle = {
@@ -18,4 +19,5 @@ export const linkStyle = {
   width: '100%',
   height: '100%',
   justifyContent: 'space-between',
+  fontWeight:'600'
 }

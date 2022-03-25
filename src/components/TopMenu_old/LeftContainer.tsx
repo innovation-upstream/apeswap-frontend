@@ -10,7 +10,6 @@ interface Props {
 
 const LeftContainer: React.FC<Props> = (props: Props) => {
   const { setCollapse, collapse } = props
-  console.log('props', props)
   return (
     <Box
       sx={{

@@ -23,21 +23,22 @@ const RightContainer: React.FC<any> = () => {
         alignItems: 'center',
         justifyContent: 'end',
         gap: [4, 8],
-        'button:nth-of-type(1)': {
+        '> button:nth-of-type(1)': {
           display: ['none', 'none', 'inline-flex'],
+        },
+        '>*:empty': {
+          display: 'none',
+        },
+
+        '> button:last-child': {
+          border: 0,
+          zIndex: 9,
         },
       }}
     >
       <BNBButton />
       <ConnectButton />
-
-      <IconButton
-        background="info"
-        color="backgroundDisabled"
-        icon="profileLight"
-        variant="circular"
-        csx={{ border: 0 }}
-      />
+      <IconButton background="white4" color="info" colorMode="dark" icon="profileIcon" variant="circular" />
     </Box>
   )
 }

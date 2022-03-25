@@ -8,6 +8,7 @@ import {
   MenuFooter,
   MenuContext,
   Svg,
+  IconButton,
   Text,
 } from '@innovationupstream/apeswap-uikit'
 import { useWeb3React } from '@web3-react/core'
@@ -17,9 +18,14 @@ import { CHAIN_ID } from 'config/constants/chains'
 import useTheme from 'hooks/useTheme'
 import { useNetworkChainId, useProfile, useTokenPrices } from 'state/hooks'
 import useSelectNetwork from 'hooks/useSelectNetwork'
+import { Flex, Box } from 'theme-ui'
+import ConnectButton from 'components/TopMenu_old/ConnectButton'
+import BNBButton from 'components/TopMenu_old/BNBButton'
+import RightContainer from './components/RightContainer'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
-import { MenuItem as MenuEntry, MenuSubItem } from './components'
+import { MenuItem as MenuEntry, MenuSubItem, MenuSubItemMobile } from './components'
+import GlobalStyle from './style'
 
 const isBrowser = typeof window === 'object'
 
@@ -35,6 +41,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
   const { tokenPrices } = useTokenPrices()
   const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const { profile } = useProfile()
+  const [collapse, setCollapse] = useState(false)
   const currentMenu = () => {
     if (chainId === CHAIN_ID.BSC) {
       return bscConfig
@@ -69,32 +76,147 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
   }, [router, setActive])
 
   return (
-    <MenuV2>
-      <MenuBody>
-        {currentMenu().map((item: any, index) => (
-          <MenuItem key={`${item.label}-${index + 1}`}>
-            {!item.items ? (
-              <MenuEntry label={item.label} icon={item.icon} href={item.href} />
-            ) : (
-              <MenuSubItem items={item.items} label={item.label} icon={item.icon} />
-            )}
-          </MenuItem>
-        ))}
-      </MenuBody>
+    <>
+      <GlobalStyle />
 
-      <MenuFooter>
-        <div sx={{ display: 'flex', justifyContent: 'space-between', ml: '19px', mr: '26px', mb: '70px' }}>
-          <div sx={{ display: 'flex', alignItems: 'center', columnGap: '8px' }}>
-            <Svg icon="ellipse" />
-            <Text sx={{ color: 'brown', fontSize: '14px' }} weight="bold">
-              $3.747
-            </Text>
-          </div>
-          <Svg icon="ellipse" />
-          <Svg icon="ellipse" />
-        </div>
-      </MenuFooter>
-    </MenuV2>
+      {['1', '2']?.map((row) => (
+        <Flex
+          className={row === '2' ? 'mobile_header' : 'desktop_header'}
+          sx={
+            row === '1'
+              ? {
+                  color: 'text',
+                  backgroundColor: 'primaryDark',
+                  position: 'relative',
+                  zIndex: 101,
+                  alignItems: 'center',
+                  flexShrink: 0,
+                  height: '60px',
+                }
+              : {
+                  backgroundColor: 'primaryDark',
+                  position: 'relative',
+                  alignItems: 'center',
+                  flexShrink: 0,
+                  height: '60px',
+                  display: 'none',
+                }
+          }
+        >
+          <Box className={row === '2' ? 'moble_div1' : ''} sx={{ paddingLeft: '20px' }}>
+            <Svg icon="logo" />
+          </Box>
+          <Box
+            className={row === '2' ? 'moble_div2' : ''}
+            sx={{
+              display: 'flex',
+            }}
+            backgroundColor="black"
+          >
+            {currentMenu().map((item: any, index) => (
+              <MenuItem key={`${item.label}-${index + 1}`}>
+                {(() => {
+                  if (row === String('1')) {
+                    return !item.items ? (
+                      <MenuEntry label={item.label} icon={item.icon} href={item.href} />
+                    ) : (
+                      <MenuSubItem items={item.items} label={item.label} icon={item.icon} />
+                    )
+                  }
+
+                  if (row === '2' && collapse) {
+                    return !item.items ? (
+                      <MenuEntry label={item.label} icon={item.icon} href={item.href} />
+                    ) : (
+                      <MenuSubItemMobile
+                        items={item.items}
+                        label={item.label}
+                        icon={item.icon}
+                        setCollapse={setCollapse}
+                        collapseData={collapse}
+                      />
+                    )
+                  }
+                  return null
+                })()}
+              </MenuItem>
+            ))}
+
+            {row === '2' && collapse && (
+              <Box sx={{ position: 'absolute', right: '23px', bottom: '20px' }}>
+                <IconButton
+                  variant="primary"
+                  icon="twitter"
+                  color="white1"
+                  sx={{ padding: '8px', margin: '0 5px' }}
+                  background="navMenuLogo"
+                />
+                <IconButton
+                  variant="primary"
+                  icon="send"
+                  color="white1"
+                  sx={{ padding: '8px', margin: '0 5px' }}
+                  background="navMenuLogo"
+                />
+                <IconButton
+                  variant="primary"
+                  icon="discord"
+                  color="info"
+                  sx={{ padding: '6px 8px', margin: '0 5px' }}
+                  background="navMenuLogo"
+                />
+                <BNBButton />
+              </Box>
+            )}
+          </Box>
+
+          <Box
+            className="header_first"
+            sx={
+              row === '1'
+                ? {
+                    marginLeft: 'auto',
+                  }
+                : {
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'end',
+                    gap: [4, 8],
+                    position: 'absolute',
+                    right: 0,
+                    paddingRight: '20px',
+                    '>*:empty': {
+                      display: 'none',
+                    },
+
+                    '> button:nth-last-child(2)': {
+                      border: 0,
+                      zIndex: 9,
+                    },
+                  }
+            }
+          >
+            <RightContainer />
+            {row === '2' && (
+              <>
+                <IconButton
+                  variant="transparent"
+                  className="testttt"
+                  onClick={() => setCollapse(!collapse)}
+                  icon={collapse ? 'close' : 'hamburger'}
+                  // icon='hamburger'
+                  color="info"
+                  sx={{
+                    width: '24',
+                    display: 'none',
+                  }}
+                />
+              </>
+            )}
+          </Box>
+        </Flex>
+      ))}
+    </>
   )
 }
 

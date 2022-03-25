@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { icons } from '@innovationupstream/apeswap-uikit'
 import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
 import { EXCHANGE } from '../constants'
@@ -7,7 +7,7 @@ const bscConfig = [
   EXCHANGE,
   {
     label: 'Stake',
-    icon: icons.FARM,
+    icon: '',
     lightIcon: 'StakeLightImage',
     darkIcon: 'StakeDarkImage',
     items: [
@@ -50,7 +50,7 @@ const bscConfig = [
   },
   {
     label: 'NFTs',
-    icon: icons.NFA,
+    icon:'',
     lightIcon: 'NfaLightImage',
     darkIcon: 'NfaDarkImage',
     items: [
@@ -78,7 +78,7 @@ const bscConfig = [
   },
   {
     label: 'More',
-    icon: icons.MORE,
+    icon:'',
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',
     items: [

@@ -52,7 +52,7 @@ const BNBButton: React.FC<any> = () => {
           onClick={() => setShowNetwork(true)}
         >
           <Svg color="yellow" direction="down" icon="bnb_token" width={18} />
-          <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
+          <Text color="info" variant="md" weight="normal" sx={{ margin: '0 5px' }}>
             BNB
           </Text>
           <Svg
@@ -99,6 +99,7 @@ const BNBButton: React.FC<any> = () => {
             height: '48px',
             alignItems: 'center',
             justifyContent: 'center',
+            margin:'10px 0'
           }}
           size="sm"
           variant={bnb ? 'primary' : 'secondary'}
@@ -116,6 +117,7 @@ const BNBButton: React.FC<any> = () => {
             width: '100%',
             height: '48px',
             justifyContent: 'center',
+            margin:'10px 0'
           }}
           size="sm"
           variant={bnb ? 'secondary' : 'primary'}
