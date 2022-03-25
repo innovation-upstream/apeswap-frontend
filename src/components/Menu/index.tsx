@@ -147,14 +147,14 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
                 <IconButton
                   variant="primary"
                   icon="twitter"
-                  color="white1"
+                  color="info"
                   sx={{ padding: '8px', margin: '0 5px' }}
                   background="navMenuLogo"
                 />
                 <IconButton
                   variant="primary"
                   icon="send"
-                  color="white1"
+                  color="info"
                   sx={{ padding: '8px', margin: '0 5px' }}
                   background="navMenuLogo"
                 />
