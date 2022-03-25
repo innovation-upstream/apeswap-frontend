@@ -10,6 +10,7 @@ import { useFetchHomepageNews, useHomepageNews } from 'state/hooks'
 import { Bubble, NewsCard, NewsWrapper, SkeletonWrapper } from './styles'
 
 const SLIDE_DELAY = 5000
+const spaceBetween = 20
 
 SwiperCore.use([Autoplay])
 
@@ -63,7 +64,7 @@ const News: React.FC = () => {
                 }}
                 loop
                 onSwiper={setSwiper}
-                spaceBetween={20}
+                spaceBetween={spaceBetween}
                 slidesPerView="auto"
                 loopedSlides={newsLength}
                 centeredSlides
@@ -74,7 +75,10 @@ const News: React.FC = () => {
               >
                 {filterNews?.map((news) => {
                   return (
-                    <SwiperSlide style={{ maxWidth: '266px', minWidth: '266px' }} key={news.id}>
+                    <SwiperSlide
+                      style={{ marginRight: `${spaceBetween}px`, maxWidth: '266px', minWidth: '266px' }}
+                      key={news.id}
+                    >
                       <a href={news?.CardLink} target="_blank" rel="noopener noreferrer">
                         <NewsCard
                           index={activeSlide}

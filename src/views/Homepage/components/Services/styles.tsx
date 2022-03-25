@@ -47,4 +47,8 @@ export const ServiceWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
+
+  & .swiper-wrapper {
+    display: flex;
+  }
 `

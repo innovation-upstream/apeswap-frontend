@@ -8,9 +8,11 @@ import { useFetchHomepageStats, useHomepageStats } from 'state/hooks'
 import { StyledCard, CardWrapper } from './styles'
 import { statsData } from './statsData'
 
+const isBrowser = typeof window === 'object'
+
 const StatCards: React.FC = () => {
   const { isSm, isXs } = useMatchBreakpoints()
-  const [loadStats, setLoadStats] = useState(false)
+  const [loadStats, setLoadStats] = useState(!isBrowser)
   const isMobile = isSm || isXs
   const { observerRef, isIntersecting } = useIntersectionObserver()
   useFetchHomepageStats(loadStats)
@@ -46,7 +48,11 @@ const StatCards: React.FC = () => {
                   {stat?.value ? (
                     <Text fontSize="28px" bold style={{ lineHeight: '30px' }}>
                       {stat?.title !== 'Partners' && '$'}
-                      <CountUp end={stat?.value} decimals={0} duration={1} separator="," />
+                      {!isBrowser ? (
+                        parseInt(stat?.value).toLocaleString()
+                      ) : (
+                        <CountUp end={stat?.value} decimals={0} duration={1} separator="," />
+                      )}
                     </Text>
                   ) : (
                     <Skeleton width="220px" height="30px" />
