@@ -42,6 +42,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
   const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const { profile } = useProfile()
   const [collapse, setCollapse] = useState(false)
+  
   const currentMenu = () => {
     if (chainId === CHAIN_ID.BSC) {
       return bscConfig
@@ -53,12 +54,14 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
   }
 
   useEffect(() => {
+
     if (isBrowser) {
       const cookies = new Cookies()
       if (account) cookies.set('account', account)
       else cookies.remove('account')
     }
   }, [account])
+
 
   useEffect(() => {
     if (networkChain) {

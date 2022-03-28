@@ -24,9 +24,16 @@ import {
   TokenPocket,
   WalletConnect,
 } from '../../Icons'
+import { setupNetwork } from 'utils/wallet'
 
 const ConnectButton: React.FC<any> = () => {
   const [showConnectPopup, setShowConnect] = useState(false)
+
+
+  const connectWallet=async(chainId:any)=>{
+    const hasSetup = await setupNetwork(chainId)
+
+  }
   return (
     <>
       <Button
@@ -68,7 +75,7 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
-            //  onClick={function noRefCheck() {}}
+             onClick={()=>{connectWallet(56)}}
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
               METAMASK
@@ -91,6 +98,8 @@ const ConnectButton: React.FC<any> = () => {
             size="md"
             variant="primary"
             //  onClick={function noRefCheck() {}}
+            onClick={()=>{connectWallet(56)}}
+
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
               TRUSTWALLET
@@ -113,6 +122,7 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
+            onClick={()=>{connectWallet(56)}}
 
             //  onClick={function noRefCheck() {}}
           >
@@ -136,6 +146,8 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
+            onClick={()=>{connectWallet(56)}}
+
             //  onClick={function noRefCheck() {}}
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
@@ -158,6 +170,8 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
+            onClick={()=>{connectWallet(56)}}
+
             //  onClick={function noRefCheck() {}}
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
@@ -180,6 +194,8 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
+            onClick={()=>{connectWallet(56)}}
+
             //  onClick={function noRefCheck() {}}
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
@@ -202,6 +218,8 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
+            onClick={()=>{connectWallet(56)}}
+
             //  onClick={function noRefCheck() {}}
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
@@ -224,6 +242,8 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
+            onClick={()=>{connectWallet(56)}}
+
             //  onClick={function noRefCheck() {}}
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
@@ -247,6 +267,8 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
+            onClick={()=>{connectWallet(56)}}
+
             //  onClick={function noRefCheck() {}}
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
@@ -270,6 +292,8 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
+            onClick={()=>{connectWallet(56)}}
+
             //  onClick={function noRefCheck() {}}
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
