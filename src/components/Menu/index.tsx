@@ -26,6 +26,7 @@ import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { MenuItem as MenuEntry, MenuSubItem, MenuSubItemMobile } from './components'
 import GlobalStyle from './style'
+import { MenuItemMobile } from './components/MenuItemMobile'
 
 const isBrowser = typeof window === 'object'
 
@@ -42,7 +43,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
   const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const { profile } = useProfile()
   const [collapse, setCollapse] = useState(false)
-  
+
   const currentMenu = () => {
     if (chainId === CHAIN_ID.BSC) {
       return bscConfig
@@ -54,14 +55,12 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
   }
 
   useEffect(() => {
-
     if (isBrowser) {
       const cookies = new Cookies()
       if (account) cookies.set('account', account)
       else cookies.remove('account')
     }
   }, [account])
-
 
   useEffect(() => {
     if (networkChain) {
@@ -129,7 +128,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
 
                   if (row === 'mobile_header' && collapse) {
                     return !item.items ? (
-                      <MenuEntry label={item.label} icon={item.icon} href={item.href} />
+                      <MenuItemMobile label={item.label} icon={item.icon} href={item.href} />
                     ) : (
                       <MenuSubItemMobile
                         items={item.items}

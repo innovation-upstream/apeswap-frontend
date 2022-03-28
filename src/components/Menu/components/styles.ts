@@ -8,7 +8,7 @@ export const menuItemContainer = {
   fontSize: '16px',
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor: 'white4',
+    // backgroundColor: 'white4',
   },
 
 } as any

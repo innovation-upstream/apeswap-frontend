@@ -5,9 +5,9 @@ import { Bold } from 'react-feather'
 import { NextLink } from './Link'
 import { menuItemContainer, linkStyle } from './styles'
 
-export const MenuItem = ({ icon, label, href }) => {
+export const MenuItemMobile = ({ icon, label, href }) => {
   const { active } = useContext(MenuContext)
-  // console.log('label', label)
+  console.log('label', label)
 
   return (
     <Flex
@@ -17,10 +17,6 @@ export const MenuItem = ({ icon, label, href }) => {
         paddingLeft: href === active ? '13px' : undefined,
         borderLeft: href === active ? '4px solid' : '',
         position: 'relative',
-        border: '3px solid transparent',
-        '&:hover': {
-          borderBottom: '3px solid white',
-        },
       }}
     >
       <Flex sx={linkStyle}>

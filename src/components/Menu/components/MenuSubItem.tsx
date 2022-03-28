@@ -1,11 +1,10 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/** @jsxImportSource theme-ui */
 import React, { useContext, useState } from 'react'
 import { Flex, Box, Image } from 'theme-ui'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MenuContext, Svg, Text, IconButton } from '@innovationupstream/apeswap-uikit'
 import { NextLink } from './Link'
 import { menuItemContainer, linkStyle } from './styles'
+
 export const MenuSubItem = ({ icon, label, items }) => {
   const [open, setOpen] = useState(false)
   const { active, collapse } = useContext(MenuContext)
@@ -50,7 +49,7 @@ export const MenuSubItem = ({ icon, label, items }) => {
             top: '100%',
             left: 0,
             minWidth: '430px',
-            background: '#000',
+            background: 'navbar',
             borderRadius: '0 0 25px 25px',
             padding: '0 0 80px 20px',
             visibility: 'hidden',
@@ -74,7 +73,15 @@ export const MenuSubItem = ({ icon, label, items }) => {
               >
                 <Flex key={`${link.label}-${index + 1}`} sx={linkStyle}>
                   <Flex sx={{ alignItems: 'center' }}>
-                    <Flex sx={{ flexShrink: 0 }}>
+                    <Flex
+                      sx={{
+                        flexShrink: 0,
+                        border: '3px solid transparent',
+                        '&:hover': {
+                          borderBottom: '3px solid white',
+                        },
+                      }}
+                    >
                       <NextLink
                         href={link.href}
                         csx={{
@@ -93,7 +100,7 @@ export const MenuSubItem = ({ icon, label, items }) => {
               </Flex>
             ))}
           </motion.div>
-          {console.log('label',label)}
+
           <Box sx={{ flexShrink: '0', marginLeft: 'auto' }}>
             {label === 'More' && (
               <Image src="/images/headers/more.svg" sx={{ width: '200px', height: '280px', objectFit: 'cover' }} />
@@ -111,14 +118,14 @@ export const MenuSubItem = ({ icon, label, items }) => {
               <IconButton
                 variant="primary"
                 icon="twitter"
-                color="white1"
+                color="info"
                 sx={{ padding: '8px', margin: '0 5px' }}
                 background="navMenuLogo"
               />
               <IconButton
                 variant="primary"
                 icon="send"
-                color="white1"
+                color="info"
                 sx={{ padding: '8px', margin: '0 5px' }}
                 background="navMenuLogo"
               />
