@@ -8,6 +8,8 @@ declare module 'styled-components' {
 }
 
 const GlobalStyle = createGlobalStyle`
+
+
 .desktop_header .header_first {
     padding-right: 20px;
 }

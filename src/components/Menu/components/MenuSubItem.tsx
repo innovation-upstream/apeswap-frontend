@@ -6,11 +6,9 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { MenuContext, Svg, Text, IconButton } from '@innovationupstream/apeswap-uikit'
 import { NextLink } from './Link'
 import { menuItemContainer, linkStyle } from './styles'
-
 export const MenuSubItem = ({ icon, label, items }) => {
   const [open, setOpen] = useState(false)
   const { active, collapse } = useContext(MenuContext)
-
 
   return (
     <>
@@ -95,11 +93,18 @@ export const MenuSubItem = ({ icon, label, items }) => {
               </Flex>
             ))}
           </motion.div>
+          {console.log('label',label)}
           <Box sx={{ flexShrink: '0', marginLeft: 'auto' }}>
-            <Image
-              src="https://i.picsum.photos/id/975/200/300.jpg?hmac=BGcA8uNiSpWczZjtm2d5f7y562W9AF2nh_3KDsyu_yM"
-              sx={{ width: '200px', height: '280px', objectFit: 'cover' }}
-            />
+            {label === 'More' && (
+              <Image src="/images/headers/more.svg" sx={{ width: '200px', height: '280px', objectFit: 'cover' }} />
+            )}
+            {label === 'NFTs' && (
+              <Image src="/images/headers/nft.svg" sx={{ width: '200px', height: '280px', objectFit: 'cover' }} />
+            )}
+
+            {label === 'Stake' && (
+              <Image src="/images/headers/stake.svg" sx={{ width: '200px', height: '280px', objectFit: 'cover' }} />
+            )}
           </Box>
           {label === 'More' && (
             <Box sx={{ position: 'absolute', right: '23px', bottom: '20px' }}>
