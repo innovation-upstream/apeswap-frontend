@@ -11,7 +11,6 @@ export const MenuSubItem = ({ icon, label, items }) => {
   const [open, setOpen] = useState(false)
   const { active, collapse } = useContext(MenuContext)
 
-  console.log('subitem', label)
 
   return (
     <>
@@ -128,10 +127,6 @@ export const MenuSubItem = ({ icon, label, items }) => {
             </Box>
           )}
         </Flex>
-
-        {/* {!collapse && open && (
-         
-        )} */}
       </Flex>
     </>
   )

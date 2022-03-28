@@ -8,7 +8,6 @@ declare module 'styled-components' {
 }
 
 const GlobalStyle = createGlobalStyle`
-
 .desktop_header .header_first {
     padding-right: 20px;
 }
@@ -201,8 +200,5 @@ const GlobalStyle = createGlobalStyle`
 .mobile_header .moble_div2 .css-1c5ggo3-MenuSubItemMobile a span {
     font-size: 14px;
 }
-}
-
-
-`
+}`
 export default GlobalStyle

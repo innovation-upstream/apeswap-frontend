@@ -79,11 +79,11 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
     <>
       <GlobalStyle />
 
-      {['1', '2']?.map((row) => (
+      {['desktop_header', 'mobile_header']?.map((row) => (
         <Flex
-          className={row === '2' ? 'mobile_header' : 'desktop_header'}
+          className={row === 'mobile_header' ? 'mobile_header' : 'desktop_header'}
           sx={
-            row === '1'
+            row === 'desktop_header'
               ? {
                   color: 'text',
                   backgroundColor: 'primaryDark',
@@ -103,11 +103,11 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
                 }
           }
         >
-          <Box className={row === '2' ? 'moble_div1' : ''} sx={{ paddingLeft: '20px' }}>
+          <Box className={row === 'mobile_header' ? 'moble_div1' : ''} sx={{ paddingLeft: '20px' }}>
             <Svg icon="logo" />
           </Box>
           <Box
-            className={row === '2' ? 'moble_div2' : ''}
+            className={row === 'mobile_header' ? 'moble_div2' : ''}
             sx={{
               display: 'flex',
             }}
@@ -116,7 +116,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
             {currentMenu().map((item: any, index) => (
               <MenuItem key={`${item.label}-${index + 1}`}>
                 {(() => {
-                  if (row === String('1')) {
+                  if (row === String('desktop_header')) {
                     return !item.items ? (
                       <MenuEntry label={item.label} icon={item.icon} href={item.href} />
                     ) : (
@@ -124,7 +124,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
                     )
                   }
 
-                  if (row === '2' && collapse) {
+                  if (row === 'mobile_header' && collapse) {
                     return !item.items ? (
                       <MenuEntry label={item.label} icon={item.icon} href={item.href} />
                     ) : (
@@ -142,7 +142,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
               </MenuItem>
             ))}
 
-            {row === '2' && collapse && (
+            {row === 'mobile_header' && collapse && (
               <Box sx={{ position: 'absolute', right: '23px', bottom: '20px' }}>
                 <IconButton
                   variant="primary"
@@ -173,7 +173,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
           <Box
             className="header_first"
             sx={
-              row === '1'
+              row === 'desktop_header'
                 ? {
                     marginLeft: 'auto',
                   }
@@ -197,14 +197,13 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
             }
           >
             <RightContainer />
-            {row === '2' && (
+            {row === 'mobile_header' && (
               <>
                 <IconButton
                   variant="transparent"
                   className="testttt"
                   onClick={() => setCollapse(!collapse)}
                   icon={collapse ? 'close' : 'hamburger'}
-                  // icon='hamburger'
                   color="info"
                   sx={{
                     width: '24',
