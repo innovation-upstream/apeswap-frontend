@@ -3,8 +3,6 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { customMeta, DEFAULT_META } from 'config/constants/meta'
 import Head from 'next/head'
-import { MenuContext } from '@innovationupstream/apeswap-uikit'
-import { Box } from 'theme-ui'
 import Container from './Container'
 
 interface SizeProps {
@@ -46,18 +44,10 @@ const PageMeta = () => {
 }
 
 const Page: React.FC<SizeProps> = ({ children, ...props }) => {
-  const { collapse } = useContext(MenuContext)
-
   return (
     <>
       <PageMeta />
-      <Box
-        sx={{
-          marginLeft: collapse ? [0, 0, '56px'] : [0, 0, '240px'],
-        }}
-      >
-        <StyledPage {...props}>{children}</StyledPage>
-      </Box>
+      <StyledPage {...props}>{children}</StyledPage>
     </>
   )
 }

@@ -6,6 +6,7 @@ import GlobalStyle from 'style/Global'
 import ToastListener from 'components/ToastListener'
 import MarketingModalCheck from 'components/MarketingModalCheck'
 import { PageWrapper } from 'components/PageWrapper'
+import Footer from 'components/Footer/Footer'
 import Menu from 'components/Menu'
 import PageLoader from 'components/PageLoader'
 import Providers from '../Providers'
@@ -36,8 +37,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GlobalStyle />
       <MarketingModalCheck />
       <PageWrapper>
-        <Menu chain={pageProps?.chainId} />
         {loading ? <PageLoader /> : <Component {...pageProps} />}
+        <Footer />
       </PageWrapper>
       <ToastListener />
     </Providers>
