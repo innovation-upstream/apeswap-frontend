@@ -1,19 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  Text,
-  Modal,
-  ModalHeader,
-  Heading,
-  MetamaskIcon,
-  Flex,
-  Svg,
-  Link,
-} from '@innovationupstream/apeswap-uikit'
-
+import { Button, Text, Modal, ModalHeader, Heading, Svg, Link } from '@innovationupstream/apeswap-uikit'
 import { Box } from 'theme-ui'
-import { IconButton } from '@apeswapfinance/uikit'
-import { setupNetwork } from 'utils/wallet'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
 import {
@@ -33,33 +20,24 @@ import AccountModal from './AccountModal'
 
 const ConnectButton: React.FC<any> = () => {
   const [showConnectPopup, setShowConnect] = useState(false)
-  const [accountPopup,setAccountPopUp]=useState(false)
-  const [showaccountPopup,setShowAccountPopup]=useState(false)
+  const [accountPopup, setAccountPopUp] = useState(false)
+  const [showaccountPopup, setShowAccountPopup] = useState(false)
   const { account, chainId } = useActiveWeb3React()
-  const { login,logout } = useAuth()
-
-
+  const { login, logout } = useAuth()
 
   const connectWallet = async (chainId1: any) => {
-      login(chainId1)
-      localStorage.setItem("accountStatus",chainId1)
-      setShowConnect(false)
-
-    }
-  useEffect(()=> {
-    if(localStorage.getItem("accountStatus")){
+    login(chainId1)
+    localStorage.setItem('accountStatus', chainId1)
+    setShowConnect(false)
+  }
+  useEffect(() => {
+    if (localStorage.getItem('accountStatus')) {
       setAccountPopUp(true)
       setShowConnect(false)
-
-
-    }else{
+    } else {
       setAccountPopUp(false)
-
-    } 
-
-
-
-  },[showaccountPopup,account])
+    }
+  }, [showaccountPopup, account])
 
   const connectButtonData = [
     {
@@ -141,57 +119,63 @@ const ConnectButton: React.FC<any> = () => {
     )
   }
 
-const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null;
+  const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
 
   return (
     <>
-    {accountPopup === false ? 
-    <Button
-    csx={{
-      background: 'white4',
-      border: 0,
-      '&:hover': {
-        background: 'white4',
-      },
-      marginRight: '-50px',
-    }}
-    colorMode="dark"
-    size="sm"
-    variant="primary"
-    onClick={() => setShowConnect(true)}
-  >
-    <Text color="info" variant="md" weight="normal" sx={{ margin: '0 30px 0 0' }}>
-      CONNECT
-    </Text>
-  </Button>
-   :
-   <Button
-   csx={{
-     background: 'white4',
-     border: 0,
-     '&:hover': {
-       background: 'white4',
-     },
-     marginRight: '-50px',
-   }}
-   colorMode="dark"
-   size="sm"
-   variant="primary"
-   onClick={() => setShowAccountPopup(true)}
- >
-   <Text color="info" variant="md" weight="normal" sx={{ margin: '0 30px 0 0' }}>
-   {accountEllipsis}
-   </Text>
- </Button>
-    }
-      
-<AccountModal handleClose={()=>{setShowAccountPopup(false)}} account={account} logout={()=>{
-  logout()  
-setShowAccountPopup(false)
-}} accountPopup={showaccountPopup}/>
+      {accountPopup === false ? (
+        <Button
+          csx={{
+            background: 'white4',
+            border: 0,
+            '&:hover': {
+              background: 'white4',
+            },
+            marginRight: '-50px',
+          }}
+          colorMode="dark"
+          size="sm"
+          variant="primary"
+          onClick={() => setShowConnect(true)}
+        >
+          <Text color="info" variant="md" weight="normal" sx={{ margin: '0 30px 0 0' }}>
+            CONNECT
+          </Text>
+        </Button>
+      ) : (
+        <Button
+          csx={{
+            background: 'white4',
+            border: 0,
+            '&:hover': {
+              background: 'white4',
+            },
+            marginRight: '-50px',
+          }}
+          colorMode="dark"
+          size="sm"
+          variant="primary"
+          onClick={() => setShowAccountPopup(true)}
+        >
+          <Text color="info" variant="md" weight="normal" sx={{ margin: '0 30px 0 0' }}>
+            {accountEllipsis}
+          </Text>
+        </Button>
+      )}
 
+      <AccountModal
+        handleClose={() => {
+          setShowAccountPopup(false)
+        }}
+        account={account}
+        logout={() => {
+          logout()
+          setShowAccountPopup(false)
+        }}
+        accountPopup={showaccountPopup}
+      />
 
-  <Modal handleClose={() => setShowConnect(false)} minWidth="20%" open={showConnectPopup}>
+      <Modal handleClose={() => setShowConnect(false)} minWidth="20%" open={showConnectPopup}>
         <ModalHeader handleClose={() => setShowConnect(false)}>
           <Heading as="h4">Connect to a wallet</Heading>
         </ModalHeader>

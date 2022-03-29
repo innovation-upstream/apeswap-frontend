@@ -19,4 +19,3 @@ export { default as QuestionMark } from './QuestionMark'
 export { default as Metamask } from './Metamask'
 export { default as CopyIcon } from './CopyIcon'
 export { default as OpenNew } from './OpenNew'
-

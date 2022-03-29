@@ -1,30 +1,22 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import {
-  Svg,
- Text,
- 
-} from '@innovationupstream/apeswap-uikit'
-
-import {
- CopyIcon
-} from '../../Icons'
-
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { Text } from '@innovationupstream/apeswap-uikit'
+import { CopyIcon } from '../../Icons'
 
 interface Props {
-  toCopy?: string | number;
+  toCopy?: string | number
 }
 
-const StyleButton = styled(Text).attrs({ role: "button" })`
+const StyleButton = styled(Text).attrs({ role: 'button' })`
   position: relative;
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.colors.text};
   font-weight: ${({ fontWeight = 600 }) => fontWeight};
-`;
+`
 
 const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
-  display: ${({ isTooltipDisplayed }) => (isTooltipDisplayed ? "block" : "none")};
+  display: ${({ isTooltipDisplayed }) => (isTooltipDisplayed ? 'block' : 'none')};
   position: absolute;
   bottom: -22px;
   right: 0;
@@ -36,32 +28,32 @@ const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
   color: ${({ theme }) => theme.colors.primary};
   border-radius: 16px;
   opacity: 0.7;
-`;
+`
 
 const CopyToClipboard: React.FC<Props> = ({ toCopy, children, ...props }) => {
-  const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false);
+  const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
 
   return (
     <StyleButton
       small
       onClick={() => {
-        navigator.clipboard.writeText(JSON.stringify(toCopy));
-        setIsTooltipDisplayed(true);
+        navigator.clipboard.writeText(JSON.stringify(toCopy))
+        setIsTooltipDisplayed(true)
         setTimeout(() => {
-          setIsTooltipDisplayed(false);
-        }, 1000);
+          setIsTooltipDisplayed(false)
+        }, 1000)
       }}
       {...props}
     >
       {children}
-      <CopyIcon/>
+      <CopyIcon />
       <Tooltip isTooltipDisplayed={isTooltipDisplayed}>Copied</Tooltip>
     </StyleButton>
-  );
-};
+  )
+}
 
 CopyToClipboard.defaultProps = {
-  toCopy: "",
-};
+  toCopy: '',
+}
 
-export default CopyToClipboard;
+export default CopyToClipboard
