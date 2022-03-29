@@ -1,6 +1,7 @@
+/** @jsxImportSource theme-ui */
 import React, { useContext, useState } from 'react'
 import { Flex, Box, Image } from 'theme-ui'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { MenuContext, Svg, Text, IconButton } from '@innovationupstream/apeswap-uikit'
 import { NextLink } from './Link'
 import { menuItemContainer, linkStyle } from './styles'

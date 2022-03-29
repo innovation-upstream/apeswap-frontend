@@ -1,21 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Box } from 'theme-ui'
-import {
-  IconButton,
-  Svg,
-  Button,
-  Text,
-  Modal,
-  ModalHeader,
-  Heading,
-  ModalFooter,
-} from '@innovationupstream/apeswap-uikit'
-import { setNetwork } from 'state/network'
+import { IconButton } from '@innovationupstream/apeswap-uikit'
+
 import ConnectButton from './ConnectButton'
 import BNBButton from './BNBButton'
 
 const RightContainer: React.FC<any> = () => {
-  const [showNetworkPopup, setShowNetwork] = useState(false)
   return (
     <Box
       sx={{

@@ -22,7 +22,7 @@ const ConnectButton: React.FC<any> = () => {
   const [showConnectPopup, setShowConnect] = useState(false)
   const [accountPopup, setAccountPopUp] = useState(false)
   const [showaccountPopup, setShowAccountPopup] = useState(false)
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const { login, logout } = useAuth()
 
   const connectWallet = async (chainId1: any) => {
@@ -180,7 +180,7 @@ const ConnectButton: React.FC<any> = () => {
           <Heading as="h4">Connect to a wallet</Heading>
         </ModalHeader>
         <Box>
-          {connectButtonData.map((data, index) => {
+          {connectButtonData.map((data) => {
             return buttonWallets(data.icon, data.connectorId, data.title)
           })}
         </Box>
