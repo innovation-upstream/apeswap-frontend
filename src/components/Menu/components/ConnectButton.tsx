@@ -1,18 +1,8 @@
 import React, { useState } from 'react'
-import {
-  Button,
-  Text,
-  Modal,
-  ModalHeader,
-  Heading,
-  MetamaskIcon,
-  Flex,
-  Svg,
-  Link,
-} from '@innovationupstream/apeswap-uikit'
+import { Button, Text, Modal, ModalHeader, Heading, MetamaskIcon, Svg, Link } from '@innovationupstream/apeswap-uikit'
 
 import { Box } from 'theme-ui'
-import { IconButton } from '@apeswapfinance/uikit'
+import { setupNetwork } from 'utils/wallet'
 import {
   TrustWallet,
   BinanceChain,
@@ -24,15 +14,12 @@ import {
   TokenPocket,
   WalletConnect,
 } from '../../Icons'
-import { setupNetwork } from 'utils/wallet'
 
 const ConnectButton: React.FC<any> = () => {
   const [showConnectPopup, setShowConnect] = useState(false)
 
-
-  const connectWallet=async(chainId:any)=>{
+  const connectWallet = async (chainId: any) => {
     const hasSetup = await setupNetwork(chainId)
-
   }
   return (
     <>
@@ -75,7 +62,9 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
-             onClick={()=>{connectWallet(56)}}
+            onClick={() => {
+              connectWallet(56)
+            }}
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
               METAMASK
@@ -98,8 +87,9 @@ const ConnectButton: React.FC<any> = () => {
             size="md"
             variant="primary"
             //  onClick={function noRefCheck() {}}
-            onClick={()=>{connectWallet(56)}}
-
+            onClick={() => {
+              connectWallet(56)
+            }}
           >
             <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
               TRUSTWALLET
@@ -122,7 +112,9 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
-            onClick={()=>{connectWallet(56)}}
+            onClick={() => {
+              connectWallet(56)
+            }}
 
             //  onClick={function noRefCheck() {}}
           >
@@ -146,7 +138,9 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
-            onClick={()=>{connectWallet(56)}}
+            onClick={() => {
+              connectWallet(56)
+            }}
 
             //  onClick={function noRefCheck() {}}
           >
@@ -170,7 +164,9 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
-            onClick={()=>{connectWallet(56)}}
+            onClick={() => {
+              connectWallet(56)
+            }}
 
             //  onClick={function noRefCheck() {}}
           >
@@ -194,7 +190,9 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
-            onClick={()=>{connectWallet(56)}}
+            onClick={() => {
+              connectWallet(56)
+            }}
 
             //  onClick={function noRefCheck() {}}
           >
@@ -218,7 +216,9 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
-            onClick={()=>{connectWallet(56)}}
+            onClick={() => {
+              connectWallet(56)
+            }}
 
             //  onClick={function noRefCheck() {}}
           >
@@ -242,7 +242,9 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
-            onClick={()=>{connectWallet(56)}}
+            onClick={() => {
+              connectWallet(56)
+            }}
 
             //  onClick={function noRefCheck() {}}
           >
@@ -267,7 +269,9 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
-            onClick={()=>{connectWallet(56)}}
+            onClick={() => {
+              connectWallet(56)
+            }}
 
             //  onClick={function noRefCheck() {}}
           >
@@ -292,7 +296,9 @@ const ConnectButton: React.FC<any> = () => {
             }}
             size="md"
             variant="primary"
-            onClick={()=>{connectWallet(56)}}
+            onClick={() => {
+              connectWallet(56)
+            }}
 
             //  onClick={function noRefCheck() {}}
           >

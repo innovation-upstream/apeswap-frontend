@@ -99,7 +99,7 @@ const BNBButton: React.FC<any> = () => {
             height: '48px',
             alignItems: 'center',
             justifyContent: 'center',
-            margin:'10px 0'
+            margin: '10px 0',
           }}
           size="sm"
           variant={bnb ? 'primary' : 'secondary'}
@@ -117,7 +117,7 @@ const BNBButton: React.FC<any> = () => {
             width: '100%',
             height: '48px',
             justifyContent: 'center',
-            margin:'10px 0'
+            margin: '10px 0',
           }}
           size="sm"
           variant={bnb ? 'secondary' : 'primary'}
