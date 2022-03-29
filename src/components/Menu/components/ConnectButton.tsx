@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Text,
@@ -13,6 +13,9 @@ import {
 
 import { Box } from 'theme-ui'
 import { IconButton } from '@apeswapfinance/uikit'
+import { setupNetwork } from 'utils/wallet'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useAuth from 'hooks/useAuth'
 import {
   TrustWallet,
   BinanceChain,
@@ -23,19 +26,95 @@ import {
   SafePalWallet,
   TokenPocket,
   WalletConnect,
+  Metamask,
 } from '../../Icons'
-import { setupNetwork } from 'utils/wallet'
+import { ConnectorNames } from './types'
+import AccountModal from './AccountModal'
 
 const ConnectButton: React.FC<any> = () => {
   const [showConnectPopup, setShowConnect] = useState(false)
+  const [accountPopup,setAccountPopUp]=useState(false)
+  const [showaccountPopup,setShowAccountPopup]=useState(false)
+  const { account, chainId } = useActiveWeb3React()
+  const { login,logout } = useAuth()
 
 
-  const connectWallet=async(chainId:any)=>{
-    const hasSetup = await setupNetwork(chainId)
 
-  }
-  return (
-    <>
+  const connectWallet = async (chainId1: any) => {
+      login(chainId1)
+      localStorage.setItem("accountStatus",chainId1)
+      setShowConnect(false)
+
+    }
+  useEffect(()=> {
+    if(localStorage.getItem("accountStatus")){
+      setAccountPopUp(true)
+      setShowConnect(false)
+
+
+    }else{
+      setAccountPopUp(false)
+
+    } 
+
+
+
+  },[showaccountPopup,account])
+
+  const connectButtonData = [
+    {
+      title: 'Metamask',
+      icon: Metamask,
+      connectorId: ConnectorNames.Injected,
+    },
+    {
+      title: 'TrustWallet',
+      icon: TrustWallet,
+      connectorId: ConnectorNames.Injected,
+    },
+    {
+      title: 'WalletConnect',
+      icon: WalletConnect,
+      connectorId: ConnectorNames.WalletConnect,
+    },
+    {
+      title: 'SafePal Wallet',
+      icon: SafePalWallet,
+      connectorId: ConnectorNames.Injected,
+    },
+    {
+      title: 'TokenPocket',
+      icon: TokenPocket,
+      connectorId: ConnectorNames.Injected,
+    },
+    {
+      title: 'Coinbase Wallet',
+      icon: Coinbase,
+      connectorId: ConnectorNames.Walletlink,
+    },
+    {
+      title: 'Binance Chain Wallet',
+      icon: BinanceChain,
+      connectorId: ConnectorNames.BSC,
+    },
+    {
+      title: 'NABOX Wallet',
+      icon: Nabox,
+      connectorId: ConnectorNames.Injected,
+    },
+    {
+      title: 'ONTO Wallet',
+      icon: OntoWallet,
+      connectorId: ConnectorNames.Injected,
+    },
+    {
+      title: 'MathWallet',
+      icon: MathWallet,
+      connectorId: ConnectorNames.Injected,
+    },
+  ]
+  const buttonWallets = (Icon, Chainid, label) => {
+    return (
       <Button
         csx={{
           background: 'white4',
@@ -43,264 +122,83 @@ const ConnectButton: React.FC<any> = () => {
           '&:hover': {
             background: 'white4',
           },
-          marginRight: '-50px',
+          width: '100%',
+          height: '48px',
+          justifyContent: 'space-between',
+          margin: '10px 0',
         }}
-        colorMode="dark"
-        size="sm"
+        size="md"
         variant="primary"
-        onClick={() => setShowConnect(true)}
+        onClick={() => {
+          connectWallet(Chainid)
+        }}
       >
-        <Text color="info" variant="md" weight="normal" sx={{ margin: '0 30px 0 0' }}>
-          CONNECT
+        <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
+          {label}
         </Text>
+        <Icon />
       </Button>
+    )
+  }
 
-      <Modal handleClose={() => setShowConnect(false)} minWidth="20%" open={showConnectPopup}>
+const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null;
+
+  return (
+    <>
+    {accountPopup === false ? 
+    <Button
+    csx={{
+      background: 'white4',
+      border: 0,
+      '&:hover': {
+        background: 'white4',
+      },
+      marginRight: '-50px',
+    }}
+    colorMode="dark"
+    size="sm"
+    variant="primary"
+    onClick={() => setShowConnect(true)}
+  >
+    <Text color="info" variant="md" weight="normal" sx={{ margin: '0 30px 0 0' }}>
+      CONNECT
+    </Text>
+  </Button>
+   :
+   <Button
+   csx={{
+     background: 'white4',
+     border: 0,
+     '&:hover': {
+       background: 'white4',
+     },
+     marginRight: '-50px',
+   }}
+   colorMode="dark"
+   size="sm"
+   variant="primary"
+   onClick={() => setShowAccountPopup(true)}
+ >
+   <Text color="info" variant="md" weight="normal" sx={{ margin: '0 30px 0 0' }}>
+   {accountEllipsis}
+   </Text>
+ </Button>
+    }
+      
+<AccountModal handleClose={()=>{setShowAccountPopup(false)}} account={account} logout={()=>{
+  logout()  
+setShowAccountPopup(false)
+}} accountPopup={showaccountPopup}/>
+
+
+  <Modal handleClose={() => setShowConnect(false)} minWidth="20%" open={showConnectPopup}>
         <ModalHeader handleClose={() => setShowConnect(false)}>
           <Heading as="h4">Connect to a wallet</Heading>
         </ModalHeader>
-        {/* METAMASK */}
         <Box>
-          <Button
-            csx={{
-              background: 'white4',
-              border: 0,
-              '&:hover': {
-                background: 'white4',
-              },
-              width: '100%',
-              height: '48px',
-              justifyContent: 'space-between',
-              margin: '10px 0',
-            }}
-            size="md"
-            variant="primary"
-             onClick={()=>{connectWallet(56)}}
-          >
-            <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-              METAMASK
-            </Text>
-            <MetamaskIcon />
-          </Button>
-          {/* TRUSTWALLET */}
-          <Button
-            csx={{
-              background: 'white4',
-              border: 0,
-              '&:hover': {
-                background: 'white4',
-              },
-              width: '100%',
-              height: '48px',
-              justifyContent: 'space-between',
-              margin: '10px 0',
-            }}
-            size="md"
-            variant="primary"
-            //  onClick={function noRefCheck() {}}
-            onClick={()=>{connectWallet(56)}}
-
-          >
-            <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-              TRUSTWALLET
-            </Text>
-            <TrustWallet />
-          </Button>
-
-          {/* WALLETCONNECT */}
-          <Button
-            csx={{
-              background: 'white4',
-              border: 0,
-              '&:hover': {
-                background: 'white4',
-              },
-              width: '100%',
-              height: '48px',
-              justifyContent: 'space-between',
-              margin: '10px 0',
-            }}
-            size="md"
-            variant="primary"
-            onClick={()=>{connectWallet(56)}}
-
-            //  onClick={function noRefCheck() {}}
-          >
-            <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-              WALLETCONNECT
-            </Text>
-            <WalletConnect />
-          </Button>
-          {/* SAFEPAL WALLET */}
-          <Button
-            csx={{
-              background: 'white4',
-              border: 0,
-              '&:hover': {
-                background: 'white4',
-              },
-              width: '100%',
-              height: '48px',
-              justifyContent: 'space-between',
-              margin: '10px 0',
-            }}
-            size="md"
-            variant="primary"
-            onClick={()=>{connectWallet(56)}}
-
-            //  onClick={function noRefCheck() {}}
-          >
-            <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-              SAFEPAL WALLET
-            </Text>
-            <SafePalWallet />
-          </Button>
-          {/* TOKENPOCKET */}
-          <Button
-            csx={{
-              background: 'white4',
-              border: 0,
-              '&:hover': {
-                background: 'white4',
-              },
-              width: '100%',
-              height: '48px',
-              justifyContent: 'space-between',
-              margin: '10px 0',
-            }}
-            size="md"
-            variant="primary"
-            onClick={()=>{connectWallet(56)}}
-
-            //  onClick={function noRefCheck() {}}
-          >
-            <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-              TOKENPOCKET
-            </Text>
-            <TokenPocket />
-          </Button>
-          {/* COINBASE WALLET */}
-          <Button
-            csx={{
-              background: 'white4',
-              border: 0,
-              '&:hover': {
-                background: 'white4',
-              },
-              width: '100%',
-              height: '48px',
-              justifyContent: 'space-between',
-              margin: '10px 0',
-            }}
-            size="md"
-            variant="primary"
-            onClick={()=>{connectWallet(56)}}
-
-            //  onClick={function noRefCheck() {}}
-          >
-            <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-              COINBASE WALLET
-            </Text>
-            <Coinbase />
-          </Button>
-          {/* BINANCE CHAIN WALLET */}
-          <Button
-            csx={{
-              background: 'white4',
-              border: 0,
-              '&:hover': {
-                background: 'white4',
-              },
-              width: '100%',
-              height: '48px',
-              justifyContent: 'space-between',
-              margin: '10px 0',
-            }}
-            size="md"
-            variant="primary"
-            onClick={()=>{connectWallet(56)}}
-
-            //  onClick={function noRefCheck() {}}
-          >
-            <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-              BINANCE CHAIN WALLET
-            </Text>
-            <BinanceChain />
-          </Button>
-          {/* NABOX WALLET */}
-          <Button
-            csx={{
-              background: 'white4',
-              border: 0,
-              '&:hover': {
-                background: 'white4',
-              },
-              width: '100%',
-              height: '48px',
-              justifyContent: 'space-between',
-              margin: '10px 0',
-            }}
-            size="md"
-            variant="primary"
-            onClick={()=>{connectWallet(56)}}
-
-            //  onClick={function noRefCheck() {}}
-          >
-            <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-              NABOX WALLET
-            </Text>
-            <Nabox />
-          </Button>
-
-          {/* ONTO WALLET */}
-          <Button
-            csx={{
-              background: 'white4',
-              border: 0,
-              '&:hover': {
-                background: 'white4',
-              },
-              width: '100%',
-              height: '48px',
-              justifyContent: 'space-between',
-              margin: '10px 0',
-            }}
-            size="md"
-            variant="primary"
-            onClick={()=>{connectWallet(56)}}
-
-            //  onClick={function noRefCheck() {}}
-          >
-            <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-              ONTO WALLET
-            </Text>
-            <OntoWallet />
-          </Button>
-
-          {/* MATH WALLET */}
-          <Button
-            csx={{
-              background: 'white4',
-              border: 0,
-              '&:hover': {
-                background: 'white4',
-              },
-              width: '100%',
-              height: '48px',
-              justifyContent: 'space-between',
-              margin: '10px 0',
-            }}
-            size="md"
-            variant="primary"
-            onClick={()=>{connectWallet(56)}}
-
-            //  onClick={function noRefCheck() {}}
-          >
-            <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>
-              MATH WALLET
-            </Text>
-            <MathWallet />
-          </Button>
+          {connectButtonData.map((data, index) => {
+            return buttonWallets(data.icon, data.connectorId, data.title)
+          })}
         </Box>
         <Box
           sx={{
@@ -309,14 +207,9 @@ const ConnectButton: React.FC<any> = () => {
             justifyContent: 'center',
           }}
         >
-          <Svg
-            color="backgroundDisabled"
-            // colorMode="light"
-            icon="question"
-            width="20px"
-          />
+          <Svg color="backgroundDisabled" icon="question" width="20px" />
           &nbsp;&nbsp;
-          <Link fontFamily="Titan One" href="/">
+          <Link fontFamily="Titan One" href="https://docs.binance.org/smart-chain/wallet/metamask.html">
             Learn how to connect
           </Link>
         </Box>

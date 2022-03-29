@@ -61,7 +61,7 @@ export const MenuSubItem = ({ icon, label, items }) => {
             animate={{ height: 'fit-content' }}
             transition={{ height: { duration: 0.3 } }}
             exit={{ height: 0 }}
-            sx={{ overflow: 'hidden', padding: '20px 0 0' }}
+            // sx={{ overflow: 'hidden', padding: '20px 0 0' }}
           >
             {items?.map((link, index) => (
               <Flex

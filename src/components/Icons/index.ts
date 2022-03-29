@@ -16,3 +16,7 @@ export { default as MarketCap } from './MarketCap'
 export { default as Partners } from './Partners'
 export { default as Trade } from './Trade'
 export { default as QuestionMark } from './QuestionMark'
+export { default as Metamask } from './Metamask'
+export { default as CopyIcon } from './CopyIcon'
+export { default as OpenNew } from './OpenNew'
+

@@ -17,6 +17,7 @@ export const setupNetwork = async (chainId: number) => {
         method: 'wallet_addEthereumChain',
         params: [CHAIN_PARAMS[chainId]],
       })
+      
       return true
     } catch (error) {
       console.warn(error)

@@ -113,7 +113,6 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
             sx={{
               display: 'flex',
             }}
-            backgroundColor="black"
           >
             {currentMenu().map((item: any, index) => (
               <MenuItem key={`${item.label}-${index + 1}`}>
