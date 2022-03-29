@@ -7,11 +7,13 @@ const TopNav: React.FC = () => {
   return (
     <TopNavWrapper>
       <TopNavMonkey />
-      <Link href="/ss-iao">
-        <BackWrapper>
-          <BackArrow src="/images/left-arrow.svg" />
-          <StyledText color="primaryBright">Back to Self-Serve Launchpad</StyledText>
-        </BackWrapper>
+      <Link href="/ss-iao" passHref>
+        <a>
+          <BackWrapper>
+            <BackArrow src="/images/left-arrow.svg" />
+            <StyledText color="primaryBright">Back to Self-Serve Launchpad</StyledText>
+          </BackWrapper>
+        </a>
       </Link>
     </TopNavWrapper>
   )
