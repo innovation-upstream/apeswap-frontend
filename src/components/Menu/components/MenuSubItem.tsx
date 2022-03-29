@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useContext, useState } from 'react'
 import { Flex, Box, Image } from 'theme-ui'
 import { AnimatePresence, motion } from 'framer-motion'
