@@ -1,14 +1,11 @@
 import React, { useContext } from 'react'
 import { Flex } from 'theme-ui'
 import { MenuContext, Svg } from '@innovationupstream/apeswap-uikit'
-import { Bold } from 'react-feather'
 import { NextLink } from './Link'
 import { menuItemContainer, linkStyle } from './styles'
 
 export const MenuItemMobile = ({ icon, label, href }) => {
   const { active } = useContext(MenuContext)
-  console.log('label', label)
-
   return (
     <Flex
       sx={{

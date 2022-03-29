@@ -2,24 +2,16 @@
 import React, { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import {
-  Menu as MenuV2,
-  MenuBody,
   MenuItem,
-  MenuFooter,
   MenuContext,
   Svg,
   IconButton,
-  Text,
 } from '@innovationupstream/apeswap-uikit'
 import { useWeb3React } from '@web3-react/core'
 import Cookies from 'universal-cookie'
-import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
-import useTheme from 'hooks/useTheme'
-import { useNetworkChainId, useProfile, useTokenPrices } from 'state/hooks'
-import useSelectNetwork from 'hooks/useSelectNetwork'
+import { useNetworkChainId } from 'state/hooks'
 import { Flex, Box } from 'theme-ui'
-import ConnectButton from 'components/TopMenu_old/ConnectButton'
 import BNBButton from 'components/TopMenu_old/BNBButton'
 import RightContainer from './components/RightContainer'
 import bscConfig from './chains/bscConfig'
@@ -36,12 +28,6 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
   const [chainId, setChainId] = useState(chain)
   const { account } = useWeb3React()
   const networkChain = useNetworkChainId()
-  const { login, logout } = useAuth()
-  const { switchNetwork } = useSelectNetwork()
-  const { isDark, toggleTheme } = useTheme()
-  const { tokenPrices } = useTokenPrices()
-  const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
-  const { profile } = useProfile()
   const [collapse, setCollapse] = useState(false)
 
   const currentMenu = () => {
@@ -88,7 +74,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
             row === 'desktop_header'
               ? {
                   color: 'text',
-                  backgroundColor: 'primaryDark',
+                  backgroundColor: 'navbar',
                   position: 'relative',
                   zIndex: 101,
                   alignItems: 'center',
@@ -96,7 +82,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
                   height: '60px',
                 }
               : {
-                  backgroundColor: 'primaryDark',
+                  backgroundColor: 'navbar',
                   position: 'relative',
                   alignItems: 'center',
                   flexShrink: 0,
@@ -110,9 +96,18 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
           </Box>
           <Box
             className={row === 'mobile_header' ? 'moble_div2' : ''}
-            sx={{
+            sx={row === 'mobile_header' ? {
               display: 'flex',
-            }}
+              backgroundColor: 'navbar',
+
+            }
+            :
+            {
+              display: 'flex',
+
+            }
+          
+          }
           >
             {currentMenu().map((item: any, index) => (
               <MenuItem key={`${item.label}-${index + 1}`}>
@@ -125,7 +120,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
                     )
                   }
 
-                  if (row === 'mobile_header' && collapse) {
+                  if ((row === String('mobile_header')) && collapse) {
                     return !item.items ? (
                       <MenuItemMobile label={item.label} icon={item.icon} href={item.href} />
                     ) : (

@@ -120,7 +120,8 @@ const ConnectButton: React.FC<any> = () => {
   }
 
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
-
+ console.log("accountEllipsis",accountEllipsis);
+ 
   return (
     <>
       {accountPopup === false ? (

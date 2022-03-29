@@ -8,8 +8,6 @@ declare module 'styled-components' {
 }
 
 const GlobalStyle = createGlobalStyle`
-
-
 .desktop_header .header_first {
     padding-right: 20px;
 }
@@ -52,7 +50,6 @@ const GlobalStyle = createGlobalStyle`
     max-height: calc(100vh - 60px);
     overflow-y: auto;
 }
-
 .mobile_header .css-1c5ggo3-MenuSubItemMobile {
     visibility: inherit;
 }
@@ -63,7 +60,6 @@ const GlobalStyle = createGlobalStyle`
     padding-left: 0;
     padding-right: 0;
 }
-
 .mobile_header .moble_div2 .css-2zrim3-MenuSubItem .css-xrz6s1-MenuSubItem {
     margin-left: 0;
 }
@@ -86,7 +82,6 @@ const GlobalStyle = createGlobalStyle`
 .mobile_header .moble_div2 .css-2zrim3-MenuSubItem .css-12gh6qa-MenuSubItem {
     display: none;
 }
-
 .css-2zrim3-MenuSubItem svg {
     display: block;
 }
@@ -101,11 +96,9 @@ const GlobalStyle = createGlobalStyle`
     border-radius: inherit;
     padding-bottom: 0;
 }
-
 .mobile_header .moble_div2 .css-vysuop .css-2zrim3-MenuSubItem .css-1frydlt-MenuSubItem {
     display: none;
 }
-
 .mobile_header  .css-1c5ggo3-MenuSubItemMobile {
     transition: max-height 0.3s ease-out 0s;
     overflow: hidden;
@@ -130,17 +123,13 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
 }
 .css-1xcxgfs {
-
     padding-left: 0;
-
 }
-
 .css-vysuop svg {
     margin-right: 15px;
     width: 10px;
     height: 10px;
 }
-
 .mobile_header .css-1982br3-MenuSubItemMobile {
     margin-left: 3px!important;
 }
@@ -157,7 +146,6 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
 }
 .css-1xcxgfs {
-
     padding-left: 0;
   
 }
@@ -184,17 +172,14 @@ const GlobalStyle = createGlobalStyle`
     padding-bottom: 25px;
     padding: 20px 0px;
 }
-
 .mobile_header .testttt svg.css-18rc60n-Hamburger {
     width: 37px;
     height: 67px;
 }
-
 .mobile_header .testttt svg.css-rmffv1-Close {
     width: 27px;
     height: 64px;
 }
-
 .mobile_header .moble_div2 .css-vysuop .css-kq58s2-MenuSubItemMobile .css-nvhnyf-MenuSubItemMobile {
     background-color: #383838;
     border: none;

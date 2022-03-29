@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /** @jsxImportSource theme-ui */
 import React, { useContext, useState } from 'react'
 import { Flex, Box, Image } from 'theme-ui'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { MenuContext, Svg, Text, IconButton } from '@innovationupstream/apeswap-uikit'
 import { NextLink } from './Link'
 import { menuItemContainer, linkStyle } from './styles'
@@ -20,9 +21,11 @@ export const MenuSubItem = ({ icon, label, items }) => {
           '&:hover > div:nth-of-type(2)': {
             visibility: 'visible',
           },
+         
         }}
       >
-        <Flex sx={linkStyle}>
+        <Flex sx={linkStyle} 
+                >
           <Flex sx={{ alignItems: 'center' }}>
             <Flex sx={{ flexShrink: 0 }}>
               {typeof icon === 'string' ? <Svg width={24} icon={icon as any} /> : icon}
@@ -62,7 +65,7 @@ export const MenuSubItem = ({ icon, label, items }) => {
             animate={{ height: 'fit-content' }}
             transition={{ height: { duration: 0.3 } }}
             exit={{ height: 0 }}
-            // sx={{ overflow: 'hidden', padding: '20px 0 0' }}
+            sx={{ overflow: 'hidden', padding: '20px 0 0' }}
           >
             {items?.map((link, index) => (
               <Flex
@@ -74,15 +77,12 @@ export const MenuSubItem = ({ icon, label, items }) => {
               >
                 <Flex key={`${link.label}-${index + 1}`} sx={linkStyle}>
                   <Flex sx={{ alignItems: 'center' }}>
-                    <Flex
-                      sx={{
-                        flexShrink: 0,
-                        border: '3px solid transparent',
-                        '&:hover': {
-                          borderBottom: '3px solid white',
-                        },
-                      }}
-                    >
+                    <Flex sx={{ flexShrink: 0 ,
+                    border: "3px solid transparent", 
+                    '&:hover': {
+                            borderBottom:'3px solid white',
+                          },
+                          }}>
                       <NextLink
                         href={link.href}
                         csx={{
@@ -91,6 +91,7 @@ export const MenuSubItem = ({ icon, label, items }) => {
                           padding: '5px',
                           display: 'inline-block',
                           width: '100%',
+                         
                         }}
                       >
                         {link.label}
@@ -101,7 +102,7 @@ export const MenuSubItem = ({ icon, label, items }) => {
               </Flex>
             ))}
           </motion.div>
-
+        
           <Box sx={{ flexShrink: '0', marginLeft: 'auto' }}>
             {label === 'More' && (
               <Image src="/images/headers/more.svg" sx={{ width: '200px', height: '280px', objectFit: 'cover' }} />
