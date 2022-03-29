@@ -83,7 +83,9 @@ const Iazos: React.FC = () => {
           <HeaderWrapper>
             <StyledHeader>Self-Serve Launchpad</StyledHeader>
             <Link href="/ss-iao/create" passHref>
-              <StyledButton> CREATE </StyledButton>
+              <a>
+                <StyledButton> CREATE </StyledButton>
+              </a>
             </Link>
           </HeaderWrapper>
           <SettingsWrapper>

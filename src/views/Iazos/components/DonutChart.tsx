@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Text, useMatchBreakpoints, Skeleton } from '@apeswapfinance/uikit'
+import { Text, Skeleton } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 
 interface DonutChartProps {
   items: {

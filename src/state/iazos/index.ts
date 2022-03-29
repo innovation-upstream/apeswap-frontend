@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
+import { HYDRATE } from 'next-redux-wrapper'
 import { IazosState } from '../types'
 import fetchIazosFromApi, { fetchIazoFromApi } from './fetchIazosFromApi'
 import fetchIazoDefaultSettings, {
