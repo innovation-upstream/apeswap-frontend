@@ -12,11 +12,12 @@ export const MenuItemMobile = ({ icon, label, href }) => {
         ...menuItemContainer,
         borderColor: 'text',
         paddingLeft: href === active ? '13px' : undefined,
-        borderLeft: href === active ? '4px solid' : '',
+        borderLeft: href === active ? '0px solid' : '',
         position: 'relative',
+        borderBottom: '1px solid rgba(133, 133, 133, 0.1)',
       }}
     >
-      <Flex sx={linkStyle}>
+      <Flex sx={{ ...linkStyle }}>
         <Flex sx={{ alignItems: 'center' }}>
           <Flex sx={{ flexShrink: 0 }}>{typeof icon === 'string' ? <Svg width={24} icon={icon as any} /> : icon}</Flex>
           <Flex sx={{ flexShrink: 0 }}>

@@ -23,6 +23,7 @@ export const MenuSubItemMobile = ({ icon, label, items, setCollapse, collapseDat
           '&:hover > div:nth-of-type(2)': {
             visibility: 'visible',
           },
+          borderBottom: '1px solid rgba(133, 133, 133, 0.1)',
         }}
       >
         <Flex sx={linkStyle}>
@@ -30,7 +31,12 @@ export const MenuSubItemMobile = ({ icon, label, items, setCollapse, collapseDat
             <Flex sx={{ flexShrink: 0 }}>
               {typeof icon === 'string' ? <Svg width={24} icon={icon as any} /> : icon}
             </Flex>
-            <Flex sx={{ flexShrink: 0, marginLeft: '16px' }}>
+            <Flex
+              sx={{
+                flexShrink: 0,
+                marginLeft: '16px',
+              }}
+            >
               <Text
                 sx={{
                   color: 'text',
