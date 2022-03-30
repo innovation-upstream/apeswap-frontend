@@ -1,6 +1,6 @@
 export const menuItemContainer = {
   alignItems: 'center',
-  height: '48px',
+  // height: '48px',
   pl: '17px',
   pr: '20px',
   flexShrink: 0,
@@ -10,7 +10,6 @@ export const menuItemContainer = {
     cursor: 'pointer',
     // backgroundColor: 'white4',
   },
-
 } as any
 
 export const linkStyle = {
@@ -18,6 +17,7 @@ export const linkStyle = {
   alignItems: 'center',
   width: '100%',
   height: '100%',
+  minHeight: '48px',
   justifyContent: 'space-between',
-  fontWeight:'600'
+  fontWeight: '600',
 }

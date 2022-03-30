@@ -1,12 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useEffect, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
-import {
-  MenuItem,
-  MenuContext,
-  Svg,
-  IconButton,
-} from '@innovationupstream/apeswap-uikit'
+import { MenuItem, MenuContext, Svg, IconButton } from '@innovationupstream/apeswap-uikit'
 import { useWeb3React } from '@web3-react/core'
 import Cookies from 'universal-cookie'
 import { CHAIN_ID } from 'config/constants/chains'
@@ -96,18 +91,16 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
           </Box>
           <Box
             className={row === 'mobile_header' ? 'moble_div2' : ''}
-            sx={row === 'mobile_header' ? {
-              display: 'flex',
-              backgroundColor: 'navbar',
-
+            sx={
+              row === 'mobile_header'
+                ? {
+                    display: 'flex',
+                    backgroundColor: 'navbar',
+                  }
+                : {
+                    display: 'flex',
+                  }
             }
-            :
-            {
-              display: 'flex',
-
-            }
-          
-          }
           >
             {currentMenu().map((item: any, index) => (
               <MenuItem key={`${item.label}-${index + 1}`}>
@@ -120,7 +113,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
                     )
                   }
 
-                  if ((row === String('mobile_header')) && collapse) {
+                  if (row === String('mobile_header') && collapse) {
                     return !item.items ? (
                       <MenuItemMobile label={item.label} icon={item.icon} href={item.href} />
                     ) : (

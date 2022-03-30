@@ -1,69 +1,69 @@
 import {
-    TrustWallet,
-    BinanceChain,
-    Coinbase,
-    MathWallet,
-    Nabox,
-    OntoWallet,
-    SafePalWallet,
-    TokenPocket,
-    WalletConnect,
-    Metamask,
-  } from '../../Icons'
-import { ConnectorNames } from "./types";
+  TrustWallet,
+  BinanceChain,
+  Coinbase,
+  MathWallet,
+  Nabox,
+  OntoWallet,
+  SafePalWallet,
+  TokenPocket,
+  WalletConnect,
+  Metamask,
+} from '../../Icons'
+import { ConnectorNames } from './types'
 
 const connectors = [
   {
-    title: "Metamask",
+    title: 'Metamask',
     icon: Metamask,
     connectorId: ConnectorNames.Injected,
   },
   {
-    title: "TrustWallet",
+    title: 'TrustWallet',
     icon: TrustWallet,
     connectorId: ConnectorNames.Injected,
   },
   {
-    title: "WalletConnect",
+    title: 'WalletConnect',
     icon: WalletConnect,
     connectorId: ConnectorNames.WalletConnect,
   },
   {
-    title: "SafePal Wallet",
+    title: 'SafePal Wallet',
     icon: SafePalWallet,
     connectorId: ConnectorNames.Injected,
   },
   {
-    title: "TokenPocket",
+    title: 'TokenPocket',
     icon: TokenPocket,
     connectorId: ConnectorNames.Injected,
   },
   {
-    title: "Coinbase Wallet",
+    title: 'Coinbase Wallet',
     icon: Coinbase,
     connectorId: ConnectorNames.Walletlink,
   },
   {
-    title: "Binance Chain Wallet",
+    title: 'Binance Chain Wallet',
     icon: BinanceChain,
     connectorId: ConnectorNames.BSC,
   },
   {
-    title: "NABOX Wallet",
+    title: 'NABOX Wallet',
     icon: Nabox,
     connectorId: ConnectorNames.Injected,
   },
   {
-    title: "ONTO Wallet",
+    title: 'ONTO Wallet',
     icon: OntoWallet,
     connectorId: ConnectorNames.Injected,
   },
   {
-    title: "MathWallet",
+    title: 'MathWallet',
     icon: MathWallet,
     connectorId: ConnectorNames.Injected,
   },
-];
+]
 
-export default connectors;
-export const localStorageKey = "accountStatus";
+export default connectors
+export const localStorageKey = 'accountStatus'

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Text, Modal, ModalHeader, Heading, Flex, Link } from '@innovationupstream/apeswap-uikit'
+import { Box } from 'theme-ui'
 import CopyToClipboard from './CopyToClipboard'
-import { OpenNew } from '../../Icons'
 
 interface Props {
   account?: string
@@ -17,19 +17,18 @@ const AccountModal: React.FC<Props> = ({ account, logout, onDismiss = () => null
       <ModalHeader handleClose={() => handleClose()}>
         <Heading as="h4">Your wallet</Heading>
       </ModalHeader>
-      <Text
-        fontSize="20px"
-        fontWeight={600}
-        style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginBottom: '8px' }}
-      >
-        {account}
-      </Text>
+      <Text weight="bold">{account}</Text>
       <Flex mt="10px" mb="32px">
-        <OpenNew />
-        <Link small href={`https://bscscan.com/address/${account}`} mr="16px" fontFamily="poppins" bold>
-          View on BscScan
-        </Link>
-        <CopyToClipboard toCopy={account}>Copy Address</CopyToClipboard>
+        <Box mr="15px">
+          <Link external href={`https://bscscan.com/address/${account}`} fontFamily="poppins">
+            View on BscScan
+          </Link>
+        </Box>
+        <CopyToClipboard toCopy={account}>
+          <Text variant="sm" weight="bold">
+            Copy Address
+          </Text>
+        </CopyToClipboard>
       </Flex>
       <Flex sx={{ justifyContent: 'center' }}>
         <Button
@@ -41,8 +40,14 @@ const AccountModal: React.FC<Props> = ({ account, logout, onDismiss = () => null
             onDismiss()
             window.location.reload()
           }}
+          csx={{
+            paddingRight: '24px',
+            paddingLeft: '24px',
+            border: '2px solid rgb(255, 179, 0)',
+            height: '28px',
+          }}
         >
-          LOGOUT
+          <Text weight="normal">LOGOUT</Text>
         </Button>
       </Flex>
     </Modal>

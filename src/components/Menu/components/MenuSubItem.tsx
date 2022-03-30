@@ -21,11 +21,9 @@ export const MenuSubItem = ({ icon, label, items }) => {
           '&:hover > div:nth-of-type(2)': {
             visibility: 'visible',
           },
-         
         }}
       >
-        <Flex sx={linkStyle} 
-                >
+        <Flex sx={linkStyle}>
           <Flex sx={{ alignItems: 'center' }}>
             <Flex sx={{ flexShrink: 0 }}>
               {typeof icon === 'string' ? <Svg width={24} icon={icon as any} /> : icon}
@@ -43,7 +41,7 @@ export const MenuSubItem = ({ icon, label, items }) => {
             </Flex>
           </Flex>
           <Box sx={{ display: collapse ? 'none' : null }}>
-            <Svg icon="caret" width={7} direction={open ? 'up' : 'down'} />
+            {/* <Svg icon="caret" width={7} direction={open ? 'up' : 'down'} /> */}
           </Box>
         </Flex>
 
@@ -77,12 +75,15 @@ export const MenuSubItem = ({ icon, label, items }) => {
               >
                 <Flex key={`${link.label}-${index + 1}`} sx={linkStyle}>
                   <Flex sx={{ alignItems: 'center' }}>
-                    <Flex sx={{ flexShrink: 0 ,
-                    border: "3px solid transparent", 
-                    '&:hover': {
-                            borderBottom:'3px solid white',
-                          },
-                          }}>
+                    <Flex
+                      sx={{
+                        flexShrink: 0,
+                        border: '3px solid transparent',
+                        '&:hover': {
+                          borderBottom: '3px solid white',
+                        },
+                      }}
+                    >
                       <NextLink
                         href={link.href}
                         csx={{
@@ -91,7 +92,6 @@ export const MenuSubItem = ({ icon, label, items }) => {
                           padding: '5px',
                           display: 'inline-block',
                           width: '100%',
-                         
                         }}
                       >
                         {link.label}
@@ -102,7 +102,7 @@ export const MenuSubItem = ({ icon, label, items }) => {
               </Flex>
             ))}
           </motion.div>
-        
+
           <Box sx={{ flexShrink: '0', marginLeft: 'auto' }}>
             {label === 'More' && (
               <Image src="/images/headers/more.svg" sx={{ width: '200px', height: '280px', objectFit: 'cover' }} />
@@ -113,6 +113,9 @@ export const MenuSubItem = ({ icon, label, items }) => {
 
             {label === 'Stake' && (
               <Image src="/images/headers/stake.svg" sx={{ width: '200px', height: '280px', objectFit: 'cover' }} />
+            )}
+            {label === 'Offerings' && (
+              <Image src="/images/headers/offering.svg" sx={{ width: '200px', height: '280px', objectFit: 'cover' }} />
             )}
           </Box>
           {label === 'More' && (

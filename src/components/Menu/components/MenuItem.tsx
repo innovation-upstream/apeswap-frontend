@@ -14,8 +14,8 @@ export const MenuItem = ({ icon, label, href }) => {
       sx={{
         ...menuItemContainer,
         borderColor: 'text',
-        paddingLeft: href === active ? '13px' : undefined,
-        borderLeft: href === active ? '4px solid' : '',
+        paddingLeft: href === active ? '0px' : undefined,
+        borderLeft: href === active ? '0px solid' : '',
         position: 'relative',
         border: '3px solid transparent',
         '&:hover': {

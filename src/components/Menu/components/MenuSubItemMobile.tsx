@@ -10,7 +10,6 @@ import { menuItemContainer, linkStyle } from './styles'
 export const MenuSubItemMobile = ({ icon, label, items, setCollapse, collapseData }) => {
   const [open, setOpen] = useState(false)
   const { active, collapse } = useContext(MenuContext)
-  console.log('subitem', label)
 
   return (
     <>
@@ -53,14 +52,14 @@ export const MenuSubItemMobile = ({ icon, label, items, setCollapse, collapseDat
               setCollapse(!collapseData)
             }}
             sx={{
-              position: 'absolute',
-              top: '100%',
+              position: 'relative',
+              top: 'auto',
               left: 0,
-              minWidth: '500px',
-              background: '#383838',
-              borderRadius: '0 0 25px 25px',
-              padding: '0 0 80px 20px',
-              visibility: 'hidden',
+              minWidth: '100vw',
+              background: '#565656',
+              borderRadius: '0',
+              padding: '0 0 20px 30px',
+              //  visibility: 'hidden',
               overflow: 'hidden',
             }}
           >
@@ -69,7 +68,10 @@ export const MenuSubItemMobile = ({ icon, label, items, setCollapse, collapseDat
               animate={{ height: 'fit-content' }}
               transition={{ height: { duration: 0.3 } }}
               exit={{ height: 0 }}
-              sx={{ overflow: 'hidden', padding: '20px 0 0' }}
+              sx={{
+                overflow: 'hidden',
+                padding: '20px 0 0',
+              }}
             >
               {items?.map((link, index) => (
                 <Flex
