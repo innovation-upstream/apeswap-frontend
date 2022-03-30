@@ -19,15 +19,14 @@ const Farms: React.FC = () => {
   usePollFarms()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
-  const { pathname } = useRouter()
+  const { pathname, query: params } = useRouter()
   const TranslateString = useI18n()
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const farmsLP = useFarms(account)
-  const { search } = window.location
-  const params = new URLSearchParams(search)
-  const urlSearchedFarm = parseInt(params.get('pid'))
+  const urlSearchedFarm = parseInt(params?.pid as string)
   const [query, setQuery] = useState('')
+  const [sortOption, setSortOption] = useState('all')
   const loadMoreRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

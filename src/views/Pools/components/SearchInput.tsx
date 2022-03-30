@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { Input } from '@apeswapfinance/uikit'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 
 const StyledInput = styled(Input)`
   border-radius: 20px;

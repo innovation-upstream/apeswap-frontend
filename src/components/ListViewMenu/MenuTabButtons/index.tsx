@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useRouteMatch, useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { Toggle } from '@apeswapfinance/uikit'
 
 const Wrapper = styled.div`
@@ -22,20 +22,20 @@ const Wrapper = styled.div`
 `
 
 const MenuTabButton: React.FC = () => {
-  const { url, isExact } = useRouteMatch()
-  const history = useHistory()
+  const { pathname, push } = useRouter()
+  const url = `/${pathname.split('/')?.[1]}`
 
   const handleClick = () => {
-    if (isExact) {
-      history.push(`${url}/history`)
+    if (!pathname.includes('history')) {
+      push(`${url}/history`)
     } else {
-      history.push(url)
+      push(url)
     }
   }
 
   return (
     <Wrapper>
-      <Toggle size="md" labels={['CURRENT', 'PAST']} onClick={handleClick} checked={!isExact} />
+      <Toggle size="md" labels={['CURRENT', 'PAST']} onClick={handleClick} checked={pathname.includes('history')} />
     </Wrapper>
   )
 }
