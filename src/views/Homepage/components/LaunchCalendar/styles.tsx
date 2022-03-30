@@ -17,7 +17,7 @@ export const LaunchCalendarWrapper = styled.div`
 
 export const ColorWrap = styled.div`
   display: flex;
-  background: ${({ theme }) => theme.card.background};
+  background: ${({ theme }) => theme.colors.white2};
   align-items: center;
   justify-content: center;
 `

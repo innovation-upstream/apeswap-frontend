@@ -2,7 +2,6 @@ import React from 'react'
 import { Heading, BaseLayout, useMatchBreakpoints, Text } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'
-import HeaderSection from 'components/layout/HeaderSection'
 import useTheme from 'hooks/useTheme'
 import useFetchBurningGames from 'state/strapi/useFetchBurningGames'
 import CardBurningGame from './CardBurningGame'
@@ -130,18 +129,15 @@ const BurningGames: React.FC = () => {
 
   return (
     <ContainerPrincipal>
-      <HeaderSection>
-        <Header banner={banner}>
-          <HeadingContainer>
-            <StyledHeading as="h1" mb="12px" mt={0} color="white">
-              BANANA Burns
-            </StyledHeading>
-            <SubtitleHeading isMobile={!isDesktop} fontWeight={400} color="white">
-              Partners Supporting The Jungle
-            </SubtitleHeading>
-          </HeadingContainer>
-        </Header>
-      </HeaderSection>
+      <Header banner={banner}>
+        <HeadingContainer>
+          <StyledHeading as="h1">BANANA Burns</StyledHeading>
+          <SubtitleHeading isMobile={!isDesktop} fontWeight={400} color="white">
+            Partners Supporting The Jungle
+          </SubtitleHeading>
+        </HeadingContainer>
+      </Header>
+
       <StyledPage width="1130px">
         {data.length !== 0 && (
           <CardFull isMobile={!isDesktop}>

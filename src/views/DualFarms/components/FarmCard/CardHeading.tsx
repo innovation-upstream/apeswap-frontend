@@ -2,7 +2,7 @@ import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
-import { Flex, Heading, Skeleton, Text, Image } from '@apeswapfinance/uikit'
+import { Flex, Skeleton, Text, Image } from '@apeswapfinance/uikit'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import UnlockButton from 'components/UnlockButton'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -47,7 +47,7 @@ const StyledBackground = styled.div`
     width: 180px;
   }
 `
-const StyledHeading = styled(Heading)`
+const StyledHeading = styled(Text)`
   font-size: 12px;
   ${({ theme }) => theme.mediaQueries.xs} {
     text-align: start;
@@ -311,7 +311,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       </StyledBackground>
       <StyledFlexContainer>
         <LabelContainer>
-          <StyledHeading fontWeight={800}>{lpLabel}</StyledHeading>
+          <StyledHeading bold>{lpLabel}</StyledHeading>
           {!removed && (
             <Text style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
               <StyledText1>APR:</StyledText1>
@@ -322,8 +322,8 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
                       lpLabel={lpLabel}
                       rewardTokenName="BANANA"
                       addLiquidityUrl={addLiquidityUrl}
-                      rewardTokenPrice={bananaPrice}
-                      apy={apr}
+                      rewardTokenPrice={bananaPrice?.toNumber()}
+                      apy={apr?.toNumber()}
                     />
                   )}
                   <StyledAPRText>{farmAPR}%</StyledAPRText>

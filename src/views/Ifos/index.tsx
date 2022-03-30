@@ -2,8 +2,6 @@ import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import useI18n from 'hooks/useI18n'
 import { Heading } from '@apeswapfinance/uikit'
-import Page from 'components/layout/Page'
-import HeaderSection from 'components/layout/HeaderSection'
 import Container from 'components/layout/Container'
 import ifos, { pastIfos } from 'config/constants/ifo'
 import IfoTabButtons from './components/IfoTabButtons'
@@ -62,6 +60,7 @@ const HeaderContainer = styled.div`
 const StyledHeading = styled(Heading)`
   font-size: 36px;
   max-width: 240px !important;
+  margin-bottom: 8px;
 
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 44px;
@@ -182,30 +181,27 @@ const Ifos = () => {
 
   return (
     <>
-      <HeaderSection>
-        <Header>
-          <HeaderContainer>
-            <StyledHeading as="h1" mb="8px" mt={0} color="white" fontWeight={800}>
-              {TranslateString(999, 'Initial Ape Offerings')}
-            </StyledHeading>
-          </HeaderContainer>
+      <Header>
+        <HeaderContainer>
+          <StyledHeading as="h1" style={{ color: 'white' }}>
+            {TranslateString(999, 'Initial Ape Offerings')}
+          </StyledHeading>
+        </HeaderContainer>
 
-          <RightDiv>
-            <Ape src="/images/banners/iao-ape.svg" className="ape" />
-            <WindowDiv className="window" />
-            <Banana src="/images/banners/iao-banana.svg" className="banana" />
-          </RightDiv>
-        </Header>
-      </HeaderSection>
-      <Page>
-        <Container>
-          <IfoProjectCard ifoId={projectId} />
-          {tabOption === 'past' && <IfoPastProjectSwiper onSelectProject={setProjectId} />}
-          <IfoTabButtons onSelect={handleTabSelectionChange} selectedTab={tabOption} />
-          <HowItWorks onParticipate={openCurrentProject} />
-          <Ideology />
-        </Container>
-      </Page>
+        <RightDiv>
+          <Ape src="/images/banners/iao-ape.svg" className="ape" />
+          <WindowDiv className="window" />
+          <Banana src="/images/banners/iao-banana.svg" className="banana" />
+        </RightDiv>
+      </Header>
+
+      <Container>
+        <IfoProjectCard ifoId={projectId} />
+        {tabOption === 'past' && <IfoPastProjectSwiper onSelectProject={setProjectId} />}
+        <IfoTabButtons onSelect={handleTabSelectionChange} selectedTab={tabOption} />
+        <HowItWorks onParticipate={openCurrentProject} />
+        <Ideology />
+      </Container>
     </>
   )
 }

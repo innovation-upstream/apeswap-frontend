@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@apeswapfinance/sdk'
-import { Text, Flex, AddIcon, ButtonSquare, Card } from '@apeswapfinance/uikit'
+import { Text, Flex, AddIcon, Button, Card } from '@apeswapfinance/uikit'
 import { Wrapper } from 'views/Swap/components/styled'
 import CurrencyInputHeader from 'views/Swap/components/CurrencyInputHeader'
 import Link from 'next/link'
@@ -124,13 +124,13 @@ export default function Pool() {
 
                 <Link href="/add" passHref>
                   <LinkWrapper>
-                    <ButtonSquare
+                    <Button
                       id="join-pool-button"
                       startIcon={<AddIcon color="white" />}
                       style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px' }}
                     >
                       Add Liquidity
-                    </ButtonSquare>
+                    </Button>
                   </LinkWrapper>
                 </Link>
               </InnerFlex>
@@ -142,7 +142,7 @@ export default function Pool() {
               <Text mb="8px">Dont see a pool you joined?</Text>
               <Link href="/find" passHref>
                 <LinkWrapper>
-                  <ButtonSquare
+                  <Button
                     id="import-pool-link"
                     style={{
                       backgroundColor: 'rgb(0,0,0,0)',
@@ -154,7 +154,7 @@ export default function Pool() {
                       {' '}
                       Find other LP tokens
                     </Text>
-                  </ButtonSquare>
+                  </Button>
                 </LinkWrapper>
               </Link>
             </StyledFlex>

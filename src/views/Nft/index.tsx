@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Text, Heading, Spinner, Flex } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
-import HeaderSection from 'components/layout/HeaderSection'
 import { useFetchNfas, useNfas } from 'state/hooks'
 import SortNfts from './components/SortNfts'
 import OwnedNfts from './components/OwnedNft'
@@ -79,18 +78,17 @@ const Nft = () => {
 
   return (
     <>
-      <HeaderSection>
-        <Header>
-          <HeadingContainer>
-            <StyledHeading as="h1" mt={0} color="white" fontWeight={800}>
-              {TranslateString(999, 'Non Fungible Apes')}
-            </StyledHeading>
-            <StyledHeading as="h1" mb="8px" mt={1} color="white" fontWeight={800}>
-              {TranslateString(999, 'Collection')}
-            </StyledHeading>
-          </HeadingContainer>
-        </Header>
-      </HeaderSection>
+      <Header>
+        <HeadingContainer>
+          <StyledHeading as="h1" color="white">
+            {TranslateString(999, 'Non Fungible Apes')}
+          </StyledHeading>
+          <StyledHeading as="h1" color="white" style={{ marginBottom: '8px' }}>
+            {TranslateString(999, 'Collection')}
+          </StyledHeading>
+        </HeadingContainer>
+      </Header>
+
       <Page>
         <StyledHero>
           <Text style={{ color: 'subtle', paddingTop: '10px', textDecoration: 'underline' }}>

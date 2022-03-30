@@ -10,10 +10,9 @@ import useWindowSize, { Size } from 'hooks/useDimensions'
 import { useVaults, useNetworkChainId, usePollVaultsData } from 'state/hooks'
 import { Vault } from 'state/types'
 import Page from 'components/layout/Page'
-import HeaderSection from 'components/layout/HeaderSection'
+import MenuTabButtons from 'components/ListViewMenu/MenuTabButtons'
 import ToggleView from './components/ToggleView/ToggleView'
 import SearchInput from './components/SearchInput'
-import VaultTabButtons from './components/VaultTabButtons'
 import VaultCard from './components/VaultCard/VaultCard'
 import VaultTable from './components/VaultTable/VaultTable'
 import { ViewMode } from './components/types'
@@ -179,7 +178,7 @@ const StyledCheckbox = styled(Checkbox)<CheckboxProps>`
 `
 
 const ContainerLabels = styled.div`
-  background: ${({ theme }) => theme.card.background};
+  background: ${({ theme }) => theme.colors.white2};
   border-radius: 16px;
   margin-top: 24px;
   height: 32px;
@@ -418,7 +417,7 @@ const StyledTable = styled.div`
 `
 
 const Container = styled.div`
-  background: ${({ theme }) => theme.card.background};
+  background: ${({ theme }) => theme.colors.white2};
   border-radius: 16px;
   margin: 16px 0px;
   position: relative;
@@ -593,13 +592,11 @@ const Vaults: React.FC<IVaults> = ({ showHistory }) => {
 
   const renderHeader = () => {
     const headerContents = (
-      <HeaderSection>
-        <HeadingContainer>
-          <StyledHeading as="h1" mb="8px" mt={0} color="white" fontWeight={800}>
-            {TranslateString(999, 'Burning Vaults')}
-          </StyledHeading>
-        </HeadingContainer>
-      </HeaderSection>
+      <HeadingContainer>
+        <StyledHeading as="h1" color="white" style={{ marginBottom: '8px', color: 'white' }}>
+          {TranslateString(999, 'Burning Vaults')}
+        </StyledHeading>
+      </HeadingContainer>
     )
     if (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
       return <HeaderPolygon>{headerContents}</HeaderPolygon>
@@ -621,7 +618,9 @@ const Vaults: React.FC<IVaults> = ({ showHistory }) => {
               <SearchInput onChange={handleChangeQuery} value={searchQuery} />
             </LabelWrapper>
             <ButtonCheckWrapper>
-              <VaultTabButtons />
+              <div />
+              <MenuTabButtons />
+              <div style={{ marginRight: '70px' }} />{' '}
               <ToggleContainer>
                 <ToggleWrapper onClick={() => setStakedOnly(!stakedOnly)}>
                   <StyledCheckbox checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
