@@ -10,6 +10,7 @@ import { PageWrapper } from 'components/PageWrapper'
 import Footer from 'components/Footer/Footer'
 import Menu from 'components/Menu'
 import PageLoader from 'components/PageLoader'
+import { SSRContextProvider } from 'contexts/SSRContext'
 import Providers from '../Providers'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -38,14 +39,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1" />
       </Head>
       <Providers>
-        <ResetCSS />
-        <GlobalStyle />
-        <MarketingModalCheck />
-        <PageWrapper>
-          {loading ? <PageLoader /> : <Component {...pageProps} />}
-          <Footer />
-        </PageWrapper>
-        <ToastListener />
+        <SSRContextProvider desktop={pageProps.isDesktop}>
+          <ResetCSS />
+          <GlobalStyle />
+          <MarketingModalCheck />
+          <PageWrapper>
+            {loading ? <PageLoader /> : <Component {...pageProps} />}
+            <Footer />
+          </PageWrapper>
+          <ToastListener />
+        </SSRContextProvider>
       </Providers>
     </>
   )
