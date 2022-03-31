@@ -24,6 +24,10 @@ export const NewsWrapper = styled.div`
   width: 95vw;
   justify-content: center;
   padding-bottom: 50px;
+
+  & .swiper-wrapper {
+    display: flex;
+  }
 `
 
 export const SkeletonWrapper = styled.div`

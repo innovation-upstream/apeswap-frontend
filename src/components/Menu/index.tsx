@@ -5,9 +5,9 @@ import { MenuItem, MenuContext, Svg, IconButton } from '@innovationupstream/apes
 import { useWeb3React } from '@web3-react/core'
 import Cookies from 'universal-cookie'
 import { CHAIN_ID } from 'config/constants/chains'
-import { useNetworkChainId } from 'state/hooks'
 import { Flex, Box } from 'theme-ui'
 import BNBButton from 'components/TopMenu_old/BNBButton'
+import { useNetworkChainId } from 'state/hooks'
 import RightContainer from './components/RightContainer'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
@@ -99,6 +99,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
                   }
                 : {
                     display: 'flex',
+                    alignItems: 'baseline',
                   }
             }
           >

@@ -9,12 +9,15 @@ import { Bubble, ValueCard, ValueImage, ValuesWrapper, ValueText } from './style
 import { defaultValues } from './defaultValues'
 
 const SLIDE_DELAY = 5000
+const spaceBetween = 30
 SwiperCore.use([Autoplay])
+
+const isBrowser = typeof window === 'object'
 
 const Values: React.FC = () => {
   const { swiper, setSwiper } = useSwiper()
   const [activeSlide, setActiveSlide] = useState(0)
-  const [loadValues, setLoadValues] = useState(false)
+  const [loadValues, setLoadValues] = useState(!isBrowser)
   const { isMd, isSm, isXs } = useMatchBreakpoints()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const swiperFlag = isMd || isSm || isXs
@@ -53,7 +56,7 @@ const Values: React.FC = () => {
               }}
               loop
               onSwiper={setSwiper}
-              spaceBetween={30}
+              spaceBetween={spaceBetween}
               slidesPerView="auto"
               loopedSlides={defaultValues.length}
               centeredSlides
@@ -61,7 +64,10 @@ const Values: React.FC = () => {
             >
               {defaultValues.map((value) => {
                 return (
-                  <SwiperSlide style={{ maxWidth: '338px', minWidth: '338px' }} key={value.title}>
+                  <SwiperSlide
+                    style={{ marginRight: `${spaceBetween}px`, maxWidth: '338px', minWidth: '338px' }}
+                    key={value.title}
+                  >
                     <ValueCard key={value.title}>
                       {loadValues ? (
                         <ValueImage image={value.logoImg} />

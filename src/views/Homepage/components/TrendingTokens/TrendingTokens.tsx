@@ -15,6 +15,8 @@ const NUMBER_OF_TOKENS_TO_DISPLAY = 6
 const TOKEN_DELAY = 10000
 const CATEGORIES = ['primary', 'partner']
 
+const isBrowser = typeof window === 'object'
+
 const TrendingTokens: React.FC = () => {
   const { chainId } = useActiveWeb3React()
   const [loadTokens, setLoadTokens] = useState(false)
@@ -105,18 +107,27 @@ const TrendingTokens: React.FC = () => {
                               <Text fontSize="12px">{token?.tokenTicker}</Text>
                               <Text fontSize="12px" color={token?.percentChange < 0 ? 'red' : 'green'}>
                                 {token?.percentChange > 0 && '+'}
-                                <CountUp end={token?.percentChange * 100} decimals={2} duration={1.5} />%
+                                {!isBrowser ? (
+                                  (token?.percentChange * 100).toFixed(2)
+                                ) : (
+                                  <CountUp end={token?.percentChange * 100} decimals={2} duration={1.5} />
+                                )}
+                                %
                               </Text>
                             </Flex>
                             <Flex alignItems="center" style={{ width: '100%', height: '50%' }}>
                               <Text>
                                 $
-                                <CountUp
-                                  end={token?.tokenPrice}
-                                  decimals={token?.tokenPrice > 1 ? 2 : 4}
-                                  duration={1.5}
-                                  separator=","
-                                />
+                                {!isBrowser ? (
+                                  parseFloat(token?.tokenPrice.toFixed(token?.tokenPrice > 1 ? 2 : 4)).toLocaleString()
+                                ) : (
+                                  <CountUp
+                                    end={token?.tokenPrice}
+                                    decimals={token?.tokenPrice > 1 ? 2 : 4}
+                                    duration={1.5}
+                                    separator=","
+                                  />
+                                )}
                               </Text>
                             </Flex>
                           </Flex>

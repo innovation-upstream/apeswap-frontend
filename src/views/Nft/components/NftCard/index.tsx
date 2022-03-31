@@ -1,8 +1,9 @@
 import React from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
-import { Card, CardBody, Heading } from '@apeswapfinance/uikit'
+import { Card, Heading } from '@apeswapfinance/uikit'
 import { Nft } from 'config/constants/types'
+import { Box } from 'theme-ui'
 import InfoRow from '../InfoRow'
 import Image from '../Image'
 
@@ -28,15 +29,15 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   return (
     <Link href={`/nft/${index}`} passHref>
       <LinkWrapper>
-        <Card>
+        <Card sx={{ borderRadius: '10px', overflow: 'hidden' }}>
           <Image src={image} alt={name} originalLink={image} rarityTier={attributes.rarityTierNumber} />
-          <CardBody>
+          <Box sx={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Header>
-              <Heading fontWeight={800}>
+              <Heading as="h5" sx={{ textAlign: 'center' }}>
                 {name} - #{pad(`${index}`, '4')}
               </Heading>
             </Header>
-          </CardBody>
+          </Box>
         </Card>
       </LinkWrapper>
     </Link>

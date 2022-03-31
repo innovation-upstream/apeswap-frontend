@@ -8,6 +8,10 @@ export const ValuesWrapper = styled.div`
   justify-content: center;
   height: 550px;
   width: 100%;
+
+  & .swiper-wrapper {
+    display: flex;
+  }
 `
 
 export const ValueCard = styled.div`

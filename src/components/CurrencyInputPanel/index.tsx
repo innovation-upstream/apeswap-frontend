@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Currency, Pair, Token } from '@apeswapfinance/sdk'
-import { Button, Text, useModal, Flex, ButtonSquare, ArrowDropDownIcon } from '@apeswapfinance/uikit'
+import { Button, Text, useModal, Flex, ArrowDropDownIcon } from '@apeswapfinance/uikit'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import styled from 'styled-components'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -132,6 +132,7 @@ export default function CurrencyInputPanel({
       showCommonBases={showCommonBases}
     />,
   )
+
   return (
     <CurrencyInputContainer removeLiquidity={removeLiquidity}>
       <Flex style={{ position: 'relative' }}>
@@ -220,7 +221,7 @@ export default function CurrencyInputPanel({
       <InputPanel id={id}>
         <Container removeLiquidity={removeLiquidity}>
           {account && currency && showMaxButton && label !== 'To' && (
-            <ButtonSquare
+            <Button
               onClick={onMax}
               variant="primary"
               style={{
@@ -233,7 +234,7 @@ export default function CurrencyInputPanel({
               }}
             >
               MAX
-            </ButtonSquare>
+            </Button>
           )}
           <RowBetween>
             <NumericalInput

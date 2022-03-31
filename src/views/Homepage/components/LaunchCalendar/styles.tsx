@@ -9,11 +9,15 @@ export const LaunchCalendarWrapper = styled.div`
   height: 500px;
   justify-content: space-between;
   align-items: center;
+
+  & .swiper-wrapper {
+    display: flex;
+  }
 `
 
 export const ColorWrap = styled.div`
   display: flex;
-  background: ${({ theme }) => theme.card.background};
+  background: ${({ theme }) => theme.colors.white2};
   align-items: center;
   justify-content: center;
 `

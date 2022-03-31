@@ -17,6 +17,8 @@ import {
   SkeletonWrapper,
 } from './styles'
 
+const spaceBetween = 20
+
 const LaunchCalendar: React.FC = () => {
   const [loadNews, setLoadNews] = useState(false)
   const today = new Date()
@@ -57,7 +59,7 @@ const LaunchCalendar: React.FC = () => {
                 id="launchSwiper"
                 initialSlide={0}
                 onSwiper={setSwiper}
-                spaceBetween={20}
+                spaceBetween={spaceBetween}
                 slidesPerView="auto"
                 resizeObserver
                 centeredSlides
@@ -73,11 +75,14 @@ const LaunchCalendar: React.FC = () => {
                 {sortLaunch?.map((launch, i) => {
                   const date = new Date(launch.launchTime)
                   const slide = (
-                    <SwiperSlide style={{ maxWidth: '219px', minWidth: '219px' }} key={launch?.textLine1}>
+                    <SwiperSlide
+                      style={{ marginRight: `${spaceBetween}px`, maxWidth: '219px', minWidth: '219px' }}
+                      key={launch?.textLine1}
+                    >
                       <LaunchCard>
                         <Flex justifyContent="center" alignItems="center" flexDirection="column">
                           <Text fontSize="30px" bold>
-                            {date.getDate()} {date.toDateString().split(' ')[1]}
+                            {date.getUTCDate()} {date.toUTCString().split(' ')[2]}
                           </Text>
                           <Text fontSize="12px">
                             {date.getUTCHours()}:{date?.getUTCMinutes() === 0 ? '00' : date?.getUTCMinutes()} UTC
@@ -112,7 +117,10 @@ const LaunchCalendar: React.FC = () => {
                     return (
                       <>
                         {slide}
-                        <SwiperSlide style={{ maxWidth: '219px', minWidth: '219px' }} key={launch?.textLine1}>
+                        <SwiperSlide
+                          style={{ marginRight: `${spaceBetween}px`, maxWidth: '219px', minWidth: '219px' }}
+                          key={launch?.textLine1}
+                        >
                           <LaunchCard>
                             <Flex alignItems="center" justifyContent="center" style={{ height: '100%' }}>
                               <QuestionMark fill={theme.colors.text} />

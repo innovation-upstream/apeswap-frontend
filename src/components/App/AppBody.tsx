@@ -1,14 +1,15 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Card } from '@apeswapfinance/uikit'
+import styled from '@emotion/styled'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
   z-index: 1;
   width: 360px;
   margin-bottom: 80px;
+  overflow: hidden;
   background: ${({ theme }) => theme.colors.white2};
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries?.md} {
     width: 680px;
     margin-bottom: 0px;
   }

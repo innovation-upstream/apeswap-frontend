@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { Input, SearchIcon2 } from '@apeswapfinance/uikit'
+import { Input } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 
 const StyledInput = styled(Input)`
@@ -16,14 +16,6 @@ const StyledInput = styled(Input)`
   :focus {
     box-shadow: 0px 0px 0px 1px #ffb300, 0px 0px 0px 4px rgb(255 179 0 / 40%) !important;
   }
-`
-
-const StyledSearchIcon = styled(SearchIcon2)`
-  position: absolute;
-  right: 10px;
-  top: 7px;
-  width: 14px;
-  height: 14px;
 `
 
 const InputWrapper = styled.div`
@@ -79,8 +71,7 @@ const SearchInput: React.FC<Props> = ({ value, onChange }) => {
   return (
     <Container toggled={toggled}>
       <InputWrapper>
-        <StyledInput ref={inputEl} value={value} onChange={onChange} onBlur={() => setToggled(false)} />
-        <StyledSearchIcon color="text" />
+        <StyledInput icon="search" ref={inputEl} value={value} onChange={onChange} onBlur={() => setToggled(false)} />
       </InputWrapper>
     </Container>
   )

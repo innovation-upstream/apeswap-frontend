@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import TextInput from 'components/TextInput'
 import useTheme from 'hooks/useTheme'
 import ImageUpload from './ImageUpload'

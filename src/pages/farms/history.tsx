@@ -1,15 +1,17 @@
 import React from 'react'
 import { GetServerSideProps } from 'next'
+import BigNumber from 'bignumber.js'
 import { getServerSideGenericProps } from 'components/getServersideProps'
 import Farms from 'views/Farms'
 import DualFarms from 'views/DualFarms'
-import { ViewMode } from 'views/Farms/components/types'
 import { setFarmsPublicData } from 'state/farms'
+import fetchFarmLpAprs from 'state/stats/getFarmLpAprs'
+import fetchLpPrices from 'state/lpPrices/fetchLpPrices'
 import fetchPrices from 'state/tokenPrices/fetchPrices'
 import fetchFarms from 'state/farms/fetchFarms'
 import fetchDualFarms from 'state/dualFarms/fetchDualFarms'
 import { CHAIN_ID } from 'config/constants/chains'
-import { wrapper } from '../../state'
+import { wrapper } from 'state'
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   const initialProps = await getServerSideGenericProps(context)
@@ -22,32 +24,24 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     if (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
       farmData = await fetchDualFarms(tokenPrices, chainId)
     } else {
-      farmData = await fetchFarms(chainId)
+      const lpTokenPrices = await fetchLpPrices(chainId)
+      const farmLpAprs = await fetchFarmLpAprs(chainId)
+      const bananaPrice = (
+        new BigNumber(tokenPrices?.find((token) => token.symbol === 'BANANA')?.price) || new BigNumber(0)
+      ).toString()
+
+      farmData = await fetchFarms(chainId, lpTokenPrices, new BigNumber(bananaPrice), farmLpAprs)
     }
   } catch (e) {
     console.warn(e)
   }
   store.dispatch(setFarmsPublicData(JSON.parse(JSON.stringify(farmData))))
 
-  let view = ViewMode.TABLE
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(req.headers.userAgent as string)) {
-    view = ViewMode.CARD
-  }
-
-  return {
-    props: {
-      ...initialProps?.props,
-      view,
-    },
-  }
+  return initialProps
 })
 
-const FarmsPage: React.FC<{ chainId?: number; view: any }> = ({ chainId, view }) => {
-  return chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET ? (
-    <DualFarms showHistory view={view} />
-  ) : (
-    <Farms showHistory view={view} />
-  )
+const FarmsPage: React.FC<{ chainId?: number }> = ({ chainId }) => {
+  return chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET ? <DualFarms showHistory /> : <Farms />
 }
 
 export default FarmsPage

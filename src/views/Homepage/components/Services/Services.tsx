@@ -11,6 +11,8 @@ import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { ServiceWrapper, YieldCard, ColorWrap, Bubble } from './styles'
 import { defaultServiceData } from './defaultServiceData'
 
+const spaceBetween = 20
+
 const Services: React.FC = () => {
   const { swiper, setSwiper } = useSwiper()
   const [loadServices, setLoadServices] = useState(false)
@@ -86,9 +88,10 @@ const Services: React.FC = () => {
                       token2={tokenImage[1]}
                       token3={stat.rewardToken.name}
                       stakeLp
+                      iconFill="white"
                     />
                   ) : id === 'poolDetails' ? (
-                    <ServiceTokenDisplay token1={tokenImage[0]} token2={tokenImage[1]} />
+                    <ServiceTokenDisplay token1={tokenImage[0]} token2={tokenImage[1]} iconFill="white" />
                   ) : (
                     <ServiceTokenDisplay token1={tokenImage[0]} />
                   )}
@@ -129,7 +132,7 @@ const Services: React.FC = () => {
                 id="serviceSwiper"
                 initialSlide={0}
                 onSwiper={setSwiper}
-                spaceBetween={20}
+                spaceBetween={spaceBetween}
                 slidesPerView="auto"
                 loopedSlides={defaultServiceData.length}
                 loop
@@ -146,7 +149,10 @@ const Services: React.FC = () => {
               >
                 {displayData?.map((service) => {
                   return (
-                    <SwiperSlide style={{ maxWidth: '338px', minWidth: '338px' }} key={service.title}>
+                    <SwiperSlide
+                      style={{ marginRight: `${spaceBetween}px`, maxWidth: '338px', minWidth: '338px' }}
+                      key={service.title}
+                    >
                       <YieldCard image={service.backgroundImg}>
                         <Flex flexDirection="column" justifyContent="space-between" style={{ height: '100%' }}>
                           <Flex flexDirection="column">

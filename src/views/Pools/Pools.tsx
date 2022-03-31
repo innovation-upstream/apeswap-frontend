@@ -6,6 +6,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Heading, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
+import MenuTabButtons from 'components/ListViewMenu/MenuTabButtons'
 import useI18n from 'hooks/useI18n'
 import useWindowSize, { Size } from 'hooks/useDimensions'
 import { useBlock } from 'state/block/hooks'
@@ -16,7 +17,6 @@ import Page from 'components/layout/Page'
 import HeaderSection from 'components/layout/HeaderSection'
 import ToggleView from './components/ToggleView/ToggleView'
 import SearchInput from './components/SearchInput'
-import PoolTabButtons from './components/PoolTabButtons'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolTable from './components/PoolTable/PoolTable'
 import { ViewMode } from './components/types'
@@ -226,7 +226,7 @@ const StyledCheckbox = styled(Checkbox)<CheckboxProps>`
 `
 
 const ContainerLabels = styled.div`
-  background: ${({ theme }) => theme.card.background};
+  background: ${({ theme }) => theme.colors.white2};
   border-radius: 16px;
   margin-top: 24px;
   height: 32px;
@@ -463,7 +463,7 @@ const StyledTable = styled.div`
 `
 
 const Container = styled.div`
-  background: ${({ theme }) => theme.card.background};
+  background: ${({ theme }) => theme.colors.white2};
   border-radius: 16px;
   margin: 16px 0px;
   position: relative;
@@ -692,24 +692,22 @@ const Pools: React.FC<IPools> = ({ showHistory }) => {
 
   return (
     <>
-      <HeaderSection>
-        <Header>
-          <HeadingContainer>
-            <StyledHeading as="h1" mb="8px" mt={0} color="white" fontWeight={800}>
-              {TranslateString(999, 'Banana Pools')}
-            </StyledHeading>
-            {size.width > 968 && (
-              <Text fontSize="22px" fontWeight={400} color="white">
-                Stake BANANA to earn new tokens. <br /> You can unstake at any time. <br /> Rewards are calculated per
-                block.
-              </Text>
-            )}
-          </HeadingContainer>
-          <MonkeyWrapper>
-            <PoolMonkey />
-          </MonkeyWrapper>
-        </Header>
-      </HeaderSection>
+      <Header>
+        <HeadingContainer>
+          <StyledHeading as="h1" style={{ color: 'white', marginBottom: '8px' }}>
+            {TranslateString(999, 'Banana Pools')}
+          </StyledHeading>
+          {size.width > 968 && (
+            <Text fontSize="22px" fontWeight={400} color="white">
+              Stake BANANA to earn new tokens. <br /> You can unstake at any time. <br /> Rewards are calculated per
+              block.
+            </Text>
+          )}
+        </HeadingContainer>
+        <MonkeyWrapper>
+          <PoolMonkey />
+        </MonkeyWrapper>
+      </Header>
       <StyledPage width="1130px">
         <ControlContainer>
           <ViewControls>
@@ -721,7 +719,9 @@ const Pools: React.FC<IPools> = ({ showHistory }) => {
               <SearchInput onChange={handleChangeQuery} value={searchQuery} />
             </LabelWrapper>
             <ButtonCheckWrapper>
-              <PoolTabButtons />
+              <div />
+              <MenuTabButtons />
+              <div style={{ marginRight: '70px' }} />
               <ToggleContainer size={size.width}>
                 <ToggleWrapper onClick={() => setStakedOnly(!stakedOnly)}>
                   <StyledCheckbox checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />

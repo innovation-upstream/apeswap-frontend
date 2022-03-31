@@ -373,6 +373,7 @@ export default function Swap() {
                         </ExpertButton>
                       ) : null}
                     </AutoColumn>
+
                     <CurrencyInputPanel
                       value={formattedAmounts[Field.OUTPUT]}
                       onUserInput={handleTypeOutput}

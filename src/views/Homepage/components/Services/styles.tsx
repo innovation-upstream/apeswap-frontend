@@ -4,7 +4,7 @@ import { FadeIn } from '../../styles'
 export const ColorWrap = styled.div`
   position: relative;
   display: flex;
-  background: ${({ theme }) => theme.card.background};
+  background: ${({ theme }) => theme.colors.white2};
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -47,4 +47,8 @@ export const ServiceWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
+
+  & .swiper-wrapper {
+    display: flex;
+  }
 `
