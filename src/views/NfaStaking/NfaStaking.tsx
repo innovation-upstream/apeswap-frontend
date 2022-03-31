@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
@@ -8,7 +8,6 @@ import { partition } from 'lodash'
 import useWindowSize, { Size } from 'hooks/useDimensions'
 import { useNfaStakingPools, usePollNfaStakingData } from 'state/hooks'
 import Page from 'components/layout/Page'
-import HeaderSection from 'components/layout/HeaderSection'
 import SearchInput from '../Pools/components/SearchInput'
 import PoolCard from './components/PoolCard/PoolCard'
 
@@ -282,16 +281,27 @@ const AdminText = styled(Text)`
   color: white;
 `
 
-const NfaStaking: React.FC = () => {
+interface NfaStakingProps {
+  initSize?: any
+}
+
+const NfaStaking: React.FC<NfaStakingProps> = ({ initSize }) => {
   usePollNfaStakingData()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const { pathname } = useRouter()
   const isActive = !pathname.includes('history')
-  const size: Size = useWindowSize()
+  const widowSize: Size = useWindowSize()
+  const [size, setSize] = useState(initSize)
   const allNfaStakingPools = useNfaStakingPools()
   const TranslateString = useI18n()
   const loadMoreRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (widowSize.width !== undefined) {
+      setSize(widowSize)
+    }
+  }, [widowSize])
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
