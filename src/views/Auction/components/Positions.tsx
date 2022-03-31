@@ -9,6 +9,8 @@ import AuctionCard from './AuctionCard'
 
 SwiperCore.use([Keyboard, Mousewheel])
 
+const spaceBetween = 30
+
 interface PositionProps {
   auctions: AuctionsOverall
 }
@@ -26,6 +28,7 @@ const StyledSwiper = styled.div`
   }
   .swiper-slide {
     width: auto;
+    position: relative;
   }
 `
 const Positions: React.FC<PositionProps> = ({ auctions }) => {
@@ -41,7 +44,7 @@ const Positions: React.FC<PositionProps> = ({ auctions }) => {
       <Swiper
         initialSlide={initialIndex}
         onSwiper={setSwiper}
-        spaceBetween={30}
+        spaceBetween={spaceBetween}
         slidesPerView="auto"
         freeMode
         freeModeSticky
@@ -52,7 +55,7 @@ const Positions: React.FC<PositionProps> = ({ auctions }) => {
         resizeObserver
       >
         {auctions?.auctions.map((auction) => (
-          <SwiperSlide key={auction.auctionId}>
+          <SwiperSlide key={auction.auctionId} style={{ marginRight: `${spaceBetween}px` }}>
             <AuctionCard
               activeAuctionId={auctions.activeAuctionId}
               auction={auction}
