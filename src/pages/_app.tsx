@@ -10,6 +10,7 @@ import { PageWrapper } from 'components/PageWrapper'
 import Footer from 'components/Footer/Footer'
 import Menu from 'components/Menu'
 import PageLoader from 'components/PageLoader'
+import ApeswapWidget from 'components/ApeswapWidget'
 import Providers from '../Providers'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -43,6 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <MarketingModalCheck />
         <PageWrapper>
           <Menu chain={pageProps?.chainId} />
+          <ApeswapWidget  />
           {loading ? <PageLoader /> : <Component {...pageProps} />}
           <Footer />
         </PageWrapper>
