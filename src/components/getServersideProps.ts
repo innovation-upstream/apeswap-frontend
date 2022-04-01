@@ -2,12 +2,11 @@ import { GetServerSidePropsContext } from 'next'
 import Cookies from 'universal-cookie'
 import { CHAIN_ID } from 'config/constants/chains'
 import { setNetwork } from 'state/network'
+import { getSelectorsByUserAgent } from 'react-device-detect'
 import Store from 'state'
 
-type IStore = any
-
 export const getServerSideGenericProps = async (
-  context: GetServerSidePropsContext & { store?: IStore },
+  context: GetServerSidePropsContext & { store?: typeof Store },
 ): Promise<{ props: any }> => {
   const { req } = context
   const cookies = new Cookies(req.cookies)
@@ -15,6 +14,7 @@ export const getServerSideGenericProps = async (
   const chainIdStr = cookies.get('chainIdStatus')
   const chainId = chainIdStr ? parseInt(chainIdStr) : CHAIN_ID.BSC
   context.store?.dispatch(setNetwork({ chainId }))
+  const { isDesktop } = getSelectorsByUserAgent(req.headers['user-agent'])
 
   if (!chainIdStr) {
     cookies.set('chainIdStatus', chainId.toString())
@@ -25,6 +25,7 @@ export const getServerSideGenericProps = async (
       JSON.stringify({
         account,
         chainId,
+        isDesktop,
       }),
     ),
   }
