@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { Text, ArrowBackIcon, ArrowForwardIcon } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useGetNfaAuctionHistory } from 'hooks/api'
+import { AuctionContext } from 'contexts/SSRContext'
 
 interface RowProps {
   background?: boolean
@@ -132,7 +132,8 @@ const StyledForwardArrow = styled(ArrowForwardIcon)<ArrowProps>`
 const ROWS_PER_PAGE = 13
 
 const History: React.FC = () => {
-  const historyData = useGetNfaAuctionHistory()
+  const { history } = useContext(AuctionContext)
+  const { historyData } = history
   const [prevSlice, setPrevSlice] = useState(0)
   const [curSlice, setCurSlice] = useState(ROWS_PER_PAGE)
   const [backArrowFlag, setBackArrowFlag] = useState(false)
