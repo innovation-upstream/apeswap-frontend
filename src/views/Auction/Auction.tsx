@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Text } from '@apeswapfinance/uikit'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
@@ -203,11 +203,24 @@ const MoreInfo = styled.div`
   }
 `
 
-const Auction: React.FC = () => {
+interface AuctionProps {
+  view?: any
+}
+
+const Auction: React.FC<AuctionProps> = ({ view }) => {
   useFetchAuctions()
   const { auctions } = useAuctions()
   const { isXl, isXxl } = useMatchBreakpoints()
-  const isDesktop = isXxl || isXl
+  const [isDesktop, setIsDesktop] = useState(view)
+
+  useEffect(() => {
+    if (isXl || isXxl) {
+      setIsDesktop(true)
+    } else {
+      setIsDesktop(false)
+    }
+  }, [isXl, isXxl])
+
   return (
     <SwiperProvider>
       <Container>
