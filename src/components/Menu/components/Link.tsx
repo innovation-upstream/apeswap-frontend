@@ -10,9 +10,17 @@ export const NextLink: React.FC<{ href: string; csx?: any }> = ({ children, href
       <Text
         sx={{
           color: 'text',
-          paddingLeft: '16px',
           fontWeight: '400',
           fontSize: 2,
+          pl: '20px',
+          '&:after': {
+            content: '""',
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+          },
           ...csx,
         }}
       >

@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo, useState, useEffect } from 'react'
 import { Button, Text, CheckmarkIcon, CogIcon, Input, Toggle, Card } from '@apeswapfinance/uikit'
 import { useDispatch, useSelector } from 'react-redux'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { TokenList } from '@uniswap/token-lists'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { parseENSAddress } from 'utils/ENS/parseENSAddress'

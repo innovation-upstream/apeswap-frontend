@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { Text, Button, Input, InputProps, Flex } from '@apeswapfinance/uikit'
 import useI18n from '../../hooks/useI18n'
 

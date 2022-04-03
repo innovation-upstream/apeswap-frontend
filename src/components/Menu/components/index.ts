@@ -1,3 +1,3 @@
 export * from './Link'
-export * from './MenuItem'
-export * from './MenuSubItem'
+export { default as DesktopMenu } from './DesktopMenu'
+export { default as MobileMenu } from './MobileMenu'

@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { ResetCSS } from '@apeswapfinance/uikit'
+import { Box } from 'theme-ui'
 import GlobalStyle from 'style/Global'
 import ToastListener from 'components/ToastListener'
 import MarketingModalCheck from 'components/MarketingModalCheck'
@@ -44,7 +45,14 @@ function MyApp({ Component, pageProps }: AppProps) {
           <GlobalStyle />
           <MarketingModalCheck />
           <PageWrapper>
-            {loading ? <PageLoader /> : <Component {...pageProps} />}
+            <Menu chain={pageProps?.chainId} />
+            {loading ? (
+              <PageLoader />
+            ) : (
+              <Box sx={{ pt: '60px' }}>
+                <Component {...pageProps} />
+              </Box>
+            )}
             <Footer />
           </PageWrapper>
           <ToastListener />

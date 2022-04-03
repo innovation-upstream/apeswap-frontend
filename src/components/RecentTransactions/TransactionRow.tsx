@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { BlockIcon, CheckmarkCircleIcon, Flex, OpenNewIcon, AutoRenewIcon } from '@apeswapfinance/uikit'
 import { TransactionDetails } from 'state/transactions/reducer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

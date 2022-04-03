@@ -2,6 +2,7 @@
 import React from 'react'
 import { Box, Flex } from 'theme-ui'
 import { Text, Svg, IconButton, Button } from '@innovationupstream/apeswap-uikit'
+import { NetworkButton } from 'components/NetworkButton'
 import FooterLinks from './FooterLinks'
 import styles from './styles'
 
@@ -18,11 +19,7 @@ const Footer: React.FC = () => {
             </Text>
           </Box>
           <Flex sx={{ mt: '35px' }}>
-            <IconButton background="white3" sx={styles.select}>
-              <Svg width="20px" icon="bsc_token" />
-              <Text variant="sm">BSC</Text>
-              <Svg width="8px" icon="caret" direction="down" />
-            </IconButton>
+            <NetworkButton />
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
             <IconButton background="white3" color="brown" icon="twitter" sx={styles.socialButtons} />

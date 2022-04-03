@@ -14,7 +14,7 @@ const maticConfig = [
   },
   {
     label: 'More',
-    icon: icons.MORE,
+    icon: '',
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',
     items: [
