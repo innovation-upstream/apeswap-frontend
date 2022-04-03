@@ -74,7 +74,8 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                           marginTop: 10,
                           pl: 0,
                           '&:hover': {
-                            boxShadow: 'inset rgb(250 250 250) 0px -2px 0px',
+                            color: 'text',
+                            boxShadow: 'inset 0px -2px 0px',
                           },
                         }}
                       >

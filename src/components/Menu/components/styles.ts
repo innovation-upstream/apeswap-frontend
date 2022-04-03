@@ -17,7 +17,8 @@ export const desktopMenuItem = (label: string) => ({
     display: 'none',
   },
   '&:hover': {
-    boxShadow: 'inset rgb(250 250 250) 0px -3px 0px',
+    boxShadow: 'inset 0px -3px 0px',
+    color: 'text',
     [`#menu-modal-${label}`]: {
       display: 'flex',
     },
