@@ -1,12 +1,16 @@
 /** @jsxImportSource theme-ui */
-import React from 'react'
+import React, { useContext } from 'react'
 import { Box, Flex } from 'theme-ui'
+import { ThemeSwitcher } from '@apeswapfinance/uikit'
 import { Text, Svg, IconButton, Button } from '@innovationupstream/apeswap-uikit'
 import { NetworkButton } from 'components/NetworkButton'
+import { ThemeContext } from 'contexts/ThemeContext'
 import FooterLinks from './FooterLinks'
 import styles from './styles'
 
 const Footer: React.FC = () => {
+  const { toggleTheme, isDark } = useContext(ThemeContext)
+
   return (
     <Box sx={{ position: 'relative', overflow: 'hidden', pb: '90px', backgroundColor: 'dark1' }}>
       <Box sx={styles.container}>
@@ -18,16 +22,17 @@ const Footer: React.FC = () => {
               experience for everyone.
             </Text>
           </Box>
-          <Flex sx={{ mt: '35px' }}>
+          <Flex sx={{ mt: '35px', columnGap: '25px' }}>
+            <ThemeSwitcher isDark={isDark} toggleTheme={toggleTheme} />
             <NetworkButton />
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
-            <IconButton background="white3" color="brown" icon="twitter" sx={styles.socialButtons} />
-            <IconButton background="white3" color="brown" icon="discord" sx={styles.socialButtons} />
-            <IconButton background="white3" color="brown" icon="send" sx={styles.socialButtons} />
-            <IconButton background="white3" color="brown" icon="reddit" sx={styles.socialButtons} />
-            <IconButton background="white3" color="brown" icon="medium" sx={styles.socialButtons} />
-            <IconButton background="white3" color="brown" icon="instagram" sx={styles.socialButtons} />
+            <IconButton background="white3" color="text" icon="twitter" sx={styles.socialButtons} />
+            <IconButton background="white3" color="text" icon="discord" sx={styles.socialButtons} />
+            <IconButton background="white3" color="text" icon="send" sx={styles.socialButtons} />
+            <IconButton background="white3" color="text" icon="reddit" sx={styles.socialButtons} />
+            <IconButton background="white3" color="text" icon="medium" sx={styles.socialButtons} />
+            <IconButton background="white3" color="text" icon="instagram" sx={styles.socialButtons} />
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
             <Flex sx={{ alignItems: 'center', columnGap: '10px' }}>
