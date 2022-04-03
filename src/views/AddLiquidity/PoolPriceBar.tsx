@@ -1,6 +1,6 @@
 import React from 'react'
 import { Currency, Percent, Price } from '@apeswapfinance/sdk'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { Text, Card, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import { AutoColumn } from '../../components/layout/Column'
 import { AutoRow } from '../../components/layout/Row'

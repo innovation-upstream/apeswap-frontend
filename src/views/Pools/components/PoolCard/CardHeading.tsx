@@ -1,6 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { Flex, Skeleton, Text, Image, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
 import { useWeb3React } from '@web3-react/core'

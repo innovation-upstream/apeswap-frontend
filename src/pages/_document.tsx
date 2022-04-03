@@ -55,6 +55,9 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <div id="network-modal-root" />
+          <div id="account-modal-root" />
+          <div id="wallet-modal-root" />
         </body>
       </Html>
     )

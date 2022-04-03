@@ -76,7 +76,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
 
   return {
     props: {
-      ...initialProps,
+      ...initialProps?.props,
       isDesktopView,
       historyData,
     },

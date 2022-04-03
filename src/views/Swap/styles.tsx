@@ -1,5 +1,5 @@
 import { Flex, Button } from '@apeswapfinance/uikit'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 
 export const StyledSwapContainer = styled(Flex)`
   flex-shrink: 0;
@@ -32,7 +32,7 @@ export const ExpertButton = styled(Button)`
   font-size: 10px;
   right: -20px;
   margin-top: 1px;
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme?.mediaQueries?.md} {
     right: 8px;
     font-size: 14px;
   }

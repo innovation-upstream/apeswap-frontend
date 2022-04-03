@@ -46,7 +46,7 @@ const HeaderContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
   position: absolute;
-  z-index: 999;
+  z-index: 2;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     position: relative;

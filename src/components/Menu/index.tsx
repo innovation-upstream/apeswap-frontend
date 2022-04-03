@@ -1,41 +1,36 @@
 /** @jsxImportSource theme-ui */
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect, useContext, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
-import {
-  Menu as MenuV2,
-  MenuBody,
-  MenuItem,
-  MenuFooter,
-  MenuContext,
-  Svg,
-  Text,
-} from '@innovationupstream/apeswap-uikit'
+import throttle from 'lodash/throttle'
+import { useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { MenuContext, Svg, IconButton } from '@innovationupstream/apeswap-uikit'
 import { useWeb3React } from '@web3-react/core'
 import Cookies from 'universal-cookie'
-import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
-import useTheme from 'hooks/useTheme'
-import { useNetworkChainId, useProfile, useTokenPrices } from 'state/hooks'
-import useSelectNetwork from 'hooks/useSelectNetwork'
-import track from 'utils/track'
+import { Flex, Box } from 'theme-ui'
+import { SSRContext } from 'contexts/SSRContext'
+import { useNetworkChainId } from 'state/hooks'
+import { NetworkButton } from 'components/NetworkButton'
+import { WalletModal } from 'components/WalletModal'
+import { AccountModal } from 'components/AccountModal'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
-import { MenuItem as MenuEntry, MenuSubItem } from './components'
+import { DesktopMenu, MobileMenu } from './components'
+import ConnectButton from './components/ConnectButton'
 
-const isBrowser = typeof window === 'object'
-
-const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
+const Menu: React.FC<{ chain?: number }> = () => {
   const router = useRouter()
-  const { setActive } = useContext(MenuContext)
-  const [chainId, setChainId] = useState(chain)
+  const refPrevOffset = useRef(null)
+  const [showMenu, setShowMenu] = useState(true)
+  const [showConnectPopup, setShowConnect] = useState(false)
+  const [showAccountPopup, setShowAccount] = useState(false)
+  const { setActive, collapse, setCollapse } = useContext(MenuContext)
   const { account } = useWeb3React()
-  const networkChain = useNetworkChainId()
-  const { login, logout } = useAuth()
-  const { switchNetwork } = useSelectNetwork()
-  const { isDark, toggleTheme } = useTheme()
-  const { tokenPrices } = useTokenPrices()
-  const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
-  const { profile } = useProfile()
+  const chainId = useNetworkChainId()
+  const { isDesktop, isBrowser } = useContext(SSRContext)
+  const { isXxl } = useMatchBreakpoints()
+  const isMobile = isBrowser ? isXxl === false : !isDesktop
+
   const currentMenu = () => {
     if (chainId === CHAIN_ID.BSC) {
       return bscConfig
@@ -47,55 +42,118 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
   }
 
   useEffect(() => {
+    refPrevOffset.current = window.pageYOffset
+  }, [])
+
+  useEffect(() => {
     if (isBrowser) {
       const cookies = new Cookies()
       if (account) cookies.set('account', account)
       else cookies.remove('account')
     }
-  }, [account])
-
-  useEffect(() => {
-    if (networkChain) {
-      setChainId(networkChain)
-    }
-  }, [networkChain])
+  }, [account, isBrowser])
 
   useEffect(() => {
     if (!router) return
-    const handleChange = (url) => setActive?.(url)
+    const handleChange = (url) => {
+      setActive?.(url)
+      setCollapse(true)
+    }
     router.events.on('routeChangeComplete', handleChange)
 
     // eslint-disable-next-line consistent-return
     return () => router.events.off('routeChangeComplete', handleChange)
-  }, [router, setActive])
+  }, [router, setActive, setCollapse])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentOffset = window.pageYOffset
+      const isBottomOfPage = window.document.body.clientHeight === currentOffset + window.innerHeight
+      const isTopOfPage = currentOffset === 0
+      // Always show the menu when user reach the top
+      if (isTopOfPage) {
+        setShowMenu(true)
+      }
+      // Avoid triggering anything at the bottom because of layout shift
+      else if (!isBottomOfPage) {
+        if (currentOffset < refPrevOffset.current) {
+          // Has scroll up
+          setShowMenu(true)
+        } else {
+          // Has scroll down
+          setShowMenu(false)
+        }
+      }
+      refPrevOffset.current = currentOffset
+    }
+    const throttledHandleScroll = throttle(handleScroll, 200)
+
+    window.addEventListener('scroll', throttledHandleScroll)
+    return () => {
+      window.removeEventListener('scroll', throttledHandleScroll)
+    }
+  }, [])
+
+  const handleConnect = () => {
+    if (account) {
+      setShowAccount(true)
+      return
+    }
+    setShowConnect(true)
+  }
 
   return (
-    <MenuV2>
-      <MenuBody>
-        {currentMenu().map((item: any, index) => (
-          <MenuItem key={`${item.label}-${index + 1}`}>
-            {!item.items ? (
-              <MenuEntry label={item.label} icon={item.icon} href={item.href} />
-            ) : (
-              <MenuSubItem items={item.items} label={item.label} icon={item.icon} />
+    <>
+      <Box
+        sx={{
+          background: 'navbar',
+          position: 'fixed',
+          width: '100%',
+          height: '60px',
+          transform: `translateY(${showMenu ? 0 : '-100%'})`,
+          transition: 'transform linear 0.1s',
+          zIndex: 100,
+        }}
+      >
+        <Flex
+          sx={{ alignItems: 'center', height: '100%', justifyContent: 'space-between', px: ['25px', '25px', '20px'] }}
+        >
+          <Flex sx={{ columnGap: '40px', height: '100%' }}>
+            <IconButton variant="transparent" icon="logo" />
+            {!isMobile && <DesktopMenu items={currentMenu() as any} />}
+          </Flex>
+          <Flex sx={{ alignItems: 'center', columnGap: 5, height: '100%' }}>
+            {!isMobile && <NetworkButton />}
+            <ConnectButton handleConnect={handleConnect} />
+            {isMobile && (
+              <Box sx={{ paddingY: '10px' }}>
+                <IconButton color="text" variant="transparent" onClick={() => setCollapse(!collapse)}>
+                  <Svg icon={collapse ? 'hamburger' : 'close'} width={collapse ? 35 : 20} />
+                </IconButton>
+              </Box>
             )}
-          </MenuItem>
-        ))}
-      </MenuBody>
-
-      <MenuFooter>
-        <div sx={{ display: 'flex', justifyContent: 'space-between', ml: '19px', mr: '26px', mb: '70px' }}>
-          <div sx={{ display: 'flex', alignItems: 'center', columnGap: '8px' }}>
-            <Svg icon="ellipse" />
-            <Text sx={{ color: 'brown', fontSize: '14px' }} weight="bold">
-              $3.747
-            </Text>
-          </div>
-          <Svg icon="ellipse" />
-          <Svg icon="ellipse" />
-        </div>
-      </MenuFooter>
-    </MenuV2>
+          </Flex>
+        </Flex>
+        {isMobile && <MobileMenu items={currentMenu() as any} />}
+      </Box>
+      <AccountModal open={showAccountPopup} handleClose={() => setShowAccount(false)} />
+      <WalletModal open={showConnectPopup} handleClose={() => setShowConnect(false)} />
+      {!collapse && (
+        <Box
+          onClick={() => setCollapse(true)}
+          sx={{
+            display: ['none', 'block', 'block'],
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+            zIndex: 5,
+            background: 'rgb(56, 56, 56, 0.6)',
+          }}
+        />
+      )}
+    </>
   )
 }
 

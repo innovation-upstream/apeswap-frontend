@@ -2,7 +2,7 @@ import React, { KeyboardEvent, useCallback, useMemo, useRef, useState } from 're
 import { Currency, ETHER, Token } from '@apeswapfinance/sdk'
 import { Text, Input, Flex } from '@apeswapfinance/uikit'
 import { FixedSizeList } from 'react-window'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import useDebounce from 'hooks/useDebounce'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } from '../../hooks/Tokens'
