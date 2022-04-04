@@ -83,7 +83,7 @@ const Menu: React.FC<{ chain?: number }> = ({ chain }) => {
                   flexShrink: 0,
                   height: '60px',
                   display: 'none',
-                  zIndex:'99999'
+                  zIndex: '99999',
                 }
           }
         >

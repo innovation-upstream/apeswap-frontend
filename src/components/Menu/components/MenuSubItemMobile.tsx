@@ -24,7 +24,6 @@ export const MenuSubItemMobile = ({ icon, label, items, setCollapse, collapseDat
             visibility: 'visible',
           },
           borderBottom: '1px solid rgba(133, 133, 133, 0.1)',
-          
         }}
       >
         <Flex sx={linkStyle}>

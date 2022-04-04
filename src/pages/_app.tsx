@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <MarketingModalCheck />
         <PageWrapper>
           <Menu chain={pageProps?.chainId} />
-          <ApeswapWidget  />
+          <ApeswapWidget />
           {loading ? <PageLoader /> : <Component {...pageProps} />}
           <Footer />
         </PageWrapper>
