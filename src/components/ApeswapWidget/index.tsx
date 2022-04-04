@@ -9,7 +9,7 @@ const ApeswapWidget = () => {
 
   return (
     <>
-      <Modal colorMode={isDark ? 'dark' : 'light'} open minWidth="385px" maxWidth="100%">
+      <Modal open minWidth="385px" maxWidth="100%">
         <ModalHeader>
           <Flex
             sx={{
