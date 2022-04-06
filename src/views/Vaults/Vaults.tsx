@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Heading, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
@@ -10,6 +10,7 @@ import useWindowSize, { Size } from 'hooks/useDimensions'
 import { useVaults, useNetworkChainId, usePollVaultsData } from 'state/hooks'
 import { Vault } from 'state/types'
 import Page from 'components/layout/Page'
+import { SSRContext } from 'contexts/SSRContext'
 import MenuTabButtons from 'components/ListViewMenu/MenuTabButtons'
 import ToggleView from './components/ToggleView/ToggleView'
 import SearchInput from './components/SearchInput'
@@ -450,7 +451,8 @@ const Vaults: React.FC<IVaults> = ({ showHistory }) => {
   const [stakedOnly, setStakedOnly] = useState(false)
   const [burnOnly, setBurnOnly] = useState(false)
   const [observerIsSet, setObserverIsSet] = useState(false)
-  const [viewMode, setViewMode] = useState(null)
+  const { isDesktop } = useContext(SSRContext)
+  const [viewMode, setViewMode] = useState(isDesktop ? ViewMode.TABLE : ViewMode.CARD)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const [numberOfVaultsVisible, setNumberOfVaultsVisible] = useState(NUMBER_OF_VAULTS_VISIBLE)

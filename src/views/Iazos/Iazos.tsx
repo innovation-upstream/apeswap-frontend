@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Link from 'next/link'
 import { useFetchIazos, useIazos } from 'state/hooks'
 import useCurrentTime from 'hooks/useTimer'
@@ -6,6 +6,7 @@ import TextInput from 'components/TextInput'
 import useTheme from 'hooks/useTheme'
 import { Spinner } from '@apeswapfinance/uikit'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
+import { SSRContext } from 'contexts/SSRContext'
 import IconButton from './components/IconButton'
 import IazoCard from './components/IazoCard/IazoCard'
 import Header from './components/Header'
@@ -27,7 +28,8 @@ const Iazos: React.FC = () => {
   const { iazos, isInitialized } = useIazos()
   const { isDark } = useTheme()
   const { isMd, isSm, isXs } = useMatchBreakpoints()
-  const isMobile = isMd || isSm || isXs
+  const { isDesktop, isBrowser } = useContext(SSRContext)
+  const isMobile = isBrowser ? isMd || isSm || isXs : !isDesktop
   const registeredIazos = iazos?.filter((iazo) => iazo.isRegistered)
   const currentTime = useCurrentTime() / 1000
   const [sort, setSort] = useState(null)

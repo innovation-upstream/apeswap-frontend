@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import { Text, Flex, Link, LinkExternal } from '@apeswapfinance/uikit'
 import { registerToken } from 'utils/wallet'
+import { SSRContext } from 'contexts/SSRContext'
 
 interface RewardToken {
   address?: any
@@ -85,7 +86,8 @@ const Detail: React.FC<ExpandableSectionProps> = ({
   const TranslateString = useI18n()
   const totalStakedTitle = type === 'card' ? 'Total Staked Value' : 'Total Staked'
   const chainId = process.env.NEXT_PUBLIC_CHAIN_ID
-  const URLactual = window.location
+  const { isBrowser, origin } = useContext(SSRContext)
+  const URLactual = isBrowser ? window.location?.origin : origin
 
   return (
     <>
@@ -144,7 +146,7 @@ const Detail: React.FC<ExpandableSectionProps> = ({
               rewardToken?.address[chainId],
               rewardToken?.symbol,
               rewardToken?.decimals,
-              `${URLactual.origin}/images/tokens/${imageToken || `${rewardToken?.symbol}.svg`}`,
+              `${URLactual}/images/tokens/${imageToken || `${rewardToken?.symbol}.svg`}`,
             )
           }
         >

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 import styled, { keyframes } from 'styled-components'
 import { PoolCategory } from 'config/constants/types'
@@ -14,7 +14,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { usePollPools, usePools } from 'state/hooks'
 import { Pool } from 'state/types'
 import Page from 'components/layout/Page'
-import HeaderSection from 'components/layout/HeaderSection'
+import { SSRContext } from 'contexts/SSRContext'
 import ToggleView from './components/ToggleView/ToggleView'
 import SearchInput from './components/SearchInput'
 import PoolCard from './components/PoolCard/PoolCard'
@@ -497,7 +497,8 @@ const Pools: React.FC<IPools> = ({ showHistory }) => {
   const [gnanaOnly, setGnanaOnly] = useState(false)
   const [bananaOnly, setBananaOnly] = useState(false)
   const [observerIsSet, setObserverIsSet] = useState(false)
-  const [viewMode, setViewMode] = useState(null)
+  const { isDesktop } = useContext(SSRContext)
+  const [viewMode, setViewMode] = useState(isDesktop ? ViewMode.TABLE : ViewMode.CARD)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)

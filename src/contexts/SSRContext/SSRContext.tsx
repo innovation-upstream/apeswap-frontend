@@ -3,10 +3,12 @@ import React, { createContext, useEffect, useState } from 'react'
 interface SSRContextProps {
   isBrowser: boolean
   isDesktop: boolean
+  origin?: string
 }
 
 interface SSRContextProviderProps {
   desktop?: boolean
+  origin?: string
 }
 
 export const SSRContext: React.Context<SSRContextProps> = createContext({
@@ -14,9 +16,10 @@ export const SSRContext: React.Context<SSRContextProps> = createContext({
   isDesktop: true,
 } as SSRContextProps)
 
-export const SSRContextProvider: React.FC<SSRContextProviderProps> = ({ desktop, children }) => {
+export const SSRContextProvider: React.FC<SSRContextProviderProps> = ({ desktop, children, origin }) => {
   const [isBrowser, setIsBrowser] = useState(false)
-  const [isDesktop, _] = useState(desktop)
+  const [isDesktop] = useState(desktop)
+  const [appOrigin] = useState(origin)
 
   useEffect(() => {
     setIsBrowser(true)
@@ -27,6 +30,7 @@ export const SSRContextProvider: React.FC<SSRContextProviderProps> = ({ desktop,
       value={{
         isDesktop,
         isBrowser,
+        origin: appOrigin,
       }}
     >
       {children}
