@@ -112,7 +112,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
           height: '60px',
           transform: `translateY(${showMenu ? 0 : '-100%'})`,
           transition: 'transform linear 0.1s',
-          zIndex: 100,
+          zIndex: 1009,
         }}
       >
         <Flex

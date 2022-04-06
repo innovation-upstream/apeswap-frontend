@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1" />
       </Head>
       <Providers>
-        <SSRContextProvider desktop={pageProps.isDesktop}>
+        <SSRContextProvider origin={pageProps.origin} desktop={pageProps.isDesktop}>
           <ResetCSS />
           <GlobalStyle />
           <MarketingModalCheck />
