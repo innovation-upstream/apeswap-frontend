@@ -20,21 +20,16 @@ import getHomepageLaunchCalendar from 'state/stats/getHomepageLaunchCalendar'
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
   const initialProps = await getServerSideGenericProps({ ...context, store })
   const chainId = initialProps?.props?.chainId
+  const errorLog = (err) => console.warn(err)
 
-  let homepageStats = {}
-  let homepageTokenStats = []
-  let homepageNews = []
-  let homepageServiceStats = []
-  let homepageLaunchCalendar = []
-  try {
-    homepageStats = await getHomepageStats()
-    homepageNews = await getHomepageNews()
-    homepageServiceStats = await getHomepageServiceStats()
-    homepageLaunchCalendar = await getHomepageLaunchCalendar()
-    homepageTokenStats = await getHomepageTokenStats(chainId === CHAIN_ID.MATIC ? 'polygon' : 'primary')
-  } catch (e) {
-    console.warn(e)
-  }
+  const [homepageStats, homepageTokenStats, homepageNews, homepageServiceStats, homepageLaunchCalendar] =
+    await Promise.all([
+      getHomepageStats().catch((err) => errorLog(err)),
+      getHomepageTokenStats(chainId === CHAIN_ID.MATIC ? 'polygon' : 'primary').catch((err) => errorLog(err)),
+      getHomepageNews().catch((err) => errorLog(err)),
+      getHomepageServiceStats().catch((err) => errorLog(err)),
+      getHomepageLaunchCalendar().catch((err) => errorLog(err)),
+    ])
   store.dispatch(setHomepageStats(JSON.parse(JSON.stringify(homepageStats))))
   store.dispatch(setHomepageNews(JSON.parse(JSON.stringify(homepageNews))))
   store.dispatch(setHomepageTokenStats(JSON.parse(JSON.stringify(homepageTokenStats))))
