@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react'
+/** @jsxImportSource theme-ui */
+import React, { useContext, useEffect, useState } from 'react'
 import { Flex, Text, Skeleton } from '@apeswapfinance/uikit'
-import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import CountUp from 'react-countup'
 import { useTheme } from 'styled-components'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { useFetchHomepageStats, useHomepageStats } from 'state/hooks'
+import { SSRContext } from 'contexts/SSRContext'
 import { StyledCard, CardWrapper } from './styles'
 import { statsData } from './statsData'
 
-const isBrowser = typeof window === 'object'
-
 const StatCards: React.FC = () => {
-  const { isSm, isXs } = useMatchBreakpoints()
+  const { isBrowser } = useContext(SSRContext)
   const [loadStats, setLoadStats] = useState(!isBrowser)
-  const isMobile = isSm || isXs
   const { observerRef, isIntersecting } = useIntersectionObserver()
   useFetchHomepageStats(loadStats)
   const rawStats = useHomepageStats()
@@ -36,11 +34,17 @@ const StatCards: React.FC = () => {
           {stats?.map((stat) => {
             return (
               <StyledCard key={stat.id}>
-                {!isMobile && (
-                  <Flex mb="20px" justifyContent="center" alignItems="center" style={{ height: '10px' }}>
-                    <stat.logo fill={theme.colors.text} color={theme.colors.background} />
-                  </Flex>
-                )}
+                <Flex
+                  mb="20px"
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{
+                    height: '10px',
+                    display: ['none', 'flex', 'flex'],
+                  }}
+                >
+                  <stat.logo fill={theme.colors.text} color={theme.colors.background} />
+                </Flex>
                 <Flex justifyContent="center" alignItems="center" style={{ width: '100%' }}>
                   <Text style={{ lineHeight: '25px' }}>{stat.title}</Text>
                 </Flex>
