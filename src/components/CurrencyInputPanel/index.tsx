@@ -12,7 +12,7 @@ import { RowBetween } from '../layout/Row'
 import { Input as NumericalInput } from './NumericalInput'
 
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })<{ removeLiquidity: boolean }>`
-  display: flex;s
+  display: flex;
   justify-content: flex-start;
   background-color: ${({ theme }) => theme.colors.white4};
   height: 75px;
@@ -25,7 +25,7 @@ const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm'
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: ${({ removeLiquidity }) => (removeLiquidity ? '300px' : '244px')};
-  };
+  } ;
 `
 const InputPanel = styled.div`
   display: flex;
@@ -56,7 +56,7 @@ const CurrencyInputContainer = styled.div<{ removeLiquidity: boolean }>`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding:  ${({ removeLiquidity }) => (removeLiquidity ? '25px 0px 40px 0px' : '45px 0px 25px 0px')}};
+  padding: ${({ removeLiquidity }) => (removeLiquidity ? '25px 0px 40px 0px' : '45px 0px 25px 0px')};
   height: 263px;
   width: 330px;
   ${({ theme }) => theme.mediaQueries.md} {
@@ -108,6 +108,9 @@ export default function CurrencyInputPanel({
   const isNative = currency?.symbol === 'ETH'
   const { isMd, isSm, isXs } = useMatchBreakpoints()
   const isMobile = isMd || isSm || isXs
+
+  console.log('value ', value)
+  console.log('currency', currency)
 
   useEffect(() => {
     const fetchTokenPrice = async () => {

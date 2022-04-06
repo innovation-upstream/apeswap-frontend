@@ -1,3 +1,4 @@
+import PopupButton from 'components/LiquidityPopUp/PopupButton'
 import { CHAIN_ID } from 'config/constants/chains'
 import SwiperProvider from 'contexts/SwiperProvider'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

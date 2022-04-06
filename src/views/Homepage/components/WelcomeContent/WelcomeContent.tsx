@@ -1,14 +1,15 @@
 import React from 'react'
 import { ApeSwapRoundIcon, Flex, Text, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import PopupButton from 'components/LiquidityPopUp/PopupButton'
 import { BuyBanana, ContentContainer, HeadingText, LearnMore } from './styles'
 
 const WelcomeContent: React.FC = () => {
   const { isSm, isXs } = useMatchBreakpoints()
   const isMobile = isSm || isXs
-
   return (
     <Flex justifyContent="center" alignItems="center" style={{ width: '100%' }}>
       <ContentContainer>
+        <PopupButton />
         <Flex flexDirection="column" style={{ maxWidth: '650px' }}>
           <HeadingText>Welcome to the Most Connected DeFi Hub</HeadingText>
           {!isMobile && (

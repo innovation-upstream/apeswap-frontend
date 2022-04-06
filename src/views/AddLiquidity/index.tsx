@@ -59,6 +59,9 @@ export default function AddLiquidity({
   },
   history,
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
+  console.log('currencyIdA', currencyIdA)
+  console.log('currencyIdB', currencyIdB)
+
   const { account, chainId, library } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   // Either use the url params or the user swap state for initial liquidity add
@@ -68,6 +71,9 @@ export default function AddLiquidity({
 
   const loadCurrencyIdA = currencyIdA || swapCurrencyA
   const loadCurrencyIdB = currencyIdB || swapCurrencyB
+
+  console.log('swapCurrencyA>>>>>', swapCurrencyA)
+  console.log('swapCurrencyB>>>>>', swapCurrencyB)
 
   const currencyA = useCurrency(loadCurrencyIdA)
   const currencyB = useCurrency(loadCurrencyIdB)
