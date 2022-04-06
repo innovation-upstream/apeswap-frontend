@@ -45,7 +45,7 @@ const Values: React.FC = () => {
       <div ref={observerRef} />
       <ValuesWrapper>
         <ValueText bold> Our Values </ValueText>
-        <Flex justifyContent="center" style={{ width: '100%' }}>
+        <Flex justifyContent="center" style={{ width: '100%', overflow: 'hidden' }}>
           {swiperFlag ? (
             <Swiper
               id="valuesSwiper"

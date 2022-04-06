@@ -47,6 +47,7 @@ export const ServiceWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
+  column-gap: 20px;
 
   & .swiper-wrapper {
     display: flex;

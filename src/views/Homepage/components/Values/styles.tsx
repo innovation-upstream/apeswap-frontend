@@ -19,6 +19,7 @@ export const ValueCard = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  min-width: 338px;
   width: 338px;
   height: 397px;
   ${({ theme }) => theme.mediaQueries.md} {
