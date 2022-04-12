@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
-import { Flex, Button, useMatchBreakpoints, Tabs, Tab } from '@apeswapfinance/uikit'
+import { Flex, Button, useMatchBreakpoints, Tabs, Tab } from '@innovationupstream/apeswap-uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 
 interface Props {
@@ -34,6 +34,7 @@ const CurrencyInputHeader: React.FC<Props> = () => {
   const isMobile = isMd || isSm || isXs
   const path = useRouter()
   const swapActive = path.pathname.includes('swap')
+
   return (
     <CurrencyInputContainer>
       <Tabs activeTab={swapActive ? 0 : 1} size="md">
@@ -41,14 +42,14 @@ const CurrencyInputHeader: React.FC<Props> = () => {
           index={0}
           label="SWAP"
           onClick={() => history.push('/swap')}
-          size={isMobile ? 'xsm' : 'md'}
+          size={isMobile ? 'sm' : 'md'}
           variant="centered"
         />
         <Tab
           index={1}
           label="LIQUIDITY"
           onClick={() => history.push('/pool')}
-          size={isMobile ? 'xsm' : 'md'}
+          size={isMobile ? 'sm' : 'md'}
           variant="centered"
         />
       </Tabs>
