@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components'
 
 export const Banner = styled.div`
   position: absolute;
-  top: 0;
+  top: 60px;
   left: 0;
   display: flex;
   justify-content: center;

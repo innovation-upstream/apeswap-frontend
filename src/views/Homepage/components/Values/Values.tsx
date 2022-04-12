@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Flex, Text, Skeleton } from '@apeswapfinance/uikit'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import SwiperCore, { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import useSwiper from 'hooks/useSwiper'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
+import { SSRContext } from 'contexts/SSRContext'
 import { Bubble, ValueCard, ValueImage, ValuesWrapper, ValueText } from './styles'
 import { defaultValues } from './defaultValues'
 
@@ -12,15 +13,14 @@ const SLIDE_DELAY = 5000
 const spaceBetween = 30
 SwiperCore.use([Autoplay])
 
-const isBrowser = typeof window === 'object'
-
 const Values: React.FC = () => {
   const { swiper, setSwiper } = useSwiper()
   const [activeSlide, setActiveSlide] = useState(0)
+  const { isBrowser, isDesktop } = useContext(SSRContext)
   const [loadValues, setLoadValues] = useState(!isBrowser)
   const { isMd, isSm, isXs } = useMatchBreakpoints()
   const { observerRef, isIntersecting } = useIntersectionObserver()
-  const swiperFlag = isMd || isSm || isXs
+  const swiperFlag = isBrowser ? isMd || isSm || isXs : !isDesktop
 
   const slideVal = (index: number) => {
     setActiveSlide(index)
