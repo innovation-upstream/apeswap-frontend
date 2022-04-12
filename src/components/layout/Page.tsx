@@ -30,7 +30,7 @@ const StyledPage = styled(Container)<SizeProps>`
 
 const PageMeta = () => {
   const { pathname } = useRouter()
-  const pageMeta = customMeta[pathname] || {}
+  const pageMeta = customMeta[pathname] || { title: 'ApeSwap' }
   const { title, description, image } = { ...DEFAULT_META, ...pageMeta }
 
   return (

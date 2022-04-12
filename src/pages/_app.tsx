@@ -12,6 +12,7 @@ import Footer from 'components/Footer/Footer'
 import Menu from 'components/Menu'
 import PageLoader from 'components/PageLoader'
 import { SSRContextProvider } from 'contexts/SSRContext'
+import { Metatags } from 'components/scripts'
 import Providers from '../Providers'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -37,7 +38,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, minimum-scale=1" />
+        <title>ApeSwap</title>
+        <Metatags />
       </Head>
       <Providers>
         <SSRContextProvider origin={pageProps.origin} desktop={pageProps.isDesktop}>
