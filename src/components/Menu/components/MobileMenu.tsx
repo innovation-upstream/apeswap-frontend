@@ -117,8 +117,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
                                 <NextLink
                                   href={link.href}
                                   csx={{
-                                    fontSize: '16px',
-                                    fontWeight: 'bold',
+                                    fontSize: '14px',
+                                    fontWeight: 600,
                                     pl: '35px',
                                   }}
                                 >

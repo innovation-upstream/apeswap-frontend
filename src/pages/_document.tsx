@@ -33,9 +33,10 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <link rel="preconnect" href="%REACT_APP_NODE_1%" />
-          <link rel="preconnect" href="%REACT_APP_NODE_2%" />
-          <link rel="preconnect" href="%REACT_APP_NODE_3%" />
+          <title>ApeSwap</title>
+          <link rel="preconnect" href={process.env.NEXT_PUBLIC_APP_NODE_1} />
+          <link rel="preconnect" href={process.env.NEXT_PUBLIC_APP_NODE_2} />
+          <link rel="preconnect" href={process.env.NEXT_PUBLIC_APP_NODE_3} />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
           <link
