@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useMatchBreakpoints } from '@apeswapfinance/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
+import { SSRContext } from 'contexts/SSRContext'
 import ListCard from './ListCard'
 import { ListViewContainer } from './styles'
 import MobileListCard from './MobileListCard'
@@ -8,7 +9,8 @@ import { ExtendedListViewProps } from './types'
 
 const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews }) => {
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
-  const isMobile = !isLg && !isXl && !isXxl
+  const { isDesktop, isBrowser } = useContext(SSRContext)
+  const isMobile = isBrowser ? !isLg && !isXl && !isXxl : !isDesktop
   return (
     <ListViewContainer>
       {listViews.map((view) => {

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Flex, useMatchBreakpoints, Text, LinkExternal, Svg } from '@apeswapfinance/uikit'
 import ListView from 'components/ListView'
+import { SSRContext } from 'contexts/SSRContext'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
 import { Farm } from 'state/types'
@@ -16,7 +17,8 @@ import { ActionContainer } from './CardActions/styles'
 const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, openPid }) => {
   const { chainId } = useActiveWeb3React()
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
-  const isMobile = !isLg && !isXl && !isXxl
+  const { isDesktop, isBrowser } = useContext(SSRContext)
+  const isMobile = isBrowser ? !isLg && !isXl && !isXxl : !isDesktop
 
   const farmsListView = farms.map((farm, i) => {
     const [token1, token2] = farm.lpSymbol.split('-')

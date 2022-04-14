@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Flex,
   AddIcon,
@@ -10,6 +10,7 @@ import {
   useMatchBreakpoints,
 } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
+import { SSRContext } from 'contexts/SSRContext'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
@@ -41,7 +42,8 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
   const [pendingWithdrawTrx, setPendingWithdrawTrx] = useState(false)
   const { toastSuccess } = useToast()
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
-  const isMobile = !isLg && !isXl && !isXxl
+  const { isDesktop, isBrowser } = useContext(SSRContext)
+  const isMobile = isBrowser ? !isLg && !isXl && !isXxl : !isDesktop
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
 
   const { onStake } = useStake(pid)
