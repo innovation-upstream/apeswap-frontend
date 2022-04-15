@@ -14,6 +14,14 @@ const networks = {
     icon: 'polygon_token',
     name: 'POLYGON',
   },
+  [CHAIN_ID.BSC_TESTNET]: {
+    icon: 'bsc_token',
+    name: 'BSC TESTNET',
+  },
+  [CHAIN_ID.MATIC_TESTNET]: {
+    icon: 'polygon_token',
+    name: 'POLYGON TESTNET',
+  },
 }
 
 const NetworkButton: React.FC = () => {
