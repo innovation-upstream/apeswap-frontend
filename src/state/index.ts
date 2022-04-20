@@ -59,7 +59,7 @@ const store = configureStore({
     ...getDefaultMiddleware({ thunk: true }),
     ...(typeof window === 'object' ? [save({ states: PERSISTED_KEYS })] : []),
   ],
-  preloadedState: load({ states: PERSISTED_KEYS }),
+  preloadedState: typeof window === 'object' ? load({ states: PERSISTED_KEYS }) : {},
 })
 
 store.dispatch(updateVersion())
