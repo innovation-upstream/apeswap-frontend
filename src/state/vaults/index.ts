@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import vaultsConfig from 'config/constants/vaults'
 import fetchVaultData from './fetchVaultData'
 import { fetchVaultUserAllowances, fetchVaultUserStakedBalances, fetchVaultUserTokenBalances } from './fetchVaultsUser'
-import { VaultsState, TokenPrices, Vault } from '../types'
+import { VaultsState, TokenPrices, Vault, FarmLpAprsType } from '../types'
+import fetchVaults from './fetchVaults'
 
 const initialState: VaultsState = { data: [], loadVaultData: false, userDataLoaded: false }
 
@@ -42,9 +43,9 @@ export const vaultSlice = createSlice({
 })
 
 // thunks
-export const fetchVaultsPublicDataAsync = (chainId: number, tokenPrices: TokenPrices[]) => async (dispatch) => {
+export const fetchVaultsPublicDataAsync = (chainId: number, tokenPrices: TokenPrices[], farmLpAprs: FarmLpAprsType) => async (dispatch) => {
   try {
-    const vaults = await fetchVaultData(chainId, tokenPrices)
+    const vaults = await fetchVaults(chainId, tokenPrices, farmLpAprs)
     dispatch(setLoadVaultData(vaults))
   } catch (error) {
     console.warn(error)
@@ -53,7 +54,7 @@ export const fetchVaultsPublicDataAsync = (chainId: number, tokenPrices: TokenPr
 
 export const fetchVaultUserDataAsync = (account: string, chainId: number) => async (dispatch) => {
   try {
-    const filteredVaults = vaultsConfig.filter((vault) => vault.network === chainId)
+    const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
     const userVaultAllowances = await fetchVaultUserAllowances(account, chainId)
     const userVaultTokenBalances = await fetchVaultUserTokenBalances(account, chainId)
     const userVaultBalances = await fetchVaultUserStakedBalances(account, chainId)
@@ -72,28 +73,28 @@ export const fetchVaultUserDataAsync = (account: string, chainId: number) => asy
 }
 
 export const setFilteredVaults = (chainId: number) => async (dispatch) => {
-  const filteredVaults = vaultsConfig.filter((vault) => vault.network === chainId)
+  const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
   dispatch(setVaults(filteredVaults))
   dispatch(setVaultsLoad(true))
 }
 
 export const updateVaultUserAllowance = (account: string, chainId: number, pid: number) => async (dispatch) => {
   const allowances = await fetchVaultUserAllowances(account, chainId)
-  const filteredVaults = vaultsConfig.filter((vault) => vault.network === chainId)
+  const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
   const pidIndex = filteredVaults.findIndex((v) => v.pid === pid)
   dispatch(updateVaultsUserData({ pid, field: 'allowance', value: allowances[pidIndex] }))
 }
 
 export const updateVaultUserBalance = (account: string, chainId: number, pid: number) => async (dispatch) => {
   const tokenBalances = await fetchVaultUserTokenBalances(account, chainId)
-  const filteredVaults = vaultsConfig.filter((vault) => vault.network === chainId)
+  const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
   const pidIndex = filteredVaults.findIndex((v) => v.pid === pid)
   dispatch(updateVaultsUserData({ pid, field: 'tokenBalance', value: tokenBalances[pidIndex] }))
 }
 
 export const updateVaultUserStakedBalance = (account: string, chainId: number, pid: number) => async (dispatch) => {
   const stakedBalances = await fetchVaultUserStakedBalances(account, chainId)
-  const filteredVaults = vaultsConfig.filter((vault) => vault.network === chainId)
+  const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
   const pidIndex = filteredVaults.findIndex((v) => v.pid === pid)
   dispatch(updateVaultsUserData({ pid, field: 'stakedBalance', value: stakedBalances[pidIndex] }))
 }

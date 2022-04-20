@@ -7,9 +7,13 @@ import { getVaultApeAddress } from 'utils/addressHelper'
 
 export const fetchVaultUserAllowances = async (account: string, chainId: number) => {
   const vaultApeAddress = getVaultApeAddress(chainId)
-  const filteredVaultsToFetch = vaultsConfig.filter((vault) => vault.network === chainId)
-  const calls = filteredVaultsToFetch.map((vault) => {
-    return { address: vault.stakeTokenAddress, name: 'allowance', params: [account, vaultApeAddress] }
+  const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
+  const calls = filteredVaults.map((vault) => {
+    return {
+      address: vault.stakeToken.address[chainId],
+      name: 'allowance',
+      params: [account, vault.stratAddress[chainId]],
+    }
   })
   const rawStakeAllowances = await multicall(chainId, erc20ABI, calls)
   const parsedStakeAllowances = rawStakeAllowances.map((stakeBalance) => {
@@ -19,10 +23,10 @@ export const fetchVaultUserAllowances = async (account: string, chainId: number)
 }
 
 export const fetchVaultUserTokenBalances = async (account: string, chainId: number) => {
-  const filteredVaultsToFetch = vaultsConfig.filter((vault) => vault.network === chainId)
-  const calls = filteredVaultsToFetch.map((vault) => {
+  const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
+  const calls = filteredVaults.map((vault) => {
     return {
-      address: vault.stakeTokenAddress,
+      address: vault.stakeToken.address[chainId],
       name: 'balanceOf',
       params: [account],
     }
@@ -35,19 +39,19 @@ export const fetchVaultUserTokenBalances = async (account: string, chainId: numb
 }
 
 export const fetchVaultUserStakedBalances = async (account: string, chainId: number) => {
-  const vaultApeAddress = getVaultApeAddress(chainId)
-  const filteredVaultsToFetch = vaultsConfig.filter((vault) => vault.network === chainId)
-  const calls = filteredVaultsToFetch.map((vault) => {
-    return {
-      address: vaultApeAddress,
-      name: 'stakedWantTokens',
-      params: [vault.pid, account],
-    }
-  })
+  // const vaultApeAddress = getVaultApeAddress(chainId)
+  // const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
+  // const calls = filteredVaults.map((vault) => {
+  //   return {
+  //     address: vault.stratAddress[chainId],
+  //     name: 'balanceOf',
+  //     params: [vault.pid, account],
+  //   }
+  // })
 
-  const rawStakedBalances = await multicall(chainId, vaultApeABI, calls)
-  const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
-    return new BigNumber(stakedBalance[0]._hex).toJSON()
-  })
-  return parsedStakedBalances
+  // const rawStakedBalances = await multicall(chainId, erc20ABI, calls)
+  // const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
+  //   return new BigNumber(stakedBalance[0]._hex).toJSON()
+  // })
+  return 0
 }

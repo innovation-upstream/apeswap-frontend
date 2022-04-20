@@ -2,21 +2,20 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Heading, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
 import { CHAIN_ID } from 'config/constants/chains'
 import useWindowSize, { Size } from 'hooks/useDimensions'
-import { useVaults, useNetworkChainId, usePollVaultsData } from 'state/hooks'
+import { useVaults, usePollVaultsData } from 'state/vaults/hooks'
 import { Vault } from 'state/types'
 import Page from 'components/layout/Page'
 import MenuTabButtons from 'components/ListViewMenu/MenuTabButtons'
-import ToggleView from './components/ToggleView/ToggleView'
 import SearchInput from './components/SearchInput'
-import VaultCard from './components/VaultCard/VaultCard'
-import VaultTable from './components/VaultTable/VaultTable'
 import { ViewMode } from './components/types'
+import DisplayVaults from './components/DisplayVaults'
 
 interface LabelProps {
   active?: boolean
@@ -455,9 +454,10 @@ const Vaults: React.FC = () => {
   const { pathname } = useLocation()
   const size: Size = useWindowSize()
   const { vaults: initVaults } = useVaults()
+  console.log(initVaults)
   const [allVaults, setAllVaults] = useState(initVaults)
   const TranslateString = useI18n()
-  const chainId = useNetworkChainId()
+  const { chainId } = useActiveWeb3React()
   const isActive = !pathname.includes('history')
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
   const tableWrapperEl = useRef<HTMLDivElement>(null)
@@ -565,29 +565,29 @@ const Vaults: React.FC = () => {
     return sortVaults(chosenVaults).slice(0, numberOfVaultsVisible)
   }
 
-  const cardLayout = (
-    <CardContainer>
-      <FlexLayout>
-        {vaultsToShow().map((vault) => (
-          <VaultCard key={vault.pid} vault={vault} removed={!isActive} />
-        ))}
-      </FlexLayout>
-    </CardContainer>
-  )
+  // const cardLayout = (
+  //   <CardContainer>
+  //     <FlexLayout>
+  //       {vaultsToShow().map((vault) => (
+  //         <VaultCard key={vault.pid} vault={vault} removed={!isActive} />
+  //       ))}
+  //     </FlexLayout>
+  //   </CardContainer>
+  // )
 
-  const tableLayout = (
-    <Container>
-      <TableContainer>
-        <TableWrapper ref={tableWrapperEl}>
-          <StyledTable>
-            {vaultsToShow().map((vault) => (
-              <VaultTable key={vault.pid} vault={vault} removed={!isActive} />
-            ))}
-          </StyledTable>
-        </TableWrapper>
-      </TableContainer>
-    </Container>
-  )
+  // const tableLayout = (
+  //   <Container>
+  //     <TableContainer>
+  //       <TableWrapper ref={tableWrapperEl}>
+  //         <StyledTable>
+  //           {vaultsToShow().map((vault) => (
+  //             <VaultTable key={vault.pid} vault={vault} removed={!isActive} />
+  //           ))}
+  //         </StyledTable>
+  //       </TableWrapper>
+  //     </TableContainer>
+  //   </Container>
+  // )
 
   const renderHeader = () => {
     const headerContents = (
@@ -609,9 +609,9 @@ const Vaults: React.FC = () => {
       <StyledPage width="1130px">
         <ControlContainer>
           <ViewControls>
-            {size.width > 968 && viewMode !== null && (
+            {/* {size.width > 968 && viewMode !== null && (
               <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-            )}
+            )} */}
             <LabelWrapper>
               <StyledText mr="15px">Search</StyledText>
               <SearchInput onChange={handleChangeQuery} value={searchQuery} />
@@ -633,41 +633,7 @@ const Vaults: React.FC = () => {
             </ButtonCheckWrapper>
           </ViewControls>
         </ControlContainer>
-        <ContainerLabels>
-          <StyledLabelContainerHot>
-            <StyledLabel active={sortOption === 'hot'} onClick={() => handleSortOptionChange('hot')}>
-              Hot
-            </StyledLabel>
-          </StyledLabelContainerHot>
-          <StyledLabelContainerLP>
-            <StyledLabel>Token</StyledLabel>
-          </StyledLabelContainerLP>
-          <StyledLabelContainerDailyAPY>
-            <StyledLabel active={sortOption === 'dailyapy'} onClick={() => handleSortOptionChange('dailyapy')}>
-              Daily APY
-              {sortOption === 'dailyapy' ? (
-                <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
-              ) : null}
-            </StyledLabel>
-          </StyledLabelContainerDailyAPY>
-          <StyledLabelContainerYearlyAPY>
-            <StyledLabel active={sortOption === 'yearlyapy'} onClick={() => handleSortOptionChange('yearlyapy')}>
-              Yearly APY
-              {sortOption === 'yearlyapy' ? (
-                <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
-              ) : null}
-            </StyledLabel>
-          </StyledLabelContainerYearlyAPY>
-          <StyledLabelContainerTotalStaked>
-            <StyledLabel active={sortOption === 'totalstaked'} onClick={() => handleSortOptionChange('totalstaked')}>
-              Total Staked
-              {sortOption === 'totalstaked' ? (
-                <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
-              ) : null}
-            </StyledLabel>
-          </StyledLabelContainerTotalStaked>
-        </ContainerLabels>
-        {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
+        <DisplayVaults vaults={vaultsToShow()} />
         <div ref={loadMoreRef} />
       </StyledPage>
     </>

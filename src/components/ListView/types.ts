@@ -9,6 +9,7 @@ export interface ListViewProps {
   expandedContentSize?: number
   billArrow?: boolean
   stakeLp?: boolean
+  earnLp?: boolean
 }
 
 export interface ListCardProps extends ListViewProps {

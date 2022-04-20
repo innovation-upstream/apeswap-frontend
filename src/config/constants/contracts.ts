@@ -87,7 +87,7 @@ export default {
   },
   apePriceGetter: {
     56: '0x5e545322b83626c745FE46144a15C00C94cBD803',
-    97: '',
+    97: '0xd722f9A2950E35Ab3EeD1d013c214671750A638B',
     137: '0x05D6C73D7de6E02B3f57677f849843c03320681c',
   },
   miniApeV2: {
