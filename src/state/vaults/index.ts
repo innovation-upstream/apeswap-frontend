@@ -43,14 +43,15 @@ export const vaultSlice = createSlice({
 })
 
 // thunks
-export const fetchVaultsPublicDataAsync = (chainId: number, tokenPrices: TokenPrices[], farmLpAprs: FarmLpAprsType) => async (dispatch) => {
-  try {
-    const vaults = await fetchVaults(chainId, tokenPrices, farmLpAprs)
-    dispatch(setLoadVaultData(vaults))
-  } catch (error) {
-    console.warn(error)
+export const fetchVaultsPublicDataAsync =
+  (chainId: number, tokenPrices: TokenPrices[], farmLpAprs: FarmLpAprsType) => async (dispatch) => {
+    try {
+      const vaults = await fetchVaults(chainId, tokenPrices, farmLpAprs)
+      dispatch(setLoadVaultData(vaults))
+    } catch (error) {
+      console.warn(error)
+    }
   }
-}
 
 export const fetchVaultUserDataAsync = (account: string, chainId: number) => async (dispatch) => {
   try {

@@ -20,7 +20,7 @@ interface StakeActionsProps {
   stakedTokenSymbol: string
   stakedBalance: string
   stakeTokenValueUsd: number
-  sousId: number
+  strategyAddress: string
 }
 
 const StakeAction: React.FC<StakeActionsProps> = ({
@@ -28,7 +28,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   stakedTokenSymbol,
   stakedBalance,
   stakeTokenValueUsd,
-  sousId,
+  strategyAddress,
 }) => {
   const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
   const dispatch = useAppDispatch()

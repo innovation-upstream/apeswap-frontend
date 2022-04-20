@@ -104,7 +104,6 @@ export const usePollPools = () => {
   }, [dispatch, tokenPrices, chainId])
 }
 
-
 // Dual Farms
 
 export const usePollDualFarms = () => {
@@ -131,7 +130,6 @@ export const useDualFarmsFromPid = (pid): DualFarm => {
   const farm = useSelector((state: State) => state.dualFarms.data.find((f) => f.pid === pid))
   return farm
 }
-
 
 // Pools
 
