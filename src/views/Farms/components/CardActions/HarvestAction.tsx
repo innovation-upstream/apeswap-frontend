@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useHarvest } from 'hooks/useHarvest'
 import { AutoRenewIcon, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import { useToast } from 'state/hooks'
+import { SSRContext } from 'contexts/SSRContext'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { updateFarmUserEarnings } from 'state/farms'
@@ -23,7 +24,8 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
   const { onHarvest } = useHarvest(pid)
   const { toastSuccess } = useToast()
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
-  const isMobile = !isLg && !isXl && !isXxl
+  const { isDesktop, isBrowser } = useContext(SSRContext)
+  const isMobile = isBrowser ? !isLg && !isXl && !isXxl : !isDesktop
 
   return (
     <ActionContainer>
