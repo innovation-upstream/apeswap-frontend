@@ -3587,6 +3587,25 @@ const pools: PoolConfig[] = [
     isFinished: false,
     tokenDecimals: 18,
   },
+  {
+    sousId: 194,
+    tokenName: 'DEP',
+    image: 'DEP.png',
+    stakingToken: tokens.gnana,
+    rewardToken: tokens.dep,
+    contractAddress: {
+      97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
+      56: '0x75768Ea1A1C3c84121063f7A281ee3081dB1D8Ef',
+    },
+    poolCategory: PoolCategory.APEZONE,
+    projectLink: 'https://dea.sg/',
+    harvest: true,
+    tokenPerBlock: `0.526796875`,
+    sortOrder: 1,
+    reflect: false,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
 
   //
   // JUNGLE POOLS
@@ -3687,6 +3706,25 @@ const pools: PoolConfig[] = [
     tokenDecimals: 18,
     lpStaking: true,
     isEarnTokenLp: false,
+  },
+  {
+    sousId: 193,
+    tokenName: 'BOUNTIE',
+    image: 'BOUNTIE.png',
+    stakingToken: tokens.banana,
+    rewardToken: tokens.bountie,
+    contractAddress: {
+      97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
+      56: '0x59A4B153D080E3066236e57f6Bd66Ad241eb0269',
+    },
+    poolCategory: PoolCategory.APEZONE,
+    projectLink: 'https://bountiehunter.io/',
+    harvest: true,
+    tokenPerBlock: `0.990789351851851851`,
+    sortOrder: 1,
+    reflect: false,
+    isFinished: false,
+    tokenDecimals: 18,
   },
 
   //
