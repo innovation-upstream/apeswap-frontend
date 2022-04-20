@@ -6,7 +6,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "dev": "next dev",
     "start": "next start",
-    "build": "CI=false next build",
+    "build": "CI=false next build --output public",
     "test": "jest",
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
