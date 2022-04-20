@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
   const { toggleTheme, isDark } = useContext(ThemeContext)
 
   return (
-    <Box sx={{ position: 'relative', overflow: 'hidden', pb: '90px', backgroundColor: 'dark1' }}>
+    <Box sx={{ position: 'relative', overflow: 'hidden', pb: '90px', backgroundColor: 'footer' }}>
       <Box sx={styles.container}>
         <Box sx={styles.leftSection}>
           <Svg icon="textLogo" width="250px" />

@@ -1873,10 +1873,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@innovationupstream/apeswap-uikit@1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@innovationupstream/apeswap-uikit/-/apeswap-uikit-1.0.12.tgz#9d73c1ba8a001e559d50ade2da0fbaffa9d4acdf"
-  integrity sha512-LSDvMlyDxEYCTk/hz3QzLcRXcs0awpR2Y4D4/DTpAvFDEPPArkR0Zj+qdMFKKckBIl6nJMtcvE87LrSFyuoBKg==
+"@innovationupstream/apeswap-uikit@1.0.13":
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/@innovationupstream/apeswap-uikit/-/apeswap-uikit-1.0.13.tgz#3f047d231db5e11f5c1a1e96c105bfb4454aec71"
+  integrity sha512-sdoyVdXnbmZWYbwsLlNpp1Z9qxmpoV5bjFX59HyzWoolLaw5jYUax6vlUyG877BuO1TB44ABzpua8BlQF3aLAw==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"

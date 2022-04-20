@@ -5,6 +5,7 @@ const styles: Record<string, ThemeUIStyleObject> = {
     maxWidth: '1200px',
     margin: 'auto',
     px: '40px',
+    color: 'primaryBright',
     '@media (min-width: 1024px)': {
       display: 'flex',
       px: '40px',

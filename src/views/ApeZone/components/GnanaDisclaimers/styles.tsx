@@ -38,7 +38,6 @@ export const FirstHeader = styled(Heading)`
   text-transform: uppercase;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    display: none;
     font-size: 30px;
   }
 `
