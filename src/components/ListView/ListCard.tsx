@@ -44,7 +44,9 @@ const ListCard: React.FC<ListCardProps> = ({
           </div>
         )}
       </ListCardContainer>
-      {expandedContent && expanded && <ListExpandedContainer justifyContent={expandedContentJustified}>{expandedContent}</ListExpandedContainer>}
+      {expandedContent && expanded && (
+        <ListExpandedContainer justifyContent={expandedContentJustified}>{expandedContent}</ListExpandedContainer>
+      )}
     </>
   )
 }

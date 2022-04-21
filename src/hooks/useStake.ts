@@ -106,7 +106,6 @@ export const useNfaStake = (sousId) => {
   return { onStake: handleStake }
 }
 
-
 export const useDualFarmStake = (pid: number) => {
   const dispatch = useDispatch()
   const { account, chainId } = useWeb3React()

@@ -17,7 +17,6 @@ import DepositModal from '../Modals/DepositModal'
 import WithdrawModal from '../Modals/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButtonSquare, StyledButtonSquare } from './styles'
 
-
 interface StakeActionsProps {
   stakingTokenBalance: string
   stakedTokenSymbol: string
