@@ -1002,6 +1002,20 @@ const tokens = {
     },
     decimals: 18,
   },
+  ankr: {
+    symbol: 'ANKR',
+    address: {
+      56: '0xf307910A4c7bbc79691fD374889b36d8531B08e3',
+    },
+    decimals: 18,
+  },
+  kte: {
+    symbol: 'KTE',
+    address: {
+      56: '0x61fA01129aC0bB124D1C60Dc9f735C6C579A858B',
+    },
+    decimals: 18,
+  },
 
   // Test LPs
 
