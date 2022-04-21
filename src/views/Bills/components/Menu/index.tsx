@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Select, SelectItem, Text } from '@apeswapfinance/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { ListViewProps } from './types'
 import SearchInput from './SearchInput'
 import { ClaimAllWrapper, ControlContainer, LabelWrapper, LearnMoreButton, StyledText } from './styles'
@@ -41,7 +41,7 @@ const BillMenu: React.FC<ListViewProps> = ({ onHandleQueryChange, onSetSortOptio
           })}
         </Select>
       </Flex>
-      <LearnMoreButton variant="secondary" as={Link} to="?modal=bills">
+      <LearnMoreButton variant="secondary" as={Link} href="?modal=bills">
         {' '}
         Learn More{' '}
       </LearnMoreButton>

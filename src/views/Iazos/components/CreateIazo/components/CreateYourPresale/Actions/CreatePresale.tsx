@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { AutoRenewIcon } from '@apeswapfinance/uikit'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import useCreateIazo from 'views/Iazos/hooks/useCreateIazo'
 import tokens from 'config/constants/tokens'
 import BigNumber from 'bignumber.js'
@@ -20,7 +20,7 @@ interface CreatePresaleProps {
 
 const CreatePresale: React.FC<CreatePresaleProps> = ({ presaleData, disabled, creationFee, iazoFee }) => {
   const { chainId, account } = useWeb3React()
-  const history = useHistory()
+  const router = useRouter()
   const { toastSuccess, toastError } = useToast()
   const { datesSelected, pairCreation, postsaleDetails, presaleTokenDetails, information } = presaleData
   const { tokenAddress, quoteToken, tokenDecimals, tokenSymbol } = pairCreation
@@ -129,7 +129,7 @@ const CreatePresale: React.FC<CreatePresaleProps> = ({ presaleData, disabled, cr
               apiObject.append('iazoAddress', iazoAddress)
               onCreateIazoApi(apiObject).then((apiResp: any) => {
                 if (apiResp.status === 201) {
-                  history.push('/ss-iao')
+                  router.push('/ss-iao')
                   toastSuccess('Your SS-IAO was successfully created!')
                 } else {
                   toastError('Your SS-IAO encountered an error. Please contact the ApeSwap team for help.')
