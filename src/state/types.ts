@@ -142,6 +142,7 @@ export interface Vault extends VaultConfig {
   allocPoint?: string
   weight?: number
   stakeTokenPrice?: number
+  rewardTokenPrice?: number
   strategyPairBalance?: string
   strategyPairBalanceFixed?: string
   totalInQuoteToken?: string

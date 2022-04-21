@@ -40,23 +40,9 @@ const cleanVaultData = (
       (token) => token.address[chainId]?.toLowerCase() === vaultConfig.stakeToken.address[chainId]?.toLowerCase(),
     )?.price
 
-    console.log(stakeTokenPriceUsd)
-
     const totalTokensStaked = getBalanceNumber(new BigNumber(strategyPairBalance))
     const totalTokensStakedMC = getBalanceNumber(new BigNumber(stakeTokenMCBalance))
-    const totalValueStakedUsd = totalTokensStaked * stakeTokenPriceUsd
     const totalValueStakedInMCUsd = totalTokensStakedMC * stakeTokenPriceUsd
-
-    console.log('TOKEN PRICES')
-    console.log(tokenPrices)
-    console.log(strategyPairBalance)
-    console.log(weight)
-    console.log(stakeTokenMCBalance)
-    console.log('STAKE TOKEN PRICE')
-    console.log(stakeTokenPriceUsd)
-    console.log(strategyPairBalance)
-    console.log(totalTokensStaked)
-    console.log(totalValueStakedUsd)
 
     // const quoteTokenAmountTotal = isPair
     //   ? new BigNumber(quoteTokenPairBalance).div(new BigNumber(10).pow(quoteTokenDecimals))
@@ -118,6 +104,7 @@ const cleanVaultData = (
       strategyPairBalance: strategyPairBalance.toString(),
       strategyPairBalanceFixed: null,
       stakeTokenPrice: stakeTokenPriceUsd,
+      rewardTokenPrice: rewardTokenPriceUsd,
       masterChefPairBalance: stakeTokenMCBalance.toString(),
       apy: {
         daily: dailyApy,

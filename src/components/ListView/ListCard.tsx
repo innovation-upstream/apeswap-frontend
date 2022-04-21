@@ -19,13 +19,14 @@ const ListCard: React.FC<ListCardProps> = ({
   infoContent,
   infoContentPosition,
   expandedContentJustified,
+  titleContainerWidth,
   open,
 }) => {
   const [expanded, setExpanded] = useState(open)
   return (
     <>
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>
-        <TitleContainer>
+        <TitleContainer titleContainerWidth={titleContainerWidth}>
           {serviceTokenDisplay}
           {tag && <TagContainer ml="10px">{tag}</TagContainer>}
           {title}

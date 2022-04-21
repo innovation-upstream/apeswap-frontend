@@ -98,10 +98,10 @@ export const ContentContainer = styled(Flex)`
   }
 `
 
-export const TitleContainer = styled(Flex)`
+export const TitleContainer = styled(Flex)<{ titleContainerWidth?: number }>`
   align-items: center;
   height: 100%;
-  max-width: 290px;
+  max-width: ${({ titleContainerWidth }) => titleContainerWidth || 290}px;
   width: 100%;
 `
 

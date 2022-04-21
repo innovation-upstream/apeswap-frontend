@@ -11,6 +11,7 @@ export interface ListViewProps {
   billArrow?: boolean
   stakeLp?: boolean
   earnLp?: boolean
+  titleContainerWidth?: number
 }
 
 export interface ListCardProps extends ListViewProps {

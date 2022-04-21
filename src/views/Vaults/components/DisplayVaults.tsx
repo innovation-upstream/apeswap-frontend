@@ -36,10 +36,12 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
     const userAllowance = vault?.userData?.allowance
     const userEarnings = getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards) || new BigNumber(0))
     const userEarningsUsd = `$${(
-      getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards) || new BigNumber(0)) * vault.rewardToken?.price
+      (getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards)) || 0) * vault.rewardTokenPrice
     ).toFixed(2)}`
     const userTokenBalance = (getBalanceNumber(new BigNumber(vault?.userData?.tokenBalance)) || 0).toFixed(4)
     const userTokenBalanceUsd = `$${(parseFloat(userTokenBalance || '0') * vault?.stakeTokenPrice).toFixed(2)}`
+    const userStakedBalance = getBalanceNumber(new BigNumber(vault?.userData?.stakedBalance))
+    const userStakedBalanceUsd = `$${(userStakedBalance * vault?.stakeTokenPrice).toFixed(2)}`
 
     const { tokenDisplay, stakeLp, earnLp } = vaultTokenDisplay(vault.stakeToken, vault.rewardToken)
 
@@ -55,6 +57,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           {vault.stakeToken.symbol}
         </Text>
       ),
+      titleContainerWidth: 350,
       id: vault.id,
       infoContent: <></>, // <InfoContent vault={vault} />,
       infoContentPosition: 'translate(-82%, 28%)',
@@ -78,28 +81,36 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           <ListViewContent
             title="Daily APY"
             value={`${isActive ? vault?.apy?.daily?.toFixed(2) : '0.00'}%`}
-            width={isMobile ? 95 : 120}
+            width={isMobile ? 95 : 140}
             toolTip="APR is calculated based on current value of of the token, reward rate and vault % owned."
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0, 60%)"
+            height={50}
           />
           <ListViewContent
             title="Yearly APY"
             value={`${isActive ? vault?.apy?.yearly?.toFixed(2) : '0.00'}%`}
-            width={isMobile ? 95 : 120}
+            width={isMobile ? 95 : 155}
             toolTip="APR is calculated based on current value of of the token, reward rate and vault % owned."
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0, 60%)"
+            height={50}
           />
           <ListViewContent
             title="Total Staked"
             value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
-            width={isMobile ? 160 : 160}
+            width={isMobile ? 160 : 170}
             toolTip="The total value of the tokens currently staked in this vault."
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0%, 75%)"
+            height={50}
           />
-          <ListViewContent title="Earned" value="0.00" width={isMobile ? 80 : 90} />
+          <ListViewContent
+            title={vault.version === 'V1' ? 'Staked' : 'Earned'}
+            value={vault.version === 'V1' ? userStakedBalanceUsd : userEarningsUsd}
+            width={isMobile ? 80 : 115}
+            height={50}
+          />
         </>
       ),
       expandedContent: (
