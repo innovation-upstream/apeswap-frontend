@@ -15,6 +15,8 @@ interface CardActionProps {
   stakeTokenValueUsd: number
   stakeTokenAddress: string
   strategyAddress: string
+  pid: number
+  vaultVersion: 'V1' | 'V2'
 }
 
 const Actions: React.FC<CardActionProps> = ({
@@ -25,6 +27,8 @@ const Actions: React.FC<CardActionProps> = ({
   stakeTokenValueUsd,
   stakeTokenAddress,
   strategyAddress,
+  pid,
+  vaultVersion,
 }) => {
   const { account } = useActiveWeb3React()
   const actionToRender = () => {
@@ -38,18 +42,19 @@ const Actions: React.FC<CardActionProps> = ({
     if (!new BigNumber(allowance)?.gt(0)) {
       return (
         <CenterContainer>
-          <ApprovalAction stakingTokenContractAddress={stakeTokenAddress} strategyAddress={strategyAddress} />
+          <ApprovalAction stakingTokenContractAddress={stakeTokenAddress} vaultVersion={vaultVersion} pid={pid} />
         </CenterContainer>
       )
     }
     return (
-      // <StakeAction
-      //   stakedBalance={stakedBalance}
-      //   stakedTokenSymbol={stakedTokenSymbol}
-      //   stakingTokenBalance={stakingTokenBalance}
-      //   stakeTokenValueUsd={stakeTokenValueUsd}
-      // />
-      <></>
+      <StakeAction
+        stakedBalance={stakedBalance}
+        stakedTokenSymbol={stakedTokenSymbol}
+        stakingTokenBalance={stakingTokenBalance}
+        stakeTokenValueUsd={stakeTokenValueUsd}
+        pid={pid}
+        vaultVersion={vaultVersion}
+      />
     )
   }
   return actionToRender()

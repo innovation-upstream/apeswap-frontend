@@ -53,6 +53,7 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
             expandedContent={view.expandedContent}
             infoContent={view.infoContent}
             infoContentPosition={view?.infoContentPosition}
+            expandedContentJustified={view?.expandedContentJustified}
             key={view.id}
             open={view?.open}
           />

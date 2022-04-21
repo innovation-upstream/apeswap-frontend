@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { Contract, ethers } from 'ethers'
 import {
-  VaultApe,
+  VaultApeV1,
   Iazo,
   SousChef,
   Masterchef,
@@ -12,6 +12,7 @@ import {
   IazoFactory,
   Bill,
   BillNft,
+  VaultApeV2,
 } from 'config/abi/types'
 
 export const approve = async (lpContract: Erc20, masterChefContract: Contract) => {
@@ -151,7 +152,7 @@ export const nfaUnstake = async (nfaStakingChefContract: NfaStaking, ids) => {
   })
 }
 
-export const stakeVault = async (vaultApeContract: VaultApe, pid, amount) => {
+export const stakeVault = async (vaultApeContract: VaultApeV1 | VaultApeV2, pid, amount) => {
   return vaultApeContract['deposit(uint256,uint256)'](
     pid,
     new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -160,7 +161,13 @@ export const stakeVault = async (vaultApeContract: VaultApe, pid, amount) => {
   })
 }
 
-export const vaultUnstake = async (vaultApeContract: VaultApe, pid, amount) => {
+export const harvestMaximizer = async (vaultApeContract: VaultApeV2, pid) => {
+  return vaultApeContract.harvestAll(pid).then((trx) => {
+    return trx.wait()
+  })
+}
+
+export const vaultUnstake = async (vaultApeContract: VaultApeV1 | VaultApeV2, pid, amount) => {
   return vaultApeContract['withdraw(uint256,uint256)'](
     pid,
     new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -169,7 +176,7 @@ export const vaultUnstake = async (vaultApeContract: VaultApe, pid, amount) => {
   })
 }
 
-export const vaultUnstakeAll = async (vaultApeContract: VaultApe, pid) => {
+export const vaultUnstakeAll = async (vaultApeContract: VaultApeV1 | VaultApeV2, pid) => {
   return vaultApeContract.withdrawAll(pid).then((trx) => {
     return trx.wait()
   })

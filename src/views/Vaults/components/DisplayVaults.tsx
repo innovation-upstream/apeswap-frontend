@@ -18,6 +18,7 @@ import { NextArrow } from 'views/Farms/components/styles'
 import { Container, StyledButton, ActionContainer } from './styles'
 import { vaultTokenDisplay } from '../helpers'
 import Actions from './Actions'
+import HarvestAction from './Actions/HarvestAction'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -33,14 +34,12 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
     //     : `https://apeswap.finance/swap?outputCurrency=${vault?.stakingToken.address[chainId]}`
     //   : `${BASE_ADD_LIQUIDITY_URL}/${vault?.lpTokens?.token?.address[chainId]}/${vault?.lpTokens?.quoteToken?.address[chainId]}`
     const userAllowance = vault?.userData?.allowance
-    // const userEarnings = getBalanceNumber(vault?.userData?.pendingReward || new BigNumber(0))
-    // const userEarningsUsd = `$${(
-    //   getBalanceNumber(vault?.userData?.pendingReward || new BigNumber(0)) * vault.rewardToken?.price
-    // ).toFixed(2)}`
-    const userTokenBalance = `${vault?.userData?.stakedBalance || '0'}`
-    const userTokenBalanceUsd = `$${(
-      parseFloat(vault?.userData?.stakedBalance || '0') * vault?.stakeTokenPrice
+    const userEarnings = getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards) || new BigNumber(0))
+    const userEarningsUsd = `$${(
+      getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards) || new BigNumber(0)) * vault.rewardToken?.price
     ).toFixed(2)}`
+    const userTokenBalance = (getBalanceNumber(new BigNumber(vault?.userData?.tokenBalance)) || 0).toFixed(4)
+    const userTokenBalanceUsd = `$${(parseFloat(userTokenBalance || '0') * vault?.stakeTokenPrice).toFixed(2)}`
 
     const { tokenDisplay, stakeLp, earnLp } = vaultTokenDisplay(vault.stakeToken, vault.rewardToken)
 
@@ -50,6 +49,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       tokens: tokenDisplay,
       stakeLp,
       earnLp,
+      tag: vault.type,
       title: (
         <Text ml={10} weight="bold">
           {vault.stakeToken.symbol}
@@ -58,6 +58,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       id: vault.id,
       infoContent: <></>, // <InfoContent vault={vault} />,
       infoContentPosition: 'translate(-82%, 28%)',
+      expandedContentJustified: vault.version === 'V1' && 'space-around',
       open: openId === vault.pid,
       cardContent: (
         <>
@@ -104,9 +105,9 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       expandedContent: (
         <>
           <ActionContainer>
-            {/* {isMobile && (
+            {isMobile && (
               <ListViewContent
-                title={`Available ${vault?.stakingToken?.symbol}`}
+                title={`Available ${vault?.stakeToken?.symbol}`}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary
@@ -116,12 +117,14 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                 ml={10}
               />
             )}
-            <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
-              <StyledButton sx={{ width: '150px' }}>GET {vault?.stakingToken?.symbol}</StyledButton>
+            <a href="google.com" target="_blank" rel="noopener noreferrer">
+              <StyledButton sx={{ width: '150px' }}>
+                GET {vault?.stakeToken?.lpToken ? 'LP' : vault?.stakeToken?.symbol}
+              </StyledButton>
             </a>
             {!isMobile && (
               <ListViewContent
-                title={`Available ${vault?.stakingToken?.symbol}`}
+                title={`Available ${vault?.stakeToken?.symbol}`}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary
@@ -130,29 +133,29 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                 lineHeight={15}
                 ml={10}
               />
-            )} */}
-            <></>
+            )}
           </ActionContainer>
-          <Flex sx={{ width: `${isMobile ? '100%' : '450px'}`, justifyContent: 'space-between' }}>
-            {!isMobile && <NextArrow />}
-            <Actions
-              allowance={userAllowance?.toString()}
-              stakedBalance={vault?.userData?.stakedBalance?.toString()}
-              stakedTokenSymbol={vault?.stakeToken?.symbol}
-              stakingTokenBalance={vault?.userData?.stakedBalance?.toString()}
-              stakeTokenAddress={vault?.stakeToken?.address[chainId]}
-              stakeTokenValueUsd={vault?.stakeTokenPrice}
-              strategyAddress={vault?.stratAddress[chainId]}
+          {!isMobile && <NextArrow />}
+          <Actions
+            allowance={userAllowance?.toString()}
+            stakedBalance={vault?.userData?.stakedBalance?.toString()}
+            stakedTokenSymbol={vault?.stakeToken?.symbol}
+            stakingTokenBalance={vault?.userData?.tokenBalance?.toString()}
+            stakeTokenAddress={vault?.stakeToken?.address[chainId]}
+            stakeTokenValueUsd={vault?.stakeTokenPrice}
+            strategyAddress={vault?.stratAddress[chainId]}
+            pid={vault.pid}
+            vaultVersion={vault.version}
+          />
+          {vault.version === 'V2' && !isMobile && <NextArrow />}
+          {vault.version === 'V2' && (
+            <HarvestAction
+              pid={vault?.pid}
+              disabled={userEarnings <= 0}
+              userEarnings={userEarnings}
+              earnTokenSymbol={vault?.rewardToken?.symbol}
             />
-            <></>
-            {!isMobile && <NextArrow />}
-          </Flex>
-          {/* <HarvestAction
-            sousId={vault?.sousId}
-            disabled={userEarnings <= 0}
-            userEarnings={userEarnings}
-            earnTokenSymbol={vault?.rewardToken?.symbol || vault?.tokenName}
-          /> */}
+          )}
         </>
       ),
     } as ExtendedListViewProps

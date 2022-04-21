@@ -26,7 +26,7 @@ import {
   updateDualFarmUserTokenBalances,
 } from 'state/dualFarms'
 import { useNetworkChainId } from 'state/hooks'
-import { useMasterchef, useMiniChefContract, useNfaStakingChef, useSousChef, useVaultApe } from './useContract'
+import { useMasterchef, useMiniChefContract, useNfaStakingChef, useSousChef } from './useContract'
 import useActiveWeb3React from './useActiveWeb3React'
 
 const useUnstake = (pid: number) => {
@@ -132,63 +132,6 @@ export const useNfaUnstake = (sousId) => {
   )
 
   return { onUnstake: handleUnstake }
-}
-
-export const useVaultUnstake = (pid: number) => {
-  const { account, chainId } = useWeb3React()
-  const vaultApeContract = useVaultApe()
-  const dispatch = useDispatch()
-
-  const handleUnstake = useCallback(
-    async (amount: string) => {
-      try {
-        const txHash = await vaultUnstake(vaultApeContract, pid, amount)
-        track({
-          event: 'vault',
-          chain: chainId,
-          data: {
-            cat: 'unstake',
-            amount,
-            pid,
-          },
-        })
-        dispatch(updateVaultUserBalance(account, chainId, pid))
-        dispatch(updateVaultUserStakedBalance(account, chainId, pid))
-        console.info(txHash)
-      } catch (e) {
-        console.error(e)
-      }
-    },
-    [account, vaultApeContract, dispatch, pid, chainId],
-  )
-  return { onUnstake: handleUnstake }
-}
-
-export const useVaultUnstakeAll = (pid: number) => {
-  const { account, chainId } = useWeb3React()
-  const vaultApeContract = useVaultApe()
-  const dispatch = useDispatch()
-
-  const handleUnstake = useCallback(
-    async (amount: string) => {
-      const txHash = await vaultUnstakeAll(vaultApeContract, pid)
-      track({
-        event: 'vault',
-        chain: chainId,
-        data: {
-          cat: 'unstakeAll',
-          amount,
-          pid,
-        },
-      })
-      dispatch(updateVaultUserBalance(account, chainId, pid))
-      dispatch(updateVaultUserStakedBalance(account, chainId, pid))
-      console.info(txHash)
-    },
-    [account, vaultApeContract, chainId, dispatch, pid],
-  )
-
-  return { onUnstakeAll: handleUnstake }
 }
 
 export const useMiniChefUnstake = (pid: number) => {

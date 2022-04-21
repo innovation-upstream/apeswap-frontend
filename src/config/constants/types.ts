@@ -225,6 +225,8 @@ export interface MasterChef {
 export interface VaultConfig {
   id: number
   pid: number
+  type: 'MAX' | 'AUTO' | 'BURN'
+  version: 'V1' | 'V2'
   availableChains: number[]
   stratAddress: Address
   platform: string

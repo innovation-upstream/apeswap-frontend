@@ -18,6 +18,7 @@ const ListCard: React.FC<ListCardProps> = ({
   expandedContent,
   infoContent,
   infoContentPosition,
+  expandedContentJustified,
   open,
 }) => {
   const [expanded, setExpanded] = useState(open)
@@ -43,7 +44,7 @@ const ListCard: React.FC<ListCardProps> = ({
           </div>
         )}
       </ListCardContainer>
-      {expandedContent && expanded && <ListExpandedContainer>{expandedContent}</ListExpandedContainer>}
+      {expandedContent && expanded && <ListExpandedContainer justifyContent={expandedContentJustified}>{expandedContent}</ListExpandedContainer>}
     </>
   )
 }

@@ -2,7 +2,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 import vaultsConfig from 'config/constants/vaults'
 import fetchVaultData from './fetchVaultData'
-import { fetchVaultUserAllowances, fetchVaultUserStakedBalances, fetchVaultUserTokenBalances } from './fetchVaultsUser'
+import {
+  fetchVaultUserAllowances,
+  fetchVaultUserStakedAndPendingBalances,
+  fetchVaultUserTokenBalances,
+} from './fetchVaultsUser'
 import { VaultsState, TokenPrices, Vault, FarmLpAprsType } from '../types'
 import fetchVaults from './fetchVaults'
 
@@ -15,20 +19,20 @@ export const vaultSlice = createSlice({
     setLoadVaultData: (state, action) => {
       const liveVaultsData: Vault[] = action.payload
       state.data = state.data.map((vault) => {
-        const liveVaultData = liveVaultsData.find((entry) => entry.pid === vault.pid)
+        const liveVaultData = liveVaultsData.find((entry) => entry.id === vault.id)
         return { ...vault, ...liveVaultData }
       })
     },
     setVaultUserData: (state, action) => {
       const userData = action.payload
       state.data = state.data.map((vault) => {
-        const userVaultData = userData.find((entry) => entry.pid === vault.pid)
+        const userVaultData = userData.find((entry) => entry.id === vault.id)
         return { ...vault, userData: userVaultData }
       })
     },
     updateVaultsUserData: (state, action) => {
-      const { field, value, pid } = action.payload
-      const index = state.data.findIndex((v) => v.pid === pid)
+      const { field, value, id } = action.payload
+      const index = state.data.findIndex((v) => v.id === id)
       state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
     },
     setVaults: (state, action) => {
@@ -58,13 +62,14 @@ export const fetchVaultUserDataAsync = (account: string, chainId: number) => asy
     const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
     const userVaultAllowances = await fetchVaultUserAllowances(account, chainId)
     const userVaultTokenBalances = await fetchVaultUserTokenBalances(account, chainId)
-    const userVaultBalances = await fetchVaultUserStakedBalances(account, chainId)
+    const userVaultBalances = await fetchVaultUserStakedAndPendingBalances(account, chainId)
     const userData = filteredVaults.map((vault, index) => {
       return {
-        pid: vault.pid,
+        id: vault.id,
         allowance: userVaultAllowances[index],
         tokenBalance: userVaultTokenBalances[index],
-        stakedBalance: userVaultBalances[index],
+        stakedBalance: userVaultBalances.stakedBalances[index],
+        pendingRewards: userVaultBalances.pendingRewards[index],
       }
     })
     dispatch(setVaultUserData(userData))
@@ -79,25 +84,25 @@ export const setFilteredVaults = (chainId: number) => async (dispatch) => {
   dispatch(setVaultsLoad(true))
 }
 
-export const updateVaultUserAllowance = (account: string, chainId: number, pid: number) => async (dispatch) => {
+export const updateVaultUserAllowance = (account: string, chainId: number, id: number) => async (dispatch) => {
   const allowances = await fetchVaultUserAllowances(account, chainId)
   const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
-  const pidIndex = filteredVaults.findIndex((v) => v.pid === pid)
-  dispatch(updateVaultsUserData({ pid, field: 'allowance', value: allowances[pidIndex] }))
+  const index = filteredVaults.findIndex((v) => v.pid === id)
+  dispatch(updateVaultsUserData({ id, field: 'allowance', value: allowances[index] }))
 }
 
-export const updateVaultUserBalance = (account: string, chainId: number, pid: number) => async (dispatch) => {
+export const updateVaultUserBalance = (account: string, chainId: number, id: number) => async (dispatch) => {
   const tokenBalances = await fetchVaultUserTokenBalances(account, chainId)
   const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
-  const pidIndex = filteredVaults.findIndex((v) => v.pid === pid)
-  dispatch(updateVaultsUserData({ pid, field: 'tokenBalance', value: tokenBalances[pidIndex] }))
+  const index = filteredVaults.findIndex((v) => v.id === id)
+  dispatch(updateVaultsUserData({ id, field: 'tokenBalance', value: tokenBalances[index] }))
 }
 
-export const updateVaultUserStakedBalance = (account: string, chainId: number, pid: number) => async (dispatch) => {
-  const stakedBalances = await fetchVaultUserStakedBalances(account, chainId)
+export const updateVaultUserStakedBalance = (account: string, chainId: number, id: number) => async (dispatch) => {
+  const stakedBalances = await fetchVaultUserStakedAndPendingBalances(account, chainId)
   const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
-  const pidIndex = filteredVaults.findIndex((v) => v.pid === pid)
-  dispatch(updateVaultsUserData({ pid, field: 'stakedBalance', value: stakedBalances[pidIndex] }))
+  const index = filteredVaults.findIndex((v) => v.id === id)
+  dispatch(updateVaultsUserData({ id, field: 'stakedBalance', value: stakedBalances.stakedBalances[index] }))
 }
 
 // Actions

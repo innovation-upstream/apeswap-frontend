@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Skeleton } from '@apeswapfinance/uikit'
 import useApproveVault from 'views/Vaults/hooks/useApproveVault'
-import { useERC20 } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
-import { updateUserAllowance } from 'state/pools'
+import { fetchVaultUserDataAsync, updateVaultUserAllowance } from 'state/vaults'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useToast } from 'state/hooks'
@@ -11,19 +10,21 @@ import { StyledButton } from '../styles'
 
 interface ApprovalActionProps {
   stakingTokenContractAddress: string
-  strategyAddress: string
+  vaultVersion: 'V1' | 'V2'
+  pid: number
   isLoading?: boolean
 }
 
 const ApprovalAction: React.FC<ApprovalActionProps> = ({
   stakingTokenContractAddress,
-  strategyAddress,
+  vaultVersion,
+  pid,
   isLoading = false,
 }) => {
   const { chainId, account } = useActiveWeb3React()
   const [pendingTrx, setPendingTrx] = useState(false)
   const dispatch = useAppDispatch()
-  const { onApprove } = useApproveVault(stakingTokenContractAddress, strategyAddress)
+  const { onApprove } = useApproveVault(stakingTokenContractAddress, vaultVersion)
   const { toastSuccess } = useToast()
 
   return (
@@ -49,8 +50,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({
                 console.error(e)
                 setPendingTrx(false)
               })
-            // dispatch(updateUserAllowance(chainId, sousId, account))
-
+            dispatch(fetchVaultUserDataAsync(account, chainId))
             setPendingTrx(false)
           }}
           load={pendingTrx}

@@ -17,7 +17,7 @@ import {
   updateDualFarmUserTokenBalances,
 } from 'state/dualFarms'
 import { useNetworkChainId } from 'state/hooks'
-import { useMasterchef, useMiniChefContract, useNfaStakingChef, useSousChef, useVaultApe } from './useContract'
+import { useMasterchef, useMiniChefContract, useNfaStakingChef, useSousChef } from './useContract'
 import useActiveWeb3React from './useActiveWeb3React'
 
 const useStake = (pid: number) => {
@@ -106,39 +106,6 @@ export const useNfaStake = (sousId) => {
   return { onStake: handleStake }
 }
 
-export const useVaultStake = (pid: number) => {
-  const { account } = useWeb3React()
-  const vaultApeContract = useVaultApe()
-  const dispatch = useDispatch()
-  const chainId = useNetworkChainId()
-
-  const handleStake = useCallback(
-    async (amount: string) => {
-      try {
-        const txHash = await stakeVault(vaultApeContract, pid, amount)
-        track({
-          event: 'vault',
-          chain: chainId,
-          data: {
-            cat: 'stake',
-            amount,
-            pid,
-          },
-        })
-        dispatch(updateVaultUserBalance(account, chainId, pid))
-        dispatch(updateVaultUserStakedBalance(account, chainId, pid))
-        console.info(txHash)
-        return txHash
-      } catch (e) {
-        console.error(e)
-      }
-      return null
-    },
-    [account, vaultApeContract, dispatch, pid, chainId],
-  )
-
-  return { onStake: handleStake }
-}
 
 export const useDualFarmStake = (pid: number) => {
   const dispatch = useDispatch()

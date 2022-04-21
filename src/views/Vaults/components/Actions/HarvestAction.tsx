@@ -4,24 +4,25 @@ import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { updateUserPendingReward } from 'state/pools'
 import ListViewContent from 'components/ListViewContent'
+import { fetchVaultUserDataAsync } from 'state/vaults'
+import useHarvestMaximizer from 'views/Vaults/hooks/useHarvestMaximizer'
 import { useAppDispatch } from 'state'
 import { StyledButton } from '../styles'
 import { ActionContainer } from './styles'
 
 interface HarvestActionsProps {
-  sousId: number
+  pid: number
   userEarnings: number
   earnTokenSymbol: string
   disabled: boolean
 }
 
-const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol, disabled, userEarnings }) => {
+const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, earnTokenSymbol, disabled, userEarnings }) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onHarvest } = useSousHarvest(sousId)
+  const { onHarvest } = useHarvestMaximizer(pid)
   const { toastSuccess } = useToast()
   const isMobile = useIsMobile()
 
@@ -39,7 +40,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
         console.error(e)
         setPendingTrx(false)
       })
-    dispatch(updateUserPendingReward(chainId, sousId, account))
+    dispatch(fetchVaultUserDataAsync(account, chainId))
     setPendingTrx(false)
   }
 

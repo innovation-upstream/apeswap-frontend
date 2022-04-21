@@ -157,6 +157,7 @@ export interface Vault extends VaultConfig {
     tokenBalance: string
     stakedBalance: string
     stakedWantBalance: string
+    pendingRewards: string
   }
 }
 

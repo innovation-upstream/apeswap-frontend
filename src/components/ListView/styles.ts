@@ -11,10 +11,10 @@ const ExpandSmallAnimation = (size?: number) => keyframes`
     100%{height: ${size || 234}px;}
 `
 
-export const ListExpandedContainer = styled(Flex)<{ size?: number }>`
+export const ListExpandedContainer = styled(Flex)<{ size?: number; justifyContent?: string }>`
   height: ${({ size }) => size || 234}px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${({ justifyContent }) => justifyContent || 'space-between'};
   flex-wrap: wrap;
   animation: ${({ size }) => ExpandSmallAnimation(size)} 0.3s ease;
   overflow: hidden;

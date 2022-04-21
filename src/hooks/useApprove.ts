@@ -9,14 +9,7 @@ import { updateDualFarmUserAllowances } from 'state/dualFarms'
 import { updateVaultUserAllowance } from 'state/vaults'
 import useActiveWeb3React from './useActiveWeb3React'
 import { useAuctionAddress } from './useAddress'
-import {
-  useMasterchef,
-  useSousChef,
-  useNonFungibleApes,
-  useVaultApe,
-  useMiniChefContract,
-  useERC20,
-} from './useContract'
+import { useMasterchef, useSousChef, useNonFungibleApes, useMiniChefContract, useERC20 } from './useContract'
 
 // Approve a Farm
 export const useApprove = (lpContract) => {
@@ -104,32 +97,6 @@ export const useNfaStakingApprove = (contractToApprove: string, sousId) => {
       return false
     }
   }, [account, dispatch, contractToApprove, sousId, tokenContract, chainId])
-
-  return { onApprove: handleApprove }
-}
-
-// Approve vault
-export const useVaultApeApprove = (lpContract, pid) => {
-  const { account, chainId } = useActiveWeb3React()
-  const vaultApeContract = useVaultApe()
-  const dispatch = useDispatch()
-  const handleApprove = useCallback(async () => {
-    try {
-      const tx = await approve(lpContract, vaultApeContract)
-      track({
-        event: 'vaults',
-        chain: chainId,
-        data: {
-          token: tx.to,
-          cat: 'enable',
-        },
-      })
-      dispatch(updateVaultUserAllowance(account, chainId, pid))
-      return tx
-    } catch (e) {
-      return false
-    }
-  }, [account, lpContract, vaultApeContract, dispatch, chainId, pid])
 
   return { onApprove: handleApprove }
 }

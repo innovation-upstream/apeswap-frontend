@@ -8,6 +8,8 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
 import { useAppDispatch } from 'state'
+import { useVaultStake } from 'views/Vaults/hooks/useVaultStake'
+import { useVaultUnstake } from 'views/Vaults/hooks/useVaultUnstake'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
@@ -15,12 +17,14 @@ import DepositModal from '../Modals/DepositModal'
 import WithdrawModal from '../Modals/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButtonSquare, StyledButtonSquare } from './styles'
 
+
 interface StakeActionsProps {
   stakingTokenBalance: string
   stakedTokenSymbol: string
   stakedBalance: string
   stakeTokenValueUsd: number
-  strategyAddress: string
+  pid: number
+  vaultVersion: 'V1' | 'V2'
 }
 
 const StakeAction: React.FC<StakeActionsProps> = ({
@@ -28,7 +32,8 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   stakedTokenSymbol,
   stakedBalance,
   stakeTokenValueUsd,
-  strategyAddress,
+  pid,
+  vaultVersion,
 }) => {
   const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
   const dispatch = useAppDispatch()
@@ -43,8 +48,8 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const isMobile = useIsMobile()
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
 
-  const { onStake } = useSousStake(sousId)
-  const { onUnstake } = useSousUnstake(sousId)
+  const { onStake } = useVaultStake(pid, vaultVersion)
+  const { onUnstake } = useVaultUnstake(pid, vaultVersion)
 
   const [onPresentDeposit] = useModal(
     <DepositModal
