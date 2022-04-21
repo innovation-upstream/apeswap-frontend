@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
   const { toggleTheme, isDark } = useContext(ThemeContext)
 
   return (
-    <Box sx={{ position: 'relative', overflow: 'hidden', pb: '90px', backgroundColor: 'footer' }}>
+    <Box sx={{ position: 'relative', overflow: 'hidden', pb: '32px', backgroundColor: 'footer' }}>
       <Box sx={styles.container}>
         <Box sx={styles.leftSection}>
           <Svg icon="textLogo" width="250px" />
@@ -41,16 +41,20 @@ const Footer: React.FC = () => {
               </IconButton>
               <Text>$0.388</Text>
             </Flex>
-            <Button variant="secondary">BUY BANANA</Button>
+            <Button variant="secondary" sx={{ fontSize: '16px' }} px="0px">
+              BUY BANANA
+            </Button>
           </Flex>
         </Box>
         <FooterLinks />
       </Box>
-      <Flex sx={styles.copyright}>
-        <Text sx={{ fontSize: '16px' }}>©2022 All rights reserved</Text>
-      </Flex>
-      <Box sx={styles.apeLogo}>
-        <Svg icon="logo" />
+      <Box sx={styles.copyrightWrapper}>
+        <Flex sx={styles.copyright}>
+          <Text sx={{ fontSize: '16px', color: 'primaryBright' }}>©2022 All rights reserved</Text>
+        </Flex>
+        <Box sx={styles.apeLogo}>
+          <Svg icon="logo" />
+        </Box>
       </Box>
     </Box>
   )

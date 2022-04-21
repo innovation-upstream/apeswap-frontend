@@ -21,7 +21,9 @@ const FooterLinks: React.FC = () => {
       {footerLinks.map((col, index) => (
         <Box>
           <Flex sx={styles.linkTitle} onClick={() => toggleOpen(index)}>
-            <Text color="yellow">{col.title}</Text>
+            <Text color="yellow" weight="bold" sx={{ fontSize: ['16px', '22px', '22px'] }}>
+              {col.title}
+            </Text>
             <span sx={{ display: ['block', 'none', 'none'] }}>
               <Svg width="8px" icon="caret" direction="down" />
             </span>
@@ -36,7 +38,9 @@ const FooterLinks: React.FC = () => {
               <li sx={{ marginTop: 7 }}>
                 <Link href={link.href} passHref>
                   <a>
-                    <Text sx={{ fontSize: '16px' }}>{link.label}</Text>
+                    <Text sx={{ fontSize: ['12px', '16px'] }} weight="normal">
+                      {link.label}
+                    </Text>
                   </a>
                 </Link>
               </li>
