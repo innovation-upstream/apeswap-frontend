@@ -18,6 +18,10 @@ export const getServerSideGenericProps = async (
   const { isDesktop } = getSelectorsByUserAgent(req.headers['user-agent'])
   const { origin } = absoluteUrl(req)
 
+  const CACHE_KEY = 'IS_DARK'
+  const cachedMode = cookies.get(CACHE_KEY) || 'false'
+  const colorMode = JSON.parse(cachedMode) ? 'dark' : 'light'
+
   if (!chainIdStr) {
     cookies.set('chainIdStatus', chainId.toString())
   }
@@ -29,6 +33,7 @@ export const getServerSideGenericProps = async (
         chainId,
         isDesktop,
         origin,
+        colorMode,
       }),
     ),
   }

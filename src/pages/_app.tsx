@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>ApeSwap</title>
         <Metatags />
       </Head>
-      <Providers>
+      <Providers colorMode={pageProps.colorMode}>
         <SSRContextProvider origin={pageProps.origin} desktop={pageProps.isDesktop}>
           <ResetCSS />
           <GlobalStyle />

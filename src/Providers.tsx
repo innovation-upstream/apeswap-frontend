@@ -11,16 +11,10 @@ import NftProvider from 'views/Nft/contexts/NftProvider'
 import { ThemeProvider } from 'theme-ui'
 import { Apeswap, MenuContextProvider } from '@innovationupstream/apeswap-uikit'
 import { NetworkContextName } from 'config/constants'
-import Cookies from 'universal-cookie'
-
-const CACHE_KEY = 'IS_DARK'
-const cookie = new Cookies()
-const cachedMode = cookie.get(CACHE_KEY) || 'false'
-const colorMode = JSON.parse(cachedMode) ? 'dark' : 'light'
 
 const Web3ProviderNetwork = typeof window === 'object' ? createWeb3ReactRoot(NetworkContextName) : React.Fragment
 
-const Providers: React.FC = ({ children }) => {
+const Providers: React.FC<any> = ({ colorMode, children }) => {
   const { pathname } = useRouter()
 
   return (
@@ -36,7 +30,7 @@ const Providers: React.FC = ({ children }) => {
               },
             }}
           >
-            <ThemeContextProvider>
+            <ThemeContextProvider colorMode={colorMode}>
               <NftProvider>
                 <RefreshContextProvider>
                   <ModalProvider>
