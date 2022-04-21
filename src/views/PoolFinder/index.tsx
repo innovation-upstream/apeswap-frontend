@@ -140,7 +140,7 @@ export default function PoolFinder() {
                 style={{ justifyItems: 'center', backgroundColor: '', padding: '12px 0px', borderRadius: '12px' }}
               >
                 <Text textAlign="center">Pool Found!</Text>
-                <StyledInternalLink to="/pool">
+                <StyledInternalLink href="/pool">
                   <Text textAlign="center" style={{ textDecoration: 'underline' }}>
                     Manage this pool.
                   </Text>
@@ -155,7 +155,7 @@ export default function PoolFinder() {
                 ) : (
                   <AutoColumn gap="sm" justify="center">
                     <Text textAlign="center">You don’t have liquidity in this pool yet.</Text>
-                    <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                    <StyledInternalLink href={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
                       <Text style={{ textDecoration: 'underline' }} textAlign="center">
                         Add Liquidity
                       </Text>
@@ -165,7 +165,7 @@ export default function PoolFinder() {
               ) : validPairNoLiquidity ? (
                 <AutoColumn gap="sm" justify="center">
                   <Text textAlign="center">No pool found.</Text>
-                  <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                  <StyledInternalLink href={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
                     Create pool.
                   </StyledInternalLink>
                 </AutoColumn>

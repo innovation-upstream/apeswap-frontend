@@ -3,8 +3,8 @@ import { GetServerSideProps } from 'next'
 import { getServerSideGenericProps } from 'components/getServersideProps'
 import fetchPrices from 'state/tokenPrices/fetchPrices'
 import fetchPools from 'state/pools/fetchPools'
-import Pools from '../../views/Pools'
-import { wrapper } from '../../state'
+import Pools from 'views/Pools'
+import { wrapper } from 'state'
 import { setPoolsPublicData } from '../../state/pools'
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {

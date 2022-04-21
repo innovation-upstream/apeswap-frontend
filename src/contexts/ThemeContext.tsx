@@ -5,14 +5,11 @@ import { useColorMode } from 'theme-ui'
 import Cookies from 'universal-cookie'
 
 const CACHE_KEY = 'IS_DARK'
-const cookie = new Cookies()
-const cachedMode = cookie.get(CACHE_KEY) || 'false'
-const isDarkMode = JSON.parse(cachedMode)
 const ThemeContext = React.createContext({ isDark: null, toggleTheme: () => null })
 
-const ThemeContextProvider = ({ children }) => {
+const ThemeContextProvider = ({ colorMode, children }) => {
   const [_, setColorMode] = useColorMode()
-  const [isDark, setIsDark] = useState(isDarkMode)
+  const [isDark, setIsDark] = useState(colorMode === 'dark')
 
   const toggleTheme = () => {
     setIsDark((prevState) => {

@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import useSwiper from 'hooks/useSwiper'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import useWindowSize from 'hooks/useDimensions'
+import Link from 'next/link'
 import { ServiceData } from 'state/types'
 import { useFetchHomepageServiceStats, useHomepageServiceStats } from 'state/hooks'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
@@ -178,8 +179,30 @@ const Services: React.FC = () => {
               </Swiper>
             ) : (
               displayData?.map((service) => {
-                return (
-                  <YieldCard image={service.backgroundImg} key={service.title}>
+                return service.id === 'treasuryBills' ? (
+                  <Link href="/treasury-bills">
+                    <a>
+                      <YieldCard image={service.backgroundImg} key={service.id} style={{ cursor: 'pointer' }}>
+                        <Flex flexDirection="column" justifyContent="space-between" style={{ height: '100%' }}>
+                          <Flex flexDirection="column">
+                            <Flex>
+                              <Text color="white" fontSize="25px" bold>
+                                {service.title}
+                              </Text>
+                            </Flex>
+                            <Flex padding="0px 40px 0px 0px">
+                              <Text color="white" bold>
+                                {service.description}
+                              </Text>
+                            </Flex>
+                          </Flex>
+                          <>{service.title !== '' && displayStats(service.id, service.link, service.stats)}</>
+                        </Flex>
+                      </YieldCard>
+                    </a>
+                  </Link>
+                ) : (
+                  <YieldCard image={service.backgroundImg} key={service.id}>
                     <Flex flexDirection="column" justifyContent="space-between" style={{ height: '100%' }}>
                       <Flex flexDirection="column">
                         <Flex>
