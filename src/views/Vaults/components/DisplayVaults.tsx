@@ -28,11 +28,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
 
   const vaultsListView = vaults.map((vault) => {
     const totalDollarAmountStaked = parseFloat(vault?.totalStaked) * vault?.stakeTokenPrice
-    // const liquidityUrl = !vault?.lpStaking
-    //   ? vault.stakingToken.symbol === 'GNANA'
-    //     ? 'https://apeswap.finance/gnana'
-    //     : `https://apeswap.finance/swap?outputCurrency=${vault?.stakingToken.address[chainId]}`
-    //   : `${BASE_ADD_LIQUIDITY_URL}/${vault?.lpTokens?.token?.address[chainId]}/${vault?.lpTokens?.quoteToken?.address[chainId]}`
+    const liquidityUrl = `https://apeswap.finance/add/`
     const userAllowance = vault?.userData?.allowance
     const userEarnings = getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards) || new BigNumber(0))
     const userEarningsUsd = `$${(
@@ -41,17 +37,19 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
     const userTokenBalance = (getBalanceNumber(new BigNumber(vault?.userData?.tokenBalance)) || 0).toFixed(4)
     const userTokenBalanceUsd = `$${(parseFloat(userTokenBalance || '0') * vault?.stakeTokenPrice).toFixed(2)}`
     const userStakedBalance = getBalanceNumber(new BigNumber(vault?.userData?.stakedBalance))
-    const userStakedBalanceUsd = `$${(userStakedBalance * vault?.stakeTokenPrice).toFixed(2)}`
+    const userStakedBalanceUsd = `$${((userStakedBalance || 0) * vault?.stakeTokenPrice).toFixed(2)}`
 
     const { tokenDisplay, stakeLp, earnLp } = vaultTokenDisplay(vault.stakeToken, vault.rewardToken)
 
-    console.log(vault)
     // Token symbol logic is here temporarily for nfty
     return {
       tokens: tokenDisplay,
       stakeLp,
       earnLp,
-      tag: vault.type,
+      tag: {
+        text: vault.type,
+        backgroundColor: vault.type === 'AUTO' ? 'green' : 'red',
+      },
       title: (
         <Text ml={10} weight="bold">
           {vault.stakeToken.symbol}
@@ -61,7 +59,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       id: vault.id,
       infoContent: <></>, // <InfoContent vault={vault} />,
       infoContentPosition: 'translate(-82%, 28%)',
-      expandedContentJustified: vault.version === 'V1' && 'space-around',
+      expandedContentJustified: vault.version === 'V1' && 'center',
       open: openId === vault.pid,
       cardContent: (
         <>
@@ -118,7 +116,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           <ActionContainer>
             {isMobile && (
               <ListViewContent
-                title={`Available ${vault?.stakeToken?.symbol}`}
+                title={`Available ${vault.stakeToken.lpToken ? 'LP' : vault?.stakeToken?.symbol}`}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary
@@ -128,14 +126,14 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                 ml={10}
               />
             )}
-            <a href="google.com" target="_blank" rel="noopener noreferrer">
+            <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
               <StyledButton sx={{ width: '150px' }}>
                 GET {vault?.stakeToken?.lpToken ? 'LP' : vault?.stakeToken?.symbol}
               </StyledButton>
             </a>
             {!isMobile && (
               <ListViewContent
-                title={`Available ${vault?.stakeToken?.symbol}`}
+                title={`Available ${vault.stakeToken.lpToken ? 'LP' : vault?.stakeToken?.symbol}`}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary
@@ -146,7 +144,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
               />
             )}
           </ActionContainer>
-          {!isMobile && <NextArrow />}
+          {vault.version === 'V1' ? !isMobile && <NextArrow ml="30px" mr="50px" /> : !isMobile && <NextArrow />}
           <Actions
             allowance={userAllowance?.toString()}
             stakedBalance={vault?.userData?.stakedBalance?.toString()}

@@ -134,7 +134,7 @@ const vaults: VaultConfig[] = [
     platform: 'ApeSwap',
     masterchef: {
       pid: {
-        [CHAIN_ID.BSC]: 7,
+        [CHAIN_ID.BSC]: 1,
       },
       address: {
         [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',

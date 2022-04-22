@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
+import { Button } from '@ape.swap/uikit'
 import styled from 'styled-components'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Heading, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
+import { Heading, Text, Card, Checkbox, ArrowDropDownIcon, Flex } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import useI18n from 'hooks/useI18n'
@@ -16,6 +17,8 @@ import MenuTabButtons from 'components/ListViewMenu/MenuTabButtons'
 import SearchInput from './components/SearchInput'
 import { ViewMode } from './components/types'
 import DisplayVaults from './components/DisplayVaults'
+import VaultMenu from './components/Menu'
+import useCompound from './hooks/useCompound'
 
 interface LabelProps {
   active?: boolean
@@ -446,6 +449,7 @@ const Vaults: React.FC = () => {
   usePollVaultsData()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [burnOnly, setBurnOnly] = useState(false)
+  const [vaultType, setVaultType] = useState('allTypes')
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [viewMode, setViewMode] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
@@ -459,6 +463,7 @@ const Vaults: React.FC = () => {
   const TranslateString = useI18n()
   const { chainId } = useActiveWeb3React()
   const isActive = !pathname.includes('history')
+  const { onCompound } = useCompound()
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const loadMoreRef = useRef<HTMLDivElement>(null)
@@ -531,10 +536,10 @@ const Vaults: React.FC = () => {
 
   const sortVaults = (vaultsToSort: Vault[]) => {
     switch (sortOption) {
-      case 'dailyapy':
+      case 'dailyApy':
         // Ternary is needed to prevent pools without APR (like MIX) getting top spot
         return orderBy(vaultsToSort, (vault: Vault) => vault?.apy?.daily, sortDirection)
-      case 'yearlyapy':
+      case 'yearlyApy':
         return orderBy(vaultsToSort, (vault: Vault) => vault?.apy?.daily, sortDirection)
       case 'totalstaked':
         return orderBy(vaultsToSort, (vault: Vault) => parseInt(vault?.totalStaked), sortDirection)
@@ -543,58 +548,39 @@ const Vaults: React.FC = () => {
     }
   }
 
-  const vaultsToShow = (): Vault[] => {
-    let chosenVaults = []
+  const renderVaults = (): Vault[] => {
+    let chosenVaults = isActive ? activeVaults : inactiveVaults
 
-    if (stakedOnly && burnOnly) {
-      chosenVaults = isActive ? burnOnlyVaultsStakedVaults : burnOnlyVaultsInactiveStakedVaults
-    } else if (stakedOnly && !burnOnly) {
+    if (stakedOnly) {
       chosenVaults = isActive ? stakedOnlyVaults : stakedInactiveVaults
-    } else if (!stakedOnly && burnOnly) {
-      chosenVaults = isActive ? burnOnlyVaults : burnOnlyVaultsInactiveVaults
-    } else {
-      chosenVaults = isActive ? activeVaults : inactiveVaults
+    }
+
+    if (vaultType !== 'allTypes') {
+      chosenVaults = chosenVaults.filter((vault) => vault.type === vaultType.toUpperCase())
     }
 
     if (searchQuery) {
       const lowercaseQuery = searchQuery.toLowerCase()
       chosenVaults = chosenVaults.filter((vault) =>
-        `${vault?.token0?.symbol.toLowerCase()}-${vault?.token1?.symbol.toLowerCase()}`.includes(lowercaseQuery),
+        `${vault?.stakeToken?.symbol.toLowerCase()}-${vault?.rewardToken?.symbol.toLowerCase()}`.includes(
+          lowercaseQuery,
+        ),
       )
     }
     return sortVaults(chosenVaults).slice(0, numberOfVaultsVisible)
   }
 
-  // const cardLayout = (
-  //   <CardContainer>
-  //     <FlexLayout>
-  //       {vaultsToShow().map((vault) => (
-  //         <VaultCard key={vault.pid} vault={vault} removed={!isActive} />
-  //       ))}
-  //     </FlexLayout>
-  //   </CardContainer>
-  // )
-
-  // const tableLayout = (
-  //   <Container>
-  //     <TableContainer>
-  //       <TableWrapper ref={tableWrapperEl}>
-  //         <StyledTable>
-  //           {vaultsToShow().map((vault) => (
-  //             <VaultTable key={vault.pid} vault={vault} removed={!isActive} />
-  //           ))}
-  //         </StyledTable>
-  //       </TableWrapper>
-  //     </TableContainer>
-  //   </Container>
-  // )
-
   const renderHeader = () => {
     const headerContents = (
       <HeadingContainer>
         <StyledHeading as="h1" color="white" style={{ marginBottom: '8px', color: 'white' }}>
-          {TranslateString(999, 'Burning Vaults')}
+          {TranslateString(999, 'Vaults')}
         </StyledHeading>
+        <Flex alignItems="center" justifyContent="center">
+          <Button size="lg" onClick={onCompound}>
+            COMPOUND ME
+          </Button>
+        </Flex>
       </HeadingContainer>
     )
     if (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
@@ -607,33 +593,18 @@ const Vaults: React.FC = () => {
     <>
       {renderHeader()}
       <StyledPage width="1130px">
-        <ControlContainer>
-          <ViewControls>
-            {/* {size.width > 968 && viewMode !== null && (
-              <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-            )} */}
-            <LabelWrapper>
-              <StyledText mr="15px">Search</StyledText>
-              <SearchInput onChange={handleChangeQuery} value={searchQuery} />
-            </LabelWrapper>
-            <ButtonCheckWrapper>
-              <div />
-              <MenuTabButtons />
-              <div style={{ marginRight: '70px' }} />{' '}
-              <ToggleContainer>
-                <ToggleWrapper onClick={() => setStakedOnly(!stakedOnly)}>
-                  <StyledCheckbox checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
-                  <StyledText>{TranslateString(1116, 'Staked')}</StyledText>
-                </ToggleWrapper>
-                <ToggleWrapper onClick={() => setBurnOnly(!burnOnly)}>
-                  <StyledCheckbox checked={burnOnly} onChange={() => setBurnOnly(!burnOnly)} />
-                  <StyledText> {TranslateString(1116, 'Burning')}</StyledText>
-                </ToggleWrapper>
-              </ToggleContainer>
-            </ButtonCheckWrapper>
-          </ViewControls>
-        </ControlContainer>
-        <DisplayVaults vaults={vaultsToShow()} />
+        <VaultMenu
+          onHandleQueryChange={handleChangeQuery}
+          onSetSortOption={setSortOption}
+          onSetStake={setStakedOnly}
+          onSetVaultType={setVaultType}
+          vaults={[]}
+          activeOption={sortOption}
+          activeVaultType={vaultType}
+          stakedOnly={stakedOnly}
+          query={searchQuery}
+        />
+        <DisplayVaults vaults={renderVaults()} />
         <div ref={loadMoreRef} />
       </StyledPage>
     </>

@@ -28,7 +28,11 @@ const ListCard: React.FC<ListCardProps> = ({
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>
         <TitleContainer titleContainerWidth={titleContainerWidth}>
           {serviceTokenDisplay}
-          {tag && <TagContainer ml="10px">{tag}</TagContainer>}
+          {tag && (
+            <TagContainer ml="10px" backgroundColor={tag.backgroundColor}>
+              {tag.text}
+            </TagContainer>
+          )}
           {title}
         </TitleContainer>
         <ContentContainer>{cardContent}</ContentContainer>

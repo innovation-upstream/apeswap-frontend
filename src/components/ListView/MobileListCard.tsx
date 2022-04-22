@@ -28,7 +28,11 @@ const MobileListCard: React.FC<ListCardProps> = ({
         <Flex justifyContent="space-between" style={{ width: '100%' }}>
           <TitleContainer>
             {serviceTokenDisplay}
-            {tag && <TagContainer ml="10px">{tag}</TagContainer>}
+            {tag && (
+              <TagContainer ml="10px" backgroundColor={tag.backgroundColor}>
+                {tag.text}
+              </TagContainer>
+            )}
             {title}
           </TitleContainer>
           <Flex>

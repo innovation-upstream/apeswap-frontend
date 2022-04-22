@@ -75,16 +75,17 @@ export const DropDownIcon = styled(ArrowDropDownIcon)<{ open: boolean }>`
   cursor: pointer;
 `
 
-export const TagContainer = styled(Flex)`
+export const TagContainer = styled(Flex)<{ backgroundColor: string }>`
   align-items: center;
   justify-content: center;
-  width: 31px;
   height: 15px;
   border-radius: 7px;
   color: white;
+  font-weight: 800;
   line-height: 0px;
   font-size: 10px;
-  background-color: red;
+  padding: 9px 5px;
+  background-color: ${({ backgroundColor }) => backgroundColor};
 `
 
 export const ContentContainer = styled(Flex)`
