@@ -9,6 +9,7 @@ import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
 import NftProvider from 'views/Nft/contexts/NftProvider'
 import { NetworkContextName } from 'config/constants'
+import WidgetModalProvider from 'contexts/WidgetModalContext'
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -21,7 +22,9 @@ const Providers: React.FC = ({ children }) => {
             <ThemeContextProvider>
               <NftProvider>
                 <RefreshContextProvider>
-                  <ModalProvider>{children}</ModalProvider>
+                  <ModalProvider>
+                    <WidgetModalProvider>{children}</WidgetModalProvider>
+                  </ModalProvider>
                 </RefreshContextProvider>
               </NftProvider>
             </ThemeContextProvider>

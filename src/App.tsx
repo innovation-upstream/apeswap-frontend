@@ -9,6 +9,7 @@ import MarketingModalCheck from 'components/MarketingModalCheck'
 import { CHAIN_ID } from 'config/constants/chains'
 import { useFetchTokenPrices, useFetchProfile, useUpdateNetwork } from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
+import { WidgetModal } from 'components/WidgetModal'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -294,6 +295,7 @@ const App: React.FC = () => {
         window.location.pathname === '/vaults' ||
         window.location.pathname === '/iazos') && <StyledChevronUpIcon onClick={scrollToTop} />}
       {loadMenu()}
+      <WidgetModal />
       <ToastListener />
     </Router>
   )

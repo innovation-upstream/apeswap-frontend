@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components'
 import { Text, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import SwiperProvider from 'contexts/SwiperProvider'
 import { useAuctions, useFetchAuctions } from 'state/hooks'
+import useWidgetModal from 'hooks/useWidgetModal'
 import Positions from './components/Positions'
 import Container from './components/Container'
 import History from './components/History'
@@ -207,9 +208,26 @@ const Auction: React.FC = () => {
   const { auctions } = useAuctions()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isDesktop = isXxl || isXl
+
+  const { setWidgetState } = useWidgetModal()
+
   return (
     <SwiperProvider>
       <Container>
+        <button
+          type="button"
+          style={{
+            width: '100%',
+            background: 'red',
+            height: 50,
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: 20,
+          }}
+          onClick={() => setWidgetState({ open: true })}
+        >
+          Open Widget
+        </button>
         <Header>
           <AuctionFrame>
             <NfaHead />
