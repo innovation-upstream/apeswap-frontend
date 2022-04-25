@@ -262,23 +262,16 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
 
           {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) && (
             <Flex flexDirection="row" mt="10px">
-              <Button
-                as={Link}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
-                fullWidth
-                style={{ height: '40px', fontSize: '20px', marginRight: '8px' }}
-              >
-                <Title color="white">Add</Title>
-              </Button>
-              <Button
-                as={Link}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
-                mb="8px"
-                fullWidth
-                style={{ height: '40px', marginLeft: '8px' }}
-              >
-                <Title color="white">Remove</Title>
-              </Button>
+              <Link href={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                <Button fullWidth style={{ height: '40px', fontSize: '20px', marginRight: '8px' }}>
+                  <Title color="white">Add</Title>
+                </Button>
+              </Link>
+              <Link href={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                <Button mb="8px" fullWidth style={{ height: '40px', marginLeft: '8px' }}>
+                  <Title color="white">Remove</Title>
+                </Button>
+              </Link>
             </Flex>
           )}
         </AutoColumn>
