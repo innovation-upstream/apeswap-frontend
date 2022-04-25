@@ -69,3 +69,30 @@ export const footerLinks = [
     links: learnLinks,
   },
 ]
+
+export const socialLinks = [
+  {
+    icon: 'twitter',
+    url: 'https://twitter.com/ape_swap',
+  },
+  {
+    icon: 'discord',
+    url: 'https://discord.com/invite/ApeSwap',
+  },
+  {
+    icon: 'send',
+    url: 'https://t.me/ape_swap',
+  },
+  {
+    icon: 'reddit',
+    url: 'https://www.reddit.com/r/Apeswap',
+  },
+  {
+    icon: 'medium',
+    url: 'https://ape-swap.medium.com',
+  },
+  {
+    icon: 'instagram',
+    url: 'https://www.instagram.com/apeswap.finance',
+  },
+]

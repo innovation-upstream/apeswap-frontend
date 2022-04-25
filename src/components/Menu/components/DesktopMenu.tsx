@@ -102,27 +102,33 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                   >
                     {label === 'More' && (
                       <>
-                        <IconButton
-                          variant="primary"
-                          icon="twitter"
-                          color="info"
-                          sx={{ padding: '8px', height: 'fit-content' }}
-                          background="white3"
-                        />
-                        <IconButton
-                          variant="primary"
-                          icon="send"
-                          color="info"
-                          sx={{ padding: '8px', height: 'fit-content' }}
-                          background="white3"
-                        />
-                        <IconButton
-                          variant="primary"
-                          icon="discord"
-                          color="info"
-                          sx={{ padding: '6px 8px', height: 'fit-content' }}
-                          background="white3"
-                        />
+                        <a href="https://twitter.com/ape_swap" target="_blank" rel="noopener noreferrer">
+                          <IconButton
+                            variant="primary"
+                            icon="twitter"
+                            color="info"
+                            sx={{ padding: '8px', height: 'fit-content' }}
+                            background="white3"
+                          />
+                        </a>
+                        <a href="https://t.me/ape_swap" target="_blank" rel="noopener noreferrer">
+                          <IconButton
+                            variant="primary"
+                            icon="send"
+                            color="info"
+                            sx={{ padding: '8px', height: 'fit-content' }}
+                            background="white3"
+                          />
+                        </a>
+                        <a href="https://discord.com/invite/ApeSwap" target="_blank" rel="noopener noreferrer">
+                          <IconButton
+                            variant="primary"
+                            icon="discord"
+                            color="info"
+                            sx={{ padding: '6px 8px', height: 'fit-content' }}
+                            background="white3"
+                          />
+                        </a>
                       </>
                     )}
                   </Flex>

@@ -6,6 +6,7 @@ import { Text, Svg, IconButton, Button } from '@innovationupstream/apeswap-uikit
 import { NetworkButton } from 'components/NetworkButton'
 import { ThemeContext } from 'contexts/ThemeContext'
 import FooterLinks from './FooterLinks'
+import { socialLinks } from './Footer.data'
 import styles from './styles'
 
 const Footer: React.FC = () => {
@@ -27,12 +28,11 @@ const Footer: React.FC = () => {
             <NetworkButton />
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
-            <IconButton background="white3" color="text" icon="twitter" sx={styles.socialButtons} />
-            <IconButton background="white3" color="text" icon="discord" sx={styles.socialButtons} />
-            <IconButton background="white3" color="text" icon="send" sx={styles.socialButtons} />
-            <IconButton background="white3" color="text" icon="reddit" sx={styles.socialButtons} />
-            <IconButton background="white3" color="text" icon="medium" sx={styles.socialButtons} />
-            <IconButton background="white3" color="text" icon="instagram" sx={styles.socialButtons} />
+            {socialLinks.map((link) => (
+              <a href={link.url} key={link.url} target="_blank" rel="noopener noreferrer">
+                <IconButton background="white3" color="text" icon={link.icon as any} sx={styles.socialButtons} />
+              </a>
+            ))}
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
             <Flex sx={{ alignItems: 'center', columnGap: '10px' }}>
