@@ -8,11 +8,12 @@ export const menuItemContainer = {
   },
 } as any
 
-export const desktopMenuItem = (label: string) => ({
+export const desktopMenuItem = (label: string, active: boolean) => ({
   position: 'relative',
   paddingX: '10px',
   alignItems: 'center',
   height: '100%',
+  boxShadow: active ? 'inset 0px -3px 0px' : '',
   [`#menu-modal-${label}`]: {
     display: 'none',
   },

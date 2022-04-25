@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
-import React from 'react'
+import React, { useContext } from 'react'
 import { Box, Flex, useColorMode } from 'theme-ui'
-import { Text, IconButton } from '@innovationupstream/apeswap-uikit'
+import { Text, IconButton, MenuContext } from '@innovationupstream/apeswap-uikit'
 import { NextLink } from './Link'
 import { menuItemContainer, desktopMenuItem, desktopSubItem } from './styles'
 import * as ImageModule from '../images'
@@ -22,7 +22,8 @@ interface DesktopMenuProps {
 }
 
 const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
-  const [colorMode, _] = useColorMode()
+  const [colorMode] = useColorMode()
+  const { active } = useContext(MenuContext)
 
   return (
     <Flex
@@ -36,7 +37,10 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
       {items?.map((item) => {
         const { label, href, items: subItems } = item
         const ImageElement = Icons[(colorMode === 'dark' ? item?.darkIcon : item?.lightIcon) || '']
-        const style: any = desktopMenuItem(label)
+        const style: any = desktopMenuItem(
+          label,
+          active === href || subItems?.some((subItem) => active === subItem.href),
+        )
 
         return (
           <Flex sx={style}>
@@ -73,8 +77,8 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                           display: 'inline-block',
                           marginTop: 10,
                           pl: 0,
+                          color: 'text',
                           '&:hover': {
-                            color: 'text',
                             boxShadow: 'inset 0px -2px 0px',
                           },
                         }}
