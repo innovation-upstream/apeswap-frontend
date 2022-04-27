@@ -5,11 +5,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Install modules
         run: yarn
-        env: 
+        env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Run Jest tests
-        run: yarn test
-        env: 
+
+      - name: Cypress Test
+        uses: cypress-io/github-action@v2
+        with:
+          build: yarn build
+          start: yarn start
+        env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

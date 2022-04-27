@@ -2,18 +2,19 @@ import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { Text } from '@apeswapfinance/uikit'
+import { LinkWrapper } from 'style/LinkWrapper'
 
 const TopNav: React.FC = () => {
   return (
     <TopNavWrapper>
       <TopNavMonkey />
       <Link href="/ss-iao" passHref>
-        <a>
+        <LinkWrapper>
           <BackWrapper>
             <BackArrow src="/images/left-arrow.svg" />
             <StyledText color="primaryBright">Back to Self-Serve Launchpad</StyledText>
           </BackWrapper>
-        </a>
+        </LinkWrapper>
       </Link>
     </TopNavWrapper>
   )

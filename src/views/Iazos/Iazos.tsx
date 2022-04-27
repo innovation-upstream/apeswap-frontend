@@ -7,6 +7,7 @@ import useTheme from 'hooks/useTheme'
 import { Spinner } from '@apeswapfinance/uikit'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import { SSRContext } from 'contexts/SSRContext'
+import { LinkWrapper } from 'style/LinkWrapper'
 import IconButton from './components/IconButton'
 import IazoCard from './components/IazoCard/IazoCard'
 import Header from './components/Header'
@@ -85,9 +86,9 @@ const Iazos: React.FC = () => {
           <HeaderWrapper>
             <StyledHeader>Self-Serve Launchpad</StyledHeader>
             <Link href="/ss-iao/create" passHref>
-              <a>
+              <LinkWrapper>
                 <StyledButton> CREATE </StyledButton>
-              </a>
+              </LinkWrapper>
             </Link>
           </HeaderWrapper>
           <SettingsWrapper>

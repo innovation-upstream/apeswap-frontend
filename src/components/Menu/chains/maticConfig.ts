@@ -1,4 +1,3 @@
-import { icons } from '@innovationupstream/apeswap-uikit'
 import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
 import { EXCHANGE } from '../constants'
 
