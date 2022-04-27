@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Text, Svg, IconButton, Button } from '@innovationupstream/apeswap-uikit'
+import { Text, Svg, IconButton } from '@innovationupstream/apeswap-uikit'
 import { useNetworkChainId } from 'state/hooks'
 import { CHAIN_ID } from 'config/constants/chains'
 import NetworkModal from './NetworkModal'

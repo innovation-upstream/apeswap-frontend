@@ -15,7 +15,11 @@
     "format:write": "prettier --ignore-path .gitignore --write \"**/*.{js,jsx,ts,tsx}\"",
     "prepare": "husky install",
     "postinstall": "yarn run typechain",
-    "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\""
+    "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\"",
+    "cypress": "cypress open",
+    "cypress:headless": "cypress run",
+    "e2e": "start-server-and-test start http://localhost:3000 cypress",
+    "e2e:headless": "start-server-and-test start http://localhost:3000 cypress:headless"
   },
   "browserslist": {
     "production": [
@@ -93,6 +97,7 @@
     "@typechain/ethers-v5": "^8.0.5",
     "@types/jest": "^26.0.19",
     "@types/react-datepicker": "^4.3.2",
+    "cypress": "^9.5.4",
     "eslint": "^7.26.0",
     "framer-motion": "^4.1.17",
     "husky": "^7.0.4",

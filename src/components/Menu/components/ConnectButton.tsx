@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
-import React, { useState } from 'react'
+import React from 'react'
 import { Box, Flex } from 'theme-ui'
-import { Button, Text, Svg, IconButton } from '@innovationupstream/apeswap-uikit'
+import { Button, Text, IconButton } from '@innovationupstream/apeswap-uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { connectButton } from './styles'
 

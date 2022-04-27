@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import { Text, Button, useModal } from '@apeswapfinance/uikit'
 import useI18n from 'hooks/useI18n'
+import { LinkWrapper } from 'style/LinkWrapper'
 import Image from './Image'
 import TransferNftModal from './TransferNftModal'
 import { NftProviderContext } from '../contexts/NftProvider'
@@ -98,19 +99,19 @@ const WalletNft: React.FC<NftCardProps> = ({ nft }) => {
   return (
     <CardFlip>
       <CardFlipInner>
-        <Link href={`/nft/${nft.index}`}>
-          <a>
+        <Link href={`/nft/${nft.index}`} passHref>
+          <LinkWrapper>
             <CardFlipFront>
               <Image src={nft.image} alt={nft.image} rarityTier={nft.attributes.rarityTierNumber} />
               <StyledText fontSize="20px" paddingTop="20px" color="subtle">
                 {nft.name} - #{pad(`${nft.index}`, '4')}
               </StyledText>
             </CardFlipFront>
-          </a>
+          </LinkWrapper>
         </Link>
         <CardFlipBack>
           <Link href={`/nft/${nft.index}`}>
-            <a>
+            <LinkWrapper>
               {Object.keys(nft.attributes).map((key, index) => (
                 <Row key={key}>
                   <StyledText as="p" color="subtle" style={{ paddingLeft: '10px', textAlign: 'left' }}>
@@ -121,7 +122,7 @@ const WalletNft: React.FC<NftCardProps> = ({ nft }) => {
                   </StyledText>
                 </Row>
               ))}
-            </a>
+            </LinkWrapper>
           </Link>
           <Button
             variant="primary"

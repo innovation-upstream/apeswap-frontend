@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { ServiceData } from 'state/types'
 import { useFetchHomepageServiceStats, useHomepageServiceStats } from 'state/hooks'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
+import { LinkWrapper } from 'style/LinkWrapper'
 import { ServiceWrapper, YieldCard, ColorWrap, Bubble } from './styles'
 import { defaultServiceData } from './defaultServiceData'
 
@@ -180,8 +181,8 @@ const Services: React.FC = () => {
             ) : (
               displayData?.map((service) => {
                 return service.id === 'treasuryBills' ? (
-                  <Link href="/treasury-bills">
-                    <a>
+                  <Link href="/treasury-bills" passHref>
+                    <LinkWrapper>
                       <YieldCard image={service.backgroundImg} key={service.id} style={{ cursor: 'pointer' }}>
                         <Flex flexDirection="column" justifyContent="space-between" style={{ height: '100%' }}>
                           <Flex flexDirection="column">
@@ -199,7 +200,7 @@ const Services: React.FC = () => {
                           <>{service.title !== '' && displayStats(service.id, service.link, service.stats)}</>
                         </Flex>
                       </YieldCard>
-                    </a>
+                    </LinkWrapper>
                   </Link>
                 ) : (
                   <YieldCard image={service.backgroundImg} key={service.id}>
