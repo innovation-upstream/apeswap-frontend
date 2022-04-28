@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/uikit@^1.0.1":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.0.2.tgz#e7630b83ef73b4a22e7df8c16e946726d86b0cec"
-  integrity sha512-X8547O9BetGPXwObihd6etasNyTpAXIWevC9avmJIZuLkKG0tOoKqAjdI4T/GuR2C1cYNiZNC35H9Re37ayw0g==
+"@ape.swap/uikit@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.0.3.tgz#0dc63c989fe56b737f567c2eae44ff542dc98d23"
+  integrity sha512-/WauZbzeu2z8usW6qnExx4linA6rhwXM/3BZBtjFGKcVrwrDhjoDHyl+xXnMoTvh5Iy4xpmVbYSOE/iQx4T0Fg==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
@@ -55,15 +55,15 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@apeswapfinance/token-lists@1.0.258":
-  version "1.0.258"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.258/924c49cce56bd02fd5a4fba764dc06e5cef62fcaa37be327aabd38e860056862#24ea5f7aefaba35141673047fef0a58cc695f187"
-  integrity sha512-W0UHbMjbBQ9Xn1Q3PNBKU9o8SZ2YbprKbm0NRBISykvMsMwyxYVbiIPOKVCXp5DjcsCR/ImXJfZeq7DXRqCHzg==
+"@apeswapfinance/token-lists@1.0.267":
+  version "1.0.267"
+  resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.267/71aa8573cedbe3b551d2352ed91407f9b2afe5d9e7f19dcccc6efb22964583fa#77cb79f4fb294d881e459f1cd99552bb4be337e2"
+  integrity sha512-0wz5n+BFOJCqQ5DnogpF3SVb8jL6IUBZZ3YcdFF6rPU7Ss+ZQNZZHsktuBo6IIGABukCO5q5BY1Tgo/0Y7NMkA==
 
-"@apeswapfinance/uikit@^0.11.2-1.4":
-  version "0.11.2-1.4"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/uikit/0.11.2-1.4/9bdafc36b4be414f1f2847dfa14597b1bf6cedf5cd90d7f280a32f9d1af83dc3#fcc233bda13365add3e85a34db23ba6856cc92ee"
-  integrity sha512-DTg3u7uRJBhn2tpnX6E2p5uh3IJxzahgQgqsh+dopQSFuZE6Gvjq7AtDu85tyvE4fbBYIm1+pZHkruPvwpYYpQ==
+"@apeswapfinance/uikit@0.11.2-1.6":
+  version "0.11.2-1.6"
+  resolved "https://npm.pkg.github.com/download/@apeswapfinance/uikit/0.11.2-1.6/b4850bb6fce794fd571ea0dfc63c9f892d3d3ec7a588080dd18c4a0299fc0b85#7b04aec5a831d241e82dc3ed9df524c71d5c29b9"
+  integrity sha512-pSikeIwLdbCdMc5lst0IQbFWdeBABT5Sg1i5hpUhl3C02j5RKyYH/+NxHU8r/UV8iHrQHucCralnyzWMv8qkhA==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@rollup/plugin-json" "^4.1.0"
