@@ -25,14 +25,14 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     props: JSON.parse(
       JSON.stringify({
         ...initialProps?.props,
-        id: query.id,
+        id: query.id ? parseInt(query.id as string) : undefined,
       }),
     ),
   }
 })
 
-const PoolsPage: React.FC = () => {
-  return <Pools />
+const PoolsPage: React.FC = ({ id }: any) => {
+  return <Pools id={id} />
 }
 
 export default PoolsPage

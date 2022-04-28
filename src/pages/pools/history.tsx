@@ -25,14 +25,14 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     props: JSON.parse(
       JSON.stringify({
         ...initialProps?.props,
-        id: query.id,
+        id: query.id ? parseInt(query.id as string) : undefined,
       }),
     ),
   }
 })
 
-const PoolsHistory: React.FC = () => {
-  return <Pools showHistory />
+const PoolsHistory: React.FC = ({ id }: any) => {
+  return <Pools showHistory id={id} />
 }
 
 export default PoolsHistory
