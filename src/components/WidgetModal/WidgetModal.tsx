@@ -6,13 +6,14 @@ import { HelpIcon } from '@apeswapfinance/uikit'
 import { widgetType } from 'contexts/WidgetModalContext'
 import useWidgetModal from 'hooks/useWidgetModal'
 import { Flex } from 'theme-ui'
+import { merge } from 'lodash'
 
 const labels: { [T in widgetType]: string } = {
   liquidity: 'Add Liquidity',
 }
 
 const WidgetModal = () => {
-  const { open, widget, widgetProps, setWidgetState } = useWidgetModal()
+  const { open, widget, widgetProps, setWidgetState, modalProps: newModalProps } = useWidgetModal()
   const handleClose = () => setWidgetState({ open: false })
   const modalContainer = document.querySelector('#root')
 
@@ -26,9 +27,10 @@ const WidgetModal = () => {
       maxHeight: 'calc(100% - 30px)',
     },
   }
+
   return modalContainer
     ? ReactDOM.createPortal(
-        <Modal {...modalProps} handleClose={handleClose}>
+        <Modal {...merge(modalProps, newModalProps)} handleClose={handleClose}>
           <ModalHeader handleClose={handleClose}>
             <Flex
               sx={{

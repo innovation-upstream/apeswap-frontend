@@ -9,6 +9,9 @@ import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ApyButton from 'components/ApyCalculator/ApyButton'
 import useIsMobile from 'hooks/useIsMobile'
+import useWidgetModal from 'hooks/useWidgetModal'
+import { Field, selectCurrency } from 'state/swap/actions'
+import { useAppDispatch } from 'state'
 import CardActions from './CardActions'
 import { Container, FarmButton, NextArrow } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
@@ -17,6 +20,23 @@ import { ActionContainer } from './CardActions/styles'
 const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, openPid }) => {
   const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
+  const { setWidgetState } = useWidgetModal()
+  const dispatch = useAppDispatch()
+  const showLiquidity = (token, quoteToken) => {
+    dispatch(
+      selectCurrency({
+        field: Field.INPUT,
+        currencyId: token,
+      }),
+    )
+    dispatch(
+      selectCurrency({
+        field: Field.OUTPUT,
+        currencyId: quoteToken,
+      }),
+    )
+    setWidgetState({ open: true, modalProps: { style: { zIndex: 1000 } } })
+  }
 
   const farmsListView = farms.map((farm) => {
     const [token1, token2] = farm.lpSymbol.split('-')
@@ -139,9 +159,10 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
                 ml={10}
               />
             )}
-            <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
-              <FarmButton>GET LP</FarmButton>
-            </a>
+
+            <FarmButton onClick={() => showLiquidity(farm.tokenAddresses[chainId], farm.quoteTokenAdresses[chainId])}>
+              GET LP
+            </FarmButton>
             {!isMobile && (
               <ListViewContent
                 title="Available LP"

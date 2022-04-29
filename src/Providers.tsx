@@ -22,9 +22,9 @@ const Providers: React.FC = ({ children }) => {
             <ThemeContextProvider>
               <NftProvider>
                 <RefreshContextProvider>
-                  <ModalProvider>
-                    <WidgetModalProvider>{children}</WidgetModalProvider>
-                  </ModalProvider>
+                  <WidgetModalProvider>
+                    <ModalProvider>{children}</ModalProvider>
+                  </WidgetModalProvider>
                 </RefreshContextProvider>
               </NftProvider>
             </ThemeContextProvider>

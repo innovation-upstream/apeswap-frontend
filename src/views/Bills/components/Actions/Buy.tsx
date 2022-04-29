@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AutoRenewIcon, Flex, Text } from '@apeswapfinance/uikit'
+import { AutoRenewIcon, Flex, Text, useModal } from '@apeswapfinance/uikit'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useBuyBill from 'views/Bills/hooks/useBuyBill'
@@ -8,6 +8,8 @@ import { useToast } from 'state/hooks'
 import { getEtherscanLink } from 'utils'
 import { useAppDispatch } from 'state'
 import { fetchBillsUserDataAsync, fetchUserOwnedBillsDataAsync } from 'state/bills'
+import useWidgetModal from 'hooks/useWidgetModal'
+import { Field, selectCurrency } from 'state/swap/actions'
 import { BuyProps } from './types'
 import { BuyButton, GetLPButton, MaxButton, StyledInput } from './styles'
 
@@ -21,6 +23,7 @@ const Buy: React.FC<BuyProps> = ({
   onBillId,
   onTransactionSubmited,
 }) => {
+  const { setWidgetState } = useWidgetModal()
   const formatUserLpValue = getFullDisplayBalance(new BigNumber(userLpValue))
   const [amount, setAmount] = useState('')
   const { chainId, account } = useActiveWeb3React()
@@ -67,11 +70,27 @@ const Buy: React.FC<BuyProps> = ({
     setPendingTrx(false)
   }
 
+  const showLiquidity = () => {
+    dispatch(
+      selectCurrency({
+        field: Field.INPUT,
+        currencyId: token.address[chainId],
+      }),
+    )
+    dispatch(
+      selectCurrency({
+        field: Field.OUTPUT,
+        currencyId: quoteToken.address[chainId],
+      }),
+    )
+    setWidgetState({ open: true, modalProps: { style: { zIndex: 1000 } } })
+  }
+
   return (
     <>
-      <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
-        <GetLPButton variant="secondary">Get LP</GetLPButton>
-      </a>
+      <GetLPButton variant="secondary" onClick={showLiquidity}>
+        Get LP
+      </GetLPButton>
       <Flex style={{ position: 'relative' }}>
         <Text fontSize="12px" style={{ position: 'absolute', top: 14, left: 10, zIndex: 1 }} bold>
           Amount:
