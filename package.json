@@ -97,7 +97,7 @@
     "@typechain/ethers-v5": "^8.0.5",
     "@types/jest": "^26.0.19",
     "@types/react-datepicker": "^4.3.2",
-    "cypress": "^9.6.0",
+    "cypress": "^9.5.4",
     "eslint": "^7.26.0",
     "framer-motion": "^4.1.17",
     "husky": "^7.0.4",

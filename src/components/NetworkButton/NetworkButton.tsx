@@ -8,7 +8,7 @@ import NetworkModal from './NetworkModal'
 const networks = {
   [CHAIN_ID.BSC]: {
     icon: 'bsc_token',
-    name: 'BSC',
+    name: 'BNB',
   },
   [CHAIN_ID.MATIC]: {
     icon: 'polygon_token',
@@ -42,7 +42,7 @@ const NetworkButton: React.FC = () => {
         onClick={() => setOpen(true)}
       >
         <Svg width="20px" icon={networks[chainId]?.icon as any} />
-        <Text color="text" variant="sm">
+        <Text color="text" sx={{ fontSize: '14px', fontWeight: '600' }} variant="sm">
           {networks[chainId]?.name}
         </Text>
         <Svg width="8px" icon="caret" direction="down" color="text" />

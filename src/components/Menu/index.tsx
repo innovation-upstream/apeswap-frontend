@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import throttle from 'lodash/throttle'
 import { useMatchBreakpoints } from '@apeswapfinance/uikit'
 import { MenuContext, Svg, IconButton } from '@innovationupstream/apeswap-uikit'
+import Link from 'next/link'
 import { useWeb3React } from '@web3-react/core'
 import Cookies from 'universal-cookie'
 import { CHAIN_ID } from 'config/constants/chains'
@@ -119,7 +120,9 @@ const Menu: React.FC<{ chain?: number }> = () => {
           sx={{ alignItems: 'center', height: '100%', justifyContent: 'space-between', px: ['25px', '25px', '20px'] }}
         >
           <Flex sx={{ columnGap: '40px', height: '100%' }}>
-            <IconButton variant="transparent" icon="logo" />
+            <Link href="/">
+              <IconButton variant="transparent" icon="logo" />
+            </Link>
             {!isMobile && <DesktopMenu items={currentMenu() as any} />}
           </Flex>
           <Flex sx={{ alignItems: 'center', columnGap: 5, height: '100%' }}>
