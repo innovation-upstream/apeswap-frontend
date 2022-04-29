@@ -9,7 +9,7 @@ import { SSRContext } from 'contexts/SSRContext'
 const networks = [
   {
     icon: 'bsc_token',
-    name: 'BSC',
+    name: 'BNB',
     chain: CHAIN_ID.BSC,
   },
   {

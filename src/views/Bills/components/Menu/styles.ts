@@ -1,6 +1,6 @@
 import { Text, Flex } from '@apeswapfinance/uikit'
 import { Button } from '@ape.swap/uikit'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 
 export const ControlContainer = styled(Flex)`
   align-items: center;

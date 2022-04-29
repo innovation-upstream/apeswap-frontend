@@ -1,5 +1,6 @@
 import React from 'react'
 import { Flex, Select, SelectItem, Text } from '@apeswapfinance/uikit'
+import { Button } from '@innovationupstream/apeswap-uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import Link from 'next/link'
 import { ListViewProps } from './types'
@@ -45,10 +46,14 @@ const BillMenu: React.FC<ListViewProps> = ({ onHandleQueryChange, onSetSortOptio
           })}
         </Select>
       </Flex>
-      <LearnMoreButton variant="secondary" as={Link} href="?modal=bills">
-        {' '}
-        Learn More{' '}
-      </LearnMoreButton>
+      <Link href="?modal=bills">
+        <Button
+          csx={{ height: '36px', width: '192px', border: '2px solid', justifyContent: 'center' }}
+          variant="secondary"
+        >
+          Learn More
+        </Button>
+      </Link>
       <ClaimAllWrapper>
         <ClaimAll userOwnedBills={ownedBills} ownedBillsAmount={ownedBillsAmount} />
       </ClaimAllWrapper>
