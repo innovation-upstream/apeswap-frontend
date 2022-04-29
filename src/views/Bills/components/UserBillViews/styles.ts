@@ -1,5 +1,5 @@
 import { Card, Flex } from '@apeswapfinance/uikit'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 
 export const CardContainer = styled(Card)`
   display: flex;
@@ -14,7 +14,7 @@ export const CardContainer = styled(Card)`
 export const BillsImage = styled.div<{ image?: string }>`
   width: 270px;
   height: 159px;
-  background-image: ${({ image }) => `url(${image});`}
+  background-image: ${({ image }) => `url(${image});`};
   border-radius: 10px 10px 0px 0px;
   background-repeat: no-repeat;
   background-size: 100% 100%;
