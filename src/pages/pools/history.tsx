@@ -8,7 +8,8 @@ import { wrapper } from '../../state'
 import { setPoolsPublicData } from '../../state/pools'
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-  const initialProps = await getServerSideGenericProps(context)
+  const { query } = context
+  const initialProps = await getServerSideGenericProps({ ...context, ...store })
   const chainId = initialProps?.props?.chainId
 
   let poolData = []
@@ -20,11 +21,18 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   }
   store.dispatch(setPoolsPublicData(JSON.parse(JSON.stringify(poolData))))
 
-  return initialProps
+  return {
+    props: JSON.parse(
+      JSON.stringify({
+        ...initialProps?.props,
+        id: query.id ? parseInt(query.id as string) : undefined,
+      }),
+    ),
+  }
 })
 
-const PoolsHistory: React.FC = () => {
-  return <Pools showHistory />
+const PoolsHistory: React.FC = ({ id }: any) => {
+  return <Pools showHistory id={id} />
 }
 
 export default PoolsHistory

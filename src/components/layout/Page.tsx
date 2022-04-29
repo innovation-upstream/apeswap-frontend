@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { customMeta, DEFAULT_META } from 'config/constants/meta'

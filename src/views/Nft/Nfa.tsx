@@ -68,7 +68,6 @@ const BoxShadow = styled.div`
 `
 
 const Nfa: React.FC<{ nft: number }> = ({ nft: id }) => {
-  const router = useRouter()
   useFetchNfas()
   const { nfas } = useNfas()
   const TranslateString = useI18n()

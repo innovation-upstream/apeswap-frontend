@@ -455,7 +455,7 @@ const tokens = {
     decimals: 18,
   },
   sx: {
-    symbol: 'sx',
+    symbol: 'SX',
     address: {
       56: '0x6f26e8a40c8daae8c4358ce557c10226527cebce',
     },
@@ -1028,6 +1028,13 @@ const tokens = {
     symbol: 'ASPO',
     address: {
       56: '0x1a9b49E9f075c37Fe5f86C916bac9DEb33556D7E',
+    },
+    decimals: 18,
+  },
+  bico: {
+    symbol: 'BICO',
+    address: {
+      56: '0x06250a4962558F0F3E69FC07F4c67BB9c9eAc739',
     },
     decimals: 18,
   },
