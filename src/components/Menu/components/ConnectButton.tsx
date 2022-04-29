@@ -2,6 +2,7 @@
 import React from 'react'
 import { Box, Flex } from 'theme-ui'
 import { Button, Text, IconButton } from '@innovationupstream/apeswap-uikit'
+import Link from 'next/link'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import { connectButton } from './styles'
@@ -34,12 +35,9 @@ const ConnectButton: React.FC<any> = ({ handleConnect }) => {
           transform: 'translateY(-50%)',
         }}
       >
-        <IconButton
-          onClick={handleConnect}
-          icon={isDark ? 'profileDark' : 'profileLight'}
-          variant="circular"
-          background="white3"
-        />
+        <Link href="/nft">
+          <IconButton icon={isDark ? 'profileDark' : 'profileLight'} variant="circular" background="white3" />
+        </Link>
       </Box>
     </Flex>
   )

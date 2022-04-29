@@ -3,14 +3,18 @@ import React, { useContext } from 'react'
 import { Box, Flex } from 'theme-ui'
 import { ThemeSwitcher } from '@apeswapfinance/uikit'
 import { Text, Svg, IconButton, Button } from '@innovationupstream/apeswap-uikit'
+import Link from 'next/link'
 import { NetworkButton } from 'components/NetworkButton'
 import { ThemeContext } from 'contexts/ThemeContext'
+import { useTokenPrices } from 'state/hooks'
 import FooterLinks from './FooterLinks'
 import { socialLinks } from './Footer.data'
 import styles from './styles'
 
 const Footer: React.FC = () => {
   const { toggleTheme, isDark } = useContext(ThemeContext)
+  const { tokenPrices } = useTokenPrices()
+  const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
 
   return (
     <Box
@@ -45,14 +49,26 @@ const Footer: React.FC = () => {
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
             <Flex sx={{ alignItems: 'center', columnGap: '10px' }}>
-              <IconButton variant="transparent">
-                <Svg width="30px" icon="banana_token" />
-              </IconButton>
-              <Text>$0.388</Text>
+              <Link href="https://info.apeswap.finance/token/0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95">
+                <a
+                  target="_blank"
+                  href="https://info.apeswap.finance/token/0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95"
+                  rel="noreferrer"
+                >
+                  <IconButton variant="transparent">
+                    <Svg width="30px" icon="banana_token" />
+                  </IconButton>
+                </a>
+              </Link>
+              <Text>${bananaPriceUsd?.toFixed(3)}</Text>
             </Flex>
-            <Button variant="secondary" sx={{ fontSize: '16px' }} px="0px">
-              BUY BANANA
-            </Button>
+            <Link href="/swap">
+              <a target="_blank" href="/swap" rel="noreferrer">
+                <Button variant="secondary" sx={{ fontSize: '16px' }} px="0px">
+                  BUY BANANA
+                </Button>
+              </a>
+            </Link>
           </Flex>
         </Box>
         <FooterLinks />
