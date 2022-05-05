@@ -10,9 +10,9 @@ export const parseAddress = (currAddress: Address, chainId: ChainId) => {
 
 const useAddress = (curAddresses: Address) => {
   const { chainId } = useActiveWeb3React()
-  const [address, setAddress] = useState(parseAddress(curAddresses, chainId))
+  const [address, setAddress] = useState(parseAddress(curAddresses, chainId as number))
   useEffect(() => {
-    setAddress(parseAddress(curAddresses, chainId))
+    setAddress(parseAddress(curAddresses, chainId as number))
   }, [chainId, curAddresses])
   return address
 }

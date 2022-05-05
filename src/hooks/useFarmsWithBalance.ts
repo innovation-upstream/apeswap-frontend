@@ -27,8 +27,11 @@ const useFarmsWithBalance = () => {
           params: [farm.pid, account],
         }))
 
-        const rawResults = await multicall(chainId, masterChefABI, calls)
-        const results = farmsConfig.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
+        const rawResults = await multicall(chainId as number, masterChefABI, calls)
+        const results = farmsConfig.map((farm, index) => ({
+          ...farm,
+          balance: new BigNumber(rawResults[index]),
+        })) as any
 
         setFarmsWithBalances(results)
       } catch (e) {
@@ -45,8 +48,11 @@ const useFarmsWithBalance = () => {
           params: [farm.pid, account],
         }))
 
-        const rawResults = await multicall(chainId, miniChefABI, calls)
-        const results = filteredDualFarms.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
+        const rawResults = await multicall(chainId as number, miniChefABI, calls)
+        const results = filteredDualFarms.map((farm, index) => ({
+          ...farm,
+          balance: new BigNumber(rawResults[index]),
+        })) as any
 
         setFarmsWithBalances(results)
       } catch (e) {

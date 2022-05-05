@@ -4,7 +4,7 @@ import random from 'lodash/random'
 
 const useRpcUrl = () => {
   const { chainId } = useWeb3React()
-  const nodes = NETWORK_RPC[chainId]
+  const nodes = NETWORK_RPC[chainId as number]
   const randomIndex = random(0, nodes.length - 1)
   return nodes[randomIndex]
 }

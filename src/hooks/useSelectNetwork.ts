@@ -17,7 +17,7 @@ const useSwitchNetwork = () => {
           console.warn(error)
         }
       } else {
-        dispatch(fetchUserNetwork(chainId, account, userChainId))
+        dispatch(fetchUserNetwork(chainId as number, account as string, userChainId))
       }
     },
     [chainId, account, library, dispatch],

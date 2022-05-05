@@ -41,12 +41,12 @@ export const useAllHarvest = (farmPids: number[], chainId: number) => {
 
   const handleHarvest = useCallback(async () => {
     if (chainId === CHAIN_ID.MATIC) {
-      const harvestPromises = farmPids.reduce((accum, pid) => {
+      const harvestPromises = farmPids.reduce((accum: any, pid) => {
         return [...accum, miniChefHarvest(miniChefContract, pid, account)]
       }, [])
       return Promise.all(harvestPromises)
     }
-    const harvestPromises = farmPids.reduce((accum, pid) => {
+    const harvestPromises = farmPids.reduce((accum: any, pid) => {
       return [...accum, harvest(masterChefContract, pid)]
     }, [])
     return Promise.all(harvestPromises)
@@ -87,7 +87,12 @@ export const useSousHarvestAll = (sousIds: number[]) => {
   const handleHarvestAll = useCallback(async () => {
     const harvestPromises = sousIds.map((sousId) => {
       const config = poolsConfig.find((pool) => pool.sousId === sousId)
-      const sousChefContract = getContract(config.contractAddress[chainId], sousChef, library, account) as SousChef
+      const sousChefContract = getContract(
+        config?.contractAddress?.[chainId as number],
+        sousChef,
+        library as any,
+        account as string,
+      ) as SousChef
       return sousId === 0 ? harvest(masterChefContract, 0) : soushHarvest(sousChefContract)
     })
     return Promise.all(harvestPromises)
@@ -102,8 +107,8 @@ export const useNfaStakingHarvest = (sousId) => {
   const nfaStakingChef = useNfaStakingChef(sousId)
   const handleHarvest = useCallback(async () => {
     const trxHash = await nfaStakeHarvest(nfaStakingChef)
-    dispatch(updateUserNfaStakingPendingReward(chainId, sousId, account))
-    dispatch(updateNfaStakingUserBalance(chainId, sousId, account))
+    dispatch(updateUserNfaStakingPendingReward(chainId, sousId, account as string))
+    dispatch(updateNfaStakingUserBalance(chainId, sousId, account as string))
     track({
       event: 'nfa',
       chain: chainId,
@@ -133,8 +138,8 @@ export const useMiniChefHarvest = (farmPid: number) => {
         pid: farmPid,
       },
     })
-    dispatch(updateDualFarmUserEarnings(chainId, farmPid, account))
-    dispatch(updateDualFarmRewarderEarnings(chainId, farmPid, account))
+    dispatch(updateDualFarmUserEarnings(chainId as number, farmPid, account as string))
+    dispatch(updateDualFarmRewarderEarnings(chainId as number, farmPid, account as string))
     return txHash
   }, [account, dispatch, farmPid, miniChefContract, chainId])
 

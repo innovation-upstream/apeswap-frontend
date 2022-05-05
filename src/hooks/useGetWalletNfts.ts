@@ -47,14 +47,14 @@ const useGetWalletNfts = () => {
   useEffect(() => {
     const fetchNfts = async () => {
       try {
-        const balanceOf = await (await nonFungibleApesContract.balanceOf(account)).toNumber()
+        const balanceOf = await (await nonFungibleApesContract.balanceOf(account as string)).toNumber()
 
         if (balanceOf > 0) {
           let nfts: NftMap = {}
 
           const tokenIdPromises = []
 
-          const tokenIdsOwnedByWallet = await Promise.all(tokenIdPromises)
+          const tokenIdsOwnedByWallet = (await Promise.all(tokenIdPromises)) as any
 
           nfts = tokenIdsOwnedByWallet.reduce((accum, association) => {
             if (!association) {

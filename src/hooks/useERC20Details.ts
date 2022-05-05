@@ -37,7 +37,11 @@ const useERC20Details = () => {
           name: 'decimals',
         },
       ]
-      const [userBalance, tokenSymbol, totalSupply, tokenDecimals] = await multicall(chainId, erc20ABI, erc20Calls)
+      const [userBalance, tokenSymbol, totalSupply, tokenDecimals] = await multicall(
+        chainId as number,
+        erc20ABI,
+        erc20Calls,
+      )
       return {
         userBalance: userBalance.toString(),
         tokenSymbol: tokenSymbol[0],

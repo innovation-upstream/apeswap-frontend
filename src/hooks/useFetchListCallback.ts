@@ -18,7 +18,7 @@ function useFetchListCallback(): (listUrl: string, sendDispatch?: boolean) => Pr
       if (chainId !== ChainId.MAINNET) {
         throw new Error('Could not construct mainnet ENS resolver')
       }
-      return resolveENSContentHash(ensName, library)
+      return resolveENSContentHash(ensName, library as any)
     },
     [chainId, library],
   )

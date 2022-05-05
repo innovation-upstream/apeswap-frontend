@@ -12,7 +12,7 @@ export const useIfoAllowance = (tokenAddress: string, spenderAddress: string, de
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await tokenContract.allowance(account, spenderAddress)
+        const res = await tokenContract.allowance(account as string, spenderAddress)
         setAllowance(new BigNumber(res.toString()))
       } catch (e) {
         setAllowance(null)
@@ -32,8 +32,8 @@ export const useNfaAllowance = (spenderAddress: string, dependency?: any) => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await tokenContract.isApprovedForAll(account, spenderAddress)
-        setAllowance(res)
+        const res = await tokenContract.isApprovedForAll(account as string, spenderAddress)
+        setAllowance(res as any)
       } catch (e) {
         setAllowance(null)
       }

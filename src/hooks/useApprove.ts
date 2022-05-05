@@ -98,7 +98,7 @@ export const useNfaStakingApprove = (contractToApprove: string, sousId) => {
   const handleApprove = useCallback(async () => {
     try {
       const tx = await tokenContract.setApprovalForAll(contractToApprove, true)
-      dispatch(updateNfaStakingUserAllowance(chainId, sousId, account))
+      dispatch(updateNfaStakingUserAllowance(chainId as number, sousId, account as string))
       return tx
     } catch {
       return false
@@ -124,7 +124,7 @@ export const useVaultApeApprove = (lpContract, pid) => {
           cat: 'enable',
         },
       })
-      dispatch(updateVaultUserAllowance(account, chainId, pid))
+      dispatch(updateVaultUserAllowance(account as string, chainId as number, pid))
       return tx
     } catch (e) {
       return false
@@ -151,7 +151,7 @@ export const useDualFarmApprove = (lpContract, pid: number) => {
           cat: 'enable',
         },
       })
-      dispatch(updateDualFarmUserAllowances(chainId, pid, account))
+      dispatch(updateDualFarmUserAllowances(chainId as number, pid, account as string))
       return tx
     } catch (e) {
       console.warn(e)

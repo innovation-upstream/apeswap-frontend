@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 const useIntersectionObserver = () => {
   const [observerRefElement, setObserverRefElement] = useState(null)
   const [observerRef] = useState(() => (element) => setObserverRefElement(element))
-  const intersectionObserverRef = useRef<IntersectionObserver>(null)
+  const intersectionObserverRef = useRef<IntersectionObserver | null>(null)
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [isIntersecting, setIsIntersecting] = useState(false)
 
