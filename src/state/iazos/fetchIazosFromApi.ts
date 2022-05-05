@@ -49,34 +49,34 @@ const formatIazoData = (iazo): Iazo => {
   }
 
   const feeInfo: IazoFeeInfo = {
-    feeAddress: null,
-    baseFee: null,
-    iazoTokenFee: null,
+    feeAddress: null as any,
+    baseFee: null as any,
+    iazoTokenFee: null as any,
   }
 
   const status: IazoStatus = {
-    lpGenerationComplete: null,
-    forceFailed: null,
-    totalBaseCollected: null,
-    totalTokensSold: null,
-    totalTokensWithdraw: null,
-    totalBaseWithdraw: null,
-    numBuyers: null,
+    lpGenerationComplete: false,
+    forceFailed: false,
+    totalBaseCollected: null as any,
+    totalTokensSold: null as any,
+    totalTokensWithdraw: null as any,
+    totalBaseWithdraw: null as any,
+    numBuyers: null as any,
   }
 
   const baseToken: IazoTokenInfo = {
     address: iazo.token2,
-    name: null,
-    symbol: null,
-    decimals: null,
+    name: null as any,
+    symbol: null as any,
+    decimals: null as any,
   }
 
   const iazoToken: IazoTokenInfo = {
     address: iazo.token1,
-    name: null,
-    symbol: null,
-    decimals: null,
-    totalSupply: null,
+    name: null as any,
+    symbol: null as any,
+    decimals: null as any,
+    totalSupply: null as any,
   }
 
   return {
@@ -91,7 +91,7 @@ const formatIazoData = (iazo): Iazo => {
     listingPrice: iazo.priceListing,
     burnRemain: iazo.burnRemaining,
     iazoTags: iazo.tags,
-    iazoState: null,
+    iazoState: null as any,
     feeInfo,
     timeInfo,
     status,

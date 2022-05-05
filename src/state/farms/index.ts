@@ -13,7 +13,7 @@ import fetchFarms from './fetchFarms'
 
 const initialState: FarmsState = {
   data: [...farmsConfig],
-  tags: null,
+  tags: null as any,
 }
 
 export const farmsSlice = createSlice({
@@ -37,7 +37,7 @@ export const farmsSlice = createSlice({
     updateFarmUserData: (state, action) => {
       const { field, value, pid } = action.payload
       const index = state.data.findIndex((p) => p.pid === pid)
-      state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+      state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } as any }
     },
   },
 })

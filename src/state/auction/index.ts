@@ -6,7 +6,7 @@ import { AuctionsOverall, AuctionsState, Nfa } from '../types'
 const initialState: AuctionsState = {
   isInitialized: false,
   isLoading: true,
-  data: null,
+  data: null as any,
 }
 
 export const auctionsSlice = createSlice({
