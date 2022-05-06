@@ -14,6 +14,7 @@ const vaults: VaultConfig[] = [
     },
 
     stakeToken: tokens.banana,
+    token: tokens.banana,
     rewardToken: tokens.banana,
     platform: 'ApeSwap',
     masterchef: {
@@ -42,6 +43,8 @@ const vaults: VaultConfig[] = [
       [CHAIN_ID.BSC]: '0x4e4efe113214c1371b264c09f59f64c5f12589f8',
     },
     stakeToken: tokens.bananaBnb,
+    token: tokens.banana,
+    quoteToken: tokens.wbnb,
     rewardToken: tokens.bananaBnb,
     platform: 'ApeSwap',
     masterchef: {
@@ -59,6 +62,7 @@ const vaults: VaultConfig[] = [
     totalFees: 4,
     withdrawFee: 0.1,
     burning: false,
+    inactive: true,
   },
   {
     id: 2,
@@ -70,6 +74,8 @@ const vaults: VaultConfig[] = [
       [CHAIN_ID.BSC]: '0x234101c6612115cac7bdb74ee20f388bb95db8cc',
     },
     stakeToken: tokens.bananaBusd,
+    token: tokens.banana,
+    quoteToken: tokens.wbnb,
     rewardToken: tokens.bananaBusd,
     platform: 'ApeSwap',
     masterchef: {
@@ -87,49 +93,23 @@ const vaults: VaultConfig[] = [
     totalFees: 4,
     withdrawFee: 0.1,
     burning: false,
+    inactive: true,
   },
+
+  // BANANA - BNB vault config
+
   {
     id: 3,
     pid: 0,
-    availableChains: [CHAIN_ID.BSC_TESTNET, CHAIN_ID.BSC],
-    type: 'MAX',
-    version: 'V2',
-    stratAddress: {
-      [CHAIN_ID.BSC_TESTNET]: '0x32C359E44374a103A35171fc1aB92ef6E6B3f7D5',
-      [CHAIN_ID.BSC]: '0xbfA9faC2e891f21f0eD32F1655eD5B1CD7De3897',
-    },
-    stakeToken: tokens.banana,
-    rewardToken: tokens.banana,
-    platform: 'ApeSwap',
-    masterchef: {
-      pid: {
-        [CHAIN_ID.BSC_TESTNET]: 0,
-        [CHAIN_ID.BSC]: 0,
-      },
-      address: {
-        [CHAIN_ID.BSC_TESTNET]: '0xbbC5e1cD3BA8ED639b00927115e5f0e0040aA613',
-        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
-      },
-      rewardsPerBlock: {
-        [CHAIN_ID.BSC_TESTNET]: 'cakePerBlock',
-        [CHAIN_ID.BSC]: 'cakePerBlock',
-      },
-      rewardToken: tokens.banana,
-    },
-    totalFees: 1,
-    withdrawFee: 0,
-    burning: false,
-  },
-  {
-    id: 4,
-    pid: 1,
     availableChains: [CHAIN_ID.BSC],
     type: 'MAX',
     version: 'V2',
     stratAddress: {
-      [CHAIN_ID.BSC]: '0xcA8078Ab97E7F54e40D1ff4aA81012f8629E2cD5',
+      [CHAIN_ID.BSC]: '0x6328cb56360cE890301cC169462e057eCDa2966d',
     },
     stakeToken: tokens.bananaBnb,
+    token: tokens.banana,
+    quoteToken: tokens.wbnb,
     rewardToken: tokens.banana,
     platform: 'ApeSwap',
     masterchef: {
@@ -148,27 +128,32 @@ const vaults: VaultConfig[] = [
     withdrawFee: 0,
     burning: false,
   },
+
+  // BANANA - BUSD vault config
+
   {
-    id: 998,
+    id: 4,
     pid: 1,
-    availableChains: [CHAIN_ID.BSC_TESTNET],
+    availableChains: [CHAIN_ID.BSC],
     type: 'MAX',
     version: 'V2',
     stratAddress: {
-      [CHAIN_ID.BSC_TESTNET]: '0xA0F89D810257942bB91119c7c2Ea5A9F218fC4Cf',
+      [CHAIN_ID.BSC]: '0xf5b311BF1d1B2A3F9a1B6330D0AF83189EB8B288',
     },
-    stakeToken: tokens.horNey,
+    stakeToken: tokens.bananaBusd,
+    token: tokens.banana,
+    quoteToken: tokens.busd,
     rewardToken: tokens.banana,
     platform: 'ApeSwap',
     masterchef: {
       pid: {
-        [CHAIN_ID.BSC_TESTNET]: 7,
+        [CHAIN_ID.BSC]: 2,
       },
       address: {
-        [CHAIN_ID.BSC_TESTNET]: '0xbbC5e1cD3BA8ED639b00927115e5f0e0040aA613',
+        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
       },
       rewardsPerBlock: {
-        [CHAIN_ID.BSC_TESTNET]: 'cakePerBlock',
+        [CHAIN_ID.BSC]: 'cakePerBlock',
       },
       rewardToken: tokens.banana,
     },
@@ -176,27 +161,98 @@ const vaults: VaultConfig[] = [
     withdrawFee: 0,
     burning: false,
   },
+
+  // MATIC - BNB vault config
+
   {
-    id: 999,
+    id: 5,
     pid: 2,
-    availableChains: [CHAIN_ID.BSC_TESTNET],
+    availableChains: [CHAIN_ID.BSC],
     type: 'MAX',
     version: 'V2',
     stratAddress: {
-      [CHAIN_ID.BSC_TESTNET]: '0x8fbcFD4f90e53C2722CDc56D2d3403B097136819',
+      [CHAIN_ID.BSC]: '0x4d7fC6e83e73F423E6f8C3362BeAE3A7a4aA21AE',
     },
-    stakeToken: tokens.forEver,
+    stakeToken: tokens.bnbMatic,
+    token: tokens.wmatic,
+    quoteToken: tokens.wbnb,
     rewardToken: tokens.banana,
     platform: 'ApeSwap',
     masterchef: {
       pid: {
-        [CHAIN_ID.BSC_TESTNET]: 8,
+        [CHAIN_ID.BSC]: 45,
       },
       address: {
-        [CHAIN_ID.BSC_TESTNET]: '0xbbC5e1cD3BA8ED639b00927115e5f0e0040aA613',
+        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
       },
       rewardsPerBlock: {
-        [CHAIN_ID.BSC_TESTNET]: 'cakePerBlock',
+        [CHAIN_ID.BSC]: 'cakePerBlock',
+      },
+      rewardToken: tokens.banana,
+    },
+    totalFees: 1,
+    withdrawFee: 0,
+    burning: false,
+  },
+
+  // FTM - BNB vault config
+
+  {
+    id: 6,
+    pid: 3,
+    availableChains: [CHAIN_ID.BSC],
+    type: 'MAX',
+    version: 'V2',
+    stratAddress: {
+      [CHAIN_ID.BSC]: '0x3bA4b0f9192D5605F462dA1c9cebb7FF23456869',
+    },
+    stakeToken: tokens.bnbFtm,
+    token: tokens.ftm,
+    quoteToken: tokens.wbnb,
+    rewardToken: tokens.banana,
+    platform: 'ApeSwap',
+    masterchef: {
+      pid: {
+        [CHAIN_ID.BSC]: 49,
+      },
+      address: {
+        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
+      },
+      rewardsPerBlock: {
+        [CHAIN_ID.BSC]: 'cakePerBlock',
+      },
+      rewardToken: tokens.banana,
+    },
+    totalFees: 1,
+    withdrawFee: 0,
+    burning: false,
+  },
+
+  // CEEK - BNB vault config
+
+  {
+    id: 7,
+    pid: 4,
+    availableChains: [CHAIN_ID.BSC],
+    type: 'MAX',
+    version: 'V2',
+    stratAddress: {
+      [CHAIN_ID.BSC]: '0x5F3B9F07049142A495f30F6284Ff80eAb559d267',
+    },
+    stakeToken: tokens.bnbCeek,
+    token: tokens.ceek,
+    quoteToken: tokens.wbnb,
+    rewardToken: tokens.banana,
+    platform: 'ApeSwap',
+    masterchef: {
+      pid: {
+        [CHAIN_ID.BSC]: 117,
+      },
+      address: {
+        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
+      },
+      rewardsPerBlock: {
+        [CHAIN_ID.BSC]: 'cakePerBlock',
       },
       rewardToken: tokens.banana,
     },

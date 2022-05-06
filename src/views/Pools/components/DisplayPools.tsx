@@ -6,11 +6,13 @@ import ListViewContent from 'components/ListViewContent'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import ApyButton from 'components/ApyCalculator/ApyButton'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import { Pool } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
+import { useTranslation } from 'contexts/Localization'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
@@ -20,6 +22,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number }> = ({ pools, ope
   const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
+  const { t } = useTranslation()
   const isActive = !pathname.includes('history')
 
   const poolsListView = pools.map((pool) => {
@@ -32,10 +35,11 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number }> = ({ pools, ope
         : `https://apeswap.finance/swap?outputCurrency=${pool?.stakingToken.address[chainId]}`
       : `${BASE_ADD_LIQUIDITY_URL}/${pool?.lpTokens?.token?.address[chainId]}/${pool?.lpTokens?.quoteToken?.address[chainId]}`
     const userAllowance = pool?.userData?.allowance
-    const userEarnings = getBalanceNumber(pool?.userData?.pendingReward || new BigNumber(0))
-    const userEarningsUsd = `$${(
-      getBalanceNumber(pool?.userData?.pendingReward || new BigNumber(0)) * pool.rewardToken?.price
-    ).toFixed(2)}`
+    const userEarnings = getBalanceNumber(
+      pool?.userData?.pendingReward || new BigNumber(0),
+      pool?.rewardToken?.decimals,
+    )
+    const userEarningsUsd = `$${(userEarnings * pool.rewardToken?.price).toFixed(2)}`
     const userTokenBalance = `${getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0))?.toFixed(6)}`
     const userTokenBalanceUsd = `$${(
       getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0)) * pool?.stakingToken?.price
@@ -49,7 +53,6 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number }> = ({ pools, ope
           {pool?.rewardToken?.symbol || pool?.tokenName}
         </Text>
       ),
-      stakeLp: false,
       id: pool.sousId,
       infoContent: <InfoContent pool={pool} />,
       infoContentPosition: 'translate(-82%, 28%)',
@@ -69,24 +72,33 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number }> = ({ pools, ope
             )}
           </Flex>
           <ListViewContent
-            title="APR"
+            title={t('APR')}
             value={`${isActive ? pool?.apr?.toFixed(2) : '0.00'}%`}
             width={isMobile ? 95 : 80}
             height={50}
-            toolTip="APR is calculated based on current value of of the token, reward rate and pool % owned."
+            toolTip={t('APR is calculated based on current value of the token, reward rate and pool % owned.')}
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0, 60%)"
+            aprCalculator={
+              <ApyButton
+                lpLabel={pool?.stakingToken?.symbol}
+                rewardTokenName={pool?.rewardToken?.symbol}
+                rewardTokenPrice={pool?.rewardToken?.price}
+                apy={pool?.apr / 100}
+                addLiquidityUrl={liquidityUrl}
+              />
+            }
           />
           <ListViewContent
-            title="Total Staked"
+            title={t('Total Staked')}
             value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
             width={isMobile ? 160 : 110}
             height={50}
-            toolTip="The total value of the tokens currently staked in this pool."
+            toolTip={t('The total value of the tokens currently staked in this pool.')}
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0%, 75%)"
           />
-          <ListViewContent title="Earned" value={userEarningsUsd} height={50} width={isMobile ? 80 : 150} />
+          <ListViewContent title={t('Earned')} value={userEarningsUsd} height={50} width={isMobile ? 80 : 150} />
         </>
       ),
       expandedContent: (
@@ -94,7 +106,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number }> = ({ pools, ope
           <ActionContainer>
             {isMobile && (
               <ListViewContent
-                title={`Available ${pool?.stakingToken?.symbol}`}
+                title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary
@@ -105,11 +117,13 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number }> = ({ pools, ope
               />
             )}
             <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
-              <StyledButton sx={{ width: '150px' }}>GET {pool?.stakingToken?.symbol}</StyledButton>
+              <StyledButton sx={{ width: '150px' }}>
+                {t('GET')} {pool?.stakingToken?.symbol}
+              </StyledButton>
             </a>
             {!isMobile && (
               <ListViewContent
-                title={`Available ${pool?.stakingToken?.symbol}`}
+                title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary
@@ -120,19 +134,17 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number }> = ({ pools, ope
               />
             )}
           </ActionContainer>
-          <Flex sx={{ width: `${isMobile ? '100%' : '450px'}`, justifyContent: 'space-between' }}>
-            {!isMobile && <NextArrow />}
-            <Actions
-              allowance={userAllowance?.toString()}
-              stakedBalance={pool?.userData?.stakedBalance?.toString()}
-              stakedTokenSymbol={pool?.stakingToken?.symbol}
-              stakingTokenBalance={pool?.userData?.stakingTokenBalance?.toString()}
-              stakeTokenAddress={pool?.stakingToken?.address[chainId]}
-              stakeTokenValueUsd={pool?.stakingToken?.price}
-              sousId={pool?.sousId}
-            />
-            {!isMobile && <NextArrow />}
-          </Flex>
+          {!isMobile && <NextArrow />}
+          <Actions
+            allowance={userAllowance?.toString()}
+            stakedBalance={pool?.userData?.stakedBalance?.toString()}
+            stakedTokenSymbol={pool?.stakingToken?.symbol}
+            stakingTokenBalance={pool?.userData?.stakingTokenBalance?.toString()}
+            stakeTokenAddress={pool?.stakingToken?.address[chainId]}
+            stakeTokenValueUsd={pool?.stakingToken?.price}
+            sousId={pool?.sousId}
+          />
+          {!isMobile && <NextArrow />}
           <HarvestAction
             sousId={pool?.sousId}
             disabled={userEarnings <= 0}

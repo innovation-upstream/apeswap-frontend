@@ -6,23 +6,25 @@ import { useToast } from 'state/hooks'
 import { getEtherscanLink } from 'utils'
 import { useAppDispatch } from 'state'
 import { fetchBillsUserDataAsync, fetchUserOwnedBillsDataAsync } from 'state/bills'
+import { useTranslation } from 'contexts/Localization'
 import { ClaimProps } from './types'
 import { StyledButton } from '../styles'
 
-const Claim: React.FC<ClaimProps> = ({ billAddress, billIds, buttonSize }) => {
+const Claim: React.FC<ClaimProps> = ({ billAddress, billIds, buttonSize, pendingRewards }) => {
   const { onClaimBill } = useClaimBill(billAddress, billIds)
   const { chainId, account } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
   const { toastSuccess } = useToast()
+  const { t } = useTranslation()
 
   const handleClaim = async () => {
     setPendingTrx(true)
     await onClaimBill()
       .then((resp) => {
         const trxHash = resp.transactionHash
-        toastSuccess('Claim Successful', {
-          text: 'View Transaction',
+        toastSuccess(t('Claim Successful'), {
+          text: t('View Transaction'),
           url: getEtherscanLink(trxHash, 'transaction', chainId),
         })
       })
@@ -38,10 +40,10 @@ const Claim: React.FC<ClaimProps> = ({ billAddress, billIds, buttonSize }) => {
     <StyledButton
       onClick={handleClaim}
       endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
-      disabled={pendingTrx}
+      disabled={pendingTrx || parseFloat(pendingRewards) === 0}
       buttonSize={buttonSize}
     >
-      CLAIM
+      {t('CLAIM')}
     </StyledButton>
   )
 }

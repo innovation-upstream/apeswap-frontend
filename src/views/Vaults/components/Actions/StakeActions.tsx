@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import { Flex, AddIcon, MinusIcon, useModal } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useSousStake } from 'hooks/useStake'
-import { fetchPoolsUserDataAsync } from 'state/pools'
-import { useSousUnstake } from 'hooks/useUnstake'
+import { fetchVaultUserDataAsync } from 'state/vaults'
 import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
 import { useAppDispatch } from 'state'
@@ -68,7 +66,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             console.error(e)
             setPendingDepositTrx(false)
           })
-        dispatch(fetchPoolsUserDataAsync(chainId, account))
+        dispatch(fetchVaultUserDataAsync(account, chainId))
         setPendingDepositTrx(false)
       }}
     />,
@@ -92,7 +90,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             console.error(e)
             setPendingWithdrawTrx(false)
           })
-        dispatch(fetchPoolsUserDataAsync(chainId, account))
+        dispatch(fetchVaultUserDataAsync(account, chainId))
         setPendingWithdrawTrx(false)
       }}
     />,
@@ -116,7 +114,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             value={rawStakedBalance.toFixed(2)}
             value2={userStakedBalanceUsd}
             value2Secondary
-            width={100}
+            width={150}
             height={50}
             lineHeight={15}
             ml={10}

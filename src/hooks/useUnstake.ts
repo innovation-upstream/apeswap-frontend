@@ -9,17 +9,8 @@ import {
   updateNfaStakingUserBalance,
   updateUserNfaStakingPendingReward,
 } from 'state/actions'
-import { updateVaultUserBalance, updateVaultUserStakedBalance } from 'state/vaults'
 import track from 'utils/track'
-import {
-  unstake,
-  sousUnstake,
-  sousEmegencyWithdraw,
-  nfaUnstake,
-  vaultUnstake,
-  vaultUnstakeAll,
-  miniChefUnstake,
-} from 'utils/callHelpers'
+import { unstake, sousUnstake, sousEmegencyWithdraw, nfaUnstake, miniChefUnstake } from 'utils/callHelpers'
 import {
   updateDualFarmUserEarnings,
   updateDualFarmUserStakedBalances,
@@ -145,7 +136,7 @@ export const useMiniChefUnstake = (pid: number) => {
       dispatch(updateDualFarmUserEarnings(chainId, pid, account))
       dispatch(updateDualFarmUserStakedBalances(chainId, pid, account))
       dispatch(updateDualFarmUserTokenBalances(chainId, pid, account))
-      console.info(txHash)
+      return txHash
     },
     [account, dispatch, miniChefContract, pid, chainId],
   )

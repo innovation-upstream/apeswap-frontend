@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useVaultApeV1, useVaultApeV2 } from 'hooks/useContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAppDispatch } from 'state'
-import { harvestMaximizer, stakeVault } from 'utils/callHelpers'
+import { harvestMaximizer, stakeVaultV2 } from 'utils/callHelpers'
 import track from 'utils/track'
 
 // dispatch(updateVaultUserBalance(account, chainId, pid))

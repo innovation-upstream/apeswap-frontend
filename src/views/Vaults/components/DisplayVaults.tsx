@@ -1,17 +1,20 @@
 import { IconButton, Text, Flex } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
-import { Tag } from '@apeswapfinance/uikit'
+import { Tag, useModal } from '@apeswapfinance/uikit'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useIsMobile from 'hooks/useIsMobile'
+import { useAppDispatch } from 'state'
+import { Field, selectCurrency } from 'state/swap/actions'
 import React from 'react'
 import { Vault } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
+import { LiquidityModal } from 'components/LiquidityWidget'
 // import Actions from './Actions'
 // import HarvestAction from './Actions/HarvestAction'
 // import InfoContent from '../InfoContent'
@@ -22,9 +25,37 @@ import HarvestAction from './Actions/HarvestAction'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
+  const dispatch = useAppDispatch()
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
   const isActive = !pathname.includes('history')
+
+  // TODO: clean up this code
+  // Hack to get the close modal function from the provider
+  // Need to export ModalContext from uikit to clean up the code
+  const [, closeModal] = useModal(<></>)
+  const [onPresentAddLiquidityWidgetModal] = useModal(
+    <LiquidityModal handleClose={closeModal} />,
+    true,
+    true,
+    'liquidityWidgetModal',
+  )
+
+  const showLiquidity = (token, quoteToken) => {
+    dispatch(
+      selectCurrency({
+        field: Field.INPUT,
+        currencyId: token,
+      }),
+    )
+    dispatch(
+      selectCurrency({
+        field: Field.OUTPUT,
+        currencyId: quoteToken,
+      }),
+    )
+    onPresentAddLiquidityWidgetModal()
+  }
 
   const vaultsListView = vaults.map((vault) => {
     const totalDollarAmountStaked = parseFloat(vault?.totalStaked) * vault?.stakeTokenPrice
@@ -126,11 +157,23 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                 ml={10}
               />
             )}
-            <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
-              <StyledButton sx={{ width: '150px' }}>
-                GET {vault?.stakeToken?.lpToken ? 'LP' : vault?.stakeToken?.symbol}
+            {vault.stakeToken?.lpToken ? (
+              <StyledButton
+                sx={{ width: '150px' }}
+                onClick={() =>
+                  showLiquidity(
+                    vault.token.address[chainId],
+                    vault.quoteToken.symbol === 'BNB' ? 'ETH' : vault.quoteToken.address[chainId],
+                  )
+                }
+              >
+                GET LP
               </StyledButton>
-            </a>
+            ) : (
+              <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
+                <StyledButton sx={{ width: '150px' }}>GET {vault?.stakeToken?.symbol}</StyledButton>
+              </a>
+            )}
             {!isMobile && (
               <ListViewContent
                 title={`Available ${vault.stakeToken.lpToken ? 'LP' : vault?.stakeToken?.symbol}`}

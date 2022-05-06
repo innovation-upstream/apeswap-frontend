@@ -1,12 +1,14 @@
 import { Flex, Skeleton } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import ListViewContent from 'components/ListViewContent'
+import ReactPlayer from 'react-player'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React from 'react'
 import { Bills } from 'state/types'
 import 'swiper/swiper.min.css'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useTranslation } from 'contexts/Localization'
 import Claim from '../Actions/Claim'
 import { BillCardsContainer, BillsImage, CardContainer } from './styles'
 import { StyledButton } from '../styles'
@@ -14,12 +16,16 @@ import BillModal from '../Modals'
 
 const BillCard: React.FC<{ bills: Bills[]; ml?: string }> = ({ bills, ml }) => {
   const { chainId } = useActiveWeb3React()
+  const { t } = useTranslation()
   const scrollDown = () => window.scrollBy({ top: 500, behavior: 'smooth' })
-  const ownedBillsAmount = bills?.flatMap((bill) => (bill?.userOwnedBillsData ? bill?.userOwnedBillsData : []))?.length
+  const ownedBillsAmount = bills?.flatMap((bill) => (bill?.userOwnedBillsData ? bill?.userOwnedBillsData : [])).length
   const billsCardView = bills
     .flatMap((bill) => {
       const ownedBills = bill?.userOwnedBillsData
-      return ownedBills?.map((ownedBill, i) => {
+      return ownedBills?.flatMap((ownedBill, i) => {
+        if (parseFloat(ownedBill.pendingRewards) === 0 && parseFloat(ownedBill.payout) === 0) {
+          return []
+        }
         const pendingRewards = getBalanceNumber(
           new BigNumber(ownedBill.pendingRewards),
           bill?.earnToken?.decimals,
@@ -39,16 +45,20 @@ const BillCard: React.FC<{ bills: Bills[]; ml?: string }> = ({ bills, ml }) => {
                 justifyContent="space-between"
                 style={{ height: '75px', width: '100%' }}
               >
-                <ListViewContent title="Banana Bill" value={bill.lpToken.symbol} height={50} width={120} />
+                <ListViewContent title={t('Banana Bill')} value={bill.lpToken.symbol} height={50} width={120} />
                 <ListViewContent
-                  title="Claimable"
+                  title={t('Claimable')}
                   value={pendingRewards}
                   height={50}
                   width={60}
                   justifyContent="flex-end"
                 />
               </Flex>
-              <Claim billAddress={bill.contractAddress[chainId]} billIds={[ownedBill.id]} />
+              <Claim
+                billAddress={bill.contractAddress[chainId]}
+                billIds={[ownedBill.id]}
+                pendingRewards={ownedBill?.pendingRewards}
+              />
             </CardContainer>
           </SwiperSlide>
         )
@@ -78,7 +88,9 @@ const BillCard: React.FC<{ bills: Bills[]; ml?: string }> = ({ bills, ml }) => {
         {ownedBillsAmount < 4 && (
           <SwiperSlide style={{ maxWidth: '270px', height: '307px' }}>
             <CardContainer>
-              <BillsImage image="images/hidden-bill.png" />
+              <BillsImage>
+                <ReactPlayer playing muted loop url="videos/bills-video.mp4" height="100%" width="100%" playsInline />
+              </BillsImage>
               <Flex
                 padding="0px 15px"
                 alignItems="center"
@@ -86,14 +98,14 @@ const BillCard: React.FC<{ bills: Bills[]; ml?: string }> = ({ bills, ml }) => {
                 style={{ height: '75px', width: '100%' }}
               >
                 <ListViewContent
-                  title="Treasury Bill"
+                  title={t('Treasury Bill')}
                   value="Want more?"
                   height={50}
                   width={150}
                   justifyContent="flex-start"
                 />
               </Flex>
-              <StyledButton onClick={scrollDown}>BUY BELOW</StyledButton>
+              <StyledButton onClick={scrollDown}>{t('BUY BELOW')}</StyledButton>
             </CardContainer>
           </SwiperSlide>
         )}

@@ -7,10 +7,9 @@ import {
   updateNfaStakingUserBalance,
   updateUserNfaStakingStakedBalance,
 } from 'state/actions'
-import { stake, sousStake, nfaStake, stakeVault, miniChefStake } from 'utils/callHelpers'
+import { stake, sousStake, nfaStake, miniChefStake } from 'utils/callHelpers'
 import track from 'utils/track'
 import { CHAIN_ID } from 'config/constants'
-import { updateVaultUserBalance, updateVaultUserStakedBalance } from 'state/vaults'
 import {
   updateDualFarmUserEarnings,
   updateDualFarmUserStakedBalances,

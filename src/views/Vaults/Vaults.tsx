@@ -6,9 +6,10 @@ import styled from 'styled-components'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Heading, Text, Card, Checkbox, ArrowDropDownIcon, Flex } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
+import Banner from 'components/Banner'
+import ListViewLayout from 'components/layout/ListViewLayout'
 import partition from 'lodash/partition'
-import useI18n from 'hooks/useI18n'
-import { CHAIN_ID } from 'config/constants/chains'
+import { useTranslation } from 'contexts/Localization'
 import useWindowSize, { Size } from 'hooks/useDimensions'
 import { useVaults, usePollVaultsData } from 'state/vaults/hooks'
 import { Vault } from 'state/types'
@@ -33,7 +34,6 @@ const ControlContainer = styled(Card)`
   flex-direction: column;
   overflow: visible;
   padding-bottom: 10px;
-  transform: translateY(-85px);
 
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
@@ -41,7 +41,6 @@ const ControlContainer = styled(Card)`
     padding: 0px;
     justify-content: flex-start;
     padding-left: 50px;
-    transform: translateY(-60px);
   }
 `
 
@@ -125,43 +124,6 @@ const ViewControls = styled.div`
     }
   }
 `
-
-const HeadingContainer = styled.div`
-  max-width: 1024px;
-  margin-left: auto;
-  margin-right: auto;
-`
-
-const Header = styled.div`
-  position: relative;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  padding-top: 36px;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-image: url(/images/burning-vaults-bsc.svg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 250px;
-  background-position: center;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding-left: 24px;
-    padding-right: 24px;
-    height: 300px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-`
-
-const HeaderPolygon = styled(Header)`
-  background-image: ${({ theme }) =>
-    theme.isDark ? 'url(/images/burning-vaults-polygon-dark.svg)' : 'url(/images/burning-vaults-polygon-light.svg)'};
-`
-
 const StyledText = styled(Text)`
   font-weight: 600;
   font-size: 12px;
@@ -190,14 +152,9 @@ const ContainerLabels = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translateY(-85px);
 
   ${({ theme }) => theme.mediaQueries.xs} {
     margin-top: 34px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    transform: translateY(-60px);
   }
 `
 
@@ -297,11 +254,6 @@ const StyledLabelContainerTotalStaked = styled.div`
 
 const CardContainer = styled.div`
   margin-top: 17px;
-
-  transform: translateY(-85px);
-  ${({ theme }) => theme.mediaQueries.md} {
-    transform: translateY(-60px);
-  }
 `
 
 const ButtonCheckWrapper = styled.div`
@@ -315,27 +267,6 @@ const ButtonCheckWrapper = styled.div`
     width: fit-content;
   }
 `
-
-const StyledHeading = styled(Heading)`
-  font-size: 32px;
-  max-width: 176px !important;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    font-size: 36px;
-    max-width: 240px !important;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 44px;
-    max-width: 400px !important;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    font-size: 60px;
-    max-width: 600px !important;
-  }
-`
-
 const StyledPage = styled(Page)`
   padding-left: 5px;
   padding-right: 5px;
@@ -425,11 +356,6 @@ const Container = styled.div`
   border-radius: 16px;
   margin: 16px 0px;
   position: relative;
-
-  transform: translateY(-85px);
-  ${({ theme }) => theme.mediaQueries.md} {
-    transform: translateY(-60px);
-  }
 `
 
 const TableWrapper = styled.div`
@@ -460,7 +386,6 @@ const Vaults: React.FC = () => {
   const { vaults: initVaults } = useVaults()
   console.log(initVaults)
   const [allVaults, setAllVaults] = useState(initVaults)
-  const TranslateString = useI18n()
   const { chainId } = useActiveWeb3React()
   const isActive = !pathname.includes('history')
   const { onCompound } = useCompound()
@@ -570,43 +495,34 @@ const Vaults: React.FC = () => {
     return sortVaults(chosenVaults).slice(0, numberOfVaultsVisible)
   }
 
-  const renderHeader = () => {
-    const headerContents = (
-      <HeadingContainer>
-        <StyledHeading as="h1" color="white" style={{ marginBottom: '8px', color: 'white' }}>
-          {TranslateString(999, 'Vaults')}
-        </StyledHeading>
-        <Flex alignItems="center" justifyContent="center">
-          <Button size="lg" onClick={onCompound}>
-            COMPOUND ME
-          </Button>
-        </Flex>
-      </HeadingContainer>
-    )
-    if (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
-      return <HeaderPolygon>{headerContents}</HeaderPolygon>
-    }
-    return <Header>{headerContents}</Header>
-  }
-
   return (
     <>
-      {renderHeader()}
-      <StyledPage width="1130px">
-        <VaultMenu
-          onHandleQueryChange={handleChangeQuery}
-          onSetSortOption={setSortOption}
-          onSetStake={setStakedOnly}
-          onSetVaultType={setVaultType}
-          vaults={[]}
-          activeOption={sortOption}
-          activeVaultType={vaultType}
-          stakedOnly={stakedOnly}
-          query={searchQuery}
-        />
-        <DisplayVaults vaults={renderVaults()} />
+      <Flex
+        flexDirection="column"
+        justifyContent="center"
+        mb="100px"
+        style={{ position: 'relative', top: '30px', width: '100%' }}
+      >
+        <ListViewLayout>
+          <Banner title="Vaults" banner="banana-maximizers" link="" maxWidth={1130} />
+          <VaultMenu
+            onHandleQueryChange={handleChangeQuery}
+            onSetSortOption={setSortOption}
+            onSetStake={setStakedOnly}
+            onSetVaultType={setVaultType}
+            vaults={[]}
+            activeOption={sortOption}
+            activeVaultType={vaultType}
+            stakedOnly={stakedOnly}
+            query={searchQuery}
+          />
+          <DisplayVaults vaults={renderVaults()} />
+        </ListViewLayout>
+        <Button size="lg" sx={{ width: '300px', alignSelf: 'center', marginTop: '20px' }} onClick={onCompound}>
+          COMPOUND ME
+        </Button>
         <div ref={loadMoreRef} />
-      </StyledPage>
+      </Flex>
     </>
   )
 }

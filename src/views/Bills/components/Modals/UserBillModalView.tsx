@@ -4,8 +4,9 @@ import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { Bills } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import BillsSpinner from 'components/BillsSpinner'
+import ReactPlayer from 'react-player'
 import BigNumber from 'bignumber.js'
+import { useTranslation } from 'contexts/Localization'
 import {
   BillDescriptionContainer,
   BillFooterContentContainer,
@@ -35,6 +36,7 @@ const BILL_ATTRIBUTES = ['The Legend', 'The Location', 'The Moment', 'The Trend'
 
 const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId }) => {
   const { chainId } = useActiveWeb3React()
+  const { t } = useTranslation()
   const { token, quoteToken, earnToken, billType, lpToken, index, userOwnedBillsData, userOwnedBillsNftData } = bill
   const userOwnedBill = userOwnedBillsData?.find((b) => parseInt(b.id) === parseInt(billId))
   const userOwnedBillNftData = userOwnedBillsNftData?.find((b) => parseInt(b.tokenId) === parseInt(billId))
@@ -60,10 +62,9 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
             <BillsImage image={userOwnedBillNftData?.image} />
           ) : (
             <Flex alignItems="center" justifyContent="center">
-              <BillsImage image="images/hidden-bill.png" />
-              <div style={{ position: 'absolute' }}>
-                <BillsSpinner />
-              </div>
+              <BillsImage>
+                <ReactPlayer playing muted loop url="videos/bills-video.mp4" height="100%" width="100%" playsInline />
+              </BillsImage>
             </Flex>
           )}
           <BillDescriptionContainer minHeight={360}>
@@ -100,16 +101,21 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
                 : BILL_ATTRIBUTES.map((attrib) => {
                     return (
                       <GridTextValContainer>
-                        <Text fontSize="12px">{attrib}</Text>
+                        <Text fontSize="12px">{t(attrib)}</Text>
                         <Skeleton width="150px" />
                       </GridTextValContainer>
                     )
                   })}
             </Flex>
             <UserActionButtonsContainer>
-              <Claim billAddress={bill.contractAddress[chainId]} billIds={[billId]} buttonSize={218} />
+              <Claim
+                billAddress={bill.contractAddress[chainId]}
+                billIds={[billId]}
+                buttonSize={218}
+                pendingRewards={userOwnedBill?.payout}
+              />
               <StyledButton onClick={onPresentTransferBillModal} style={{ width: '218px' }}>
-                Transfer
+                {t('Transfer')}
               </StyledButton>
             </UserActionButtonsContainer>
           </BillDescriptionContainer>
@@ -122,7 +128,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
               justifyContent="center"
               style={{ width: '100%', height: '100%' }}
             >
-              <TopDescriptionText width="auto">Fully Vested</TopDescriptionText>
+              <TopDescriptionText width="auto">{t('Fully Vested')}</TopDescriptionText>
               <StyledHeadingText ml="10px" bold>
                 <VestedTimer
                   lastBlockTimestamp={userOwnedBill?.lastBlockTimestamp}
@@ -139,7 +145,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
               justifyContent="center"
               style={{ width: '100%', height: '100%' }}
             >
-              <TopDescriptionText width="auto">Claimable</TopDescriptionText>
+              <TopDescriptionText width="auto">{t('Claimable')}</TopDescriptionText>
               <Flex>
                 <ServiceTokenDisplay token1={earnToken.symbol} size={25} />
                 <StyledHeadingText ml="10px" bold>
@@ -159,7 +165,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
               justifyContent="center"
               style={{ width: '100%', height: '100%' }}
             >
-              <TopDescriptionText width="auto">Pending</TopDescriptionText>
+              <TopDescriptionText width="auto">{t('Pending')}</TopDescriptionText>
               <Flex>
                 <ServiceTokenDisplay token1={earnToken.symbol} size={25} />
                 <StyledHeadingText ml="10px" bold>

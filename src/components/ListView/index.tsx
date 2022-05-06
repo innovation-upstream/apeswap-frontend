@@ -20,8 +20,9 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
                 token3={view.tokens?.token3}
                 token4={view.tokens?.token4}
                 billArrow={view?.billArrow}
-                stakeLp={view?.stakeLp === false ? view.stakeLp : true}
                 earnLp={view?.earnLp}
+                stakeLp={view?.stakeLp}
+                dualEarn={view.tokens?.token4 != null}
               />
             }
             tag={view?.tag}
@@ -44,8 +45,9 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
                 token3={view.tokens?.token3}
                 token4={view.tokens?.token4}
                 billArrow={view?.billArrow}
-                stakeLp={view?.stakeLp === false ? view.stakeLp : true}
                 earnLp={view?.earnLp}
+                stakeLp={view?.stakeLp}
+                dualEarn={view.tokens?.token4 != null}
               />
             }
             tag={view?.tag}

@@ -152,7 +152,13 @@ export const nfaUnstake = async (nfaStakingChefContract: NfaStaking, ids) => {
   })
 }
 
-export const stakeVault = async (vaultApeContract: VaultApeV1 | VaultApeV2, pid, amount) => {
+export const harvestMaximizer = async (vaultApeContract: VaultApeV2, pid) => {
+  return vaultApeContract.harvestAll(pid).then((trx) => {
+    return trx.wait()
+  })
+}
+
+export const stakeVaultV1 = async (vaultApeContract: VaultApeV1, pid, amount) => {
   return vaultApeContract['deposit(uint256,uint256)'](
     pid,
     new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -161,19 +167,29 @@ export const stakeVault = async (vaultApeContract: VaultApeV1 | VaultApeV2, pid,
   })
 }
 
-export const harvestMaximizer = async (vaultApeContract: VaultApeV2, pid) => {
-  return vaultApeContract.harvestAll(pid).then((trx) => {
-    return trx.wait()
-  })
-}
-
-export const vaultUnstake = async (vaultApeContract: VaultApeV1 | VaultApeV2, pid, amount) => {
+export const vaultUnstakeV1 = async (vaultApeContract: VaultApeV1, pid, amount) => {
   return vaultApeContract['withdraw(uint256,uint256)'](
     pid,
     new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
   ).then((trx) => {
     return trx.wait()
   })
+}
+
+export const stakeVaultV2 = async (vaultApeContract: VaultApeV2, pid, amount) => {
+  return vaultApeContract
+    .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+    .then((trx) => {
+      return trx.wait()
+    })
+}
+
+export const vaultUnstakeV2 = async (vaultApeContract: VaultApeV2, pid, amount) => {
+  return vaultApeContract
+    .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+    .then((trx) => {
+      return trx.wait()
+    })
 }
 
 export const vaultUnstakeAll = async (vaultApeContract: VaultApeV1 | VaultApeV2, pid) => {

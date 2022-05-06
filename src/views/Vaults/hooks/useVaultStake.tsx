@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useVaultApeV1, useVaultApeV2 } from 'hooks/useContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAppDispatch } from 'state'
-import { stakeVault } from 'utils/callHelpers'
+import { stakeVaultV1, stakeVaultV2 } from 'utils/callHelpers'
 import track from 'utils/track'
 
 // dispatch(updateVaultUserBalance(account, chainId, pid))
@@ -16,7 +16,10 @@ export const useVaultStake = (pid: number, version: 'V1' | 'V2') => {
   const handleStake = useCallback(
     async (amount: string) => {
       try {
-        const txHash = await stakeVault(version === 'V1' ? vaultApeContractV1 : vaultApeContractV2, pid, amount)
+        const trxHash =
+          version === 'V1'
+            ? await stakeVaultV1(vaultApeContractV1, pid, amount)
+            : await stakeVaultV2(vaultApeContractV2, pid, amount)
         track({
           event: 'vault',
           chain: chainId,
@@ -26,8 +29,8 @@ export const useVaultStake = (pid: number, version: 'V1' | 'V2') => {
             pid,
           },
         })
-        console.info(txHash)
-        return txHash
+        console.info(trxHash)
+        return trxHash
       } catch (e) {
         console.error(e)
       }
