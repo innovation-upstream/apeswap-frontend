@@ -69,8 +69,8 @@ export const useSousStake = (sousId) => {
         },
       })
 
-      dispatch(updateUserStakedBalance(chainId, sousId, account))
-      dispatch(updateUserBalance(chainId, sousId, account))
+      dispatch(updateUserStakedBalance(chainId as number, sousId, account as string))
+      dispatch(updateUserBalance(chainId as number, sousId, account as string))
       return trxHash
     },
     [account, dispatch, masterChefContract, sousChefContract, sousId, chainId],
@@ -88,8 +88,8 @@ export const useNfaStake = (sousId) => {
   const handleStake = useCallback(
     async (ids: number[]) => {
       await nfaStake(nfaStakeChefContract, ids)
-      dispatch(updateUserNfaStakingStakedBalance(chainId, sousId, account))
-      dispatch(updateNfaStakingUserBalance(chainId, sousId, account))
+      dispatch(updateUserNfaStakingStakedBalance(chainId, sousId, account as string))
+      dispatch(updateNfaStakingUserBalance(chainId, sousId, account as string))
       track({
         event: 'nfa',
         chain: chainId,
@@ -125,8 +125,8 @@ export const useVaultStake = (pid: number) => {
             pid,
           },
         })
-        dispatch(updateVaultUserBalance(account, chainId, pid))
-        dispatch(updateVaultUserStakedBalance(account, chainId, pid))
+        dispatch(updateVaultUserBalance(account as string, chainId, pid))
+        dispatch(updateVaultUserStakedBalance(account as string, chainId, pid))
         console.info(txHash)
         return txHash
       } catch (e) {
@@ -147,9 +147,9 @@ export const useDualFarmStake = (pid: number) => {
   const handleStake = useCallback(
     async (amount: string) => {
       const txHash = await miniChefStake(miniChefContract, pid, amount, account)
-      dispatch(updateDualFarmUserStakedBalances(chainId, pid, account))
-      dispatch(updateDualFarmUserEarnings(chainId, pid, account))
-      dispatch(updateDualFarmUserTokenBalances(chainId, pid, account))
+      dispatch(updateDualFarmUserStakedBalances(chainId as number, pid, account as string))
+      dispatch(updateDualFarmUserEarnings(chainId as number, pid, account as string))
+      dispatch(updateDualFarmUserTokenBalances(chainId as number, pid, account as string))
       track({
         event: 'dualFarm',
         chain: chainId,

@@ -15,8 +15,8 @@ const useTokenBalance = (tokenAddress: string) => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const tokenContract = getContract(erc20ABI, tokenAddress, chainId, library)
-      const res = await getTokenBalance(library, tokenAddress, account, tokenContract)
+      const tokenContract = getContract(erc20ABI, tokenAddress, chainId as number, library)
+      const res = await getTokenBalance(library as any, tokenAddress, account as string, tokenContract)
       setBalance(new BigNumber(res))
     }
 
@@ -36,7 +36,7 @@ export const useAccountTokenBalance = (account: string, tokenAddress: string) =>
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getTokenBalance(library, tokenAddress, account, tokenContract)
+      const res = await getTokenBalance(library as any, tokenAddress, account, tokenContract)
       setBalance(new BigNumber(res))
     }
 
@@ -75,7 +75,7 @@ export const useBurnedBalance = (tokenAddress: string) => {
   useEffect(() => {
     async function fetchTotalSupply() {
       const res = await getTokenBalance(
-        library,
+        library as any,
         tokenAddress,
         '0x000000000000000000000000000000000000dEaD',
         tokenContract,
