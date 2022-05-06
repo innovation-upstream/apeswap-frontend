@@ -23,8 +23,8 @@ const Data = () => {
             paddingBottom: '5px',
           }}
         >
-          <Text variant={isMobile ? 'sm' : 'md'}>APR (incl. LP rewards):</Text>
-          <Text variant={isMobile ? 'sm' : 'md'}>{farmsLP[1]?.apr}%</Text>
+          <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>APR (incl. LP rewards):</Text>
+          <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{farmsLP[1]?.apr}%</Text>
         </Flex>
         <Flex
           sx={{
@@ -35,8 +35,8 @@ const Data = () => {
             paddingBottom: '5px',
           }}
         >
-          <Text variant={isMobile ? 'sm' : 'md'}>Base APR (BANANA yield only): </Text>{' '}
-          <Text variant={isMobile ? 'sm' : 'md'}>{}</Text>
+          <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>Base APR (BANANA yield only): </Text>{' '}
+          <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{}</Text>
         </Flex>
         <Flex
           sx={{
@@ -47,8 +47,8 @@ const Data = () => {
             paddingBottom: '5px',
           }}
         >
-          <Text variant={isMobile ? 'sm' : 'md'}>APY (1x daily compound):</Text>{' '}
-          <Text variant={isMobile ? 'sm' : 'md'}>{farmsLP[1]?.apy}%</Text>
+          <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>APY (1x daily compound):</Text>{' '}
+          <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{farmsLP[1]?.apy}%</Text>
         </Flex>
         <Flex
           sx={{
@@ -59,8 +59,8 @@ const Data = () => {
             paddingBottom: '5px',
           }}
         >
-          <Text variant={isMobile ? 'sm' : 'md'}> Farm Multiplier:</Text>{' '}
-          <Text variant={isMobile ? 'sm' : 'md'}>{farmsLP[1]?.multiplier}</Text>
+          <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}> Farm Multiplier:</Text>{' '}
+          <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{farmsLP[1]?.multiplier}</Text>
         </Flex>
         <Box as="ul" sx={{ paddingBottom: '25px' }}>
           <Flex as="li">
