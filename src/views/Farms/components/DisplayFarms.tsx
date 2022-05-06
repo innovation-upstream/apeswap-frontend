@@ -105,6 +105,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
           </Flex>
         </>
       ),
+
       cardContent: (
         <>
           <ListViewContent

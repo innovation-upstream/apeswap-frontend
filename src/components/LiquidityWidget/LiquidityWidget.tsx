@@ -112,6 +112,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
   const handleCurrencyBSelect = (currencyB_: Currency) => {
     setcurrencyB1(currencyId(currencyB_))
   }
+  console.log('Field.CURRENCY_A', Field.CURRENCY_A, currencies, currencyA)
   const balanceA = useCurrencyBalance(account ?? undefined, currencies[Field.CURRENCY_A])
   const balanceB = useCurrencyBalance(account ?? undefined, currencies[Field.CURRENCY_B])
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, useEffect, useState } from 'react'
 import { Currency, Pair, Token } from '@apeswapfinance/sdk'
 import { Button, Text, useModal, Flex, ArrowDropDownIcon, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
@@ -10,16 +10,6 @@ import { CurrencyLogo, DoubleCurrencyLogo } from '../../Logo'
 import { RowBetween } from '../../layout/Row'
 import NumericalInput from './NumericalInput'
 
-const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })<{ removeLiquidity: boolean }>`
-  display: flex;
-  justify-content: flex-start;
-  background-color: ${({ theme }) => theme.colors.white4};
-  padding: 0;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.white4} !important;
-  }
-`
 const InputPanel = styled.div`
   display: flex;
   justify-content: space-between;
@@ -61,6 +51,7 @@ interface CurrencyInputPanelProps {
   showCommonBases?: boolean
   removeLiquidity?: boolean
   addLiquidity?: boolean
+  setDollarbuttons: Dispatch<any>
 }
 export default function CurrencyInputPanelRoi({
   value,
@@ -79,9 +70,11 @@ export default function CurrencyInputPanelRoi({
   showCommonBases,
   removeLiquidity,
   addLiquidity,
+  setDollarbuttons,
 }: CurrencyInputPanelProps) {
   const { account, chainId } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+
   const [tokenPrice, setTokenPrice] = useState<number>(null)
   const isNative = currency?.symbol === 'ETH'
   const { isMd, isSm, isXs } = useMatchBreakpoints()
@@ -100,7 +93,6 @@ export default function CurrencyInputPanelRoi({
     }
     fetchTokenPrice()
   }, [currency, chainId, isLp, isNative])
-
   return (
     <CurrencyInputContainer removeLiquidity={removeLiquidity}>
       <Flex style={{ position: 'relative' }}>
@@ -129,10 +121,29 @@ export default function CurrencyInputPanelRoi({
               removeLiquidity={removeLiquidity}
               value={value}
               onUserInput={(val) => {
+                setDollarbuttons(null)
                 onUserInput(val)
               }}
             />
           </RowBetween>
+          <Text
+            fontSize="14px"
+            style={{
+              display: 'inline',
+              position: 'absolute',
+              bottom: '-20px',
+              right: '10px',
+            }}
+          >
+            {!hideBalance && !!currency && value
+              ? isLp
+                ? `~ $${(
+                    tokenPrice *
+                    (parseFloat(selectedCurrencyBalance?.toSignificant(6)) * (parseInt(value) / 100))
+                  )?.toFixed(2)}`
+                : `~ $${(tokenPrice * parseFloat(value))?.toFixed(2)}`
+              : ' -'}
+          </Text>
         </Container>
       </InputPanel>
     </CurrencyInputContainer>

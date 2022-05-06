@@ -10,7 +10,6 @@ const WelcomeContent: React.FC = () => {
   return (
     <Flex justifyContent="center" alignItems="center" style={{ width: '100%' }}>
       <ContentContainer>
-        <Roicalculator />
         <Flex flexDirection="column" style={{ maxWidth: '650px' }}>
           <HeadingText>Welcome to the Most Connected DeFi Hub</HeadingText>
           {!isMobile && (

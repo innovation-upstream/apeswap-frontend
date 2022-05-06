@@ -51,12 +51,13 @@ const Container = styled.div<{ removeLiquidity: boolean }>`
 
 const CurrencyInputContainer = styled.div<{ removeLiquidity: boolean; orders: boolean }>`
   background-color: ${({ theme }) => theme.colors.white3};
-  border-radius: ${({ orders }) => (orders ? '0px' : '20px')}};
+  border-radius: ${({ orders }) => (orders ? '0px' : '20px')};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center; ${({ orders }) => (orders ? 'flex-end' : 'center')};
-  padding:  ${({ removeLiquidity }) => (removeLiquidity ? '25px 0px 40px 0px' : '45px 0px 25px 0px')}};
+  align-items: center;
+  ${({ orders }) => (orders ? 'flex-end' : 'center')};
+  padding: ${({ removeLiquidity }) => (removeLiquidity ? '25px 0px 40px 0px' : '45px 0px 25px 0px')};
   height: 263px;
   width: 330px;
   ${({ theme }) => theme.mediaQueries.md} {
