@@ -14,7 +14,7 @@ import { NetworkContextName } from 'config/constants'
 
 const Web3ProviderNetwork = typeof window === 'object' ? createWeb3ReactRoot(NetworkContextName) : React.Fragment
 
-const Providers: React.FC<any> = ({ colorMode, children }) => {
+const Providers: React.FC<{ colorMode: string }> = ({ colorMode, children }) => {
   const { pathname } = useRouter()
 
   return (
