@@ -18,7 +18,7 @@ const provider = getProvider(56)
 
 export const fetchPoolsAllowance = async (chainId: number, account) => {
   const calls = nonBnbPools.map((p) => ({
-    address: p.stakingToken.address[chainId],
+    address: p.stakingToken.address?.[chainId],
     name: 'allowance',
     params: [account, p.contractAddress[chainId]],
   }))
@@ -33,7 +33,7 @@ export const fetchPoolsAllowance = async (chainId: number, account) => {
 export const fetchUserBalances = async (chainId: number, account) => {
   // Non BNB pools
   const calls = nonBnbPools.map((p) => ({
-    address: p.stakingToken.address[chainId],
+    address: p.stakingToken.address?.[chainId],
     name: 'balanceOf',
     params: [account],
   }))

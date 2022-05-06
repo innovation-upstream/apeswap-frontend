@@ -16,28 +16,28 @@ const fetchDualFarms = async (tokenPrices: TokenPrices[], chainId: number) => {
     filteredDualFarms.map(async (dualFarmConfig) => {
       const lpAdress = dualFarmConfig.stakeTokenAddress
       const quoteToken = tokenPrices?.find(
-        (token) => token.address[chainId] === dualFarmConfig.stakeTokens.token0.address[chainId],
+        (token) => token.address[chainId] === dualFarmConfig.stakeTokens.token0.address?.[chainId],
       )
       const token1 = tokenPrices?.find(
-        (token) => token.address[chainId] === dualFarmConfig.stakeTokens.token1.address[chainId],
+        (token) => token.address[chainId] === dualFarmConfig.stakeTokens.token1.address?.[chainId],
       )
       const miniChefRewarderToken = tokenPrices?.find(
-        (token) => token.address[chainId] === dualFarmConfig.rewardTokens.token0.address[chainId],
+        (token) => token.address[chainId] === dualFarmConfig.rewardTokens.token0.address?.[chainId],
       )
       const rewarderToken = tokenPrices?.find(
-        (token) => token.address[chainId] === dualFarmConfig.rewardTokens.token1.address[chainId],
+        (token) => token.address[chainId] === dualFarmConfig.rewardTokens.token1?.address?.[chainId],
       )
 
       const calls = [
         // Balance of token in the LP contract
         {
-          address: dualFarmConfig.stakeTokens.token0.address[chainId],
+          address: dualFarmConfig.stakeTokens.token0.address?.[chainId],
           name: 'balanceOf',
           params: [lpAdress],
         },
         // Balance of quote token on LP contract
         {
-          address: dualFarmConfig.stakeTokens.token1.address[chainId],
+          address: dualFarmConfig.stakeTokens.token1.address?.[chainId],
           name: 'balanceOf',
           params: [lpAdress],
         },
@@ -65,24 +65,26 @@ const fetchDualFarms = async (tokenPrices: TokenPrices[], chainId: number) => {
 
       // Total value in staking in quote token value
       const lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
-        .div(new BigNumber(10).pow(quoteToken?.decimals))
+        .div(new BigNumber(10).pow(quoteToken?.decimals as number))
         .times(new BigNumber(2))
         .times(lpTokenRatio)
 
       // Total value in pool in quote token value
       const totalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
-        .div(new BigNumber(10).pow(quoteToken?.decimals))
+        .div(new BigNumber(10).pow(quoteToken?.decimals as number))
         .times(new BigNumber(2))
 
       // Amount of token in the LP that are considered staking (i.e amount of token * lp ratio)
-      const tokenAmount = new BigNumber(tokenBalanceLP).div(new BigNumber(10).pow(token1?.decimals)).times(lpTokenRatio)
+      const tokenAmount = new BigNumber(tokenBalanceLP)
+        .div(new BigNumber(10).pow(token1?.decimals as number))
+        .times(lpTokenRatio)
       const quoteTokenAmount = new BigNumber(quoteTokenBlanceLP)
-        .div(new BigNumber(10).pow(quoteToken?.decimals))
+        .div(new BigNumber(10).pow(quoteToken?.decimals as number))
         .times(lpTokenRatio)
 
-      let alloc = null
+      let alloc
       let multiplier = 'unset'
-      let miniChefPoolRewardPerSecond = null
+      let miniChefPoolRewardPerSecond
       try {
         const [info, totalAllocPoint, miniChefRewardsPerSecond] = await multicall(chainId, miniChefABI, [
           {
@@ -112,9 +114,9 @@ const fetchDualFarms = async (tokenPrices: TokenPrices[], chainId: number) => {
         console.warn('Error fetching farm', error, dualFarmConfig)
       }
 
-      let rewarderTotalAlloc = null
-      let rewarderInfo = null
-      let rewardsPerSecond = null
+      let rewarderTotalAlloc = null as any
+      let rewarderInfo = null as any
+      let rewardsPerSecond = null as any
 
       if (dualFarmConfig.rewarderAddress === '0x1F234B1b83e21Cb5e2b99b4E498fe70Ef2d6e3bf') {
         // Temporary until we integrate the subgraph to the frontend
@@ -153,11 +155,11 @@ const fetchDualFarms = async (tokenPrices: TokenPrices[], chainId: number) => {
         rewarderTotalAlloc = multiReturn[2]
       }
 
-      const totalStaked = quoteTokenAmount.times(new BigNumber(2)).times(quoteToken?.price)
+      const totalStaked = quoteTokenAmount.times(new BigNumber(2)).times(quoteToken?.price as number)
       const totalValueInLp = new BigNumber(quoteTokenBlanceLP)
-        .div(new BigNumber(10).pow(quoteToken?.decimals))
+        .div(new BigNumber(10).pow(quoteToken?.decimals as number))
         .times(new BigNumber(2))
-        .times(quoteToken?.price)
+        .times(quoteToken?.price as number)
       const stakeTokenPrice = totalValueInLp.div(new BigNumber(getBalanceNumber(lpTotalSupply))).toNumber()
 
       const rewarderAllocPoint = new BigNumber(rewarderInfo?.allocPoint?._hex)
@@ -168,9 +170,9 @@ const fetchDualFarms = async (tokenPrices: TokenPrices[], chainId: number) => {
       )
       const apr = getDualFarmApr(
         totalStaked?.toNumber(),
-        miniChefRewarderToken?.price,
+        miniChefRewarderToken?.price as number,
         miniChefPoolRewardPerSecond?.toString(),
-        rewarderToken?.price,
+        rewarderToken?.price as number,
         rewarderPoolRewardPerSecond?.toString(),
       )
 

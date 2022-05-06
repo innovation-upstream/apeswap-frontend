@@ -11,8 +11,8 @@ import fetchIazoDefaultSettings, {
 const initialState: IazosState = {
   isInitialized: false,
   isLoading: true,
-  iazoData: null,
-  iazoDefaultSettings: null,
+  iazoData: [],
+  iazoDefaultSettings: null as any,
 }
 
 export const iazosSlice = createSlice({

@@ -14,7 +14,7 @@ const fetchPoolCalls = (pool: PoolConfig, chainId: number): Call[] => {
     },
   ]
   const bananaCall = {
-    address: pool.stakingToken.address[chainId],
+    address: pool.stakingToken.address?.[chainId],
     name: 'balanceOf',
     params: [pool.contractAddress[chainId]],
   }

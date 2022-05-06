@@ -7,26 +7,27 @@ const getStats = async (address: string): Promise<Stats> => {
     const response = await fetch(`${apiBaseUrl}/stats/${address}`)
     const statRes = await response.json()
     if (statRes.statusCode === 500) {
-      return null
+      return null as any
     }
     return statRes
   } catch (error) {
-    return null
+    return null as any
   }
 }
 
 export const fetchPoolStats = (pools: Pool[], curBlock): any[] => {
-  const stakedPools = pools.filter((pool) => parseInt(pool?.userData?.stakedBalance?.toString()) > 0)
+  const stakedPools = pools.filter((pool) => parseInt(pool?.userData?.stakedBalance?.toString() as string) > 0)
   const mappedPoolStats = stakedPools.map((pool) => {
     const stakedTvl =
-      getBalanceNumber(pool.userData?.stakedBalance, pool.stakingToken.decimals) * pool.stakingToken?.price
+      getBalanceNumber(pool.userData?.stakedBalance as any, pool.stakingToken.decimals) *
+      Number(pool.stakingToken?.price)
     const pendingReward = pool.rewardToken
-      ? getBalanceNumber(pool.userData?.pendingReward, pool?.rewardToken.decimals)
-      : getBalanceNumber(pool.userData?.pendingReward, pool.tokenDecimals)
-    const pendingRewardUsd = pool.rewardToken ? pendingReward * pool?.rewardToken?.price : 0
-    const dollarsEarnedPerDay = (stakedTvl * (pool?.apr / 100)) / 365
-    const tokensEarnedPerDay = pool.rewardToken ? dollarsEarnedPerDay / pool?.rewardToken?.price : 0
-    const finished = curBlock > pool?.endBlock
+      ? getBalanceNumber(pool.userData?.pendingReward as any, pool?.rewardToken.decimals)
+      : getBalanceNumber(pool.userData?.pendingReward as any, pool.tokenDecimals)
+    const pendingRewardUsd = pool.rewardToken ? pendingReward * Number(pool?.rewardToken?.price) : 0
+    const dollarsEarnedPerDay = (stakedTvl * ((pool?.apr as number) / 100)) / 365
+    const tokensEarnedPerDay = pool.rewardToken ? dollarsEarnedPerDay / Number(pool?.rewardToken?.price) : 0
+    const finished = curBlock > Number(pool?.endBlock)
     return {
       id: pool.sousId,
       address: pool.contractAddress[56],
@@ -35,7 +36,7 @@ export const fetchPoolStats = (pools: Pool[], curBlock): any[] => {
       stakedTvl,
       pendingReward,
       pendingRewardUsd,
-      apr: finished ? 0 : pool?.apr / 100,
+      apr: finished ? 0 : Number(pool?.apr) / 100,
       dollarsEarnedPerDay,
       dollarsEarnedPerWeek: dollarsEarnedPerDay * 7,
       dollarsEarnedPerMonth: dollarsEarnedPerDay * 30,
@@ -86,7 +87,7 @@ export function computeStats(pools, farms, statsOverall, bananasInWallet, curBlo
     totalApr += pool.stakedTvl * pool.apr
   })
 
-  stats.farms.forEach((farm) => {
+  stats.farms.forEach((farm: any) => {
     stats.pendingRewardUsd += farm.pendingRewardUsd
     stats.pendingRewardBanana += farm.pendingReward
     stats.dollarsEarnedPerDay += farm.dollarsEarnedPerDay
@@ -119,7 +120,7 @@ export function computeStats(pools, farms, statsOverall, bananasInWallet, curBlo
 
 // Get TVL info for Farms only given a wallet
 export function getStatsForFarms(farms, farmsInfo) {
-  const allFarms = []
+  const allFarms: any[] = []
   farms.map(async (farm) => {
     if (!farm.userData) return
     const userInfo = { ...farm.userData, amount: parseInt(farm.userData.stakedBalance, 10) }

@@ -15,12 +15,12 @@ const getProfile = async (nfas: Nfa[], chainId: number, address: string): Promis
     const nfasOwned = address ? await nfaContract.balanceOf(address) : '0'
     const nfbsOwned = address ? await nfbContract.balanceOf(address) : '0'
     if (nfasOwned === '0' && nfbsOwned === '0') {
-      return null
+      return null as any
     }
-    let ownedNfts = null
-    let rarestNft = null
+    let ownedNfts = null as any
+    let rarestNft = null as any
     if (nfasOwned !== '0' && !nfasOwned.eq(0)) {
-      const promises = []
+      const promises: any[] = []
       for (let i = 0; i < nfasOwned; i++) {
         promises.push(nfaContract.tokenOfOwnerByIndex(address, i))
       }
@@ -31,11 +31,11 @@ const getProfile = async (nfas: Nfa[], chainId: number, address: string): Promis
       localStorage.setItem(
         `profile_${address}`,
         JSON.stringify({
-          avatar: rarestNft.image,
+          avatar: rarestNft?.image,
         }),
       )
     } else if (nfbsOwned !== '0' && !nfbsOwned.eq(0)) {
-      const promises = []
+      let promises
       for (let i = 0; i < nfbsOwned; i++) {
         promises.push(nfbContract.tokenOfOwnerByIndex(address, i))
       }
@@ -58,9 +58,9 @@ const getProfile = async (nfas: Nfa[], chainId: number, address: string): Promis
           ownedNfts,
           rarestNft,
         } as Profile)
-      : null
+      : (null as any)
   } catch (error) {
-    return null
+    return null as any
   }
 }
 

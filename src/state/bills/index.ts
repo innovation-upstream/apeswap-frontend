@@ -48,7 +48,7 @@ export const billsSlice = createSlice({
     updateBillsUserData: (state, action) => {
       const { field, value, index } = action.payload
       const i = state.data.findIndex((bill) => bill.index === index)
-      state.data[i] = { ...state.data[i], userData: { ...state.data[i].userData, [field]: value } }
+      state.data[i] = { ...state.data[i], userData: { ...state.data[i].userData, [field]: value } as any }
     },
     updateBillsUserNftData: (state, action) => {
       const { value, index } = action.payload

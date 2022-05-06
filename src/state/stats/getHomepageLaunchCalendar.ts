@@ -6,11 +6,11 @@ const getHomepageLaunchCalendar = async (): Promise<LaunchCalendarCard[]> => {
     const response = await fetch(`${baseUrlStrapi}/home-v-2-launch-calendars?_sort=launchTime:asc`)
     const launchRes = await response.json()
     if (launchRes.statusCode === 500) {
-      return null
+      return null as any
     }
     return launchRes
   } catch (error) {
-    return null
+    return null as any
   }
 }
 

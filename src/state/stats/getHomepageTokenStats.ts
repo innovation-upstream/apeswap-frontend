@@ -6,11 +6,11 @@ const getHomepageTokenStats = async (category: string): Promise<HomepageTokenSta
     const response = await fetch(`${apiBaseUrl}/tokens/${category}`)
     const tokenRes = await response.json()
     if (tokenRes.statusCode === 500) {
-      return null
+      return null as any
     }
     return tokenRes
   } catch (error) {
-    return null
+    return null as any
   }
 }
 

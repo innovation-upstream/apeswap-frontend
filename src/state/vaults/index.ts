@@ -28,7 +28,7 @@ export const vaultSlice = createSlice({
     updateVaultsUserData: (state, action) => {
       const { field, value, pid } = action.payload
       const index = state.data.findIndex((v) => v.pid === pid)
-      state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+      state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } as any }
     },
     setVaults: (state, action) => {
       if (!state.loadVaultData) {

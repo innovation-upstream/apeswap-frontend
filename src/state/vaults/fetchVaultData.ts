@@ -54,13 +54,13 @@ const fetchVaultData = async (chainId: number, tokenPrices: TokenPrices[]) => {
         (token) => token.address[chainId]?.toLowerCase() === masterchef.rewardToken?.toLowerCase(),
       )?.price
       const quoteTokenPriceUsd = tokenPrices?.find(
-        (token) => token.address[chainId]?.toLowerCase() === token0.address[chainId]?.toLowerCase(),
+        (token) => token.address[chainId]?.toLowerCase() === token0.address?.[chainId]?.toLowerCase(),
       )?.price
 
       const erc20Calls = [
         // Quote token balance of
         {
-          address: token0.address[chainId],
+          address: token0.address?.[chainId],
           name: 'balanceOf',
           params: [stakeTokenAddress],
         },
@@ -82,7 +82,7 @@ const fetchVaultData = async (chainId: number, tokenPrices: TokenPrices[]) => {
         },
         // quote token decimals
         {
-          address: token0.address[chainId],
+          address: token0.address?.[chainId],
           name: 'decimals',
         },
       ]
@@ -100,8 +100,11 @@ const fetchVaultData = async (chainId: number, tokenPrices: TokenPrices[]) => {
         ? quoteTokenAmountMc.times(new BigNumber(2))
         : new BigNumber(getBalanceNumber(pairBalanceMc, quoteTokenDecimals))
       const totalStaked = isPair
-        ? totalInQuoteToken.times(quoteTokenPriceUsd).times(pairTokenRatio).toString()
-        : quoteTokenAmountTotal.times(quoteTokenPriceUsd).toString()
+        ? totalInQuoteToken
+            .times(quoteTokenPriceUsd as number)
+            .times(pairTokenRatio)
+            .toString()
+        : quoteTokenAmountTotal.times(quoteTokenPriceUsd as number).toString()
 
       // Calculate APR
       const blockPerYear = () => {
@@ -114,20 +117,20 @@ const fetchVaultData = async (chainId: number, tokenPrices: TokenPrices[]) => {
       const rewardTokensPerBlock = rewardsPerBlock ? getBalanceNumber(new BigNumber(rewardsPerBlock)) : new BigNumber(0)
       const totalValueInLp =
         isPair &&
-        new BigNumber(quoteTokenPairBalance)
+        (new BigNumber(quoteTokenPairBalance)
           .div(new BigNumber(10).pow(18))
           .times(new BigNumber(2))
-          .times(quoteTokenPriceUsd)
+          .times(quoteTokenPriceUsd as number) as any)
       const stakeTokenPrice = isPair
         ? totalValueInLp.div(new BigNumber(getBalanceNumber(pairTotalSupply))).toNumber()
         : quoteTokenPriceUsd
       const yearlyRewardTokens = rewardsInSeconds
         ? SECONDS_PER_YEAR.times(rewardTokensPerBlock).times(poolWeight)
         : blockPerYear().times(rewardTokensPerBlock).times(poolWeight)
-      const oneThousandDollarsWorthOfToken = 1000 / earnTokenPriceUsd
+      const oneThousandDollarsWorthOfToken = 1000 / Number(earnTokenPriceUsd)
       const apr = yearlyRewardTokens
-        .times(new BigNumber(earnTokenPriceUsd))
-        .div(totalInQuoteToken.times(new BigNumber(quoteTokenPriceUsd)))
+        .times(new BigNumber(Number(earnTokenPriceUsd)))
+        .div(totalInQuoteToken.times(new BigNumber(Number(quoteTokenPriceUsd))))
         .times(100)
 
       const amountEarnedYealry = tokenEarnedPerThousandDollarsCompounding({

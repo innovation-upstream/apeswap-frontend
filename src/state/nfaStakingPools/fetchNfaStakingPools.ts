@@ -7,7 +7,7 @@ import multicall from 'utils/multicall'
 import BigNumber from 'bignumber.js'
 import { TokenPrices } from 'state/types'
 
-const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID
+const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID || ''
 
 export const fetchPoolsBlockLimits = async () => {
   return nfaStakingPoolsConfig.map((nfaStakingPool) => {
@@ -44,12 +44,12 @@ export const fetchPoolTokenStatsAndApr = async (tokenPrices: TokenPrices[], tota
     const curPool = pool
     const rewardToken = tokenPrices
       ? tokenPrices.find(
-          (token) => pool?.rewardToken && token?.address[CHAIN_ID] === pool?.rewardToken.address[CHAIN_ID],
+          (token) => pool?.rewardToken && token?.address[CHAIN_ID] === pool?.rewardToken.address?.[CHAIN_ID],
         )
       : pool.rewardToken
     const totalStaked = totalStakingList.find((totalStake) => totalStake.sousId === pool.sousId)?.totalStaked
     // Calculate apr
-    const apr = getPoolApr(1, rewardToken?.price, getBalanceNumber(totalStaked), curPool?.tokenPerBlock)
+    const apr = getPoolApr(1, rewardToken?.price as number, getBalanceNumber(totalStaked), curPool?.tokenPerBlock)
     return {
       sousId: curPool.sousId,
       rewardToken,
