@@ -32,8 +32,8 @@ import Details from './Details'
 const RoiCalculator = () => {
   const [indexStaked, setIndexStaked] = useState(0)
   const [stakedDay, setStakedDay] = useState(1)
-  const [compoundDays, setCompoundDays] = useState(null)
-  const [indexCompound, setIndexCompound] = useState(null)
+  const [compoundDays, setCompoundDays] = useState(1)
+  const [indexCompound, setIndexCompound] = useState(0)
   const [dollarbuttons, setDollarbuttons] = useState(null)
   const { account } = useActiveWeb3React()
   const farmsLP = useFarms(account)
@@ -46,29 +46,16 @@ const RoiCalculator = () => {
   const tokenPrice =
     typeof farmsLP[1]?.bananaPrice === 'number' ? farmsLP[1]?.bananaPrice : new BigNumber(rewardTokenPrice).toNumber()
   const oneThousandDollarsWorthOfBanana = 1000 / tokenPrice
+
   const bananaEarnedPerThousand1D = calculateBananaEarnedPerThousandDollars({
     numberOfDays: stakedDay,
     farmApy,
     rewardTokenPrice,
   })
-  const compoundROIRates = tokenEarnedPerThousandDollarsCompounding({
-    numberOfDays: compoundDays,
-    farmApr: parseFloat(farmsLP[1]?.lpApr + farmsLP[1]?.apr),
-    tokenPrice: tokenPrice && tokenPrice,
-  })
-
-  const percentageStaked = apyModalRoi({
-    amountEarned: bananaEarnedPerThousand1D,
-    amountInvested: oneThousandDollarsWorthOfBanana,
-  })
-  const percentageCompound = apyModalRoi({
-    amountEarned: compoundROIRates,
-    amountInvested: oneThousandDollarsWorthOfBanana,
-  })
 
   const handleClickStaked = (newIndex) => {
     setIndexStaked(newIndex)
-    setIndexCompound(null)
+    // setIndexCompound(null)
     switch (newIndex) {
       case 0:
         setStakedDay(1)
@@ -88,7 +75,7 @@ const RoiCalculator = () => {
   }
   const handleClickCompound = (newIndex) => {
     setIndexCompound(newIndex)
-    setIndexStaked(null)
+    // setIndexStaked(null)
     switch (newIndex) {
       case 0:
         setCompoundDays(1)
@@ -103,7 +90,7 @@ const RoiCalculator = () => {
         setCompoundDays(30)
         break
       default:
-        setCompoundDays(null)
+        setCompoundDays(1)
     }
   }
   const { independentField, typedValue } = useMintState()
@@ -155,6 +142,7 @@ const RoiCalculator = () => {
   const handleCurrencyASelect = () => {
     console.log('for preventing error')
   }
+
   const modalProps = {
     style: {
       height: '100%',
@@ -162,23 +150,29 @@ const RoiCalculator = () => {
       overflowY: 'auto',
     },
   }
-
+  const compoundROIRates = tokenEarnedPerThousandDollarsCompounding({
+    numberOfDays: stakedDay,
+    farmApr: parseFloat(farmsLP[1]?.lpApr + farmsLP[1]?.apr),
+    tokenPrice,
+    compoundFrequency: compoundDays,
+    dollarBalance: dollarbuttons || formattedAmounts[Field.CURRENCY_A],
+  })
+  const percentageCompound = apyModalRoi({
+    amountEarned: compoundROIRates,
+    amountInvested: oneThousandDollarsWorthOfBanana,
+  })
+  // const percentageStaked = apyModalRoi({
+  //   amountEarned: bananaEarnedPerThousand1D,
+  //   amountInvested: oneThousandDollarsWorthOfBanana,
+  // })
   const mobileProps = isMobile ? modalProps : ''
 
   // eslint-disable-next-line no-restricted-globals
-  const percentageStakedValue = isNaN(Number(percentageStaked)) ? 'Loading...' : percentageStaked
+  const compoundROIRatesValue = isNaN(Number(compoundROIRates)) ? 'Loading...' : compoundROIRates
+  // const percentageStakedValue = isNaN(Number(percentageStaked)) ? 'Loading...' : percentageStaked
   // eslint-disable-next-line no-restricted-globals
   const percentageCompoundValue = isNaN(Number(percentageCompound)) ? 'Loading...' : percentageCompound
 
-  console.log(
-    'bananaEarnedPerThousand1D',
-    // eslint-disable-next-line no-restricted-globals
-    isNaN(Number(bananaEarnedPerThousand1D)),
-    // eslint-disable-next-line no-restricted-globals
-    isNaN(Number(percentageCompound)),
-    // eslint-disable-next-line no-restricted-globals
-    isNaN(Number(compoundROIRates)),
-  )
   return (
     <>
       <Modal open maxWidth={isMobile ? '320px' : '400px'} minWidth={isMobile ? '320px' : '400px'} {...mobileProps}>
@@ -354,17 +348,14 @@ const RoiCalculator = () => {
             <Svg icon="banana_token" width="46px" />
             <Box sx={{ paddingLeft: '20px' }}>
               <Text variant="lg" color="white1" sx={{ display: 'block' }}>
-                ${(indexStaked !== null && bananaEarnedPerThousand1D) || (indexCompound !== null && compoundROIRates)}
+                ${compoundROIRatesValue}
               </Text>
 
               <Text variant="sm" color="white1">
-                ~{(indexStaked !== null && bananaEarnedPerThousand1D) || (indexCompound !== null && compoundROIRates)}{' '}
-                BANANA
+                ~{compoundROIRatesValue} BANANA
               </Text>
               <Text variant="sm" color="white1">
-                (
-                {(indexStaked !== null && percentageStakedValue) || (indexCompound !== null && percentageCompoundValue)}
-                %)
+                ({percentageCompoundValue}%)
               </Text>
             </Box>
           </Box>
