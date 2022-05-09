@@ -101,10 +101,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
   const { isMd, isSm, isXs } = useMatchBreakpoints()
   const isMobile = isMd || isSm || isXs
 
-  const { currencies, currencyBalances, noLiquidity, liquidityMinted, poolTokenPercentage, error } = useDerivedMintInfo(
-    currencyA ?? undefined,
-    undefined,
-  )
+  const { currencies, currencyBalances, noLiquidity } = useDerivedMintInfo(currencyA ?? undefined, undefined)
 
   const { onFieldAInput } = useMintActionHandlers(noLiquidity)
 
@@ -151,6 +148,13 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
       overflowY: 'auto',
     },
   }
+
+  const modalPropsMobile = {
+    style: {
+      overflowY: 'auto',
+      height: 'calc(100% - 110px)',
+    },
+  }
   const compoundROIRates = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: stakedDay,
     farmApr: lpApr + apr,
@@ -158,14 +162,12 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
     compoundFrequency: compoundDays,
     dollarBalance: dollarbuttons || formattedAmounts[Field.CURRENCY_A],
   })
-  console.log('compoundROIRates', compoundROIRates)
-
   const percentageCompound = apyModalRoi({
     amountEarned: compoundROIRates,
     amountInvested: oneThousandDollarsWorthOfBanana,
   })
 
-  const mobileProps = isMobile ? modalProps : ''
+  const mobileProps = isMobile ? modalProps : modalPropsMobile
 
   // eslint-disable-next-line no-restricted-globals
   const compoundROIRatesValue = isNaN(Number(compoundROIRates)) ? 'Loading...' : compoundROIRates
