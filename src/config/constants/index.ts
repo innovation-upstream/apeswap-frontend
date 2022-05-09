@@ -3,7 +3,7 @@ import { JSBI, Percent, Token, ChainId, WETH } from '@apeswapfinance/sdk'
 import ApeZone from './apezone'
 import farms from './farms'
 
-export const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID)
+export const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID as any)
 
 export const NetworkContextName = 'NETWORK'
 
