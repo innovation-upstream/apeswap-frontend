@@ -15,7 +15,7 @@ export const getServerSideGenericProps = async (
   const chainIdStr = cookies.get('chainIdStatus')
   const chainId = chainIdStr ? parseInt(chainIdStr) : CHAIN_ID.BSC
   context.store?.dispatch(setNetwork({ chainId }))
-  const { isDesktop } = getSelectorsByUserAgent(req.headers['user-agent'])
+  const { isDesktop } = getSelectorsByUserAgent(req.headers['user-agent'] as string)
   const { origin } = absoluteUrl(req)
 
   const CACHE_KEY = 'IS_DARK'

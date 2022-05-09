@@ -21,7 +21,7 @@ import ConnectButton from './components/ConnectButton'
 
 const Menu: React.FC<{ chain?: number }> = () => {
   const router = useRouter()
-  const refPrevOffset = useRef(null)
+  const refPrevOffset = useRef<any | null>(null)
   const [showMenu, setShowMenu] = useState(true)
   const [showConnectPopup, setShowConnect] = useState(false)
   const [showAccountPopup, setShowAccount] = useState(false)

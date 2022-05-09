@@ -31,7 +31,7 @@ const AccountModal: React.FC<Props> = ({ open, handleClose }) => {
                 View on BscScan
               </Link>
             </Box>
-            <CopyToClipboard toCopy={account}>
+            <CopyToClipboard toCopy={account as any}>
               <Text variant="sm" weight="bold">
                 Copy Address
               </Text>
@@ -43,7 +43,7 @@ const AccountModal: React.FC<Props> = ({ open, handleClose }) => {
               variant="secondary"
               onClick={() => {
                 logout()
-                handleClose()
+                handleClose?.()
                 window.localStorage.removeItem('accountStatus')
                 window.location.reload()
               }}

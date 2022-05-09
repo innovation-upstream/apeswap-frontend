@@ -70,7 +70,9 @@ function TransactionSubmittedContent({
           <Button
             variant="tertiary"
             mt="12px"
-            onClick={() => registerToken(token.address, token.symbol, token.decimals, '')}
+            onClick={() =>
+              registerToken(token?.address as string, token?.symbol as string, token?.decimals as number, '')
+            }
           >
             <RowFixed>
               <Text>{`Add ${currencyToAdd.getSymbol(chainId)} to Metamask`}</Text>
@@ -144,7 +146,7 @@ const TransactionConfirmationModal: React.FC<ModalProps & ConfirmationModalProps
     if (customOnDismiss) {
       customOnDismiss()
     }
-    onDismiss()
+    onDismiss?.()
   }, [customOnDismiss, onDismiss])
 
   if (!chainId) return null
@@ -158,7 +160,7 @@ const TransactionConfirmationModal: React.FC<ModalProps & ConfirmationModalProps
           <TransactionSubmittedContent
             chainId={chainId}
             hash={hash}
-            onDismiss={onDismiss}
+            onDismiss={onDismiss as any}
             currencyToAdd={currencyToAdd}
           />
         ) : (

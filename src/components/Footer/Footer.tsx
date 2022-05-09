@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
             </Text>
           </Box>
           <Flex sx={{ mt: '35px', columnGap: '25px' }}>
-            <ThemeSwitcher isDark={isDark} toggleTheme={toggleTheme} />
+            <ThemeSwitcher isDark={isDark ?? !isDark} toggleTheme={toggleTheme} />
             <NetworkButton />
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>

@@ -185,18 +185,18 @@ const TextInput: React.FC<TextInputProps> = ({
         {height === 'lg' || height === 'xl' ? (
           <LargeInput
             onChange={onLargeChange}
-            backgroundColor={backgroundColor}
+            backgroundColor={backgroundColor as string}
             placeholder={placeholderText}
             imgSrc={`images/${icon}`}
-            textColor={textColor}
+            textColor={textColor as string}
           />
         ) : (
           <Input
             onChange={onChange}
-            backgroundColor={url ? backgroundColorForInput : backgroundColor}
+            backgroundColor={url ? (backgroundColorForInput as string) : (backgroundColor as string)}
             placeholder={placeholderText}
             imgSrc={`images/${icon}`}
-            textColor={textColor}
+            textColor={textColor as string}
             onKeyUp={onValidate}
             margin={margin}
             sizeText={size}

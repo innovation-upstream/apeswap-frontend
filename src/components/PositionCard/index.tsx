@@ -150,7 +150,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
 export default function FullPositionCard({ pair, ...props }: PositionCardProps) {
   const { account, chainId } = useActiveWeb3React()
 
-  const [currencyPrice, setCurrencyPrice] = useState<number>(null)
+  const [currencyPrice, setCurrencyPrice] = useState<number | any>(null)
 
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
@@ -162,7 +162,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
 
   useEffect(() => {
     const fetchCurrencyTokenPrice = async () => {
-      const tokenPriceReturned = await getTokenUsdPrice(chainId, pair?.liquidityToken?.address, 18, true, false)
+      const tokenPriceReturned = await getTokenUsdPrice(chainId as any, pair?.liquidityToken?.address, 18, true, false)
       setCurrencyPrice(tokenPriceReturned)
     }
     fetchCurrencyTokenPrice()
@@ -199,7 +199,9 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
               )}
             </Title>
             <Text small style={{ position: 'absolute', right: '40px' }} mt="5px" mr="20px">
-              {currencyPrice ? `~ $${(currencyPrice * parseFloat(userPoolBalance?.toSignificant(4))).toFixed(2)}` : '-'}
+              {currencyPrice
+                ? `~ $${(currencyPrice * parseFloat((userPoolBalance as any)?.toSignificant(4))).toFixed(2)}`
+                : '-'}
             </Text>
           </Flex>
         </Flex>

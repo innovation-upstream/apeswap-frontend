@@ -32,7 +32,7 @@ const NetworkModal: React.FC<Props> = ({ open, handleClose }) => {
 
   const handleChange = (chain: number) => {
     switchNetwork(chain)
-    handleClose()
+    handleClose?.()
   }
 
   return modalContainer

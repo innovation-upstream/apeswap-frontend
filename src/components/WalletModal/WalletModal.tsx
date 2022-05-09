@@ -33,7 +33,7 @@ const WalletModal: React.FC<Props> = ({ open, handleClose }) => {
                   onClick={() => {
                     login(data.connectorId)
                     localStorage.setItem('accountStatus', data.connectorId)
-                    handleClose()
+                    handleClose?.()
                   }}
                 >
                   <Text color="info" variant="md" weight="normal" sx={{ margin: '0 10px' }}>

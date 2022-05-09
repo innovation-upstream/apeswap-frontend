@@ -21,7 +21,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
   open,
   expandedContentSize,
 }) => {
-  const [expanded, setExpanded] = useState(open)
+  const [expanded, setExpanded] = useState<boolean | any>(open)
   return (
     <>
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>

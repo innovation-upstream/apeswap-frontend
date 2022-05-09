@@ -20,7 +20,7 @@ const ListCard: React.FC<ListCardProps> = ({
   infoContentPosition,
   open,
 }) => {
-  const [expanded, setExpanded] = useState(open)
+  const [expanded, setExpanded] = useState<boolean | any>(open)
   return (
     <>
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>
