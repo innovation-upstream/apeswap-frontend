@@ -9,6 +9,10 @@ export interface ApyButtonProps {
   rewardTokenPrice?: number
   apy?: number
   addLiquidityUrl?: string
+  apr?: number
+  lpApr?: number
+  multiplier?: number
+  detailApy?: number
 }
 
 const StyledCalculateIcon = styled(CalculateIcon)`
@@ -21,7 +25,17 @@ const StyledCalculateIcon = styled(CalculateIcon)`
   }
 `
 
-const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, rewardTokenPrice, apy, addLiquidityUrl, rewardTokenName }) => {
+const ApyButton: React.FC<ApyButtonProps> = ({
+  lpLabel,
+  rewardTokenPrice,
+  apy,
+  addLiquidityUrl,
+  rewardTokenName,
+  apr,
+  lpApr,
+  multiplier,
+  detailApy,
+}) => {
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
       lpLabel={lpLabel}
@@ -29,6 +43,10 @@ const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, rewardTokenPrice, apy, a
       rewardTokenPrice={rewardTokenPrice}
       apy={apy}
       addLiquidityUrl={addLiquidityUrl}
+      apr={apr}
+      lpApr={lpApr}
+      multiplier={multiplier}
+      detailApy={detailApy}
     />,
   )
 

@@ -142,6 +142,10 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
                 rewardTokenPrice={farm.bananaPrice}
                 apy={parseFloat(farm?.apr) / 100 + parseFloat(farm?.lpApr) / 100}
                 addLiquidityUrl={liquidityUrl}
+                apr={parseFloat(farm?.apr)}
+                lpApr={parseFloat(farm?.lpApr)}
+                multiplier={parseFloat(farm?.multiplier)}
+                detailApy={parseFloat(farm?.apy)}
               />
             }
           />

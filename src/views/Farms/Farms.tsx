@@ -9,7 +9,6 @@ import { orderBy } from 'lodash'
 import { Farm } from 'state/types'
 import { useFarms, usePollFarms } from 'state/farms/hooks'
 import useI18n from 'hooks/useI18n'
-import { Roicalculator } from 'components/RoiCalculator'
 import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
 import { Header, HeadingContainer, StyledHeading } from './styles'
@@ -151,7 +150,6 @@ const Farms: React.FC = () => {
             />
           </Flex>
           <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} />
-          <Roicalculator />
         </Flex>
       </Flex>
       <div ref={loadMoreRef} />

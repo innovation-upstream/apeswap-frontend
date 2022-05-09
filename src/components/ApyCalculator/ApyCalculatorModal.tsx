@@ -1,9 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Modal, Text, LinkExternal, Flex } from '@apeswapfinance/uikit'
-import useI18n from 'hooks/useI18n'
-import { calculateBananaEarnedPerThousandDollars, apyModalRoi } from 'utils/compoundApyHelpers'
+import { Modal } from '@apeswapfinance/uikit'
+import {
+  calculateBananaEarnedPerThousandDollars,
+  apyModalRoi,
+  tokenEarnedPerThousandDollarsCompounding,
+} from 'utils/compoundApyHelpers'
+import { Field } from 'state/mint/actions'
+import maxAmountSpend from 'utils/maxAmountSpend'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useDerivedMintInfo, useMintActionHandlers, useMintState } from 'state/mint/hooks'
+import { useCurrency } from 'hooks/Tokens'
+import { useCurrencyBalance } from 'state/wallet/hooks'
+import { Button, ButtonMenu, useMatchBreakpoints, ButtonMenuItem, Svg } from '@ape.swap/uikit'
+import { CurrencyAmount, TokenAmount } from '@apeswapfinance/sdk'
+import CurrencyInputPanelRoi from 'components/ApyCalculator/CurrencyInputRoi/index '
+import { Box, Flex, Link, Text } from 'theme-ui'
+import DetailsContent from 'components/ApyCalculator/DetailsContent'
+import styles from 'components/ApyCalculator/styles'
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
@@ -12,144 +27,430 @@ interface ApyCalculatorModalProps {
   rewardTokenPrice?: number
   apy?: number
   addLiquidityUrl?: string
+  apr?: number
+  lpApr?: number
+  multiplier?: number
+  detailApy?: number
 }
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, auto);
-  margin-bottom: 24px;
-`
+// eslint-disable-next-line no-empty-pattern
+const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
+  // eslint-disable-next-line no-empty-pattern
+  { onDismiss, lpLabel, rewardTokenName, rewardTokenPrice, apy, addLiquidityUrl, apr, lpApr, multiplier, detailApy },
+) => {
+  const [indexStaked, setIndexStaked] = useState(0)
+  const [stakedDay, setStakedDay] = useState(1)
+  const [compoundDays, setCompoundDays] = useState(1)
+  const [indexCompound, setIndexCompound] = useState(0)
+  const [dollarbuttons, setDollarbuttons] = useState(null)
+  const { account } = useActiveWeb3React()
 
-const GridItem = styled.div`
-  margin-bottom: '10px';
-`
-
-const Description = styled(Text)`
-  max-width: 320px;
-  margin-bottom: 28px;
-`
-
-const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
-  onDismiss,
-  lpLabel,
-  rewardTokenName,
-  rewardTokenPrice,
-  apy,
-  addLiquidityUrl,
-}) => {
-  const TranslateString = useI18n()
   const farmApy = new BigNumber(apy).times(new BigNumber(100)).toNumber()
   const tokenPrice =
     typeof rewardTokenPrice === 'number' ? rewardTokenPrice : new BigNumber(rewardTokenPrice).toNumber()
   const oneThousandDollarsWorthOfBanana = 1000 / tokenPrice
 
-  const bananaEarnedPerThousand1D = calculateBananaEarnedPerThousandDollars({
-    numberOfDays: 1,
-    farmApy,
-    rewardTokenPrice,
+  // const bananaEarnedPerThousand1D = calculateBananaEarnedPerThousandDollars({
+  //   numberOfDays: stakedDay,
+  //   farmApy,
+  //   rewardTokenPrice,
+  // })
+
+  const handleClickStaked = (newIndex) => {
+    setIndexStaked(newIndex)
+    // setIndexCompound(null)
+    switch (newIndex) {
+      case 0:
+        setStakedDay(1)
+        break
+      case 1:
+        setStakedDay(7)
+        break
+      case 2:
+        setStakedDay(14)
+        break
+      case 3:
+        setStakedDay(30)
+        break
+      default:
+        setStakedDay(1)
+    }
+  }
+  const handleClickCompound = (newIndex) => {
+    setIndexCompound(newIndex)
+    switch (newIndex) {
+      case 0:
+        setCompoundDays(1)
+        break
+      case 1:
+        setCompoundDays(7)
+        break
+      case 2:
+        setCompoundDays(14)
+        break
+      case 3:
+        setCompoundDays(30)
+        break
+      default:
+        setCompoundDays(1)
+    }
+  }
+  const { independentField, typedValue } = useMintState()
+  const currencyA = useCurrency('ETH')
+
+  const { isMd, isSm, isXs } = useMatchBreakpoints()
+  const isMobile = isMd || isSm || isXs
+
+  const { currencies, currencyBalances, noLiquidity, liquidityMinted, poolTokenPercentage, error } = useDerivedMintInfo(
+    currencyA ?? undefined,
+    undefined,
+  )
+
+  const { onFieldAInput } = useMintActionHandlers(noLiquidity)
+
+  const balanceA = useCurrencyBalance(account ?? undefined, currencies[Field.CURRENCY_A])
+
+  const StyledBalanceText = styled(Text)`
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 5rem;
+    text-overflow: ellipsis;
+  `
+
+  function Balance({ balance }: { balance: CurrencyAmount }) {
+    return <StyledBalanceText title={balance?.toExact()}>{balance?.toSignificant(4)}</StyledBalanceText>
+  }
+
+  const formattedAmounts = {
+    [independentField]: typedValue,
+  }
+  // get the max amounts user can add
+  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+    (accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmountSpend(currencyBalances[field]),
+      }
+    },
+    {},
+  )
+  const handleButton = (figure: string) => {
+    if (figure === '100') {
+      setDollarbuttons(100)
+    } else setDollarbuttons(1000)
+  }
+
+  const handleCurrencyASelect = () => {
+    console.log('for preventing error')
+  }
+
+  const modalProps = {
+    style: {
+      height: '100%',
+      maxHeight: '500px',
+      overflowY: 'auto',
+    },
+  }
+  const compoundROIRates = tokenEarnedPerThousandDollarsCompounding({
+    numberOfDays: stakedDay,
+    farmApr: lpApr + apr,
+    tokenPrice,
+    compoundFrequency: compoundDays,
+    dollarBalance: dollarbuttons || formattedAmounts[Field.CURRENCY_A],
   })
-  const bananaEarnedPerThousand7D = calculateBananaEarnedPerThousandDollars({
-    numberOfDays: 7,
-    farmApy,
-    rewardTokenPrice,
-  })
-  const bananaEarnedPerThousand30D = calculateBananaEarnedPerThousandDollars({
-    numberOfDays: 30,
-    farmApy,
-    rewardTokenPrice,
-  })
-  const bananaEarnedPerThousand365D = calculateBananaEarnedPerThousandDollars({
-    numberOfDays: 365,
-    farmApy,
-    rewardTokenPrice,
+  console.log('compoundROIRates', compoundROIRates)
+
+  const percentageCompound = apyModalRoi({
+    amountEarned: compoundROIRates,
+    amountInvested: oneThousandDollarsWorthOfBanana,
   })
 
+  const mobileProps = isMobile ? modalProps : ''
+
+  // eslint-disable-next-line no-restricted-globals
+  const compoundROIRatesValue = isNaN(Number(compoundROIRates)) ? 'Loading...' : compoundROIRates
+  // eslint-disable-next-line no-restricted-globals
+  const percentageCompoundValue = isNaN(Number(percentageCompound)) ? 'Loading...' : percentageCompound
+
+  const Data = () => {
+    return (
+      <>
+        <Box sx={{ backgroundColor: 'secondaryButtonDisableBg', padding: '30px 20px', borderRadius: '10px' }}>
+          <Flex
+            sx={{
+              marginBottom: '5px',
+              fontSize: '16px',
+              fontWeight: '700',
+              justifyContent: 'space-between',
+              paddingBottom: '5px',
+            }}
+          >
+            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>APR (incl. LP rewards):</Text>
+            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{lpApr}%</Text>
+          </Flex>
+          <Flex
+            sx={{
+              marginBottom: '5px',
+              fontSize: '16px',
+              fontWeight: '700',
+              justifyContent: 'space-between',
+              paddingBottom: '5px',
+            }}
+          >
+            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>Base APR (BANANA yield only): </Text>{' '}
+            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{apr}%</Text>
+          </Flex>
+          <Flex
+            sx={{
+              marginBottom: '5px',
+              fontSize: '16px',
+              fontWeight: '700',
+              justifyContent: 'space-between',
+              paddingBottom: '5px',
+            }}
+          >
+            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>APY (1x daily compound):</Text>{' '}
+            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{detailApy}%</Text>
+          </Flex>
+          <Flex
+            sx={{
+              marginBottom: '5px',
+              fontSize: '16px',
+              fontWeight: '700',
+              justifyContent: 'space-between',
+              paddingBottom: '5px',
+            }}
+          >
+            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}> Farm Multiplier:</Text>{' '}
+            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{multiplier}</Text>
+          </Flex>
+          <Box as="ul" sx={{ paddingBottom: '25px' }}>
+            <Flex as="li">
+              <Text sx={styles?.text}>• Calculated based on current rates.</Text>
+            </Flex>
+            <Flex as="li">
+              <Text sx={styles?.text}>
+                • LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.{' '}
+              </Text>
+            </Flex>
+            <Flex as="li">
+              <Text sx={styles?.text}>
+                • All figures are estimates provided for your convenience only, and by no means represent guaranteed
+                returns.
+              </Text>
+            </Flex>
+          </Box>
+          <Flex sx={{ justifyContent: 'center' }}>
+            <Link href={addLiquidityUrl}>
+              <Button size={isMobile ? 'sm' : 'md'}>GET {lpLabel}</Button>
+            </Link>
+          </Flex>
+        </Box>
+      </>
+    )
+  }
+
+  const Details = [
+    {
+      open: true,
+      expandedContent: <Data />,
+    },
+  ]
+
   return (
-    <Modal onDismiss={onDismiss} title="ROI">
-      <Grid>
-        <GridItem>
-          <Text fontSize="12px" color="gray" textTransform="uppercase" mb="20px">
-            {TranslateString(999, 'Timeframe')}
+    <>
+      <Modal
+        onDismiss={onDismiss}
+        title="ROI Calculator"
+        maxWidth={isMobile ? '320px' : '400px'}
+        minWidth={isMobile ? '320px' : '400px'}
+        {...mobileProps}
+      >
+        <Flex>
+          <Text sx={{ marginBottom: '5px', fontSize: '16px', fontWeight: '700' }}>{lpLabel}</Text>
+        </Flex>
+        <Flex>
+          <CurrencyInputPanelRoi
+            value={dollarbuttons || formattedAmounts[Field.CURRENCY_A]}
+            onUserInput={onFieldAInput}
+            onCurrencySelect={handleCurrencyASelect}
+            showMaxButton
+            onMax={() => {
+              setDollarbuttons(null)
+              onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+            }}
+            currency={currencies[Field.CURRENCY_A]}
+            id="Roi-calculater-input"
+            setDollarbuttons={setDollarbuttons}
+          />
+        </Flex>
+        <Flex sx={{ justifyContent: 'space-between', padding: '10px 15px 30px', alignItems: 'center' }}>
+          <Button size="sm" onClick={() => handleButton('100')} csx={{ marginRight: '17px' }}>
+            $100
+          </Button>
+          <Button onClick={() => handleButton('1000')} size="sm" csx={{ marginRight: '17px' }}>
+            $1000
+          </Button>
+          <Text sx={{ width: '100%', maxWidth: '163px', textAlign: 'right' }}>
+            Balance:{<Balance balance={balanceA} /> ? <Balance balance={balanceA} /> : 'Loading'}
           </Text>
-        </GridItem>
-        <GridItem>
-          <Text fontSize="12px" color="gray" textTransform="uppercase" mb="20px">
-            {TranslateString(999, 'ROI')}
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text fontSize="12px" color="gray" textTransform="uppercase" mb="20px">
-            {rewardTokenName}
-            {TranslateString(999, ' per $1000')}
-          </Text>
-        </GridItem>
-        {/* 1 day row */}
-        <GridItem>
-          <Text>1d</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({ amountEarned: bananaEarnedPerThousand1D, amountInvested: oneThousandDollarsWorthOfBanana })}%
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{bananaEarnedPerThousand1D}</Text>
-        </GridItem>
-        {/* 7 day row */}
-        <GridItem>
-          <Text>7d</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({ amountEarned: bananaEarnedPerThousand7D, amountInvested: oneThousandDollarsWorthOfBanana })}%
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{bananaEarnedPerThousand7D}</Text>
-        </GridItem>
-        {/* 30 day row */}
-        <GridItem>
-          <Text>30d</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({ amountEarned: bananaEarnedPerThousand30D, amountInvested: oneThousandDollarsWorthOfBanana })}
-            %
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{bananaEarnedPerThousand30D}</Text>
-        </GridItem>
-        {/* 365 day / APY row */}
-        <GridItem>
-          <Text>365d(APY)</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({
-              amountEarned: bananaEarnedPerThousand365D,
-              amountInvested: oneThousandDollarsWorthOfBanana,
-            })}
-            %
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{bananaEarnedPerThousand365D}</Text>
-        </GridItem>
-      </Grid>
-      <Description fontSize="12px" color="gray">
-        {TranslateString(
-          999,
-          'Calculated based on current rates. Compounding once daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.',
-        )}
-      </Description>
-      <Flex justifyContent="center">
-        <LinkExternal href={addLiquidityUrl}>
-          {TranslateString(999, 'Get')} {lpLabel}
-        </LinkExternal>
-      </Flex>
-    </Modal>
+        </Flex>
+        <Flex>
+          <Text sx={{ marginBottom: '5px', fontSize: '16px', fontWeight: '700' }}>STAKED FOR</Text>
+        </Flex>
+        <Flex sx={{ padding: '0 0 30px' }}>
+          <ButtonMenu activeIndex={indexStaked} onClick={handleClickStaked} size={isMobile ? 'sm' : 'md'}>
+            <ButtonMenuItem
+              sx={{
+                width: '100%',
+                maxWidth: 'calc(100%/4)',
+                height: '36px',
+                backgroundColor: indexStaked !== 0 ? 'white3' : 'yellow',
+                color: indexStaked !== 0 ? 'primaryButtonDisable' : 'White',
+                border: '0px',
+                borderTopRightRadius: indexStaked === 0 ? '10px' : '0px',
+                borderBottomLeftRadius: indexStaked === 0 ? '10px' : '0px',
+              }}
+            >
+              1D
+            </ButtonMenuItem>
+            <ButtonMenuItem
+              sx={{
+                width: '100%',
+                maxWidth: 'calc(100%/4)',
+                height: '36px',
+                backgroundColor: indexStaked !== 1 ? 'white3' : 'yellow',
+                color: indexStaked !== 1 ? 'primaryButtonDisable' : 'White',
+                border: '0px',
+                borderRadius: indexStaked === 1 ? '10px' : '0px',
+              }}
+            >
+              7D
+            </ButtonMenuItem>
+            <ButtonMenuItem
+              sx={{
+                width: '100%',
+                maxWidth: 'calc(100%/4)',
+                height: '36px',
+                backgroundColor: indexStaked !== 2 ? 'white3' : 'yellow',
+                color: indexStaked !== 2 ? 'primaryButtonDisable' : 'White',
+                border: '0px',
+                borderRadius: indexStaked === 2 ? '10px' : '0px',
+              }}
+            >
+              14D
+            </ButtonMenuItem>
+            <ButtonMenuItem
+              sx={{
+                width: '100%',
+                maxWidth: 'calc(100%/4)',
+                height: '36px',
+                backgroundColor: indexStaked !== 3 ? 'white3' : 'yellow',
+                color: indexStaked !== 3 ? 'primaryButtonDisable' : 'White',
+                border: '0px',
+                borderTopLeftRadius: indexStaked === 3 ? '10px' : '0px',
+                borderBottomLeftRadius: indexStaked === 3 ? '10px' : '0px',
+              }}
+            >
+              30D
+            </ButtonMenuItem>
+          </ButtonMenu>
+        </Flex>
+        <Flex>
+          <Text sx={{ marginBottom: '5px', fontSize: '16px', fontWeight: '700' }}>COMPOUNDING EVERY</Text>
+        </Flex>
+        <Flex sx={{ padding: '0 0 30px' }}>
+          <ButtonMenu activeIndex={indexCompound} onClick={handleClickCompound} size={isMobile ? 'sm' : 'md'}>
+            <ButtonMenuItem
+              sx={{
+                width: '100%',
+                maxWidth: 'calc(100%/4)',
+                height: '36px',
+                backgroundColor: indexCompound !== 0 ? 'white3' : 'yellow',
+                color: indexCompound !== 0 ? 'primaryButtonDisable' : 'White',
+                border: '0px',
+                borderTopRightRadius: indexCompound === 0 ? '10px' : '0px',
+                borderBottomRightRadius: indexCompound === 0 ? '10px' : '0px',
+              }}
+            >
+              1D
+            </ButtonMenuItem>
+            <ButtonMenuItem
+              sx={{
+                width: '100%',
+                maxWidth: 'calc(100%/4)',
+                height: '36px',
+                backgroundColor: indexCompound !== 1 ? 'white3' : 'yellow',
+                color: indexCompound !== 1 ? 'primaryButtonDisable' : 'White',
+                border: '0px',
+                borderRadius: indexCompound === 1 ? '10px' : '0px',
+              }}
+            >
+              7D
+            </ButtonMenuItem>
+            <ButtonMenuItem
+              sx={{
+                width: '100%',
+                maxWidth: 'calc(100%/4)',
+                height: '36px',
+                backgroundColor: indexCompound !== 2 ? 'white3' : 'yellow',
+                color: indexCompound !== 2 ? 'primaryButtonDisable' : 'White',
+                border: '0px',
+                borderRadius: indexCompound === 2 ? '10px' : '0px',
+              }}
+            >
+              14D
+            </ButtonMenuItem>
+            <ButtonMenuItem
+              sx={{
+                width: '100%',
+                maxWidth: 'calc(100%/4)',
+                height: '36px',
+                backgroundColor: indexCompound !== 3 ? 'white3' : 'yellow',
+                color: indexCompound !== 3 ? 'primaryButtonDisable' : 'White',
+                border: '0px',
+                borderTopLeftRadius: indexCompound === 3 ? '10px' : '0px',
+                borderBottomLeftRadius: indexCompound === 3 ? '10px' : '0px',
+              }}
+            >
+              30D
+            </ButtonMenuItem>
+          </ButtonMenu>
+        </Flex>
+        <Flex>
+          <Text sx={{ marginBottom: '5px', fontSize: '16px', fontWeight: '700' }}>ROI AT CURRENT RATES</Text>
+        </Flex>
+        <Flex
+          sx={{
+            backgroundColor: 'textareaColor',
+            borderRadius: '20px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '17px 0',
+            marginBottom: '25px',
+          }}
+        >
+          <Box sx={{ display: 'flex', fontWeight: '700' }}>
+            <Svg icon="banana_token" width="46px" />
+            <Box sx={{ paddingLeft: '20px' }}>
+              <Text variant="lg" color="white1" sx={{ display: 'block' }}>
+                ${compoundROIRatesValue}
+              </Text>
+
+              <Text variant="sm" color="white1">
+                ~{compoundROIRatesValue} BANANA
+              </Text>
+              <Text variant="sm" color="white1">
+                ({percentageCompoundValue}%)
+              </Text>
+            </Box>
+          </Box>
+        </Flex>
+        {Details?.map((view) => {
+          return <DetailsContent expandedContent={view.expandedContent} open={view.open} />
+        })}
+      </Modal>
+    </>
   )
 }
 
