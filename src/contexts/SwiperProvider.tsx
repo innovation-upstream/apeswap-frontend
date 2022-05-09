@@ -7,15 +7,15 @@ interface Context {
   destroySwiper: () => void
 }
 
-export const SwiperContext = createContext<Context>(undefined)
+export const SwiperContext = createContext<Context>(undefined as any)
 
 const SwiperProvider = ({ children }) => {
-  const [swiper, setSwiper] = useState<SwiperCore>(null)
+  const [swiper, setSwiper] = useState<SwiperCore>(null as any)
 
   const destroySwiper = () => {
     if (swiper) {
       swiper.destroy()
-      setSwiper(null)
+      setSwiper(null as any)
     }
   }
 

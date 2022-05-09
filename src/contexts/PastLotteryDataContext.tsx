@@ -11,4 +11,4 @@ export default React.createContext({
   mostRecentLotteryNumber: 0,
   historyError: false,
   historyData: [],
-} as PastLotteryDataState)
+} as unknown as PastLotteryDataState)
