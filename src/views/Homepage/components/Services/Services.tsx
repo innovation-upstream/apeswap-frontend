@@ -10,6 +10,7 @@ import { ServiceData } from 'state/types'
 import { useFetchHomepageServiceStats, useHomepageServiceStats } from 'state/hooks'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { LinkWrapper } from 'style/LinkWrapper'
+import { useTranslation } from 'contexts/Localization'
 import { ServiceWrapper, YieldCard, ColorWrap, Bubble } from './styles'
 import { defaultServiceData } from './defaultServiceData'
 
@@ -22,10 +23,11 @@ const Services: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0)
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const { width } = useWindowSize()
+  const { t } = useTranslation()
   const serviceData = useHomepageServiceStats()
   const displayData =
     serviceData &&
-    defaultServiceData.map((service) => {
+    defaultServiceData(t).map((service) => {
       return { ...service, stats: serviceData[service.id] }
     })
   const slideNewsNav = (index: number) => {
@@ -115,7 +117,7 @@ const Services: React.FC = () => {
         <a href={link} rel="noopener noreferrer">
           <Flex alignItems="center" justifyContent="center" style={{ textAlign: 'center' }}>
             <Text color="white" fontSize="16px" bold>
-              See All {'>'}
+              {t('See All')} {'>'}
             </Text>
           </Flex>
         </a>

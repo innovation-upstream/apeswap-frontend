@@ -1,48 +1,48 @@
 import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
 import { EXCHANGE } from '../constants'
+import { ContextApi } from '../../../contexts/Localization/types'
 
-const maticConfig = [
-  EXCHANGE,
+const maticConfig: (t: ContextApi['t']) => any[] = (t) => [
+  EXCHANGE(t),
   {
-    label: 'Farms',
+    label: t('Farms'),
     href: '/farms',
   },
   {
-    label: 'Vaults',
-    href: '/vaults',
-  },
-  {
-    label: 'More',
-    icon: '',
+    label: t('More'),
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',
     items: [
       {
-        label: 'Docs',
+        label: t('Documentation'),
         href: 'https://apeswap.gitbook.io/apeswap-finance/',
       },
       {
-        label: 'Charts',
+        label: t('Charts'),
         href: NETWORK_INFO_LINK[CHAIN_ID.MATIC],
       },
       {
-        label: 'Governance',
+        label: t('Governance'),
         href: 'https://vote.apeswap.finance',
+      },
+      {
+        label: t('Education'),
+        href: 'https://www.apelabs.education/',
       },
     ],
   },
   //   {
-  //     label: 'Pools',
+  //     label: t('Pools'),
   //     icon: 'PoolIcon',
   //     href: '/pools',
   //   },
   //   {
-  //     label: 'IAO',
+  //     label: t('IAO'),
   //     icon: 'IfoIcon',
   //     href: '/iao',
   //   },
   //   {
-  //     label: 'GNANA',
+  //     label: t('GNANA'),
   //     icon: 'ApeZone',
   //     href: '/gnana',
   //   },

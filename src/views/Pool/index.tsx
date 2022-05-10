@@ -10,6 +10,7 @@ import UnlockButton from 'components/UnlockButton'
 import SwapBanner from 'components/SwapBanner'
 import WalletTransactions from 'components/RecentTransactions/WalletTransactions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useTranslation } from 'contexts/Localization'
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs } from '../../hooks/usePairs'
@@ -73,13 +74,14 @@ export default function Pool() {
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some((V2Pair) => !V2Pair)
 
   const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
+  const { t } = useTranslation()
 
   const renderBody = () => {
     if (!account) {
       return (
         <Flex flexDirection="column" justifyContent="space-between" style={{ height: '130px' }}>
           <Text textAlign="center" fontSize="22.5px" marginTop="10px" bold>
-            Add Liquidity To Receive LP Tokens
+            {t('Add Liquidity To Receive LP Tokens')}
           </Text>
           <UnlockButton large />
         </Flex>
@@ -88,7 +90,7 @@ export default function Pool() {
     if (v2IsLoading) {
       return (
         <Text textAlign="center">
-          <Dots>Loading</Dots>
+          <Dots>{t('Loading')}</Dots>
         </Text>
       )
     }
@@ -101,7 +103,7 @@ export default function Pool() {
         />
       ))
     }
-    return <Text textAlign="center">No liquidity found.</Text>
+    return <Text textAlign="center">{t('No liquidity found.')}</Text>
   }
 
   return (
@@ -109,7 +111,7 @@ export default function Pool() {
       <Flex alignItems="center" flexDirection="column" flexWrap="nowrap" mb="20px">
         <SwapBanner />
         <AppBody>
-          <CurrencyInputHeader title="Swap" subtitle="Trade tokens in an instant" />
+          <CurrencyInputHeader title={t('Swap')} subtitle={t('Trade tokens in an instant')} />
           <Wrapper>
             <StyledCard style={{ height: '160px', borderRadius: '20px' }} mb="25px">
               <InnerFlex
@@ -129,7 +131,7 @@ export default function Pool() {
                       startIcon={<AddIcon color="white" />}
                       style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px' }}
                     >
-                      Add Liquidity
+                      {t('Add Liquidity')}
                     </Button>
                   </LinkWrapper>
                 </Link>
@@ -152,7 +154,7 @@ export default function Pool() {
                   >
                     <Text style={{ textDecoration: 'underline' }} mb="8px">
                       {' '}
-                      Find other LP tokens
+                      {t('Find other LP tokens')}
                     </Text>
                   </Button>
                 </LinkWrapper>

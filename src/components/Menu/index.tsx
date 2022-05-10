@@ -10,6 +10,8 @@ import Cookies from 'universal-cookie'
 import { CHAIN_ID } from 'config/constants/chains'
 import { Flex, Box } from 'theme-ui'
 import { SSRContext } from 'contexts/SSRContext'
+import { useTranslation } from 'contexts/Localization'
+import { ContextApi } from 'contexts/Localization/types'
 import { useNetworkChainId } from 'state/hooks'
 import { NetworkButton } from 'components/NetworkButton'
 import { WalletModal } from 'components/WalletModal'
@@ -18,6 +20,7 @@ import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { DesktopMenu, MobileMenu } from './components'
 import ConnectButton from './components/ConnectButton'
+import { languageList } from '../../config/localization/languages'
 
 const Menu: React.FC<{ chain?: number }> = () => {
   const router = useRouter()
@@ -31,15 +34,16 @@ const Menu: React.FC<{ chain?: number }> = () => {
   const { isDesktop, isBrowser } = useContext(SSRContext)
   const { isXxl } = useMatchBreakpoints()
   const isMobile = isBrowser ? isXxl === false : !isDesktop
+  const { t, setLanguage, currentLanguage } = useTranslation()
 
-  const currentMenu = () => {
+  const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC) {
-      return bscConfig
+      return bscConfig(translate)
     }
     if (chainId === CHAIN_ID.MATIC) {
-      return maticConfig
+      return maticConfig(translate)
     }
-    return bscConfig
+    return bscConfig(translate)
   }
 
   useEffect(() => {
@@ -123,7 +127,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
             <Link href="/">
               <IconButton variant="transparent" icon="logo" />
             </Link>
-            {!isMobile && <DesktopMenu items={currentMenu() as any} />}
+            {!isMobile && <DesktopMenu items={currentMenu(t) as any} />}
           </Flex>
           <Flex sx={{ alignItems: 'center', columnGap: 5, height: '100%' }}>
             {!isMobile && <NetworkButton />}
@@ -137,7 +141,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
             )}
           </Flex>
         </Flex>
-        {isMobile && <MobileMenu items={currentMenu() as any} />}
+        {isMobile && <MobileMenu items={currentMenu(t) as any} />}
       </Box>
       <AccountModal open={showAccountPopup} handleClose={() => setShowAccount(false)} />
       <WalletModal open={showConnectPopup} handleClose={() => setShowConnect(false)} />

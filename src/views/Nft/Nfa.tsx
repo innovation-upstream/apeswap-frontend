@@ -4,9 +4,8 @@ import { useGetNfaSales } from 'hooks/api'
 import styled from 'styled-components'
 import { Text, Button } from '@apeswapfinance/uikit'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useFetchNfas, useNfas } from 'state/hooks'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import NfaAttributes from './components/NfaAttributes'
 import NfaSales from './components/NfaSales'
 import Image from './components/Image'
@@ -70,8 +69,8 @@ const BoxShadow = styled.div`
 const Nfa: React.FC<{ nft: number }> = ({ nft: id }) => {
   useFetchNfas()
   const { nfas } = useNfas()
-  const TranslateString = useI18n()
   const nfa = nfas?.find((nft) => nft.index === id)
+  const { t } = useTranslation()
   const sales = useGetNfaSales(id)
 
   if (!nfa) {
@@ -82,7 +81,7 @@ const Nfa: React.FC<{ nft: number }> = ({ nft: id }) => {
     <Page>
       <Link href="/nft">
         <Button size="sm" style={{ marginTop: '25px' }}>
-          {TranslateString(999, 'Back')}
+          {t('Back')}
         </Button>
       </Link>
       <PageHolder>
@@ -95,16 +94,16 @@ const Nfa: React.FC<{ nft: number }> = ({ nft: id }) => {
         <DetailsHolder>
           <BoxShadow>
             <Text fontSize="32px" color="brown" fontWeight={800}>
-              {TranslateString(999, `${nfa.name} ${nfa.index}`)}
+              {t(`${nfa.name} ${nfa.index}`)}
             </Text>
             <Text fontWeight={300} fontSize="20px" style={{ margin: '5px 0px 5px 0px' }}>
-              {TranslateString(999, nfa.attributes.rarityTierName)}
+              {t(nfa.attributes.rarityTierName)}
             </Text>
             <Text fontWeight={300} fontSize="20px" style={{ margin: '5px 0px 5px 0px' }}>
-              {TranslateString(
-                999,
-                `Level ${nfa.attributes.rarityTierNumber} | Rarity ${nfa.attributes.rarityOverallRank} / 1000`,
-              )}
+              {t('Level %rarityTierNumber% | Rarity %rarityOverallRank% / 1000', {
+                rarityTierNumber: nfa.attributes.rarityTierNumber,
+                rarityOverallRank: nfa.attributes.rarityOverallRank,
+              })}
             </Text>
             <a
               href={`https://nftkey.app/collections/nfas/token-details/?tokenId=${id}`}
@@ -116,14 +115,14 @@ const Nfa: React.FC<{ nft: number }> = ({ nft: id }) => {
                 fontSize="20px"
                 style={{ textDecoration: 'underline', margin: '5px 0px 20px 0px' }}
               >
-                {TranslateString(999, 'Marketplace')}
+                {t('Marketplace')}
               </Text>
             </a>
           </BoxShadow>
           {sales && (
             <BoxShadow style={{ marginTop: '25px', padding: '5px 0px 10px 0px' }}>
               <Text fontWeight={300} fontSize="23px" style={{ margin: '10px 0px 15px 0px' }}>
-                {TranslateString(999, sales?.length > 0 ? 'Previous Sales' : 'No Sale History')}
+                {t(sales?.length > 0 ? 'Previous Sales' : 'No Sale History')}
               </Text>
               {sales?.length > 0 ? (
                 sales?.map((trx) => (

@@ -19,6 +19,7 @@ import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useTranslation } from 'contexts/Localization'
 import ListViewContent from 'components/ListViewContent'
 import DepositModal from '../Modals/DepositModal'
 import WithdrawModal from '../Modals/WithdrawModal'
@@ -45,6 +46,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
   const { isDesktop, isBrowser } = useContext(SSRContext)
   const isMobile = isBrowser ? !isLg && !isXl && !isXxl : !isDesktop
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
+  const { t } = useTranslation()
 
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
@@ -57,8 +59,8 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
         await onStake(val)
           .then((resp) => {
             const trxHash = resp.transactionHash
-            toastSuccess('Deposit Successful', {
-              text: 'View Transaction',
+            toastSuccess(t('Deposit Successful'), {
+              text: t('View Transaction'),
               url: getEtherscanLink(trxHash, 'transaction', chainId),
             })
           })
@@ -81,9 +83,9 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
           .then((resp) => {
             const trxHash = resp.transactionHash
             toastSuccess(
-              'Withdraw Successful',
+              t('Withdraw Successful'),
               <LinkExternal href={getEtherscanLink(trxHash, 'transaction', chainId)}>
-                <Text> View Transaction </Text>
+                <Text> {t('View Transaction')} </Text>
               </LinkExternal>,
             )
           })
@@ -106,7 +108,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
             endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
             disabled={pendingDepositTrx}
           >
-            DEPOSIT
+            {t('DEPOSIT')}
           </StyledButton>
         </CenterContainer>
       )
@@ -115,7 +117,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
       <ActionContainer>
         {isMobile && (
           <ListViewContent
-            title="Staked LP"
+            title={t('Staked LP')}
             value={`${rawStakedBalance.toFixed(6)} LP`}
             value2={userStakedBalanceUsd}
             value2Secondary
@@ -144,7 +146,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
         </Flex>
         {!isMobile && (
           <ListViewContent
-            title="Staked LP"
+            title={t('Staked LP')}
             value={`${rawStakedBalance.toFixed(6)} LP`}
             value2={userStakedBalanceUsd}
             value2Secondary

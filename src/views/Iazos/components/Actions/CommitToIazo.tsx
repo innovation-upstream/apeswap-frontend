@@ -8,6 +8,7 @@ import { IazoTokenInfo } from 'state/types'
 import useCommitToIazo from 'views/Iazos/hooks/useCommitToIazo'
 import BigNumber from 'bignumber.js'
 import { ZERO_ADDRESS } from 'config'
+import { useTranslation } from 'contexts/Localization'
 import TokenInput from '../CreateIazo/components/CreateYourPresale/PresaleDetails/TokenInput'
 import StyledButton, { Wrapper, BoldAfterText } from './styles'
 
@@ -29,6 +30,7 @@ const CommitToIazo: React.FC<ApproveCreateIazoProps> = ({
   maxSpendFormatted,
 }) => {
   const { isMd, isSm, isXs } = useMatchBreakpoints()
+  const { t } = useTranslation()
   const isMobile = isMd || isSm || isXs
   const { address, symbol, decimals } = baseToken
   const [pendingTrx, setPendingTrx] = useState(false)
@@ -64,7 +66,7 @@ const CommitToIazo: React.FC<ApproveCreateIazoProps> = ({
         disabled={pendingTrx || disabled}
         endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
       >
-        Commit
+        {t('Commit')}
       </StyledButton>
     </Wrapper>
   )
