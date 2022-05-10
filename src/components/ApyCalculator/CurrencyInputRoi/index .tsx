@@ -77,8 +77,6 @@ export default function CurrencyInputPanelRoi({
 
   const [tokenPrice, setTokenPrice] = useState<number>(null)
   const isNative = currency?.symbol === 'ETH'
-  const { isMd, isSm, isXs } = useMatchBreakpoints()
-  const isMobile = isMd || isSm || isXs
 
   useEffect(() => {
     const fetchTokenPrice = async () => {

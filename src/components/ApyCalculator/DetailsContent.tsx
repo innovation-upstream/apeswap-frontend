@@ -12,7 +12,7 @@ const DetailsContent: React.FC<expandCardProps> = ({ expandedContent, open }) =>
   return (
     <>
       <Flex sx={{ justifyContent: 'center', padding: '0 0 15px', alignItems: 'center' }}>
-        <Text sx={{ textAlign: 'center', padding: '0 10px 0px 0' }}>Details</Text>
+        <Text sx={{ textAlign: 'center', padding: '0 10px 0px 0', fontWeight: 700 }}>Details</Text>
         {expandedContent && <DropDownIcon onClick={() => setExpanded((prev) => !prev)} open={expanded} mr="30px" />}
       </Flex>
       {expandedContent && expanded && <Text variant="sm">{expandedContent}</Text>}

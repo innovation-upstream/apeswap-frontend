@@ -45,7 +45,6 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
   const [dollarbuttons, setDollarbuttons] = useState(null)
   const { account } = useActiveWeb3React()
 
-  const farmApy = new BigNumber(apy).times(new BigNumber(100)).toNumber()
   const tokenPrice =
     typeof rewardTokenPrice === 'number' ? rewardTokenPrice : new BigNumber(rewardTokenPrice).toNumber()
   const oneThousandDollarsWorthOfBanana = 1000 / tokenPrice
@@ -141,7 +140,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
     console.log('for preventing error')
   }
 
-  const modalProps = {
+  const modalPropsMobile = {
     style: {
       height: '100%',
       maxHeight: '500px',
@@ -149,12 +148,14 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
     },
   }
 
-  const modalPropsMobile = {
+  const modalProps = {
     style: {
       overflowY: 'auto',
-      height: 'calc(100% - 110px)',
+      maxHeight: 'calc(100% - 10px)',
+      height: 'auto',
     },
   }
+  const aprRewards = (lpApr + apr).toFixed(2)
   const compoundROIRates = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays: stakedDay,
     farmApr: lpApr + apr,
@@ -167,7 +168,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
     amountInvested: oneThousandDollarsWorthOfBanana,
   })
 
-  const mobileProps = isMobile ? modalProps : modalPropsMobile
+  const mobileProps = isMobile ? modalPropsMobile : modalProps
 
   // eslint-disable-next-line no-restricted-globals
   const compoundROIRatesValue = isNaN(Number(compoundROIRates)) ? 'Loading...' : compoundROIRates
@@ -188,7 +189,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
             }}
           >
             <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>APR (incl. LP rewards):</Text>
-            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{lpApr}%</Text>
+            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{aprRewards}%</Text>
           </Flex>
           <Flex
             sx={{
