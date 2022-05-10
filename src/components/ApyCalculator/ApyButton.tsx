@@ -13,6 +13,7 @@ export interface ApyButtonProps {
   lpApr?: number
   multiplier?: number
   detailApy?: number
+  lpAddresses?: string
 }
 
 const StyledCalculateIcon = styled(CalculateIcon)`
@@ -35,6 +36,7 @@ const ApyButton: React.FC<ApyButtonProps> = ({
   lpApr,
   multiplier,
   detailApy,
+  lpAddresses,
 }) => {
   const [onPresentApyModal] = useModal(
     <ApyCalculatorModal
@@ -47,6 +49,7 @@ const ApyButton: React.FC<ApyButtonProps> = ({
       lpApr={lpApr}
       multiplier={multiplier}
       detailApy={detailApy}
+      lpAddresses={lpAddresses}
     />,
   )
 

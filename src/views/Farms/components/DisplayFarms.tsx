@@ -51,6 +51,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
 
   const farmsListView = farms.map((farm) => {
     const [token1, token2] = farm.lpSymbol.split('-')
+    const lpAddresses = farm.lpAddresses[chainId]
     const bscScanUrl = `https://bscscan.com/address/${farm.lpAddresses[chainId]}`
     const liquidityUrl = `https://apeswap.finance/add/${
       farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId]
@@ -146,6 +147,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
                 lpApr={parseFloat(farm?.lpApr)}
                 multiplier={parseFloat(farm?.multiplier)}
                 detailApy={parseFloat(farm?.apy)}
+                lpAddresses={lpAddresses}
               />
             }
           />

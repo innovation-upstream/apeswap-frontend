@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Modal } from '@apeswapfinance/uikit'
+import { Modal, Tab, Tabs } from '@apeswapfinance/uikit'
 import {
   calculateBananaEarnedPerThousandDollars,
   apyModalRoi,
@@ -31,12 +31,25 @@ interface ApyCalculatorModalProps {
   lpApr?: number
   multiplier?: number
   detailApy?: number
+  lpAddresses?: string
 }
 
 // eslint-disable-next-line no-empty-pattern
 const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
   // eslint-disable-next-line no-empty-pattern
-  { onDismiss, lpLabel, rewardTokenName, rewardTokenPrice, apy, addLiquidityUrl, apr, lpApr, multiplier, detailApy },
+  {
+    onDismiss,
+    lpLabel,
+    rewardTokenName,
+    rewardTokenPrice,
+    apy,
+    addLiquidityUrl,
+    apr,
+    lpApr,
+    multiplier,
+    detailApy,
+    lpAddresses,
+  },
 ) => {
   const [indexStaked, setIndexStaked] = useState(0)
   const [stakedDay, setStakedDay] = useState(1)
@@ -95,7 +108,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
     }
   }
   const { independentField, typedValue } = useMintState()
-  const currencyA = useCurrency('ETH')
+  const currencyA = useCurrency(lpAddresses)
 
   const { isMd, isSm, isXs } = useMatchBreakpoints()
   const isMobile = isMd || isSm || isXs
@@ -143,7 +156,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
   const modalPropsMobile = {
     style: {
       height: '100%',
-      maxHeight: '500px',
+      maxHeight: '600px',
       overflowY: 'auto',
     },
   }
@@ -153,6 +166,12 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
       overflowY: 'auto',
       maxHeight: 'calc(100% - 10px)',
       height: 'auto',
+    },
+  }
+  const tabsProps = {
+    style: {
+      fontSize: '16px',
+      fontWeight: '700',
     },
   }
   const aprRewards = (lpApr + apr).toFixed(2)
@@ -188,8 +207,8 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
               paddingBottom: '5px',
             }}
           >
-            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>APR (incl. LP rewards):</Text>
-            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{aprRewards}%</Text>
+            <Text sx={{ fontSize: '12px' }}>APR (incl. LP rewards)</Text>
+            <Text sx={{ fontSize: '12px' }}>{aprRewards}%</Text>
           </Flex>
           <Flex
             sx={{
@@ -200,8 +219,8 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
               paddingBottom: '5px',
             }}
           >
-            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>Base APR (BANANA yield only): </Text>{' '}
-            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{apr}%</Text>
+            <Text sx={{ fontSize: '12px' }}>Base APR (BANANA yield only)</Text>{' '}
+            <Text sx={{ fontSize: '12px' }}>{apr}%</Text>
           </Flex>
           <Flex
             sx={{
@@ -212,8 +231,8 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
               paddingBottom: '5px',
             }}
           >
-            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>APY (1x daily compound):</Text>{' '}
-            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{detailApy}%</Text>
+            <Text sx={{ fontSize: '12px' }}>APY (1x daily compound)</Text>{' '}
+            <Text sx={{ fontSize: '12px' }}>{detailApy}%</Text>
           </Flex>
           <Flex
             sx={{
@@ -224,8 +243,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
               paddingBottom: '5px',
             }}
           >
-            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}> Farm Multiplier:</Text>{' '}
-            <Text sx={{ fontSize: isMobile ? '12px' : '14px' }}>{multiplier}</Text>
+            <Text sx={{ fontSize: '12px' }}> Farm Multiplier:</Text> <Text sx={{ fontSize: '12px' }}>{multiplier}</Text>
           </Flex>
           <Box as="ul" sx={{ paddingBottom: '25px' }}>
             <Flex as="li">
@@ -270,7 +288,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
         {...mobileProps}
       >
         <Flex>
-          <Text sx={{ marginBottom: '5px', fontSize: '16px', fontWeight: '700' }}>{lpLabel}</Text>
+          <Text sx={{ marginBottom: '5px', fontSize: '16px', fontWeight: '700' }}>{lpLabel}&nbsp;&nbsp;LP</Text>
         </Flex>
         <Flex>
           <CurrencyInputPanelRoi
@@ -301,127 +319,27 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (
         <Flex>
           <Text sx={{ marginBottom: '5px', fontSize: '16px', fontWeight: '700' }}>STAKED FOR</Text>
         </Flex>
-        <Flex sx={{ padding: '0 0 30px' }}>
-          <ButtonMenu activeIndex={indexStaked} onClick={handleClickStaked} size={isMobile ? 'sm' : 'md'}>
-            <ButtonMenuItem
-              sx={{
-                width: '100%',
-                maxWidth: 'calc(100%/4)',
-                height: '36px',
-                backgroundColor: indexStaked !== 0 ? 'white3' : 'yellow',
-                color: indexStaked !== 0 ? 'primaryButtonDisable' : 'White',
-                border: '0px',
-                borderTopRightRadius: indexStaked === 0 ? '10px' : '0px',
-                borderBottomLeftRadius: indexStaked === 0 ? '10px' : '0px',
-              }}
-            >
-              1D
-            </ButtonMenuItem>
-            <ButtonMenuItem
-              sx={{
-                width: '100%',
-                maxWidth: 'calc(100%/4)',
-                height: '36px',
-                backgroundColor: indexStaked !== 1 ? 'white3' : 'yellow',
-                color: indexStaked !== 1 ? 'primaryButtonDisable' : 'White',
-                border: '0px',
-                borderRadius: indexStaked === 1 ? '10px' : '0px',
-              }}
-            >
-              7D
-            </ButtonMenuItem>
-            <ButtonMenuItem
-              sx={{
-                width: '100%',
-                maxWidth: 'calc(100%/4)',
-                height: '36px',
-                backgroundColor: indexStaked !== 2 ? 'white3' : 'yellow',
-                color: indexStaked !== 2 ? 'primaryButtonDisable' : 'White',
-                border: '0px',
-                borderRadius: indexStaked === 2 ? '10px' : '0px',
-              }}
-            >
-              14D
-            </ButtonMenuItem>
-            <ButtonMenuItem
-              sx={{
-                width: '100%',
-                maxWidth: 'calc(100%/4)',
-                height: '36px',
-                backgroundColor: indexStaked !== 3 ? 'white3' : 'yellow',
-                color: indexStaked !== 3 ? 'primaryButtonDisable' : 'White',
-                border: '0px',
-                borderTopLeftRadius: indexStaked === 3 ? '10px' : '0px',
-                borderBottomLeftRadius: indexStaked === 3 ? '10px' : '0px',
-              }}
-            >
-              30D
-            </ButtonMenuItem>
-          </ButtonMenu>
-        </Flex>
+        <Box sx={{ marginBottom: '10px' }}>
+          <Tabs activeTab={indexStaked} variant="fullWidth">
+            <Tab index={0} label="1D" onClick={handleClickStaked} size="xsm" variant="fullWidth" />
+            <Tab index={1} label="7D" onClick={handleClickStaked} size="xsm" variant="fullWidth" />
+            <Tab index={2} label="14D" onClick={handleClickStaked} size="xsm" variant="fullWidth" />
+            <Tab index={3} label="30D" onClick={handleClickStaked} size="xsm" variant="fullWidth" />
+          </Tabs>
+        </Box>
         <Flex>
           <Text sx={{ marginBottom: '5px', fontSize: '16px', fontWeight: '700' }}>COMPOUNDING EVERY</Text>
         </Flex>
-        <Flex sx={{ padding: '0 0 30px' }}>
-          <ButtonMenu activeIndex={indexCompound} onClick={handleClickCompound} size={isMobile ? 'sm' : 'md'}>
-            <ButtonMenuItem
-              sx={{
-                width: '100%',
-                maxWidth: 'calc(100%/4)',
-                height: '36px',
-                backgroundColor: indexCompound !== 0 ? 'white3' : 'yellow',
-                color: indexCompound !== 0 ? 'primaryButtonDisable' : 'White',
-                border: '0px',
-                borderTopRightRadius: indexCompound === 0 ? '10px' : '0px',
-                borderBottomRightRadius: indexCompound === 0 ? '10px' : '0px',
-              }}
-            >
-              1D
-            </ButtonMenuItem>
-            <ButtonMenuItem
-              sx={{
-                width: '100%',
-                maxWidth: 'calc(100%/4)',
-                height: '36px',
-                backgroundColor: indexCompound !== 1 ? 'white3' : 'yellow',
-                color: indexCompound !== 1 ? 'primaryButtonDisable' : 'White',
-                border: '0px',
-                borderRadius: indexCompound === 1 ? '10px' : '0px',
-              }}
-            >
-              7D
-            </ButtonMenuItem>
-            <ButtonMenuItem
-              sx={{
-                width: '100%',
-                maxWidth: 'calc(100%/4)',
-                height: '36px',
-                backgroundColor: indexCompound !== 2 ? 'white3' : 'yellow',
-                color: indexCompound !== 2 ? 'primaryButtonDisable' : 'White',
-                border: '0px',
-                borderRadius: indexCompound === 2 ? '10px' : '0px',
-              }}
-            >
-              14D
-            </ButtonMenuItem>
-            <ButtonMenuItem
-              sx={{
-                width: '100%',
-                maxWidth: 'calc(100%/4)',
-                height: '36px',
-                backgroundColor: indexCompound !== 3 ? 'white3' : 'yellow',
-                color: indexCompound !== 3 ? 'primaryButtonDisable' : 'White',
-                border: '0px',
-                borderTopLeftRadius: indexCompound === 3 ? '10px' : '0px',
-                borderBottomLeftRadius: indexCompound === 3 ? '10px' : '0px',
-              }}
-            >
-              30D
-            </ButtonMenuItem>
-          </ButtonMenu>
-        </Flex>
+        <Box sx={{ marginBottom: '10px' }}>
+          <Tabs activeTab={indexCompound} variant="fullWidth">
+            <Tab index={0} label="1D" onClick={handleClickCompound} size="xsm" variant="fullWidth" />
+            <Tab index={1} label="7D" onClick={handleClickCompound} size="xsm" variant="fullWidth" />
+            <Tab index={2} label="14D" onClick={handleClickCompound} size="xsm" variant="fullWidth" />
+            <Tab index={3} label="30D" onClick={handleClickCompound} size="xsm" variant="fullWidth" />
+          </Tabs>
+        </Box>
         <Flex>
-          <Text sx={{ marginBottom: '5px', fontSize: '16px', fontWeight: '700' }}>ROI AT CURRENT RATES</Text>
+          <Text sx={{ marginBottom: '10px', fontSize: '16px', fontWeight: '700' }}>ROI AT CURRENT RATES</Text>
         </Flex>
         <Flex
           sx={{
