@@ -9,6 +9,7 @@ import Banner from 'components/Banner'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import partition from 'lodash/partition'
 import useWindowSize, { Size } from 'hooks/useDimensions'
+import { useFetchFarmLpAprs } from 'state/hooks'
 import { useVaults, usePollVaultsData } from 'state/vaults/hooks'
 import { Vault } from 'state/types'
 import { ViewMode } from './components/types'
@@ -20,6 +21,8 @@ const NUMBER_OF_VAULTS_VISIBLE = 12
 
 const Vaults: React.FC = () => {
   usePollVaultsData()
+  const { chainId } = useActiveWeb3React()
+  useFetchFarmLpAprs(chainId)
   const [stakedOnly, setStakedOnly] = useState(false)
   const [burnOnly, setBurnOnly] = useState(false)
   const [vaultType, setVaultType] = useState('allTypes')
@@ -33,7 +36,6 @@ const Vaults: React.FC = () => {
   const { vaults: initVaults } = useVaults()
   console.log(initVaults)
   const [allVaults, setAllVaults] = useState(initVaults)
-  const { chainId } = useActiveWeb3React()
   const isActive = !pathname.includes('history')
   const { onCompound } = useCompound()
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')

@@ -11,6 +11,7 @@ import cleanVaultData from './cleanVaultData'
 // import cleanFarmData from './cleanFarmData'
 
 const fetchVaults = async (chainId: number, tokenPrices: TokenPrices[], farmLpAprs: FarmLpAprsType) => {
+  console.log(farmLpAprs)
   const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
   const vaultIds = []
   const vaultCalls = filteredVaults.flatMap((vault) => {

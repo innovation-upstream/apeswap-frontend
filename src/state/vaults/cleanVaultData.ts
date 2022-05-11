@@ -15,6 +15,7 @@ const cleanVaultData = (
   chainId: number,
 ) => {
   const data = chunkedVaults.map((chunk, index) => {
+    console.log(farmLpAprs)
     const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
     const vaultConfig = filteredVaults?.find((vault) => vault.id === vaultIds[index])
     console.log(vaultConfig)
@@ -49,6 +50,8 @@ const cleanVaultData = (
     const rewardTokensPerBlock = rewardsPerBlock ? getBalanceNumber(new BigNumber(rewardsPerBlock)) : new BigNumber(0)
     // This only works for apeswap farms
     const lpApr = farmLpAprs?.lpAprs?.find((lp) => lp.pid === vaultConfig.masterchef.pid)?.lpApr * 100
+    console.log(farmLpAprs)
+    console.log(lpApr)
 
     const yearlyRewardTokens = BLOCKS_PER_YEAR.times(rewardTokensPerBlock).times(poolWeight)
     const oneThousandDollarsWorthOfToken = 1000 / rewardTokenPriceUsd
@@ -62,6 +65,7 @@ const cleanVaultData = (
       compoundFrequency: VAULT_COMPOUNDS_PER_DAY,
       performanceFee: 0,
     })
+
     const amountEarnedDaily = tokenEarnedPerThousandDollarsCompounding({
       numberOfDays: 1,
       farmApr: lpApr ? apr + lpApr : apr,
@@ -88,7 +92,6 @@ const cleanVaultData = (
         yearly: yealryApy,
       },
     }
-    return {}
   })
   return data
 }
