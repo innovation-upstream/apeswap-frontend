@@ -4,12 +4,19 @@ import { Text } from '@apeswapfinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { escapeRegExp } from '../../utils'
 
-const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
+const StyledInput = styled.input<{
+  error?: boolean
+  fontSize?: string
+  align?: string
+  width?: string
+  fontWeight?: number
+  marginRight: string
+}>`
   color: ${({ error, theme }) => (error ? theme.colors.error : theme.colors.text)};
-  width: 0;
+  width: ${({ width }) => width || 0};
   height: 100%;
   position: relative;
-  font-weight: 500;
+  font-weight: ${({ fontWeight }) => fontWeight || 500};
   outline: none;
   border: none;
   flex: 1 1 auto;
@@ -21,6 +28,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   text-overflow: ellipsis;
   padding: 0px;
   margin-left: ${({ align }) => (align === 'left' ? '20px' : '0px')};
+  margin-right: ${({ marginRight }) => marginRight};
   -webkit-appearance: textfield;
 
   ::-webkit-search-decoration {
@@ -60,6 +68,8 @@ export const Input = React.memo(function InnerInput({
   error?: boolean
   fontSize?: string
   align?: 'right' | 'left'
+  width?: 'default' | 'full'
+  fontWeight?: number
 } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'as'>) {
   const { t } = useTranslation()
   const enforcer = (nextUserInput: string) => {
@@ -90,7 +100,7 @@ export const Input = React.memo(function InnerInput({
         maxLength={79}
         spellCheck="false"
         fontSize="22px"
-        style={{ marginRight: removeLiquidity ? '2.5px' : '10px' }}
+        marginRight={removeLiquidity ? '2.5px' : '10px'}
       />
       {removeLiquidity && (
         <div style={{ marginRight: '10px' }}>
