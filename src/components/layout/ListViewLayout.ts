@@ -1,5 +1,5 @@
 import { Flex } from '@apeswapfinance/uikit'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 
 const ListViewLayout = styled(Flex)`
   position: relative;

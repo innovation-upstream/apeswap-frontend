@@ -128,26 +128,33 @@ export default function Swap() {
 
   const updateParams = useCallback(
     (direction: string, currency: string) => {
-      const searchParams = new URLSearchParams(history.location.search)
+      const { inputCurrency, outputCurrency } = router.query
+      const query: Record<string, string> = {}
 
-      if (direction === 'inputCurrency' && currency === searchParams.get('outputCurrency')) {
-        if (searchParams.get('inputCurrency') !== null) {
-          searchParams.set('outputCurrency', searchParams.get('inputCurrency'))
-        } else {
-          searchParams.delete('outputCurrency')
+      if (direction === 'inputCurrency' && currency === outputCurrency) {
+        if (inputCurrency) {
+          query.outputCurrency = inputCurrency as string
         }
-      } else if (direction === 'outputCurrency' && currency === searchParams.get('inputCurrency')) {
-        if (searchParams.get('outputCurrency') !== null) {
-          searchParams.set('inputCurrency', searchParams.get('outputCurrency'))
-        } else {
-          searchParams.delete('inputCurrency')
+      } else if (direction === 'outputCurrency' && currency === inputCurrency) {
+        if (outputCurrency) {
+          query.inputCurrency = outputCurrency as string
         }
       }
 
-      searchParams.set(direction, currency)
-      history.push(`?${searchParams.toString()}`)
+      query[direction] = currency
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            ...query,
+          },
+        },
+        undefined,
+        { shallow: true },
+      )
     },
-    [history],
+    [router],
   )
 
   // modal and loading

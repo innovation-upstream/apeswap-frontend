@@ -16,12 +16,11 @@ import { LanguageProvider } from './contexts/Localization'
 
 const Web3ProviderNetwork = typeof window === 'object' ? createWeb3ReactRoot(NetworkContextName) : React.Fragment
 
+const queryClient = new QueryClient()
+
 const Providers: React.FC<{ colorMode?: string }> = ({ colorMode, children }) => {
   const { pathname } = useRouter()
 
-const queryClient = new QueryClient()
-
-const Providers: React.FC = ({ children }) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>

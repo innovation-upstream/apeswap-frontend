@@ -55,10 +55,10 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@apeswapfinance/token-lists@1.0.270":
-  version "1.0.270"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.270/65cf22fc325352d0ea1e8180e1ea69567e2103634e4dc757eaa82b5601777fa6#a5326bf80531b0522f704a13f317195a68d8736e"
-  integrity sha512-A/PhbO8YfZgaRTKqn4c0Bb18SNayLbR6tjvMpfhmiUVl7sn50j0YNXSIoHez5IyonT3sKMTdfH+VxNtKYf8qYQ==
+"@apeswapfinance/token-lists@1.0.272":
+  version "1.0.272"
+  resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.272/8bf72007d6b8c88bb360b7c9a3e9493a41eb69ae4c70a99984374575bd6087e7#a4d9fb83996c4bdbba57ab7d146a2f33145660cb"
+  integrity sha512-OaEGouBn7Yr/SxBBnvLHb0A1zM90QXg0AqLdv8TPx+kQn+FpMdMHc3NtGC0CtI5K8zE7sz2rHx+jcTCn61uP4A==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
@@ -4165,6 +4165,13 @@ axios@0.21.3:
   version "0.21.3"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.3.tgz#f85d9b747f9b66d59ca463605cedf1844872b82e"
   integrity sha512-JtoZ3Ndke/+Iwt5n+BgSli/3idTvpt5OjKyoCmz4LX5+lPiY5l7C1colYezhlxThjNa/NhngCUWZSZFypIFuaA==
+  dependencies:
+    follow-redirects "^1.14.0"
+
+axios@^0.21.1:
+  version "0.21.4"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
+  integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
   dependencies:
     follow-redirects "^1.14.0"
 
@@ -10254,6 +10261,20 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
+listr2@^3.8.3:
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/listr2/-/listr2-3.14.0.tgz#23101cc62e1375fd5836b248276d1d2b51fdbe9e"
+  integrity sha512-TyWI8G99GX9GjE54cJ+RrNMcIFBfwMPxc3XTFiAYGN4s10hWROGtOg7+O6u6LE3mNkyld7RSLE6nrKBvTfcs3g==
+  dependencies:
+    cli-truncate "^2.1.0"
+    colorette "^2.0.16"
+    log-update "^4.0.0"
+    p-map "^4.0.0"
+    rfdc "^1.3.0"
+    rxjs "^7.5.1"
+    through "^2.3.8"
+    wrap-ansi "^7.0.0"
+
 load-script@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/load-script/-/load-script-1.0.0.tgz#0491939e0bee5643ee494a7e3da3d2bac70c6ca4"
@@ -11018,6 +11039,11 @@ nano-time@1.0.0:
   integrity sha1-sFVPaa2J4i0JB/ehKwmTpdlhN+8=
   dependencies:
     big-integer "^1.6.16"
+
+nanoid@^3.1.30:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
+  integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
 
 nanoid@^3.3.1:
   version "3.3.1"

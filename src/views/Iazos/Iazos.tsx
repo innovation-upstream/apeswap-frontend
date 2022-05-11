@@ -95,7 +95,7 @@ const Iazos: React.FC = () => {
             <TopNavWrapper />
             <HeaderWrapper>
               <StyledHeader>{t('Self - Serve Launchpad')}</StyledHeader>
-              <Link to="/ss-iao/create">
+              <Link href="/ss-iao/create">
                 <StyledButton> {t('CREATE')} </StyledButton>
               </Link>
             </HeaderWrapper>
@@ -121,7 +121,7 @@ const Iazos: React.FC = () => {
               {isInitialized || iazos ? (
                 renderIazos()?.map((iazo) => {
                   return (
-                    <Link to={`/ss-iao/${iazo.iazoContractAddress}`} key={iazo.iazoContractAddress}>
+                    <Link href={`/ss-iao/${iazo.iazoContractAddress}`} key={iazo.iazoContractAddress}>
                       <IazoCard iazo={iazo} key={iazo.iazoContractAddress} />
                     </Link>
                   )

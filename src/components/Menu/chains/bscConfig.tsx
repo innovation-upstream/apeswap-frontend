@@ -4,6 +4,7 @@ import { ContextApi } from 'contexts/Localization/types'
 import { EXCHANGE } from '../constants'
 
 const bscConfig: (t: ContextApi['t']) => any[] = (t) => [
+  EXCHANGE(t),
   {
     label: t('Stake'),
     icon: icons.FARM,

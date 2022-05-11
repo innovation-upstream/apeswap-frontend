@@ -37,7 +37,12 @@ const MenuTabButton: React.FC = () => {
 
   return (
     <Wrapper>
-      <Toggle size="md" labels={[t('ACTIVE'), t('INACTIVE')]} onClick={handleClick} checked={pathname.includes('history')} />
+      <Toggle
+        size="md"
+        labels={[t('ACTIVE'), t('INACTIVE')]}
+        onClick={handleClick}
+        checked={pathname.includes('history')}
+      />
     </Wrapper>
   )
 }

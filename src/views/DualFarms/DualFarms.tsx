@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import BigNumber from 'bignumber.js'
 import { Flex } from '@apeswapfinance/uikit'
@@ -15,20 +15,16 @@ import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from '../Farms/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
-const { search } = window.location
-const params = new URLSearchParams(search)
-
-const urlSearchedFarm = parseInt(params.get('pid'))
-
 interface IDualFarms {
+  pid?: number
   showHistory?: boolean
-  view?: any
 }
 
-const DualFarms: React.FC<IDualFarms> = ({ showHistory, view }) => {
+const DualFarms: React.FC<IDualFarms> = ({ pid, showHistory }) => {
   usePollDualFarms()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
+  const urlSearchedFarm = pid
 
   const { t } = useTranslation()
   const { pathname } = useRouter()
@@ -38,7 +34,7 @@ const DualFarms: React.FC<IDualFarms> = ({ showHistory, view }) => {
   const [sortOption, setSortOption] = useState('all')
 
   const [stakedOnly, setStakedOnly] = useState(false)
-  const isActive = !pathname.includes('history')
+  const isActive = !showHistory
 
   const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.multiplier === '0X')

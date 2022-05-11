@@ -17,14 +17,20 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   }
 
   return {
-    props: {
-      ...initialProps?.props,
-      swapBanners,
-    },
+    props: JSON.parse(
+      JSON.stringify({
+        ...initialProps?.props,
+        swapBanners,
+      }),
+    ),
   }
 })
 
-const SwapPage: React.FC<{ swapBanners?: any }> = ({ swapBanners }) => {
+interface SwapPageProps {
+  swapBanners?: any
+}
+
+const SwapPage: React.FC<SwapPageProps> = ({ swapBanners }) => {
   return (
     <SwapContextProvider swapBanner={swapBanners}>
       <Swap />

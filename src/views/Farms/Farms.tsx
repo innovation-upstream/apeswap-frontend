@@ -15,17 +15,22 @@ import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
 
-const Farms: React.FC = () => {
+interface IFarms {
+  pid?: number
+  showHistory?: boolean
+}
+
+const Farms: React.FC<IFarms> = ({ pid, showHistory }) => {
   useFetchLpTokenPrices()
   usePollFarms()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
-  const { pathname, query: params } = useRouter()
+  const { pathname } = useRouter()
   const { t } = useTranslation()
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const farmsLP = useFarms(account)
-  const urlSearchedFarm = parseInt(params?.pid as string)
+  const urlSearchedFarm = pid
   const [query, setQuery] = useState('')
   const [sortOption, setSortOption] = useState('all')
   const loadMoreRef = useRef<HTMLDivElement>(null)
@@ -49,7 +54,7 @@ const Farms: React.FC = () => {
   }, [observerIsSet])
 
   const [stakedOnly, setStakedOnly] = useState(false)
-  const isActive = !pathname.includes('history')
+  const isActive = !showHistory
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')

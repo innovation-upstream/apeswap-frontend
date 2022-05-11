@@ -27,6 +27,33 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
+  // TODO: clean up this code
+  // Hack to get the close modal function from the provider
+  // Need to export ModalContext from uikit to clean up the code
+  const [, closeModal] = useModal(<></>)
+  const [onPresentAddLiquidityWidgetModal] = useModal(
+    <LiquidityModal handleClose={closeModal} />,
+    true,
+    true,
+    'liquidityWidgetModal',
+  )
+
+  const showLiquidity = (token, quoteToken) => {
+    dispatch(
+      selectCurrency({
+        field: Field.INPUT,
+        currencyId: token,
+      }),
+    )
+    dispatch(
+      selectCurrency({
+        field: Field.OUTPUT,
+        currencyId: quoteToken,
+      }),
+    )
+    onPresentAddLiquidityWidgetModal()
+  }
+
   const farmsListView = farms.map((farm) => {
     const [token1, token2] = farm.lpSymbol.split('-')
     const bscScanUrl = `https://bscscan.com/address/${farm.lpAddresses[chainId]}`
