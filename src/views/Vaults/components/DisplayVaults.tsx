@@ -59,7 +59,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
 
   const vaultsListView = vaults.map((vault) => {
     const totalDollarAmountStaked = parseFloat(vault?.totalStaked) * vault?.stakeTokenPrice
-    const liquidityUrl = `https://apeswap.finance/add/`
+    const liquidityUrl = `https://apeswap.finance/swap/`
     const userAllowance = vault?.userData?.allowance
     const userEarnings = getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards) || new BigNumber(0))
     const userEarningsUsd = `$${(

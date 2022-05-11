@@ -44,50 +44,27 @@ const cleanVaultData = (
     const totalTokensStakedMC = getBalanceNumber(new BigNumber(stakeTokenMCBalance))
     const totalValueStakedInMCUsd = totalTokensStakedMC * stakeTokenPriceUsd
 
-    // const quoteTokenAmountTotal = isPair
-    //   ? new BigNumber(quoteTokenPairBalance).div(new BigNumber(10).pow(quoteTokenDecimals))
-    //   : new BigNumber(strategyPairBalance.toString()).div(new BigNumber(10).pow(quoteTokenDecimals))
-    // const pairTokenRatio = parseFloat(strategyPairBalance) / parseFloat(pairTotalSupply.toString())
-    // const lptokenRatio = new BigNumber(pairBalanceMc).div(new BigNumber(pairTotalSupply))
-    // const quoteTokenAmountMc = quoteTokenAmountTotal.times(lptokenRatio)
-    // const totalInQuoteToken = isPair
-    //   ? quoteTokenAmountMc.times(new BigNumber(2))
-    //   : new BigNumber(getBalanceNumber(pairBalanceMc, quoteTokenDecimals))
-    // const totalStaked = isPair
-    //   ? totalInQuoteToken.times(quoteTokenPriceUsd).times(pairTokenRatio).toString()
-    //   : quoteTokenAmountTotal.times(quoteTokenPriceUsd).toString()
-
-    // const totalValueInLp =
-    //   isPair &&
-    //   new BigNumber(quoteTokenPairBalance)
-    //     .div(new BigNumber(10).pow(18))
-    //     .times(new BigNumber(2))
-    //     .times(quoteTokenPriceUsd)
-    // const stakeTokenPrice = isPair
-    //   ? totalValueInLp.div(new BigNumber(getBalanceNumber(pairTotalSupply))).toNumber()
-    //   : quoteTokenPriceUsd
-
     // Calculate APR
     const poolWeight = totalAllocPoint ? allocPoint.div(new BigNumber(totalAllocPoint)) : new BigNumber(0)
     const rewardTokensPerBlock = rewardsPerBlock ? getBalanceNumber(new BigNumber(rewardsPerBlock)) : new BigNumber(0)
+    // This only works for apeswap farms
+    const lpApr = farmLpAprs?.lpAprs?.find((lp) => lp.pid === vaultConfig.masterchef.pid)?.lpApr * 100
 
     const yearlyRewardTokens = BLOCKS_PER_YEAR.times(rewardTokensPerBlock).times(poolWeight)
     const oneThousandDollarsWorthOfToken = 1000 / rewardTokenPriceUsd
 
-    // const apr = yearlyRewardTokens.times(new BigNumber(earnTokenPriceUsd)).div(stakeTokenPriceUsd).times(100)
     const apr = getFarmApr(poolWeight, new BigNumber(rewardTokenPriceUsd), new BigNumber(totalValueStakedInMCUsd))
-    console.log(apr.toString())
 
     const amountEarnedYealry = tokenEarnedPerThousandDollarsCompounding({
       numberOfDays: 365,
-      farmApr: apr,
+      farmApr: lpApr ? apr + lpApr : apr,
       tokenPrice: rewardTokenPriceUsd,
       compoundFrequency: VAULT_COMPOUNDS_PER_DAY,
       performanceFee: 0,
     })
     const amountEarnedDaily = tokenEarnedPerThousandDollarsCompounding({
       numberOfDays: 1,
-      farmApr: apr,
+      farmApr: lpApr ? apr + lpApr : apr,
       tokenPrice: rewardTokenPriceUsd,
       compoundFrequency: VAULT_COMPOUNDS_PER_DAY,
       performanceFee: 0,

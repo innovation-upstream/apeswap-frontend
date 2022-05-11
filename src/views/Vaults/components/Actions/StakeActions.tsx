@@ -145,7 +145,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             value={`${rawStakedBalance.toFixed(2)}`}
             value2={userStakedBalanceUsd}
             value2Secondary
-            width={100}
+            width={200}
             height={50}
             lineHeight={15}
             ml={10}

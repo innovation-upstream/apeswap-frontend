@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
-import { useSousHarvestAll } from 'hooks/useHarvest'
 import { useToast } from 'state/hooks'
-import { fetchPoolsUserDataAsync } from 'state/pools'
+import { fetchVaultUserDataAsync } from 'state/vaults'
 import { getEtherscanLink } from 'utils'
+import useHarvestAllMaximizer from 'views/Vaults/hooks/useHarvestAllMaximizer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAppDispatch } from 'state'
 import { StyledButtonSquare } from './styles'
 
 interface HarvestActionsProps {
-  sousIds: number[]
+  pids: number[]
   disabled?: boolean
 }
 
-const HarvestAll: React.FC<HarvestActionsProps> = ({ sousIds, disabled }) => {
+const HarvestAll: React.FC<HarvestActionsProps> = ({ pids, disabled }) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onHarvestAll } = useSousHarvestAll(sousIds)
+  const { onHarvestAll } = useHarvestAllMaximizer(pids)
   const { toastSuccess } = useToast()
 
   const handleHarvestAll = async () => {
@@ -34,7 +34,7 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ sousIds, disabled }) => {
         console.error(e)
         setPendingTrx(false)
       })
-    dispatch(fetchPoolsUserDataAsync(chainId, account))
+    dispatch(fetchVaultUserDataAsync(account, chainId))
     setPendingTrx(false)
   }
 
@@ -42,11 +42,11 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ sousIds, disabled }) => {
     <StyledButtonSquare
       height={36}
       minWidth={100}
-      disabled={disabled || pendingTrx || sousIds.length <= 0}
+      disabled={disabled || pendingTrx || pids.length <= 0}
       onClick={handleHarvestAll}
       load={pendingTrx}
     >
-      HARVEST ALL
+      HARVEST ALL ({pids.length})
     </StyledButtonSquare>
   )
 }

@@ -59,7 +59,7 @@ const VaultMenu: React.FC<ListViewProps> = ({
         <StyledText> Staked </StyledText>
       </ToggleWrapper>
       <ClaimAllWrapper>
-        <HarvestAll sousIds={vaultPids} />
+        <HarvestAll pids={vaultPids} />
       </ClaimAllWrapper>
     </ControlContainer>
   )
