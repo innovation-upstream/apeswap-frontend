@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Modal, Text, LinkExternal, Flex } from '@apeswapfinance/uikit'
-
-import { calculateBananaEarnedPerThousandDollars, apyModalRoi } from 'utils/compoundApyHelpers'
+import { Modal, Tab, Tabs } from '@apeswapfinance/uikit'
+import { apyModalRoi, tokenEarnedPerThousandDollarsCompounding } from 'utils/compoundApyHelpers'
+import { Field } from 'state/mint/actions'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useDerivedMintInfo } from 'state/mint/hooks'
+import { useCurrency } from 'hooks/Tokens'
+import { useCurrencyBalance } from 'state/wallet/hooks'
+import { Button, Svg, Text } from '@ape.swap/uikit'
+import { CurrencyAmount } from '@apeswapfinance/sdk'
+import CurrencyInputPanelRoi from 'components/ApyCalculator/CurrencyInputRoi/index '
+import { Box, Flex, Heading } from 'theme-ui'
+import DetailsContent from 'components/ApyCalculator/DetailsContent'
+import useIsMobile from 'hooks/useIsMobile'
 import { useTranslation } from 'contexts/Localization'
+import styles from './styles'
+
+const StyledBalanceText = styled(Text)`
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 5rem;
+  text-overflow: ellipsis;
+`
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
@@ -13,142 +31,153 @@ interface ApyCalculatorModalProps {
   rewardTokenPrice?: number
   apy?: number
   addLiquidityUrl?: string
+  apr?: number
+  lpApr?: number
+  multiplier?: number
+  detailApy?: number
+  lpAddresses?: string
 }
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, auto);
-  margin-bottom: 24px;
-`
+const amountButtons = ['100', '1000']
+const intervals = [1, 7, 14, 30]
 
-const GridItem = styled.div`
-  margin-bottom: 10px;
-`
-
-const Description = styled(Text)`
-  max-width: 320px;
-  margin-bottom: 28px;
-`
-
-const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
-  onDismiss,
-  lpLabel,
-  rewardTokenName,
-  rewardTokenPrice,
-  apy,
-  addLiquidityUrl,
-}) => {
+const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (props) => {
+  const { onDismiss, lpLabel, rewardTokenPrice, apr, lpApr, lpAddresses } = props
+  const [numberOfDays, setNumberOfDays] = useState(1)
+  const [compoundFrequency, setCompoundFrequency] = useState(1)
+  const [amountDollars, setAmountDollars] = useState('0')
+  const [inputValue, setInputValue] = useState('0')
+  const { account } = useActiveWeb3React()
+  const isMobile = useIsMobile()
   const { t } = useTranslation()
-  const farmApy = new BigNumber(apy).times(new BigNumber(100)).toNumber()
+
   const tokenPrice =
     typeof rewardTokenPrice === 'number' ? rewardTokenPrice : new BigNumber(rewardTokenPrice).toNumber()
   const oneThousandDollarsWorthOfBanana = 1000 / tokenPrice
 
-  const bananaEarnedPerThousand1D = calculateBananaEarnedPerThousandDollars({
-    numberOfDays: 1,
-    farmApy,
-    rewardTokenPrice,
-  })
-  const bananaEarnedPerThousand7D = calculateBananaEarnedPerThousandDollars({
-    numberOfDays: 7,
-    farmApy,
-    rewardTokenPrice,
-  })
-  const bananaEarnedPerThousand30D = calculateBananaEarnedPerThousandDollars({
-    numberOfDays: 30,
-    farmApy,
-    rewardTokenPrice,
-  })
-  const bananaEarnedPerThousand365D = calculateBananaEarnedPerThousandDollars({
-    numberOfDays: 365,
-    farmApy,
-    rewardTokenPrice,
+  const onIntervalClick = (type: 'staked' | 'compound') => (index: number) => {
+    if (type === 'staked') {
+      setNumberOfDays(intervals[index])
+    } else {
+      setCompoundFrequency(intervals[index])
+    }
+  }
+
+  const onUserInput = (value: string) => {
+    setInputValue(value)
+    setAmountDollars(null)
+  }
+
+  const currencyA = useCurrency(lpAddresses)
+  const { currencies } = useDerivedMintInfo(currencyA ?? undefined, undefined)
+  const balanceA = useCurrencyBalance(account ?? undefined, currencies[Field.CURRENCY_A])
+
+  function Balance({ balance }: { balance: CurrencyAmount }) {
+    return <StyledBalanceText title={balance?.toExact()}>{balance?.toSignificant(4)}</StyledBalanceText>
+  }
+
+  const modalProps = {
+    style: {
+      overflowY: 'auto',
+      maxHeight: '85vh',
+    },
+  }
+
+  const compoundROIRates = tokenEarnedPerThousandDollarsCompounding({
+    numberOfDays,
+    farmApr: lpApr + apr,
+    tokenPrice,
+    compoundFrequency,
+    amountDollar: parseFloat(amountDollars || inputValue),
   })
 
+  const percentageCompound = apyModalRoi({
+    amountEarned: compoundROIRates,
+    amountInvested: oneThousandDollarsWorthOfBanana,
+  })
+
+  const compoundROIRatesValue = Number.isNaN(compoundROIRates) ? 0 : compoundROIRates
+  const percentageCompoundValue = Number.isNaN(parseFloat(percentageCompound)) ? 0 : percentageCompound
+
   return (
-    <Modal onDismiss={onDismiss} title={t('CURRENT RATES')}>
-      <Grid>
-        <GridItem>
-          <Text fontSize="12px" color="gray" textTransform="uppercase" mb="20px">
-            {t('Timeframe')}
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text fontSize="12px" color="gray" textTransform="uppercase" mb="20px">
-            {t('Return')}
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text fontSize="12px" color="gray" textTransform="uppercase" mb="20px">
-            {rewardTokenName}
-            {t(' per $1000')}
-          </Text>
-        </GridItem>
-        {/* 1 day row */}
-        <GridItem>
-          <Text>{t('1d')}</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({ amountEarned: bananaEarnedPerThousand1D, amountInvested: oneThousandDollarsWorthOfBanana })}%
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{bananaEarnedPerThousand1D}</Text>
-        </GridItem>
-        {/* 7 day row */}
-        <GridItem>
-          <Text>{t('7d')}</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({ amountEarned: bananaEarnedPerThousand7D, amountInvested: oneThousandDollarsWorthOfBanana })}%
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{bananaEarnedPerThousand7D}</Text>
-        </GridItem>
-        {/* 30 day row */}
-        <GridItem>
-          <Text>{t('30d')}</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({ amountEarned: bananaEarnedPerThousand30D, amountInvested: oneThousandDollarsWorthOfBanana })}
-            %
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{bananaEarnedPerThousand30D}</Text>
-        </GridItem>
-        {/* 365 day / APY row */}
-        <GridItem>
-          <Text>{`${t('365d')}${t('')}`}</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({
-              amountEarned: bananaEarnedPerThousand365D,
-              amountInvested: oneThousandDollarsWorthOfBanana,
-            })}
-            %
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{bananaEarnedPerThousand365D}</Text>
-        </GridItem>
-      </Grid>
-      <Description fontSize="12px" color="gray">
-        {t(
-          'Returns are calculated based on current rates, assuming daily compounding. Estimated returns are not guaranteed and are provided for convenience only.',
-        )}
-      </Description>
-      <Flex justifyContent="center">
-        <LinkExternal href={addLiquidityUrl}>
-          {t('Get')} {lpLabel}
-        </LinkExternal>
+    <Modal
+      onDismiss={onDismiss}
+      title={t('ROI Calculator')}
+      maxWidth={isMobile ? '320px' : '400px'}
+      minWidth={isMobile ? '320px' : '400px'}
+      {...modalProps}
+    >
+      <Heading as="h3" sx={styles.title}>
+        {t(lpLabel)}&nbsp;&nbsp;LP
+      </Heading>
+      <CurrencyInputPanelRoi
+        value={amountDollars?.toString()}
+        onUserInput={onUserInput}
+        currency={currencies[Field.CURRENCY_A]}
+        isLp
+      />
+      <Flex sx={styles.buttonsContainer}>
+        <Flex sx={{ columnGap: ['8px', '17px'] }}>
+          {amountButtons.map((amount) => (
+            <Button key={`${amount}`} size="sm" onClick={() => setAmountDollars(amount)}>
+              ${amount}
+            </Button>
+          ))}
+        </Flex>
+        <Text>
+          {t('Balance: ')}
+          <Balance balance={balanceA} />
+        </Text>
       </Flex>
+      <Heading sx={styles.title}>{t('STAKED FOR')}</Heading>
+      <Box sx={{ marginBottom: '30px' }}>
+        <Tabs activeTab={intervals.indexOf(numberOfDays)} variant="fullWidth">
+          {intervals.map((interval, index) => (
+            <Tab
+              key={`${interval}D`}
+              index={index}
+              label={t(`${interval}D`)}
+              onClick={onIntervalClick('staked')}
+              size="xsm"
+              variant="fullWidth"
+            />
+          ))}
+        </Tabs>
+      </Box>
+      <Heading sx={styles.title}>{t('COMPOUNDING EVERY')}</Heading>
+      <Box sx={{ marginBottom: '30px' }}>
+        <Tabs activeTab={intervals.indexOf(compoundFrequency)} variant="fullWidth">
+          {intervals.map((interval, index) => (
+            <Tab
+              key={`${interval}D`}
+              index={index}
+              label={t(`${interval}D`)}
+              onClick={onIntervalClick('compound')}
+              size="xsm"
+              variant="fullWidth"
+            />
+          ))}
+        </Tabs>
+      </Box>
+      <Heading sx={styles.title}>{t('ROI AT CURRENT RATES')}</Heading>
+      <Flex sx={styles.roiContainer}>
+        <Svg icon="banana_token" width="46px" />
+        <Box>
+          <Text as="p" weight="bold" variant="lg" color="white1">
+            ${compoundROIRatesValue}
+          </Text>
+
+          <Box sx={styles.roiBanana}>
+            <Text variant="sm" color="white1">
+              ~{compoundROIRatesValue} BANANA
+            </Text>
+            <Text variant="sm" color="white1">
+              ({percentageCompoundValue}%)
+            </Text>
+          </Box>
+        </Box>
+      </Flex>
+      <DetailsContent {...props} aprRewards={(lpApr + apr).toFixed(2)} />
     </Modal>
   )
 }
