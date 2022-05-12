@@ -82,7 +82,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
         backgroundColor: vault.type === 'AUTO' ? 'green' : 'red',
       },
       title: (
-        <Text ml={10} weight="bold">
+        <Text ml={isMobile ? 5 : 10} weight="bold" style={{ fontSize: isMobile ? '14px' : '16px' }}>
           {vault.stakeToken.symbol}
         </Text>
       ),
@@ -94,23 +94,10 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       open: openId === vault.pid,
       cardContent: (
         <>
-          <Flex sx={{ width: '90px', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-            {/* {!isMobile && (
-              <>
-                <a href={vault.projectLink} target="_blank" rel="noreferrer">
-                  <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
-                </a>
-                <a href={vault?.twitter} target="_blank" rel="noreferrer">
-                  <IconButton icon="twitter" color="primaryBright" width={20} />
-                </a>
-              </>
-            )} */}
-            <></>
-          </Flex>
           <ListViewContent
             title="Daily APY"
             value={`${isActive ? vault?.apy?.daily?.toFixed(2) : '0.00'}%`}
-            width={isMobile ? 95 : 140}
+            width={isMobile ? 90 : 140}
             toolTip="APR is calculated based on current value of of the token, reward rate and vault % owned."
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0, 60%)"
@@ -128,7 +115,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           <ListViewContent
             title="Total Staked"
             value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
-            width={isMobile ? 160 : 170}
+            width={isMobile ? 200 : 170}
             toolTip="The total value of the tokens currently staked in this vault."
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0%, 75%)"
@@ -137,7 +124,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           <ListViewContent
             title={vault.version === 'V1' ? 'Staked' : 'Earned'}
             value={vault.version === 'V1' ? userStakedBalanceUsd : userEarningsUsd}
-            width={isMobile ? 80 : 115}
+            width={isMobile ? 50 : 115}
             height={50}
           />
         </>
