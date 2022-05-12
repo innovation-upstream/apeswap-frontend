@@ -16,7 +16,7 @@ const styles = {
     alignItems: 'center',
   },
   roiContainer: {
-    backgroundColor: 'textareaColor',
+    backgroundColor: 'brown',
     borderRadius: '20px',
     justifyContent: 'center',
     alignItems: 'center',

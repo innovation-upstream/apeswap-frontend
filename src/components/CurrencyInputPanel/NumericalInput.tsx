@@ -13,7 +13,7 @@ const StyledInput = styled.input<{
   marginRight: string
 }>`
   color: ${({ error, theme }) => (error ? theme.colors.error : theme.colors.text)};
-  width: ${({ width }) => width || 0};
+  width: ${({ width }) => (width === 'full' ? 'initial' : 0)};
   height: 100%;
   position: relative;
   font-weight: ${({ fontWeight }) => fontWeight || 500};
@@ -27,7 +27,11 @@ const StyledInput = styled.input<{
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0px;
+<<<<<<< HEAD
   margin-left: ${({ align }) => (align === 'left' ? '20px' : '0px')};
+=======
+  margin-left: ${({ align, width }) => (align === 'left' || width === 'full' ? '20px' : '0px')};
+>>>>>>> a5e82d0316ad9aa963dce1e0d914d25a108ccadd
   margin-right: ${({ marginRight }) => marginRight};
   -webkit-appearance: textfield;
 

@@ -14,6 +14,7 @@ import CurrencyInputPanelRoi from 'components/ApyCalculator/CurrencyInputRoi/ind
 import { Box, Flex, Heading } from 'theme-ui'
 import DetailsContent from 'components/ApyCalculator/DetailsContent'
 import useIsMobile from 'hooks/useIsMobile'
+import { useTranslation } from 'contexts/Localization'
 import styles from './styles'
 
 const StyledBalanceText = styled(Text)`
@@ -48,6 +49,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (props) => {
   const [inputValue, setInputValue] = useState('0')
   const { account } = useActiveWeb3React()
   const isMobile = useIsMobile()
+  const { t } = useTranslation()
 
   const tokenPrice =
     typeof rewardTokenPrice === 'number' ? rewardTokenPrice : new BigNumber(rewardTokenPrice).toNumber()
@@ -94,24 +96,25 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (props) => {
     amountInvested: oneThousandDollarsWorthOfBanana,
   })
 
-  const compoundROIRatesValue = Number.isNaN(Number(compoundROIRates)) ? 'Loading...' : compoundROIRates
-  const percentageCompoundValue = Number.isNaN(Number(percentageCompound)) ? 'Loading...' : percentageCompound
+  const compoundROIRatesValue = Number.isNaN(compoundROIRates) ? 0 : compoundROIRates
+  const percentageCompoundValue = Number.isNaN(parseFloat(percentageCompound)) ? 0 : percentageCompound
 
   return (
     <Modal
       onDismiss={onDismiss}
-      title="ROI"
+      title={t('ROI Calculator')}
       maxWidth={isMobile ? '320px' : '400px'}
       minWidth={isMobile ? '320px' : '400px'}
       {...modalProps}
     >
       <Heading as="h3" sx={styles.title}>
-        {lpLabel}&nbsp;&nbsp;LP
+        {t(lpLabel)}&nbsp;&nbsp;LP
       </Heading>
       <CurrencyInputPanelRoi
         value={amountDollars?.toString()}
         onUserInput={onUserInput}
         currency={currencies[Field.CURRENCY_A]}
+        isLp
       />
       <Flex sx={styles.buttonsContainer}>
         <Flex sx={{ columnGap: ['8px', '17px'] }}>
@@ -121,16 +124,19 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (props) => {
             </Button>
           ))}
         </Flex>
-        <Text>Balance: {<Balance balance={balanceA} /> ? <Balance balance={balanceA} /> : 'Loading'}</Text>
+        <Text>
+          {t('Balance: ')}
+          <Balance balance={balanceA} />
+        </Text>
       </Flex>
-      <Heading sx={styles.title}>STAKED FOR</Heading>
+      <Heading sx={styles.title}>{t('STAKED FOR')}</Heading>
       <Box sx={{ marginBottom: '30px' }}>
         <Tabs activeTab={intervals.indexOf(numberOfDays)} variant="fullWidth">
           {intervals.map((interval, index) => (
             <Tab
               key={`${interval}D`}
               index={index}
-              label={`${interval}D`}
+              label={t(`${interval}D`)}
               onClick={onIntervalClick('staked')}
               size="xsm"
               variant="fullWidth"
@@ -138,14 +144,14 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (props) => {
           ))}
         </Tabs>
       </Box>
-      <Heading sx={styles.title}>COMPOUNDING EVERY</Heading>
+      <Heading sx={styles.title}>{t('COMPOUNDING EVERY')}</Heading>
       <Box sx={{ marginBottom: '30px' }}>
         <Tabs activeTab={intervals.indexOf(compoundFrequency)} variant="fullWidth">
           {intervals.map((interval, index) => (
             <Tab
               key={`${interval}D`}
               index={index}
-              label={`${interval}D`}
+              label={t(`${interval}D`)}
               onClick={onIntervalClick('compound')}
               size="xsm"
               variant="fullWidth"
@@ -153,7 +159,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = (props) => {
           ))}
         </Tabs>
       </Box>
-      <Heading sx={styles.title}>ROI AT CURRENT RATES</Heading>
+      <Heading sx={styles.title}>{t('ROI AT CURRENT RATES')}</Heading>
       <Flex sx={styles.roiContainer}>
         <Svg icon="banana_token" width="46px" />
         <Box>

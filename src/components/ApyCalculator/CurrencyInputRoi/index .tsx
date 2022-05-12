@@ -22,7 +22,7 @@ export default function CurrencyInputPanelRoi({
   value,
   onUserInput,
   currency,
-  isLp = false,
+  isLp,
   removeLiquidity,
 }: CurrencyInputPanelProps) {
   const { account, chainId } = useActiveWeb3React()
@@ -31,11 +31,12 @@ export default function CurrencyInputPanelRoi({
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
 
   const [tokenPrice, setTokenPrice] = useState<number>(null)
-  const isNative = currency?.symbol === 'ETH'
-  const maxAmount = maxAmountSpend(selectedCurrencyBalance)?.toExact()
+  const maxAmount = maxAmountSpend(selectedCurrencyBalance)?.toExact() || '0'
 
   useEffect(() => {
+    if (!currency) return
     const fetchTokenPrice = async () => {
+      const isNative = currency?.symbol === 'ETH'
       const tokenPriceReturned = await getTokenUsdPrice(
         chainId,
         currency instanceof Token ? currency?.address : '',
@@ -46,34 +47,19 @@ export default function CurrencyInputPanelRoi({
       setTokenPrice(tokenPriceReturned)
     }
     fetchTokenPrice()
-  }, [currency, chainId, isLp, isNative])
+  }, [currency, chainId, isLp])
 
   useEffect(() => {
     if (!value) return
-    const expectedValue = (
-      !!currency && value
-        ? isLp
-          ? ((parseFloat(selectedCurrencyBalance?.toSignificant(6)) * (parseInt(value) / 100)) / tokenPrice)?.toFixed(2)
-          : (parseFloat(value) / tokenPrice)?.toFixed(2)
-        : 0
-    ).toString()
+    const expectedValue = parseFloat(!!currency && value ? (parseFloat(value) / tokenPrice)?.toFixed(2) : '0')
 
-    setInputValue(expectedValue)
+    setInputValue(Number.isFinite(expectedValue) ? expectedValue.toString() : '0')
   }, [currency, isLp, selectedCurrencyBalance, tokenPrice, value])
 
   useEffect(() => {
-    const fiatValue = (
-      !!currency && inputValue
-        ? isLp
-          ? (
-              tokenPrice *
-              (parseFloat(selectedCurrencyBalance?.toSignificant(6)) * (parseInt(inputValue) / 100))
-            )?.toFixed(2)
-          : (tokenPrice * parseFloat(inputValue))?.toFixed(2)
-        : 0
-    ).toString()
+    const fiatValue = parseFloat(!!currency && inputValue ? (tokenPrice * parseFloat(inputValue))?.toFixed(2) : '0')
 
-    setOutputValue(fiatValue)
+    setOutputValue(Number.isFinite(fiatValue) ? fiatValue.toString() : '0')
   }, [currency, inputValue, isLp, onUserInput, selectedCurrencyBalance, tokenPrice])
 
   return (
