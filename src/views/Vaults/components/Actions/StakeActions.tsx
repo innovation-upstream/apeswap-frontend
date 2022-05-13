@@ -20,6 +20,7 @@ interface StakeActionsProps {
   stakedTokenSymbol: string
   stakedBalance: string
   stakeTokenValueUsd: number
+  withdrawFee: string
   pid: number
   vaultVersion: 'V1' | 'V2'
 }
@@ -29,6 +30,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   stakedTokenSymbol,
   stakedBalance,
   stakeTokenValueUsd,
+  withdrawFee,
   pid,
   vaultVersion,
 }) => {
@@ -76,6 +78,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
     <WithdrawModal
       max={stakedBalance}
       tokenName={stakedTokenSymbol}
+      withdrawFee={withdrawFee}
       onConfirm={async (val) => {
         setPendingWithdrawTrx(true)
         await onUnstake(val)

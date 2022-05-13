@@ -29,9 +29,6 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
-    totalFees: 1,
-    withdrawFee: 0,
-    burning: false,
   },
   {
     id: 1,
@@ -59,11 +56,10 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
-    totalFees: 4,
-    withdrawFee: 0.1,
-    burning: false,
     inactive: true,
   },
+
+  // BANANA - BUSD Vault config
   {
     id: 2,
     pid: 2,
@@ -90,9 +86,6 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
-    totalFees: 4,
-    withdrawFee: 0.1,
-    burning: false,
     inactive: true,
   },
 
@@ -124,9 +117,6 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
-    totalFees: 1,
-    withdrawFee: 0,
-    burning: false,
   },
 
   // BANANA - BUSD vault config
@@ -157,9 +147,6 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
-    totalFees: 1,
-    withdrawFee: 0,
-    burning: false,
   },
 
   // MATIC - BNB vault config
@@ -190,9 +177,6 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
-    totalFees: 1,
-    withdrawFee: 0,
-    burning: false,
   },
 
   // FTM - BNB vault config
@@ -223,9 +207,6 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
-    totalFees: 1,
-    withdrawFee: 0,
-    burning: false,
   },
 
   // CEEK - BNB vault config
@@ -256,9 +237,6 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
-    totalFees: 1,
-    withdrawFee: 0,
-    burning: false,
   },
 
   // {

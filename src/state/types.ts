@@ -12,6 +12,7 @@ import {
   Team,
   VaultConfig,
   DualFarmConfig,
+  LiveIfo,
   BillsConfig,
 } from 'config/constants/types'
 
@@ -141,6 +142,8 @@ export interface JunglePool extends PoolConfig {
 export interface Vault extends VaultConfig {
   totalStaked?: string
   totalAllocPoint?: string
+  keeperFee?: string
+  withdrawFee?: string
   allocPoint?: string
   weight?: number
   stakeTokenPrice?: number
@@ -556,6 +559,7 @@ export interface StatsState {
   HomepageLaunchCalendar: LaunchCalendarCard[]
   HomepageServiceStats: ServiceData[]
   FarmLpAprs: FarmLpAprsType
+  LiveIfo: LiveIfo[]
   data: Stats
 }
 

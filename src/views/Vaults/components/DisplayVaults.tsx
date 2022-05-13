@@ -1,7 +1,7 @@
-import { IconButton, Text, Flex } from '@ape.swap/uikit'
+import { IconButton, Text, Flex, useModal } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
-import { Tag, useModal } from '@apeswapfinance/uikit'
+import { Tag } from '@apeswapfinance/uikit'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
@@ -22,6 +22,7 @@ import { Container, StyledButton, ActionContainer } from './styles'
 import { vaultTokenDisplay } from '../helpers'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
+import InfoContent from './InfoContent'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -88,7 +89,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       ),
       titleContainerWidth: 350,
       id: vault.id,
-      infoContent: <></>, // <InfoContent vault={vault} />,
+      infoContent: <InfoContent vault={vault} />,
       infoContentPosition: 'translate(-82%, 28%)',
       expandedContentJustified: vault.version === 'V1' && 'center',
       open: openId === vault.pid,
@@ -115,7 +116,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           <ListViewContent
             title="Total Staked"
             value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
-            width={isMobile ? 200 : 170}
+            width={isMobile ? 100 : 170}
             toolTip="The total value of the tokens currently staked in this vault."
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0%, 75%)"
@@ -182,7 +183,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             stakingTokenBalance={vault?.userData?.tokenBalance?.toString()}
             stakeTokenAddress={vault?.stakeToken?.address[chainId]}
             stakeTokenValueUsd={vault?.stakeTokenPrice}
-            strategyAddress={vault?.stratAddress[chainId]}
+            withdrawFee={vault?.withdrawFee}
             pid={vault.pid}
             vaultVersion={vault.version}
           />

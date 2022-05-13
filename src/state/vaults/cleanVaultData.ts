@@ -10,15 +10,18 @@ import { getBalanceNumber } from 'utils/formatBalance'
 const cleanVaultData = (
   vaultIds: number[],
   chunkedVaults: any[],
+  vaultSettings: any[],
   tokenPrices: TokenPrices[],
   farmLpAprs: FarmLpAprsType,
   chainId: number,
 ) => {
+  const keeperFee = parseFloat(vaultSettings[1]) / 100
+  const withdrawFee = parseFloat(vaultSettings[5]) / 100
   const data = chunkedVaults.map((chunk, index) => {
-    console.log(farmLpAprs)
     const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
     const vaultConfig = filteredVaults?.find((vault) => vault.id === vaultIds[index])
-    console.log(vaultConfig)
+    console.log(keeperFee)
+    console.log(withdrawFee)
     const [
       totalAllocPoint,
       poolInfo,
@@ -63,7 +66,7 @@ const cleanVaultData = (
       farmApr: lpApr ? apr + lpApr : apr,
       tokenPrice: rewardTokenPriceUsd,
       compoundFrequency: VAULT_COMPOUNDS_PER_DAY,
-      performanceFee: 0,
+      performanceFee: keeperFee,
     })
 
     const amountEarnedDaily = tokenEarnedPerThousandDollarsCompounding({
@@ -71,13 +74,15 @@ const cleanVaultData = (
       farmApr: lpApr ? apr + lpApr : apr,
       tokenPrice: rewardTokenPriceUsd,
       compoundFrequency: VAULT_COMPOUNDS_PER_DAY,
-      performanceFee: 0,
+      performanceFee: keeperFee,
     })
     const yealryApy = getRoi({ amountEarned: amountEarnedYealry, amountInvested: oneThousandDollarsWorthOfToken })
     const dailyApy = getRoi({ amountEarned: amountEarnedDaily, amountInvested: oneThousandDollarsWorthOfToken })
 
     return {
       ...vaultConfig,
+      keeperFee: keeperFee.toString(),
+      withdrawFee: withdrawFee.toString(),
       totalStaked: totalTokensStaked.toString(),
       totalAllocPoint: totalAllocPoint.toString(),
       allocPoint: allocPoint.toString(),

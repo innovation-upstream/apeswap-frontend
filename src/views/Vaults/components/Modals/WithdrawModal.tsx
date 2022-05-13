@@ -3,17 +3,18 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Modal, AutoRenewIcon, ModalFooter } from '@apeswapfinance/uikit'
 import ModalInput from 'components/ModalInput'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import UnderlinedButton from 'components/UnderlinedButton'
 import { useTranslation } from 'contexts/Localization'
+import { Flex, Text } from '@ape.swap/uikit'
 
 interface WithdrawModalProps {
   max: string
   onConfirm: (amount: string) => void
   onDismiss?: () => void
   tokenName?: string
+  withdrawFee?: string
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
+const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, withdrawFee, tokenName = '' }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
@@ -43,6 +44,9 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
         inputTitle={t('Unstake')}
       />
       <ModalFooter onDismiss={onDismiss}>
+        <Flex sx={{ padding: '10px' }}>
+          <Text>{t(`Withdrawing will have a %withdrawFee%% fee`, { withdrawFee })}</Text>
+        </Flex>
         <Button
           disabled={pendingTx || parseFloat(fullBalance) < parseFloat(val)}
           onClick={async () => {

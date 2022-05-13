@@ -14,7 +14,7 @@ interface CardActionProps {
   stakedBalance: string
   stakeTokenValueUsd: number
   stakeTokenAddress: string
-  strategyAddress: string
+  withdrawFee: string
   pid: number
   vaultVersion: 'V1' | 'V2'
 }
@@ -26,7 +26,7 @@ const Actions: React.FC<CardActionProps> = ({
   stakedBalance,
   stakeTokenValueUsd,
   stakeTokenAddress,
-  strategyAddress,
+  withdrawFee,
   pid,
   vaultVersion,
 }) => {
@@ -52,6 +52,7 @@ const Actions: React.FC<CardActionProps> = ({
         stakedTokenSymbol={stakedTokenSymbol}
         stakingTokenBalance={stakingTokenBalance}
         stakeTokenValueUsd={stakeTokenValueUsd}
+        withdrawFee={withdrawFee}
         pid={pid}
         vaultVersion={vaultVersion}
       />

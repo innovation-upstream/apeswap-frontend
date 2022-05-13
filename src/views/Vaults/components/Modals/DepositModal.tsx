@@ -3,7 +3,6 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Modal, AutoRenewIcon, ModalFooter } from '@apeswapfinance/uikit'
 import ModalInput from 'components/ModalInput'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import UnderlinedButton from 'components/UnderlinedButton'
 import { useTranslation } from 'contexts/Localization'
 
 interface DepositModalProps {
