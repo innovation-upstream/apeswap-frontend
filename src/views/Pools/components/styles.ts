@@ -1,6 +1,6 @@
 import { ArrowDropUpIcon } from '@apeswapfinance/uikit'
 import { Button, Flex } from '@ape.swap/uikit'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 
 export const StyledButton = styled(Button)`
   border-radius: 10px;
