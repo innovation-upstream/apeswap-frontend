@@ -23,7 +23,6 @@ const fetchVaults = async (chainId: number, tokenPrices: TokenPrices[], farmLpAp
     vaultIds.push(vault.id)
     return fetchVaultCalls(vault, chainId)
   })
-  console.log(vaultCalls)
   const vals = await multicall(chainId, [...masterchefABI, ...erc20], vaultCalls)
   const vaultSettings = await masterVaultApev2.getSettings()
   const chunkSize = vaultCalls.length / filteredVaults.length

@@ -4,7 +4,7 @@ import { VaultConfig } from 'config/constants/types'
 
 const fetchVaultCalls = (vault: VaultConfig, chainId: number): Call[] => {
   const stratAddress = vault.stratAddress[chainId]
-  const { stakeToken, masterchef } = vault
+  const { stakeToken, rewardToken, masterchef } = vault
   const masterchefCalls = [
     // Masterchef total alloc points
     {
@@ -47,7 +47,21 @@ const fetchVaultCalls = (vault: VaultConfig, chainId: number): Call[] => {
       params: [stratAddress],
     },
   ]
-  return [...masterchefCalls, ...calls]
+  const bananaPoolCalls = [
+    // Banana pool info
+    {
+      address: masterchef.address[chainId],
+      name: 'poolInfo',
+      params: [0],
+    },
+    // Total banana staked in pool
+    {
+      address: rewardToken.address[chainId],
+      name: 'balanceOf',
+      params: [masterchef.address[chainId]],
+    },
+  ]
+  return [...masterchefCalls, ...calls, ...bananaPoolCalls]
 }
 
 export default fetchVaultCalls

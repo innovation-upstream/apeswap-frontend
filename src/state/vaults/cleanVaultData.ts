@@ -30,11 +30,11 @@ const cleanVaultData = (
       stakeTokenMCBalance,
       stakeTokenTotalSupply,
       stakeTokenStrategyBalance,
+      bananaPoolInfo,
+      bananaPoolTotalStaked,
     ] = chunk
-
-    const allocPoint = new BigNumber(poolInfo.allocPoint?._hex)
-    const strategyPairBalance = userInfo.amount.toString()
-    const weight = totalAllocPoint ? allocPoint.div(new BigNumber(totalAllocPoint)) : new BigNumber(0)
+    console.log(bananaPoolInfo)
+    console.log(bananaPoolTotalStaked.toString())
 
     const rewardTokenPriceUsd = tokenPrices?.find(
       (token) =>
@@ -44,9 +44,21 @@ const cleanVaultData = (
       (token) => token.address[chainId]?.toLowerCase() === vaultConfig.stakeToken.address[chainId]?.toLowerCase(),
     )?.price
 
+    // Strat info
+    const allocPoint = new BigNumber(poolInfo.allocPoint?._hex)
+    const strategyPairBalance = userInfo.amount.toString()
+    const weight = totalAllocPoint ? allocPoint.div(new BigNumber(totalAllocPoint)) : new BigNumber(0)
     const totalTokensStaked = getBalanceNumber(new BigNumber(strategyPairBalance))
     const totalTokensStakedMC = getBalanceNumber(new BigNumber(stakeTokenMCBalance))
     const totalValueStakedInMCUsd = totalTokensStakedMC * stakeTokenPriceUsd
+
+    // Banana pool info
+    const bananaPoolAllocPoint = new BigNumber(bananaPoolInfo.allocPoint?._hex)
+    const bananaPoolWeight = totalAllocPoint
+      ? bananaPoolAllocPoint.div(new BigNumber(totalAllocPoint))
+      : new BigNumber(0)
+    const totalBananaStakedMC = getBalanceNumber(new BigNumber(bananaPoolTotalStaked))
+    const totalBananaValueStakedInMCUsd = totalBananaStakedMC * stakeTokenPriceUsd
 
     // Calculate APR
     const poolWeight = totalAllocPoint ? allocPoint.div(new BigNumber(totalAllocPoint)) : new BigNumber(0)
@@ -60,6 +72,13 @@ const cleanVaultData = (
     const oneThousandDollarsWorthOfToken = 1000 / rewardTokenPriceUsd
 
     const apr = getFarmApr(poolWeight, new BigNumber(rewardTokenPriceUsd), new BigNumber(totalValueStakedInMCUsd))
+    const bananaPoolApr = getFarmApr(
+      bananaPoolWeight,
+      new BigNumber(rewardTokenPriceUsd),
+      new BigNumber(totalBananaValueStakedInMCUsd),
+    )
+
+    console.log(bananaPoolApr)
 
     const amountEarnedYealry = tokenEarnedPerThousandDollarsCompounding({
       numberOfDays: 365,
