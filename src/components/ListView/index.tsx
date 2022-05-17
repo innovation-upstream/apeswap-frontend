@@ -60,6 +60,7 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
             titleContainerWidth={view?.titleContainerWidth}
             key={view.id}
             open={view?.open}
+            alignServiceTokens={view?.alignServiceTokens}
           />
         )
       })}

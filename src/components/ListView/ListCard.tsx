@@ -1,3 +1,4 @@
+import { Flex } from '@ape.swap/uikit'
 import { InfoIcon, TooltipBubble } from '@apeswapfinance/uikit'
 import React, { useState } from 'react'
 import {
@@ -21,13 +22,18 @@ const ListCard: React.FC<ListCardProps> = ({
   expandedContentJustified,
   titleContainerWidth,
   open,
+  alignServiceTokens,
 }) => {
   const [expanded, setExpanded] = useState(open)
   return (
     <>
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>
         <TitleContainer titleContainerWidth={titleContainerWidth}>
-          {serviceTokenDisplay}
+          {alignServiceTokens ? (
+            <Flex sx={{ width: '120px', justifyContent: 'flex-end' }}>{serviceTokenDisplay}</Flex>
+          ) : (
+            serviceTokenDisplay
+          )}
           {tag && (
             <TagContainer ml="10px" backgroundColor={tag.backgroundColor}>
               {tag.text}

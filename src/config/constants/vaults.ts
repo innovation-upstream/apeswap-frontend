@@ -239,6 +239,64 @@ const vaults: VaultConfig[] = [
     },
   },
 
+  // TESTNET VAULTS
+
+  {
+    id: 8,
+    pid: 0,
+    availableChains: [CHAIN_ID.BSC_TESTNET],
+    type: 'MAX',
+    version: 'V2',
+    stratAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '0x5a850dD7a7A54AB82dB9A436a332A78fAeE040C8',
+    },
+    stakeToken: tokens.horNey,
+    token: tokens.hor,
+    quoteToken: tokens.ney,
+    rewardToken: tokens.banana,
+    platform: 'ApeSwap',
+    masterchef: {
+      pid: {
+        [CHAIN_ID.BSC_TESTNET]: 7,
+      },
+      address: {
+        [CHAIN_ID.BSC_TESTNET]: '0xbbC5e1cD3BA8ED639b00927115e5f0e0040aA613',
+      },
+      rewardsPerBlock: {
+        [CHAIN_ID.BSC_TESTNET]: 'cakePerBlock',
+      },
+      rewardToken: tokens.banana,
+    },
+  },
+
+  {
+    id: 9,
+    pid: 1,
+    availableChains: [CHAIN_ID.BSC_TESTNET],
+    type: 'MAX',
+    version: 'V2',
+    stratAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '0x7b6dA317FB5A6D4e66Dc470CaE1E2F4fe2384299',
+    },
+    stakeToken: tokens.forEver,
+    token: tokens.for,
+    quoteToken: tokens.ever,
+    rewardToken: tokens.banana,
+    platform: 'ApeSwap',
+    masterchef: {
+      pid: {
+        [CHAIN_ID.BSC_TESTNET]: 8,
+      },
+      address: {
+        [CHAIN_ID.BSC_TESTNET]: '0xbbC5e1cD3BA8ED639b00927115e5f0e0040aA613',
+      },
+      rewardsPerBlock: {
+        [CHAIN_ID.BSC_TESTNET]: 'cakePerBlock',
+      },
+      rewardToken: tokens.banana,
+    },
+  },
+
   // {
   //   pid: 2,
   //   image: '',

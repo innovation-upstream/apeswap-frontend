@@ -15,6 +15,7 @@ export interface ListViewProps {
   stakeLp?: boolean
   earnLp?: boolean
   titleContainerWidth?: number
+  alignServiceTokens?: boolean
 }
 
 export interface ListCardProps extends ListViewProps {

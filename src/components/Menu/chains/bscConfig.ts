@@ -11,24 +11,24 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     darkIcon: 'StakeDarkImage',
     items: [
       {
-        label: t('BANANA Farms'),
-        href: '/farms',
+        label: t('Staking Pools'),
+        href: '/pools',
         isNew: false,
       },
       {
-        label: t('Staking Pools'),
-        href: '/pools',
+        label: t('BANANA Maximizers'),
+        href: '/vaults',
+        isNew: false,
+      },
+      {
+        label: t('BANANA Farms'),
+        href: '/farms',
         isNew: false,
       },
       {
         label: t('Jungle Farms'),
         href: '/jungle-farms',
         isNew: false,
-      },
-      {
-        label: t('Vaults'),
-        href: '/vaults',
-        isNew: true,
       },
       {
         label: t('GNANA'),

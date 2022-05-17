@@ -76,6 +76,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
     // Token symbol logic is here temporarily for nfty
     return {
       tokens: tokenDisplay,
+      alignServiceTokens: true,
       stakeLp,
       earnLp,
       tag: {

@@ -1088,6 +1088,35 @@ const tokens = {
     decimals: 18,
   },
 
+  ever: {
+    symbol: 'EVER',
+    address: {
+      97: '0x78eA04b5B63ae22c697c7e629b7E7bfB876D4b6f',
+    },
+    decimals: 18,
+  },
+  for: {
+    symbol: 'FOR',
+    address: {
+      97: '0x9Fee03D36b184881A198201B925A00338b1e3Cc5',
+    },
+    decimals: 18,
+  },
+  hor: {
+    symbol: 'HOR',
+    address: {
+      97: '0xaB10D6f91add497b919c9FA584036408F8163b4C',
+    },
+    decimals: 18,
+  },
+  ney: {
+    symbol: 'NEY',
+    address: {
+      97: '0x93762B86736caa0658016fe55AD23e2f77EB7Cd5',
+    },
+    decimals: 18,
+  },
+
   // Test LPs
 
   horNey: {

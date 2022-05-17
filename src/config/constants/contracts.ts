@@ -90,7 +90,7 @@ export default {
   },
   vaultApeV2: {
     56: '0x39061dA018EC960900c4E4fB43D453135da63eE4',
-    97: '0xA9C8cc06d48597F6ba64F37D8916383165237fE8',
+    97: '0x2e6d191744739BA07A350816845bf92C8339583a',
     137: '',
   },
   apePriceGetter: {
