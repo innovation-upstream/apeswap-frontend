@@ -30,7 +30,7 @@ const ListCard: React.FC<ListCardProps> = ({
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>
         <TitleContainer titleContainerWidth={titleContainerWidth}>
           {alignServiceTokens ? (
-            <Flex sx={{ width: '120px', justifyContent: 'flex-end' }}>{serviceTokenDisplay}</Flex>
+            <Flex sx={{ width: '130px', justifyContent: 'flex-end' }}>{serviceTokenDisplay}</Flex>
           ) : (
             serviceTokenDisplay
           )}

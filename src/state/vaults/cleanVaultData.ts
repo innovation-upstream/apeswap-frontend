@@ -4,7 +4,11 @@ import { vaultsConfig } from 'config/constants'
 import { CHAIN_ID } from 'config/constants/chains'
 import { FarmLpAprsType, LpTokenPrices, TokenPrices } from 'state/types'
 import { getFarmApr } from 'utils/apr'
-import { getRoi, tokenEarnedPerThousandDollarsCompounding } from 'utils/compoundApyHelpers'
+import {
+  getRoi,
+  tokenEarnedPerThousandDollarsCompounding,
+  tokenEarnedPerThousandDollarsCompoundingMax,
+} from 'utils/compoundApyHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 const cleanVaultData = (
@@ -58,7 +62,7 @@ const cleanVaultData = (
       ? bananaPoolAllocPoint.div(new BigNumber(totalAllocPoint))
       : new BigNumber(0)
     const totalBananaStakedMC = getBalanceNumber(new BigNumber(bananaPoolTotalStaked))
-    const totalBananaValueStakedInMCUsd = totalBananaStakedMC * stakeTokenPriceUsd
+    const totalBananaValueStakedInMCUsd = totalBananaStakedMC * rewardTokenPriceUsd
 
     // Calculate APR
     const poolWeight = totalAllocPoint ? allocPoint.div(new BigNumber(totalAllocPoint)) : new BigNumber(0)
@@ -77,26 +81,44 @@ const cleanVaultData = (
       new BigNumber(rewardTokenPriceUsd),
       new BigNumber(totalBananaValueStakedInMCUsd),
     )
+    console.log(bananaPoolWeight, rewardTokenPriceUsd, totalBananaValueStakedInMCUsd)
 
     console.log(bananaPoolApr)
 
-    const amountEarnedYealry = tokenEarnedPerThousandDollarsCompounding({
-      numberOfDays: 365,
-      farmApr: lpApr ? apr + lpApr : apr,
-      tokenPrice: rewardTokenPriceUsd,
-      compoundFrequency: VAULT_COMPOUNDS_PER_DAY,
-      performanceFee: keeperFee,
-    })
+    let yearlyApy = 0
+    let dailyApy = 0
 
-    const amountEarnedDaily = tokenEarnedPerThousandDollarsCompounding({
-      numberOfDays: 1,
-      farmApr: lpApr ? apr + lpApr : apr,
-      tokenPrice: rewardTokenPriceUsd,
-      compoundFrequency: VAULT_COMPOUNDS_PER_DAY,
-      performanceFee: keeperFee,
-    })
-    const yealryApy = getRoi({ amountEarned: amountEarnedYealry, amountInvested: oneThousandDollarsWorthOfToken })
-    const dailyApy = getRoi({ amountEarned: amountEarnedDaily, amountInvested: oneThousandDollarsWorthOfToken })
+    if (vaultConfig.version === 'V2') {
+      yearlyApy = tokenEarnedPerThousandDollarsCompoundingMax({
+        numberOfDays: 365,
+        farmApr: lpApr ? apr + lpApr : apr,
+        bananaPoolApr,
+        performanceFee: keeperFee,
+      })
+      dailyApy = tokenEarnedPerThousandDollarsCompoundingMax({
+        numberOfDays: 1,
+        farmApr: lpApr ? apr + lpApr : apr,
+        bananaPoolApr,
+        performanceFee: keeperFee,
+      })
+    } else {
+      const amountEarnedYealry = tokenEarnedPerThousandDollarsCompounding({
+        numberOfDays: 365,
+        farmApr: lpApr ? apr + lpApr : apr,
+        tokenPrice: rewardTokenPriceUsd,
+        performanceFee: keeperFee,
+      })
+      const amountEarnedDaily = tokenEarnedPerThousandDollarsCompounding({
+        numberOfDays: 1,
+        farmApr: lpApr ? apr + lpApr : apr,
+        tokenPrice: rewardTokenPriceUsd,
+        performanceFee: keeperFee,
+      })
+      yearlyApy = getRoi({ amountEarned: amountEarnedYealry, amountInvested: oneThousandDollarsWorthOfToken })
+      dailyApy = getRoi({ amountEarned: amountEarnedDaily, amountInvested: oneThousandDollarsWorthOfToken })
+    }
+
+    // console.log(amountEarnedYealry)
 
     return {
       ...vaultConfig,
@@ -113,7 +135,7 @@ const cleanVaultData = (
       masterChefPairBalance: stakeTokenMCBalance.toString(),
       apy: {
         daily: dailyApy,
-        yearly: yealryApy,
+        yearly: yearlyApy,
       },
     }
   })

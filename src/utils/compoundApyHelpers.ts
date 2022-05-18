@@ -54,6 +54,37 @@ export const tokenEarnedPerThousandDollarsCompounding = ({
   return parseFloat(interestEarned.toFixed(roundingDecimals))
 }
 
+export const tokenEarnedPerThousandDollarsCompoundingMax = ({
+  numberOfDays,
+  farmApr,
+  bananaPoolApr,
+  compoundFrequency = 1,
+  performanceFee = 0,
+}) => {
+  // Everything here is worked out relative to a year, with the asset compounding at the compoundFrequency rate. 1 = once per day
+  const timesCompounded = 365 * compoundFrequency
+  // We use decimal values rather than % in the math for both APY and the number of days being calculates as a proportion of the year
+  let aprAsDecimal = farmApr / 100
+  let bananaAprAsDecimal = bananaPoolApr / 100
+
+  if (performanceFee) {
+    // Reduce the APR by the % performance fee
+    const feeRelativeToApr = (farmApr / 100) * performanceFee
+    const aprAfterFee = farmApr - feeRelativeToApr
+    aprAsDecimal = aprAfterFee / 100
+    const bananaFeeRelativeToApr = (bananaPoolApr / 100) * performanceFee
+    const bananaAprAfterFee = bananaPoolApr - bananaFeeRelativeToApr
+    bananaAprAsDecimal = bananaAprAfterFee / 100
+  }
+
+  let finalValue = 0
+
+  for (let i = 0; i < numberOfDays; i++) {
+    finalValue = finalValue * (1 + bananaAprAsDecimal / timesCompounded) + aprAsDecimal / timesCompounded
+  }
+  return finalValue * 100
+}
+
 export const getRoi = ({ amountEarned, amountInvested }) => {
   const percentage = (amountEarned / amountInvested) * 100
   return percentage
