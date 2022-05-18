@@ -100,18 +100,18 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             title="Daily APY"
             value={`${isActive ? vault?.apy?.daily?.toFixed(2) : '0.00'}%`}
             width={isMobile ? 90 : 140}
-            toolTip="APR is calculated based on current value of of the token, reward rate and vault % owned."
+            toolTip="Daily APY includes BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily."
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 60%)"
+            toolTipTransform="translate(0, 40%)"
             height={50}
           />
           <ListViewContent
             title="Yearly APY"
             value={`${isActive ? vault?.apy?.yearly?.toFixed(2) : '0.00'}%`}
             width={isMobile ? 95 : 155}
-            toolTip="APR is calculated based on current value of of the token, reward rate and vault % owned."
+            toolTip="Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily."
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 60%)"
+            toolTipTransform="translate(0, 40%)"
             height={50}
           />
           <ListViewContent
