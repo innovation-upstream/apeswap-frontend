@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { ThemeProvider as SCThemeProvider } from 'styled-components'
+import { ThemeProvider as EmThemeProvider } from '@emotion/react'
 import { light, dark } from '@apeswapfinance/uikit'
 import { useColorMode } from 'theme-ui'
 import Cookies from 'universal-cookie'
@@ -22,7 +23,9 @@ const ThemeContextProvider = ({ colorMode, children }) => {
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-      <SCThemeProvider theme={isDark ? dark : light}>{children}</SCThemeProvider>
+      <SCThemeProvider theme={isDark ? dark : light}>
+        <EmThemeProvider theme={isDark ? dark : light}>{children}</EmThemeProvider>
+      </SCThemeProvider>
     </ThemeContext.Provider>
   )
 }
