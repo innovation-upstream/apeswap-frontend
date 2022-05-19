@@ -4,9 +4,14 @@ import React from 'react'
 import Link from 'next/link'
 import { Text } from '@innovationupstream/apeswap-uikit'
 
-export const NextLink: React.FC<{ href: string; csx?: any }> = ({ children, href, csx = {} }) => (
+export const NextLink: React.FC<{ href: string; csx?: any; target?: string }> = ({
+  children,
+  href,
+  csx = {},
+  target = '_self',
+}) => (
   <Link href={href} passHref>
-    <a>
+    <a target={target}>
       <Text
         sx={{
           color: 'text',

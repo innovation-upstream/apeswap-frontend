@@ -1,5 +1,5 @@
 import { Button, Flex } from '@ape.swap/uikit'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import UnlockButton from 'components/UnlockButton'
 
 export const StyledButtonSquare = styled(Button)<{ height?: number; minWidth?: number }>`

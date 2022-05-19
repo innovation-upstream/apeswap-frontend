@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
-import { useMatchBreakpoints, Tabs, Tab, Text } from '@apeswapfinance/uikit'
+import { useMatchBreakpoints, Tabs, Tab, Text } from '@innovationupstream/apeswap-uikit'
 
 import { AppBody } from '../../../components/App'
 import { useAllTokens } from '../../../hooks/Tokens'
@@ -156,7 +156,7 @@ export default function OrderHistoryPanel() {
               <Tab
                 index={0}
                 label={t('OPEN')}
-                size={isMobile ? 'xsm' : 'md'}
+                size={isMobile ? 'sm' : 'md'}
                 activeTab={activeTab}
                 variant="fullWidth"
                 onClick={switchTab}
@@ -164,7 +164,7 @@ export default function OrderHistoryPanel() {
               <Tab
                 index={1}
                 label={t('CLOSED')}
-                size={isMobile ? 'xsm' : 'md'}
+                size={isMobile ? 'sm' : 'md'}
                 variant="fullWidth"
                 activeTab={activeTab}
                 onClick={switchTab}
@@ -172,7 +172,7 @@ export default function OrderHistoryPanel() {
               <Tab
                 index={2}
                 label={t('CANCELLED')}
-                size={isMobile ? 'xsm' : 'md'}
+                size={isMobile ? 'sm' : 'md'}
                 variant="fullWidth"
                 activeTab={activeTab}
                 onClick={switchTab}

@@ -56,9 +56,13 @@ const Footer: React.FC = () => {
               </Link>
               <Text>$0.388</Text>
             </Flex>
-            <Button variant="secondary" sx={{ fontSize: '16px' }} px="0px">
-              BUY BANANA
-            </Button>
+            <Link href="https://apeswap.finance/swap">
+              <a target="_blank" href="https://apeswap.finance/swap" rel="noreferrer">
+                <Button variant="secondary" sx={{ fontSize: '16px' }} px="0px">
+                  BUY BANANA
+                </Button>
+              </a>
+            </Link>
           </Flex>
         </Box>
         <FooterLinks />
