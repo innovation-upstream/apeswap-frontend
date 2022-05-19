@@ -87,6 +87,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
     amountEarned: compoundROIRates,
     amountInvested: bananaWorthForDollarSelected,
   })
+  console.log('compoundROIRates', compoundROIRates)
 
   const compoundROIRatesValue = Number.isNaN(compoundROIRates) ? 0 : compoundROIRates
   const percentageCompoundValue = Number.isNaN(parseFloat(percentageCompound)) ? 0 : percentageCompound
