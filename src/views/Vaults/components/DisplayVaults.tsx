@@ -151,7 +151,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                 sx={{ width: '150px' }}
                 onClick={() =>
                   showLiquidity(
-                    vault.token.address[chainId],
+                    vault.token.symbol === 'BNB' ? 'ETH' : vault.token.address[chainId],
                     vault.quoteToken.symbol === 'BNB' ? 'ETH' : vault.quoteToken.address[chainId],
                   )
                 }

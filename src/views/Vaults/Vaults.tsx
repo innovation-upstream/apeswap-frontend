@@ -137,7 +137,13 @@ const Vaults: React.FC = () => {
         style={{ position: 'relative', top: '30px', width: '100%' }}
       >
         <ListViewLayout>
-          <Banner title="BANANA Maximizers" banner="banana-maximizers" link="" maxWidth={1130} />
+          <Banner
+            title="BANANA Maximizers"
+            banner="banana-maximizers"
+            link=""
+            titleColor="primaryBright"
+            maxWidth={1130}
+          />
           <VaultMenu
             onHandleQueryChange={handleChangeQuery}
             onSetSortOption={setSortOption}
