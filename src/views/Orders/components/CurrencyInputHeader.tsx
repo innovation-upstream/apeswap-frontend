@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Flex, Button, useMatchBreakpoints, Tabs, Tab } from '@apeswapfinance/uikit'
+import { Flex, Button, Tabs, Tab } from '@innovationupstream/apeswap-uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
+import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
+import { SSRContext } from 'contexts/SSRContext'
+import useIsMobile from 'hooks/useIsMobile'
+import { LinkWrapper } from 'style/LinkWrapper'
 
 interface Props {
   title?: string
@@ -22,16 +26,16 @@ const CurrencyInputContainer = styled(Flex)`
 `
 
 const CurrencyInputHeader: React.FC<Props> = () => {
-  const { isMd, isSm, isXs } = useMatchBreakpoints()
-  const history = useHistory()
-  const isMobile = isMd || isSm || isXs
-  const path = useLocation()
+  const { isDesktop, isBrowser } = useContext(SSRContext)
+  const isMobileView = useIsMobile()
+  const isMobile = isBrowser ? isMobileView : !isDesktop
+  const router = useRouter()
   const { t } = useTranslation()
 
   const getActiveTab = () => {
-    const { pathname } = path
-    if (pathname.includes('swap')) return 0
-    if (pathname.includes('orders')) return 1
+    const { pathname } = router
+    if (pathname === '/swap') return 0
+    if (pathname === '/orders') return 1
     return 2
   }
 
@@ -41,44 +45,46 @@ const CurrencyInputHeader: React.FC<Props> = () => {
         <Tab
           index={0}
           label={t('SWAP')}
-          onClick={() => history.push('/swap')}
-          size={isMobile ? 'xsm' : 'md'}
+          onClick={() => router.push('/swap')}
+          size={isMobile ? 'sm' : 'md'}
           variant="centered"
           activeTab={getActiveTab()}
         />
         <Tab
           index={1}
           label={t('ORDERS')}
-          onClick={() => history.push('/orders')}
-          size={isMobile ? 'xsm' : 'md'}
+          onClick={() => router.push('/orders')}
+          size={isMobile ? 'sm' : 'md'}
           variant="centered"
           activeTab={getActiveTab()}
         />
         <Tab
           index={2}
           label={t('LIQUIDITY')}
-          onClick={() => history.push('/pool')}
-          size={isMobile ? 'xsm' : 'md'}
+          onClick={() => router.push('/pool')}
+          size={isMobile ? 'sm' : 'md'}
           variant="centered"
           activeTab={getActiveTab()}
         />
       </Tabs>
       <Flex>
-        <a href="https://app.multichain.org/" target="_blank" rel="noopener noreferrer">
-          <Button
-            style={{
-              fontSize: '15px',
-              fontWeight: 700,
-              marginRight: '25px',
-              marginLeft: '15px',
-              padding: 10,
-              display: isMobile ? 'none' : 'block',
-              height: isMobile ? '36px ' : '40px',
-            }}
-          >
-            {t('BRIDGE')}
-          </Button>
-        </a>
+        <Link href="https://app.multichain.org/" passHref>
+          <LinkWrapper target="_blank" rel="noopener noreferrer">
+            <Button
+              style={{
+                fontSize: '15px',
+                fontWeight: 700,
+                marginRight: '25px',
+                marginLeft: '15px',
+                padding: 10,
+                display: isMobile ? 'none' : 'block',
+                height: isMobile ? '36px ' : '40px',
+              }}
+            >
+              {t('BRIDGE')}
+            </Button>
+          </LinkWrapper>
+        </Link>
         <GlobalSettings />
       </Flex>
     </CurrencyInputContainer>
