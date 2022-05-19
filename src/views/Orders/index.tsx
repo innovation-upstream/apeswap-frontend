@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { CurrencyAmount, JSBI, Token, Trade } from '@apeswapfinance/sdk'
+import { useRouter } from 'next/router'
 import { Button, Text, ArrowDownIcon, useModal, Flex, Card, Link } from '@apeswapfinance/uikit'
 import Page from 'components/layout/Page'
 import SwapBanner from 'components/SwapBanner'
 import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
 import track from 'utils/track'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import AddressInputPanel from './components/AddressInputPanel'
 import Column, { AutoColumn } from '../../components/layout/Column'
@@ -63,11 +63,12 @@ const OrderInfoPanel = styled.div`
   padding: 20px;
 `
 
-export default function Orders({ history }: RouteComponentProps) {
+export default function Orders() {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { chainId } = useActiveWeb3React()
   const [tradeValueUsd, setTradeValueUsd] = useState<number>(null)
   const { t } = useTranslation()
+  const router = useRouter()
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -337,7 +338,7 @@ export default function Orders({ history }: RouteComponentProps) {
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
   const [onPresentImportTokenWarningModal] = useModal(
-    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap/')} />,
+    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => router.push('/swap/')} />,
   )
 
   useEffect(() => {
