@@ -6,6 +6,7 @@ import { Text, Svg, IconButton, Button } from '@innovationupstream/apeswap-uikit
 import Link from 'next/link'
 import { NetworkButton } from 'components/NetworkButton'
 import { ThemeContext } from 'contexts/ThemeContext'
+import { LinkWrapper } from 'style/LinkWrapper'
 import FooterLinks from './FooterLinks'
 import { socialLinks } from './Footer.data'
 import styles from './styles'
@@ -46,9 +47,13 @@ const Footer: React.FC = () => {
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
             <Flex sx={{ alignItems: 'center', columnGap: '10px' }}>
-              <IconButton variant="transparent">
-                <Svg width="30px" icon="banana_token" />
-              </IconButton>
+              <Link href="https://info.apeswap.finance/token/0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95" passHref>
+                <LinkWrapper target="_blank">
+                  <IconButton variant="transparent">
+                    <Svg width="30px" icon="banana_token" />
+                  </IconButton>
+                </LinkWrapper>
+              </Link>
               <Text>$0.388</Text>
             </Flex>
             <Link href="https://apeswap.finance/swap">
