@@ -37,7 +37,7 @@ const FooterLinks: React.FC = () => {
             {col.links.map((link) => (
               <li sx={{ marginTop: 7 }}>
                 <Link href={link.href} passHref>
-                  <a>
+                  <a target="_blank">
                     <Text sx={{ fontSize: ['12px', '16px'] }} weight="normal">
                       {link.label}
                     </Text>
