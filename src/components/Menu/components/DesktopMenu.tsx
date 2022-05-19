@@ -82,6 +82,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                             boxShadow: 'inset 0px -2px 0px',
                           },
                         }}
+                        target={label === 'More' && '_blank'}
                       >
                         {subItem.label}
                       </NextLink>
