@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import { Box, Flex } from 'theme-ui'
 import { ThemeSwitcher } from '@apeswapfinance/uikit'
 import { Text, Svg, IconButton, Button } from '@innovationupstream/apeswap-uikit'
+import Link from 'next/link'
 import { NetworkButton } from 'components/NetworkButton'
 import { ThemeContext } from 'contexts/ThemeContext'
 import FooterLinks from './FooterLinks'
@@ -50,9 +51,13 @@ const Footer: React.FC = () => {
               </IconButton>
               <Text>$0.388</Text>
             </Flex>
-            <Button variant="secondary" sx={{ fontSize: '16px' }} px="0px">
-              BUY BANANA
-            </Button>
+            <Link href="https://apeswap.finance/swap">
+              <a target="_blank" href="https://apeswap.finance/swap" rel="noreferrer">
+                <Button variant="secondary" sx={{ fontSize: '16px' }} px="0px">
+                  BUY BANANA
+                </Button>
+              </a>
+            </Link>
           </Flex>
         </Box>
         <FooterLinks />
