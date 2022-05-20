@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { CHAIN_ID } from 'config/constants'
 import track from 'utils/track'
-import Torus, { PaymentParams } from '@toruslabs/torus-embed'
+import { PaymentParams } from '@toruslabs/torus-embed'
 import { useToast } from 'state/hooks'
 import useActiveWeb3React from './useActiveWeb3React'
 
@@ -10,6 +10,7 @@ const useTopup = () => {
   const { account } = useActiveWeb3React()
 
   const handleTopup = useCallback(async () => {
+    const Torus = (await import('@toruslabs/torus-embed')).default
     const torus = new Torus({})
     await torus.init({
       enableLogging: false,
