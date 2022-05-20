@@ -17,14 +17,8 @@ test('value should be correct', () => {
       fc.float(),
       fc.float(),
       fc.nat(),
-      (data, a, b, c, d, e, f) => {
-        const numberOfDays = data
-        const apr = a
-        const lpApr = b
-        const tokenPrice = c
-        const amountDollars = d
-        const inputValue = e
-        const compoundFrequency = f
+      (numberOfDays, apr, lpApr, tokenPrice, amountDollars, inputValue, compoundFrequency) => {
+        // Calling function
         const compoundROIRates = tokenEarnedPerThousandDollarsCompounding({
           numberOfDays,
           farmApr: apr + lpApr,
@@ -33,7 +27,15 @@ test('value should be correct', () => {
           compoundFrequency: 1 / compoundFrequency,
           amountDollar: amountDollars || inputValue,
         })
-        expect(compoundROIRates).toEqual(compoundInterest(d / c, data * 365, (a + b) * 100, f * 365))
+        // Checking with formula
+        expect(compoundROIRates).toEqual(
+          compoundInterest(
+            amountDollars / tokenPrice,
+            numberOfDays * 365,
+            (apr + lpApr) * 100,
+            compoundFrequency * 365,
+          ),
+        )
       },
     ),
   )
@@ -41,18 +43,16 @@ test('value should be correct', () => {
 
 test('percentage Should be correct ', () => {
   fc.assert(
-    fc.property(fc.float(), fc.float(), (data, b) => {
+    fc.property(fc.float(), fc.float(), (compoundROIRates, bananaWorthForDollarSelected) => {
       function percentage(partialValue, totalValue) {
         return ((100 * partialValue) / totalValue).toFixed(2).toString()
       }
 
-      const compoundROIRates = data
-      const bananaWorthForDollarSelected = b
       const percentageCompound = apyModalRoi({
         amountEarned: compoundROIRates,
         amountInvested: bananaWorthForDollarSelected,
       })
-      expect(percentageCompound).toEqual(percentage(data, b))
+      expect(percentageCompound).toEqual(percentage(compoundROIRates, bananaWorthForDollarSelected))
     }),
   )
 })
