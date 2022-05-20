@@ -12,7 +12,7 @@ import { Flex, Box } from 'theme-ui'
 import { SSRContext } from 'contexts/SSRContext'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
-import { useNetworkChainId } from 'state/hooks'
+import { useNetworkChainId, useLiveIfoStatus } from 'state/hooks'
 import { NetworkButton } from 'components/NetworkButton'
 import { WalletModal } from 'components/WalletModal'
 import { AccountModal } from 'components/AccountModal'
@@ -20,7 +20,7 @@ import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { DesktopMenu, MobileMenu } from './components'
 import ConnectButton from './components/ConnectButton'
-import { languageList } from '../../config/localization/languages'
+import ethConfig from './chains/ethConfig'
 
 const Menu: React.FC<{ chain?: number }> = () => {
   const router = useRouter()
@@ -43,8 +43,12 @@ const Menu: React.FC<{ chain?: number }> = () => {
     if (chainId === CHAIN_ID.MATIC) {
       return maticConfig(translate)
     }
+    if (chainId === CHAIN_ID.ETH) {
+      return ethConfig(translate)
+    }
     return bscConfig(translate)
   }
+  const { liveIfos } = useLiveIfoStatus()
 
   useEffect(() => {
     refPrevOffset.current = window.pageYOffset

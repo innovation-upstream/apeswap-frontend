@@ -1,6 +1,7 @@
 import React from 'react'
-import { ModalProvider } from '@apeswapfinance/uikit'
 import { useRouter } from 'next/router'
+import { ModalProvider } from '@ape.swap/uikit'
+import { ModalProvider as OldModalProvider } from '@apeswapfinance/uikit'
 import { Web3ReactProvider, createWeb3ReactRoot } from '@web3-react/core'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
@@ -39,9 +40,11 @@ const Providers: React.FC<{ colorMode?: string }> = ({ colorMode, children }) =>
                 <LanguageProvider>
                   <RefreshContextProvider>
                     <ModalProvider>
-                      <MenuContextProvider collapse active={pathname}>
-                        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-                      </MenuContextProvider>
+                      <OldModalProvider>
+                        <MenuContextProvider collapse active={pathname}>
+                          <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                        </MenuContextProvider>
+                      </OldModalProvider>
                     </ModalProvider>
                   </RefreshContextProvider>
                 </LanguageProvider>

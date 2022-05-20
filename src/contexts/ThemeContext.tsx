@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { ThemeProvider as SCThemeProvider } from 'styled-components'
 import { ThemeProvider as EmThemeProvider } from '@emotion/react'
 import { light, dark } from '@apeswapfinance/uikit'
-import { useColorMode } from 'theme-ui'
 import Cookies from 'universal-cookie'
+import { Apeswap } from '@ape.swap/uikit'
+import { ThemeProvider as ThemeUIProvider, useColorMode } from 'theme-ui'
 
 const CACHE_KEY = 'IS_DARK'
 const ThemeContext = React.createContext({ isDark: null, toggleTheme: () => null })
