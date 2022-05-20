@@ -10,8 +10,7 @@ import { ThemeContextProvider } from 'contexts/ThemeContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
 import NftProvider from 'views/Nft/contexts/NftProvider'
-import { ThemeProvider } from 'theme-ui'
-import { Apeswap, MenuContextProvider } from '@innovationupstream/apeswap-uikit'
+import { MenuContextProvider } from '@innovationupstream/apeswap-uikit'
 import { NetworkContextName } from 'config/constants'
 import { LanguageProvider } from './contexts/Localization'
 
@@ -26,31 +25,21 @@ const Providers: React.FC<{ colorMode?: string }> = ({ colorMode, children }) =>
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
         <Provider store={store}>
-          <ThemeProvider
-            theme={{
-              ...Apeswap,
-              config: {
-                ...Apeswap.config,
-                initialColorModeName: colorMode,
-              },
-            }}
-          >
-            <ThemeContextProvider colorMode={colorMode}>
-              <NftProvider>
-                <LanguageProvider>
-                  <RefreshContextProvider>
-                    <ModalProvider>
-                      <OldModalProvider>
-                        <MenuContextProvider collapse active={pathname}>
-                          <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-                        </MenuContextProvider>
-                      </OldModalProvider>
-                    </ModalProvider>
-                  </RefreshContextProvider>
-                </LanguageProvider>
-              </NftProvider>
-            </ThemeContextProvider>
-          </ThemeProvider>
+          <ThemeContextProvider colorMode={colorMode}>
+            <NftProvider>
+              <LanguageProvider>
+                <RefreshContextProvider>
+                  <ModalProvider>
+                    <OldModalProvider>
+                      <MenuContextProvider collapse active={pathname}>
+                        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                      </MenuContextProvider>
+                    </OldModalProvider>
+                  </ModalProvider>
+                </RefreshContextProvider>
+              </LanguageProvider>
+            </NftProvider>
+          </ThemeContextProvider>
         </Provider>
       </Web3ProviderNetwork>
     </Web3ReactProvider>
