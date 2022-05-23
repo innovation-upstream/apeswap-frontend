@@ -1,3 +1,5 @@
+import { ThemeUIStyleObject } from 'theme-ui'
+
 export const menuItemContainer = {
   alignItems: 'center',
   pr: '20px',
@@ -65,4 +67,21 @@ export const connectButton = {
   '&:hover': {
     background: 'white4',
   },
+}
+
+interface Props {
+  account?: string
+}
+
+export const dynamicStyles: Record<string, (props: any) => ThemeUIStyleObject> = {
+  userBlockBtn: ({ account }: Props) => ({
+    height: '35px',
+    marginLeft: '10px',
+    lineHeight: '10px',
+    background: account ? 'white3' : 'yellow',
+    color: account ? 'text' : 'primaryBright',
+    '&&': {
+      padding: `0px ${account ? '45px' : '15px'} 0px 15px`,
+    },
+  }),
 }
