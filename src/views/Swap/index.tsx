@@ -55,6 +55,7 @@ const Label = styled(Text)`
 
 export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
+  console.log(loadedUrlParams)
   const { chainId } = useActiveWeb3React()
   const [tradeValueUsd, setTradeValueUsd] = useState<number>(null)
 
