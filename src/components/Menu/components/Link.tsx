@@ -8,7 +8,7 @@ export const NextLink: React.FC<{ href: string; csx?: any; target?: string }> = 
   children,
   href,
   csx = {},
-  target = '_self',
+  target = children === 'Exchange' ? '_self' : '_blank',
 }) => (
   <Link href={href} passHref>
     <a target={target}>

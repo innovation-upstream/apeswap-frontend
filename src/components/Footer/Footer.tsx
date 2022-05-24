@@ -20,9 +20,9 @@ const Footer: React.FC = () => {
         position: 'relative',
         overflow: 'hidden',
         pb: '32px',
-        backgroundColor: 'footer',
+        backgroundColor: isDark ? '#0b0b0b' : '#4d4040',
         borderTop: '5px solid',
-        borderTopColor: 'lvl2',
+        borderTopColor: isDark ? '#383838' : '#f1eada',
       }}
     >
       <Box sx={styles.container}>

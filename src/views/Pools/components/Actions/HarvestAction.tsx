@@ -84,7 +84,13 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
           onClick={handleApeHarder}
           load={pendingApeHarderTrx}
           mr={isMobile ? '0px' : '10px'}
-          style={{ minWidth: isMobile && '100px', width: isMobile && '115px', padding: '0px' }}
+          style={{
+            minWidth: isMobile && '100px',
+            width: isMobile && '115px',
+            padding: '0px',
+            paddingRight: '25px',
+            fontSize: '16px',
+          }}
         >
           {t('Compound')}
         </StyledButton>
@@ -93,7 +99,12 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
         disabled={disabled || pendingTrx}
         onClick={handleHarvest}
         load={pendingTrx}
-        style={{ minWidth: isMobile && sousId === 0 && '100px', width: isMobile && sousId === 0 && '100px' }}
+        style={{
+          minWidth: isMobile && sousId === 0 && '100px',
+          width: isMobile && sousId === 0 && '100px',
+          paddingRight: '25px',
+          fontSize: '16px',
+        }}
       >
         {t('HARVEST')}
       </StyledButton>

@@ -11,7 +11,7 @@ const GlobalSettings = () => {
     <Button
       onClick={onPresentSettingsModal}
       size={isMobile ? 'sm' : 'md'}
-      style={{ fontSize: '25px', padding: 8, height: isMobile ? '36px' : '40px' }}
+      style={{ fontSize: '25px', padding: 8, height: isMobile ? '36px' : '40px', marginRight: !isMobile ? '30px' : '' }}
     >
       <CogIcon width="28px" color="white" />
     </Button>

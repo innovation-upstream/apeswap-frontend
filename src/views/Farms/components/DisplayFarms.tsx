@@ -31,6 +31,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
   // Hack to get the close modal function from the provider
   // Need to export ModalContext from uikit to clean up the code
   const [, closeModal] = useModal(<></>)
+
   const [onPresentAddLiquidityWidgetModal] = useModal(
     <LiquidityModal handleClose={closeModal} />,
     true,

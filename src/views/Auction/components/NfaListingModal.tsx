@@ -39,6 +39,8 @@ const OwnedNfaWrapper = styled.div`
 const DescriptionWrapper = styled.div`
   width: 305px;
   display: flex;
+  max-height: calc(100vh - 330px);
+  overflow: auto;
   flex-direction: column;
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 405px;
