@@ -23,29 +23,32 @@ const Footer: React.FC = () => {
         backgroundColor: isDark ? '#0b0b0b' : '#4d4040',
         borderTop: '5px solid',
         borderTopColor: isDark ? '#383838' : '#f1eada',
+        '@media (max-width:575px)': {
+          pb: '10px',
+        },
       }}
     >
       <Box sx={styles.container}>
         <Box sx={styles.leftSection}>
           <Svg icon="textLogo" width="250px" />
           <Box sx={{ pt: 11 }}>
-            <Text sx={{ fontSize: '16px' }}>
+            <Text sx={{ fontSize: '16px', ...styles.textleft }}>
               ApeSwap is a DeFi Hub on BNB Chain & Polygon focused on offering an accessible, transparent and secure
               experience for everyone.
             </Text>
           </Box>
-          <Flex sx={{ mt: '35px', columnGap: '25px' }}>
+          <Flex sx={{ mt: '35px', columnGap: '25px', width: '100%' }}>
             <ThemeSwitcher isDark={isDark} toggleTheme={toggleTheme} />
             <NetworkButton />
           </Flex>
-          <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
+          <Flex sx={{ mt: '35px', justifyContent: 'space-between', width: '100%' }}>
             {socialLinks.map((link) => (
               <a href={link.url} key={link.url} target="_blank" rel="noopener noreferrer">
                 <IconButton background="white3" color="text" icon={link.icon as any} sx={styles.socialButtons} />
               </a>
             ))}
           </Flex>
-          <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
+          <Flex sx={{ mt: '35px', justifyContent: 'space-between', width: '100%' }}>
             <Flex sx={{ alignItems: 'center', columnGap: '10px' }}>
               <Link href="https://info.apeswap.finance/token/0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95" passHref>
                 <LinkWrapper target="_blank">

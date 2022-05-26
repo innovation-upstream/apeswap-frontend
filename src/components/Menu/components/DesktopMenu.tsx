@@ -2,6 +2,7 @@
 import React, { useContext } from 'react'
 import { Box, Flex, useColorMode } from 'theme-ui'
 import { Text, IconButton, MenuContext } from '@innovationupstream/apeswap-uikit'
+import { mix } from '@theme-ui/color'
 import { NextLink } from './Link'
 import { menuItemContainer, desktopMenuItem, desktopSubItem } from './styles'
 import * as ImageModule from '../images'
@@ -24,7 +25,6 @@ interface DesktopMenuProps {
 const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
   const [colorMode] = useColorMode()
   const { active } = useContext(MenuContext)
-
   return (
     <Flex
       sx={{
@@ -79,6 +79,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                           //   subItem.label === 'GNANA'
                           //     ? 'linear-gradient(53.53deg, rgb(161, 101, 82) 15.88%, rgb(225, 178, 66) 92.56%) text'
                           //     : '',
+
                           fontWeight: 'bold',
                           display: 'inline-block',
                           marginTop: 10,

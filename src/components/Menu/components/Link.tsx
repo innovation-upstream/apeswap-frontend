@@ -3,6 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Text } from '@innovationupstream/apeswap-uikit'
+import { alpha } from '@theme-ui/color'
 
 export const NextLink: React.FC<{ href: string; csx?: any; target?: string }> = ({
   children,
@@ -14,7 +15,19 @@ export const NextLink: React.FC<{ href: string; csx?: any; target?: string }> = 
     <a target={target}>
       <Text
         sx={{
-          color: 'text',
+          background: (t) =>
+            children === 'GNANA'
+              ? `
+          linear-gradient(
+            53.53deg,
+            ${alpha('rgb(161, 101, 82)', 0.9)(t)},
+            ${alpha('rgb(225, 178, 66)', 1)(t)}
+          ) 
+        `
+              : '',
+          backgroundClip: 'text',
+          //  color: 'text',
+          WebkitTextFillColor: children === 'GNANA' ? 'transparent' : '',
           fontWeight: '400',
           fontSize: 2,
           pl: '20px',
