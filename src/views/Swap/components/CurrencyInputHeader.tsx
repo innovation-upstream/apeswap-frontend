@@ -94,7 +94,12 @@ const CurrencyInputHeader: React.FC<Props> = () => {
           />
         </Tabs>
       </StyledDiv>
-      <Flex>
+      <Flex
+        sx={{
+          width: '145px',
+          flexShrink: 0,
+        }}
+      >
         {/* <div style={{ marginRight: '25px' }}>
           <RunFiatButton runFiat={onTopup} />
         </div> */}
@@ -103,7 +108,7 @@ const CurrencyInputHeader: React.FC<Props> = () => {
             sx={{
               fontSize: '15px',
               fontWeight: 700,
-              marginRight: '25px',
+              marginRight: '10px',
               padding: 10,
               display: isMobile ? 'none' : 'block',
               height: isMobile ? '36px ' : '40px',

@@ -112,7 +112,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
         <ListViewContent
           title={`${t('Earned')} ${earnTokenSymbol}`}
           value={userEarnings?.toFixed(4)}
-          width={150}
+          width={100}
           height={50}
           ml={10}
         />
