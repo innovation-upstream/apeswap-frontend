@@ -7,17 +7,16 @@ import Link from 'next/link'
 import { NetworkButton } from 'components/NetworkButton'
 import { ThemeContext } from 'contexts/ThemeContext'
 import { LinkWrapper } from 'style/LinkWrapper'
-import { Select, SelectItem } from '@ape.swap/uikit'
 import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 import FooterLinks from './FooterLinks'
 import { socialLinks } from './Footer.data'
 import styles from './styles'
+import LangSelector from './LangSelector'
 
 const Footer: React.FC = () => {
   const { toggleTheme, isDark } = useContext(ThemeContext)
   const { t, setLanguage, currentLanguage } = useTranslation()
-  console.log('currentLanguage', currentLanguage?.language)
 
   return (
     <Box
@@ -42,15 +41,7 @@ const Footer: React.FC = () => {
           <Flex sx={{ mt: '35px', columnGap: '25px' }}>
             <ThemeSwitcher isDark={isDark} toggleTheme={toggleTheme} />
             <NetworkButton />
-            <Select position="top" size="sm" active={currentLanguage?.language}>
-              {languageList.map((val, index) => {
-                return (
-                  <SelectItem size="sm" value={val?.language}>
-                    {val?.language}
-                  </SelectItem>
-                )
-              })}
-            </Select>
+            <LangSelector currentLang={currentLanguage?.language} langs={languageList} setLang={setLanguage} />
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
             {socialLinks.map((link) => (

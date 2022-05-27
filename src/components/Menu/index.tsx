@@ -14,12 +14,13 @@ import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
 import { useNetworkChainId, useLiveIfoStatus } from 'state/hooks'
 import { NetworkButton } from 'components/NetworkButton'
+import { languageList } from 'config/localization/languages'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { DesktopMenu, MobileMenu } from './components'
 import ConnectButton from './components/ConnectButton'
 import ethConfig from './chains/ethConfig'
-import LanguageChangeButton from './components/LanguageChange'
+import LangSelectorButton from './components/LangSelectorButton'
 
 const Menu: React.FC<{ chain?: number }> = () => {
   const router = useRouter()
@@ -31,7 +32,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
   const { isDesktop, isBrowser } = useContext(SSRContext)
   const { isXxl } = useMatchBreakpoints()
   const isMobile = isBrowser ? isXxl === false : !isDesktop
-  const { t } = useTranslation()
+  const { t, setLanguage, currentLanguage } = useTranslation()
 
   const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC) {
@@ -122,7 +123,12 @@ const Menu: React.FC<{ chain?: number }> = () => {
             </Link>
             {!isMobile && <DesktopMenu items={currentMenu(t) as any} />}
           </Flex>
-          <LanguageChangeButton />
+          <LangSelectorButton
+            currentLang={currentLanguage?.language}
+            langs={languageList}
+            setLang={setLanguage}
+            t={t}
+          />
           <Flex sx={{ alignItems: 'center', columnGap: 5, height: '100%' }}>
             {!isMobile && <NetworkButton />}
             <ConnectButton />
