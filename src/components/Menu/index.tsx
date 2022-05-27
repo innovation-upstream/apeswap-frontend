@@ -14,19 +14,17 @@ import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
 import { useNetworkChainId, useLiveIfoStatus } from 'state/hooks'
 import { NetworkButton } from 'components/NetworkButton'
-import useAuth from 'hooks/useAuth'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { DesktopMenu, MobileMenu } from './components'
 import ConnectButton from './components/ConnectButton'
 import ethConfig from './chains/ethConfig'
+import LanguageChangeButton from './components/LanguageChange'
 
 const Menu: React.FC<{ chain?: number }> = () => {
   const router = useRouter()
   const refPrevOffset = useRef(null)
   const [showMenu, setShowMenu] = useState(true)
-  const [showConnectPopup, setShowConnect] = useState(false)
-  const [showAccountPopup, setShowAccount] = useState(false)
   const { setActive, collapse, setCollapse } = useContext(MenuContext)
   const { account } = useWeb3React()
   const chainId = useNetworkChainId()
@@ -34,7 +32,6 @@ const Menu: React.FC<{ chain?: number }> = () => {
   const { isXxl } = useMatchBreakpoints()
   const isMobile = isBrowser ? isXxl === false : !isDesktop
   const { t } = useTranslation()
-  const { login, logout } = useAuth()
 
   const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC) {
@@ -125,6 +122,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
             </Link>
             {!isMobile && <DesktopMenu items={currentMenu(t) as any} />}
           </Flex>
+          <LanguageChangeButton />
           <Flex sx={{ alignItems: 'center', columnGap: 5, height: '100%' }}>
             {!isMobile && <NetworkButton />}
             <ConnectButton />
