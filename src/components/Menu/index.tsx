@@ -121,7 +121,11 @@ const Menu: React.FC<{ chain?: number }> = () => {
         >
           <Flex sx={{ columnGap: '40px', height: '100%' }}>
             <Link href="/">
-              <IconButton variant="transparent" icon="logo" />
+              <IconButton
+                variant="transparent"
+                icon="logo"
+                sx={{ '&:hover:not([disabled])': { backgroundColor: 'transparent', filter: 'brightness(100%)' } }}
+              />
             </Link>
             {!isMobile && <DesktopMenu items={currentMenu(t) as any} />}
           </Flex>

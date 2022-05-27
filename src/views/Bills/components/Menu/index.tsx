@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Select, SelectItem, Text } from '@apeswapfinance/uikit'
-import { Button } from '@innovationupstream/apeswap-uikit'
+import { Button } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
@@ -54,7 +54,7 @@ const BillMenu: React.FC<ListViewProps> = ({ onHandleQueryChange, onSetSortOptio
           variant="secondary"
         >
           {' '}
-          {t('Learn More')}{' '}
+          {t('Learn More').toUpperCase()}{' '}
         </Button>
       </Link>
       <ClaimAllWrapper>
