@@ -50,7 +50,7 @@ const TransactionRow: React.FC<TransactionRowProps> = ({ txn }) => {
     <Flex alignItems="center" mb="10px">
       <TxnIcon color="white">{renderIcon(txn)}</TxnIcon>
       <Summary>{txn.summary ?? txn.hash}</Summary>
-      <a href={getEtherscanLink(txn.hash, 'transaction', chainId)} target="_blank" rel="noopener noreferrer">
+      <a href={getEtherscanLink(txn.hash, 'transaction', chainId as any)} target="_blank" rel="noopener noreferrer">
         <TxnIcon>
           <OpenNewIcon width="24px" color="#FFB300" />
         </TxnIcon>

@@ -96,7 +96,7 @@ export interface OptionProps {
 
 const Select: React.FunctionComponent<SelectProps> = ({ options, onChange }) => {
   const containerRef = useRef(null)
-  const dropdownRef = useRef(null)
+  const dropdownRef = useRef<any | null>(null)
   const [isOpen, setIsOpen] = useState(false)
   const [selectedOption, setSelectedOption] = useState(options[0])
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })

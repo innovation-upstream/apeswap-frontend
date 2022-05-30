@@ -124,14 +124,14 @@ export default function CurrencyInputPanel({
   otherCurrency,
   id,
   showCommonBases,
-  removeLiquidity,
+  removeLiquidity = false,
   addLiquidity,
   orders,
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  const [tokenPrice, setTokenPrice] = useState<number>(null)
+  const [tokenPrice, setTokenPrice] = useState<number | any>(null)
   const isNative = currency?.symbol === 'ETH'
   const { isMd, isSm, isXs } = useMatchBreakpoints()
   const isMobile = isMd || isSm || isXs
@@ -139,9 +139,9 @@ export default function CurrencyInputPanel({
   useEffect(() => {
     const fetchTokenPrice = async () => {
       const tokenPriceReturned = await getTokenUsdPrice(
-        chainId,
+        chainId as any,
         currency instanceof Token ? currency?.address : '',
-        currency?.decimals,
+        currency?.decimals as any,
         isLp,
         isNative,
       )
@@ -266,7 +266,7 @@ export default function CurrencyInputPanel({
               ? isLp
                 ? `~ $${(
                     tokenPrice *
-                    (parseFloat(selectedCurrencyBalance?.toSignificant(6)) * (parseInt(value) / 100))
+                    (parseFloat((selectedCurrencyBalance as any)?.toSignificant(6)) * (parseInt(value) / 100))
                   )?.toFixed(2)}`
                 : `~ $${(tokenPrice * parseFloat(value))?.toFixed(2)}`
               : ' -'}
@@ -336,7 +336,7 @@ export default function CurrencyInputPanel({
                 ? isLp
                   ? `~ $${(
                       tokenPrice *
-                      (parseFloat(selectedCurrencyBalance?.toSignificant(6)) * (parseInt(value) / 100))
+                      (parseFloat((selectedCurrencyBalance as any)?.toSignificant(6)) * (parseInt(value) / 100))
                     )?.toFixed(2)}`
                   : `~ $${(tokenPrice * parseFloat(value))?.toFixed(2)}`
                 : ' -'}
