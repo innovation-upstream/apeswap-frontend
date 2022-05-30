@@ -1,4 +1,4 @@
-import { ErrorIcon, Text } from '@apeswapfinance/uikit'
+import { ErrorIcon, Text } from '@ape.swap/uikit'
 import { AutoColumn } from 'components/layout/Column'
 import React from 'react'
 import styled, { css } from 'styled-components'
@@ -24,6 +24,7 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
 `
 
 export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
+  font-size: 12px;
   color: ${({ theme, severity }) =>
     severity === 3 || severity === 4
       ? theme.colors.error
