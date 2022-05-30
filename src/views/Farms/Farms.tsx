@@ -6,25 +6,31 @@ import { Flex } from '@apeswapfinance/uikit'
 import { useFetchFarmLpAprs, useFetchLpTokenPrices } from 'state/hooks'
 import ListViewMenu from 'components/ListViewMenu'
 import { orderBy } from 'lodash'
+import ListViewLayout from 'components/layout/ListViewLayout'
+import Banner from 'components/Banner'
+import { useTranslation } from 'contexts/Localization'
 import { Farm } from 'state/types'
 import { useFarms, usePollFarms } from 'state/farms/hooks'
-import useI18n from 'hooks/useI18n'
 import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
-import { Header, HeadingContainer, StyledHeading } from './styles'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
 
-const Farms: React.FC = () => {
+interface IFarms {
+  pid?: number
+  showHistory?: boolean
+}
+
+const Farms: React.FC<IFarms> = ({ pid, showHistory }) => {
   useFetchLpTokenPrices()
   usePollFarms()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
-  const { pathname, query: params } = useRouter()
-  const TranslateString = useI18n()
+  const { pathname } = useRouter()
+  const { t } = useTranslation()
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const farmsLP = useFarms(account)
-  const urlSearchedFarm = parseInt(params?.pid as string)
+  const urlSearchedFarm = pid
   const [query, setQuery] = useState('')
   const [sortOption, setSortOption] = useState('all')
   const loadMoreRef = useRef<HTMLDivElement>(null)
@@ -48,7 +54,7 @@ const Farms: React.FC = () => {
   }, [observerIsSet])
 
   const [stakedOnly, setStakedOnly] = useState(false)
-  const isActive = !pathname.includes('history')
+  const isActive = !showHistory
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
@@ -125,18 +131,21 @@ const Farms: React.FC = () => {
 
   return (
     <>
-      <Header>
-        <HeadingContainer>
-          <StyledHeading as="h1">{TranslateString(999, 'Stake LP tokens to earn BANANA')}</StyledHeading>
-        </HeadingContainer>
-      </Header>
       <Flex
+        flexDirection="column"
         justifyContent="center"
         mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%', padding: '0px 10px' }}
+        style={{ position: 'relative', top: '30px', width: '100%' }}
       >
-        <Flex flexDirection="column" alignSelf="center" style={{ maxWidth: '1130px', width: '100%' }}>
-          <Flex alignItems="center" justifyContent="center">
+        <ListViewLayout>
+          <Banner
+            banner="banana-farms"
+            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
+            title={t('Banana Farms')}
+            listViewBreak
+            maxWidth={1130}
+          />
+          <Flex alignItems="center" justifyContent="center" mt="20px">
             <ListViewMenu
               onHandleQueryChange={handleChangeQuery}
               onSetSortOption={setSortOption}
@@ -149,7 +158,7 @@ const Farms: React.FC = () => {
             />
           </Flex>
           <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} />
-        </Flex>
+        </ListViewLayout>
       </Flex>
       <div ref={loadMoreRef} />
     </>

@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { Toggle } from '@apeswapfinance/uikit'
+import { useTranslation } from 'contexts/Localization'
 
 const Wrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
@@ -24,6 +25,7 @@ const Wrapper = styled.div`
 const MenuTabButton: React.FC = () => {
   const { pathname, push } = useRouter()
   const url = `/${pathname.split('/')?.[1]}`
+  const { t } = useTranslation()
 
   const handleClick = () => {
     if (!pathname.includes('history')) {
@@ -35,7 +37,12 @@ const MenuTabButton: React.FC = () => {
 
   return (
     <Wrapper>
-      <Toggle size="md" labels={['ACTIVE', 'INACTIVE']} onClick={handleClick} checked={pathname.includes('history')} />
+      <Toggle
+        size="md"
+        labels={[t('ACTIVE'), t('INACTIVE')]}
+        onClick={handleClick}
+        checked={pathname.includes('history')}
+      />
     </Wrapper>
   )
 }

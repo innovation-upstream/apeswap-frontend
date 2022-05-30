@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { CurrencyAmount, JSBI, Token, Trade } from '@apeswapfinance/sdk'
-import { Button, Text, ArrowDownIcon, useModal, Flex, IconButton, Card } from '@apeswapfinance/uikit'
+import { Button, Text, ArrowDownIcon, useModal, Flex, IconButton, Card, AutoRenewIcon } from '@apeswapfinance/uikit'
 import Page from 'components/layout/Page'
 import WalletTransactions from 'components/RecentTransactions/WalletTransactions'
 import SwapBanner from 'components/SwapBanner'
@@ -9,6 +9,7 @@ import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
 import track from 'utils/track'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'contexts/Localization'
 import AddressInputPanel from './components/AddressInputPanel'
 import Column, { AutoColumn } from '../../components/layout/Column'
 import ConfirmSwapModal from './components/ConfirmSwapModal'
@@ -20,8 +21,8 @@ import TradePrice from './components/TradePrice'
 import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 import ProgressSteps from './components/ProgressSteps'
 import { AppBody } from '../../components/App'
-import UnlockButton from '../../components/UnlockButton'
 
+import UnlockButton from '../../components/UnlockButton'
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
@@ -95,6 +96,7 @@ export default function Swap() {
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = showWrap ? undefined : v2Trade
+  const { t } = useTranslation()
 
   const parsedAmounts = showWrap
     ? {
@@ -122,6 +124,37 @@ export default function Swap() {
       onUserInput(Field.OUTPUT, value)
     },
     [onUserInput],
+  )
+
+  const updateParams = useCallback(
+    (direction: string, currency: string) => {
+      const { inputCurrency, outputCurrency } = router.query
+      const query: Record<string, string> = {}
+
+      if (direction === 'inputCurrency' && currency === outputCurrency) {
+        if (inputCurrency) {
+          query.outputCurrency = inputCurrency as string
+        }
+      } else if (direction === 'outputCurrency' && currency === inputCurrency) {
+        if (outputCurrency) {
+          query.inputCurrency = outputCurrency as string
+        }
+      }
+
+      query[direction] = currency
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            ...query,
+          },
+        },
+        undefined,
+        { shallow: true },
+      )
+    },
+    [router],
   )
 
   // modal and loading
@@ -191,7 +224,7 @@ export default function Swap() {
   const [recentTransactions] = useUserRecentTransactions()
 
   const handleSwap = useCallback(() => {
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee)) {
+    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
       return
     }
     if (!swapCallback) {
@@ -221,7 +254,7 @@ export default function Swap() {
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, trade, chainId, tradeValueUsd])
+  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, trade, chainId, tradeValueUsd, t])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -260,6 +293,7 @@ export default function Swap() {
     (inputCurrency) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, inputCurrency)
+      updateParams('inputCurrency', inputCurrency.symbol !== 'ETH' ? inputCurrency.address : 'ETH')
       const showSwapWarning = shouldShowSwapWarning(inputCurrency)
       if (showSwapWarning) {
         setSwapWarningCurrency(inputCurrency)
@@ -267,7 +301,7 @@ export default function Swap() {
         setSwapWarningCurrency(null)
       }
     },
-    [onCurrencySelection],
+    [onCurrencySelection, updateParams],
   )
 
   const handleMaxInput = useCallback(() => {
@@ -279,6 +313,7 @@ export default function Swap() {
   const handleOutputSelect = useCallback(
     (outputCurrency) => {
       onCurrencySelection(Field.OUTPUT, outputCurrency)
+      updateParams('outputCurrency', outputCurrency.symbol !== 'ETH' ? outputCurrency.address : 'ETH')
       const showSwapWarning = shouldShowSwapWarning(outputCurrency)
       if (showSwapWarning) {
         setSwapWarningCurrency(outputCurrency)
@@ -287,7 +322,7 @@ export default function Swap() {
       }
     },
 
-    [onCurrencySelection],
+    [onCurrencySelection, updateParams],
   )
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
@@ -329,11 +364,13 @@ export default function Swap() {
           <StyledSwapContainer>
             <StyledInputCurrencyWrapper>
               <AppBody>
-                <CurrencyInputHeader title="Swap" subtitle="Trade tokens in an instant" />
+                <CurrencyInputHeader title={t('Swap')} subtitle={t('Trade tokens in an instant')} />
                 <Wrapper id="swap-page">
                   <AutoColumn gap="10px">
                     <CurrencyInputPanel
-                      label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
+                      label={
+                        independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')
+                      }
                       value={formattedAmounts[Field.INPUT]}
                       showMaxButton={!atMaxAmountInput}
                       currency={currencies[Field.INPUT]}
@@ -354,7 +391,7 @@ export default function Swap() {
                       }}
                     >
                       <IconButton
-                        style={{ backgroundColor: '#FFB300', borderRadius: '50px', width: '50px', height: '50px' }}
+                        style={{ borderRadius: '50px', width: '50px', height: '50px' }}
                         onClick={() => {
                           setApprovalSubmitted(false) // reset 2 step UI for approvals
                           onSwitchTokens()
@@ -369,7 +406,7 @@ export default function Swap() {
                       </IconButton>
                       {recipient === null && !showWrap && isExpertMode ? (
                         <ExpertButton variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
-                          + Add a send (optional)
+                          {t('+ Add a send (optional)')}
                         </ExpertButton>
                       ) : null}
                     </AutoColumn>
@@ -377,7 +414,7 @@ export default function Swap() {
                     <CurrencyInputPanel
                       value={formattedAmounts[Field.OUTPUT]}
                       onUserInput={handleTypeOutput}
-                      label={independentField === Field.INPUT && !showWrap && trade ? 'To (estimated)' : 'To'}
+                      label={independentField === Field.INPUT && !showWrap && trade ? t('To (estimated)') : t('To')}
                       showMaxButton={false}
                       currency={currencies[Field.OUTPUT]}
                       onCurrencySelect={handleOutputSelect}
@@ -392,7 +429,7 @@ export default function Swap() {
                             <ArrowDownIcon width="16px" />
                           </ArrowWrapper>
                           <Button variant="text" id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
-                            - Remove send
+                            {t('-Remove send')}
                           </Button>
                         </AutoRow>
                         <AddressInputPanel id="recipient" value={recipient} onChange={onChangeRecipient} />
@@ -404,7 +441,7 @@ export default function Swap() {
                         {Boolean(trade) && (
                           <>
                             <RowBetween align="center">
-                              <Label>Price</Label>
+                              <Label>{t('Price')}</Label>
                               <TradePrice
                                 price={trade?.executionPrice}
                                 showInverted={showInverted}
@@ -412,14 +449,14 @@ export default function Swap() {
                               />
                             </RowBetween>
                             <RowBetween align="center">
-                              <Label>Price Impact</Label>
+                              <Label>{t('Price Impact')}</Label>
                               <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
                             </RowBetween>
                           </>
                         )}
                         {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                           <RowBetween align="center">
-                            <Label>Slippage Tolerance</Label>
+                            <Label>{t('Slippage Tolerance')}</Label>
                             <Text bold>{allowedSlippage / 100}%</Text>
                           </RowBetween>
                         )}
@@ -429,19 +466,19 @@ export default function Swap() {
                   <div>
                     {swapIsUnsupported ? (
                       <Button disabled mb="4px">
-                        Unsupported Asset
+                        {t('Unsupported Asset')}
                       </Button>
                     ) : !account ? (
                       <UnlockButton large />
                     ) : showWrap ? (
                       <LargeStyledButton disabled={Boolean(wrapInputError)} onClick={onWrap}>
                         {wrapInputError ??
-                          (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
+                          (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
                       </LargeStyledButton>
                     ) : noRoute && userHasSpecifiedInputOutput ? (
                       <Card style={{ textAlign: 'center' }}>
-                        <Text mb="4px">Insufficient liquidity for this trade</Text>
-                        {singleHopOnly && <Text mb="4px">Try enabling multi-hop trades.</Text>}
+                        <Text mb="4px">{t('Insufficient liquidity for this trade')}</Text>
+                        {singleHopOnly && <Text mb="4px">{t('Try enabling multi-hop trades.')}</Text>}
                       </Card>
                     ) : showApproveFlow ? (
                       <RowBetween>
@@ -451,13 +488,13 @@ export default function Swap() {
                           disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
                         >
                           {approval === ApprovalState.PENDING ? (
-                            <AutoRow gap="6px" justify="center">
-                              <></>
-                            </AutoRow>
+                            <>
+                              Enabling <AutoRenewIcon spin color="currentColor" style={{ marginLeft: '2px' }} />
+                            </>
                           ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                            'Enabled'
+                            t('Enabled')
                           ) : (
-                            `Enable ${currencies[Field.INPUT]?.getSymbol(chainId) ?? ''}`
+                            `${t('Enable')} ${currencies[Field.INPUT]?.getSymbol(chainId) ?? ''}`
                           )}
                         </LargeStyledButton>
                         <LargeStyledButton
@@ -483,10 +520,10 @@ export default function Swap() {
                           }
                         >
                           {priceImpactSeverity > 3 && !isExpertMode
-                            ? 'Price Impact High'
+                            ? t('Price Impact High')
                             : priceImpactSeverity > 2
-                            ? 'Swap Anyway'
-                            : 'Swap'}
+                            ? t('Swap Anyway')
+                            : t('Swap')}
                         </LargeStyledButton>
                       </RowBetween>
                     ) : (
@@ -510,10 +547,10 @@ export default function Swap() {
                       >
                         {swapInputError ||
                           (priceImpactSeverity > 3 && !isExpertMode
-                            ? 'Price Impact Too High'
+                            ? t('Price Impact Too High')
                             : priceImpactSeverity > 2
-                            ? 'Swap Anyway'
-                            : 'Swap')}
+                            ? t('Swap Anyway')
+                            : t('Swap'))}
                       </LargeStyledButton>
                     )}
                     {showApproveFlow && (

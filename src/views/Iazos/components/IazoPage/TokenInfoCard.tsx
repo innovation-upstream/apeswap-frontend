@@ -3,6 +3,7 @@ import { Text, Skeleton } from '@apeswapfinance/uikit'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import { BLOCK_EXPLORER } from 'config/constants/chains'
 import { useNetworkChainId } from 'state/hooks'
+import { useTranslation } from 'contexts/Localization'
 import {
   IazoCardWrapper,
   CardMonkey,
@@ -37,6 +38,7 @@ const TokenInfoCard: React.FC<TokenInfoCardProps> = ({
   )}`
   const tokenLink = `${BLOCK_EXPLORER[chainId]}/address/${tokenAddress}`
   const contractLink = `${BLOCK_EXPLORER[chainId]}/address/${contractAddress}`
+  const { t } = useTranslation()
 
   return (
     <IazoCardWrapper>
@@ -48,7 +50,7 @@ const TokenInfoCard: React.FC<TokenInfoCardProps> = ({
           <TokenInfoButton opacity="1">
             <a href={contractLink} target="_blank" rel="noopener noreferrer">
               <Text fontSize={isMobile ? '11px' : '15px'} color="white">
-                BscScan
+                {t('BscScan')}
               </Text>
             </a>
           </TokenInfoButton>
@@ -62,7 +64,7 @@ const TokenInfoCard: React.FC<TokenInfoCardProps> = ({
           <TokenInfoButton opacity=".1">
             <a href={tokenWebsite} target="_blank" rel="noopener noreferrer">
               <Text fontSize={isMobile ? '11px' : '15px'} color="white">
-                Website
+                {t('Website')}
               </Text>
             </a>
           </TokenInfoButton>

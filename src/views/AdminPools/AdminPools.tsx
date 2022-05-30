@@ -6,13 +6,14 @@ import { useWeb3React } from '@web3-react/core'
 import { Heading, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
-import useI18n from 'hooks/useI18n'
+
 import { useBlock } from 'state/block/hooks'
 import useWindowSize, { Size } from 'hooks/useDimensions'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { usePools } from 'state/hooks'
 import { Pool } from 'state/types'
 import Page from 'components/layout/Page'
+import { useTranslation } from 'contexts/Localization'
 import SearchInput from '../PoolsLegacy/components/SearchInput'
 import PoolTabButtons from '../PoolsLegacy/components/PoolTabButtons'
 import PoolCard from '../PoolsLegacy/components/PoolCard/PoolCard'
@@ -464,7 +465,7 @@ const AdminPools: React.FC = () => {
   const { pathname } = useRouter()
   const size: Size = useWindowSize()
   const allPools = usePools(account)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const isActive = !pathname.includes('history')
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
@@ -573,11 +574,12 @@ const AdminPools: React.FC = () => {
     <>
       <Header>
         <HeadingContainer>
-          <StyledHeading as="h1">{TranslateString(999, 'Admin Pools')}</StyledHeading>
+          <StyledHeading as="h1">{t('Admin Pools')}</StyledHeading>
           {size.width > 968 && (
             <AdminText>
-              Stake OBIE to earn new tokens. <br /> Admins will be allocated OBIE tokens from grandpa Obie Dobo. <br />{' '}
-              Your own personal pools page to reward your hard work ❤️
+              {t('Stake OBIE to earn new tokens.')} <br />{' '}
+              {t('Admins will be allocated OBIE tokens from grandpa Obie Dobo.')} <br />{' '}
+              {t('Your own personal pools page to reward your hard work')} ❤️
             </AdminText>
           )}
         </HeadingContainer>
@@ -597,7 +599,7 @@ const AdminPools: React.FC = () => {
               <ToggleContainer>
                 <ToggleWrapper onClick={() => setStakedOnly(!stakedOnly)}>
                   <StyledCheckbox checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
-                  <StyledText>{TranslateString(1116, 'Staked')}</StyledText>
+                  <StyledText>{t('Staked')}</StyledText>
                 </ToggleWrapper>
               </ToggleContainer>
             </ButtonCheckWrapper>
@@ -606,12 +608,12 @@ const AdminPools: React.FC = () => {
         <ContainerLabels>
           <StyledLabelContainerHot>
             <StyledLabel active={sortOption === 'hot'} onClick={() => handleSortOptionChange('hot')}>
-              Hot
+              {t('Hot')}
             </StyledLabel>
           </StyledLabelContainerHot>
           <StyledLabelContainerAPR>
             <StyledLabel active={sortOption === 'apr'} onClick={() => handleSortOptionChange('apr')}>
-              Very Nice
+              {t('Very Nice')}
               {sortOption === 'apr' ? (
                 <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
               ) : null}
@@ -619,18 +621,18 @@ const AdminPools: React.FC = () => {
           </StyledLabelContainerAPR>
           <StyledLabelContainerLiquidity>
             <StyledLabel active={sortOption === 'totalStaked'} onClick={() => handleSortOptionChange('totalStaked')}>
-              Good Project
+              {t('Good Project')}
               {sortOption === 'totalStaked' ? (
                 <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
               ) : null}
             </StyledLabel>
           </StyledLabelContainerLiquidity>
           <StyledLabelContainerLP>
-            <StyledLabel>Token</StyledLabel>
+            <StyledLabel>{t('Token')}</StyledLabel>
           </StyledLabelContainerLP>
           <StyledLabelContainerEarned>
             <StyledLabel active={sortOption === 'earned'} onClick={() => handleSortOptionChange('earned')}>
-              Earned
+              {t('Earned')}
               {sortOption === 'earned' ? (
                 <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
               ) : null}
