@@ -22,7 +22,7 @@ const MarketingModalCheck = () => {
   const { BillsBody1 } = BillsBodies
 
   const onDismiss = () => {
-    push({ pathname })
+    push({ pathname }, undefined, { shallow: true })
   }
 
   const lending = [<LendingBody1 />, <LendingBody2 />, <LendingBody3 />, <LendingBody4 />, <LendingBody5 />]
