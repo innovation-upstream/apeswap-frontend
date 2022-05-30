@@ -162,8 +162,8 @@ const SlippageTabs = () => {
 }
 
 const StyledInput = styled(Input)`
-  width: 120px;
-  height: 28px;
+  width: 120px !important;
+  height: 28px !important;
   color: ${(props) => props.theme.colors.text};
   outline: none;
   :focus {
@@ -179,8 +179,8 @@ const SelectButton = styled.div<{ active: boolean }>`
   display: flex;
   width: 56px;
   height: 28px;
-  background: ${(props) => (props.active ? 'rgba(255, 179, 0, 1)' : props.theme.colors.inputBorder)};
-  color: ${(props) => (props.active ? 'white' : props.theme.colors.primary)};
+  background: ${(props) => (props.active ? 'rgba(255, 179, 0, 1)' : props.theme.colors.navbar)};
+  color: ${(props) => (props.active ? 'white' : props.theme.colors.text)};
   border-radius: 20px;
   cursor: pointer;
   align-items: center;

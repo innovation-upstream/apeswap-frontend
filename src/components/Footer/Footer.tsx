@@ -2,7 +2,7 @@
 import React, { useContext } from 'react'
 import { Box, Flex } from 'theme-ui'
 import { ThemeSwitcher } from '@apeswapfinance/uikit'
-import { Text, Svg, IconButton, Button } from '@innovationupstream/apeswap-uikit'
+import { Text, Svg, IconButton, Button } from '@ape.swap/uikit'
 import Link from 'next/link'
 import { NetworkButton } from 'components/NetworkButton'
 import { ThemeContext } from 'contexts/ThemeContext'

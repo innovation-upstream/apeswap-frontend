@@ -79,64 +79,66 @@ const Services: React.FC = () => {
           justifyContent="space-between"
           style={{ position: 'absolute', bottom: '60px', height: '250px', width: '300px' }}
         >
-          {stats?.map((stat) => {
-            const { name, tokenImage } = handleEachService(id, stat)
-            return (
-              <a href={stat.link} rel="noopener noreferrer" key={stat?.apr}>
-                <Flex
-                  mt="5px"
-                  mb="5px"
-                  pl="20px"
-                  style={{
-                    width: '100%',
-                    height: '70px',
-                    background: 'rgba(11, 11, 11, .55)',
-                    borderRadius: '10px',
-                  }}
-                >
-                  {id === 'farmDetails' ? (
-                    <ServiceTokenDisplay
-                      token1={tokenImage[0]}
-                      token2={tokenImage[1]}
-                      token3={stat.rewardToken.name}
-                      stakeLp
-                      iconFill="white"
-                    />
-                  ) : id === 'billDetails' ? (
-                    <ServiceTokenDisplay
-                      token1={tokenImage[0]}
-                      token2={tokenImage[1]}
-                      token3="BANANA"
-                      stakeLp
-                      billArrow
-                      iconFill="white"
-                    />
-                  ) : id === 'poolDetails' ? (
-                    <ServiceTokenDisplay token1={tokenImage[0]} token2={tokenImage[1]} iconFill="white" />
-                  ) : (
-                    <ServiceTokenDisplay token1={tokenImage[0]} />
-                  )}
-                  <Flex pl="15px" justifyContent="center" flexDirection="column">
-                    <Text bold style={{ width: '100%', color: 'white' }}>
-                      {name}
-                    </Text>
-                    {id === 'lendingDetails' ? (
-                      <Text style={{ width: '100%', color: 'white' }}>APY: {stat.apy.toFixed(2)}%</Text>
+          {stats
+            ?.filter((s) => s)
+            .map((stat) => {
+              const { name, tokenImage } = handleEachService(id, stat)
+              return (
+                <a href={stat.link} rel="noopener noreferrer" key={stat?.apr}>
+                  <Flex
+                    mt="5px"
+                    mb="5px"
+                    pl="20px"
+                    style={{
+                      width: '100%',
+                      height: '70px',
+                      background: 'rgba(11, 11, 11, .55)',
+                      borderRadius: '10px',
+                    }}
+                  >
+                    {id === 'farmDetails' ? (
+                      <ServiceTokenDisplay
+                        token1={tokenImage[0]}
+                        token2={tokenImage[1]}
+                        token3={stat.rewardToken.name}
+                        stakeLp
+                        iconFill="white"
+                      />
                     ) : id === 'billDetails' ? (
-                      <Text style={{ width: '100%', color: 'white' }}>
-                        Discount:{' '}
-                        <span style={{ color: stat.discount > 0 ? 'white' : '#DF4141' }}>
-                          {stat.discount.toFixed(2)}%
-                        </span>
-                      </Text>
+                      <ServiceTokenDisplay
+                        token1={tokenImage[0]}
+                        token2={tokenImage[1]}
+                        token3="BANANA"
+                        stakeLp
+                        billArrow
+                        iconFill="white"
+                      />
+                    ) : id === 'poolDetails' ? (
+                      <ServiceTokenDisplay token1={tokenImage[0]} token2={tokenImage[1]} iconFill="white" />
                     ) : (
-                      <Text style={{ width: '100%', color: 'white' }}>APR: {(stat.apr * 100).toFixed(2)}%</Text>
+                      <ServiceTokenDisplay token1={tokenImage[0]} />
                     )}
+                    <Flex pl="15px" justifyContent="center" flexDirection="column">
+                      <Text bold style={{ width: '100%', color: 'white' }}>
+                        {name}
+                      </Text>
+                      {id === 'lendingDetails' ? (
+                        <Text style={{ width: '100%', color: 'white' }}>APY: {stat.apy.toFixed(2)}%</Text>
+                      ) : id === 'billDetails' ? (
+                        <Text style={{ width: '100%', color: 'white' }}>
+                          Discount:{' '}
+                          <span style={{ color: stat.discount > 0 ? 'white' : '#DF4141' }}>
+                            {stat.discount.toFixed(2)}%
+                          </span>
+                        </Text>
+                      ) : (
+                        <Text style={{ width: '100%', color: 'white' }}>APR: {(stat.apr * 100).toFixed(2)}%</Text>
+                      )}
+                    </Flex>
                   </Flex>
-                </Flex>
-              </a>
-            )
-          })}
+                </a>
+              )
+            })}
         </Flex>
         <a href={link} rel="noopener noreferrer">
           <Flex alignItems="center" justifyContent="center" style={{ textAlign: 'center' }}>

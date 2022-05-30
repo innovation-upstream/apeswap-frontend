@@ -57,6 +57,11 @@ const styles: Record<string, ThemeUIStyleObject> = {
     width: '40px',
     height: '40px',
     padding: '1px',
+    '&:hover:not([disabled])': {
+      backgroundColor: 'white3',
+      opacity: 0.8,
+      borderColor: 'white3',
+    },
   },
   copyrightWrapper: {
     position: 'relative',
