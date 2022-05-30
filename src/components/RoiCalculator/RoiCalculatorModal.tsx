@@ -84,6 +84,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
     numberOfDays,
     farmApr: apr + lpApr,
     tokenPrice,
+    roundingDecimals: 8,
     // Get the fraction of 1 day
     compoundFrequency: 1 / compoundFrequency,
     amountDollar: parseFloat(amountDollars || inputValue),
@@ -169,7 +170,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
 
           <Box sx={styles.roiBanana}>
             <Text variant="sm" color="primaryBright">
-              ~{compoundROIRatesValue} BANANA
+              ~{compoundROIRatesValue.toFixed(2)} BANANA
             </Text>
             <Text variant="sm" color="primaryBright">
               ({percentageCompoundValue}%)
