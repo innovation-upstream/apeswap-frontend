@@ -163,7 +163,12 @@ const Pools: React.FC<IPools> = ({ showHistory, id }) => {
               stakedOnly={stakedOnly}
               query={searchQuery}
             />
-            <DisplayPools pools={renderPools()} openId={urlSearchedPool} poolTags={poolTags} showHistory={showHistory} />
+            <DisplayPools
+              pools={renderPools()}
+              openId={urlSearchedPool}
+              poolTags={poolTags}
+              showHistory={showHistory}
+            />
             <div ref={loadMoreRef} />
           </Flex>
         </ListViewLayout>
