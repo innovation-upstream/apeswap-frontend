@@ -46,7 +46,7 @@ const pools: PoolConfig[] = [
     tokenName: 'ALLOY',
     stakingToken: tokens.banana,
     image: 'ALLOY.png',
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       // BEP20RewardApe
       97: '0xb1108939748A635C5ed982a17FF5C6E7D79ECF62',
@@ -66,7 +66,7 @@ const pools: PoolConfig[] = [
     tokenName: 'NAUT',
     stakingToken: tokens.banana,
     image: 'NAUT.png',
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       // BEP20RewardApe
       97: '0xb1108939748A635C5ed982a17FF5C6E7D79ECF62',
@@ -86,7 +86,7 @@ const pools: PoolConfig[] = [
   //   tokenName: 'NAUT',
   //   stakingTokenName: 'BNB-NAUT',
   //   image: 'NAUT.png',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
   //     56: '0x288ea5437c7aad045a393cee2f41e548df24d1c8', // BNB-NAUT LP
@@ -151,7 +151,7 @@ const pools: PoolConfig[] = [
     tokenName: 'LYPTUS',
     image: 'LYPTUS.svg',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       // BEP20RewardApe
       97: '0xb1108939748A635C5ed982a17FF5C6E7D79ECF62',
@@ -172,7 +172,7 @@ const pools: PoolConfig[] = [
     tokenName: 'ONT',
     image: 'ONT.png',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x3996F919980778cb0fc1982087cAc01089e33fe7', // ApeRewardPool
       56: '0x8e6f61f855a7483E29c8E87BF221C73e10b49738',
@@ -211,7 +211,7 @@ const pools: PoolConfig[] = [
     tokenName: 'BINGUS',
     image: 'Bingus.png',
     stakingToken: tokens.gnana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x3996F919980778cb0fc1982087cAc01089e33fe7',
       56: '0x1697b103a72299d5db4e39ef28a32991c347be23', // ApeRewardPool
@@ -231,7 +231,7 @@ const pools: PoolConfig[] = [
     tokenName: 'WATCH',
     image: 'WATCH.png',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x3996F919980778cb0fc1982087cAc01089e33fe7',
       56: '0x465a3782d9014e6eefccc21470c5e41b2cad9d6d', // ApeRewardPool
@@ -251,7 +251,7 @@ const pools: PoolConfig[] = [
     tokenName: 'KEYFI',
     image: 'KEYFI.png',
     stakingToken: tokens.gnana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x3996F919980778cb0fc1982087cAc01089e33fe7',
       56: '0xEedd7475Eb5D05D591bE0927B178AcBBdC5ee1c1', // ApeRewardPool
@@ -291,7 +291,7 @@ const pools: PoolConfig[] = [
     tokenName: 'NRV',
     image: 'NRV.png',
     stakingToken: tokens.gnana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x3996F919980778cb0fc1982087cAc01089e33fe7',
       56: '0x48ee3f7748fac3e8e4858bd0b09483c4339d3d7e', // ApeRewardPool
@@ -311,7 +311,7 @@ const pools: PoolConfig[] = [
     tokenName: 'MOONLIGHT',
     image: 'MOONLIGHT.svg',
     stakingToken: tokens.gnana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x3996F919980778cb0fc1982087cAc01089e33fe7',
       56: '0xe44d4786e9d367a475a0789dc618c76a2b2d05ec', // ApeRewardPool
@@ -331,7 +331,7 @@ const pools: PoolConfig[] = [
     tokenName: 'SPACE',
     image: 'SPACE.svg',
     stakingToken: tokens.gnana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x3996F919980778cb0fc1982087cAc01089e33fe7',
       56: '0x52634C2763a6DADA2028440d0892431b04809d88', // ApeRewardPool
@@ -351,7 +351,7 @@ const pools: PoolConfig[] = [
     tokenName: 'GMR',
     image: '',
     stakingToken: tokens.gnana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x0e34e04310e44329f1dafd28c9922ee4517ac397',
       56: '0xfd9c606d3Ff6AC1b044C4F5C0A9Fa934634bD2e8',
@@ -371,7 +371,7 @@ const pools: PoolConfig[] = [
     tokenName: 'WINGS',
     image: 'WINGS.svg',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
       56: '0x15C4200e694e4A0223191Ec717906CBA82F54745',
@@ -391,7 +391,7 @@ const pools: PoolConfig[] = [
     tokenName: 'MBOX',
     image: 'MOBOX.svg',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
       56: '0x19383690321291cb00de31ddec94f4596d504f5a',
@@ -411,7 +411,7 @@ const pools: PoolConfig[] = [
     tokenName: 'WYVERN',
     image: 'WYVERN.png',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
       56: '0x33a8CE49cFBdeF61e5E494f769b5626d395a56f3',
@@ -430,7 +430,7 @@ const pools: PoolConfig[] = [
     tokenName: 'BOG',
     image: 'BOG.svg',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
       56: '0x1851a14b9b6bcd55b57da6bfd11f7fb5ae8c3d01',
@@ -470,7 +470,7 @@ const pools: PoolConfig[] = [
     tokenName: 'SCAM',
     image: 'SCAM.png',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
       56: '0x49605d4d0bdf049a9c3f20f59e066662a086a9a8',
@@ -490,7 +490,7 @@ const pools: PoolConfig[] = [
     tokenName: 'SKILL',
     image: 'SKILL.svg',
     stakingToken: tokens.gnana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
       56: '0x92f5927fb750593b00ac933d296d9230d6f8b421',
@@ -513,7 +513,7 @@ const pools: PoolConfig[] = [
   //   tokenName: 'SPACE',
   //   image: 'SPACE.svg',
   //   stakingTokenName: 'SPACE-BNB',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
   //     56: '0xd0F82498051067E154d1dcd3d88fA95063949D7e', // SPACE-BNB
@@ -536,7 +536,7 @@ const pools: PoolConfig[] = [
     tokenName: 'bxBTC',
     image: 'bxBTC.png',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x3996F919980778cb0fc1982087cAc01089e33fe7',
       56: '0xd65f1319f6408C03EBA7f27e156391784492A9EF', // ApeRewardPool
@@ -558,7 +558,7 @@ const pools: PoolConfig[] = [
   //   tokenName: 'HIFI',
   //   image: 'HIFI.svg',
   //   stakingTokenName: 'HIFI-BNB',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
   //     56: '0xf093ce6778c4d7d99c23f714297fff15a661d354', // HIFI-BNB
@@ -581,7 +581,7 @@ const pools: PoolConfig[] = [
     sousId: 1,
     tokenName: 'BNB',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       // BNBRewardsApe
       97: '0x88777a814946cd8eb80e7029eedf05cc6cf34168',
@@ -601,7 +601,7 @@ const pools: PoolConfig[] = [
   //   sousId: 2,
   //   tokenName: 'SOUL',
   //   stakingTokenName: 'BANANA-SOUL',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   image: 'SOUL.png',
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
@@ -625,7 +625,7 @@ const pools: PoolConfig[] = [
   //   sousId: 3,
   //   tokenName: 'SOUL',
   //   stakingTokenName: 'BANANA-SOUL',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   image: 'SOUL.png',
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
@@ -649,7 +649,7 @@ const pools: PoolConfig[] = [
   //   sousId: 4,
   //   tokenName: 'NUTS',
   //   stakingTokenName: 'BANANA-NUTS',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   image: 'NUTS.svg',
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
@@ -673,7 +673,7 @@ const pools: PoolConfig[] = [
   //   sousId: 5,
   //   tokenName: 'BANANA',
   //   stakingTokenName: 'BANANA-NUTS',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   image: 'BANANA.svg',
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
@@ -697,7 +697,7 @@ const pools: PoolConfig[] = [
   //   sousId: 6,
   //   tokenName: 'CRX',
   //   stakingTokenName: 'BANANA-CRX',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   image: 'CRX.svg',
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
@@ -721,7 +721,7 @@ const pools: PoolConfig[] = [
   //   sousId: 7,
   //   tokenName: 'NAUT',
   //   stakingTokenName: 'BNB-NAUT',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   image: 'NAUT.png',
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
@@ -766,7 +766,7 @@ const pools: PoolConfig[] = [
   //   tokenName: 'NUTS',
   //   stakingTokenName: 'BANANA-NUTS',
   //   image: 'NUTS.svg',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
   //     56: '0x44baf117d79d5313bea1fbba416e4067436e4bbe', // BANANA-NUTS LP
@@ -789,7 +789,7 @@ const pools: PoolConfig[] = [
   //   sousId: 10,
   //   tokenName: 'HPS',
   //   stakingTokenName: 'BANANA-HPS',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   image: 'HPS.png',
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
@@ -813,7 +813,7 @@ const pools: PoolConfig[] = [
   //   sousId: 11,
   //   tokenName: 'BRICK',
   //   stakingTokenName: 'BANANA-BRICK',
-  //   rewardToken: null,
+  //   rewardToken: null as any,
   //   image: 'BRICK.png',
   //   stakingTokenAddress: {
   //     97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
@@ -838,7 +838,7 @@ const pools: PoolConfig[] = [
     tokenName: 'CAPS',
     image: 'CAPS.svg',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
       56: '0x99dc608804adf5c5e9701b829fefbd618da14c5b',
@@ -858,7 +858,7 @@ const pools: PoolConfig[] = [
     tokenName: 'BIRB',
     image: 'BIRB.svg',
     stakingToken: tokens.gnana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
       56: '0xaffd843b548f70cc586cdecb2dd0e85be5349e96',
@@ -938,7 +938,7 @@ const pools: PoolConfig[] = [
     tokenName: 'POTS',
     image: 'POTS.svg',
     stakingToken: tokens.banana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
       56: '0x4632d4ff6312c9a00c6440c9271f0061aaa49a4b',
@@ -998,7 +998,7 @@ const pools: PoolConfig[] = [
     tokenName: 'BABI',
     image: 'BABI.svg',
     stakingToken: tokens.gnana,
-    rewardToken: null,
+    rewardToken: null as any,
     contractAddress: {
       97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
       56: '0xbc2329abb85e0a3dc7e5bfd01901374bd4162831',
