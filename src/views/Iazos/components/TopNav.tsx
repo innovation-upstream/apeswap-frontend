@@ -3,8 +3,10 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import { Text } from '@apeswapfinance/uikit'
 import { LinkWrapper } from 'style/LinkWrapper'
+import { useTranslation } from 'contexts/Localization'
 
 const TopNav: React.FC = () => {
+  const { t } = useTranslation()
   return (
     <TopNavWrapper>
       <TopNavMonkey />
@@ -12,7 +14,7 @@ const TopNav: React.FC = () => {
         <LinkWrapper>
           <BackWrapper>
             <BackArrow src="/images/left-arrow.svg" />
-            <StyledText color="primaryBright">Back to Self-Serve Launchpad</StyledText>
+            <StyledText color="primaryBright">{t('Back to Self-Serve Launchpad')}</StyledText>
           </BackWrapper>
         </LinkWrapper>
       </Link>

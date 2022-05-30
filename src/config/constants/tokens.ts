@@ -6,6 +6,7 @@ const tokens = {
       97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
       56: '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95',
       137: '0x5d47baba0d66083c52009271faf3f50dcc01023c',
+      1: '0x92df60c51c710a1b1c20e42d85e221f3a1bfc7f2',
     },
     decimals: 18,
   },
@@ -1038,6 +1039,76 @@ const tokens = {
     },
     decimals: 18,
   },
+  cpo: {
+    symbol: 'CPO',
+    address: {
+      56: '0xea395DFaFEd39924988b475f2Ca7f4C72655203A',
+    },
+    decimals: 18,
+  },
+  coc: {
+    symbol: 'COC',
+    address: {
+      56: '0xbDC3b3639f7AA19e623A4d603A3Fb7Ab20115A91',
+    },
+    decimals: 18,
+  },
+  froyo: {
+    symbol: 'FROYO',
+    address: {
+      56: '0xe369fec23380f9F14ffD07a1DC4b7c1a9fdD81c9',
+    },
+    decimals: 18,
+  },
+  primate: {
+    symbol: 'PRIMATE',
+    address: {
+      56: '0xA19863E302FD1B41276fCe5A48D9C511DBeEf34c',
+    },
+    decimals: 18,
+  },
+  lc: {
+    symbol: 'LC',
+    address: {
+      56: '0x6012C3a742f92103d238F1c8306cF8fbcDEca8B3',
+    },
+    decimals: 18,
+  },
+  grvs: {
+    symbol: 'GRVS',
+    address: {
+      56: '0x190CEC0657a02E9eAB1C1DF5d59f9139131cf539',
+    },
+    decimals: 18,
+  },
+  lgx: {
+    symbol: 'LGX',
+    address: {
+      56: '0x9096B4309224d751FCB43d7eB178dcFFc122aD15',
+    },
+    decimals: 18,
+  },
+  roobee: {
+    symbol: 'ROOBEE',
+    address: {
+      56: '0xF77351D8f4eE853135961A936BB8d2e4fFa75f9D',
+    },
+    decimals: 18,
+  },
+  vtg: {
+    symbol: 'VTG',
+    address: {
+      56: '0x8de5aA37a7C40A53062EAD382b8EEAD3B08a7A46',
+    },
+    decimals: 18,
+  },
+  tlos: {
+    symbol: 'TLOS',
+    address: {
+      56: '0xb6C53431608E626AC81a9776ac3e999c5556717c',
+    },
+    decimals: 18,
+  },
 
   // LP Tokens
   bananaBnb: {
@@ -1124,6 +1195,30 @@ const tokens = {
     symbol: 'DRF-BUSD',
     address: {
       56: '0x5FFc5b392Fcc33357c6a8240bda1C9374A55E6B8',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  cocBnb: {
+    symbol: 'COC-BNB',
+    address: {
+      56: '0x5467dD00ca4d91010Ab2A3aEF8a0162DC218801A',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  lcBnb: {
+    symbol: 'LC-BNB',
+    address: {
+      56: '0xc5a69133432eF17CD15C501CAa5f9cF28C22aA00',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  lgxBusd: {
+    symbol: 'LGX-BUSD',
+    address: {
+      56: '0x004F72D474eE262701205E3637B4367594eFb11D',
     },
     decimals: 18,
     lpToken: true,

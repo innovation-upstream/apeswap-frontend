@@ -20,13 +20,13 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   let farmData = []
   try {
     const tokenPrices = await fetchPrices(chainId)
+    const bananaPrice = (
+      new BigNumber(tokenPrices?.find((token) => token.symbol === 'BANANA')?.price) || new BigNumber(0)
+    ).toString()
+    const [lpTokenPrices, farmLpAprs] = await Promise.all([fetchLpPrices(chainId), fetchFarmLpAprs(chainId)])
     if (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
-      farmData = await fetchDualFarms(tokenPrices, chainId)
+      farmData = await fetchDualFarms(chainId, tokenPrices, new BigNumber(bananaPrice), farmLpAprs)
     } else {
-      const [lpTokenPrices, farmLpAprs] = await Promise.all([fetchLpPrices(chainId), fetchFarmLpAprs(chainId)])
-      const bananaPrice = (
-        new BigNumber(tokenPrices?.find((token) => token.symbol === 'BANANA')?.price) || new BigNumber(0)
-      ).toString()
       farmData = await fetchFarms(chainId, lpTokenPrices, new BigNumber(bananaPrice), farmLpAprs)
     }
   } catch (e) {
@@ -37,8 +37,12 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   return initialProps
 })
 
-const FarmsPage: React.FC<{ chainId?: number }> = ({ chainId }) => {
-  return chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET ? <DualFarms showHistory /> : <Farms />
+const FarmsPage: React.FC<{ chainId?: number; pid: any }> = ({ chainId, pid }) => {
+  return chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET ? (
+    <DualFarms pid={pid} showHistory />
+  ) : (
+    <Farms pid={pid} showHistory />
+  )
 }
 
 export default FarmsPage

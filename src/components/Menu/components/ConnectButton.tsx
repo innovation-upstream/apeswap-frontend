@@ -1,46 +1,95 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Box, Flex } from 'theme-ui'
-import { Button, Text, IconButton } from '@innovationupstream/apeswap-uikit'
+import { Button, Text, useWalletModal, useMatchBreakpoints, IconButton } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useAuth from 'hooks/useAuth'
+import { useTranslation } from 'contexts/Localization'
+import { Box, Flex } from 'theme-ui'
 import useTheme from 'hooks/useTheme'
-import { connectButton } from './styles'
+import { dynamicStyles } from './styles'
 
-const ConnectButton: React.FC<any> = ({ handleConnect }) => {
+const ConnectButton: React.FC<any> = () => {
   const { account } = useActiveWeb3React()
+  const { login, logout } = useAuth()
+  const { t } = useTranslation()
+  const { onPresentAccountModal, onPresentConnectModal } = useWalletModal(login as any, logout, t, account)
+  const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
+  const { isXs } = useMatchBreakpoints()
   const { isDark } = useTheme()
+
+  const buttonStyle = dynamicStyles.userBlockBtn({ account })
+
+  const loadButton = () => {
+    if (account) {
+      if (isXs) {
+        return (
+          <Button
+            size="sm"
+            fontSize="14px"
+            variant="tertiary"
+            sx={buttonStyle}
+            onClick={() => {
+              onPresentAccountModal()
+            }}
+            account={account}
+          >
+            <Text weight="normal">{accountEllipsis}</Text>
+          </Button>
+        )
+      }
+      return (
+        <Button
+          size="sm"
+          variant="tertiary"
+          fontSize="14px"
+          sx={buttonStyle}
+          onClick={() => {
+            onPresentAccountModal()
+          }}
+          account={account}
+        >
+          <Text weight="normal">{accountEllipsis}</Text>
+        </Button>
+      )
+    }
+    return (
+      <Button
+        size="sm"
+        variant="primary"
+        fontSize="16px"
+        onClick={() => {
+          onPresentConnectModal()
+        }}
+        account={account}
+      >
+        {t('Connect')}
+      </Button>
+    )
+  }
+
   return (
     <Flex sx={{ position: 'relative', marginRight: 5 }}>
-      <Button csx={connectButton} size="sm" variant="primary" onClick={handleConnect}>
-        <Text
-          color="info"
-          variant="md"
-          weight="normal"
+      {loadButton()}
+      {account && (
+        <Box
           sx={{
-            margin: '0 30px 0 0',
-            fontSize: '16px',
-            fontWeight: '600',
+            '&& button': { border: 'none', borderRadius: '50%' },
+            position: 'absolute',
+            right: -4,
+            top: '50%',
+            transform: 'translateY(-50%)',
           }}
         >
-          {account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : 'CONNECT'}
-        </Text>
-      </Button>
-      <Box
-        sx={{
-          '& button': { border: 'none' },
-          position: 'absolute',
-          right: -5,
-          top: '50%',
-          transform: 'translateY(-50%)',
-        }}
-      >
-        <IconButton
-          onClick={handleConnect}
-          icon={isDark ? 'profileDark' : 'profileLight'}
-          variant="circular"
-          background="white3"
-        />
-      </Box>
+          <IconButton
+            onClick={() => {
+              onPresentAccountModal()
+            }}
+            icon={isDark ? 'profileDark' : 'profileLight'}
+            variant="circular"
+            background="white3"
+          />
+        </Box>
+      )}
     </Flex>
   )
 }

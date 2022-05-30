@@ -13,6 +13,9 @@ import Menu from 'components/Menu'
 import PageLoader from 'components/PageLoader'
 import { SSRContextProvider } from 'contexts/SSRContext'
 import { Metatags } from 'components/scripts'
+import ListsUpdater from 'state/lists/updater'
+import MulticallUpdater from 'state/multicall/updater'
+import TransactionUpdater from 'state/transactions/updater'
 import Providers from '../Providers'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -59,6 +62,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           </PageWrapper>
           <ToastListener />
         </SSRContextProvider>
+        <ListsUpdater />
+        <TransactionUpdater />
+        <MulticallUpdater />
       </Providers>
     </>
   )
