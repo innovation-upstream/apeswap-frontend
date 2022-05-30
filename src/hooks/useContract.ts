@@ -134,13 +134,13 @@ export const useSousChef = (id) => {
   // Using selector to avoid circular dependecies
   const chainId = useSelector((state: State) => state.network.data.chainId)
   const config = poolsConfig.find((pool) => pool.sousId === id)
-  return useContract(sousChef, config.contractAddress[chainId]) as SousChef
+  return useContract(sousChef, config?.contractAddress[chainId]) as SousChef
 }
 
 export const useNfaStakingChef = (id) => {
   const config = nfaStakingPools.find((pool) => pool.sousId === id)
   const rawAbi = nfaStakingAbi
-  return useContract(rawAbi, config.contractAddress[process.env.NEXT_PUBLIC_CHAIN_ID]) as NfaStaking
+  return useContract(rawAbi, config?.contractAddress?.[process.env.NEXT_PUBLIC_CHAIN_ID ?? '']) as NfaStaking
 }
 
 export const useAuction = () => {

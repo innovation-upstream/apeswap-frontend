@@ -13,7 +13,7 @@ const cleanFarmData = (
 ) => {
   const data = chunkedFarms.map((chunk, index) => {
     const farmConfig = farmsConfig?.find((farm) => farm.pid === farmIds[index])
-    const filteredLpPrice = lpPrices?.find((lp) => lp.address === farmConfig.lpAddresses)
+    const filteredLpPrice = lpPrices?.find((lp) => lp.address === farmConfig?.lpAddresses)
     const [
       tokenBalanceLP,
       quoteTokenBlanceLP,
@@ -43,15 +43,15 @@ const cleanFarmData = (
       .div(new BigNumber(10).pow(quoteTokenDecimals))
       .times(lpTokenRatio)
 
-    let alloc = null
+    let alloc = null as any
     let multiplier = 'unset'
     const allocPoint = new BigNumber(info.allocPoint._hex)
     const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
     alloc = poolWeight.toJSON()
     multiplier = `${allocPoint.div(100).toString()}X`
-    const totalLpStakedUsd = totalLpStaked.times(filteredLpPrice?.price)
+    const totalLpStakedUsd = totalLpStaked.times(filteredLpPrice?.price as number)
     const apr = getFarmApr(poolWeight, bananaPrice, totalLpStakedUsd)
-    const lpApr = farmLpAprs?.lpAprs?.find((lp) => lp.pid === farmConfig.pid)?.lpApr * 100
+    const lpApr = (farmLpAprs?.lpAprs?.find((lp) => lp.pid === farmConfig?.pid)?.lpApr as number) * 100
     const amountEarned = tokenEarnedPerThousandDollarsCompounding({
       numberOfDays: 365,
       farmApr: lpApr ? apr + lpApr : apr,

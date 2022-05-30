@@ -7,7 +7,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 
 const cleanPoolData = (poolIds: number[], chunkedPools: any[], tokenPrices: TokenPrices[], chainId: number) => {
   const data = chunkedPools.map((chunk, index) => {
-    const poolConfig = poolsConfig.find((pool) => pool.sousId === poolIds[index])
+    const poolConfig = poolsConfig.find((pool) => pool.sousId === poolIds[index]) as PoolConfig
     const [startBlock, endBlock, totalStaked] = chunk
     const totalStakedFormatted = new BigNumber(totalStaked).toJSON()
     const [stakingToken, rewardToken, apr] = fetchPoolTokenStatsAndApr(
@@ -33,13 +33,18 @@ const fetchPoolTokenStatsAndApr = (pool: PoolConfig, tokenPrices: TokenPrices[],
   // Get values needed to calculate apr
   const curPool = pool
   const rewardToken = tokenPrices
-    ? tokenPrices.find((token) => pool?.rewardToken && token?.address[chainId] === pool?.rewardToken.address[chainId])
+    ? tokenPrices.find((token) => pool?.rewardToken && token?.address[chainId] === pool?.rewardToken.address?.[chainId])
     : pool.rewardToken
   const stakingToken = tokenPrices
-    ? tokenPrices.find((token) => token?.address[chainId] === pool?.stakingToken.address[chainId])
+    ? tokenPrices.find((token) => token?.address[chainId] === pool?.stakingToken.address?.[chainId])
     : pool.stakingToken
   // Calculate apr
-  const apr = getPoolApr(stakingToken?.price, rewardToken?.price, getBalanceNumber(totalStaked), curPool?.tokenPerBlock)
+  const apr = getPoolApr(
+    stakingToken?.price as number,
+    rewardToken?.price as number,
+    getBalanceNumber(totalStaked),
+    curPool?.tokenPerBlock,
+  )
   return [stakingToken, rewardToken, apr]
 }
 

@@ -14,7 +14,7 @@ const fetchFarms = async (
   bananaPrice: BigNumber,
   farmLpAprs: FarmLpAprsType,
 ) => {
-  const farmIds = []
+  const farmIds: number[] = []
   const farmCalls = farmsConfig.flatMap((farm) => {
     farmIds.push(farm.pid)
     return fetchFarmCalls(farm, chainId)

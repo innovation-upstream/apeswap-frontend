@@ -8,7 +8,7 @@ import fetchPoolCalls from './fetchPoolCalls'
 import cleanPoolData from './cleanPoolData'
 
 const fetchPools = async (chainId: number, tokenPrices: TokenPrices[]) => {
-  const poolIds = []
+  const poolIds: number[] = []
   const poolCalls = poolsConfig.flatMap((pool) => {
     poolIds.push(pool.sousId)
     return fetchPoolCalls(pool, chainId)

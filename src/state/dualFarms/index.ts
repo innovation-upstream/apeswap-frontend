@@ -35,7 +35,7 @@ export const dualFarmsSlice = createSlice({
     updateDualFarmUserData: (state, action) => {
       const { field, value, pid } = action.payload
       const index = state.data.findIndex((p) => p.pid === pid)
-      state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+      state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } as any }
     },
   },
 })

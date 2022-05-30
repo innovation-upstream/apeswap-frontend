@@ -40,9 +40,9 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   addLiquidityUrl,
 }) => {
   const { t } = useTranslation()
-  const farmApy = new BigNumber(apy).times(new BigNumber(100)).toNumber()
+  const farmApy = new BigNumber(apy || 0).times(new BigNumber(100)).toNumber()
   const tokenPrice =
-    typeof rewardTokenPrice === 'number' ? rewardTokenPrice : new BigNumber(rewardTokenPrice).toNumber()
+    typeof rewardTokenPrice === 'number' ? rewardTokenPrice : new BigNumber(rewardTokenPrice as any).toNumber()
   const oneThousandDollarsWorthOfBanana = 1000 / tokenPrice
 
   const bananaEarnedPerThousand1D = calculateBananaEarnedPerThousandDollars({

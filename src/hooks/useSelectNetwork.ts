@@ -49,7 +49,7 @@ const useSwitchNetwork = () => {
           }
         }
       } else {
-        dispatch(fetchUserNetwork(chainId, account, userChainId))
+        dispatch(fetchUserNetwork(chainId as number, account as string, userChainId))
       }
     },
     [chainId, account, provider, dispatch, connector, t, toastError],

@@ -41,12 +41,12 @@ export const useFarms = (account): Farm[] => {
 }
 
 export const useFarmFromPid = (pid): Farm => {
-  const farm = useSelector((state: State) => state.farms.data.find((f) => f.pid === pid))
+  const farm = useSelector((state: State) => state.farms.data.find((f) => f.pid === pid)) as Farm
   return farm
 }
 
 export const useFarmFromSymbol = (lpSymbol: string): Farm => {
-  const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol))
+  const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol)) as Farm
   return farm
 }
 

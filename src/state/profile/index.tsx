@@ -6,7 +6,7 @@ import getProfile from './getProfile'
 const initialState: ProfileState = {
   isInitialized: false,
   isLoading: true,
-  data: null,
+  data: null as any,
 }
 
 export const profileSlice = createSlice({

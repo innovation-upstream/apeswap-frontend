@@ -6,11 +6,11 @@ const getHomepageServiceStats = async (): Promise<ServiceData[]> => {
     const response = await fetch(`${apiBaseUrl}/stats/features`)
     const serviceResp = await response.json()
     if (serviceResp.statusCode === 500) {
-      return null
+      return null as any
     }
     return serviceResp
   } catch (error) {
-    return null
+    return null as any
   }
 }
 

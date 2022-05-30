@@ -7,7 +7,7 @@ import { Apeswap } from '@ape.swap/uikit'
 import { ThemeProvider as ThemeUIProvider } from 'theme-ui'
 
 const CACHE_KEY = 'IS_DARK'
-const ThemeContext = React.createContext({ isDark: null, toggleTheme: () => null })
+const ThemeContext = React.createContext({ isDark: null as any, toggleTheme: () => null as any })
 
 const ThemeContextProvider = ({ colorMode, children }) => {
   const [isDark, setIsDark] = useState(colorMode === 'dark')

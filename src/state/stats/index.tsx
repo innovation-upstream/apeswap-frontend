@@ -13,14 +13,14 @@ import fetchIfoStatus from './fetchIfoStatus'
 const initialState: StatsState = {
   isInitialized: false,
   isLoading: true,
-  HomepageData: null,
-  HomepageTokenStats: null,
-  HomepageNews: null,
-  HomepageLaunchCalendar: null,
-  HomepageServiceStats: null,
-  FarmLpAprs: null,
-  LiveIfo: null,
-  data: null,
+  HomepageData: null as any,
+  HomepageTokenStats: null as any,
+  HomepageNews: null as any,
+  HomepageLaunchCalendar: null as any,
+  HomepageServiceStats: null as any,
+  FarmLpAprs: null as any,
+  LiveIfo: null as any,
+  data: null as any,
 }
 
 export const statsSlice = createSlice({

@@ -12,8 +12,8 @@ const useAllEarnings = () => {
   const [balances, setBalance] = useState([])
   const { account, chainId } = useWeb3React()
   const { fastRefresh } = useRefresh()
-  const masterChefAddress = getMasterChefAddress(chainId)
-  const miniChefAddress = getMiniChefAddress(chainId)
+  const masterChefAddress = getMasterChefAddress(chainId as number)
+  const miniChefAddress = getMiniChefAddress(chainId as number)
 
   useEffect(() => {
     const fetchAllBSCBalances = async () => {
@@ -24,7 +24,7 @@ const useAllEarnings = () => {
           params: [farm.pid, account],
         }))
 
-        const res = await multicall(chainId, masterChefABI, calls)
+        const res = await multicall(chainId as number, masterChefABI, calls)
 
         setBalance(res)
       } catch (e) {
@@ -41,7 +41,7 @@ const useAllEarnings = () => {
           params: [farm.pid, account],
         }))
 
-        const res = await multicall(chainId, miniChefABI, calls)
+        const res = await multicall(chainId as number, miniChefABI, calls)
 
         setBalance(res)
       } catch (e) {

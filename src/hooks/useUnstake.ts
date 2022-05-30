@@ -54,7 +54,7 @@ const useUnstake = (pid: number) => {
 }
 
 // TODO remove legacy code we don't need to support
-const SYRUPIDS = []
+const SYRUPIDS: string | any[] = []
 
 export const useSousUnstake = (sousId) => {
   const dispatch = useDispatch()
@@ -73,9 +73,9 @@ export const useSousUnstake = (sousId) => {
       } else {
         trxHash = await sousUnstake(sousChefContract, amount)
       }
-      dispatch(updateUserStakedBalance(chainId, sousId, account))
-      dispatch(updateUserBalance(chainId, sousId, account))
-      dispatch(updateUserPendingReward(chainId, sousId, account))
+      dispatch(updateUserStakedBalance(chainId as number, sousId, account as string))
+      dispatch(updateUserBalance(chainId as number, sousId, account as string))
+      dispatch(updateUserPendingReward(chainId as number, sousId, account as string))
       track({
         event: 'pool',
         chain: chainId,
@@ -99,9 +99,9 @@ export const useSousEmergencyWithdraw = (sousId) => {
   const sousChefContract = useSousChef(sousId)
   const handleEmergencyWithdraw = useCallback(async () => {
     const txHash = await sousEmegencyWithdraw(sousChefContract)
-    dispatch(updateUserStakedBalance(chainId, sousId, account))
-    dispatch(updateUserBalance(chainId, sousId, account))
-    dispatch(updateUserPendingReward(chainId, sousId, account))
+    dispatch(updateUserStakedBalance(chainId as number, sousId, account as string))
+    dispatch(updateUserBalance(chainId as number, sousId, account as string))
+    dispatch(updateUserPendingReward(chainId as number, sousId, account as string))
     console.info(txHash)
   }, [account, dispatch, sousChefContract, sousId, chainId])
   return { onEmergencyWithdraw: handleEmergencyWithdraw }
@@ -116,9 +116,9 @@ export const useNfaUnstake = (sousId) => {
   const handleUnstake = useCallback(
     async (ids: number[]) => {
       await nfaUnstake(nfaStakeChefContract, ids)
-      dispatch(updateUserNfaStakingStakedBalance(chainId, sousId, account))
-      dispatch(updateNfaStakingUserBalance(chainId, sousId, account))
-      dispatch(updateUserNfaStakingPendingReward(chainId, sousId, account))
+      dispatch(updateUserNfaStakingStakedBalance(chainId, sousId, account as string))
+      dispatch(updateNfaStakingUserBalance(chainId, sousId, account as string))
+      dispatch(updateUserNfaStakingPendingReward(chainId, sousId, account as string))
       track({
         event: 'nfa',
         chain: chainId,
@@ -152,8 +152,8 @@ export const useVaultUnstake = (pid: number) => {
             pid,
           },
         })
-        dispatch(updateVaultUserBalance(account, chainId, pid))
-        dispatch(updateVaultUserStakedBalance(account, chainId, pid))
+        dispatch(updateVaultUserBalance(account as string, chainId as number, pid))
+        dispatch(updateVaultUserStakedBalance(account as string, chainId as number, pid))
         console.info(txHash)
       } catch (e) {
         console.error(e)
@@ -181,8 +181,8 @@ export const useVaultUnstakeAll = (pid: number) => {
           pid,
         },
       })
-      dispatch(updateVaultUserBalance(account, chainId, pid))
-      dispatch(updateVaultUserStakedBalance(account, chainId, pid))
+      dispatch(updateVaultUserBalance(account as string, chainId as number, pid))
+      dispatch(updateVaultUserStakedBalance(account as string, chainId as number, pid))
       console.info(txHash)
     },
     [account, vaultApeContract, chainId, dispatch, pid],
@@ -199,9 +199,9 @@ export const useMiniChefUnstake = (pid: number) => {
   const handleUnstake = useCallback(
     async (amount: string) => {
       const txHash = await miniChefUnstake(miniChefContract, pid, amount, account)
-      dispatch(updateDualFarmUserEarnings(chainId, pid, account))
-      dispatch(updateDualFarmUserStakedBalances(chainId, pid, account))
-      dispatch(updateDualFarmUserTokenBalances(chainId, pid, account))
+      dispatch(updateDualFarmUserEarnings(chainId as number, pid, account as string))
+      dispatch(updateDualFarmUserStakedBalances(chainId as number, pid, account as string))
+      dispatch(updateDualFarmUserTokenBalances(chainId as number, pid, account as string))
       return txHash
     },
     [account, dispatch, miniChefContract, pid, chainId],

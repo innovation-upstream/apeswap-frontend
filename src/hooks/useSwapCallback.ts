@@ -61,7 +61,7 @@ function useSwapCallArguments(
       return []
     }
 
-    const swapMethods = []
+    const swapMethods: SwapParameters[] = []
 
     swapMethods.push(
       Router.swapCallParameters(trade, {
