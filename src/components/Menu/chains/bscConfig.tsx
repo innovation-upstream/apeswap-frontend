@@ -24,7 +24,7 @@ const bscConfig: (t: ContextApi['t']) => any[] = (t) => [
       {
         label: t('Jungle Farms'),
         href: '/jungle-farms',
-        isNew: false,
+        isNew: true,
       },
       {
         label: t('Vaults'),
@@ -46,7 +46,7 @@ const bscConfig: (t: ContextApi['t']) => any[] = (t) => [
       {
         label: t('Treasury Bills'),
         href: '/treasury-bills',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Official IAO'),
