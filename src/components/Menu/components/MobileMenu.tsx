@@ -4,8 +4,11 @@ import { Box, Flex } from 'theme-ui'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IconButton, MenuContext, Svg, Text } from '@innovationupstream/apeswap-uikit'
 import { NetworkButton } from 'components/NetworkButton'
+import { useTranslation } from 'contexts/Localization'
+import { languageList } from 'config/localization/languages'
 import { NextLink } from './Link'
 import { menuItemContainer, linkStyle } from './styles'
+import LangSelectorButton from './LangSelectorButton'
 
 interface MobileMenuProps {
   items: {
@@ -21,6 +24,7 @@ interface MobileMenuProps {
 const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
   const { active, collapse } = useContext(MenuContext)
   const [open, setOpen] = useState<any>({})
+  const { t, setLanguage, currentLanguage } = useTranslation()
 
   const handleClick = (label: string) => () => {
     setOpen((prev) => ({
@@ -136,43 +140,59 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
               </>
             )
           })}
-          <Flex
-            sx={{
-              justifyContent: 'center',
-              py: '30px',
-              columnGap: '20px',
-              background: 'navbar',
-            }}
-          >
-            <a href="https://twitter.com/ape_swap" target="_blank" rel="noopener noreferrer">
-              <IconButton
-                variant="primary"
-                icon="twitter"
-                color="info"
-                sx={{ padding: '8px', margin: '0 5px' }}
-                background="white3"
+          <Box>
+            <Flex
+              sx={{
+                justifyContent: 'center',
+                background: 'navbar',
+                paddingTop: '9px',
+              }}
+            >
+              <LangSelectorButton
+                currentLang={currentLanguage?.language}
+                langs={languageList}
+                setLang={setLanguage}
+                t={t}
               />
-            </a>
-            <a href="https://t.me/ape_swap" target="_blank" rel="noopener noreferrer">
-              <IconButton
-                variant="primary"
-                icon="send"
-                color="info"
-                sx={{ padding: '8px', margin: '0 5px' }}
-                background="white3"
-              />
-            </a>
-            <a href="https://discord.com/invite/ApeSwap" target="_blank" rel="noopener noreferrer">
-              <IconButton
-                variant="primary"
-                icon="discord"
-                color="info"
-                sx={{ padding: '6px 8px', margin: '0 5px' }}
-                background="white3"
-              />
-            </a>
-            <NetworkButton />
-          </Flex>
+              <NetworkButton />
+            </Flex>
+            <Flex
+              sx={{
+                justifyContent: 'center',
+                py: '14px',
+                columnGap: '20px',
+                background: 'navbar',
+              }}
+            >
+              <a href="https://twitter.com/ape_swap" target="_blank" rel="noopener noreferrer">
+                <IconButton
+                  variant="primary"
+                  icon="twitter"
+                  color="info"
+                  sx={{ padding: '8px', margin: '0 5px' }}
+                  background="white3"
+                />
+              </a>
+              <a href="https://t.me/ape_swap" target="_blank" rel="noopener noreferrer">
+                <IconButton
+                  variant="primary"
+                  icon="send"
+                  color="info"
+                  sx={{ padding: '8px', margin: '0 5px' }}
+                  background="white3"
+                />
+              </a>
+              <a href="https://discord.com/invite/ApeSwap" target="_blank" rel="noopener noreferrer">
+                <IconButton
+                  variant="primary"
+                  icon="discord"
+                  color="info"
+                  sx={{ padding: '6px 8px', margin: '0 5px' }}
+                  background="white3"
+                />
+              </a>
+            </Flex>
+          </Box>
         </motion.div>
       )}
     </AnimatePresence>

@@ -123,13 +123,16 @@ const Menu: React.FC<{ chain?: number }> = () => {
             </Link>
             {!isMobile && <DesktopMenu items={currentMenu(t) as any} />}
           </Flex>
-          <LangSelectorButton
-            currentLang={currentLanguage?.language}
-            langs={languageList}
-            setLang={setLanguage}
-            t={t}
-          />
+
           <Flex sx={{ alignItems: 'center', columnGap: 5, height: '100%' }}>
+            {!isMobile && (
+              <LangSelectorButton
+                currentLang={currentLanguage?.language}
+                langs={languageList}
+                setLang={setLanguage}
+                t={t}
+              />
+            )}
             {!isMobile && <NetworkButton />}
             <ConnectButton />
             {isMobile && (

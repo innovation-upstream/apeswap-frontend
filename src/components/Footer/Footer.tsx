@@ -16,7 +16,7 @@ import LangSelector from './LangSelector'
 
 const Footer: React.FC = () => {
   const { toggleTheme, isDark } = useContext(ThemeContext)
-  const { t, setLanguage, currentLanguage } = useTranslation()
+  const { setLanguage, currentLanguage } = useTranslation()
 
   return (
     <Box

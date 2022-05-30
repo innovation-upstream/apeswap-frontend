@@ -1,6 +1,5 @@
 import React from 'react'
-import LegacySvg from '../Svg/LegacySvg'
-import { LegacySvgProps } from '../Svg/types'
+import { LegacySvg, LegacySvgProps } from '@ape.swap/uikit'
 
 const Icon: React.FC<LegacySvgProps> = (props) => {
   return (
