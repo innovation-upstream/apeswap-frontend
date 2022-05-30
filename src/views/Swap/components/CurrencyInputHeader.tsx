@@ -100,9 +100,6 @@ const CurrencyInputHeader: React.FC<Props> = () => {
           flexShrink: 0,
         }}
       >
-        {/* <div style={{ marginRight: '25px' }}>
-          <RunFiatButton runFiat={onTopup} />
-        </div> */}
         <a href="https://app.multichain.org/" target="_blank" rel="noopener noreferrer">
           <Button
             sx={{

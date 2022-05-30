@@ -26,7 +26,6 @@ export const NextLink: React.FC<{ href: string; csx?: any; target?: string }> = 
         `
               : '',
           backgroundClip: 'text',
-          //  color: 'text',
           WebkitTextFillColor: children === 'GNANA' ? 'transparent' : '',
           fontWeight: '400',
           fontSize: 2,

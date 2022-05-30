@@ -73,13 +73,6 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                       <NextLink
                         href={subItem.href}
                         csx={{
-                          //  textFillColor: subItem.label === 'GNANA' ? 'transparent' : 'none',
-                          //  backgroundClip: 'text',
-                          // background:
-                          //   subItem.label === 'GNANA'
-                          //     ? 'linear-gradient(53.53deg, rgb(161, 101, 82) 15.88%, rgb(225, 178, 66) 92.56%) text'
-                          //     : '',
-
                           fontWeight: 'bold',
                           display: 'inline-block',
                           marginTop: 10,
