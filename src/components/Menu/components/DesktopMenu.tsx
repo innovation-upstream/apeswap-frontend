@@ -2,7 +2,6 @@
 import React, { useContext } from 'react'
 import { Box, Flex, useColorMode } from 'theme-ui'
 import { Text, IconButton, MenuContext } from '@innovationupstream/apeswap-uikit'
-import { mix } from '@theme-ui/color'
 import { NextLink } from './Link'
 import { menuItemContainer, desktopMenuItem, desktopSubItem } from './styles'
 import * as ImageModule from '../images'

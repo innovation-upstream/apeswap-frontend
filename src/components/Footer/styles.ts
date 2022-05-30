@@ -1,5 +1,3 @@
-import { AutoColumn } from 'components/layout/Column'
-import block from 'state/block'
 import { ThemeUIStyleObject } from 'theme-ui'
 
 const styles: Record<string, ThemeUIStyleObject> = {
