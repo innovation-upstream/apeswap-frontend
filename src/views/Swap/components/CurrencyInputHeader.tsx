@@ -1,8 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
-import { Flex, Button, useMatchBreakpoints, Tabs, Tab } from '@innovationupstream/apeswap-uikit'
+import { Tabs, Tab } from '@apeswapfinance/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
+import { CHAIN_ID } from 'config/constants/chains'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Flex, useMatchBreakpoints, Button } from '@ape.swap/uikit'
+import useTopup from 'hooks/useTopup'
+import { useTranslation } from 'contexts/Localization'
 
 interface Props {
   title?: string
@@ -19,6 +24,18 @@ const CurrencyInputContainer = styled(Flex)`
   width: 100%;
   background: ${({ theme }) => theme.colors.navbar};
   margin-bottom: 20px;
+
+  /* ${({ theme }) => theme.mediaQueries.xs} {
+    flex-direction: column-reverse !important;
+  } */
+`
+
+export const StyledDiv = styled.div`
+  ${({ theme }) => theme.mediaQueries.xs} {
+    /* margin-top: 16px; */
+    width: 100%;
+    display: flex;
+  }
 `
 
 const LinkWrapper = styled.a`
@@ -32,39 +49,67 @@ const CurrencyInputHeader: React.FC<Props> = () => {
   const { isMd, isSm, isXs } = useMatchBreakpoints()
   const history = useRouter()
   const isMobile = isMd || isSm || isXs
+  const { chainId } = useActiveWeb3React()
   const path = useRouter()
-  const swapActive = path.pathname.includes('swap')
+  const { t } = useTranslation()
+  const { onTopup } = useTopup()
+  const getActiveTab = () => {
+    const { pathname } = path
+    if (pathname.includes('swap')) return 0
+    if (pathname.includes('orders')) return 1
+    return 2
+  }
 
   return (
     <CurrencyInputContainer>
-      <Tabs activeTab={swapActive ? 0 : 1} size="md">
-        <Tab
-          index={0}
-          label="SWAP"
-          onClick={() => history.push('/swap')}
-          size={isMobile ? 'sm' : 'md'}
-          variant="centered"
-        />
-        <Tab
-          index={1}
-          label="LIQUIDITY"
-          onClick={() => history.push('/pool')}
-          size={isMobile ? 'sm' : 'md'}
-          variant="centered"
-        />
-      </Tabs>
+      <StyledDiv>
+        <Tabs activeTab={getActiveTab()} size="md">
+          <Tab
+            index={0}
+            label={t('SWAP')}
+            onClick={() => history.push('/swap')}
+            size={isMobile ? 'xsm' : 'md'}
+            variant="centered"
+            activeTab={getActiveTab()}
+          />
+          {chainId === CHAIN_ID.BSC ? (
+            <Tab
+              index={1}
+              label={t('ORDERS')}
+              onClick={() => history.push('/orders')}
+              size={isMobile ? 'xsm' : 'md'}
+              variant="centered"
+              activeTab={getActiveTab()}
+            />
+          ) : (
+            <></>
+          )}
+          <Tab
+            index={2}
+            label={t('LIQUIDITY')}
+            onClick={() => history.push('/pool')}
+            size={isMobile ? 'xsm' : 'md'}
+            variant="centered"
+            activeTab={getActiveTab()}
+          />
+        </Tabs>
+      </StyledDiv>
       <Flex>
+        {/* <div style={{ marginRight: '25px' }}>
+          <RunFiatButton runFiat={onTopup} />
+        </div> */}
         <a href="https://app.multichain.org/" target="_blank" rel="noopener noreferrer">
           <Button
-            style={{
+            sx={{
               fontSize: '15px',
               fontWeight: 700,
-              marginRight: isMobile ? '15px ' : '25px',
-              marginLeft: '15px',
+              marginRight: '25px',
               padding: 10,
+              display: isMobile ? 'none' : 'block',
+              height: isMobile ? '36px ' : '40px',
             }}
           >
-            BRIDGE
+            {t('BRIDGE')}
           </Button>
         </a>
         <GlobalSettings />

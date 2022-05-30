@@ -27,7 +27,7 @@ interface HomeContextProviderProps {
   header?: any[]
 }
 
-export const HomeContext: React.Context<HomeContextProps> = createContext({
+export const HomeContext: React.Context<HomeContextProps> | any = createContext({
   farms: {
     farmsData: [],
   },

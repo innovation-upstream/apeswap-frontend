@@ -10,14 +10,16 @@ import Cookies from 'universal-cookie'
 import { CHAIN_ID } from 'config/constants/chains'
 import { Flex, Box } from 'theme-ui'
 import { SSRContext } from 'contexts/SSRContext'
-import { useNetworkChainId } from 'state/hooks'
+import { useTranslation } from 'contexts/Localization'
+import { ContextApi } from 'contexts/Localization/types'
+import { useNetworkChainId, useLiveIfoStatus } from 'state/hooks'
 import { NetworkButton } from 'components/NetworkButton'
-import { WalletModal } from 'components/WalletModal'
-import { AccountModal } from 'components/AccountModal'
+import useAuth from 'hooks/useAuth'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { DesktopMenu, MobileMenu } from './components'
 import ConnectButton from './components/ConnectButton'
+import ethConfig from './chains/ethConfig'
 
 const Menu: React.FC<{ chain?: number }> = () => {
   const router = useRouter()
@@ -31,16 +33,22 @@ const Menu: React.FC<{ chain?: number }> = () => {
   const { isDesktop, isBrowser } = useContext(SSRContext)
   const { isXxl } = useMatchBreakpoints()
   const isMobile = isBrowser ? isXxl === false : !isDesktop
+  const { t } = useTranslation()
+  const { login, logout } = useAuth()
 
-  const currentMenu = () => {
+  const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC) {
-      return bscConfig
+      return bscConfig(translate)
     }
     if (chainId === CHAIN_ID.MATIC) {
-      return maticConfig
+      return maticConfig(translate)
     }
-    return bscConfig
+    if (chainId === CHAIN_ID.ETH) {
+      return ethConfig(translate)
+    }
+    return bscConfig(translate)
   }
+  const { liveIfos } = useLiveIfoStatus()
 
   useEffect(() => {
     refPrevOffset.current = window.pageYOffset
@@ -95,14 +103,6 @@ const Menu: React.FC<{ chain?: number }> = () => {
     }
   }, [])
 
-  const handleConnect = () => {
-    if (account) {
-      setShowAccount(true)
-      return
-    }
-    setShowConnect(true)
-  }
-
   return (
     <>
       <Box
@@ -113,7 +113,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
           height: '60px',
           transform: `translateY(${showMenu ? 0 : '-100%'})`,
           transition: 'transform linear 0.1s',
-          zIndex: 1009,
+          zIndex: 9,
         }}
       >
         <Flex
@@ -123,11 +123,11 @@ const Menu: React.FC<{ chain?: number }> = () => {
             <Link href="/">
               <IconButton variant="transparent" icon="logo" />
             </Link>
-            {!isMobile && <DesktopMenu items={currentMenu() as any} />}
+            {!isMobile && <DesktopMenu items={currentMenu(t) as any} />}
           </Flex>
           <Flex sx={{ alignItems: 'center', columnGap: 5, height: '100%' }}>
             {!isMobile && <NetworkButton />}
-            <ConnectButton handleConnect={handleConnect} />
+            <ConnectButton />
             {isMobile && (
               <Box sx={{ paddingY: '10px' }}>
                 <IconButton color="text" variant="transparent" onClick={() => setCollapse(!collapse)}>
@@ -137,10 +137,8 @@ const Menu: React.FC<{ chain?: number }> = () => {
             )}
           </Flex>
         </Flex>
-        {isMobile && <MobileMenu items={currentMenu() as any} />}
+        {isMobile && <MobileMenu items={currentMenu(t) as any} />}
       </Box>
-      <AccountModal open={showAccountPopup} handleClose={() => setShowAccount(false)} />
-      <WalletModal open={showConnectPopup} handleClose={() => setShowConnect(false)} />
       {!collapse && (
         <Box
           onClick={() => setCollapse(true)}

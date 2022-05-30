@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import useSwiper from 'hooks/useSwiper'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { SSRContext } from 'contexts/SSRContext'
+import { useTranslation } from 'contexts/Localization'
 import { Bubble, ValueCard, ValueImage, ValuesWrapper, ValueText } from './styles'
 import { defaultValues } from './defaultValues'
 
@@ -19,6 +20,7 @@ const Values: React.FC = () => {
   const { isBrowser, isDesktop } = useContext(SSRContext)
   const [loadValues, setLoadValues] = useState(!isBrowser)
   const { isMd, isSm, isXs } = useMatchBreakpoints()
+  const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const swiperFlag = isBrowser ? isMd || isSm || isXs : !isDesktop
 
@@ -44,7 +46,7 @@ const Values: React.FC = () => {
     <>
       <div ref={observerRef} />
       <ValuesWrapper>
-        <ValueText bold> Our Values </ValueText>
+        <ValueText bold> {t('Our Values')} </ValueText>
         <Flex justifyContent="center" style={{ width: '100%', overflow: 'hidden' }}>
           {swiperFlag ? (
             <Swiper
@@ -62,7 +64,7 @@ const Values: React.FC = () => {
               centeredSlides
               onSlideChange={handleSlide}
             >
-              {defaultValues.map((value) => {
+              {defaultValues(t).map((value) => {
                 return (
                   <SwiperSlide
                     style={{ marginRight: `${spaceBetween}px`, maxWidth: '338px', minWidth: '338px' }}
@@ -84,7 +86,7 @@ const Values: React.FC = () => {
               })}
             </Swiper>
           ) : (
-            defaultValues.map((value) => {
+            defaultValues(t).map((value) => {
               return (
                 <ValueCard key={value.title}>
                   {loadValues ? (

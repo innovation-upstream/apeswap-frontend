@@ -12,7 +12,7 @@ interface SwapContextProviderProps {
   swapBanner?: any[]
 }
 
-export const SwapContext: React.Context<SwapContextProps> = createContext({
+export const SwapContext: React.Context<SwapContextProps> | any = createContext({
   swap: {
     swapBannersData: [],
   },

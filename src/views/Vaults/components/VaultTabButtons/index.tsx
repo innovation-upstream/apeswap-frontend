@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ButtonMenu, ButtonMenuItem } from '@apeswapfinance/uikit'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 const LinkWrapper = styled.a`
   color: inherit;
@@ -12,19 +12,19 @@ const LinkWrapper = styled.a`
 const VaultTabButtons = () => {
   const { pathname } = useRouter()
   const url = `/${pathname.split('/')?.[1]}`
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   return (
     <Wrapper>
       <ButtonMenu activeIndex={pathname.includes('history') ? 1 : 0} size="sm" variant="yellow">
         <ButtonMenuItem fontSize="12px">
           <Link href={`${url}`} passHref>
-            <LinkWrapper>{TranslateString(999, 'Active')}</LinkWrapper>
+            <LinkWrapper>{t('Active')}</LinkWrapper>
           </Link>
         </ButtonMenuItem>
         <ButtonMenuItem fontSize="12px">
           <Link href={`${url}/history`} passHref>
-            <LinkWrapper>{TranslateString(999, 'Inactive')}</LinkWrapper>
+            <LinkWrapper>{t('Inactive')}</LinkWrapper>
           </Link>
         </ButtonMenuItem>
       </ButtonMenu>

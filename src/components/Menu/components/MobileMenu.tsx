@@ -121,6 +121,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
                                     fontWeight: 600,
                                     pl: '35px',
                                   }}
+                                  target={label === 'More' && '_blank'}
                                 >
                                   {link.label}
                                 </NextLink>

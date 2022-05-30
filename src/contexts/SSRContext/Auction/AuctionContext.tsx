@@ -12,7 +12,7 @@ interface AuctionContextProviderProps {
   history?: any[]
 }
 
-export const AuctionContext: React.Context<AuctionContextProps> = createContext({
+export const AuctionContext: React.Context<AuctionContextProps> | any = createContext({
   history: {
     historyData: [],
   },

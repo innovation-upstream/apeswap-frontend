@@ -1,9 +1,10 @@
 /** @jsxImportSource theme-ui */
-import React, { useState } from 'react'
-import { Text, Svg, IconButton } from '@innovationupstream/apeswap-uikit'
+import React from 'react'
+import { Text, Svg, Button, useNetworkModal } from '@ape.swap/uikit'
 import { useNetworkChainId } from 'state/hooks'
+import useSwitchNetwork from 'hooks/useSelectNetwork'
 import { CHAIN_ID } from 'config/constants/chains'
-import NetworkModal from './NetworkModal'
+import { useTranslation } from 'contexts/Localization'
 
 const networks = {
   [CHAIN_ID.BSC]: {
@@ -22,33 +23,37 @@ const networks = {
     icon: 'polygon_token',
     name: 'POLYGON TESTNET',
   },
+  [CHAIN_ID.ETH]: {
+    icon: 'eth_token',
+    name: 'ETHEREUM',
+  },
 }
 
 const NetworkButton: React.FC = () => {
   const chainId = useNetworkChainId()
-  const [open, setOpen] = useState(false)
+  const { switchNetwork } = useSwitchNetwork()
+  const { t } = useTranslation()
+  const { onPresentNetworkModal } = useNetworkModal(switchNetwork, chainId, t)
 
   return (
-    <>
-      <IconButton
-        background="white3"
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          px: '11px',
-          py: '8px',
-          columnGap: '8px',
-        }}
-        onClick={() => setOpen(true)}
-      >
-        <Svg width="20px" icon={networks[chainId]?.icon as any} />
-        <Text color="text" sx={{ fontSize: '14px', fontWeight: '600' }} variant="sm">
-          {networks[chainId]?.name}
-        </Text>
-        <Svg width="8px" icon="caret" direction="down" color="text" />
-      </IconButton>
-      <NetworkModal open={open} handleClose={() => setOpen(false)} />
-    </>
+    <Button
+      variant="tertiary"
+      background="white3"
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        px: '11px',
+        py: '8px',
+        columnGap: '8px',
+      }}
+      onClick={onPresentNetworkModal}
+    >
+      <Svg width="20px" icon={networks[chainId]?.icon as any} />
+      <Text color="text" sx={{ fontSize: '14px', fontWeight: '600' }} variant="sm">
+        {networks[chainId]?.name}
+      </Text>
+      <Svg width="8px" icon="caret" direction="down" color="text" />
+    </Button>
   )
 }
 
