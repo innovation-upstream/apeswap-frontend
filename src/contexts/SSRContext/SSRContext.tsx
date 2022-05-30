@@ -18,7 +18,7 @@ export const SSRContext: React.Context<SSRContextProps> = createContext({
 
 export const SSRContextProvider: React.FC<SSRContextProviderProps> = ({ desktop, children, origin }) => {
   const [isBrowser, setIsBrowser] = useState(false)
-  const [isDesktop] = useState(desktop)
+  const [isDesktop] = useState<boolean | any>(desktop)
   const [appOrigin] = useState(origin)
 
   useEffect(() => {
