@@ -7,12 +7,15 @@ import Link from 'next/link'
 import { NetworkButton } from 'components/NetworkButton'
 import { ThemeContext } from 'contexts/ThemeContext'
 import { LinkWrapper } from 'style/LinkWrapper'
+import { useTokenPrices } from 'state/hooks'
 import FooterLinks from './FooterLinks'
 import { socialLinks } from './Footer.data'
 import styles from './styles'
 
 const Footer: React.FC = () => {
   const { toggleTheme, isDark } = useContext(ThemeContext)
+  const { tokenPrices } = useTokenPrices()
+  const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
 
   return (
     <Box
@@ -54,7 +57,7 @@ const Footer: React.FC = () => {
                   </IconButton>
                 </LinkWrapper>
               </Link>
-              <Text>$0.388</Text>
+              <Text sx={{ fontWeight: '600', fontSize: '18px' }}>${bananaPriceUsd?.toFixed(3)}</Text>
             </Flex>
             <Link href="https://apeswap.finance/swap">
               <a target="_blank" href="https://apeswap.finance/swap" rel="noreferrer">
