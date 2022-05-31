@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useState } from 'react'
-import { AddIcon, Button, useModal } from '@ape.swap/uikit'
+import { AddIcon, Button } from '@ape.swap/uikit'
+import { useModal } from '@apeswapfinance/uikit'
 import { Box, Flex, Text } from 'theme-ui'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Currency, ETHER, TokenAmount, ROUTER_ADDRESS, CurrencyAmount } from '@apeswapfinance/sdk'
@@ -40,10 +41,10 @@ import ConnectButton from './ConnectButton'
 import styles from './styles'
 
 interface ILiquidityWidgetProps {
-  onDismiss?: () => void
+  onCancel?: () => void
 }
 
-const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onDismiss }) => {
+const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
   const { isDark } = useTheme()
   const { t } = useTranslation()
 
@@ -360,7 +361,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onDismiss }) => {
           </Text>
           <Button
             size="sm"
-            sx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
+            csx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
             variant="primary"
             onClick={() => {
               onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
@@ -429,7 +430,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onDismiss }) => {
           </Text>
           <Button
             size="sm"
-            sx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
+            csx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
             variant="primary"
             onClick={() => {
               onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
@@ -486,7 +487,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onDismiss }) => {
                   <Flex sx={{ justifyContent: 'space-between', columnGap: '15px' }}>
                     {approvalA !== ApprovalState.APPROVED && (
                       <Button
-                        sx={styles.button}
+                        csx={styles.button}
                         onClick={approveACallback}
                         disabled={approvalA === ApprovalState.PENDING}
                       >
@@ -501,7 +502,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onDismiss }) => {
                     {approvalB !== ApprovalState.APPROVED && (
                       <Box sx={{ padding: '0 5px' }}>
                         <Button
-                          sx={styles.button}
+                          csx={styles.button}
                           onClick={approveBCallback}
                           disabled={approvalB === ApprovalState.PENDING}
                         >
@@ -538,7 +539,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onDismiss }) => {
         )}
       </Flex>
       <Flex sx={{ justifyContent: 'center', margin: '10px 0 0' }}>
-        <UnderlinedButton text="cancel" handleClick={onDismiss} />
+        <UnderlinedButton text="cancel" handleClick={onCancel} />
       </Flex>
     </>
   )
