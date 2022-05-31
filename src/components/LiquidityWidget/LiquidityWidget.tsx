@@ -266,17 +266,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
             )} Pool Tokens`}
           </Text>
         </Row>
-        <Text
-          sx={{
-            textAlign: 'left',
-            fontSize: '14px',
-            fontWeight: '400',
-            marginTop: '24px',
-            marginBottom: '24px',
-            lineHeight: '1.5',
-            fontStyle: 'italic',
-          }}
-        >
+        <Text sx={styles.outPutmodal}>
           {t(
             'Output is estimated. If the price changes by more than %allowedSlippage%% your transaction will revert.',
             { allowedSlippage: allowedSlippage / 100 },
@@ -334,25 +324,15 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
         <Flex>
           <Text
             sx={{
-              fontSize: '16px',
-              fontWeight: 700,
-              lineHeight: '24px',
+              ...styles.token,
               color: isDark ? 'primaryBright' : 'brown',
             }}
           >
-            Token 1
+            {t('Token 1')}
           </Text>
         </Flex>
         <Flex sx={{ alignItems: 'center' }}>
-          <Text
-            sx={{
-              fontSize: '12px',
-              fontWeight: 500,
-              lineHeight: '14px',
-              marginRight: '10px',
-              color: isDark ? 'primaryBright' : 'brown',
-            }}
-          >
+          <Text sx={styles.balance}>
             <Box>
               {t('Balance')}:&nbsp;&nbsp;
               <Balance balance={balanceA} />
@@ -391,11 +371,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
       >
         <Flex
           sx={{
-            justifyContent: 'center',
-            backgroundColor: '#FFB300',
-            borderRadius: '30px',
-            width: '29px',
-            height: '29px',
+            ...styles.icon,
           }}
         >
           <AddIcon width="25px" color="primaryBright" />
@@ -405,9 +381,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
         <Flex>
           <Text
             sx={{
-              fontSize: '16px',
-              fontWeight: 700,
-              lineHeight: '24px',
+              ...styles.token,
               color: isDark ? 'primaryBright' : 'brown',
             }}
           >
@@ -415,15 +389,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
           </Text>
         </Flex>
         <Flex sx={{ alignItems: 'center' }}>
-          <Text
-            sx={{
-              fontSize: '12px',
-              fontWeight: 500,
-              lineHeight: '14px',
-              marginRight: '10px',
-              color: isDark ? 'primaryBright' : 'brown',
-            }}
-          >
+          <Text sx={styles.balance}>
             {t('Balance')}:&nbsp;&nbsp;
             <Balance balance={balanceB} />
           </Text>
@@ -461,16 +427,9 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
         chainId={chainId}
       />
 
-      <Flex
-        sx={{
-          justifyContent: 'center',
-          Button: {
-            padding: '7px 30px',
-          },
-        }}
-      >
+      <Flex sx={styles.bottombutton}>
         {addIsUnsupported ? (
-          <Button csx={styles.button} disabled mb="4px">
+          <Button sx={styles.button} disabled mb="4px">
             Unsupported Asset
           </Button>
         ) : !account ? (
@@ -486,7 +445,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
                   <Flex sx={{ justifyContent: 'space-between', columnGap: '15px' }}>
                     {approvalA !== ApprovalState.APPROVED && (
                       <Button
-                        csx={styles.button}
+                        sx={styles.button}
                         onClick={approveACallback}
                         disabled={approvalA === ApprovalState.PENDING}
                       >
@@ -501,7 +460,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
                     {approvalB !== ApprovalState.APPROVED && (
                       <Box sx={{ padding: '0 5px' }}>
                         <Button
-                          csx={styles.button}
+                          sx={styles.button}
                           onClick={approveBCallback}
                           disabled={approvalB === ApprovalState.PENDING}
                         >
@@ -517,7 +476,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
                 </RowBetween>
               )}
             <Button
-              csx={styles.button}
+              sx={styles.button}
               onClick={() => {
                 if (expertMode) {
                   onAdd()

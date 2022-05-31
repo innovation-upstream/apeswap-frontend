@@ -4,7 +4,7 @@ import { Box, Flex, useColorMode } from 'theme-ui'
 import { MenuContext } from '@innovationupstream/apeswap-uikit'
 import { Text, IconButton } from '@ape.swap/uikit'
 import { NextLink } from './Link'
-import { menuItemContainer, desktopMenuItem, desktopSubItem } from './styles'
+import { menuItemContainer, desktopMenuItem, desktopSubItem, socialMedia, menuItems } from './styles'
 import * as ImageModule from '../images'
 
 const Icons = ImageModule as unknown as { [key: string]: React.FC }
@@ -48,10 +48,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
             {subItems?.length ? (
               <Text
                 sx={{
-                  color: 'text',
-                  fontWeight: 'bold',
-                  fontSize: 2,
-                  pl: '0px',
+                  ...menuItems,
                 }}
               >
                 {label}
@@ -94,12 +91,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                   <ImageElement />
                   <Flex
                     sx={{
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                      columnGap: '10px',
-                      background: 'navbar',
-                      borderRadius: '25px',
-                      height: '50px',
+                      ...socialMedia,
                     }}
                   >
                     {label === 'More' && (

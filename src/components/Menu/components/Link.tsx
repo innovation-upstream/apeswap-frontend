@@ -3,6 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Text } from '@ape.swap/uikit'
+import { menuLink } from './styles'
 
 export const NextLink: React.FC<{ href: string; csx?: any; target?: string }> = ({
   children,
@@ -14,18 +15,7 @@ export const NextLink: React.FC<{ href: string; csx?: any; target?: string }> = 
     <a target={target}>
       <Text
         sx={{
-          color: 'text',
-          fontWeight: '400',
-          fontSize: 2,
-          pl: '20px',
-          '&:after': {
-            content: '""',
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-          },
+          ...menuLink,
           ...csx,
         }}
       >

@@ -15,19 +15,17 @@ import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
 import { useNetworkChainId, useLiveIfoStatus } from 'state/hooks'
 import { NetworkButton } from 'components/NetworkButton'
-import useAuth from 'hooks/useAuth'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { DesktopMenu, MobileMenu } from './components'
 import ConnectButton from './components/ConnectButton'
 import ethConfig from './chains/ethConfig'
+import styles from './styles'
 
 const Menu: React.FC<{ chain?: number }> = () => {
   const router = useRouter()
   const refPrevOffset = useRef(null)
   const [showMenu, setShowMenu] = useState(true)
-  const [showConnectPopup, setShowConnect] = useState(false)
-  const [showAccountPopup, setShowAccount] = useState(false)
   const { setActive, collapse, setCollapse } = useContext(MenuContext)
   const { account } = useWeb3React()
   const chainId = useNetworkChainId()
@@ -35,7 +33,6 @@ const Menu: React.FC<{ chain?: number }> = () => {
   const { isXxl } = useMatchBreakpoints()
   const isMobile = isBrowser ? isXxl === false : !isDesktop
   const { t } = useTranslation()
-  const { login, logout } = useAuth()
 
   const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC) {
@@ -108,13 +105,8 @@ const Menu: React.FC<{ chain?: number }> = () => {
     <>
       <Box
         sx={{
-          background: 'navbar',
-          position: 'fixed',
-          width: '100%',
-          height: '60px',
+          ...styles.header,
           transform: `translateY(${showMenu ? 0 : '-100%'})`,
-          transition: 'transform linear 0.1s',
-          zIndex: 9,
         }}
       >
         <Flex
@@ -148,14 +140,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
         <Box
           onClick={() => setCollapse(true)}
           sx={{
-            display: ['none', 'block', 'block'],
-            position: 'fixed',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            zIndex: 5,
-            background: 'rgb(56, 56, 56, 0.6)',
+            ...styles.last,
           }}
         />
       )}

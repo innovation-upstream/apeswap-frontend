@@ -18,6 +18,7 @@ const ConnectButton: React.FC<any> = () => {
   const { isDark } = useTheme()
 
   const buttonStyle = dynamicStyles.userBlockBtn({ account })
+  const iconstyleconnect = dynamicStyles.connectButtonIcon({})
 
   const loadButton = () => {
     if (account) {
@@ -71,15 +72,7 @@ const ConnectButton: React.FC<any> = () => {
     <Flex sx={{ position: 'relative', marginRight: 5 }}>
       {loadButton()}
       {account && (
-        <Box
-          sx={{
-            '&& button': { border: 'none', borderRadius: '50%' },
-            position: 'absolute',
-            right: -4,
-            top: '50%',
-            transform: 'translateY(-50%)',
-          }}
-        >
+        <Box sx={iconstyleconnect}>
           <IconButton
             onClick={() => {
               onPresentAccountModal()

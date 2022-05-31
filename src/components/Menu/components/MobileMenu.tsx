@@ -6,7 +6,7 @@ import { MenuContext } from '@innovationupstream/apeswap-uikit'
 import { Svg, Text, IconButton } from '@ape.swap/uikit'
 import { NetworkButton } from 'components/NetworkButton'
 import { NextLink } from './Link'
-import { menuItemContainer, linkStyle } from './styles'
+import { menuItemContainer, linkStyle, menuMobile, dropdown } from './styles'
 
 interface MobileMenuProps {
   items: {
@@ -39,11 +39,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
           transition={{ height: { duration: 0.3 } }}
           exit={{ height: 0 }}
           sx={{
-            width: '100%',
-            background: 'navbar',
-            position: 'absolute',
-            overflow: 'hidden',
-            zIndex: 10,
+            menuMobile,
           }}
         >
           {items?.map((item) => {
@@ -96,11 +92,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
                       animate={{ height: 'fit-content' }}
                       transition={{ height: { duration: 0.3 } }}
                       exit={{ height: 0 }}
-                      sx={{
-                        overflow: 'hidden',
-                        padding: '10px 0px',
-                        background: 'navbar',
-                      }}
+                      sx={dropdown as any}
                     >
                       {subItems?.map((link, index) => (
                         <Flex

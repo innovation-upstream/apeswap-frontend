@@ -1,6 +1,14 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
 const styles: Record<string, ThemeUIStyleObject> = {
+  footerHead: {
+    position: 'relative',
+    overflow: 'hidden',
+    pb: '32px',
+    backgroundColor: 'footer',
+    borderTop: '5px solid',
+    borderTopColor: 'lvl2',
+  },
   container: {
     maxWidth: '1200px',
     width: '100%',

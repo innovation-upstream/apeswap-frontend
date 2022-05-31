@@ -84,7 +84,7 @@ const MetaMaskLogo = styled.img`
   cursor: pointer;
   position: absolute;
   bottom: -30px;
-  marginleft: 10px;
+  margin-left: 10px;
   width: 20px;
 `
 

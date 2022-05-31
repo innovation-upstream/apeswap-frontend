@@ -5,6 +5,7 @@ import { useNetworkChainId } from 'state/hooks'
 import useSwitchNetwork from 'hooks/useSelectNetwork'
 import { CHAIN_ID } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
+import styles from './styles'
 
 const networks = {
   [CHAIN_ID.BSC]: {
@@ -40,11 +41,7 @@ const NetworkButton: React.FC = () => {
       variant="tertiary"
       background="white3"
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        px: '11px',
-        py: '8px',
-        columnGap: '8px',
+        ...styles.button,
       }}
       onClick={onPresentNetworkModal}
     >
