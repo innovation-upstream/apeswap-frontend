@@ -11,7 +11,7 @@ const ConnectButton = () => {
   const { onPresentConnectModal } = useWalletModal(login, logout, t)
 
   return (
-    <Button onClick={onPresentConnectModal} csx={styles.button}>
+    <Button onClick={onPresentConnectModal} sx={styles.button}>
       {t('CONNECT WALLET')}
     </Button>
   )
