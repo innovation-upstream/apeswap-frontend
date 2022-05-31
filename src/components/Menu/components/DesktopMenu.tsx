@@ -1,7 +1,8 @@
 /** @jsxImportSource theme-ui */
 import React, { useContext } from 'react'
 import { Box, Flex, useColorMode } from 'theme-ui'
-import { Text, IconButton, MenuContext } from '@innovationupstream/apeswap-uikit'
+import { MenuContext } from '@innovationupstream/apeswap-uikit'
+import { Text, IconButton } from '@ape.swap/uikit'
 import { NextLink } from './Link'
 import { menuItemContainer, desktopMenuItem, desktopSubItem } from './styles'
 import * as ImageModule from '../images'

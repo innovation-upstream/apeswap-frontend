@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
+import { useMatchBreakpoints } from '@ape.swap/uikit'
 import { IazoTimeInfo } from 'state/types'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useTranslation } from 'contexts/Localization'

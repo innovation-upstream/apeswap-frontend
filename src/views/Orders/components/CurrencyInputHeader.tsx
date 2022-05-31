@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Flex, Button, Tabs, Tab } from '@innovationupstream/apeswap-uikit'
+import { Flex, Button, Tabs, Tab } from '@ape.swap/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'

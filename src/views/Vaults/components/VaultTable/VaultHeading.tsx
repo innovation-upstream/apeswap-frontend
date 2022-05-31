@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Image } from '@innovationupstream/apeswap-uikit'
+import { Text, Image } from '@ape.swap/uikit'
 import Tooltip from 'components/Tooltip/Tooltip'
 import { useTranslation } from 'contexts/Localization'
 

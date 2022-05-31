@@ -2,7 +2,7 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import Link from 'next/link'
-import { Text } from '@innovationupstream/apeswap-uikit'
+import { Text } from '@ape.swap/uikit'
 
 export const NextLink: React.FC<{ href: string; csx?: any; target?: string }> = ({
   children,

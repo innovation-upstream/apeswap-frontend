@@ -1,5 +1,5 @@
 import React from 'react'
-import { LegacySvg, LegacySvgProps } from '@innovationupstream/apeswap-uikit'
+import { LegacySvg, LegacySvgProps } from '@ape.swap/uikit'
 
 const Icon: React.FC<LegacySvgProps> = (props) => {
   return (

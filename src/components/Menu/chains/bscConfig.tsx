@@ -1,4 +1,4 @@
-import { icons } from '@innovationupstream/apeswap-uikit'
+import { icons } from '@ape.swap/uikit'
 import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
 import { ContextApi } from 'contexts/Localization/types'
 import { EXCHANGE } from '../constants'

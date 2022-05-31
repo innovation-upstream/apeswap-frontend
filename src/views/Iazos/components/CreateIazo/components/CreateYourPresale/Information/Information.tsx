@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
+import { useMatchBreakpoints } from '@ape.swap/uikit'
 import TextInput from 'components/TextInput'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from 'contexts/Localization'

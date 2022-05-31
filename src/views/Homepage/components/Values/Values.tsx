@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Flex, Text, Skeleton } from '@apeswapfinance/uikit'
-import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
+import { useMatchBreakpoints } from '@ape.swap/uikit'
 import SwiperCore, { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import useSwiper from 'hooks/useSwiper'
