@@ -44,6 +44,7 @@ const Footer: React.FC = () => {
           <Flex sx={{ mt: '35px', columnGap: '25px' }}>
             <ThemeSwitcher isDark={isDark} toggleTheme={toggleTheme} />
             <NetworkButton />
+            {/* language button  */}
             <LangSelector currentLang={currentLanguage?.language} langs={languageList} setLang={setLanguage} />
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
