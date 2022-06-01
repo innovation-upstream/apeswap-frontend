@@ -60,6 +60,15 @@ const styles: Record<string, ThemeUIStyleObject> = {
       padding: '7px 30px',
     },
   },
+  outPutmodal: {
+    textAlign: 'left',
+    fontSize: '14px',
+    fontWeight: '400',
+    marginTop: '24px',
+    marginBottom: '24px',
+    lineHeight: '1.5',
+    fontStyle: 'italic',
+  },
 }
 
 export default styles

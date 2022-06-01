@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback, useState } from 'react'
 import { AddIcon, Button } from '@ape.swap/uikit'
 import { Box, Flex, Text } from 'theme-ui'
@@ -340,7 +341,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
           </Text>
           <Button
             size="sm"
-            csx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
+            sx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
             variant="primary"
             onClick={() => {
               onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
@@ -395,7 +396,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
           </Text>
           <Button
             size="sm"
-            csx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
+            sx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
             variant="primary"
             onClick={() => {
               onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')

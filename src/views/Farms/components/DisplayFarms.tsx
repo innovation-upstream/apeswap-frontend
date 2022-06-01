@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useContext } from 'react'
 import { Flex, Text, LinkExternal, Svg, useModal } from '@apeswapfinance/uikit'
 import { TagVariants } from '@ape.swap/uikit'

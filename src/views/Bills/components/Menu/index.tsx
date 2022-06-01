@@ -50,7 +50,7 @@ const BillMenu: React.FC<ListViewProps> = ({ onHandleQueryChange, onSetSortOptio
       </Flex>
       <Link href="?modal=bills" shallow>
         <Button
-          csx={{ height: '36px', width: '192px', border: '2px solid', justifyContent: 'center' }}
+          sx={{ height: '36px', width: '192px', border: '2px solid', justifyContent: 'center' }}
           variant="secondary"
         >
           {' '}

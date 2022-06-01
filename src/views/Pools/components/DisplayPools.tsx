@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useContext } from 'react'
 import { IconButton, Text, Flex, TagVariants } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
