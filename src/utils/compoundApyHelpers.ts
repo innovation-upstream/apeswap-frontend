@@ -23,6 +23,17 @@ export const apyModalRoi = ({ amountEarned, amountInvested }) => {
   return percentage.toFixed(2)
 }
 
+/**
+ * @param {number}  numberOfDays - Number of days staked.
+ * @param {number} farmApr - Apr value of the farm to be used.
+ * @param {number} tokenPrice - Price of token in USD.
+ * @param {number} [roundingDecimals=2] - Rounding decimal.
+ * @param {number} [compoundFrequency=1] - 1 = compounding once per day.
+ * @param {number} [performanceFee=0] - Performance fee.
+ * @param {number} [amountDollar=1000] - Amount invested in the farm in USD.
+ * @returns {number} tokensEarned - Tokens earned.
+ */
+
 export const tokenEarnedPerThousandDollarsCompounding = ({
   numberOfDays,
   farmApr,

@@ -28,10 +28,14 @@ const StyledInput = styled.input<{
   text-overflow: ellipsis;
   padding: 0px;
 <<<<<<< HEAD
+<<<<<<< HEAD
   margin-left: ${({ align }) => (align === 'left' ? '20px' : '0px')};
 =======
   margin-left: ${({ align, width }) => (align === 'left' || width === 'full' ? '20px' : '0px')};
 >>>>>>> a5e82d0316ad9aa963dce1e0d914d25a108ccadd
+=======
+  margin-left: ${({ align, width }) => (align === 'left' || width === 'full' ? '20px' : '0px')};
+>>>>>>> 75f37c654fb580d6f6267c3d15dd04e77ac7575b
   margin-right: ${({ marginRight }) => marginRight};
   -webkit-appearance: textfield;
 
