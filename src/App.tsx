@@ -7,7 +7,13 @@ import { ScrollToTop } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import MarketingModalCheck from 'components/MarketingModalCheck'
 import { CHAIN_ID } from 'config/constants/chains'
-import { useFetchTokenPrices, useFetchProfile, useUpdateNetwork, useFetchLiveIfoStatus } from 'state/hooks'
+import {
+  useFetchTokenPrices,
+  useFetchProfile,
+  useUpdateNetwork,
+  useFetchLiveIfoStatus,
+  useFetchLiveTags,
+} from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
@@ -26,7 +32,7 @@ declare module '@emotion/react' {
 const Home = lazy(() => import('./views/Homepage'))
 const Farms = lazy(() => import('./views/Farms'))
 const Pools = lazy(() => import('./views/Pools'))
-const JunglePools = lazy(() => import('./views/JunglePools'))
+const JungleFarms = lazy(() => import('./views/JungleFarms'))
 const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const DualFarms = lazy(() => import('./views/DualFarms'))
@@ -93,6 +99,7 @@ const App: React.FC = () => {
   usePollBlockNumber()
   useFetchProfile()
   useFetchLiveIfoStatus()
+  useFetchLiveTags()
 
   const { account, chainId } = useActiveWeb3React()
   const [showScrollIcon, setShowScrollIcon] = useState(false)
@@ -300,7 +307,7 @@ const App: React.FC = () => {
               <Pools />
             </Route>
             <Route path="/jungle-farms">
-              <JunglePools />
+              <JungleFarms />
             </Route>
             <Route path="/vaults">
               <Vaults />

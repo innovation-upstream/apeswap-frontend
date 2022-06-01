@@ -1,11 +1,13 @@
 import React, { useContext } from 'react'
 import { Flex, Text, LinkExternal, Svg, useModal } from '@apeswapfinance/uikit'
+import { TagVariants } from '@ape.swap/uikit'
+import { Box } from 'theme-ui'
 import ListView from 'components/ListView'
 import { SSRContext } from 'contexts/SSRContext'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import { LiquidityModal } from 'components/LiquidityWidget'
 import ListViewContent from 'components/ListViewContent'
-import { Farm } from 'state/types'
+import { Farm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -17,9 +19,9 @@ import { useAppDispatch } from 'state'
 import CardActions from './CardActions'
 import { Container, FarmButton, NextArrow } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
-import { ActionContainer } from './CardActions/styles'
+import { ActionContainer, StyledTag } from './CardActions/styles'
 
-const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, openPid }) => {
+const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] }> = ({ farms, openPid, farmTags }) => {
   const { chainId } = useActiveWeb3React()
   const { isDesktop, isBrowser } = useContext(SSRContext)
   const isMobileView = useIsMobile()
@@ -70,15 +72,24 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
     const userTokenBalanceUsd = `$${(
       getBalanceNumber(farm?.userData?.tokenBalance || new BigNumber(0)) * farm?.lpValueUsd
     ).toFixed(2)}`
+    const fTag = farmTags?.find((tag) => tag.pid === farm.pid)
+    const tagColor = fTag?.color as TagVariants
 
     return {
+      tag: (
+        <>
+          {fTag?.pid === farm.pid && (
+            <Box sx={{ marginRight: '5px', marginTop: ['0px', '2px'] }}>
+              <StyledTag key={fTag?.pid} variant={tagColor}>
+                {fTag?.text}
+              </StyledTag>
+            </Box>
+          )}
+        </>
+      ),
       tokens: { token1: farm.pid === 184 ? 'NFTY2' : token1, token2, token3: 'BANANA' },
       stakeLp: true,
-      title: (
-        <Text ml={10} bold>
-          {farm.lpSymbol}
-        </Text>
-      ),
+      title: <Text bold>{farm.lpSymbol}</Text>,
       open: farm.pid === openPid,
       id: farm.pid,
       infoContent: (

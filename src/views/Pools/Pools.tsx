@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import BigNumber from 'bignumber.js'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PoolCategory } from 'config/constants/types'
 import { useWeb3React } from '@web3-react/core'
 import { Flex } from '@apeswapfinance/uikit'
@@ -8,7 +9,7 @@ import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import { useBlock } from 'state/block/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePollPools, usePools } from 'state/hooks'
+import { usePollPools, usePools, usePoolTags } from 'state/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { Pool } from 'state/types'
@@ -24,6 +25,7 @@ interface IPools {
 
 const Pools: React.FC<IPools> = ({ showHistory, id }) => {
   usePollPools()
+  const { chainId } = useActiveWeb3React()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [tokenOption, setTokenOption] = useState('allTokens')
   const [observerIsSet, setObserverIsSet] = useState(false)
@@ -32,6 +34,7 @@ const Pools: React.FC<IPools> = ({ showHistory, id }) => {
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { account } = useWeb3React()
   const allPools = usePools(account)
+  const { poolTags } = usePoolTags(chainId)
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const isActive = !showHistory
@@ -160,7 +163,12 @@ const Pools: React.FC<IPools> = ({ showHistory, id }) => {
               stakedOnly={stakedOnly}
               query={searchQuery}
             />
-            <DisplayPools pools={renderPools()} openId={urlSearchedPool} showHistory={showHistory} />
+            <DisplayPools
+              pools={renderPools()}
+              openId={urlSearchedPool}
+              poolTags={poolTags}
+              showHistory={showHistory}
+            />
             <div ref={loadMoreRef} />
           </Flex>
         </ListViewLayout>
