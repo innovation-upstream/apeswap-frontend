@@ -49,6 +49,7 @@ const DetailsContent: React.FC<expandCardProps> = ({ ...props }) => {
           <Text>{t('APR (incl. LP rewards)')}</Text>
           <Text>{props?.aprRewards}%</Text>
         </Flex>
+        {/* Conditional Render Start */}
         <Flex sx={styles.detailRow}>
           <Text>{t('Base APR (BANANA yield only)')}</Text>
           <Text>{props?.apr}%</Text>
@@ -61,6 +62,7 @@ const DetailsContent: React.FC<expandCardProps> = ({ ...props }) => {
           <Text>{t('Farm Multiplier')}</Text>
           <Text>{props?.multiplier}</Text>
         </Flex>
+        {/* Conditional Render Stop */}
 
         <ul>
           <li>

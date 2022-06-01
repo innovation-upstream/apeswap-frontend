@@ -82,7 +82,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
 
   const compoundROIRates = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays,
-    farmApr: apr + lpApr,
+    farmApr: apr + (lpApr || 0),
     tokenPrice,
     roundingDecimals: 8,
     // Get the fraction of 1 day
@@ -108,7 +108,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
       {...modalStyle}
     >
       <Heading as="h3" sx={styles.title}>
-        {t(lpLabel)} LP
+        {t(lpLabel)} {lpApr && 'LP'}
       </Heading>
       <CurrencyInputPanel
         value={amountDollars?.toString()}
