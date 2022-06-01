@@ -36,7 +36,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
     >
       {items?.map((item) => {
         const { label, href, items: subItems } = item
-        const newLabel = label?.replace(/' '/g, '_')
+        const newLabel = label?.replace(/\s/gi, '_')
         const ImageElement = Icons[(colorMode === 'dark' ? item?.darkIcon : item?.lightIcon) || '']
         const style: any = desktopMenuItem(
           newLabel,
