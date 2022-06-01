@@ -1,0 +1,14 @@
+[
+  {
+    "text": "Base APR (BANANA yield only)",
+    "value": "apr"
+  },
+  {
+    "text": "APY (1x daily compound)",
+    "value": "detailApy"
+  },
+  {
+    "text": "Farm Multiplier",
+    "value": "multiplier"
+  }
+]

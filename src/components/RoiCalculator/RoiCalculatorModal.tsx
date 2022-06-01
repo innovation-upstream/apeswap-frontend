@@ -14,6 +14,7 @@ import useTheme from 'hooks/useTheme'
 import CurrencyInputPanel from './CurrencyInput'
 import DetailsContent from './DetailsContent'
 import styles from './styles'
+import { aprHeaders, defaultHeaders } from './roiLabels'
 
 interface RoiCalculatorModalProps {
   onDismiss?: () => void
@@ -29,6 +30,7 @@ interface RoiCalculatorModalProps {
   lpAddresses?: string
   tokenAddress?: string
   quoteTokenAddress?: string
+  roiType?: string
 }
 
 const modalStyle = {
@@ -42,7 +44,7 @@ const amountButtons = ['100', '1000']
 const intervals = [1, 7, 14, 30]
 
 const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
-  const { onDismiss, lpLabel, rewardTokenPrice, apr, lpApr, lpAddresses } = props
+  const { onDismiss, lpLabel, rewardTokenPrice, apr, lpApr, lpAddresses, roiType } = props
   const [numberOfDays, setNumberOfDays] = useState(1)
   const [compoundFrequency, setCompoundFrequency] = useState(1)
   const [amountDollars, setAmountDollars] = useState('1000')
@@ -129,7 +131,9 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
           <Text sx={styles.balance}>{balanceA?.toSignificant(4)}</Text>
         </Text>
       </Flex>
-      <Heading sx={styles.title}>{t('STAKED FOR')}</Heading>
+      <Heading sx={styles.title}>
+        {lpApr ? t(`${defaultHeaders.stakingHeader}`) : t(`${aprHeaders.stakingHeader}`)}
+      </Heading>
       <Box sx={styles.tabContainer}>
         <Tabs activeTab={intervals.indexOf(numberOfDays)} variant="fullWidth">
           {intervals.map((interval, index) => (
@@ -144,7 +148,9 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
           ))}
         </Tabs>
       </Box>
-      <Heading sx={styles.title}>{t('COMPOUNDING EVERY')}</Heading>
+      <Heading sx={styles.title}>
+        {lpApr ? t(`${defaultHeaders.compoundHeader}`) : t(`${aprHeaders.compoundHeader}`)}
+      </Heading>
       <Box sx={styles.tabContainer}>
         <Tabs activeTab={intervals.indexOf(compoundFrequency)} variant="fullWidth">
           {intervals.map((interval, index) => (
@@ -160,7 +166,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
           ))}
         </Tabs>
       </Box>
-      <Heading sx={styles.title}>{t('ROI AT CURRENT RATES')}</Heading>
+      <Heading sx={styles.title}>{lpApr ? t(`${defaultHeaders.ratesHeader}`) : t(`${aprHeaders.ratesHeader}`)}</Heading>
       <Flex sx={styles.roiContainer(isDark)}>
         <Svg icon="banana_token" width="46px" />
         <Box>

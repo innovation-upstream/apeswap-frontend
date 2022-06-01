@@ -9,6 +9,7 @@ import { LiquidityModal } from 'components/LiquidityWidget'
 import { Field, selectCurrency } from 'state/swap/actions'
 import { useAppDispatch } from 'state'
 import styles from './styles'
+import DETAILS_TOKEN_INFO from './detailsTokenInfo.json'
 
 interface expandCardProps {
   [key: string]: any
@@ -46,37 +47,35 @@ const DetailsContent: React.FC<expandCardProps> = ({ ...props }) => {
       </Flex>
       <Box sx={styles.detailContainer(!expanded)}>
         <Flex sx={styles.detailRow}>
-          <Text>{t('APR (incl. LP rewards)')}</Text>
+          <Text>{props.lpApr ? t('APR (incl. LP rewards)') : t(`${props.lpLabel}`)}</Text>
           <Text>{props?.aprRewards}%</Text>
         </Flex>
-        {/* Conditional Render Start */}
-        <Flex sx={styles.detailRow}>
-          <Text>{t('Base APR (BANANA yield only)')}</Text>
-          <Text>{props?.apr}%</Text>
-        </Flex>
-        <Flex sx={styles.detailRow}>
-          <Text>{t('APY (1x daily compound)')}</Text>
-          <Text>{props?.detailApy}%</Text>
-        </Flex>
-        <Flex sx={styles.detailRow}>
-          <Text>{t('Farm Multiplier')}</Text>
-          <Text>{props?.multiplier}</Text>
-        </Flex>
-        {/* Conditional Render Stop */}
+
+        {props.lpApr &&
+          DETAILS_TOKEN_INFO.map((item) => {
+            return (
+              <Flex sx={styles.detailRow}>
+                <Text>{t(`${item.text}`)}</Text>
+                <Text>{props[item.value]}%</Text>
+              </Flex>
+            )
+          })}
 
         <ul>
           <li>
             <Text sx={styles?.text}>{t('Calculated based on current rates.')}</Text>
           </li>
-          <li>
-            <Text sx={styles?.text}>
-              {t('LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.')}
-            </Text>
-          </li>
+          {props.lpApr && (
+            <li>
+              <Text sx={styles?.text}>
+                {t('LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.')}
+              </Text>
+            </li>
+          )}
           <li>
             <Text sx={styles?.text}>
               {t(
-                'All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.',
+                'All figures are estimates for illustrative purposes only, and do not represent guaranteed returns. Your actual returns may vary.',
               )}
             </Text>
           </li>
