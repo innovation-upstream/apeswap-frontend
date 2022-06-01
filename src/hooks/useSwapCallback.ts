@@ -19,22 +19,22 @@ export enum SwapCallbackState {
   VALID,
 }
 
-interface SwapCall {
+export interface SwapCall {
   contract: Contract
   parameters: SwapParameters
 }
 
-interface SuccessfulCall {
+export interface SuccessfulCall {
   call: SwapCall
   gasEstimate: BigNumber
 }
 
-interface FailedCall {
+export interface FailedCall {
   call: SwapCall
   error: Error
 }
 
-type EstimatedSwapCall = SuccessfulCall | FailedCall
+export type EstimatedSwapCall = SuccessfulCall | FailedCall
 
 /**
  * Returns the swap calls that can be used to make the trade
@@ -42,7 +42,7 @@ type EstimatedSwapCall = SuccessfulCall | FailedCall
  * @param allowedSlippage user allowed slippage
  * @param recipientAddressOrName
  */
-function useSwapCallArguments(
+export function useSwapCallArguments(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
@@ -97,7 +97,7 @@ export function useSwapCallback(
   const { account, chainId, library } = useActiveWeb3React()
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
-
+  console.log(swapCalls)
   const addTransaction = useTransactionAdder()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
@@ -169,6 +169,8 @@ export function useSwapCallback(
           if (errorCalls.length > 0) throw errorCalls[errorCalls.length - 1].error
           throw new Error(t('Unexpected error. Please contact support: none of the calls threw an error'))
         }
+
+        console.log(successfulEstimation)
 
         const {
           call: {

@@ -1,9 +1,10 @@
 import { parseUnits } from '@ethersproject/units'
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade, ChainId } from '@apeswapfinance/sdk'
 import { ParsedQs } from 'qs'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useRouterCheck } from 'hooks/useRouterCheck'
 import tokens from 'config/constants/tokens'
 import useENS from 'hooks/ENS/useENS'
 import { useCurrency } from 'hooks/Tokens'
@@ -110,6 +111,7 @@ function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
 export function useDerivedSwapInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
+  currencyUsdValues: { [field in Field]?: number }
   parsedAmount: CurrencyAmount | undefined
   v2Trade: Trade | undefined
   inputError?: string
@@ -144,15 +146,26 @@ export function useDerivedSwapInfo(): {
 
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
-  const currencyBalances = {
-    [Field.INPUT]: relevantTokenBalances[0],
-    [Field.OUTPUT]: relevantTokenBalances[1],
+  const currencyBalances = useMemo(
+    () => ({
+      [Field.INPUT]: relevantTokenBalances[0],
+      [Field.OUTPUT]: relevantTokenBalances[1],
+    }),
+    [relevantTokenBalances],
+  )
+
+  const currencyUsdValues = {
+    [Field.INPUT]: 0,
+    [Field.OUTPUT]: 0,
   }
 
-  const currencies: { [field in Field]?: Currency } = {
-    [Field.INPUT]: inputCurrency ?? undefined,
-    [Field.OUTPUT]: outputCurrency ?? undefined,
-  }
+  const currencies: { [field in Field]?: Currency | null } = useMemo(
+    () => ({
+      [Field.INPUT]: inputCurrency ?? undefined,
+      [Field.OUTPUT]: outputCurrency ?? undefined,
+    }),
+    [inputCurrency, outputCurrency],
+  )
 
   let inputError: string | undefined
   if (!account) {
@@ -192,9 +205,12 @@ export function useDerivedSwapInfo(): {
     inputError = `${t('Insufficient')} ${amountIn.currency.getSymbol(chainId)} ${t('balance')}`
   }
 
+  useRouterCheck(v2Trade, allowedSlippage, recipient)
+
   return {
     currencies,
     currencyBalances,
+    currencyUsdValues,
     parsedAmount,
     v2Trade: v2Trade ?? undefined,
     inputError,

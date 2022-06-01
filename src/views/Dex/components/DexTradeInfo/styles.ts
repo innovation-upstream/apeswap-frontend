@@ -11,24 +11,23 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     width: '100%',
     flexDirection: 'column',
     height: 'fit-content',
-  },
-
-  navLinkContainer: {
-    width: '100%',
-    maxWidth: '225px',
-    paddingRight: '20px',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-
-  navIconContainer: {
-    width: '100%',
-    maxWidth: '60px',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-
-  navLink: {
     cursor: 'pointer',
+  },
+
+  normalRouterContainer: {
+    borderRadius: 4,
+    height: '16px',
+    padding: '2px 6px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    mr: '5px',
+  },
+
+  bottomRouterContainer: {
+    width: '100%',
+    padding: '10px',
+    borderRadius: '10px',
+    margin: '10px 0px',
+    flexDirection: 'column',
   },
 }

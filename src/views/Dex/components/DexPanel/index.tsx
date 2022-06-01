@@ -5,10 +5,11 @@ import { CurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { useDerivedSwapInfo } from 'state/swap/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
+import { getCurrencyUsdPrice } from 'utils/getTokenUsdPrice'
 import TokenSelector from '../TokenSelector'
 import { styles } from './styles'
 import { DexPanelProps } from './types'
@@ -22,11 +23,16 @@ const DexPanel: React.FC<DexPanelProps> = ({
   fieldType,
   showCommonBases = false,
 }) => {
-  const [inputVal, setInputVal] = useState('')
+  const [usdVal, setUsdVal] = useState(null)
   const { chainId, account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const currencyBalance = selectedCurrencyBalance?.toSignificant(6)
   const { t } = useTranslation()
+
+  useMemo(async () => {
+    setUsdVal(null)
+    setUsdVal(await getCurrencyUsdPrice(chainId, currency))
+  }, [chainId, currency])
 
   return (
     <Flex sx={{ ...styles.dexPanelContainer }}>
@@ -48,7 +54,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
       </Flex>
       <Flex sx={{ ...styles.panelBottomContainer }}>
         <Text size="12px" sx={{ ...styles.panelBottomText }}>
-          $0.00
+          {usdVal && value && `$${(usdVal * parseFloat(value)).toFixed(2)}`}
         </Text>
         {account && (
           <Flex sx={{ alignItems: 'center' }}>

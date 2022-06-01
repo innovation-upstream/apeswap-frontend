@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Button, Card, CardIcon, CogIcon, Flex, Svg, Text, useModal } from '@ape.swap/uikit'
+import { Button, Card, CardIcon, CogIcon, Flex, Svg, Text, useModal, AutoRenewIcon } from '@ape.swap/uikit'
 import { Currency } from '@apeswapfinance/sdk'
 import NumericalInput from 'components/LiquidityWidget/CurrencyInput/NumericalInput'
 import { CurrencyLogo } from 'components/Logo'
@@ -12,22 +12,33 @@ import { WrapType } from 'hooks/useWrapCallback'
 import React, { useCallback, useState } from 'react'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
+import ConfirmSwapModal from 'views/Swap/components/ConfirmSwapModal'
 import TokenSelector from '../TokenSelector'
 import { styles } from './styles'
 import { DexActionProps } from './types'
 
-const DexActions: React.FC<DexActionProps> = ({ trade, swapInputError, isExpertMode, showWrap, wrapType, onWrap }) => {
+const DexActions: React.FC<DexActionProps> = ({
+  trade,
+  swapInputError,
+  isExpertMode,
+  showWrap,
+  wrapType,
+  priceImpactWithoutFee,
+  swapCallbackError,
+  userHasSpecifiedInputOutput,
+  onWrap,
+  handleSwap,
+  onPresentConfirmModal,
+  setSwapState,
+}) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
-  const [approvalSubmitted, setApprovalSubmitted] = useState(false)
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
-
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
@@ -36,9 +47,7 @@ const DexActions: React.FC<DexActionProps> = ({ trade, swapInputError, isExpertM
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
     !swapInputError &&
-    (approval === ApprovalState.NOT_APPROVED ||
-      approval === ApprovalState.PENDING ||
-      (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
+    (approval === ApprovalState.NOT_APPROVED || approval === ApprovalState.PENDING) &&
     !(priceImpactSeverity > 3 && !isExpertMode)
 
   const renderAction = () => {
@@ -52,7 +61,52 @@ const DexActions: React.FC<DexActionProps> = ({ trade, swapInputError, isExpertM
         </Button>
       )
     }
-    return <></>
+    if (!trade?.route && userHasSpecifiedInputOutput) {
+      return (
+        <Text margin="10px 0px" sx={{ width: '100%', textAlign: 'center' }}>
+          {t('Insufficient liquidity for this trade')}
+        </Text>
+      )
+    }
+    if (showApproveFlow) {
+      return (
+        <Button
+          fullWidth
+          onClick={approveCallback}
+          disabled={approval !== ApprovalState.NOT_APPROVED}
+          load={approval === ApprovalState.PENDING}
+        >
+          {approval === ApprovalState.PENDING ? t('Approving') : t('Approve Apeswap Router')}
+        </Button>
+      )
+    }
+    return (
+      <Button
+        fullWidth
+        onClick={() => {
+          if (isExpertMode) {
+            handleSwap()
+          } else {
+            setSwapState({
+              tradeToConfirm: trade,
+              attemptingTxn: false,
+              swapErrorMessage: undefined,
+              txHash: undefined,
+            })
+            onPresentConfirmModal()
+          }
+        }}
+        id="swap-button"
+        disabled={!!swapInputError || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
+      >
+        {swapInputError ||
+          (priceImpactSeverity > 3 && !isExpertMode
+            ? t('Price Impact Too High')
+            : priceImpactSeverity > 2
+            ? t('Swap Anyway')
+            : t('Swap'))}
+      </Button>
+    )
   }
 
   return <Flex sx={{ ...styles.dexActionsContainer }}>{renderAction()}</Flex>

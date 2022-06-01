@@ -154,22 +154,20 @@ const TransactionConfirmationModal: React.FC<ModalProps & ConfirmationModalProps
   if (!chainId) return null
 
   return (
-    <div style={{ maxWidth: '420px', zIndex: 101 }}>
-      <Modal title={title} onDismiss={handleDismiss}>
-        {attemptingTxn ? (
-          <ConfirmationPendingContent pendingText={pendingText} />
-        ) : hash ? (
-          <TransactionSubmittedContent
-            chainId={chainId}
-            hash={hash}
-            onDismiss={onDismiss}
-            currencyToAdd={currencyToAdd}
-          />
-        ) : (
-          content()
-        )}
-      </Modal>
-    </div>
+    <Modal title={title} onDismiss={handleDismiss}>
+      {attemptingTxn ? (
+        <ConfirmationPendingContent pendingText={pendingText} />
+      ) : hash ? (
+        <TransactionSubmittedContent
+          chainId={chainId}
+          hash={hash}
+          onDismiss={onDismiss}
+          currencyToAdd={currencyToAdd}
+        />
+      ) : (
+        content()
+      )}
+    </Modal>
   )
 }
 
