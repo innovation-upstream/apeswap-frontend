@@ -23,6 +23,8 @@ import ethConfig from './chains/ethConfig'
 import LangSelectorButton from './components/LangSelectorButton'
 
 const Menu: React.FC<{ chain?: number }> = () => {
+  console.log('bscConfig', bscConfig)
+
   const router = useRouter()
   const refPrevOffset = useRef(null)
   const [showMenu, setShowMenu] = useState(true)

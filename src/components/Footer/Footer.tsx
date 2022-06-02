@@ -17,7 +17,7 @@ import LangSelector from './LangSelector'
 
 const Footer: React.FC = () => {
   const { toggleTheme, isDark } = useContext(ThemeContext)
-  const { setLanguage, currentLanguage } = useTranslation()
+  const { setLanguage, currentLanguage, t } = useTranslation()
   const { tokenPrices } = useTokenPrices()
   const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
 
@@ -37,8 +37,9 @@ const Footer: React.FC = () => {
           <Svg icon="textLogo" width="250px" />
           <Box sx={{ pt: 11 }}>
             <Text sx={{ fontSize: '16px' }}>
-              ApeSwap is a DeFi Hub on BNB Chain & Polygon focused on offering an accessible, transparent and secure
-              experience for everyone.
+              {t(
+                'ApeSwap is a DeFi Hub on BNB Chain & Polygon focused on offering an accessible, transparent and secure experience for everyone.',
+              )}
             </Text>
           </Box>
           <Flex sx={{ mt: '35px', columnGap: '25px' }}>
@@ -68,7 +69,7 @@ const Footer: React.FC = () => {
             <Link href="https://apeswap.finance/swap">
               <a target="_blank" href="https://apeswap.finance/swap" rel="noreferrer">
                 <Button variant="secondary" sx={{ fontSize: '16px' }} px="0px">
-                  BUY BANANA
+                  {t('BUY BANANA')}
                 </Button>
               </a>
             </Link>
