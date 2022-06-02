@@ -28,6 +28,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number }> = ({ pools, ope
   const poolsListView = pools.map((pool) => {
     const token1 = pool?.stakingToken?.symbol
     const token2 = pool?.rewardToken?.symbol
+    const tokenAddress = pool.stakingToken.address[chainId]
     const totalDollarAmountStaked = getBalanceNumber(pool?.totalStaked) * pool?.stakingToken?.price
     const liquidityUrl = !pool?.lpStaking
       ? pool.stakingToken.symbol === 'GNANA'
@@ -87,6 +88,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number }> = ({ pools, ope
                 apy={pool?.apr / 100}
                 addLiquidityUrl={liquidityUrl}
                 apr={pool?.apr}
+                lpAddresses={tokenAddress}
               />
             }
           />
