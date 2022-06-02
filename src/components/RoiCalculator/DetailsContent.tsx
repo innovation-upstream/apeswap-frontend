@@ -8,6 +8,7 @@ import { useModal } from '@apeswapfinance/uikit'
 import { LiquidityModal } from 'components/LiquidityWidget'
 import { Field, selectCurrency } from 'state/swap/actions'
 import { useAppDispatch } from 'state'
+import { tokenInfo, tokenListInfo } from './tokenInfo'
 import styles from './styles'
 
 interface expandCardProps {
@@ -20,6 +21,7 @@ const DetailsContent: React.FC<expandCardProps> = ({ ...props }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
+  const apr: number = props?.apr + (props?.lpApr || 0)
   const [onPresentAddLiquidityWidgetModal] = useModal(<LiquidityModal />, true, true, 'liquidityWidgetModal')
 
   const showLiquidity = () => {
@@ -46,40 +48,27 @@ const DetailsContent: React.FC<expandCardProps> = ({ ...props }) => {
       </Flex>
       <Box sx={styles.detailContainer(!expanded)}>
         <Flex sx={styles.detailRow}>
-          <Text>{t('APR (incl. LP rewards)')}</Text>
-          <Text>{props?.aprRewards}%</Text>
+          <Text>{t(props?.lpApr ? 'APR (incl. LP rewards)' : `APR - ${props?.lpLabel} rewards`)}</Text>
+          <Text>{apr.toFixed(2)}%</Text>
         </Flex>
         {/* Conditional Render Start */}
-        <Flex sx={styles.detailRow}>
-          <Text>{t('Base APR (BANANA yield only)')}</Text>
-          <Text>{props?.apr}%</Text>
-        </Flex>
-        <Flex sx={styles.detailRow}>
-          <Text>{t('APY (1x daily compound)')}</Text>
-          <Text>{props?.detailApy}%</Text>
-        </Flex>
-        <Flex sx={styles.detailRow}>
-          <Text>{t('Farm Multiplier')}</Text>
-          <Text>{props?.multiplier}</Text>
-        </Flex>
+        {props.lpApr &&
+          tokenInfo.map((item) => {
+            return (
+              <Flex key={item.value} sx={styles.detailRow}>
+                <Text>{t(`${item.text}`)}</Text>
+                <Text>{props[item.value]}%</Text>
+              </Flex>
+            )
+          })}
         {/* Conditional Render Stop */}
 
         <ul>
-          <li>
-            <Text sx={styles?.text}>{t('Calculated based on current rates.')}</Text>
-          </li>
-          <li>
-            <Text sx={styles?.text}>
-              {t('LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.')}
-            </Text>
-          </li>
-          <li>
-            <Text sx={styles?.text}>
-              {t(
-                'All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.',
-              )}
-            </Text>
-          </li>
+          {tokenListInfo[props?.lpApr ? 'lpPair' : 'notLpPair']?.map((item) => (
+            <li key={item}>
+              <Text sx={styles?.text} dangerouslySetInnerHTML={{ __html: t(item) }} />
+            </li>
+          ))}
         </ul>
 
         <Flex sx={{ marginTop: '25px', justifyContent: 'center' }}>

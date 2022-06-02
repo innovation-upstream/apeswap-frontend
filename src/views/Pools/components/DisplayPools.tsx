@@ -6,7 +6,7 @@ import ListViewContent from 'components/ListViewContent'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ApyButton from 'components/ApyCalculator/ApyButton'
+import ApyButton from 'components/RoiCalculator/ApyButton'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import { Pool } from 'state/types'
@@ -86,6 +86,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number }> = ({ pools, ope
                 rewardTokenPrice={pool?.rewardToken?.price}
                 apy={pool?.apr / 100}
                 addLiquidityUrl={liquidityUrl}
+                apr={pool?.apr}
               />
             }
           />
