@@ -36,10 +36,10 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
     >
       {items?.map((item) => {
         const { label, href, items: subItems } = item
-        const newLabel = label?.replace(/\s/gi, '_')
+        const itemClassName = label?.replace(/\s/gi, '_')
         const ImageElement = Icons[(colorMode === 'dark' ? item?.darkIcon : item?.lightIcon) || '']
         const style: any = desktopMenuItem(
-          newLabel,
+          itemClassName,
           active === href || subItems?.some((subItem) => active === subItem.href),
         )
 
@@ -62,7 +62,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
               </NextLink>
             )}
             {subItems?.length && (
-              <Flex id={`menu-modal-${newLabel}`} sx={desktopSubItem as any}>
+              <Flex id={`menu-modal-${itemClassName}`} sx={desktopSubItem as any}>
                 <ul
                   sx={{
                     listStyleType: 'none',
@@ -83,7 +83,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                             boxShadow: 'inset 0px -2px 0px',
                           },
                         }}
-                        target={newLabel === 'More' && '_blank'}
+                        target={itemClassName === 'More' && '_blank'}
                       >
                         {subItem.label}
                       </NextLink>

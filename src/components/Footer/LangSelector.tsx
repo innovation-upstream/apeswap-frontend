@@ -1,15 +1,8 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Select, SelectItem, Text } from '@ape.swap/uikit'
-import { Language } from './types'
 
-interface Props {
-  currentLang: string
-  langs: Language[]
-  setLang: (lang: Language) => void
-}
-
-const LangSelector: React.FC<Props> = ({ currentLang, langs, setLang }) => (
+const LangSelector = ({ currentLang, langs, setLang }) => (
   <Select
     size="xsm"
     active={currentLang}

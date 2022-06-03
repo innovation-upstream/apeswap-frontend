@@ -6,9 +6,3 @@ export enum ConnectorNames {
 }
 
 export type Login = (connectorId: ConnectorNames) => void
-
-export interface Language {
-  code: string
-  language: string
-  locale: string
-}
