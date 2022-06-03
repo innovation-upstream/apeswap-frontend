@@ -27,10 +27,9 @@ interface RoiCalculatorModalProps {
   apr?: number
   lpApr?: number
   multiplier?: number
-  detailApy?: number
   lpAddresses?: string
   tokenAddress?: string
-  quoteTokenAddress?: string
+  isLp?: boolean
 }
 
 const modalStyle = {
@@ -44,7 +43,7 @@ const amountButtons = ['100', '1000']
 const intervals = [1, 7, 14, 30]
 
 const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
-  const { onDismiss, lpLabel, rewardTokenName, rewardTokenPrice, apr, lpApr, lpAddresses } = props
+  const { onDismiss, lpLabel, rewardTokenName, rewardTokenPrice, apr, lpApr, lpAddresses, tokenAddress, isLp } = props
   const [numberOfDays, setNumberOfDays] = useState(1)
   const [compoundFrequency, setCompoundFrequency] = useState(1)
   const [amountDollars, setAmountDollars] = useState('1000')
@@ -75,11 +74,11 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
   }
 
   const onUserInput = (value: string) => {
-    setInputValue(value)
+    setInputValue(() => value)
     setAmountDollars(null)
   }
 
-  const currencyA = useCurrency(lpAddresses)
+  const currencyA = useCurrency(isLp ? lpAddresses : tokenAddress)
   const { currencies } = useDerivedMintInfo(currencyA ?? undefined, undefined)
   const balanceA = useCurrencyBalance(account ?? undefined, currencies[Field.CURRENCY_A])
 
@@ -111,7 +110,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
       {...modalStyle}
     >
       <Heading as="h3" sx={styles.title}>
-        {!lpApr && `${t(rewardTokenName)} -`} {t(lpLabel)} {lpApr && 'LP'}
+        {t(lpLabel)} {isLp && 'LP'}
       </Heading>
       <CurrencyInputPanel
         value={amountDollars?.toString()}
@@ -181,7 +180,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
           </Box>
         </Box>
       </Flex>
-      <DetailsContent {...props} />
+      <DetailsContent {...props} isLp={isLp} />
     </Modal>
   )
 }

@@ -13,6 +13,7 @@ import styles from './styles'
 
 interface expandCardProps {
   [key: string]: any
+  isLp?: boolean
 }
 
 const DetailsContent: React.FC<expandCardProps> = ({ ...props }) => {
@@ -48,11 +49,11 @@ const DetailsContent: React.FC<expandCardProps> = ({ ...props }) => {
       </Flex>
       <Box sx={styles.detailContainer(!expanded)}>
         <Flex sx={styles.detailRow}>
-          <Text>{t(props?.lpApr ? 'APR (incl. LP rewards)' : `APR - ${props?.lpLabel} rewards`)}</Text>
+          <Text>{t(props.isLp ? 'APR (incl. LP rewards)' : `APR - ${props?.lpLabel} rewards`)}</Text>
           <Text>{apr.toFixed(2)}%</Text>
         </Flex>
-        {/* Conditional Render Start */}
-        {props.lpApr &&
+
+        {props.isLp &&
           tokenInfo.map((item) => {
             return (
               <Flex key={item.value} sx={styles.detailRow}>
@@ -61,10 +62,9 @@ const DetailsContent: React.FC<expandCardProps> = ({ ...props }) => {
               </Flex>
             )
           })}
-        {/* Conditional Render Stop */}
 
         <ul>
-          {tokenListInfo[props?.lpApr ? 'lpPair' : 'notLpPair']?.map((item) => (
+          {tokenListInfo[props.isLp ? 'lpPair' : 'notLpPair']?.map((item) => (
             <li key={item}>
               <Text sx={styles?.text} dangerouslySetInnerHTML={{ __html: t(item) }} />
             </li>

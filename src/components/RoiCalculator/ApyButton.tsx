@@ -14,10 +14,9 @@ export interface ApyButtonProps {
   apr?: number
   lpApr?: number
   multiplier?: number
-  detailApy?: number
   lpAddresses?: string
   tokenAddress?: string
-  quoteTokenAddress?: string
+  isLp?: boolean
 }
 
 const ApyButton: React.FC<ApyButtonProps> = ({
@@ -29,10 +28,9 @@ const ApyButton: React.FC<ApyButtonProps> = ({
   apr,
   lpApr,
   multiplier,
-  detailApy,
   lpAddresses,
   tokenAddress,
-  quoteTokenAddress,
+  isLp,
 }) => {
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
@@ -44,10 +42,9 @@ const ApyButton: React.FC<ApyButtonProps> = ({
       apr={apr}
       lpApr={lpApr}
       multiplier={multiplier}
-      detailApy={detailApy}
       lpAddresses={lpAddresses}
       tokenAddress={tokenAddress}
-      quoteTokenAddress={quoteTokenAddress}
+      isLp={isLp}
     />,
   )
 
