@@ -7,6 +7,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     marginTop: '10px',
     borderRadius: '10px',
     borderColor: 'white3',
+    background: 'white3',
     padding: '5px 10px',
     width: '100%',
     flexDirection: 'column',

@@ -4,7 +4,7 @@ import { Trade } from '@apeswapfinance/sdk'
 import { useTranslation } from 'contexts/Localization'
 import React, { useMemo, useState } from 'react'
 import { Divider } from 'theme-ui'
-import { Field } from 'state/swap/actions'
+import { Field, SwapDelay } from 'state/swap/actions'
 import { useRouterCheck } from 'hooks/useRouterCheck'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import TradePrice from 'views/Orders/components/TradePrice'
@@ -13,13 +13,18 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { computeTradePriceBreakdown, computeSlippageAdjustedAmounts } from 'utils/prices'
 import { styles } from './styles'
 
-const DexTradeInfo: React.FC<{ trade: Trade; allowedSlippage: number }> = ({ trade, allowedSlippage }) => {
+const DexTradeInfo: React.FC<{ trade: Trade; allowedSlippage: number; swapDelay?: SwapDelay; open?: boolean }> = ({
+  trade,
+  allowedSlippage,
+  swapDelay,
+  open = false,
+}) => {
   const { chainId, account } = useActiveWeb3React()
-  const [showMore, setShowMore] = useState(false)
+  const [showMore, setShowMore] = useState(open)
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState(false)
-  const router = useRouterCheck(trade, allowedSlippage, account)
-  console.log(router)
+  // const router = useRouterCheck(trade, allowedSlippage, account)
+  // console.log(router)
   const route = trade?.route?.path?.map((val, i) => {
     return i < trade?.route?.path?.length - 1 ? `${val.getSymbol(chainId)} > ` : val.getSymbol(chainId)
   })
@@ -31,8 +36,7 @@ const DexTradeInfo: React.FC<{ trade: Trade; allowedSlippage: number }> = ({ tra
   )
   const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
 
-  console.log(trade)
-  return trade ? (
+  return trade && swapDelay !== SwapDelay.INVALID ? (
     <Flex sx={{ ...styles.dexTradeInfoContainer }}>
       <Flex
         sx={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}

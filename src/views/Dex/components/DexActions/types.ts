@@ -11,6 +11,7 @@ export interface DexActionProps {
   priceImpactWithoutFee: Percent
   swapCallbackError: string
   userHasSpecifiedInputOutput: boolean
+  disabled: boolean
   onWrap: () => void
   handleSwap: () => void
   onPresentConfirmModal: () => void

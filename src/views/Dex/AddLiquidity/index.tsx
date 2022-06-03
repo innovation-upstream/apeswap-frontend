@@ -1,12 +1,13 @@
 import React, { useCallback, useState } from 'react'
 import { useCurrency } from 'hooks/Tokens'
-import { Field, SwapDelay } from 'state/swap/actions'
-import { Button, Flex, useModal } from '@ape.swap/uikit'
+import { Field } from 'state/swap/actions'
+import { ArrowDropLeftIcon, Button, Flex, Text, useModal } from '@ape.swap/uikit'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import confirmPriceImpactWithoutFee from 'views/Swap/components/confirmPriceImpactWithoutFee'
 import { computeTradePriceBreakdown } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
+import { Link } from 'react-router-dom'
 import { CurrencyAmount, JSBI, Trade } from '@apeswapfinance/sdk'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
 import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
@@ -15,11 +16,11 @@ import maxAmountSpend from 'utils/maxAmountSpend'
 import { dexStyles } from '../styles'
 import DexPanel from '../components/DexPanel'
 import DexNav from '../components/DexNav'
-import ConfirmSwapModal from './components/ConfirmSwapModal'
-import SwapSwitchButton from './components/SwapSwitchButton'
+import ConfirmSwapModal from '../Swap/components/ConfirmSwapModal'
+import SwapSwitchButton from '../Swap/components/SwapSwitchButton'
 import DexActions from '../components/DexActions'
 import DexTradeInfo from '../components/DexTradeInfo'
-import LoadingBestRoute from './components/LoadingBestRoute'
+import AddLiquiditySign from './components/AddLiquiditySign'
 
 const Swap: React.FC = () => {
   // modal and loading
@@ -46,8 +47,7 @@ const Swap: React.FC = () => {
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
 
-  const { INPUT, OUTPUT, independentField, typedValue, recipient, swapDelay } = useSwapState()
-  console.log('This is swap delay', swapDelay)
+  const { INPUT, OUTPUT, independentField, typedValue, recipient } = useSwapState()
   // the callback to execute the swap
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
@@ -87,8 +87,6 @@ const Swap: React.FC = () => {
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
-
-  const fetchingBestRoute = swapDelay === SwapDelay.INPUT_DELAY || swapDelay === SwapDelay.LOADING_ROUTE
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 
@@ -182,10 +180,17 @@ const Swap: React.FC = () => {
     <Flex sx={{ justifyContent: 'center', height: '100vh', paddingTop: '100px' }}>
       <Flex sx={{ ...dexStyles.dexContainer }}>
         <DexNav />
-        <Flex sx={{ margin: '25px 0px' }} />
+        <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center' }}>
+          <Text weight={700}>ADD LIQUIDITY</Text>
+        </Flex>
+        <Flex sx={{ margin: '0px 0px 50px 0px', alignItems: 'center' }}>
+          <Link to="/pool">
+            <ArrowDropLeftIcon width="7px" /> <Text size="12px">{t('Back')}</Text>
+          </Link>
+        </Flex>
         <DexPanel
           value={formattedAmounts[Field.INPUT]}
-          panelText="To"
+          panelText="Token 1"
           currency={inputCurrency}
           otherCurrency={outputCurrency}
           fieldType={Field.INPUT}
@@ -193,21 +198,17 @@ const Swap: React.FC = () => {
           onUserInput={onUserInput}
           handleMaxInput={handleMaxInput}
         />
-        <SwapSwitchButton onClick={onSwitchTokens} />
+        <AddLiquiditySign />
         <DexPanel
           value={formattedAmounts[Field.OUTPUT]}
-          panelText="From"
+          panelText="Token 2"
           currency={outputCurrency}
           otherCurrency={inputCurrency}
           fieldType={Field.OUTPUT}
           onCurrencySelect={onCurrencySelection}
           onUserInput={onUserInput}
         />
-        {fetchingBestRoute ? (
-          <LoadingBestRoute />
-        ) : (
-          <DexTradeInfo trade={v2Trade} allowedSlippage={allowedSlippage} swapDelay={swapDelay} />
-        )}
+        <DexTradeInfo trade={v2Trade} allowedSlippage={allowedSlippage} />
         <DexActions
           trade={trade}
           swapInputError={swapInputError}
@@ -221,7 +222,7 @@ const Swap: React.FC = () => {
           handleSwap={handleSwap}
           onPresentConfirmModal={onPresentConfirmModal}
           setSwapState={setSwapState}
-          disabled={fetchingBestRoute}
+          disabled={false}
         />
       </Flex>
     </Flex>

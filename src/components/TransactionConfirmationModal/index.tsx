@@ -1,9 +1,11 @@
 import React, { useCallback } from 'react'
 import { ChainId, Currency, Token } from '@apeswapfinance/sdk'
 import styled from 'styled-components'
-import { Button, Text, ErrorIcon, Flex, Link, Modal, ModalProps, MetamaskIcon, Spinner } from '@apeswapfinance/uikit'
+import { Button, Text, ErrorIcon, Flex, Link, MetamaskIcon, Spinner } from '@ape.swap/uikit'
+import { Modal, ModalProps } from '@apeswapfinance/uikit'
 import { registerToken } from 'utils/wallet'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { dexStyles } from 'views/Dex/styles'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { ArrowUpCircle } from 'react-feather'
 import { useTranslation } from 'contexts/Localization'
@@ -97,10 +99,10 @@ export function ConfirmationModalContent({
   bottomContent: () => React.ReactNode
 }) {
   return (
-    <Wrapper>
+    <Flex sx={{ ...dexStyles.dexContainer, padding: '0px' }}>
       <div>{topContent()}</div>
       <div>{bottomContent()}</div>
-    </Wrapper>
+    </Flex>
   )
 }
 
@@ -154,19 +156,21 @@ const TransactionConfirmationModal: React.FC<ModalProps & ConfirmationModalProps
   if (!chainId) return null
 
   return (
-    <Modal title={title} onDismiss={handleDismiss}>
-      {attemptingTxn ? (
-        <ConfirmationPendingContent pendingText={pendingText} />
-      ) : hash ? (
-        <TransactionSubmittedContent
-          chainId={chainId}
-          hash={hash}
-          onDismiss={onDismiss}
-          currencyToAdd={currencyToAdd}
-        />
-      ) : (
-        content()
-      )}
+    <Modal title={title} onDismiss={handleDismiss} maxWidth="420px">
+      <Flex>
+        {attemptingTxn ? (
+          <ConfirmationPendingContent pendingText={pendingText} />
+        ) : hash ? (
+          <TransactionSubmittedContent
+            chainId={chainId}
+            hash={hash}
+            onDismiss={onDismiss}
+            currencyToAdd={currencyToAdd}
+          />
+        ) : (
+          content()
+        )}
+      </Flex>
     </Modal>
   )
 }

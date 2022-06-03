@@ -97,6 +97,7 @@ export default function callWallchainAPI(
       if (responseJson) {
         const dataResonse: DataResponse = responseJson
         console.log(dataResonse)
+        console.log(wallchainResponseIsValid(dataResonse, value, account, contract.address))
         if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
           return dataResonse
         }

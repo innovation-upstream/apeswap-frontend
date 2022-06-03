@@ -93,7 +93,7 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
       swapErrorMessage ? (
         <TransactionErrorContent onDismiss={onDismiss} message={swapErrorMessage} />
       ) : (
-        <Flex sx={{ ...dexStyles.dexContainer, padding: '0px' }}>
+        <Flex sx={{ flexDirection: 'column'}}>
           {modalHeader()}
           {modalBottom()}
         </Flex>

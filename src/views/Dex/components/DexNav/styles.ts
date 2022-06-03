@@ -8,7 +8,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     height: '30px',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginBottom: '50px',
   },
 
   navLinkContainer: {

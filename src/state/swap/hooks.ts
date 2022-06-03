@@ -1,7 +1,7 @@
 import { parseUnits } from '@ethersproject/units'
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade, ChainId } from '@apeswapfinance/sdk'
 import { ParsedQs } from 'qs'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouterCheck } from 'hooks/useRouterCheck'
@@ -12,9 +12,18 @@ import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
-import { AppDispatch, AppState } from '../index'
+import { AppDispatch, AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
-import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
+import {
+  Field,
+  replaceSwapState,
+  selectCurrency,
+  setRecipient,
+  switchCurrencies,
+  typeInput,
+  setSwapDelay,
+  SwapDelay,
+} from './actions'
 
 import { SwapState } from './reducer'
 import { useUserSlippageTolerance } from '../user/hooks'
@@ -29,8 +38,10 @@ export function useSwapActionHandlers(): {
   onSwitchTokens: () => void
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
+  onSetSwapDelay: (swapDelay: SwapDelay) => void
 } {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
+  const timer = useRef(null)
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
       dispatch(
@@ -47,11 +58,31 @@ export function useSwapActionHandlers(): {
     dispatch(switchCurrencies())
   }, [dispatch])
 
+  const onSetSwapDelay = useCallback(
+    (swapDelay: SwapDelay) => {
+      dispatch(setSwapDelay({ swapDelay }))
+    },
+    [dispatch],
+  )
+
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
       dispatch(typeInput({ field, typedValue }))
+      if (!typedValue) {
+        onSetSwapDelay(SwapDelay.INVALID)
+        return
+      }
+      // Set state as user input delay
+      onSetSwapDelay(SwapDelay.INPUT_DELAY)
+      // Reset previous timer on user input
+      clearTimeout(timer.current)
+      // Set new timer to check wallchain router
+      timer.current = setTimeout(() => {
+        // Set state that user has finished inputing
+        onSetSwapDelay(SwapDelay.INPUT_COMPLETE)
+      }, 500)
     },
-    [dispatch],
+    [dispatch, onSetSwapDelay, timer],
   )
 
   const onChangeRecipient = useCallback(
@@ -66,6 +97,7 @@ export function useSwapActionHandlers(): {
     onCurrencySelection,
     onUserInput,
     onChangeRecipient,
+    onSetSwapDelay,
   }
 }
 
@@ -126,6 +158,7 @@ export function useDerivedSwapInfo(): {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient,
+    swapDelay,
   } = useSwapState()
 
   const inputCurrency = useCurrency(inputCurrencyId)
@@ -195,6 +228,9 @@ export function useDerivedSwapInfo(): {
 
   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
 
+  const returnVal = useRouterCheck(v2Trade, allowedSlippage, recipient, swapDelay)
+  console.log(returnVal)
+
   // compare input balance to max input based on version
   const [balanceIn, amountIn] = [
     currencyBalances[Field.INPUT],
@@ -205,8 +241,7 @@ export function useDerivedSwapInfo(): {
     inputError = `${t('Insufficient')} ${amountIn.currency.getSymbol(chainId)} ${t('balance')}`
   }
 
-  useRouterCheck(v2Trade, allowedSlippage, recipient)
-
+  console.log(returnVal)
   return {
     currencies,
     currencyBalances,
@@ -263,6 +298,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
   }
 
   const recipient = validatedRecipient(parsedQs.recipient)
+  const swapDelay = SwapDelay.INVALID
 
   return {
     [Field.INPUT]: {
@@ -274,6 +310,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     independentField: parseIndependentFieldURLParameter(parsedQs.exactField),
     recipient,
+    swapDelay,
   }
 }
 
@@ -284,6 +321,7 @@ export function useDefaultsFromURLSearch():
   const { chainId } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
+  const swapDelay = SwapDelay.INVALID
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
   >()
@@ -299,6 +337,7 @@ export function useDefaultsFromURLSearch():
         inputCurrencyId: parsed[Field.INPUT].currencyId,
         outputCurrencyId: parsed[Field.OUTPUT].currencyId,
         recipient: parsed.recipient,
+        swapDelay,
       }),
     )
 

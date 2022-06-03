@@ -19,6 +19,13 @@ export enum SwapCallbackState {
   VALID,
 }
 
+export enum SwapDelayState {
+  INVALID,
+  INPUT_DELAY,
+  LOADING_ROUTE,
+  VALID,
+}
+
 export interface SwapCall {
   contract: Contract
   parameters: SwapParameters

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Card, CardIcon, CogIcon, Flex, Svg, Text, useModal } from '@ape.swap/uikit'
 import { Currency } from '@apeswapfinance/sdk'
 import NumericalInput from 'components/LiquidityWidget/CurrencyInput/NumericalInput'
@@ -16,13 +17,13 @@ const DexNav: React.FC = () => {
     <Flex sx={{ ...styles.dexNavContainer }}>
       <Flex sx={{ ...styles.navLinkContainer }}>
         <Text size="14px" sx={{ ...styles.navLink }}>
-          {t('Swap')}
+          <Link to="/swap">{t('Swap')}</Link>
         </Text>
         <Text size="14px" sx={{ ...styles.navLink }}>
-          {t('Limit')}
+          {t('Orders')}
         </Text>
         <Text size="14px" sx={{ ...styles.navLink }}>
-          {t('Liquidity')}
+          <Link to="/add">{t('Liquidity')}</Link>
         </Text>
       </Flex>
       <Flex sx={{ ...styles.navIconContainer }}>

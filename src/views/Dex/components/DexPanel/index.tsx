@@ -19,8 +19,10 @@ const DexPanel: React.FC<DexPanelProps> = ({
   currency,
   onCurrencySelect,
   onUserInput,
+  handleMaxInput,
   otherCurrency,
   fieldType,
+  panelText,
   showCommonBases = false,
 }) => {
   const [usdVal, setUsdVal] = useState(null)
@@ -37,9 +39,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
   return (
     <Flex sx={{ ...styles.dexPanelContainer }}>
       <Flex sx={{ ...styles.panelTopContainer }}>
-        {fieldType && (
-          <Text sx={{ ...styles.swapDirectionText }}>{fieldType === Field.INPUT ? t('From') : t('To')}</Text>
-        )}
+        <Text sx={{ ...styles.swapDirectionText }}>{panelText}</Text>
         <NumericalInput
           value={value}
           onUserInput={(val) => onUserInput(fieldType, val)}
@@ -62,7 +62,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
               {t('Balance: %balance%', { balance: currencyBalance || 'loading' })}
             </Text>
             {fieldType === Field.INPUT && parseFloat(currencyBalance) > 0 && (
-              <Button sx={{ ...styles.maxButton }} size="sm" onClick={() => onUserInput(fieldType, currencyBalance)}>
+              <Button sx={{ ...styles.maxButton }} size="sm" onClick={handleMaxInput}>
                 {t('max')}
               </Button>
             )}

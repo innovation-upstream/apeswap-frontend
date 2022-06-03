@@ -1,105 +1,61 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@apeswapfinance/sdk'
-import { useMemo } from 'react'
+import { Trade } from '@apeswapfinance/sdk'
+import { useState } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import truncateHash from 'utils/truncateHash'
+import { SwapDelay } from 'state/swap/actions'
+import { useSwapActionHandlers } from 'state/swap/hooks'
 import callWallchainAPI from 'utils/wallchainService'
-import { useTranslation } from 'contexts/Localization'
-import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
-import { useTransactionAdder } from '../state/transactions/hooks'
-import { calculateGasMargin, getRouterContract, isAddress } from '../utils'
-import isZero from '../utils/isZero'
-import useTransactionDeadline from './useTransactionDeadline'
-import useENS from './ENS/useENS'
 import { useSwapCallArguments } from './useSwapCallback'
 
-export enum SwapCallbackState {
-  INVALID,
-  LOADING,
-  VALID,
+interface TransactionArgs {
+  data: string
+  destination: string
+  gas: any | null
+  gasPrice: any | null
+  maxFeePerGas: any | null
+  maxPriorityFeePerGas: any | null
+  nonce: any | null
+  sender: string
+  value: string
 }
 
-export interface SwapCall {
-  contract: Contract
-  parameters: SwapParameters
+interface SearchSummary {
+  expectedProfit: number
+  expectedUsdProfit: number
+  firstTokenAddress: string
+  firstTokenAmount: number
 }
 
-export interface SuccessfulCall {
-  call: SwapCall
-  gasEstimate: BigNumber
+export interface WallchainParams {
+  pathFound: boolean
+  summary: { searchSummary: SearchSummary | null }
+  transactionArgs: TransactionArgs
 }
 
-export interface FailedCall {
-  call: SwapCall
-  error: Error
-}
-
-export type EstimatedSwapCall = SuccessfulCall | FailedCall
-
-// returns a function that will execute a swap, if the parameters are all valid
-// and the user has approved the slippage adjusted input amount for the trade
-export const useRouterCheck = async (trade: Trade, allowedSlippage: number, recipientAddressOrName: string | null) => {
-  const { account, chainId, library } = useActiveWeb3React()
-  const { t } = useTranslation()
+export const useRouterCheck = (
+  trade: Trade,
+  allowedSlippage: number,
+  recipientAddressOrName: string | null,
+  swapDelay: SwapDelay,
+) => {
+  const [wallchainResp, setWallchainResp] = useState<WallchainParams | boolean>(false)
+  const { account, chainId } = useActiveWeb3React()
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
-  console.log(swapCalls)
-  const estimatedCalls: EstimatedSwapCall[] = await Promise.all(
-    swapCalls.map((call) => {
-      const {
-        parameters: { methodName, args, value },
-        contract,
-      } = call
-      const options = !value || isZero(value) ? {} : { value }
-
-      return contract.estimateGas[methodName](...args, options)
-        .then((gasEstimate) => {
-          return {
-            call,
-            gasEstimate,
-          }
-        })
-        .catch((gasError) => {
-          console.error('Gas estimate failed, trying eth_call to extract error', call)
-
-          return contract.callStatic[methodName](...args, options)
-            .then((result) => {
-              console.error('Unexpected successful call after failed estimate gas', call, gasError, result)
-              return { call, error: new Error(t('Unexpected issue with estimating the gas. Please try again.')) }
-            })
-            .catch((callError) => {
-              console.error('Call threw error', call, callError)
-              const reason: string = callError.reason || callError.data?.message || callError.message
-              const errorMessage = t(
-                `The transaction cannot succeed due to error: ${
-                  `${reason}. This is probably an issue with one of the tokens you are swapping` ??
-                  'Unknown error, check the logs'
-                }.`,
-              )
-
-              return { call, error: new Error(errorMessage) }
-            })
-        })
-    }),
-  )
-
-  // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
-  const successfulEstimation = estimatedCalls.find(
-    (el, ix, list): el is SuccessfulCall =>
-      'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
-  )
-
-  console.log(successfulEstimation)
-
-  if (successfulEstimation) {
-    const {
-      call: {
-        contract,
-        parameters: { methodName, args, value },
-      },
-    } = successfulEstimation
-    return callWallchainAPI(methodName, args, value, chainId, account, contract)
+  const { onSetSwapDelay } = useSwapActionHandlers()
+  if (swapDelay !== SwapDelay.INPUT_COMPLETE) {
+    return false
   }
-
-  return null
+  onSetSwapDelay(SwapDelay.LOADING_ROUTE)
+  if (swapCalls[0]) {
+    const {
+      contract,
+      parameters: { methodName, args, value },
+    } = swapCalls[0]
+    onSetSwapDelay(SwapDelay.VALID)
+    callWallchainAPI(methodName, args, value, chainId, account, contract)
+      .then((resp) => setWallchainResp(resp))
+      .catch(() => setWallchainResp(false))
+  }
+  onSetSwapDelay(SwapDelay.VALID)
+  console.log(wallchainResp)
+  return wallchainResp
 }

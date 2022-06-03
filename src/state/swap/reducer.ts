@@ -1,5 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
+import {
+  Field,
+  replaceSwapState,
+  selectCurrency,
+  setRecipient,
+  setSwapDelay,
+  SwapDelay,
+  switchCurrencies,
+  typeInput,
+} from './actions'
 
 export interface SwapState {
   readonly independentField: Field
@@ -12,6 +21,7 @@ export interface SwapState {
   }
   // the typed recipient address or ENS name, or null if swap should go to sender
   readonly recipient: string | null
+  readonly swapDelay: SwapDelay
 }
 
 const initialState: SwapState = {
@@ -24,13 +34,14 @@ const initialState: SwapState = {
     currencyId: '',
   },
   recipient: null,
+  swapDelay: SwapDelay.INVALID,
 }
 
 export default createReducer<SwapState>(initialState, (builder) =>
   builder
     .addCase(
       replaceSwapState,
-      (state, { payload: { typedValue, recipient, field, inputCurrencyId, outputCurrencyId } }) => {
+      (state, { payload: { typedValue, recipient, field, inputCurrencyId, outputCurrencyId, swapDelay } }) => {
         return {
           [Field.INPUT]: {
             currencyId: inputCurrencyId,
@@ -41,6 +52,7 @@ export default createReducer<SwapState>(initialState, (builder) =>
           independentField: field,
           typedValue,
           recipient,
+          swapDelay,
         }
       },
     )
@@ -78,5 +90,8 @@ export default createReducer<SwapState>(initialState, (builder) =>
     })
     .addCase(setRecipient, (state, { payload: { recipient } }) => {
       state.recipient = recipient
+    })
+    .addCase(setSwapDelay, (state, { payload: { swapDelay } }) => {
+      state.swapDelay = swapDelay
     }),
 )

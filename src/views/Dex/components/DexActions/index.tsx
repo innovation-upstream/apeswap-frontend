@@ -26,6 +26,7 @@ const DexActions: React.FC<DexActionProps> = ({
   priceImpactWithoutFee,
   swapCallbackError,
   userHasSpecifiedInputOutput,
+  disabled,
   onWrap,
   handleSwap,
   onPresentConfirmModal,
@@ -97,7 +98,7 @@ const DexActions: React.FC<DexActionProps> = ({
           }
         }}
         id="swap-button"
-        disabled={!!swapInputError || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
+        disabled={!!swapInputError || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || disabled}
       >
         {swapInputError ||
           (priceImpactSeverity > 3 && !isExpertMode

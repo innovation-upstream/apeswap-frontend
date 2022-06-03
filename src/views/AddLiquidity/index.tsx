@@ -141,6 +141,7 @@ export default function AddLiquidity({
   )
 
   // check whether the user has approved the router on the tokens
+  // COMEBACK TO THIS
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
     parseAddress(ROUTER_ADDRESS, chainId),
