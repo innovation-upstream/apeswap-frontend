@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useMemo } from 'react'
 import { Trade, TradeType } from '@apeswapfinance/sdk'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
@@ -5,7 +6,7 @@ import { AutoRow } from 'components/layout/Row'
 import { useTranslation } from 'contexts/Localization'
 import DexTradeInfo from 'views/Dex/components/DexTradeInfo'
 import { Button, Text, Flex } from '@ape.swap/uikit'
-import { Field } from 'state/swap/actions'
+import { Field, WallchainParams } from 'state/swap/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 export default function SwapModalFooter({
@@ -13,11 +14,13 @@ export default function SwapModalFooter({
   onConfirm,
   allowedSlippage,
   swapErrorMessage,
+  bestRoute,
   disabledConfirm,
 }: {
   trade: Trade
   allowedSlippage: number
   onConfirm: () => void
+  bestRoute: WallchainParams | null
   swapErrorMessage: string | undefined
   disabledConfirm: boolean
 }) {
@@ -55,7 +58,7 @@ export default function SwapModalFooter({
 
   return (
     <Flex sx={{ flexDirection: 'column', transform: 'translate(0px, -10px)' }}>
-      <DexTradeInfo trade={trade} allowedSlippage={allowedSlippage} />
+      <DexTradeInfo trade={trade} allowedSlippage={allowedSlippage} bestRoute={bestRoute}/>
       <Flex sx={{ margin: '10px 0px' }}>
         <Text size="12px" weight={500} sx={{ textAlign: 'center' }}>
           {estimatedText}

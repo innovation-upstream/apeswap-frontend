@@ -1,6 +1,7 @@
+/** @jsxImportSource theme-ui */
 import React, { useMemo } from 'react'
 import { Trade, TradeType } from '@apeswapfinance/sdk'
-import { Text, ErrorIcon, ArrowDownIcon, Button, Flex } from '@ape.swap/uikit'
+import { Text, ErrorIcon, ArrowDownIcon, Button, Flex, Svg } from '@ape.swap/uikit'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AutoColumn } from 'components/layout/Column'
@@ -71,9 +72,10 @@ export default function SwapModalHeader({
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: 'yellow',
+              paddingRight:'.6px'
             }}
           >
-            <ArrowDownIcon width="16px" color="white" />
+            <Svg icon='arrow' width="6px" color='primaryBright' />
           </Flex>
         </Flex>
       </Flex>

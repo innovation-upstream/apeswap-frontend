@@ -1,4 +1,5 @@
 import { ThemeUIStyleObject } from 'theme-ui'
+import { buttonHover } from 'views/Dex/styles'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   // Token selector container
@@ -35,11 +36,20 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
 
   maxButton: {
+    background: 'yellow',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: '6px',
-    height: '20px',
-    width: '40px',
+    height: '22px',
+    padding: '0px 8px',
+    cursor: 'pointer',
     fontSize: '12px',
     fontWeight: '600',
     ml: '10px',
+    transition: 'all .3s linear',
+    '&:active': {
+      transform: 'scale(0.9)',
+    },
+    ':hover': buttonHover,
   },
 }

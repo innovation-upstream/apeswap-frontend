@@ -3,11 +3,13 @@ import {
   Field,
   replaceSwapState,
   selectCurrency,
+  setBestRoute,
   setRecipient,
   setSwapDelay,
   SwapDelay,
   switchCurrencies,
   typeInput,
+  WallchainParams,
 } from './actions'
 
 export interface SwapState {
@@ -22,6 +24,7 @@ export interface SwapState {
   // the typed recipient address or ENS name, or null if swap should go to sender
   readonly recipient: string | null
   readonly swapDelay: SwapDelay
+  readonly bestRoute: WallchainParams | null
 }
 
 const initialState: SwapState = {
@@ -35,13 +38,17 @@ const initialState: SwapState = {
   },
   recipient: null,
   swapDelay: SwapDelay.INVALID,
+  bestRoute: null,
 }
 
 export default createReducer<SwapState>(initialState, (builder) =>
   builder
     .addCase(
       replaceSwapState,
-      (state, { payload: { typedValue, recipient, field, inputCurrencyId, outputCurrencyId, swapDelay } }) => {
+      (
+        state,
+        { payload: { typedValue, recipient, field, inputCurrencyId, outputCurrencyId, swapDelay, bestRoute } },
+      ) => {
         return {
           [Field.INPUT]: {
             currencyId: inputCurrencyId,
@@ -53,6 +60,7 @@ export default createReducer<SwapState>(initialState, (builder) =>
           typedValue,
           recipient,
           swapDelay,
+          bestRoute,
         }
       },
     )
@@ -93,5 +101,8 @@ export default createReducer<SwapState>(initialState, (builder) =>
     })
     .addCase(setSwapDelay, (state, { payload: { swapDelay } }) => {
       state.swapDelay = swapDelay
+    })
+    .addCase(setBestRoute, (state, { payload: { bestRoute } }) => {
+      state.bestRoute = bestRoute
     }),
 )

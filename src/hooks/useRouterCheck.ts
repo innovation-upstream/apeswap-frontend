@@ -45,30 +45,30 @@ export const useRouterCheck = async (
     return false
   }
   onSetSwapDelay(SwapDelay.LOADING_ROUTE)
-  if (swapCalls[0]) {
-    const {
-      contract,
-      parameters: { methodName, args, value },
-    } = swapCalls[0]
-    onSetSwapDelay(SwapDelay.VALID)
-    console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
-    const rep = await callWallchainAPI(methodName, args, value, chainId, account, contract)
-      .then((resp) => {
-        console.log(resp)
-        return resp
-      })
-      .catch(() => {
-        console.error('error')
-        setWallchainResp(false)
-      })
-    console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
-    console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
-    console.log(rep)
-    console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
-    console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
+  // if (swapCalls[0]) {
+  //   const {
+  //     contract,
+  //     parameters: { methodName, args, value },
+  //   } = swapCalls[0]
+  //   onSetSwapDelay(SwapDelay.VALID)
+  //   console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
+  //   // const rep = await callWallchainAPI(methodName, args, value, chainId, account, contract)
+  //     .then((resp) => {
+  //       console.log(resp)
+  //       return resp
+  //     })
+  //     .catch(() => {
+  //       console.error('error')
+  //       setWallchainResp(false)
+  //     })
+  //   console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
+  //   console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
+  //   console.log(rep)
+  //   console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
+  //   console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
 
-    setWallchainResp(rep)
-  }
+  //   setWallchainResp(rep)
+  // }
   onSetSwapDelay(SwapDelay.VALID)
   console.log(wallchainResp)
   return wallchainResp

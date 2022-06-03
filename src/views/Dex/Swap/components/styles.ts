@@ -1,5 +1,7 @@
 import { borderRadius } from 'polished'
 import { ThemeUIStyleObject } from 'theme-ui'
+import { buttonHover } from 'views/Dex/styles'
+
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   swapSwitchContainer: {
@@ -9,13 +11,18 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'center',
   },
   swapSwitchButton: {
-    backgroundColor: 'yellow',
+    background: 'yellow',
     height: '30px',
     width: '30px',
     borderRadius: '30px',
-    alignItems: 'center',
     justifyContent: 'center',
+    paddingRight: '1px',
     cursor: 'pointer',
+    transition: 'all .3s linear',
+    '&:active': {
+      transform: 'scale(0.9)',
+    },
+    ':hover': buttonHover,
   },
   SwapConfirmDisabledInputContainer: {
     backgroundColor: 'white3',

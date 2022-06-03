@@ -166,6 +166,7 @@ const Swap: React.FC = () => {
       attemptingTxn={attemptingTxn}
       txHash={txHash}
       recipient={recipient}
+      bestRoute={null}
       allowedSlippage={allowedSlippage}
       onConfirm={handleSwap}
       swapErrorMessage={swapErrorMessage}
@@ -208,7 +209,7 @@ const Swap: React.FC = () => {
           onCurrencySelect={onCurrencySelection}
           onUserInput={onUserInput}
         />
-        <DexTradeInfo trade={v2Trade} allowedSlippage={allowedSlippage} />
+        <DexTradeInfo trade={v2Trade} allowedSlippage={allowedSlippage} bestRoute={null} />
         <DexActions
           trade={trade}
           swapInputError={swapInputError}

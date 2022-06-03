@@ -21,7 +21,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     padding: '2px 6px',
     justifyContent: 'center',
     alignItems: 'center',
-    mr: '5px',
+    mr: '7px',
   },
 
   bottomRouterContainer: {

@@ -1,8 +1,10 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback, useMemo } from 'react'
 import { currencyEquals, Trade } from '@apeswapfinance/sdk'
 import { ModalProps } from '@apeswapfinance/uikit'
 import { Flex } from '@ape.swap/uikit'
 import { dexStyles } from 'views/Dex/styles'
+import { WallchainParams } from 'state/swap/actions'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
@@ -33,6 +35,7 @@ interface ConfirmSwapModalProps {
   txHash?: string
   recipient: string | null
   allowedSlippage: number
+  bestRoute: WallchainParams | null
   onAcceptChanges: () => void
   onConfirm: () => void
   swapErrorMessage?: string
@@ -47,6 +50,7 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
   onConfirm,
   onDismiss,
   customOnDismiss,
+  bestRoute,
   recipient,
   swapErrorMessage,
   attemptingTxn,
@@ -77,11 +81,12 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
         onConfirm={onConfirm}
         trade={trade}
         disabledConfirm={showAcceptChanges}
+        bestRoute={bestRoute}
         swapErrorMessage={swapErrorMessage}
         allowedSlippage={allowedSlippage}
       />
     ) : null
-  }, [allowedSlippage, onConfirm, showAcceptChanges, swapErrorMessage, trade])
+  }, [allowedSlippage, onConfirm, showAcceptChanges, swapErrorMessage, bestRoute, trade])
 
   // text to show while loading
   const pendingText = `${t('Swapping')} ${trade?.inputAmount?.toSignificant(6) ?? ''} ${

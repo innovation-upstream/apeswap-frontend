@@ -187,7 +187,7 @@ export function useSwapCallback(
           gasEstimate,
         } = successfulEstimation
 
-        callWallchainAPI(methodName, args, value, chainId, account, contract)
+        // callWallchainAPI(methodName, args, value, chainId, account, contract)
 
         return contract[methodName](...args, {
           gasLimit: calculateGasMargin(gasEstimate),

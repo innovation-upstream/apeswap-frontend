@@ -47,11 +47,12 @@ const Swap: React.FC = () => {
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
 
-  const { INPUT, OUTPUT, independentField, typedValue, recipient, swapDelay } = useSwapState()
+  const { INPUT, OUTPUT, independentField, typedValue, recipient, swapDelay, bestRoute } = useSwapState()
   console.log('This is swap delay', swapDelay)
+  console.log("This is the best route", bestRoute)
   // the callback to execute the swap
 
-  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
+  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient, onSetSwapDelay } = useSwapActionHandlers()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
 
   console.log(v2Trade)
@@ -168,6 +169,7 @@ const Swap: React.FC = () => {
       onAcceptChanges={handleAcceptChanges}
       attemptingTxn={attemptingTxn}
       txHash={txHash}
+      bestRoute={bestRoute}
       recipient={recipient}
       allowedSlippage={allowedSlippage}
       onConfirm={handleSwap}
@@ -207,7 +209,7 @@ const Swap: React.FC = () => {
         {fetchingBestRoute ? (
           <LoadingBestRoute />
         ) : (
-          <DexTradeInfo trade={v2Trade} allowedSlippage={allowedSlippage} swapDelay={swapDelay} />
+          <DexTradeInfo trade={v2Trade} allowedSlippage={allowedSlippage} bestRoute={bestRoute} swapDelay={swapDelay} />
         )}
         <DexActions
           trade={trade}

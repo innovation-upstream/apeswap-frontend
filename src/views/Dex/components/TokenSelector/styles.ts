@@ -11,6 +11,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
+    transition: 'all .3s linear',
+    '&:active': {
+      transform: 'scale(0.9)',
+    },
+    ':hover': { background: 'navMenuLogo' },
   },
 
   // Token selected text

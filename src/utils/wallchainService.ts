@@ -1,5 +1,6 @@
 import { WALLCHAIN_PARAMS } from 'config/constants/chains'
 import { Contract } from 'ethers'
+import { SwapDelay, WallchainParams } from 'state/swap/actions'
 
 type SearchSummary = {
   expectedProfit?: number
@@ -71,9 +72,11 @@ export default function callWallchainAPI(
   chainId: number,
   account: string,
   contract: Contract,
+  onBestRoute: (bestRoute: WallchainParams | null) => void,
+  onSetSwapDelay: (swapDelay: SwapDelay) => void,
 ): Promise<any> {
   const encodedData = contract.interface.encodeFunctionData(methodName, args)
-
+  onSetSwapDelay(SwapDelay.LOADING_ROUTE)
   return fetch(`${WALLCHAIN_PARAMS[chainId].apiUrl}?key=${WALLCHAIN_PARAMS[chainId].apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -91,20 +94,28 @@ export default function callWallchainAPI(
         return response.json()
       }
       console.error('Wallchain Error', response.status, response.statusText)
+      onBestRoute(null)
       return null
     })
     .then((responseJson) => {
       if (responseJson) {
-        const dataResonse: DataResponse = responseJson
+        const dataResonse: WallchainParams = responseJson
         console.log(dataResonse)
         console.log(wallchainResponseIsValid(dataResonse, value, account, contract.address))
         if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
-          return dataResonse
+          onBestRoute(dataResonse)
+          onSetSwapDelay(SwapDelay.VALID)
+        } else {
+          onBestRoute(null)
+          onSetSwapDelay(SwapDelay.VALID)
         }
       }
+      onSetSwapDelay(SwapDelay.VALID)
       return null
     })
     .catch((error) => {
+      onBestRoute(null)
+      onSetSwapDelay(SwapDelay.VALID)
       console.error('Wallchain Error', error)
     })
 }

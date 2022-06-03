@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/uikit@^1.3.4":
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.4.tgz#dfe84edbe0fb6bd2ec834a1b43cc8a739b2480b6"
-  integrity sha512-ESWnrg/UdvNzBCWOZu/fcVgZLC/W047+ih6AGLidEuWb5b6crR5wDT+oZd18QdfTvtofLSrbQ6C9u/VznMZ//g==
+"@ape.swap/uikit@^1.3.6-alpha.0":
+  version "1.3.6-alpha.0"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.6-alpha.0.tgz#559e2dfdb24171273bb6fcf15b86b4f964e0dccd"
+  integrity sha512-7wP63AF3s+v05iGQGsbnHEa5Y1CThAfAuE8QnSZOVd6Yyg9BnlRWrnmCYYmyVk3WXLsfwbQ3RIJUzNwuXwtfJA==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"

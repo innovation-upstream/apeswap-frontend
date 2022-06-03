@@ -2,9 +2,11 @@
 import { Flex, HelpIcon, Svg, Text } from '@ape.swap/uikit'
 import { Trade } from '@apeswapfinance/sdk'
 import { useTranslation } from 'contexts/Localization'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Divider } from 'theme-ui'
-import { Field, SwapDelay } from 'state/swap/actions'
+import { Field, SwapDelay, WallchainParams } from 'state/swap/actions'
+import { findBestRoute } from 'utils/findBestRoute'
+import { useSwapCallArguments } from 'hooks/useSwapCallback'
 import { useRouterCheck } from 'hooks/useRouterCheck'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import TradePrice from 'views/Orders/components/TradePrice'
@@ -13,25 +15,19 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { computeTradePriceBreakdown, computeSlippageAdjustedAmounts } from 'utils/prices'
 import { styles } from './styles'
 
-const DexTradeInfo: React.FC<{ trade: Trade; allowedSlippage: number; swapDelay?: SwapDelay; open?: boolean }> = ({
-  trade,
-  allowedSlippage,
-  swapDelay,
-  open = false,
-}) => {
+const DexTradeInfo: React.FC<{
+  trade: Trade
+  allowedSlippage: number
+  bestRoute: WallchainParams | null
+  swapDelay?: SwapDelay
+  onSetSwapDelay?: (swapDelay: SwapDelay) => void
+  open?: boolean
+}> = ({ trade, allowedSlippage, swapDelay, bestRoute, open = false }) => {
   const { chainId, account } = useActiveWeb3React()
   const [showMore, setShowMore] = useState(open)
+  const isSmartRouter = bestRoute && bestRoute?.pathFound
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState(false)
-  const router = useRouterCheck(trade, allowedSlippage, account, swapDelay)
-  console.log('ASDASDASDASd')
-  console.log('ASDASDASDASd')
-  console.log('ASDASDASDASd')
-  console.log(router)
-  console.log('ASDASDASDASd')
-  console.log('ASDASDASDASd')
-  console.log('ASDASDASDASd')
-  // console.log(router)
   const route = trade?.route?.path?.map((val, i) => {
     return i < trade?.route?.path?.length - 1 ? `${val.getSymbol(chainId)} > ` : val.getSymbol(chainId)
   })
@@ -51,8 +47,15 @@ const DexTradeInfo: React.FC<{ trade: Trade; allowedSlippage: number; swapDelay?
       >
         <TradePrice price={trade?.executionPrice} showInverted={showInverted} setShowInverted={setShowInverted} />
         <Flex>
-          <Flex sx={{ ...styles.normalRouterContainer, backgroundColor: 'white4' }}>
-            <Text size="8px">ApeSwap Router</Text>
+          <Flex
+            sx={{
+              ...styles.normalRouterContainer,
+              background: isSmartRouter ? 'smartGradient' : 'white4',
+            }}
+          >
+            <Text size="8px" color={isSmartRouter ? 'primaryBright' : 'text'} weight={700}>
+              {isSmartRouter ? t('Smart Router') : t('ApeSwap Router')}
+            </Text>
           </Flex>
           <Svg icon="caret" direction={showMore ? 'up' : 'down'} />
         </Flex>
@@ -92,16 +95,39 @@ const DexTradeInfo: React.FC<{ trade: Trade; allowedSlippage: number; swapDelay?
                   : '-'}
               </Text>
             </Flex>
-            <Flex sx={{ ...styles.bottomRouterContainer, backgroundColor: 'white4' }}>
+            {/**
+             * TODO: Break this up into a component
+             */}
+            <Flex
+              sx={{
+                ...styles.bottomRouterContainer,
+                background: isSmartRouter ? 'smartGradient' : 'white4',
+              }}
+            >
               <Flex sx={{ justifyContent: 'space-between' }}>
-                <Text size="12px" sx={{ fontWeight: '700' }}>
-                  {t('ApeSwap Router')}
+                <Text color={isSmartRouter ? 'primaryBright' : 'text'} size="12px" sx={{ fontWeight: '700' }}>
+                  {isSmartRouter ? t('Smart Router') : t('ApeSwap Router')}
                 </Text>
-                <HelpIcon width="12px" />
+                <HelpIcon width="12px" color={isSmartRouter ? 'primaryBright' : 'text'} />
               </Flex>
+              {isSmartRouter && (
+                <Flex sx={{ justifyContent: 'space-between', height: '18px' }}>
+                  <Text color="primaryBright" size="10px">
+                    {t('Estimated Swap Kickback')}
+                  </Text>
+                  <Text color="primaryBright" size="10px">
+                    {bestRoute?.summary?.searchSummary?.expectedProfit?.toFixed(6)}{' '}
+                    {trade.inputAmount.currency.getSymbol(chainId)}
+                  </Text>
+                </Flex>
+              )}
               <Flex sx={{ justifyContent: 'space-between' }}>
-                <Text size="10px">{t('Route')}</Text>
-                <Text size="10px">{route}</Text>
+                <Text color={isSmartRouter ? 'primaryBright' : 'text'} size="10px">
+                  {t('Route')}
+                </Text>
+                <Text color={isSmartRouter ? 'primaryBright' : 'text'} size="10px">
+                  {route}
+                </Text>
               </Flex>
             </Flex>
           </motion.div>

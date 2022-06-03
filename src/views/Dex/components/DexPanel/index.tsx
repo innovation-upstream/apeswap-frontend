@@ -63,9 +63,9 @@ const DexPanel: React.FC<DexPanelProps> = ({
               {t('Balance: %balance%', { balance: currencyBalance || 'loading' })}
             </Text>
             {fieldType === Field.INPUT && parseFloat(currencyBalance) > 0 && (
-              <Button sx={{ ...styles.maxButton }} size="sm" onClick={handleMaxInput}>
-                {t('max')}
-              </Button>
+              <Flex sx={{ ...styles.maxButton }} size="sm" onClick={handleMaxInput}>
+                <Text color="primaryBright" sx={{ lineHeight: '0px' }}>{t('MAX')}</Text>
+              </Flex>
             )}
           </Flex>
         )}

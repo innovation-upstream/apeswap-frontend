@@ -8,6 +8,8 @@ import { useRouterCheck } from 'hooks/useRouterCheck'
 import tokens from 'config/constants/tokens'
 import useENS from 'hooks/ENS/useENS'
 import { useCurrency } from 'hooks/Tokens'
+import { findBestRoute } from 'utils/findBestRoute'
+import { useSwapCallArguments } from 'hooks/useSwapCallback'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { isAddress } from 'utils'
@@ -23,6 +25,8 @@ import {
   typeInput,
   setSwapDelay,
   SwapDelay,
+  WallchainParams,
+  setBestRoute,
 } from './actions'
 
 import { SwapState } from './reducer'
@@ -39,9 +43,18 @@ export function useSwapActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
   onSetSwapDelay: (swapDelay: SwapDelay) => void
+  onBestRoute: (bestRoute: WallchainParams | null) => void
 } {
   const dispatch = useAppDispatch()
   const timer = useRef(null)
+
+  const onSetSwapDelay = useCallback(
+    (swapDelay: SwapDelay) => {
+      dispatch(setSwapDelay({ swapDelay }))
+    },
+    [dispatch],
+  )
+
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
       dispatch(
@@ -50,20 +63,17 @@ export function useSwapActionHandlers(): {
           currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
         }),
       )
+      // Set input to complete to recalculate the best path
+      onSetSwapDelay(SwapDelay.INPUT_COMPLETE)
     },
-    [dispatch],
+    [dispatch, onSetSwapDelay],
   )
 
   const onSwitchTokens = useCallback(() => {
     dispatch(switchCurrencies())
-  }, [dispatch])
-
-  const onSetSwapDelay = useCallback(
-    (swapDelay: SwapDelay) => {
-      dispatch(setSwapDelay({ swapDelay }))
-    },
-    [dispatch],
-  )
+    // Set input to complete to recalculate the best path
+    onSetSwapDelay(SwapDelay.INPUT_COMPLETE)
+  }, [dispatch, onSetSwapDelay])
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
@@ -92,12 +102,20 @@ export function useSwapActionHandlers(): {
     [dispatch],
   )
 
+  const onBestRoute = useCallback(
+    (bestRoute: WallchainParams | null) => {
+      dispatch(setBestRoute({ bestRoute }))
+    },
+    [dispatch],
+  )
+
   return {
     onSwitchTokens,
     onCurrencySelection,
     onUserInput,
     onChangeRecipient,
     onSetSwapDelay,
+    onBestRoute,
   }
 }
 
@@ -150,6 +168,7 @@ export function useDerivedSwapInfo(): {
   v1Trade: Trade | undefined
 } {
   const { account, chainId } = useActiveWeb3React()
+  const { onSetSwapDelay, onBestRoute } = useSwapActionHandlers()
   const { t } = useTranslation()
 
   const {
@@ -159,6 +178,7 @@ export function useDerivedSwapInfo(): {
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient,
     swapDelay,
+    bestRoute,
   } = useSwapState()
 
   const inputCurrency = useCurrency(inputCurrencyId)
@@ -227,9 +247,9 @@ export function useDerivedSwapInfo(): {
   const [allowedSlippage] = useUserSlippageTolerance()
 
   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
-
-  const returnVal = useRouterCheck(v2Trade, allowedSlippage, recipient, swapDelay)
-  console.log(returnVal)
+  console.log(v2Trade)
+  const swapCalls = useSwapCallArguments(v2Trade, allowedSlippage, recipient)
+  findBestRoute(swapDelay, swapCalls, account, chainId, onSetSwapDelay, onBestRoute)
 
   // compare input balance to max input based on version
   const [balanceIn, amountIn] = [
@@ -241,7 +261,6 @@ export function useDerivedSwapInfo(): {
     inputError = `${t('Insufficient')} ${amountIn.currency.getSymbol(chainId)} ${t('balance')}`
   }
 
-  console.log(returnVal)
   return {
     currencies,
     currencyBalances,
@@ -299,6 +318,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
 
   const recipient = validatedRecipient(parsedQs.recipient)
   const swapDelay = SwapDelay.INVALID
+  const bestRoute = null
 
   return {
     [Field.INPUT]: {
@@ -311,6 +331,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
     independentField: parseIndependentFieldURLParameter(parsedQs.exactField),
     recipient,
     swapDelay,
+    bestRoute,
   }
 }
 
@@ -322,6 +343,7 @@ export function useDefaultsFromURLSearch():
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
   const swapDelay = SwapDelay.INVALID
+  const bestRoute = null
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
   >()
@@ -338,6 +360,7 @@ export function useDefaultsFromURLSearch():
         outputCurrencyId: parsed[Field.OUTPUT].currencyId,
         recipient: parsed.recipient,
         swapDelay,
+        bestRoute,
       }),
     )
 
