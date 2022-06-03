@@ -13,14 +13,14 @@ import { Flex, Box } from 'theme-ui'
 import { SSRContext } from 'contexts/SSRContext'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
-import { useNetworkChainId, useLiveIfoStatus } from 'state/hooks'
+import { useNetworkChainId } from 'state/hooks'
 import { NetworkButton } from 'components/NetworkButton'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { DesktopMenu, MobileMenu } from './components'
 import ConnectButton from './components/ConnectButton'
 import ethConfig from './chains/ethConfig'
-import styles from './styles'
+import { styles, dynamicStyles } from './styles'
 
 const Menu: React.FC<{ chain?: number }> = () => {
   const router = useRouter()
@@ -46,7 +46,6 @@ const Menu: React.FC<{ chain?: number }> = () => {
     }
     return bscConfig(translate)
   }
-  const { liveIfos } = useLiveIfoStatus()
 
   useEffect(() => {
     refPrevOffset.current = window.pageYOffset
@@ -101,24 +100,15 @@ const Menu: React.FC<{ chain?: number }> = () => {
     }
   }, [])
 
+  const buttonStyle = dynamicStyles.userBlockBtn({ showMenu })
+
   return (
     <>
-      <Box
-        sx={{
-          ...styles.header,
-          transform: `translateY(${showMenu ? 0 : '-100%'})`,
-        }}
-      >
-        <Flex
-          sx={{ alignItems: 'center', height: '100%', justifyContent: 'space-between', px: ['25px', '25px', '20px'] }}
-        >
+      <Box sx={buttonStyle}>
+        <Flex sx={styles.headerSetting}>
           <Flex sx={{ columnGap: '40px', height: '100%' }}>
             <Link href="/">
-              <IconButton
-                variant="transparent"
-                icon="logo"
-                sx={{ '&:hover:not([disabled])': { backgroundColor: 'transparent', filter: 'brightness(100%)' } }}
-              />
+              <IconButton variant="transparent" icon="logo" sx={styles.apeLogoHeader} />
             </Link>
             {!isMobile && <DesktopMenu items={currentMenu(t) as any} />}
           </Flex>
@@ -136,14 +126,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
         </Flex>
         {isMobile && <MobileMenu items={currentMenu(t) as any} />}
       </Box>
-      {!collapse && (
-        <Box
-          onClick={() => setCollapse(true)}
-          sx={{
-            ...styles.last,
-          }}
-        />
-      )}
+      {!collapse && <Box onClick={() => setCollapse(true)} sx={styles.last} />}
     </>
   )
 }

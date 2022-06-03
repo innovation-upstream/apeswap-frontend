@@ -46,13 +46,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
         return (
           <Flex sx={style}>
             {subItems?.length ? (
-              <Text
-                sx={{
-                  ...menuItems,
-                }}
-              >
-                {label}
-              </Text>
+              <Text sx={menuItems}>{label}</Text>
             ) : (
               <NextLink href={href} csx={{ fontWeight: 'bold', pl: 0 }}>
                 {label}
@@ -60,12 +54,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
             )}
             {subItems?.length && (
               <Flex id={`menu-modal-${label}`} sx={desktopSubItem as any}>
-                <ul
-                  sx={{
-                    listStyleType: 'none',
-                    marginLeft: 0,
-                  }}
-                >
+                <ul sx={{ listStyleType: 'none', marginLeft: 0 }}>
                   {subItems?.map((subItem) => (
                     <li sx={{ position: 'relative' }}>
                       <NextLink
@@ -89,11 +78,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                 </ul>
                 <Box>
                   <ImageElement />
-                  <Flex
-                    sx={{
-                      ...socialMedia,
-                    }}
-                  >
+                  <Flex sx={socialMedia}>
                     {label === 'More' && (
                       <>
                         <a href="https://twitter.com/ape_swap" target="_blank" rel="noopener noreferrer">

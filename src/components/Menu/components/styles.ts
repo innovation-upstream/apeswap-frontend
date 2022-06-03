@@ -118,6 +118,13 @@ export const mobilemenutop = {
   overflow: 'hidden',
   zIndex: 10,
 }
+export const connectButtonIcon = {
+  '&& button': { border: 'none', borderRadius: '50%' },
+  position: 'absolute',
+  right: -4,
+  top: '50%',
+  transform: 'translateY(-50%)',
+} as any
 
 interface Props {
   account?: string
@@ -133,12 +140,5 @@ export const dynamicStyles: Record<string, (props: any) => ThemeUIStyleObject> =
     '&&': {
       padding: `0px ${account ? '45px' : '15px'} 0px 15px`,
     },
-  }),
-  connectButtonIcon: () => ({
-    '&& button': { border: 'none', borderRadius: '50%' },
-    position: 'absolute',
-    right: -4,
-    top: '50%',
-    transform: 'translateY(-50%)',
   }),
 }

@@ -1,4 +1,3 @@
-/** @jsxImportSource theme-ui */
 import React, { useContext } from 'react'
 import { MenuContext } from '@innovationupstream/apeswap-uikit'
 import { Box } from 'theme-ui'

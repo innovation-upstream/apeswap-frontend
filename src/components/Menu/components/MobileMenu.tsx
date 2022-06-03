@@ -38,9 +38,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
           animate={{ height: 'fit-content' }}
           transition={{ height: { duration: 0.3 } }}
           exit={{ height: 0 }}
-          sx={{
-            menuMobile,
-          }}
+          sx={{ menuMobile }}
         >
           {items?.map((item) => {
             const { label, href, items: subItems } = item

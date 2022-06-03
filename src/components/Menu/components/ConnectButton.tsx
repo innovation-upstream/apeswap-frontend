@@ -6,7 +6,7 @@ import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
 import { Box, Flex } from 'theme-ui'
 import useTheme from 'hooks/useTheme'
-import { dynamicStyles } from './styles'
+import { dynamicStyles, connectButtonIcon } from './styles'
 
 const ConnectButton: React.FC<any> = () => {
   const { account } = useActiveWeb3React()
@@ -18,7 +18,6 @@ const ConnectButton: React.FC<any> = () => {
   const { isDark } = useTheme()
 
   const buttonStyle = dynamicStyles.userBlockBtn({ account })
-  const iconstyleconnect = dynamicStyles.connectButtonIcon({})
 
   const loadButton = () => {
     if (account) {
@@ -72,7 +71,7 @@ const ConnectButton: React.FC<any> = () => {
     <Flex sx={{ position: 'relative', marginRight: 5 }}>
       {loadButton()}
       {account && (
-        <Box sx={iconstyleconnect}>
+        <Box sx={connectButtonIcon}>
           <IconButton
             onClick={() => {
               onPresentAccountModal()
