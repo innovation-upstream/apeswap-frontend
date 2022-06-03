@@ -1,7 +1,8 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback, useState } from 'react'
 import { useCurrency } from 'hooks/Tokens'
 import { Field, SwapDelay } from 'state/swap/actions'
-import { Button, Flex, useModal } from '@ape.swap/uikit'
+import { Flex, useModal } from '@ape.swap/uikit'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import confirmPriceImpactWithoutFee from 'views/Swap/components/confirmPriceImpactWithoutFee'

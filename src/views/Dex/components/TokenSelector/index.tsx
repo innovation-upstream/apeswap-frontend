@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import { Flex, Svg, Text, useModal } from '@ape.swap/uikit'
 import { Currency } from '@apeswapfinance/sdk'
 import { CurrencyLogo } from 'components/Logo'

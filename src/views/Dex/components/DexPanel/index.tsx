@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import { Button, Flex, Skeleton, Svg, Text, useModal } from '@ape.swap/uikit'
 import { Currency } from '@apeswapfinance/sdk'
 import NumericalInput from 'components/LiquidityWidget/CurrencyInput/NumericalInput'

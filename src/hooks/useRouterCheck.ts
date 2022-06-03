@@ -31,7 +31,7 @@ export interface WallchainParams {
   transactionArgs: TransactionArgs
 }
 
-export const useRouterCheck = (
+export const useRouterCheck = async (
   trade: Trade,
   allowedSlippage: number,
   recipientAddressOrName: string | null,
@@ -51,9 +51,23 @@ export const useRouterCheck = (
       parameters: { methodName, args, value },
     } = swapCalls[0]
     onSetSwapDelay(SwapDelay.VALID)
-    callWallchainAPI(methodName, args, value, chainId, account, contract)
-      .then((resp) => setWallchainResp(resp))
-      .catch(() => setWallchainResp(false))
+    console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
+    const rep = await callWallchainAPI(methodName, args, value, chainId, account, contract)
+      .then((resp) => {
+        console.log(resp)
+        return resp
+      })
+      .catch(() => {
+        console.error('error')
+        setWallchainResp(false)
+      })
+    console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
+    console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
+    console.log(rep)
+    console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
+    console.log('Have made it here sadlasdklaskdlkasjdkjklasjdkljsadljasiodjlkasjdlkajsdlkja')
+
+    setWallchainResp(rep)
   }
   onSetSwapDelay(SwapDelay.VALID)
   console.log(wallchainResp)
