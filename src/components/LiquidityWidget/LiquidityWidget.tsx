@@ -361,7 +361,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
           </Text>
           <Button
             size="sm"
-            csx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
+            sx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
             variant="primary"
             onClick={() => {
               onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
@@ -430,7 +430,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
           </Text>
           <Button
             size="sm"
-            csx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
+            sx={{ border: 'hidden', borderRadius: '6px', padding: '3px 14px !important' }}
             variant="primary"
             onClick={() => {
               onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
@@ -487,7 +487,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
                   <Flex sx={{ justifyContent: 'space-between', columnGap: '15px' }}>
                     {approvalA !== ApprovalState.APPROVED && (
                       <Button
-                        csx={styles.button}
+                        sx={styles.button}
                         onClick={approveACallback}
                         disabled={approvalA === ApprovalState.PENDING}
                       >
@@ -502,7 +502,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
                     {approvalB !== ApprovalState.APPROVED && (
                       <Box sx={{ padding: '0 5px' }}>
                         <Button
-                          csx={styles.button}
+                          sx={styles.button}
                           onClick={approveBCallback}
                           disabled={approvalB === ApprovalState.PENDING}
                         >
