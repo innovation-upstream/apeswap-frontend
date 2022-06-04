@@ -58,7 +58,7 @@ export default function SwapModalFooter({
 
   return (
     <Flex sx={{ flexDirection: 'column', transform: 'translate(0px, -10px)' }}>
-      <DexTradeInfo trade={trade} allowedSlippage={allowedSlippage} bestRoute={bestRoute}/>
+      <DexTradeInfo trade={trade} allowedSlippage={allowedSlippage} bestRoute={bestRoute} />
       <Flex sx={{ margin: '10px 0px' }}>
         <Text size="12px" weight={500} sx={{ textAlign: 'center' }}>
           {estimatedText}

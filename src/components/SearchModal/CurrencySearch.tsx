@@ -1,6 +1,7 @@
+/** @jsxImportSource theme-ui */
 import React, { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
 import { Currency, ETHER, Token } from '@apeswapfinance/sdk'
-import { Text, Input, Flex } from '@apeswapfinance/uikit'
+import { Text, Input, Flex } from '@ape.swap/uikit'
 import { FixedSizeList } from 'react-window'
 import styled from '@emotion/styled'
 import useDebounce from 'hooks/useDebounce'
@@ -114,26 +115,24 @@ function CurrencySearch({
   const { t } = useTranslation()
   return (
     <div>
-      <AutoColumn style={{ margin: '20px 0 20px 0' }}>
-        <Row padding="0 15px 0 15px">
-          <Flex alignItems="center" justifyContent="center" mb="10px" style={{ width: '100%' }}>
-            <StyledInput
-              id="token-search-input"
-              placeholder={t('Name or Address')}
-              autoComplete="off"
-              value={searchQuery}
-              // ref={inputRef as RefObject<HTMLInputElement>}
-              onChange={handleInput}
-              onKeyDown={handleEnter}
-              icon="search"
-              autoFocus
-            />
-          </Flex>
-        </Row>
+      <Flex sx={{margin:'20px 0px'}}>
+        <Input
+          id="token-search-input"
+          width="100%"
+          sx={{width:'100%'}}
+          placeholder={t('Name or Address')}
+          autoComplete="off"
+          value={searchQuery}
+          // ref={inputRef as RefObject<HTMLInputElement>}
+          onChange={handleInput}
+          onKeyDown={handleEnter}
+          icon="search"
+          autoFocus
+        />
         {showCommonBases && (
           <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
         )}
-      </AutoColumn>
+      </Flex>
       {searchToken && !searchTokenIsAdded ? (
         <Column style={{ padding: '20px 0', height: '100%' }}>
           <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />

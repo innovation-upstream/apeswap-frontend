@@ -49,10 +49,11 @@ const Swap: React.FC = () => {
 
   const { INPUT, OUTPUT, independentField, typedValue, recipient, swapDelay, bestRoute } = useSwapState()
   console.log('This is swap delay', swapDelay)
-  console.log("This is the best route", bestRoute)
+  console.log('This is the best route', bestRoute)
   // the callback to execute the swap
 
-  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient, onSetSwapDelay } = useSwapActionHandlers()
+  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient, onSetSwapDelay } =
+    useSwapActionHandlers()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
 
   console.log(v2Trade)

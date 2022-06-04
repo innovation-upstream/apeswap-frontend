@@ -72,10 +72,10 @@ export default function SwapModalHeader({
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: 'yellow',
-              paddingRight:'.6px'
+              paddingRight: '.6px',
             }}
           >
-            <Svg icon='arrow' width="6px" color='primaryBright' />
+            <Svg icon="arrow" width="6px" color="primaryBright" />
           </Flex>
         </Flex>
       </Flex>

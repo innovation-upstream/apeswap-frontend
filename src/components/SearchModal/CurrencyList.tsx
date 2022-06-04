@@ -194,7 +194,7 @@ export default function CurrencyList({
     <FixedSizeList
       height={height}
       ref={fixedListRef as any}
-      width="100%"
+      width="360px"
       itemData={itemData}
       itemCount={itemData.length}
       itemSize={56}

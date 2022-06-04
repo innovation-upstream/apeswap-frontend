@@ -50,6 +50,6 @@ export const replaceSwapState = createAction<{
   outputCurrencyId?: string
   recipient: string | null
   swapDelay: SwapDelay
-  bestRoute: WallchainParams | null 
+  bestRoute: WallchainParams | null
 }>('swap/replaceSwapState')
 export const setRecipient = createAction<{ recipient: string | null }>('swap/setRecipient')

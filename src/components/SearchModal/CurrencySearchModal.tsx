@@ -1,6 +1,9 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback, useState } from 'react'
 import { Currency, Token } from '@apeswapfinance/sdk'
-import { ModalProps, Button, Modal, ModalFooter } from '@apeswapfinance/uikit'
+import { Button, Text } from '@ape.swap/uikit'
+import { ModalProps, ModalFooter, Modal } from '@apeswapfinance/uikit'
+
 import useIsMobile from 'hooks/useIsMobile'
 import styled from 'styled-components'
 import { TokenList } from '@uniswap/token-lists'
@@ -10,16 +13,6 @@ import ImportToken from './ImportToken'
 import Manage from './Manage'
 import ImportList from './ImportList'
 import { CurrencyModalView } from './types'
-
-const StyledModalBody = styled(Modal)`
-  overflow-y: auto;
-  width: 100%;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`
 
 interface CurrencySearchModalProps extends ModalProps {
   selectedCurrency?: Currency | null
@@ -66,7 +59,7 @@ export default function CurrencySearchModal({
       : {}),
   }
   return (
-    <StyledModalBody onDismiss={onDismiss} {...modalProps}>
+    <Modal onDismiss={onDismiss} {...modalProps} maxWidth="400px">
       {modalView === CurrencyModalView.search ? (
         <CurrencySearch
           onCurrencySelect={handleCurrencySelect}
@@ -92,16 +85,16 @@ export default function CurrencySearchModal({
       )}
       {modalView === CurrencyModalView.search && (
         <ModalFooter onDismiss={onDismiss}>
-          <Button
-            variant="primary"
+          <Text
             onClick={() => setModalView(CurrencyModalView.manage)}
             className="list-token-manage-button"
             margin="10px 0 10px 0"
+            sx={{ cursor: 'pointer', textDecoration: 'underline' }}
           >
             {t('Manage Tokens')}
-          </Button>
+          </Text>
         </ModalFooter>
       )}
-    </StyledModalBody>
+    </Modal>
   )
 }

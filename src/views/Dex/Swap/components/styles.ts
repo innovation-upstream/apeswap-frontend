@@ -2,7 +2,6 @@ import { borderRadius } from 'polished'
 import { ThemeUIStyleObject } from 'theme-ui'
 import { buttonHover } from 'views/Dex/styles'
 
-
 export const styles: Record<string, ThemeUIStyleObject> = {
   swapSwitchContainer: {
     width: '100%',
