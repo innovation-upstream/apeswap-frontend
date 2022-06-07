@@ -159,7 +159,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
     >
       <Box>
         <Heading as="h3" sx={styles.title}>
-          {!isLp && `${t(rewardTokenName)} -`} {t(lpLabel)} {isLp && 'LP'}
+          {t(lpLabel)} {isLp && 'LP'}
         </Heading>
         <CurrencyInputPanel
           dollarValue={amountDollars?.toString()}

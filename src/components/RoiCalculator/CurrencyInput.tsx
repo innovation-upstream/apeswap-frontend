@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Button, Text } from '@ape.swap/uikit'
 import { Flex } from 'theme-ui'
 import NumericalInput from 'components/CurrencyInputPanel/NumericalInput'
