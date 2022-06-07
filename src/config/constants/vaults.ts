@@ -96,7 +96,7 @@ const vaults: VaultConfig[] = [
     type: 'MAX',
     version: 'V2',
     stratAddress: {
-      [CHAIN_ID.BSC]: '0x9FF9E711F479AF05f8964d4887B1A019B23ef097',
+      [CHAIN_ID.BSC]: '0xA25790303f72c940D5cb33EA4554Bbd4656a69Dd',
     },
     stakeToken: tokens.bananaBnb,
     token: tokens.banana,
@@ -126,7 +126,7 @@ const vaults: VaultConfig[] = [
     type: 'MAX',
     version: 'V2',
     stratAddress: {
-      [CHAIN_ID.BSC]: '0x179d3911A288E92b38082ed7be06d7aBFB3D5c47',
+      [CHAIN_ID.BSC]: '0x91C235A3D1B897915a95880bD6C8305849144583',
     },
     stakeToken: tokens.bananaBusd,
     token: tokens.banana,
@@ -151,12 +151,12 @@ const vaults: VaultConfig[] = [
 
   {
     id: 5,
-    pid: 2,
+    pid: 4,
     availableChains: [CHAIN_ID.BSC],
     type: 'MAX',
     version: 'V2',
     stratAddress: {
-      [CHAIN_ID.BSC]: '0xEd1b5787fA2f5630E3BB9B673E6a9B0D6c6De47B',
+      [CHAIN_ID.BSC]: '0x037AC1244C18Ea840D4cc459135698B384DAa750',
     },
     stakeToken: tokens.bnbBusd,
     token: tokens.wbnb,
@@ -181,12 +181,12 @@ const vaults: VaultConfig[] = [
 
   {
     id: 6,
-    pid: 3,
+    pid: 2,
     availableChains: [CHAIN_ID.BSC],
     type: 'MAX',
     version: 'V2',
     stratAddress: {
-      [CHAIN_ID.BSC]: '0x84B58D71D626158D4Ebb4a5acf09a3fd9e8F6cE4',
+      [CHAIN_ID.BSC]: '0xc6C58318c5b180d820eC72bFe426ad41c04aee96',
     },
     stakeToken: tokens.bnbMatic,
     token: tokens.wmatic,
@@ -211,12 +211,12 @@ const vaults: VaultConfig[] = [
 
   {
     id: 7,
-    pid: 4,
+    pid: 3,
     availableChains: [CHAIN_ID.BSC],
     type: 'MAX',
     version: 'V2',
     stratAddress: {
-      [CHAIN_ID.BSC]: '0xAa58f8BbD94A124Df867B7f5b40A719A605bbD7A',
+      [CHAIN_ID.BSC]: '0x99eBd87fF021e311d5DC5A53E26b8bA4d62eEe2a',
     },
     stakeToken: tokens.bnbFtm,
     token: tokens.ftm,
