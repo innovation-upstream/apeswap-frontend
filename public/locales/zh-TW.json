@@ -829,6 +829,8 @@
   "Treasury Bill": "國庫券",
   "BUY BELOW": "在下面購買",
   "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens. Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "國庫券允許用戶以折扣獲取代幣，用於交換其流動性提供者（LP）代幣。每個國庫券是獨特的 NFT ，代表於一定時間內歸屬的合約及其各自的獎勵代幣。",
+  "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens.": "國庫券允許用戶以折扣獲取代幣，用於交換其流動性提供者（LP）代幣。",
+  "Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "每個國庫券是獨特的 NFT ，代表於一定時間內歸屬的合約及其各自的獎勵代幣。",
   "For more info, visit the Treasury Bills page in our Documentation.": "若需更多資訊，請訪問文檔中國庫券頁面。",
   "Your Treasury Bills": "您的國庫券",
   "List View": "列表視圖",

@@ -126,6 +126,11 @@ const StakeContainer = styled.div`
 
 const StyledUnlockButton = styled(UnlockButton)`
   font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 180px;
+  display: inline-block;
 `
 
 const VaultTable: React.FC<HarvestProps> = ({ vault, removed }) => {
