@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { NetworkButton } from 'components/NetworkButton'
 import { ThemeContext } from 'contexts/ThemeContext'
 import { LinkWrapper } from 'style/LinkWrapper'
-import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 import { useTokenPrices } from 'state/hooks'
 import FooterLinks from './FooterLinks'
@@ -17,7 +16,7 @@ import LangSelector from './LangSelector'
 
 const Footer: React.FC = () => {
   const { toggleTheme, isDark } = useContext(ThemeContext)
-  const { setLanguage, currentLanguage, t } = useTranslation()
+  const { t } = useTranslation()
   const { tokenPrices } = useTokenPrices()
   const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
 
@@ -46,7 +45,7 @@ const Footer: React.FC = () => {
             <ThemeSwitcher isDark={isDark} toggleTheme={toggleTheme} />
             <NetworkButton />
 
-            <LangSelector currentLang={currentLanguage?.language} langs={languageList} setLang={setLanguage} />
+            <LangSelector />
           </Flex>
           <Flex sx={{ mt: '35px', justifyContent: 'space-between' }}>
             {socialLinks.map((link) => (
