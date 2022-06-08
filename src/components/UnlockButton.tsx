@@ -22,7 +22,7 @@ const UnlockButton = (props) => {
           {t('UNLOCK WALLET')}
         </Button>
       ) : (
-        <div style={{ width: '186px' }}>
+        <div style={{ display: 'inline-block' }}>
           <TooltipBubble body={t('UNLOCK WALLET')} placement="bottomRight">
             <Button onClick={onPresentConnectModal} {...props}>
               {t('UNLOCK WALLET')}
