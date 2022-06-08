@@ -110,12 +110,10 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
   const onTokenAmountChange = useCallback(
     (value: string) => {
       setInputValue(value)
-      const fiatValue = parseFloat(
-        !!currency && inputValue ? (selectedTokenPrice * parseFloat(inputValue))?.toFixed(2) : '0',
-      )
+      const fiatValue = parseFloat(!!currency && value ? (selectedTokenPrice * parseFloat(value))?.toFixed(2) : '0')
       setAmountDollars(Number.isFinite(fiatValue) ? fiatValue.toString() : '0')
     },
-    [currency, inputValue, selectedTokenPrice],
+    [currency, selectedTokenPrice],
   )
 
   const onDollarAmountChange = useCallback(
