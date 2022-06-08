@@ -165,7 +165,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
           dollarValue={amountDollars?.toString()}
           tokenValue={inputValue}
           onUserInput={onTokenAmountChange}
-          onMax={() => setInputValue(maxAmount)}
+          onMax={() => onTokenAmountChange(maxAmount)}
         />
         <Flex sx={styles.buttonsContainer}>
           <Flex sx={{ columnGap: ['8px', '17px'] }}>
