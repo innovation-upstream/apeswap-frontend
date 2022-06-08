@@ -63,7 +63,11 @@ function useUserInfo(contract: Contract, tokenDecimals: number, address: string,
       ]
 
       try {
-        const [userTokens, userInfos, refundingAmount, offeringAmount] = await multicall(chainId, ifoLinearAbi, calls)
+        const [userTokens, userInfos, refundingAmount, offeringAmount] = await multicall(
+          chainId as number,
+          ifoLinearAbi,
+          calls,
+        )
         setUserTokenStatus({
           stakeTokenHarvest: getBalanceNumber(new BigNumber(userTokens?.stakeTokenHarvest.toString()), tokenDecimals),
           offeringTokenTotalHarvest: getBalanceNumber(

@@ -5,13 +5,14 @@ import { userClaimBill } from 'utils/callHelpers'
 import { getContract } from 'utils'
 import { Bill } from 'config/abi/types'
 import track from 'utils/track'
+import { Web3Provider } from '@ethersproject/providers'
 
 // Claim a Bill
 const useClaimBill = (billMap: { billAddress: string; billIds: string[] }[]) => {
   const { account, library, chainId } = useActiveWeb3React()
   const handleClaimBill = useCallback(async () => {
     const billTrxs = billMap.map(async (bm) => {
-      const billContract = getContract(bm.billAddress, billAbi, library, account) as Bill
+      const billContract = getContract(bm.billAddress, billAbi, library as Web3Provider, account as string) as Bill
       track({
         event: 'bill',
         chain: chainId,

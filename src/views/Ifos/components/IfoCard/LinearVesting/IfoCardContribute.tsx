@@ -8,6 +8,7 @@ import BigNumber from 'bignumber.js'
 
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
+import { Contract } from 'ethers'
 import { ApproveButton, VestingClaimButton, Claim, TextWrapRow } from './styles'
 import ContributeInput from '../ContributeInput/ContributeInput'
 import useLinearIAOHarvest from '../../../hooks/useLinearIAOHarvest'
@@ -47,7 +48,7 @@ const IfoCardContribute: React.FC<Props> = ({
   const allowance = useIfoAllowance(currencyAddress, address, pendingTx)
   const onApprove = useIfoApprove(currencyAddress, address)
   const tokenBalance = useTokenBalance(currencyAddress)
-  const onClaim = useLinearIAOHarvest(contract, setPendingTx)
+  const onClaim = useLinearIAOHarvest(contract as Contract, setPendingTx)
   const { t } = useTranslation()
 
   if (currencyAddress !== ZERO_ADDRESS && allowance === null) {
@@ -57,7 +58,7 @@ const IfoCardContribute: React.FC<Props> = ({
   if (
     isActive &&
     currencyAddress !== ZERO_ADDRESS &&
-    (allowance.isLessThanOrEqualTo(new BigNumber('0')) || allowance.isLessThan(tokenBalance))
+    (allowance?.isLessThanOrEqualTo(new BigNumber('0')) || allowance?.isLessThan(tokenBalance))
   ) {
     return (
       <ApproveButton

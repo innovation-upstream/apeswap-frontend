@@ -22,10 +22,10 @@ const Transfer: React.FC<TransferProps> = ({ billNftAddress, billId, toAddress, 
     setPendingTrx(true)
     await onTransfer()
       .then((resp) => {
-        const trxHash = resp.transactionHash
+        const trxHash = resp?.transactionHash
         toastSuccess(t('Transfer Successful'), {
           text: t('View Transaction'),
-          url: getEtherscanLink(trxHash, 'transaction', chainId),
+          url: getEtherscanLink(trxHash as string, 'transaction', chainId as number),
         })
       })
       .catch((e) => {
@@ -33,8 +33,8 @@ const Transfer: React.FC<TransferProps> = ({ billNftAddress, billId, toAddress, 
         toastError(e?.data?.message || t('Something went wrong please try again'))
         setPendingTrx(false)
       })
-    dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
-    dispatch(fetchBillsUserDataAsync(chainId, account))
+    dispatch(fetchUserOwnedBillsDataAsync(chainId as number, account))
+    dispatch(fetchBillsUserDataAsync(chainId as number, account))
     setPendingTrx(false)
   }
   return (

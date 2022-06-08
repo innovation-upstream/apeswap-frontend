@@ -20,7 +20,7 @@ interface ApprovalActionProps {
 const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAddress, sousId, isLoading = false }) => {
   const stakingTokenContract = useERC20(stakingTokenContractAddress)
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const rewardRefReward = useRef(null)
+  const rewardRefReward = useRef<any | null>(null)
   const { t } = useTranslation()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
 
@@ -32,10 +32,10 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAdd
       if (!txHash) {
         setRequestedApproval(false)
       } else {
-        rewardRefReward.current?.rewardMe()
+        rewardRefReward?.current?.rewardMe()
       }
     } catch (e) {
-      rewardRefReward.current?.rewardMe()
+      rewardRefReward?.current?.rewardMe()
       console.warn(e)
     }
   }, [onApprove, setRequestedApproval])

@@ -8,7 +8,6 @@ import { Flex, Spinner } from '@apeswapfinance/uikit'
 import Banner from 'components/Banner'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
 import { SSRContext } from 'contexts/SSRContext'
-import { LinkWrapper } from 'style/LinkWrapper'
 import { useTranslation } from 'contexts/Localization'
 import IconButton from './components/IconButton'
 import IazoCard from './components/IazoCard/IazoCard'
@@ -34,7 +33,7 @@ const Iazos: React.FC = () => {
   const isMobile = isBrowser ? isMd || isSm || isXs : !isDesktop
   const registeredIazos = iazos?.filter((iazo) => iazo.isRegistered)
   const currentTime = useCurrentTime() / 1000
-  const [sort, setSort] = useState(null)
+  const [sort, setSort] = useState<string>('')
   const [searchQuery, setSearchQuery] = useState(null)
   const { t } = useTranslation()
   const currentIazos = registeredIazos?.filter(
@@ -55,12 +54,12 @@ const Iazos: React.FC = () => {
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value)
+    setSearchQuery(event?.target?.value as any)
   }
 
   const renderIazos = () => {
     if (searchQuery) {
-      const lowercaseQuery = searchQuery.toLowerCase()
+      const lowercaseQuery = (searchQuery as string)?.toLowerCase()
       const filteredIazos = registeredIazos?.filter(
         (iazo) =>
           iazo.iazoToken.name.toLowerCase().includes(lowercaseQuery) || iazo.iazoToken.address.includes(searchQuery),

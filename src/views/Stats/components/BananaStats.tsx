@@ -45,7 +45,7 @@ const BananaStats: React.FC<BananaStatsProps> = ({ stats }) => {
           <Text fontWeight={800} fontSize="14px">
             {t('TVL All Pools')}
           </Text>
-          <CardValue fontSize="14px" decimals={2} value={stats.tvl} prefix="$" />
+          <CardValue fontSize="14px" decimals={2} value={stats?.tvl as number} prefix="$" />
         </Row>
         <Row>
           <Text fontWeight={800} fontSize="14px">
@@ -68,14 +68,14 @@ const BananaStats: React.FC<BananaStatsProps> = ({ stats }) => {
             <CardValue
               fontWeight={800}
               fontSize="14px"
-              value={stats.bananasEarnedPerDay}
+              value={stats?.bananasEarnedPerDay as number}
               decimals={2}
               prefix="Daily: "
             />
             <CardValue
               fontWeight={800}
               fontSize="12px"
-              value={stats.dollarsEarnedPerDay}
+              value={stats?.dollarsEarnedPerDay as number}
               decimals={2}
               prefix="($"
               suffix=")"
@@ -84,14 +84,14 @@ const BananaStats: React.FC<BananaStatsProps> = ({ stats }) => {
             <CardValue
               fontWeight={800}
               fontSize="14px"
-              value={stats.bananasEarnedPerWeek}
+              value={stats?.bananasEarnedPerWeek as number}
               decimals={2}
               prefix="Weekly: "
             />
             <CardValue
               fontWeight={800}
               fontSize="12px"
-              value={stats.dollarsEarnedPerWeek}
+              value={stats?.dollarsEarnedPerWeek as number}
               decimals={2}
               prefix="($"
               suffix=")"
@@ -100,14 +100,14 @@ const BananaStats: React.FC<BananaStatsProps> = ({ stats }) => {
             <CardValue
               fontWeight={800}
               fontSize="14px"
-              value={stats.bananasEarnedPerMonth}
+              value={stats?.bananasEarnedPerMonth as number}
               decimals={2}
               prefix="Monthly: "
             />
             <CardValue
               fontWeight={800}
               fontSize="12px"
-              value={stats.dollarsEarnedPerMonth}
+              value={stats?.dollarsEarnedPerMonth as number}
               decimals={2}
               prefix="($"
               suffix=")"
@@ -116,14 +116,14 @@ const BananaStats: React.FC<BananaStatsProps> = ({ stats }) => {
             <CardValue
               fontWeight={800}
               fontSize="14px"
-              value={stats.bananasEarnedPerYear}
+              value={stats?.bananasEarnedPerYear as number}
               decimals={2}
               prefix="Yearly: "
             />
             <CardValue
               fontWeight={800}
               fontSize="12px"
-              value={stats.dollarsEarnedPerYear}
+              value={stats?.dollarsEarnedPerYear as number}
               decimals={2}
               prefix="($"
               suffix=")"
@@ -139,7 +139,7 @@ const BananaStats: React.FC<BananaStatsProps> = ({ stats }) => {
             <CardValue
               fontWeight={800}
               fontSize="14px"
-              value={stats.aggregateAprPerDay * 100}
+              value={Number(stats?.aggregateAprPerDay) * 100}
               decimals={2}
               prefix={t('Daily')}
               suffix="%"
@@ -147,7 +147,7 @@ const BananaStats: React.FC<BananaStatsProps> = ({ stats }) => {
             <CardValue
               fontWeight={800}
               fontSize="14px"
-              value={stats.aggregateAprPerWeek * 100}
+              value={Number(stats?.aggregateAprPerWeek) * 100}
               decimals={2}
               prefix={t('Weekly')}
               suffix="%"
@@ -155,7 +155,7 @@ const BananaStats: React.FC<BananaStatsProps> = ({ stats }) => {
             <CardValue
               fontWeight={800}
               fontSize="14px"
-              value={stats.aggregateAprPerMonth * 100}
+              value={Number(stats?.aggregateAprPerMonth) * 100}
               decimals={2}
               prefix={t('Monthly')}
               suffix="%"
@@ -163,7 +163,7 @@ const BananaStats: React.FC<BananaStatsProps> = ({ stats }) => {
             <CardValue
               fontWeight={800}
               fontSize="14px"
-              value={stats.aggregateApr * 100}
+              value={Number(stats?.aggregateApr) * 100}
               decimals={2}
               prefix={t('Yearly')}
               suffix="%"

@@ -39,7 +39,7 @@ const Nfa = styled.div<{ active: boolean }>`
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, stakedNfas }) => {
   useFetchNfas()
-  const [selectedNfas, setSelectedNfas] = useState([])
+  const [selectedNfas, setSelectedNfas] = useState<number[]>([])
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
   const { nfas } = useNfas()
@@ -82,7 +82,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, sta
             setPendingTx(true)
             await onConfirm(selectedNfas)
             setPendingTx(false)
-            onDismiss()
+            onDismiss?.()
           }}
           endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
           style={{

@@ -18,11 +18,11 @@ interface PairCreationProps {
 const PairCreation: React.FC<PairCreationProps> = ({ onChange }) => {
   const tokenList = ['WBNB', 'BUSD']
   const [selectedToken, setSelectedToken] = useState<ExtendedERC20Details>({
-    userBalance: null,
-    tokenSymbol: null,
-    totalSupply: null,
-    tokenDecimals: null,
-    tokenAddress: null,
+    userBalance: null as any,
+    tokenSymbol: null as any,
+    totalSupply: null as any,
+    tokenDecimals: null as any,
+    tokenAddress: null as any,
     quoteToken: tokenList[0],
   })
   const { isMd, isSm, isXs } = useMatchBreakpoints()
@@ -64,7 +64,7 @@ const PairCreation: React.FC<PairCreationProps> = ({ onChange }) => {
     if (tokenApproved) {
       onChange(selectedToken)
     } else {
-      onChange(null)
+      onChange(null as any)
     }
   }, [selectedToken, tokenApproved, onChange])
 

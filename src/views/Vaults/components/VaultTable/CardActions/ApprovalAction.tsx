@@ -18,7 +18,7 @@ interface ApprovalActionProps {
 const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingContractAddress, pid, isLoading = false }) => {
   const stakingTokenContract = useERC20(stakingContractAddress)
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const rewardRefReward = useRef(null)
+  const rewardRefReward = useRef<any | null>(null)
   const { onApprove } = useVaultApeApprove(stakingTokenContract, pid)
   const { t } = useTranslation()
 

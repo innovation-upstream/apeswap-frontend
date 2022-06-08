@@ -34,13 +34,13 @@ const CommitToIazo: React.FC<ApproveCreateIazoProps> = ({
   const isMobile = isMd || isSm || isXs
   const { address, symbol, decimals } = baseToken
   const [pendingTrx, setPendingTrx] = useState(false)
-  const [amountToCommit, setAmountToCommit] = useState(null)
+  const [amountToCommit, setAmountToCommit] = useState<string | null>(null)
   const userBalance = useTokenBalance(isNative ? ZERO_ADDRESS : address)
   const userBalanceFormatted = getBalanceNumber(userBalance, parseInt(decimals))
   const { isDark } = useTheme()
   const { onCommit } = useCommitToIazo(
     iazoAddress,
-    new BigNumber(amountToCommit).times(new BigNumber(10).pow(parseInt(decimals))).toString(),
+    new BigNumber(amountToCommit as string).times(new BigNumber(10).pow(parseInt(decimals))).toString(),
     isNative,
   )
   return (
@@ -50,7 +50,7 @@ const CommitToIazo: React.FC<ApproveCreateIazoProps> = ({
         backgroundColor={isDark ? 'rgba(65, 65, 65, 1)' : 'white'}
         tokenSymbol={isNative ? 'BNB' : symbol}
         userBalance={userBalanceFormatted}
-        onChange={(e) => setAmountToCommit(e.currentTarget.value)}
+        onChange={(e) => setAmountToCommit(e?.currentTarget?.value)}
         max={maxSpendFormatted < userBalanceFormatted ? maxSpendFormatted : userBalanceFormatted}
         min={0}
       />

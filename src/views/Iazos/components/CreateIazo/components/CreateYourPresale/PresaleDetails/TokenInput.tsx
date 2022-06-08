@@ -49,26 +49,26 @@ const TokenInput: React.FC<TextInputProps> = ({
 }) => {
   const { toastError } = useToast()
   const { t } = useTranslation()
-  const [backgroundColorForInput, setBackgroundColorForInput] = useState(null)
+  const [backgroundColorForInput, setBackgroundColorForInput] = useState<string>('')
 
   const onValidate = (e) => {
     const val = parseFloat(e.currentTarget.value)
-    if (val < min) {
+    if (val < (min as number)) {
       toastError(`${t('Value must be greater than')} ${min}`)
       setBackgroundColorForInput('rgb(255,0,0, .3)')
       return val
     }
-    if (val > max) {
+    if (val > (max as number)) {
       toastError(`${t('Value must be less than')} ${max}`)
       setBackgroundColorForInput('rgb(255,0,0, .3)')
       return val
     }
-    setBackgroundColorForInput(backgroundColor)
+    setBackgroundColorForInput(backgroundColor as string)
     return val
   }
 
   return (
-    <InputContainer size={size} ml={ml} mr={mr}>
+    <InputContainer size={size as string} ml={ml as string} mr={mr as string}>
       <InputTitle>
         {tooltipContent && (
           <div style={{ display: 'inline-block' }}>
@@ -82,7 +82,7 @@ const TokenInput: React.FC<TextInputProps> = ({
       <Input
         value={defaultVal === 'NaN' ? '' : defaultVal}
         onChange={onChange}
-        backgroundColor={backgroundColorForInput || backgroundColor}
+        backgroundColor={backgroundColorForInput || (backgroundColor as string)}
         placeholder={placeholderText}
         disabled={disabled}
         type="number"

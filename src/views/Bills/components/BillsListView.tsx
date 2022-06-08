@@ -18,7 +18,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
   const isMobile = !isLg && !isXl && !isXxl
   const billsListView = bills.map((bill) => {
     const { token, quoteToken, earnToken } = bill
-    const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
+    const vestingTime = getTimePeriods(parseInt(bill?.vestingTime as string), true)
     return {
       tokens: { token1: token.symbol, token2: quoteToken.symbol, token3: earnToken.symbol },
       stakeLp: true,
@@ -47,17 +47,17 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           />
           <ListViewContent
             title={t('Discount')}
-            valueColor={parseFloat(bill?.discount) < 0 ? '#DF4141' : null}
+            valueColor={parseFloat(bill?.discount as string) < 0 ? '#DF4141' : ''}
             value={`${bill?.discount}%`}
             width={isMobile ? 90 : 140}
             height={52.5}
             toolTip={
-              parseFloat(bill?.discount) < 0
+              parseFloat(bill?.discount as string) < 0
                 ? t("This is the percentage discount relative to the token's current market price.")
                 : t("This is the percentage discount relative to the token's current market price.")
             }
             toolTipPlacement="bottomLeft"
-            toolTipTransform={parseFloat(bill?.discount) < 0 ? 'translate(0, 30%)' : 'translate(0, 65%)'}
+            toolTipTransform={parseFloat(bill?.discount as string) < 0 ? 'translate(0, 30%)' : 'translate(0, 65%)'}
           />
           <ListViewContent
             title={t('Vesting Term')}

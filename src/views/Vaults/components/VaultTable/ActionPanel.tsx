@@ -100,7 +100,8 @@ const ActionPanel: React.FC<ExpandableSectionProps> = ({
     ? `${Number(totalStaked).toLocaleString(undefined, { maximumFractionDigits: 3 })}`
     : '-'
 
-  const totalUserStaked = personalValueStaked > 0 ? (personalValueStaked * stakedTokenPrice).toFixed(2) : 0
+  const totalUserStaked =
+    Number(personalValueStaked) > 0 ? (Number(personalValueStaked) * Number(stakedTokenPrice)).toFixed(2) : 0
 
   return (
     <Wrapper>

@@ -488,15 +488,19 @@ const AdminPools: React.FC = () => {
         rootMargin: '0px',
         threshold: 1,
       })
-      loadMoreObserver.observe(loadMoreRef.current)
+      loadMoreObserver.observe(loadMoreRef?.current as Element)
       setObserverIsSet(true)
     }
   }, [observerIsSet])
 
   const adminPools = allPools.filter((pool) => pool.forAdmins)
+  console.log('adminPools', adminPools)
 
   const curPools = adminPools.map((pool) => {
-    return { ...pool, isFinished: pool.sousId === 0 ? false : pool.isFinished || currentBlock > pool.endBlock }
+    return {
+      ...pool,
+      isFinished: pool?.sousId === 0 ? false : pool.isFinished || currentBlock > (pool?.endBlock as number),
+    }
   })
 
   const [finishedPools, openPools] = partition(curPools, (pool) => pool.isFinished)
@@ -538,7 +542,7 @@ const AdminPools: React.FC = () => {
       case 'totalStaked':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => getBalanceNumber(pool.totalStaked) * pool.stakingToken?.price,
+          (pool: Pool) => getBalanceNumber(pool.totalStaked as BigNumber) * (pool?.stakingToken?.price as number),
           sortDirection,
         )
       default:
@@ -547,7 +551,7 @@ const AdminPools: React.FC = () => {
   }
 
   const poolsToShow = () => {
-    let chosenPools = []
+    let chosenPools: any = []
     if (stakedOnly) {
       chosenPools = isActive ? stakedOnlyPools : stakedInactivePools
     } else {
@@ -555,7 +559,7 @@ const AdminPools: React.FC = () => {
     }
     if (searchQuery) {
       const lowercaseQuery = searchQuery.toLowerCase()
-      chosenPools = chosenPools.filter((pool) => pool.tokenName.toLowerCase().includes(lowercaseQuery))
+      chosenPools = chosenPools.filter((pool) => pool?.tokenName?.toLowerCase().includes(lowercaseQuery))
     }
     return sortPools(chosenPools).slice(0, numberOfPoolsVisible)
   }
@@ -575,7 +579,7 @@ const AdminPools: React.FC = () => {
       <Header>
         <HeadingContainer>
           <StyledHeading as="h1">{t('Admin Pools')}</StyledHeading>
-          {size.width > 968 && (
+          {(size?.width as number) > 968 && (
             <AdminText>
               {t('Stake OBIE to earn new tokens.')} <br />{' '}
               {t('Admins will be allocated OBIE tokens from grandpa Obie Dobo.')} <br />{' '}

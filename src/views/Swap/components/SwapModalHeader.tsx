@@ -35,12 +35,12 @@ export default function SwapModalHeader({
 
   const amount =
     trade.tradeType === TradeType.EXACT_INPUT
-      ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)
-      : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)
+      ? (slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6) as any)
+      : (slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6) as any)
   const symbol =
     trade.tradeType === TradeType.EXACT_INPUT
-      ? trade.outputAmount.currency.getSymbol(chainId)
-      : trade.inputAmount.currency.getSymbol(chainId)
+      ? (trade.outputAmount.currency.getSymbol(chainId) as any)
+      : (trade.inputAmount.currency.getSymbol(chainId) as any)
 
   const tradeInfoText =
     trade.tradeType === TradeType.EXACT_INPUT

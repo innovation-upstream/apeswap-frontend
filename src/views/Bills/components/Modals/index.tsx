@@ -16,6 +16,7 @@ interface BillModalProps {
   buyFlag?: boolean
   billCardImage?: string
   disabled?: boolean
+  onDismiss?: () => void
 }
 
 const BillModal: React.FC<BillModalProps> = ({
@@ -28,29 +29,19 @@ const BillModal: React.FC<BillModalProps> = ({
   billCardImage,
   disabled,
 }) => {
-  const [onPresentBuyBillsModal] = useModal(
-    <BuyBillModalView bill={bill} onDismiss={null} />,
-    true,
-    true,
-    `billsModal${id}`,
-  )
+  const [onPresentBuyBillsModal] = useModal(<BuyBillModalView bill={bill} />, true, true, `billsModal${id}`)
   const [onPresentUserBillModal] = useModal(
-    <UserBillModalView bill={bill} billId={billId} onDismiss={null} />,
+    <UserBillModalView bill={bill} billId={billId as string} />,
     true,
     true,
     `billsModal${bill.billNftAddress}-${billId}`,
   )
-  const [onPresentBuyWarning] = useModal(
-    <WarningModal bill={bill} onDismiss={null} />,
-    true,
-    true,
-    `billsWarningModal${id}`,
-  )
+  const [onPresentBuyWarning] = useModal(<WarningModal bill={bill} />, true, true, `billsWarningModal${id}`)
   return !billCardImage ? (
     <StyledButton
       onClick={
         buyFlag
-          ? parseFloat(bill?.discount) < 0
+          ? parseFloat(bill?.discount as string) < 0
             ? onPresentBuyWarning
             : onPresentBuyBillsModal
           : onPresentUserBillModal

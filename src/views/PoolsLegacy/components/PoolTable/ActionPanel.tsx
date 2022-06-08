@@ -102,22 +102,23 @@ const ActionPanel: React.FC<ExpandableSectionProps> = ({
 
   const earnings = new BigNumber(pendingReward || 0)
   const rawEarningsBalance = getBalanceNumber(earnings, tokenDecimals)
-  const totalUserStaked = personalValueStaked > 0 ? (personalValueStaked * stakedTokenPrice).toFixed(2) : 0
+  const totalUserStaked =
+    Number(personalValueStaked) > 0 ? (Number(personalValueStaked) * Number(stakedTokenPrice)).toFixed(2) : 0
 
-  const timeUntilStart = getTimePeriods(blocksUntilStart * BSC_BLOCK_TIME)
-  const timeUntilEnd = getTimePeriods(blocksRemaining * BSC_BLOCK_TIME)
+  const timeUntilStart = getTimePeriods(Number(blocksUntilStart) * BSC_BLOCK_TIME)
+  const timeUntilEnd = getTimePeriods(Number(blocksRemaining) * BSC_BLOCK_TIME)
 
   return (
     <Wrapper>
       <Flex>
         <InfoContainer>
-          {blocksUntilStart > 0 && (
+          {Number(blocksUntilStart) > 0 && (
             <>
               <StyledText fontSize="12px">{t('Start')}</StyledText>
               <StyledText fontSize="12px">{`${timeUntilStart.days}d, ${timeUntilStart.hours}h, ${timeUntilStart.minutes}m`}</StyledText>
             </>
           )}
-          {blocksUntilStart === 0 && blocksRemaining > 0 && (
+          {blocksUntilStart === 0 && Number(blocksRemaining) > 0 && (
             <>
               <Flex justifyContent="space-between">
                 <StyledText fontSize="12px">{t('End')}</StyledText>
@@ -141,7 +142,9 @@ const ActionPanel: React.FC<ExpandableSectionProps> = ({
           </Flex>
           <Flex justifyContent="space-between">
             <StyledText fontSize="12px">{t('Earned Value')}:</StyledText>
-            <StyledTextGreen fontSize="12px">${(rawEarningsBalance * rewardTokenPrice).toFixed(2)}</StyledTextGreen>
+            <StyledTextGreen fontSize="12px">
+              ${(rawEarningsBalance * Number(rewardTokenPrice)).toFixed(2)}
+            </StyledTextGreen>
           </Flex>
           <Flex justifyContent="center">
             <StyledLink external href={bscScanAddress} bold={false} fontWeight={800}>

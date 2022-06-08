@@ -22,7 +22,7 @@ import Actions from '../Actions'
 import UserBillModalView from './UserBillModalView'
 
 interface BillModalProps {
-  onDismiss: () => void
+  onDismiss?: () => void
   bill: Bills
 }
 
@@ -42,13 +42,14 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
     discount,
     earnTokenPrice,
   } = bill
-  const discountEarnTokenPrice = earnTokenPrice - earnTokenPrice * (parseFloat(discount) / 100)
+  const discountEarnTokenPrice =
+    (earnTokenPrice as number) - (earnTokenPrice as number) * (parseFloat(discount as string) / 100)
   const [value, setValue] = useState('')
   const [billId, setBillId] = useState('')
   const [loading, setLoading] = useState(false)
   const bigValue = new BigNumber(value).times(new BigNumber(10).pow(18))
-  const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
-  const billValue = bigValue.div(new BigNumber(price))?.toFixed(3)
+  const vestingTime = getTimePeriods(parseInt(bill?.vestingTime as string), true)
+  const billValue = bigValue.div(new BigNumber(price as string))?.toFixed(3)
 
   const onHandleValueChange = (val: string) => {
     setValue(val)
@@ -115,9 +116,9 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                   token={token}
                   quoteToken={quoteToken}
                   lpToken={lpToken}
-                  userLpValue={userData?.stakingTokenBalance}
-                  allowance={userData?.allowance}
-                  billAddress={contractAddress[chainId]}
+                  userLpValue={userData?.stakingTokenBalance as string}
+                  allowance={userData?.allowance as string}
+                  billAddress={contractAddress[chainId as number]}
                   billIndex={index}
                   disabled={billValue === 'NaN' || parseFloat(billValue) < 0.01}
                   onValueChange={onHandleValueChange}
@@ -125,7 +126,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                   onTransactionSubmited={(trxSent) => setLoading(trxSent)}
                 />
               </ActionButtonsContainer>
-              {new BigNumber(userData?.allowance).gt(0) && (
+              {new BigNumber(userData?.allowance as string).gt(0) && (
                 <BillValueTextWrapper>
                   <Text fontSize="14px">
                     {t('Bill Value')}:{' '}

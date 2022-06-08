@@ -53,7 +53,7 @@ const Buy: React.FC<BuyProps> = ({
         searchForBillId(resp)
         toastSuccess(t('Buy Successful'), {
           text: t('View Transaction'),
-          url: getEtherscanLink(trxHash, 'transaction', chainId),
+          url: getEtherscanLink(trxHash, 'transaction', chainId as number),
         })
       })
       .catch((e) => {
@@ -62,8 +62,8 @@ const Buy: React.FC<BuyProps> = ({
         setPendingTrx(false)
         onTransactionSubmited(false)
       })
-    dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
-    dispatch(fetchBillsUserDataAsync(chainId, account))
+    dispatch(fetchUserOwnedBillsDataAsync(chainId as number, account))
+    dispatch(fetchBillsUserDataAsync(chainId as number, account))
     setPendingTrx(false)
   }
 
@@ -82,13 +82,13 @@ const Buy: React.FC<BuyProps> = ({
     dispatch(
       selectCurrency({
         field: Field.INPUT,
-        currencyId: token.symbol === 'BNB' ? 'ETH' : token.address[chainId],
+        currencyId: token?.symbol === 'BNB' ? 'ETH' : token?.address?.[chainId as number],
       }),
     )
     dispatch(
       selectCurrency({
         field: Field.OUTPUT,
-        currencyId: quoteToken.symbol === 'BNB' ? 'ETH' : quoteToken.address[chainId],
+        currencyId: quoteToken?.symbol === 'BNB' ? 'ETH' : quoteToken?.address?.[chainId as number],
       }),
     )
     onPresentAddLiquidityWidgetModal()

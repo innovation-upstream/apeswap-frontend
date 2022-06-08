@@ -40,7 +40,7 @@ const Label = styled.label`
 const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenId, onDismiss }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [value, setValue] = useState('')
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null | boolean>(null)
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const nonFungibleApesContract = useNonFungibleApes()
@@ -53,13 +53,15 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenId, onDis
         setError(t('Please enter a valid wallet address'))
       } else {
         setIsLoading(true)
-        await nonFungibleApesContract['safeTransferFrom(address,address,uint256)'](account, value, tokenId).then(
-          (trx) => {
-            return trx.wait()
-          },
-        )
+        await nonFungibleApesContract['safeTransferFrom(address,address,uint256)'](
+          account as string,
+          value,
+          tokenId,
+        ).then((trx) => {
+          return trx.wait()
+        })
         setIsLoading(false)
-        onDismiss()
+        onDismiss?.()
       }
     } catch (err) {
       console.warn('Unable to transfer NFT:', err)
@@ -92,7 +94,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenId, onDis
           placeholder={t('Paste address')}
           value={value}
           onChange={handleChange}
-          isWarning={error}
+          isWarning={error as boolean}
           disabled={isLoading}
         />
       </ModalContent>

@@ -71,7 +71,7 @@ export default function AddLiquidity({ currencyIdA, currencyIdB }: { currencyIdA
   const { t } = useTranslation()
 
   const [recentTransactions] = useUserRecentTransactions()
-  const [addValueUsd, setAddValueUsd] = useState<number>(null)
+  const [addValueUsd, setAddValueUsd] = useState<number>(0)
 
   useEffect(() => {
     if (!loadCurrencyIdA && !loadCurrencyIdB) {
@@ -139,24 +139,24 @@ export default function AddLiquidity({ currencyIdA, currencyIdB }: { currencyIdA
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
-    parseAddress(ROUTER_ADDRESS, chainId),
+    parseAddress(ROUTER_ADDRESS, chainId as number),
   )
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
-    parseAddress(ROUTER_ADDRESS, chainId),
+    parseAddress(ROUTER_ADDRESS, chainId as number),
   )
 
   useEffect(() => {
     const getAddVal = async () => {
       const isNative = currencyA?.symbol === 'ETH'
       const isLp = false
-      const usdVal = await getTokenUsdPrice(
-        chainId,
+      const usdVal = (await getTokenUsdPrice(
+        chainId as number,
         currencyA instanceof Token ? currencyA?.address : '',
-        currencyA?.decimals,
+        currencyA?.decimals as number,
         isLp,
         isNative,
-      )
+      )) as number
       setAddValueUsd(Number(parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)) * usdVal * 2)
     }
     getAddVal()

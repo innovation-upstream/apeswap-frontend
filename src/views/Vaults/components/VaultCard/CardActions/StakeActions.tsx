@@ -53,9 +53,9 @@ const StyledFlex = styled(Flex)`
 const StakeAction: React.FC<StakeActionsProps> = ({ vault, stakingTokenBalance, stakedBalance, isApproved }) => {
   const { pid } = vault
 
-  const rewardRefStake = useRef(null)
-  const rewardRefUnstake = useRef(null)
-  const rewardRefUnstakeAll = useRef(null)
+  const rewardRefStake = useRef<any | null>(null)
+  const rewardRefUnstake = useRef<any | null>(null)
+  const rewardRefUnstakeAll = useRef<any | null>(null)
   const [typeOfReward, setTypeOfReward] = useState('rewardBanana')
 
   const onStake = useReward(rewardRefStake, useVaultStake(pid).onStake)
@@ -64,7 +64,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ vault, stakingTokenBalance, 
 
   const convertedLimit = new BigNumber(stakingTokenBalance)
 
-  const lpLabel = vault.isPair ? `${vault.token0.symbol}-${vault.token1.symbol}` : vault.token0.symbol
+  const lpLabel = vault.isPair ? `${vault.token0.symbol}-${vault?.token1?.symbol}` : vault.token0.symbol
 
   const [onPresentDeposit] = useModal(
     <DepositModal

@@ -56,19 +56,19 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
 
   const farmsListView = farms.map((farm) => {
     const [token1, token2] = farm.lpSymbol.split('-')
-    const bscScanUrl = `https://bscscan.com/address/${farm.lpAddresses[chainId]}`
+    const bscScanUrl = `https://bscscan.com/address/${farm?.lpAddresses?.[chainId as number]}`
     const liquidityUrl = `https://apeswap.finance/add/${
-      farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId]
-    }/${farm.tokenAddresses[chainId]}`
+      farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm?.quoteTokenAdresses?.[chainId as number]
+    }/${farm?.tokenAddresses?.[chainId as number]}`
     const { projectLink } = farm
     const userAllowance = farm?.userData?.allowance
     const userEarnings = getBalanceNumber(farm?.userData?.earnings || new BigNumber(0))?.toFixed(2)
     const userEarningsUsd = `$${(
-      getBalanceNumber(farm?.userData?.earnings || new BigNumber(0)) * farm.bananaPrice
+      getBalanceNumber(farm?.userData?.earnings || new BigNumber(0)) * (farm?.bananaPrice as number)
     ).toFixed(2)}`
     const userTokenBalance = `${getBalanceNumber(farm?.userData?.tokenBalance || new BigNumber(0))?.toFixed(6)} LP`
     const userTokenBalanceUsd = `$${(
-      getBalanceNumber(farm?.userData?.tokenBalance || new BigNumber(0)) * farm?.lpValueUsd
+      getBalanceNumber(farm?.userData?.tokenBalance || new BigNumber(0)) * (farm?.lpValueUsd as number)
     ).toFixed(2)}`
 
     return {
@@ -87,7 +87,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
             <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
               <Text style={{ fontSize: '12px' }}>{t('Multiplier')}</Text>
               <Text bold style={{ fontSize: '12px' }}>
-                {Math.round(parseFloat(farm.multiplier) * 1000) / 100}X
+                {Math.round(parseFloat(farm?.multiplier as string) * 1000) / 100}X
               </Text>
             </Flex>
             <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
@@ -115,7 +115,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
         <>
           <ListViewContent
             title={t('APY')}
-            value={parseFloat(farm?.apy) > 1000000 ? `>1,000,000%` : `${farm?.apy}%`}
+            value={parseFloat(farm?.apy as string) > 1000000 ? `>1,000,000%` : `${farm?.apy}%`}
             width={isMobile ? 90 : 150}
             ml={20}
             toolTip={t(
@@ -149,7 +149,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
                 lpLabel={farm.lpSymbol}
                 rewardTokenName="BANANA"
                 rewardTokenPrice={farm.bananaPrice}
-                apy={parseFloat(farm?.apr) / 100 + parseFloat(farm?.lpApr) / 100}
+                apy={parseFloat(farm?.apr as string) / 100 + parseFloat(farm?.lpApr as string) / 100}
                 addLiquidityUrl={liquidityUrl}
               />
             }
@@ -184,8 +184,8 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
             <FarmButton
               onClick={() =>
                 showLiquidity(
-                  farm.tokenAddresses[chainId],
-                  farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId],
+                  farm?.tokenAddresses?.[chainId as number],
+                  farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm?.quoteTokenAdresses?.[chainId as number],
                 )
               }
             >
@@ -206,11 +206,11 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number }> = ({ farms, op
           </ActionContainer>
           {!isMobile && <NextArrow />}
           <CardActions
-            allowance={userAllowance?.toString()}
-            stakedBalance={farm?.userData?.stakedBalance?.toString()}
-            stakingTokenBalance={farm?.userData?.tokenBalance?.toString()}
-            stakeLpAddress={farm.lpAddresses[chainId]}
-            lpValueUsd={farm.lpValueUsd}
+            allowance={userAllowance?.toString() as string}
+            stakedBalance={farm?.userData?.stakedBalance?.toString() as string}
+            stakingTokenBalance={farm?.userData?.tokenBalance?.toString() as string}
+            stakeLpAddress={farm?.lpAddresses[chainId as number]}
+            lpValueUsd={farm.lpValueUsd as number}
             pid={farm.pid}
           />
           {!isMobile && <NextArrow />}

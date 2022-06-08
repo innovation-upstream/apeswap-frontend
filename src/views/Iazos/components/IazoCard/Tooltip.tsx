@@ -95,7 +95,7 @@ const StyledLink = styled.a`
   font-weight: 400;
   font-size: 15px;
   text-decoration: underline;
-  align-text: center;
+  align-items: center;
   pointer-events: auto !important;
 `
 

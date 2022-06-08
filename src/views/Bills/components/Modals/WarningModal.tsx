@@ -7,20 +7,15 @@ import { StyledButton } from '../styles'
 import BuyBillModalView from './BuyBillModalView'
 
 interface TransferBillModalProps {
-  onDismiss: () => void
+  onDismiss?: () => void
   bill?: Bills
 }
 
 const WarningModal: React.FC<TransferBillModalProps> = ({ onDismiss, bill }) => {
   const [confirmBuy, setConfirmBuy] = useState(false)
   const { t } = useTranslation()
-  const { index } = bill
-  const [onPresentBuyBillsModal] = useModal(
-    <BuyBillModalView bill={bill} onDismiss={null} />,
-    true,
-    true,
-    `billsModal${index}`,
-  )
+  const { index }: any = bill
+  const [onPresentBuyBillsModal] = useModal(<BuyBillModalView bill={bill as Bills} />, true, true, `billsModal${index}`)
 
   return (
     <Modal onDismiss={onDismiss} maxWidth="385px">
@@ -35,10 +30,10 @@ const WarningModal: React.FC<TransferBillModalProps> = ({ onDismiss, bill }) => 
         <Flex ml="30px" flexDirection="column">
           <Flex>
             <Text style={{ fontWeight: 600 }}>
-              The {bill.earnToken.symbol} you recieve from this {bill.token.symbol}-{bill.quoteToken.symbol} Treasury
-              Bill at a <span style={{ color: 'rgba(223, 65, 65, 1)' }}>{bill.discount}%</span> discount rate is priced
-              at <span style={{ textDecoration: 'underline' }}>${bill?.priceUsd}</span>, which is higher than the
-              current market rate of{' '}
+              The {bill?.earnToken.symbol} you recieve from this {bill?.token?.symbol}-{bill?.quoteToken.symbol}{' '}
+              Treasury Bill at a <span style={{ color: 'rgba(223, 65, 65, 1)' }}>{bill?.discount}%</span> discount rate
+              is priced at <span style={{ textDecoration: 'underline' }}>${bill?.priceUsd}</span>, which is higher than
+              the current market rate of{' '}
               <span style={{ textDecoration: 'underline' }}>${bill?.earnTokenPrice?.toFixed(3)} </span>
             </Text>
           </Flex>
@@ -49,7 +44,7 @@ const WarningModal: React.FC<TransferBillModalProps> = ({ onDismiss, bill }) => 
         <Text ml="10px" fontSize="12px" bold>
           {t(
             'I understand that I am purchasing %billToken% at a price above the current market rate, and would like to continue.',
-            { billToken: bill.earnToken.symbol },
+            { billToken: bill?.earnToken?.symbol as string },
           )}
         </Text>
       </Flex>

@@ -28,7 +28,7 @@ const ClaimAll: React.FC<{
         resp.map((trx) =>
           toastSuccess(t('Claim Successful'), {
             text: t('View Transaction'),
-            url: getEtherscanLink(trx.transactionHash, 'transaction', chainId),
+            url: getEtherscanLink(trx.transactionHash, 'transaction', chainId as number),
           }),
         )
       })
@@ -37,8 +37,8 @@ const ClaimAll: React.FC<{
         toastError(e?.data?.message || t('Something went wrong please try again'))
         setPendingTrx(false)
       })
-    dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
-    dispatch(fetchBillsUserDataAsync(chainId, account))
+    dispatch(fetchUserOwnedBillsDataAsync(chainId as number, account))
+    dispatch(fetchBillsUserDataAsync(chainId as number, account))
     setPendingTrx(false)
   }
   return (

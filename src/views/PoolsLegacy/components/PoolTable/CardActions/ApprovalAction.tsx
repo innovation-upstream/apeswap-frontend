@@ -20,7 +20,7 @@ const StyledButton = styled(Button)`
 const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAddress, sousId, isLoading = false }) => {
   const stakingTokenContract = useERC20(stakingTokenContractAddress)
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const rewardRefReward = useRef(null)
+  const rewardRefReward = useRef<any | null>(null)
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
   const { t } = useTranslation()
 

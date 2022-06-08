@@ -22,13 +22,13 @@ const ClaimIazo: React.FC<ApproveCreateIazoProps> = ({
   baseTokensToClaim,
 }) => {
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onClaim } = useClaimIazo(iazoAddress)
+  const { onClaim } = useClaimIazo(iazoAddress as string)
   const iazoFailed = iazoState === 'FAILED'
   const { t } = useTranslation()
 
   const renderButton = () => {
     if (iazoFailed && tokensToClaim > 0) {
-      return baseTokensToClaim > 0 ? (
+      return (baseTokensToClaim as number) > 0 ? (
         <StyledButton
           onClick={async () => {
             setPendingTrx(true)
@@ -45,7 +45,7 @@ const ClaimIazo: React.FC<ApproveCreateIazoProps> = ({
         <StyledButton disabled> {t('REFUNDED')}</StyledButton>
       )
     }
-    if (baseTokensToClaim > 0) {
+    if ((baseTokensToClaim as number) > 0) {
       return tokensToClaim > 0 ? (
         <StyledButton
           onClick={async () => {

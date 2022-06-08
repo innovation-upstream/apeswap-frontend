@@ -34,19 +34,21 @@ const CreatePresale: React.FC<CreatePresaleProps> = ({ presaleData, disabled, cr
   // Format token price
   // TOKEN_PRICE = BASE_TOKEN_AMOUNT * 10**(18 - iazoTokenDecimals)
   const formatTokenPriceToBaseToken = new BigNumber(pricePerToken).times(
-    new BigNumber(10).pow(quoteTokenObject.decimals),
+    new BigNumber(10).pow(quoteTokenObject?.decimals as any),
   )
   const formattedPricePerToken = formatTokenPriceToBaseToken.times(new BigNumber(10).pow(18 - tokenDecimals)).toString()
 
   // Format max spend of the quote token per user
   const formattedMaxSpend = new BigNumber(limitPerUser)
-    .times(new BigNumber(10).pow(quoteTokenObject?.decimals))
+    .times(new BigNumber(10).pow(quoteTokenObject?.decimals as any))
     .toString()
 
   // Format hardcap and softcap for the contract
   const formattedHardcap = new BigNumber(tokensForSale).times(new BigNumber(10).pow(tokenDecimals)).toString()
 
-  const formattedSoftcap = new BigNumber(softcap).times(new BigNumber(10).pow(quoteTokenObject?.decimals)).toString()
+  const formattedSoftcap = new BigNumber(softcap)
+    .times(new BigNumber(10).pow(quoteTokenObject?.decimals as any))
+    .toString()
 
   const hardcapForApi = parseFloat(tokensForSale) * parseFloat(pricePerToken)
 
@@ -62,11 +64,11 @@ const CreatePresale: React.FC<CreatePresaleProps> = ({ presaleData, disabled, cr
   const activeTime = endDateInSeconds - startDateInSeconds
 
   // Get quote/base token address
-  const quoteTokenAddress = quoteTokenObject.address[chainId]
+  const quoteTokenAddress = quoteTokenObject?.address?.[chainId as number]
 
   // Calculate post listing price
   const formatListingPriceToBaseToken = new BigNumber(listingPrice).times(
-    new BigNumber(10).pow(quoteTokenObject.decimals),
+    new BigNumber(10).pow(quoteTokenObject.decimals as any),
   )
 
   const postListingPrice =
@@ -91,7 +93,7 @@ const CreatePresale: React.FC<CreatePresaleProps> = ({ presaleData, disabled, cr
   apiObject.append('file', tokenLogo)
   apiObject.append('token1', quoteTokenAddress)
   apiObject.append('token2', tokenAddress)
-  apiObject.append('owner', account)
+  apiObject.append('owner', account as string)
   apiObject.append('startDate', startDateInSeconds.toString())
   apiObject.append('endDate', endDateInSeconds.toString())
   apiObject.append('duration', activeTime.toString())
@@ -125,7 +127,7 @@ const CreatePresale: React.FC<CreatePresaleProps> = ({ presaleData, disabled, cr
           setPendingTrx(true)
           await onCreateIazo()
             .then((resp) => {
-              const iazoAddress = resp.events.find((event) => event.event === 'IAZOCreated').args.newIAZO
+              const iazoAddress = (resp?.events as any)?.find((event) => event?.event === 'IAZOCreated').args?.newIAZO
               const trxHash = resp.transactionHash
               apiObject.append('createTransactionHash', trxHash)
               apiObject.append('iazoAddress', iazoAddress)

@@ -38,14 +38,14 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
         const trxHash = resp.transactionHash
         toastSuccess(t('Harvest Successful'), {
           text: t('View Transaction'),
-          url: getEtherscanLink(trxHash, 'transaction', chainId),
+          url: getEtherscanLink(trxHash, 'transaction', chainId as number),
         })
       })
       .catch((e) => {
         console.error(e)
         setPendingTrx(false)
       })
-    dispatch(updateUserPendingReward(chainId, sousId, account))
+    dispatch(updateUserPendingReward(chainId as number, sousId, account as string))
     setPendingTrx(false)
   }
 
@@ -56,14 +56,14 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
         const trxHash = resp.transactionHash
         toastSuccess(t('Ape Harder Successful'), {
           text: t('View Transaction'),
-          url: getEtherscanLink(trxHash, 'transaction', chainId),
+          url: getEtherscanLink(trxHash, 'transaction', chainId as number),
         })
       })
       .catch((e) => {
         console.error(e)
         setPendingApeHarderTrx(false)
       })
-    dispatch(fetchPoolsUserDataAsync(chainId, account))
+    dispatch(fetchPoolsUserDataAsync(chainId as number, account))
     setPendingApeHarderTrx(false)
   }
 

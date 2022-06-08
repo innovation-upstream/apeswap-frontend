@@ -48,7 +48,7 @@ const Farms: React.FC<IFarms> = ({ pid, showHistory }) => {
         rootMargin: '0px',
         threshold: 1,
       })
-      loadMoreObserver.observe(loadMoreRef.current)
+      loadMoreObserver.observe(loadMoreRef?.current as Element)
       setObserverIsSet(true)
     }
   }, [observerIsSet])
@@ -93,7 +93,7 @@ const Farms: React.FC<IFarms> = ({ pid, showHistory }) => {
           ...activeFarms?.filter((farm) => {
             return farm.pid !== urlSearchedFarm
           }),
-        ]
+        ] as any
       }
     }
 
@@ -115,7 +115,7 @@ const Farms: React.FC<IFarms> = ({ pid, showHistory }) => {
           .filter((farm) => STABLES.includes(farm.tokenSymbol) && STABLES.includes(farm.quoteTokenSymbol))
           .slice(0, numberOfFarmsVisible)
       case 'apr':
-        return orderBy(farms, (farm) => parseFloat(farm.apy), 'desc').slice(0, numberOfFarmsVisible)
+        return orderBy(farms, (farm) => parseFloat(farm?.apy as string), 'desc').slice(0, numberOfFarmsVisible)
       case 'new':
         return farms
       case 'blueChips':
@@ -123,7 +123,10 @@ const Farms: React.FC<IFarms> = ({ pid, showHistory }) => {
           .filter((farm) => BLUE_CHIPS.includes(farm.tokenSymbol) || BLUE_CHIPS.includes(farm.quoteTokenSymbol))
           .slice(0, numberOfFarmsVisible)
       case 'liquidity':
-        return orderBy(farms, (farm: Farm) => parseFloat(farm.totalLpStakedUsd), 'desc').slice(0, numberOfFarmsVisible)
+        return orderBy(farms, (farm: Farm) => parseFloat(farm?.totalLpStakedUsd as string), 'desc').slice(
+          0,
+          numberOfFarmsVisible,
+        )
       default:
         return farms.slice(0, numberOfFarmsVisible)
     }

@@ -13,7 +13,7 @@ import IfoProjectCard from './components/IfoCard/ProjectCard/IfoProjectCard'
 const Ifos = () => {
   const { t } = useTranslation()
   const firstPastIfoId = pastIfos.length > 0 ? pastIfos(t)[0].id : undefined
-  const activeIfoId = ifos(t).find((ifo) => ifo.isActive).id
+  const activeIfoId = ifos(t).find((ifo) => ifo?.isActive)?.id
   const [tabOption, setTabOption] = React.useState<TabOption>('current')
   const [projectId, setProjectId] = React.useState<string | undefined>(activeIfoId)
 
@@ -42,7 +42,7 @@ const Ifos = () => {
           maxWidth={992}
           margin="30px 0px 20px 0px"
         />
-        <IfoProjectCard ifoId={projectId} />
+        <IfoProjectCard ifoId={projectId as string} />
         {tabOption === 'past' && <IfoPastProjectSwiper onSelectProject={setProjectId} />}
         <IfoTabButtons onSelect={handleTabSelectionChange} selectedTab={tabOption} />
         <HowItWorks onParticipate={openCurrentProject} />

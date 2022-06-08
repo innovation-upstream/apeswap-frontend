@@ -58,7 +58,7 @@ const NftProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const fetchContractData = async () => {
       try {
-        const balanceOf = await nonFungibleApesContract.balanceOf(account)
+        const balanceOf = await nonFungibleApesContract.balanceOf(account as string)
 
         setState((prevState) => ({
           ...prevState,

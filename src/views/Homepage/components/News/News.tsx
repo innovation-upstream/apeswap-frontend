@@ -99,7 +99,7 @@ const News: React.FC = () => {
                           image={news?.cardImageUrl?.url}
                           key={news?.cardImageUrl?.url}
                           listLength={newsLength}
-                          onClick={() => trackBannersClick(index + 1, news?.CardLink, chainId)}
+                          onClick={() => trackBannersClick(index + 1, news?.CardLink, chainId as number)}
                         />
                       </a>
                     </SwiperSlide>

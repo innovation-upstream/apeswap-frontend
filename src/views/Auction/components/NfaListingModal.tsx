@@ -78,7 +78,7 @@ const NfaListingModal: React.FC<NfaListingModalProps> = ({ onConfirm, onDismiss,
   const allowance = useNfaAllowance(auctionAddress)
   const { onApprove } = useAuctionApprove()
   const [approved, setApproved] = useState(true)
-  const [nfaIndex, setNfaIndex] = useState(null)
+  const [nfaIndex, setNfaIndex] = useState<number | null>(null)
   const auctionLength = 86400
   const timeToExtendVal = 1800
   const minTimeToExtend = 21600
@@ -149,7 +149,7 @@ const NfaListingModal: React.FC<NfaListingModalProps> = ({ onConfirm, onDismiss,
             <OwnedNfaWrapper>
               {ownedNfas?.map((nfa) => {
                 return (
-                  <Nfa onClick={() => setNfaIndex(nfa.index)} active={nfaIndex === nfa.index}>
+                  <Nfa onClick={() => setNfaIndex(nfa?.index)} active={nfaIndex === nfa.index}>
                     <Image
                       src={nfa.image}
                       alt={nfa.name}
@@ -190,7 +190,7 @@ const NfaListingModal: React.FC<NfaListingModalProps> = ({ onConfirm, onDismiss,
             disabled={pendingTx || nfaIndex === null}
             onClick={async () => {
               setPendingTx(true)
-              await onConfirm(nfaIndex, auctionLength, timeToExtendVal, minTimeToExtend, minimumBid)
+              await onConfirm(nfaIndex as number, auctionLength, timeToExtendVal, minTimeToExtend, minimumBid)
               setPendingTx(false)
               onDismiss()
             }}

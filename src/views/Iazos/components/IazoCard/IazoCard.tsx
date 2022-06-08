@@ -1,6 +1,6 @@
 import React from 'react'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
-import { Iazo } from 'state/types'
+import { Iazo, IazoSocialInfo, IazoTags } from 'state/types'
 import getTimePeriods from 'utils/getTimePeriods'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
@@ -39,7 +39,7 @@ const IazoCard: React.FC<iazoCardProps> = ({ iazo }) => {
     socialInfo,
     iazoTags,
   } = iazo
-  const { tokenImage } = socialInfo
+  const { tokenImage } = socialInfo as IazoSocialInfo
   const { activeTime, lockPeriod } = timeInfo
   const maxSpend = getBalanceNumber(new BigNumber(maxSpendPerBuyer), parseInt(baseToken.decimals)).toString()
   const totalRaiseFormated = getBalanceNumber(new BigNumber(status.totalBaseCollected), parseInt(baseToken.decimals))
@@ -60,7 +60,7 @@ const IazoCard: React.FC<iazoCardProps> = ({ iazo }) => {
         <TokenHeaderInformationWrapper>
           <TokenImage src={tokenImage} />
           {!isMobile && <TokenName color="white"> {iazoToken.name}</TokenName>}
-          <Badges badges={iazoTags} />
+          <Badges badges={iazoTags as IazoTags[]} />
         </TokenHeaderInformationWrapper>
         <TextBoxWrapper align="flex-end">
           {isMobile && <TokenName color="white"> {iazoToken.name}</TokenName>}

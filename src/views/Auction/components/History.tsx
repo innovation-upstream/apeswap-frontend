@@ -4,7 +4,6 @@ import { Text, ArrowBackIcon, ArrowForwardIcon } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { AuctionContext } from 'contexts/SSRContext'
-import { useGetNfaAuctionHistory } from 'hooks/api'
 import { useTranslation } from 'contexts/Localization'
 
 interface RowProps {

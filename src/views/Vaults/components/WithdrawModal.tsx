@@ -49,7 +49,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
             setPendingTx(true)
             await onConfirm(val)
             setPendingTx(false)
-            onDismiss()
+            onDismiss?.()
           }}
           endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
           style={{

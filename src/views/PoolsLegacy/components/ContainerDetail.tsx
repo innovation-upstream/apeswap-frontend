@@ -85,10 +85,11 @@ const ContainerDetail: React.FC<ExpandableSectionProps> = ({
 
   const earnings = new BigNumber(pendingReward || 0)
   const rawEarningsBalance = getBalanceNumber(earnings, tokenDecimals)
-  const totalUserStaked = personalValueStaked > 0 ? Number((personalValueStaked * stakedTokenPrice).toFixed(2)) : 0
+  const totalUserStaked =
+    Number(personalValueStaked) > 0 ? (Number(personalValueStaked) * Number(stakedTokenPrice)).toFixed(2) : 0
 
-  const timeUntilStart = getTimePeriods(blocksUntilStart * BSC_BLOCK_TIME)
-  const timeUntilEnd = getTimePeriods(blocksRemaining * BSC_BLOCK_TIME)
+  const timeUntilStart = getTimePeriods(Number(blocksUntilStart) * BSC_BLOCK_TIME)
+  const timeUntilEnd = getTimePeriods(Number(blocksRemaining) * BSC_BLOCK_TIME)
 
   return (
     <>
@@ -102,7 +103,7 @@ const ContainerDetail: React.FC<ExpandableSectionProps> = ({
             totalStakedFormated={totalStakedFormated}
             addLiquidityUrl={addLiquidityUrl}
             lpLabel={lpLabel}
-            totalUserStaked={totalUserStaked}
+            totalUserStaked={totalUserStaked as number}
             rawEarningsBalance={rawEarningsBalance}
             rewardTokenPrice={rewardTokenPrice}
             bscScanAddress={bscScanAddress}
@@ -125,7 +126,7 @@ const ContainerDetail: React.FC<ExpandableSectionProps> = ({
                 totalStakedFormated={totalStakedFormated}
                 addLiquidityUrl={addLiquidityUrl}
                 lpLabel={lpLabel}
-                totalUserStaked={totalUserStaked}
+                totalUserStaked={totalUserStaked as number}
                 rawEarningsBalance={rawEarningsBalance}
                 rewardTokenPrice={rewardTokenPrice}
                 bscScanAddress={bscScanAddress}

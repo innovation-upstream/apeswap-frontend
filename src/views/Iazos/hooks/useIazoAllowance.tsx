@@ -5,13 +5,13 @@ import { useEffect, useState } from 'react'
 
 const useIazoAllowance = (tokenAddress: string, iazoAddress: string, dependency?: boolean) => {
   const { account } = useWeb3React()
-  const [allowance, setAllowance] = useState(null)
+  const [allowance, setAllowance] = useState<any | null>(null)
   const tokenContract = useERC20(tokenAddress)
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await tokenContract.allowance(account, iazoAddress)
+        const res = await tokenContract.allowance(account as string, iazoAddress)
         setAllowance(new BigNumber(res?.toString()))
       } catch (e) {
         console.error(e)

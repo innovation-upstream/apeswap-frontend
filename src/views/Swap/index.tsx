@@ -57,7 +57,7 @@ export default function Swap() {
   const router = useRouter()
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { chainId } = useActiveWeb3React()
-  const [tradeValueUsd, setTradeValueUsd] = useState<number>(null)
+  const [tradeValueUsd, setTradeValueUsd] = useState<number | null>(null)
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -188,13 +188,13 @@ export default function Swap() {
       const isLp = false
       const isNative = trade?.inputAmount?.currency?.symbol === 'ETH'
       const usdVal = await getTokenUsdPrice(
-        chainId,
+        chainId as number,
         trade?.inputAmount?.currency instanceof Token ? trade?.inputAmount?.currency?.address : '',
-        trade?.inputAmount?.currency?.decimals,
+        trade?.inputAmount?.currency?.decimals as number,
         isLp,
         isNative,
       )
-      setTradeValueUsd(Number(trade?.inputAmount.toSignificant(6)) * usdVal)
+      setTradeValueUsd(Number(trade?.inputAmount.toSignificant(6)) * Number(usdVal))
     }
     getTradeVal()
   }, [setTradeValueUsd, chainId, trade])
@@ -236,7 +236,7 @@ export default function Swap() {
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
         track({
           event: 'swap',
-          value: tradeValueUsd,
+          value: tradeValueUsd as number,
           chain: chainId,
           data: {
             token1: trade?.inputAmount?.currency?.getSymbol(chainId),

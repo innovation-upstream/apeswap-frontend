@@ -14,7 +14,7 @@ export const CardContainer = styled(Card)`
 export const BillsImage = styled.div<{ image?: string }>`
   width: 270px;
   height: 150px;
-  background-image: ${({ image }) => `url(${image});`}
+  background-image: ${({ image }) => `url(${image});`};
   overflow: hidden;
   border-radius: 10px 10px 0px 0px;
   background-repeat: no-repeat;

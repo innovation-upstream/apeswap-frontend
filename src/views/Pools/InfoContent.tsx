@@ -12,19 +12,21 @@ const InfoContent: React.FC<{ pool: Pool }> = ({ pool }) => {
   const { chainId } = useActiveWeb3React()
   const { currentBlock } = useBlock()
   const { t } = useTranslation()
-  const timeUntilStart = getTimePeriods(Math.max(pool?.startBlock - currentBlock, 0) * BSC_BLOCK_TIME, true)
-  const timeUntilEnd = getTimePeriods(Math.max(pool?.endBlock - currentBlock, 0) * BSC_BLOCK_TIME, true)
-  const explorerLink = BLOCK_EXPLORER[chainId]
-  const contractLink = `${explorerLink}/address/${pool?.contractAddress[chainId]}`
-  const tokenContractLink = `${explorerLink}/address/${pool?.rewardToken?.address[chainId]}`
+  const timeUntilStart = getTimePeriods(Math.max((pool?.startBlock as number) - currentBlock, 0) * BSC_BLOCK_TIME, true)
+  const timeUntilEnd = getTimePeriods(Math.max((pool?.endBlock as number) - currentBlock, 0) * BSC_BLOCK_TIME, true)
+  const explorerLink = BLOCK_EXPLORER[chainId as number]
+  const contractLink = `${explorerLink}/address/${pool?.contractAddress[chainId as number]}`
+  const tokenContractLink = `${explorerLink}/address/${pool?.rewardToken?.address?.[chainId as number]}`
   return (
     <>
       <Flex flexDirection="column">
-        {pool?.endBlock > 0 && pool?.rewardToken?.symbol !== 'BANANA' && (
+        {Number(pool?.endBlock) > 0 && pool?.rewardToken?.symbol !== 'BANANA' && (
           <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
-            <Text style={{ fontSize: '14px' }}>{pool?.startBlock > currentBlock ? t('Starts in') : t('Ends in')}</Text>
+            <Text style={{ fontSize: '14px' }}>
+              {(pool?.startBlock as number) > currentBlock ? t('Starts in') : t('Ends in')}
+            </Text>
             <Text style={{ fontSize: '16px' }} bold>
-              {pool?.startBlock > currentBlock
+              {(pool?.startBlock as number) > currentBlock
                 ? `${timeUntilStart.days}d, ${timeUntilStart.hours}h, ${timeUntilStart.minutes}m`
                 : `${timeUntilEnd.days}d, ${timeUntilEnd.hours}h, ${timeUntilEnd.minutes}m`}
             </Text>

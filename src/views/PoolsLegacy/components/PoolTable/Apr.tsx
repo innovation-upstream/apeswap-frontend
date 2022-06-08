@@ -59,7 +59,7 @@ const Apr: React.FC<AprProps> = ({ hideButton = false, poolApr, earnToken, rewar
               rewardTokenName={earnToken}
               addLiquidityUrl="https://apeswap.finance/swap"
               rewardTokenPrice={rewardTokenPrice}
-              apy={apr.div(100)?.toNumber()}
+              apy={apr?.div(100)?.toNumber()}
             />
           )}
         </Flex>

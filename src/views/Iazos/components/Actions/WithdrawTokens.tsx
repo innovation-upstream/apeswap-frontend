@@ -17,8 +17,8 @@ interface ApproveCreateIazoProps {
 const WithdrawTokens: React.FC<ApproveCreateIazoProps> = ({ iazoAddress, onPendingClaim, tokenAddress }) => {
   const [pendingTrx, setPendingTrx] = useState(false)
   const { t } = useTranslation()
-  const { onWithdraw } = useWithdrawOfferTokens(iazoAddress)
-  const contractBalance = useAccountTokenBalance(iazoAddress, tokenAddress)?.toNumber()
+  const { onWithdraw } = useWithdrawOfferTokens(iazoAddress as string)
+  const contractBalance = useAccountTokenBalance(iazoAddress as string, tokenAddress as string)?.toNumber()
 
   return contractBalance > 0 ? (
     <StyledButton

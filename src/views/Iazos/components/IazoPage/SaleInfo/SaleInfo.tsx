@@ -17,7 +17,7 @@ const SaleInfo: React.FC<SaleInfoProps> = ({ iazo }) => {
     if (currentTabIndex === 0) {
       return <InfoTab iazo={iazo} />
     }
-    return <About description={socialInfo.description} />
+    return <About description={socialInfo?.description as string} />
   }
   return (
     <>

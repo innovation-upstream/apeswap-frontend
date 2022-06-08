@@ -27,7 +27,7 @@ import TransferBillModal from './TransferBillModal'
 import { StyledButton } from '../styles'
 
 interface BillModalProps {
-  onDismiss: () => void
+  onDismiss?: () => void
   bill: Bills
   billId: string
 }
@@ -40,13 +40,16 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
   const { token, quoteToken, earnToken, billType, lpToken, index, userOwnedBillsData, userOwnedBillsNftData } = bill
   const userOwnedBill = userOwnedBillsData?.find((b) => parseInt(b.id) === parseInt(billId))
   const userOwnedBillNftData = userOwnedBillsNftData?.find((b) => parseInt(b.tokenId) === parseInt(billId))
-  const pending = getBalanceNumber(new BigNumber(userOwnedBill?.payout), bill?.earnToken?.decimals)?.toFixed(4)
-  const pendingUsd = (parseFloat(pending) * bill?.earnTokenPrice)?.toFixed(2)
-  const claimable = getBalanceNumber(new BigNumber(userOwnedBill?.pendingRewards), bill?.earnToken?.decimals)?.toFixed(
+  const pending = getBalanceNumber(new BigNumber(userOwnedBill?.payout as string), bill?.earnToken?.decimals)?.toFixed(
     4,
   )
+  const pendingUsd = (parseFloat(pending) * (bill?.earnTokenPrice as number))?.toFixed(2)
+  const claimable = getBalanceNumber(
+    new BigNumber(userOwnedBill?.pendingRewards as string),
+    bill?.earnToken?.decimals,
+  )?.toFixed(4)
   const attributes = userOwnedBillNftData?.attributes?.filter((attrib) => BILL_ATTRIBUTES.includes(attrib.trait_type))
-  const claimableUsd = (parseFloat(claimable) * bill?.earnTokenPrice)?.toFixed(2)
+  const claimableUsd = (parseFloat(claimable) * (bill?.earnTokenPrice as number))?.toFixed(2)
   const [onPresentTransferBillModal] = useModal(
     <TransferBillModal bill={bill} billId={billId} onDismiss={onDismiss} />,
     true,
@@ -109,10 +112,10 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
             </Flex>
             <UserActionButtonsContainer>
               <Claim
-                billAddress={bill.contractAddress[chainId]}
+                billAddress={bill.contractAddress[chainId as number]}
                 billIds={[billId]}
                 buttonSize={218}
-                pendingRewards={userOwnedBill?.payout}
+                pendingRewards={userOwnedBill?.payout as string}
               />
               <StyledButton onClick={onPresentTransferBillModal} style={{ width: '218px' }}>
                 {t('Transfer')}
@@ -131,8 +134,8 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
               <TopDescriptionText width="auto">{t('Fully Vested')}</TopDescriptionText>
               <StyledHeadingText ml="10px" bold>
                 <VestedTimer
-                  lastBlockTimestamp={userOwnedBill?.lastBlockTimestamp}
-                  vesting={userOwnedBill?.vesting}
+                  lastBlockTimestamp={userOwnedBill?.lastBlockTimestamp as string}
+                  vesting={userOwnedBill?.vesting as string}
                   userModalFlag
                 />
               </StyledHeadingText>

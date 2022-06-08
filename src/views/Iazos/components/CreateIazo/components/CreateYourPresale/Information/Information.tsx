@@ -26,7 +26,7 @@ const Information: React.FC<InformationProps> = ({ onChange }) => {
     telegram: '',
     medium: '',
     description: '',
-    tokenLogo: null,
+    tokenLogo: null as any,
   })
 
   useEffect(() => {

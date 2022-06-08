@@ -26,10 +26,11 @@ interface HarvestActionsProps {
 const HarvestActions: React.FC<HarvestActionsProps> = ({ earnings, tokenDecimals, sousId }) => {
   const { t } = useTranslation()
   const earningTokenBalance = getBalanceNumber(earnings, tokenDecimals)
-  const rewardRef = useRef(null)
+  const rewardRef = useRef<any | null>(null)
   const [pendingTx, setPendingTx] = useState(false)
   const [typeOfReward, setTypeOfReward] = useState('rewardBanana')
   const onReward = useReward(rewardRef, useNfaStakingHarvest(sousId).onReward)
+  console.log('rewardRef', rewardRef)
 
   const renderButton = () => {
     return (
@@ -40,7 +41,7 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({ earnings, tokenDecimals
           setTypeOfReward('rewardBanana')
           await onReward().catch(() => {
             setTypeOfReward('error')
-            rewardRef.current?.rewardMe()
+            rewardRef?.current?.rewardMe()
           })
           setPendingTx(false)
         }}

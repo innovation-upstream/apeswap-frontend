@@ -12,20 +12,19 @@ export const Container = styled.div`
   max-height: 100vh;
   overflow: scroll;
   overflow-x: hidden;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-}
-::-webkit-scrollbar {
-  width: 0; 
-  background: transparent;  
-}
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  ::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
 `
 
 export const BillsImage = styled.div<{ image?: string }>`
   width: 250px;
   align-self: center;
   height: 141px;
-  background-image: ${({ image }) => `url(${image});`}
+  background-image: ${({ image }) => `url(${image});`};
   background-repeat: no-repeat;
   background-size: 100% 100%;
   margin-top: 30px;

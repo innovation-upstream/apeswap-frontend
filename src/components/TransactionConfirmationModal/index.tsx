@@ -47,7 +47,7 @@ function TransactionSubmittedContent({
   hash,
   currencyToAdd,
 }: {
-  onDismiss: () => void
+  onDismiss?: () => void
   hash: string | undefined
   chainId: ChainId
   currencyToAdd?: Currency | undefined
@@ -78,7 +78,7 @@ function TransactionSubmittedContent({
             }
           >
             <RowFixed>
-              <Text>{t(`Add %symbol% to Metamask`, { symbol: currencyToAdd.getSymbol(chainId) })}</Text>
+              <Text>{t(`Add %symbol% to Metamask`, { symbol: currencyToAdd.getSymbol(chainId) as string })}</Text>
               <MetamaskIcon width="16px" ml="6px" />
             </RowFixed>{' '}
           </Button>

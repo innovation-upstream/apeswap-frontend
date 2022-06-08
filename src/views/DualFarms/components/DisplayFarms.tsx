@@ -25,21 +25,21 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number }> = ({ farms
     const polygonScanUrl = `https://polygonscan.com/address/${farm.stakeTokenAddress}`
 
     const liquidityUrl = `https://apeswap.finance/add/${
-      farm?.stakeTokens?.token0?.symbol === 'MATIC' ? 'ETH' : farm?.stakeTokens?.token0?.address[chainId]
-    }/${farm?.stakeTokens?.token1?.address[chainId]}`
+      farm?.stakeTokens?.token0?.symbol === 'MATIC' ? 'ETH' : farm?.stakeTokens?.token0?.address?.[chainId as number]
+    }/${farm?.stakeTokens?.token1?.address?.[chainId as number]}`
     const userAllowance = farm?.userData?.allowance
     const userEarningsMiniChef = getBalanceNumber(farm?.userData?.miniChefEarnings || new BigNumber(0)).toFixed(2)
     const userEarningsRewarder = getBalanceNumber(farm?.userData?.rewarderEarnings || new BigNumber(0)).toFixed(2)
     const userEarningsUsd = `$${(
-      getBalanceNumber(farm?.userData?.miniChefEarnings || new BigNumber(0)) * farm?.rewardToken0Price +
-      getBalanceNumber(farm?.userData?.rewarderEarnings || new BigNumber(0)) * farm?.rewardToken1Price
+      getBalanceNumber(farm?.userData?.miniChefEarnings || new BigNumber(0)) * (farm?.rewardToken0Price as number) +
+      getBalanceNumber(farm?.userData?.rewarderEarnings || new BigNumber(0)) * (farm?.rewardToken1Price as number)
     ).toFixed(2)}`
     const userTokenBalance = `${getBalanceNumber(farm?.userData?.tokenBalance || new BigNumber(0))?.toFixed(6)} LP`
 
     const lpValueUsd = farm?.stakeTokenPrice
 
     const userTokenBalanceUsd = `$${(
-      getBalanceNumber(farm?.userData?.tokenBalance || new BigNumber(0)) * lpValueUsd
+      getBalanceNumber(farm?.userData?.tokenBalance || new BigNumber(0)) * (lpValueUsd as number)
     ).toFixed(2)}`
     // Changing tooltip placement conditionaly until zindex solution
     return {
@@ -64,7 +64,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number }> = ({ farms
             <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
               <Text style={{ fontSize: '12px' }}>Multiplier</Text>
               <Text bold style={{ fontSize: '12px' }}>
-                {Math.round(parseFloat(farm.multiplier) * 1000) / 100}X
+                {Math.round(parseFloat(farm?.multiplier as string) * 1000) / 100}X
               </Text>
             </Flex>
             <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
@@ -85,7 +85,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number }> = ({ farms
         <>
           <ListViewContent
             title={t('APY')}
-            value={parseFloat(farm?.apy) > 1000000 ? `>1,000,000%` : `${farm?.apy}%`}
+            value={parseFloat(farm?.apy as string) > 1000000 ? `>1,000,000%` : `${farm?.apy}%`}
             width={isMobile ? 90 : 150}
             ml={20}
             toolTip={t(
@@ -97,7 +97,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number }> = ({ farms
           <ListViewContent
             title={t('APR')}
             value={`${farm?.apr ? farm?.apr.toFixed(2) : 0}%`}
-            value2={`${parseFloat(farm?.lpApr).toFixed(2)}%`}
+            value2={`${parseFloat(farm?.lpApr as string).toFixed(2)}%`}
             value2Icon={
               <span style={{ marginRight: '7px' }}>
                 <Svg icon="swap" width={13} color="text" />
@@ -119,7 +119,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number }> = ({ farms
                 lpLabel={`${farm?.stakeTokens?.token1?.symbol}-${farm?.stakeTokens?.token0?.symbol}`}
                 rewardTokenName="BANANA"
                 rewardTokenPrice={farm.rewardToken0Price}
-                apy={farm?.apr / 100 + parseFloat(farm?.lpApr) / 100}
+                apy={(farm?.apr as number) / 100 + parseFloat(farm?.lpApr as string) / 100}
                 addLiquidityUrl={liquidityUrl}
               />
             }
@@ -145,7 +145,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number }> = ({ farms
               farm?.dualImage !== false ? (
                 <ServiceTokenDisplayContainer>
                   <ServiceTokenDisplay
-                    token1={farm.pid === 11 ? 'NFTY2' : farm?.rewardTokens.token1.symbol}
+                    token1={farm.pid === 11 ? 'NFTY2' : (farm?.rewardTokens?.token1?.symbol as string)}
                     size={15}
                   />
                 </ServiceTokenDisplayContainer>
@@ -188,11 +188,11 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number }> = ({ farms
           </ActionContainer>
           {!isMobile && <NextArrow />}
           <CardActions
-            allowance={userAllowance?.toString()}
-            stakedBalance={farm?.userData?.stakedBalance?.toString()}
-            stakingTokenBalance={farm?.userData?.tokenBalance?.toString()}
+            allowance={userAllowance?.toString() as string}
+            stakedBalance={farm?.userData?.stakedBalance?.toString() as string}
+            stakingTokenBalance={farm?.userData?.tokenBalance?.toString() as string}
             stakeLpAddress={farm?.stakeTokenAddress}
-            lpValueUsd={lpValueUsd}
+            lpValueUsd={lpValueUsd as number}
             pid={farm.pid}
           />
           {!isMobile && <NextArrow />}

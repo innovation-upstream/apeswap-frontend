@@ -91,20 +91,22 @@ const Detail: React.FC<ExpandableSectionProps> = ({
 
   return (
     <>
-      {blocksUntilStart > 0 && (
+      {Number(blocksUntilStart) > 0 && (
         <>
           <StyledText fontSize="12px">{t('Start')}</StyledText>
-          <StyledText fontSize="12px">{`${timeUntilStart.days}d, ${timeUntilStart.hours}h, ${timeUntilStart.minutes}m`}</StyledText>
+          <StyledText fontSize="12px">{`${timeUntilStart?.days}d, ${timeUntilStart?.hours}h, ${timeUntilStart?.minutes}m`}</StyledText>
         </>
       )}
-      {blocksUntilStart === 0 && blocksRemaining > 0 && (
+      {blocksUntilStart === 0 && Number(blocksRemaining) > 0 && (
         <>
           <Flex justifyContent="space-between">
             <StyledText fontSize="12px">{t('End')}</StyledText>
             <StyledText fontSize="12px">
-              {rewardToken.symbol === 'BANANA'
+              {rewardToken?.symbol === 'BANANA'
                 ? t('Never')
-                : `${timeUntilEnd.days + timeUntilEnd.months * 30}d, ${timeUntilEnd.hours}h, ${timeUntilEnd.minutes}m`}
+                : `${Number(timeUntilEnd?.days) + Number(timeUntilEnd?.months) * 30}d, ${timeUntilEnd?.hours}h, ${
+                    timeUntilEnd?.minutes
+                  }m`}
             </StyledText>
           </Flex>
         </>
@@ -125,7 +127,9 @@ const Detail: React.FC<ExpandableSectionProps> = ({
       </Flex>
       <Flex justifyContent="space-between">
         <StyledText fontSize="12px">{t('Earned Value')}:</StyledText>
-        <StyledTextGreen fontSize="12px">${(rawEarningsBalance * rewardTokenPrice).toFixed(2)}</StyledTextGreen>
+        <StyledTextGreen fontSize="12px">
+          ${(Number(rawEarningsBalance) * Number(rewardTokenPrice)).toFixed(2)}
+        </StyledTextGreen>
       </Flex>
       <Flex justifyContent="center">
         <StyledLink external href={bscScanAddress} bold={false} className="noClick">
@@ -143,9 +147,9 @@ const Detail: React.FC<ExpandableSectionProps> = ({
           className="noClick"
           onClick={() =>
             registerToken(
-              rewardToken?.address[chainId],
-              rewardToken?.symbol,
-              rewardToken?.decimals,
+              rewardToken?.address[chainId as string],
+              rewardToken?.symbol as string,
+              rewardToken?.decimals as number,
               `${URLactual}/images/tokens/${imageToken || `${rewardToken?.symbol}.svg`}`,
             )
           }

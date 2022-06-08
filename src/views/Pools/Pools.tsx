@@ -54,14 +54,14 @@ const Pools: React.FC<IPools> = ({ showHistory, id }) => {
         rootMargin: '0px',
         threshold: 1,
       })
-      loadMoreObserver.observe(loadMoreRef.current)
+      loadMoreObserver.observe(loadMoreRef?.current as Element)
       setObserverIsSet(true)
     }
   }, [observerIsSet])
 
   const allNonAdminPools = allPools.filter((pool) => !pool.forAdmins && pool?.poolCategory !== PoolCategory.JUNGLE)
   const curPools = allNonAdminPools.map((pool) => {
-    return { ...pool, isFinished: pool.sousId === 0 ? false : pool.isFinished || currentBlock > pool.endBlock }
+    return { ...pool, isFinished: pool.sousId === 0 ? false : pool.isFinished || currentBlock > Number(pool?.endBlock) }
   })
 
   const [finishedPools, openPools] = partition(curPools, (pool) => pool.isFinished)
@@ -91,7 +91,7 @@ const Pools: React.FC<IPools> = ({ showHistory, id }) => {
       case 'totalStaked':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => getBalanceNumber(pool.totalStaked) * pool.stakingToken?.price,
+          (pool: Pool) => getBalanceNumber(pool?.totalStaked as BigNumber) * (pool?.stakingToken?.price as number),
           'desc',
         )
       default:
@@ -109,12 +109,12 @@ const Pools: React.FC<IPools> = ({ showHistory, id }) => {
       if (poolCheck) {
         chosenPools = [
           openPools?.find((pool) => {
-            return pool.sousId === urlSearchedPool
+            return pool?.sousId === urlSearchedPool
           }),
           ...openPools?.filter((pool) => {
             return pool.sousId !== urlSearchedPool
           }),
-        ]
+        ] as any
       }
     }
 

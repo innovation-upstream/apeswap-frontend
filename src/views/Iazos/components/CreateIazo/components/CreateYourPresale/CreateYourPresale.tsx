@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import UnlockButton from 'components/UnlockButton'
 import { IazoDefaultSettings } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
-import { PresaleData } from './types'
+import { ExtendedERC20Details, LiquidityLockDetails, PresaleData, TokenSaleDetails } from './types'
 import PairCreation from './PairCreation/PairCreation'
 import DateSelection from './DateSelection/DateSelection'
 import PresaleDetails from './PresaleDetails/PresaleDetails'
@@ -27,7 +27,7 @@ interface CreateIazoProps {
 }
 
 const CreateIazo: React.FC<CreateIazoProps> = ({ settings }) => {
-  const { baseFee, iazoTokenFee } = settings !== null && settings
+  const { baseFee, iazoTokenFee } = settings
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const [presaleData, setPresaleData] = useState<PresaleData>()
@@ -81,21 +81,24 @@ const CreateIazo: React.FC<CreateIazoProps> = ({ settings }) => {
       )}
       {stepper.pairCreated && (
         <>
-          <PresaleDetails onChange={onPresaleDetails} pairTokenDetails={presaleData.pairCreation} />
+          <PresaleDetails
+            onChange={onPresaleDetails}
+            pairTokenDetails={presaleData?.pairCreation as ExtendedERC20Details}
+          />
           <DateSelection onChange={onDateSelection} />
           <PostSaleDetails
             onChange={onPostsaleDetails}
-            quoteTokenSymbol={presaleData.pairCreation.quoteToken}
-            presalePrice={presaleData?.presaleTokenDetails?.pricePerToken}
+            quoteTokenSymbol={presaleData?.pairCreation?.quoteToken as string}
+            presalePrice={presaleData?.presaleTokenDetails?.pricePerToken as string}
           />
         </>
       )}
       {presaleStepsCompleted && (
         <>
           <SaleReview
-            presaleDetails={presaleData.presaleTokenDetails}
-            postsaleDetails={presaleData.postsaleDetails}
-            pairDetails={presaleData.pairCreation}
+            presaleDetails={presaleData?.presaleTokenDetails as TokenSaleDetails}
+            postsaleDetails={presaleData?.postsaleDetails as LiquidityLockDetails}
+            pairDetails={presaleData?.pairCreation as ExtendedERC20Details}
             iazoTokenFee={iazoTokenFee}
             baseFee={baseFee}
           />
@@ -103,7 +106,7 @@ const CreateIazo: React.FC<CreateIazoProps> = ({ settings }) => {
         </>
       )}
       {presaleStepsCompleted && stepper.informationStepCompleted && (
-        <Actions presaleData={presaleData} settings={settings} />
+        <Actions presaleData={presaleData as PresaleData} settings={settings} />
       )}
     </LaunchPadInfoWrapper>
   )

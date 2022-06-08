@@ -14,6 +14,7 @@ import getTimePeriods from 'utils/getTimePeriods'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Toggle } from '@apeswapfinance/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { Contract } from 'ethers'
 import IfoCardHeader from '../CardHeader/IfoCardHeader'
 import IfoCardProgress from '../CardProgress/IfoCardProgress'
 import IfoCardDetails from '../CardDetails/IfoCardDetails'
@@ -110,12 +111,12 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
           name: 'totalAmount',
         },
       ]
-      const [startBlock, endBlock, raisingAmount, totalAmount] = await multicall(chainId, ifoAbi, calls)
+      const [startBlock, endBlock, raisingAmount, totalAmount] = await multicall(chainId as number, ifoAbi, calls)
 
       const startBlockNum = start || parseInt(startBlock, 10)
       const endBlockNum = parseInt(endBlock, 10)
 
-      const status = getStatus(currentBlock, startBlockNum, endBlockNum)
+      const status: any = getStatus(currentBlock, startBlockNum, endBlockNum)
       const blocksRemaining = endBlockNum - currentBlock
 
       setState({
@@ -134,7 +135,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
     fetchProgress()
   }, [currentBlock, contract, releaseBlockNumber, start, address, chainId])
 
-  const { userTokenStatus, userInfo, offeringTokenBalance } = useUserInfo(contract, tokenDecimals, address)
+  const { userTokenStatus, userInfo, offeringTokenBalance } = useUserInfo(contract as Contract, tokenDecimals, address)
 
   const isComingSoon = state.status === 'coming_soon'
   const isActive = state.status === 'live'
@@ -238,7 +239,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
         isLP={!!burnedTxUrl}
         isComingSoon={!address}
         isLoading={state.isLoading}
-        status={state.status}
+        status={state?.status as any}
         secondsUntilStart={state.secondsUntilStart}
         secondsUntilEnd={state.secondsUntilEnd}
       />
@@ -256,7 +257,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
             address={address}
             currency={currency}
             currencyAddress={currencyAddress}
-            contract={contract}
+            contract={contract as Contract}
             amountContributed={getBalanceNumber(userInfo.amount, 18)}
             tokenDecimals={tokenDecimals}
             isActive={isActive}

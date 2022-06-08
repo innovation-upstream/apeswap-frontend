@@ -60,6 +60,7 @@ const HeadingText = styled(Text)`
     height: 80px;
     font-size: 40px;
     line-height: 20px;
+  }
   ${({ theme }) => theme.mediaQueries.xl} {
     top: 80px;
     margin-right: 525px;

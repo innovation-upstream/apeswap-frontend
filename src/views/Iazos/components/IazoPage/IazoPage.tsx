@@ -4,6 +4,7 @@ import { Flex, Spinner } from '@apeswapfinance/uikit'
 import Banner from 'components/Banner'
 import { useFetchIazo, useIazos } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
+import { Iazo } from 'config/abi/types'
 import TokenInfoCard from './TokenInfoCard'
 import SaleStatus from './SaleStatus/SaleStatus'
 import SaleInfo from './SaleInfo/SaleInfo'
@@ -29,7 +30,7 @@ const IazoPage: React.FC = () => {
     maxSpendPerBuyer,
     iazoState,
     iazoOwnerAddress,
-  } = isInitialized && iazo
+  } = isInitialized && (iazo as any)
   const { tokenImage, website } = isInitialized && socialInfo
   return (
     <>
@@ -75,7 +76,7 @@ const IazoPage: React.FC = () => {
                 </SpinnerHolder>
               )}
             </BeforeSaleWrapper>
-            {(isInitialized || iazo) && <SaleInfo iazo={iazo} />}
+            {(isInitialized || iazo) && <SaleInfo iazo={iazo as any} />}
           </LaunchPadWrapper>
         </Flex>
       </PageWrapper>

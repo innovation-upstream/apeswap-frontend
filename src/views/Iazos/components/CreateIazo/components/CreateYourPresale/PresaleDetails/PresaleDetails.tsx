@@ -22,17 +22,17 @@ const PresaleDetails: React.FC<PresaleDataProps> = ({ pairTokenDetails, onChange
   const bgColor = isDark ? '#383838' : '#F1EADA'
   const { tokenSymbol, quoteToken, userBalance, tokenDecimals } = pairTokenDetails
   const [tokenDetails, setTokenDetails] = useState<TokenSaleDetails>({
-    tokensForSale: null,
-    pricePerToken: null,
-    limitPerUser: null,
-    softcap: null,
+    tokensForSale: null as any,
+    pricePerToken: null as any,
+    limitPerUser: null as any,
+    softcap: null as any,
     burnRemains: false,
   })
   const balance = getBalanceNumber(new BigNumber(userBalance), tokenDecimals)
   const { t } = useTranslation()
 
   useEffect(() => {
-    onChange(tokenDetails)
+    onChange?.(tokenDetails)
   }, [tokenDetails, onChange])
 
   return (

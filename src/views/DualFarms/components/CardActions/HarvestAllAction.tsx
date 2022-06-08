@@ -14,7 +14,7 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onReward } = useAllHarvest(pids, chainId)
+  const { onReward } = useAllHarvest(pids, chainId as number)
 
   return (
     <ActionContainer>

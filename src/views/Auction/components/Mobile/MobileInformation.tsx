@@ -27,11 +27,11 @@ const MoreInformation = styled(Text)`
   padding-right: 10px;
 `
 
-const MobileInformation: React.FC<MobileInformationProps> = ({ onClick, expanded }) => {
+const MobileInformation: React.FC<MobileInformationProps> = ({ expanded }) => {
   const { t } = useTranslation()
   return (
     <>
-      <DropDownWrapper onClick={() => onClick()}>
+      <DropDownWrapper>
         <MoreInformation>{t('Information')}</MoreInformation>
         {expanded ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
       </DropDownWrapper>

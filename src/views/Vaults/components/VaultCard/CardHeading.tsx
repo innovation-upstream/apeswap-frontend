@@ -231,14 +231,14 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   image,
 }) => {
   const { t } = useTranslation()
-  const { userData, isPair, token0, token1, pid, burning } = vault
+  const { userData, isPair, token0, token1, pid, burning }: any = vault
   const stakingTokenBalance = new BigNumber(userData?.tokenBalance || 0)
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const allowance = new BigNumber(userData?.allowance || 0)
   const isLoading = !vault?.userData
   const needsApproval = !allowance.gt(0)
-  const lpLabel = vault.isPair ? `${vault?.token1?.symbol}-${vault?.token0?.symbol}` : vault?.token0?.symbol
+  const lpLabel = vault?.isPair ? `${vault?.token1?.symbol}-${vault?.token0?.symbol}` : vault?.token0?.symbol
   const { isXl } = useMatchBreakpoints()
   const isDesktop = isXl
   const { account } = useWeb3React()
@@ -248,12 +248,12 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       return <StyledUnlockButton size="sm" />
     }
     if (needsApproval) {
-      return <ApprovalAction stakingContractAddress={stakingTokenAddress} pid={pid} isLoading={isLoading} />
+      return <ApprovalAction stakingContractAddress={stakingTokenAddress as string} pid={pid} isLoading={isLoading} />
     }
     if (!needsApproval && !accountHasStakedBalance) {
       return (
         <StakeAction
-          vault={vault}
+          vault={vault as any}
           stakingTokenBalance={stakingTokenBalance}
           stakedBalance={stakedBalance}
           isStaked={accountHasStakedBalance}
@@ -266,7 +266,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
     if (!needsApproval && accountHasStakedBalance) {
       return (
         <StakeAction
-          vault={vault}
+          vault={vault as any}
           stakingTokenBalance={stakingTokenBalance}
           stakedBalance={stakedBalance}
           isStaked={accountHasStakedBalance}
@@ -363,8 +363,8 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
               </StyledText2>
             </Flex>
             <StyledText3>
-              {new BigNumber(vault?.userData?.stakedBalance).gt(0)
-                ? getBalanceNumber(new BigNumber(vault?.userData?.stakedBalance)).toFixed(4)
+              {new BigNumber(vault?.userData?.stakedBalance as string).gt(0)
+                ? getBalanceNumber(new BigNumber(vault?.userData?.stakedBalance as string)).toFixed(4)
                 : '?'}
             </StyledText3>
           </StyledFlexEarned>

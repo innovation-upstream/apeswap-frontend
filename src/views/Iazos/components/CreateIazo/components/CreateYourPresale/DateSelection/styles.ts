@@ -44,8 +44,8 @@ export const StyledSubText = styled(Text)`
 export const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  aling-items: flex-start;
-  height 80px;
+  align-items: flex-start;
+  height: 80px;
   width: 400px;
   margin-left: 35px;
 `

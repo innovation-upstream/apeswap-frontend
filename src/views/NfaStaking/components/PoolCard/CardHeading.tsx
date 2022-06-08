@@ -295,17 +295,17 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   showExpandableSection,
 }) => {
   const { t } = useTranslation()
-  const { userData, tokenPerBlock, totalStaked } = pool
+  const { userData, tokenPerBlock, totalStaked }: any = pool
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
-  const earnings = new BigNumber(pool.userData?.pendingReward || 0)
+  const earnings = new BigNumber(pool?.userData?.pendingReward || 0)
   const allowance = userData?.allowance
   const rawEarningsBalance = getBalanceNumber(earnings, 18)
   const displayBalance = rawEarningsBalance
     ? rawEarningsBalance.toLocaleString(undefined, { maximumFractionDigits: 4 })
     : '?'
-  const isLoading = !pool.userData
+  const isLoading = !pool?.userData
   const { account } = useWeb3React()
   const bananaPerDay = BLOCKS_PER_DAY.times(new BigNumber(tokenPerBlock)).div(totalStaked).toFixed(3)
 
@@ -315,22 +315,26 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
     }
     if (!allowance) {
       return (
-        <ApprovalAction nfaStakingPoolContract={pool.contractAddress[CHAIN_ID]} sousId={sousId} isLoading={isLoading} />
+        <ApprovalAction
+          nfaStakingPoolContract={pool?.contractAddress[CHAIN_ID as string]}
+          sousId={sousId as number}
+          isLoading={isLoading}
+        />
       )
     }
     if (allowance && !accountHasStakedBalance) {
       return (
         <StakeAction
-          pool={pool}
+          pool={pool as NfaStakingPool}
           stakingTokenBalance={stakingTokenBalance}
           stakedBalance={stakedBalance}
           isStaked={accountHasStakedBalance}
           firstStake={!accountHasStakedBalance}
-          tier={tier}
+          tier={tier as number}
         />
       )
     }
-    return <HarvestActions earnings={earnings} sousId={sousId} isLoading={isLoading} tokenDecimals={18} />
+    return <HarvestActions earnings={earnings} sousId={sousId as number} isLoading={isLoading} tokenDecimals={18} />
   }
 
   return (
@@ -340,7 +344,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
           <NumberHolder>
             <StyledNumber>{tier}</StyledNumber>
           </NumberHolder>
-          <Image rarityTier={tier} borderRadius="50%" hideTier />
+          <Image rarityTier={tier as number} borderRadius="50%" hideTier />
         </StyledImageHolder>
         <StyledArrow src="/images/arrow.svg" alt="arrow" />
         <StyledImage src={`/images/tokens/${earnTokenImage || `${earnToken}.svg`}`} alt={earnToken} />

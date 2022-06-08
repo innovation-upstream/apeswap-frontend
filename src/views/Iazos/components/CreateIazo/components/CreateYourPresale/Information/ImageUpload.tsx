@@ -15,7 +15,7 @@ interface ImageUploadProps {
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ title, onChange }) => {
   const fileDrop = useRef(null)
-  const [file, setFile] = useState<FileProps>(null)
+  const [file, setFile] = useState<FileProps | null>(null)
   const { t } = useTranslation()
 
   const onSetFile = (e) => {

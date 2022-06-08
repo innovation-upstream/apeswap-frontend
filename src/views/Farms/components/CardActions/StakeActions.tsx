@@ -61,14 +61,14 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
             const trxHash = resp.transactionHash
             toastSuccess(t('Deposit Successful'), {
               text: t('View Transaction'),
-              url: getEtherscanLink(trxHash, 'transaction', chainId),
+              url: getEtherscanLink(trxHash, 'transaction', chainId as number),
             })
           })
           .catch((e) => {
             console.error(e)
             setPendingDepositTrx(false)
           })
-        dispatch(fetchFarmUserDataAsync(chainId, account))
+        dispatch(fetchFarmUserDataAsync(chainId as number, account as string))
         setPendingDepositTrx(false)
       }}
     />,
@@ -84,7 +84,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
             const trxHash = resp.transactionHash
             toastSuccess(
               t('Withdraw Successful'),
-              <LinkExternal href={getEtherscanLink(trxHash, 'transaction', chainId)}>
+              <LinkExternal href={getEtherscanLink(trxHash, 'transaction', chainId as number)}>
                 <Text> {t('View Transaction')} </Text>
               </LinkExternal>,
             )
@@ -93,7 +93,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
             console.error(e)
             setPendingWithdrawTrx(false)
           })
-        dispatch(fetchFarmUserDataAsync(chainId, account))
+        dispatch(fetchFarmUserDataAsync(chainId as number, account as string))
         setPendingWithdrawTrx(false)
       }}
     />,

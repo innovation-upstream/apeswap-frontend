@@ -1,3 +1,4 @@
+import { Nft } from 'config/constants/types'
 import React from 'react'
 import { Auction } from 'state/types'
 import HistoryCard from './AuctionCardVarients/HistoryCard'
@@ -28,7 +29,7 @@ const AuctionCard: React.FC<AuctionCardProps> = ({
       )
     }
     if (activeAuctionId < auction.auctionId && activeAuctionId !== 0) {
-      return <QueuedCard nfa={auction.nfa} seller={auction.seller} />
+      return <QueuedCard nfa={auction?.nfa as Nft} seller={auction.seller} />
     }
     return <HistoryCard auction={auction} />
   }
