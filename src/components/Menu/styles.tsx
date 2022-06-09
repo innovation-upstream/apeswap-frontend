@@ -7,7 +7,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'space-between',
     px: ['25px', '25px', '20px'],
   },
-  last: {
+  overlay: {
     display: ['none', 'block', 'block'],
     position: 'fixed',
     width: '100%',

@@ -49,7 +49,7 @@ const BillMenu: React.FC<ListViewProps> = ({ onHandleQueryChange, onSetSortOptio
         </Select>
       </Flex>
       <Link href="?modal=bills" shallow>
-        <Button sx={{ LearnMoreButton }} variant="secondary">
+        <Button sx={LearnMoreButton} variant="secondary">
           {' '}
           {t('Learn More').toUpperCase()}{' '}
         </Button>

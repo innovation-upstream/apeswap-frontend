@@ -6,7 +6,7 @@ import { MenuContext } from '@innovationupstream/apeswap-uikit'
 import { Svg, Text, IconButton } from '@ape.swap/uikit'
 import { NetworkButton } from 'components/NetworkButton'
 import { NextLink } from './Link'
-import { menuItemContainer, linkStyle, menuMobile, dropdown } from './styles'
+import { menuItemContainer, linkStyle, menuMobile, dropdown, buttonSection } from './styles'
 
 interface MobileMenuProps {
   items: {
@@ -38,7 +38,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
           animate={{ height: 'fit-content' }}
           transition={{ height: { duration: 0.3 } }}
           exit={{ height: 0 }}
-          sx={{ menuMobile }}
+          sx={menuMobile}
         >
           {items?.map((item) => {
             const { label, href, items: subItems } = item
@@ -127,14 +127,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
               </>
             )
           })}
-          <Flex
-            sx={{
-              justifyContent: 'center',
-              py: '30px',
-              columnGap: '20px',
-              background: 'navbar',
-            }}
-          >
+          <Flex sx={buttonSection}>
             <a href="https://twitter.com/ape_swap" target="_blank" rel="noopener noreferrer">
               <IconButton
                 variant="primary"

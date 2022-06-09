@@ -125,6 +125,12 @@ export const connectButtonIcon = {
   top: '50%',
   transform: 'translateY(-50%)',
 } as any
+export const buttonSection = {
+  justifyContent: 'center',
+  py: '30px',
+  columnGap: '20px',
+  background: 'navbar',
+}
 
 interface Props {
   account?: string

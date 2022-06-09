@@ -100,11 +100,11 @@ const Menu: React.FC<{ chain?: number }> = () => {
     }
   }, [])
 
-  const buttonStyle = dynamicStyles.userBlockBtn({ showMenu })
+  const menuStyle = dynamicStyles.userBlockBtn({ showMenu })
 
   return (
     <>
-      <Box sx={buttonStyle}>
+      <Box sx={menuStyle}>
         <Flex sx={styles.headerSetting}>
           <Flex sx={{ columnGap: '40px', height: '100%' }}>
             <Link href="/">
@@ -126,7 +126,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
         </Flex>
         {isMobile && <MobileMenu items={currentMenu(t) as any} />}
       </Box>
-      {!collapse && <Box onClick={() => setCollapse(true)} sx={styles.last} />}
+      {!collapse && <Box onClick={() => setCollapse(true)} sx={styles.overlay} />}
     </>
   )
 }
