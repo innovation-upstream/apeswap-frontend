@@ -11,7 +11,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   const initialProps = await getServerSideGenericProps({ ...context, store })
   const chainId = initialProps?.props?.chainId
 
-  const registeredIazo = []
+  const registeredIazo = [{}]
   try {
     const iaoData = await fetchIazosFromApi(chainId)
     await Promise.all(

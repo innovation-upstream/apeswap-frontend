@@ -19,13 +19,13 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   const { query } = context
   const chainId = initialProps?.props?.chainId
 
-  let farmData = []
-  let dualFarmsData = []
+  let farmData = [{}]
+  let dualFarmsData = [{}]
 
   try {
     const tokenPrices = await fetchPrices(chainId)
     const bananaPrice = (
-      new BigNumber(tokenPrices?.find((token) => token.symbol === 'BANANA')?.price) || new BigNumber(0)
+      new BigNumber(tokenPrices?.find((token) => token.symbol === 'BANANA')?.price as number) || new BigNumber(0)
     ).toString()
     const [lpTokenPrices, farmLpAprs] = await Promise.all([fetchLpPrices(chainId), fetchFarmLpAprs(chainId)])
     if (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
@@ -36,6 +36,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   } catch (e) {
     console.warn(e)
   }
+
   store.dispatch(setFarmsPublicData(JSON.parse(JSON.stringify(farmData))))
   store.dispatch(setDualFarmsPublicData(JSON.parse(JSON.stringify(dualFarmsData))))
 

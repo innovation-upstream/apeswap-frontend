@@ -11,7 +11,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   const initialProps = await getServerSideGenericProps(context)
   const chainId = initialProps?.props?.chainId
 
-  let vaultData = []
+  let vaultData = [{}]
   try {
     const tokenPrices = await fetchPrices(chainId)
     vaultData = await fetchVaultData(chainId, tokenPrices)

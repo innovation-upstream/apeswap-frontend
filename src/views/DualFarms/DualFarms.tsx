@@ -79,7 +79,7 @@ const DualFarms: React.FC<IDualFarms> = ({ pid, showHistory }) => {
         rootMargin: '0px',
         threshold: 1,
       })
-      loadMoreObserver.observe(loadMoreRef.current)
+      loadMoreObserver.observe(loadMoreRef.current as Element)
       setObserverIsSet(true)
     }
   }, [observerIsSet])
@@ -95,12 +95,12 @@ const DualFarms: React.FC<IDualFarms> = ({ pid, showHistory }) => {
       if (farmCheck) {
         farms = [
           activeFarms?.find((farm) => {
-            return farm.pid === urlSearchedFarm
+            return farm?.pid === urlSearchedFarm
           }),
           ...activeFarms?.filter((farm) => {
-            return farm.pid !== urlSearchedFarm
+            return farm?.pid !== urlSearchedFarm
           }),
-        ]
+        ] as any
       }
     }
 
@@ -127,7 +127,7 @@ const DualFarms: React.FC<IDualFarms> = ({ pid, showHistory }) => {
           )
           .slice(0, numberOfFarmsVisible)
       case 'apr':
-        return orderBy(farms, (farm) => parseFloat(farm.apy), 'desc').slice(0, numberOfFarmsVisible)
+        return orderBy(farms, (farm) => parseFloat(farm?.apy as string), 'desc').slice(0, numberOfFarmsVisible)
       case 'new':
         return farms
       case 'blueChips':
@@ -139,7 +139,10 @@ const DualFarms: React.FC<IDualFarms> = ({ pid, showHistory }) => {
           )
           .slice(0, numberOfFarmsVisible)
       case 'liquidity':
-        return orderBy(farms, (farm: DualFarm) => parseFloat(farm.totalStaked), 'desc').slice(0, numberOfFarmsVisible)
+        return orderBy(farms, (farm: DualFarm) => parseFloat(farm?.totalStaked as string), 'desc').slice(
+          0,
+          numberOfFarmsVisible,
+        )
       default:
         return farms.slice(0, numberOfFarmsVisible)
     }
