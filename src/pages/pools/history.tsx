@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   const initialProps = await getServerSideGenericProps({ ...context, ...store })
   const chainId = initialProps?.props?.chainId
 
-  let poolData = []
+  let poolData = [{}]
   try {
     const tokenPrices = await fetchPrices(chainId)
     poolData = await fetchPools(chainId, tokenPrices)

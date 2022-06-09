@@ -10,7 +10,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   const initialProps = await getServerSideGenericProps({ ...context, ...store })
   const { params } = context
 
-  let nfas = []
+  let nfas: any = []
   try {
     store.dispatch(nfasFetchStart())
     nfas = await fetchNfas()
@@ -19,8 +19,8 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     console.error(error)
   }
 
-  const isNumber = /^-?\d+$/.test(params.nft as string)
-  if (!params.nft || !isNumber || !nfas.some((n) => n.index === parseInt(params.nft as string))) {
+  const isNumber = /^-?\d+$/.test(params?.nft as string)
+  if (!params?.nft || !isNumber || !nfas.some((n) => n.index === parseInt(params.nft as string))) {
     return {
       redirect: {
         destination: '/404',
@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   return {
     props: {
       ...initialProps?.props,
-      nft: parseInt(params.nft as string),
+      nft: parseInt(params?.nft as string),
     },
   }
 })

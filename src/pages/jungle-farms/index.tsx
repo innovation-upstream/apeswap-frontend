@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     }
   }
 
-  let poolData = []
+  let poolData = [{}]
   try {
     const tokenPrices = await fetchPrices(chainId)
     poolData = await fetchPools(chainId, tokenPrices)

@@ -71,7 +71,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
   const historyData: AuctionHistory[] = await response.json()
 
   const isDesktopView = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    req.headers['user-agent'],
+    req.headers['user-agent'] as string,
   )
 
   return {
