@@ -76,7 +76,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
                   buttonText={t('BUY')}
                   id={bill.index}
                   buyFlag
-                  disabled={!bill.discount || bill.discount.includes('NaN')}
+                  disabled={!bill.discount || bill.discount.includes('NaN') || bill.disabled}
                 />
               ) : (
                 <UnlockButton />
