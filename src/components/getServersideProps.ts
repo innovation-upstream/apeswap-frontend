@@ -10,6 +10,7 @@ export const getServerSideGenericProps = async (
   context: GetServerSidePropsContext & { store?: typeof Store },
 ): Promise<{ props: any }> => {
   const { req } = context
+  context.res.setHeader('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=120')
   const cookies = new Cookies(req.cookies)
   const account = cookies.get('account')
   const chainIdStr = cookies.get('chainIdStatus')
