@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, MutableRefObject } from 'react'
 import styled from 'styled-components'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -14,14 +14,14 @@ const DateSelectionButton: React.FC<DateSelectionProps> = ({ onChange, minDate }
   const [datePickerOpen, setDatePickerOpen] = useState(false)
   const delayedDate = new Date(new Date().setDate(new Date().getDate() + 3))
   const [date, setDate] = useState<Date>(delayedDate)
-  const datePickerRef = useRef(null)
-  const iconRef = useRef(null)
+  const datePickerRef = useRef() as MutableRefObject<HTMLDivElement>
+  const iconRef = useRef() as MutableRefObject<HTMLDivElement>
   const { isDark } = useTheme()
   const iconColor = isDark ? '#FAFAFA' : '#4D4040'
 
   useEffect(() => {
     function handler(event) {
-      if (!datePickerRef.current?.contains(event.target) && !iconRef.current?.contains(event.target)) {
+      if (!datePickerRef?.current?.contains(event?.target) && !iconRef.current?.contains(event?.target)) {
         setDatePickerOpen(false)
       }
     }
@@ -29,9 +29,9 @@ const DateSelectionButton: React.FC<DateSelectionProps> = ({ onChange, minDate }
     return () => window.removeEventListener('click', handler)
   }, [])
 
-  if (date.getTime() < minDate?.getTime()) {
-    setDate(minDate)
-    onChange(minDate)
+  if (date?.getTime() < (minDate as Date)?.getTime()) {
+    setDate(minDate as Date)
+    onChange(minDate as Date)
   }
 
   return (

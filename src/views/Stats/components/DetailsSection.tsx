@@ -41,19 +41,19 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({ farmStats, bscScanAd
       <Text fontSize="24px">{t('Earnings')}</Text>
       <Flex justifyContent="space-between">
         <Text>{t('Daily')}:</Text>
-        <CardValue fontSize="14px" decimals={2} value={farmStats.dollarsEarnedPerDay} prefix="$" />
+        <CardValue fontSize="14px" decimals={2} value={farmStats?.dollarsEarnedPerDay as number} prefix="$" />
       </Flex>
       <Flex justifyContent="space-between">
         <Text>{t('Weekly')}:</Text>
-        <CardValue fontSize="14px" decimals={2} value={farmStats.dollarsEarnedPerWeek} prefix="$" />
+        <CardValue fontSize="14px" decimals={2} value={farmStats?.dollarsEarnedPerWeek as number} prefix="$" />
       </Flex>
       <Flex justifyContent="space-between">
         <Text>{t('Monthly')}:</Text>
-        <CardValue fontSize="14px" decimals={2} value={farmStats.dollarsEarnedPerMonth} prefix="$" />
+        <CardValue fontSize="14px" decimals={2} value={farmStats?.dollarsEarnedPerMonth as number} prefix="$" />
       </Flex>
       <Flex justifyContent="space-between">
         <Text>{t('Yearly')}:</Text>
-        <CardValue fontSize="14px" decimals={2} value={farmStats.dollarsEarnedPerYear} prefix="$" />
+        <CardValue fontSize="14px" decimals={2} value={farmStats?.dollarsEarnedPerYear as number} prefix="$" />
       </Flex>
       <Flex justifyContent="center">
         <StyledLinkExternal href={bscScanAddress}>{t('View on BscScan')}</StyledLinkExternal>

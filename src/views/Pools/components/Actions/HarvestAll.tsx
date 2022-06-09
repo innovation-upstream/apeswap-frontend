@@ -28,7 +28,7 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ sousIds, disabled }) => {
         resp.map((trx) =>
           toastSuccess(t('Harvest Successful'), {
             text: t('View Transaction'),
-            url: getEtherscanLink(trx.transactionHash, 'transaction', chainId),
+            url: getEtherscanLink(trx.transactionHash, 'transaction', chainId as number),
           }),
         )
       })
@@ -36,7 +36,7 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ sousIds, disabled }) => {
         console.error(e)
         setPendingTrx(false)
       })
-    dispatch(fetchPoolsUserDataAsync(chainId, account))
+    dispatch(fetchPoolsUserDataAsync(chainId as number, account))
     setPendingTrx(false)
   }
 

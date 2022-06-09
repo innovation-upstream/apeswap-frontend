@@ -59,14 +59,14 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             const trxHash = resp.transactionHash
             toastSuccess(t('Deposit Successful'), {
               text: t('View Transaction'),
-              url: getEtherscanLink(trxHash, 'transaction', chainId),
+              url: getEtherscanLink(trxHash, 'transaction', chainId as number),
             })
           })
           .catch((e) => {
             console.error(e)
             setPendingDepositTrx(false)
           })
-        dispatch(fetchPoolsUserDataAsync(chainId, account))
+        dispatch(fetchPoolsUserDataAsync(chainId as number, account))
         setPendingDepositTrx(false)
       }}
     />,
@@ -83,14 +83,14 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             const trxHash = resp.transactionHash
             toastSuccess(t('Withdraw Successful'), {
               text: t('View Transaction'),
-              url: getEtherscanLink(trxHash, 'transaction', chainId),
+              url: getEtherscanLink(trxHash, 'transaction', chainId as number),
             })
           })
           .catch((e) => {
             console.error(e)
             setPendingWithdrawTrx(false)
           })
-        dispatch(fetchPoolsUserDataAsync(chainId, account))
+        dispatch(fetchPoolsUserDataAsync(chainId as number, account))
         setPendingWithdrawTrx(false)
       }}
     />,

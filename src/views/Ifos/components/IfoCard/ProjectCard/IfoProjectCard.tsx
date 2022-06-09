@@ -44,7 +44,7 @@ const IfoProjectCard: React.FC<IfoCardProps> = ({ ifoId }) => {
           {!!gnanaIfo && !gnanaIfo.isLinear && <FourPhaseVestingCard gnana ifo={gnanaIfo} />}
         </CardListBox>
 
-        <IfoCardDescription description={description} projectSiteUrl={projectSiteUrl} defaultIsOpen />
+        <IfoCardDescription description={description as string} projectSiteUrl={projectSiteUrl} defaultIsOpen />
       </Content>
     </StyledIfoCard>
   )

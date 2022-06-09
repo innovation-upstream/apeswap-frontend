@@ -75,8 +75,8 @@ const PoolCard: React.FC<HarvestProps> = ({ pool, removed }) => {
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
 
-  const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
-  const blocksRemaining = Math.max(endBlock - currentBlock, 0)
+  const blocksUntilStart = Math.max(Number(startBlock) - currentBlock, 0)
+  const blocksRemaining = Math.max(Number(endBlock) - currentBlock, 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const pendingReward = userData?.pendingReward
@@ -92,9 +92,9 @@ const PoolCard: React.FC<HarvestProps> = ({ pool, removed }) => {
         stakeToken={stakingToken?.symbol}
         earnToken={tokenName}
         earnTokenImage={image}
-        stakingTokenAddress={stakingToken?.address[CHAIN_ID]}
+        stakingTokenAddress={stakingToken?.address?.[CHAIN_ID as string]}
         sousId={sousId}
-        apr={new BigNumber(apr)}
+        apr={new BigNumber(apr || 0)}
         poolAPR={apr?.toFixed(2)}
         showExpandableSection={showExpandableSection}
         removed={removed}
@@ -106,12 +106,12 @@ const PoolCard: React.FC<HarvestProps> = ({ pool, removed }) => {
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             stakedBalance={stakedBalance}
-            isApproved={isApproved}
+            isApproved={isApproved as boolean}
             isStaked={accountHasStakedBalance}
           />
         </StyledFlex>
         <ContainerDetail
-          totalStaked={getBalanceNumber(totalStaked)}
+          totalStaked={getBalanceNumber(totalStaked as BigNumber)}
           personalValueStaked={getBalanceNumber(stakedBalance)}
           blocksRemaining={blocksRemaining}
           isFinished={isFinished}
@@ -124,7 +124,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool, removed }) => {
           stakedTokenPrice={stakingToken?.price}
           pendingReward={pendingReward}
           projectLink={projectLink}
-          bscScanAddress={`https://bscscan.com/address/${contractAddress[CHAIN_ID]}`}
+          bscScanAddress={`https://bscscan.com/address/${contractAddress?.[CHAIN_ID as string]}`}
           tokenDecimals={tokenDecimals}
           type="card"
           rewardToken={rewardToken}

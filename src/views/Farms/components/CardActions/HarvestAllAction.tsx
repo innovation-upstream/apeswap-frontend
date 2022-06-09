@@ -16,7 +16,7 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onReward } = useAllHarvest(pids, chainId)
+  const { onReward } = useAllHarvest(pids, chainId as number)
   const { t } = useTranslation()
 
   return (
@@ -32,7 +32,7 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
             setPendingTrx(false)
           })
           pids.map((pid) => {
-            return dispatch(updateFarmUserEarnings(chainId, pid, account))
+            return dispatch(updateFarmUserEarnings(chainId as number, pid, account as string))
           })
           setPendingTrx(false)
         }}

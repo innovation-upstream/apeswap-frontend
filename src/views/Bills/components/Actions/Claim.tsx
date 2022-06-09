@@ -25,15 +25,15 @@ const Claim: React.FC<ClaimProps> = ({ billAddress, billIds, buttonSize, pending
         const trxHash = resp.transactionHash
         toastSuccess(t('Claim Successful'), {
           text: t('View Transaction'),
-          url: getEtherscanLink(trxHash, 'transaction', chainId),
+          url: getEtherscanLink(trxHash, 'transaction', chainId as number),
         })
       })
       .catch((e) => {
         console.error(e)
         setPendingTrx(false)
       })
-    dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
-    dispatch(fetchBillsUserDataAsync(chainId, account))
+    dispatch(fetchUserOwnedBillsDataAsync(chainId as number, account))
+    dispatch(fetchBillsUserDataAsync(chainId as number, account))
     setPendingTrx(false)
   }
   return (

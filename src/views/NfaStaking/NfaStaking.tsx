@@ -190,7 +190,7 @@ const NfaStaking: React.FC = () => {
   const [finishedPools, openPools] = partition(allNfaStakingPools, (pool) => pool.isFinished)
 
   const poolsToShow = () => {
-    let chosenPools = []
+    let chosenPools: any = []
     if (stakedOnly) {
       chosenPools = isActive ? stakedOnlyPools : openPools
     } else {
@@ -199,7 +199,7 @@ const NfaStaking: React.FC = () => {
 
     if (searchQuery) {
       const lowercaseQuery = searchQuery.toLowerCase()
-      chosenPools = chosenPools.filter((pool) => `tier ${pool.tier}`.includes(lowercaseQuery))
+      chosenPools = chosenPools.filter((pool) => `tier ${pool?.tier}`.includes(lowercaseQuery))
     }
     return chosenPools
   }
@@ -208,7 +208,7 @@ const NfaStaking: React.FC = () => {
     <CardContainer>
       <FlexLayout>
         {poolsToShow().map((pool) => (
-          <PoolCard key={pool.sousId} pool={pool} removed={false} />
+          <PoolCard key={pool?.sousId} pool={pool} removed={false} />
         ))}
       </FlexLayout>
     </CardContainer>

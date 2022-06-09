@@ -116,16 +116,16 @@ function useUserInfo(contract: Contract, tokenDecimals: number, address: string,
       ]
 
       try {
-        const [balance, userAllocation, userinfo, userTokens] = await multicall(chainId, ifoAbi, calls1)
+        const [balance, userAllocation, userinfo, userTokens] = await multicall(chainId as number, ifoAbi, calls1)
 
         const [harvestOneFlag, harvestTwoFlag, harvestThreeFlag, harvestFourFlag] = await multicall(
-          chainId,
+          chainId as number,
           ifoAbi,
           calls2,
         )
 
         const [harvestOneBlock, harvestTwoBlock, harvestThreeBlock, harvestFourBlock] = await multicall(
-          chainId,
+          chainId as number,
           ifoAbi,
           calls3,
         )

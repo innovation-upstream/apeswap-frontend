@@ -22,7 +22,7 @@ const PoolMenu: React.FC<ListViewProps> = ({
   stakedOnly,
 }) => {
   const { t } = useTranslation()
-  const sousIds = pools.map((pool) => {
+  const sousIds = pools?.map((pool) => {
     return pool.sousId
   })
   return (
@@ -61,7 +61,7 @@ const PoolMenu: React.FC<ListViewProps> = ({
         <StyledText> {t('Staked')} </StyledText>
       </ToggleWrapper>
       <ClaimAllWrapper>
-        <HarvestAll sousIds={sousIds} />
+        <HarvestAll sousIds={sousIds as number[]} />
       </ClaimAllWrapper>
     </ControlContainer>
   )

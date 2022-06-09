@@ -56,7 +56,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
             const trxHash = resp.transactionHash
             toastSuccess(t('Deposit Successful'), {
               text: t('View Transaction'),
-              url: getEtherscanLink(trxHash, 'transaction', chainId),
+              url: getEtherscanLink(trxHash, 'transaction', chainId as number),
             })
           })
           .catch((e) => {
@@ -78,7 +78,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
             const trxHash = resp.transactionHash
             toastSuccess(
               t('Withdraw Successful'),
-              <LinkExternal href={getEtherscanLink(trxHash, 'transaction', chainId)}>
+              <LinkExternal href={getEtherscanLink(trxHash, 'transaction', chainId as number)}>
                 <Text> {t('View Transaction')} </Text>
               </LinkExternal>,
             )

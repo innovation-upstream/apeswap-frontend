@@ -1,5 +1,5 @@
 import React from 'react'
-import { Iazo } from 'state/types'
+import { Iazo, IazoSocialInfo } from 'state/types'
 import DonutChart from 'views/Iazos/components/DonutChart'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
@@ -16,7 +16,7 @@ const InfoTab: React.FC<InfoTabProps> = ({ iazo }) => {
   const { iazoToken, amount, liquidityPercent, feeInfo, socialInfo, listingPrice, tokenPrice } = iazo
   const { decimals, name, totalSupply } = iazoToken
   const { iazoTokenFee } = feeInfo
-  const tokenTotalSupply = getBalanceNumber(new BigNumber(totalSupply), parseInt(decimals))
+  const tokenTotalSupply = getBalanceNumber(new BigNumber(totalSupply as string), parseInt(decimals))
   const tokenFee = parseInt(iazoTokenFee) / 1000
   const liquidityPercentParsed = parseFloat(liquidityPercent) / 1000
   const priceDifference = Math.abs(parseFloat(tokenPrice) / parseFloat(listingPrice))
@@ -59,7 +59,7 @@ const InfoTab: React.FC<InfoTabProps> = ({ iazo }) => {
       </div>
       <br />
       <br />
-      <InfoFooter social={socialInfo} />
+      <InfoFooter social={socialInfo as IazoSocialInfo} />
     </InfoWrapper>
   )
 }

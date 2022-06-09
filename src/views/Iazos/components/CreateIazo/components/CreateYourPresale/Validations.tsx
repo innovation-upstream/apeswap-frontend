@@ -115,7 +115,7 @@ export const dateSelectionValidation = (
   maxIazoLength: string,
   minIazoLength: string,
 ): { error: string; message: string }[] => {
-  const validationList = []
+  const validationList: { error: string; message: string }[] = []
   const { start, end } = data
   // Convert Date types into unix timestamp in seconds
   const startDateInSeconds = Math.floor(start.valueOf() / 1000)
@@ -147,7 +147,7 @@ export const dateSelectionValidation = (
 }
 
 export const presaleValidation = (t, data: TokenSaleDetails): { error: string; message: string }[] => {
-  const validationList = []
+  const validationList: { error: string; message: string }[] = []
   const { pricePerToken, softcap, limitPerUser, tokensForSale } = data
   if (parseFloat(softcap) > parseFloat(tokensForSale) * parseFloat(pricePerToken)) {
     validationList.push({
@@ -182,7 +182,7 @@ const tokenAmountCheck = (
   userBalance: string,
   tokenDecimals: number,
 ) => {
-  const validationList = []
+  const validationList: { error: string; message: string }[] = []
   const priceDifference = Math.abs(parseFloat(pricePerToken) / parseFloat(listingPrice))
   const tokensForLiquidity = parseFloat(tokensForSale) * priceDifference * liquidityPercent
   const totalTokens = tokensForLiquidity + parseFloat(tokensForSale)

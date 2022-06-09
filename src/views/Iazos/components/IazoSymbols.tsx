@@ -51,7 +51,7 @@ const IazoSymbols: React.FC<IazoSymbolProps> = ({ iconImage, title, description,
           </SvgContainer>
         </a>
       ) : (
-        <SvgContainer link={link}>
+        <SvgContainer link={link as boolean}>
           <Icon iconImage={iconImage} />
           <IazoSymbolSvg viewBox="0 0 15 15">
             <circle cx={cx} cy={cy} r={r} fill="transparent" stroke="rgba(96, 96, 96, 1)" strokeWidth={strokeWidth} />

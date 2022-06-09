@@ -89,8 +89,8 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const rawStakedBalance = getBalanceNumber(stakedBalance)
   const displayBalance = rawStakedBalance.toLocaleString()
 
-  const rewardRefStake = useRef(null)
-  const rewardRefUnstake = useRef(null)
+  const rewardRefStake = useRef<any | null>(null)
+  const rewardRefUnstake = useRef<any | null>(null)
   const [typeOfReward, setTypeOfReward] = useState('rewardBanana')
   const earnings = new BigNumber(pool.userData?.pendingReward || 0)
   const isLoading = !pool.userData
@@ -101,10 +101,12 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const addLiquidityUrl = !pool?.lpStaking
     ? pool.stakingToken.symbol === 'GNANA'
       ? 'https://apeswap.finance/gnana'
-      : `https://apeswap.finance/swap?outputCurrency=${pool?.stakingToken.address[chainId]}`
-    : `${BASE_ADD_LIQUIDITY_URL}/${pool?.lpTokens?.token?.address[chainId]}/${pool?.lpTokens?.quoteToken?.address[chainId]}`
+      : `https://apeswap.finance/swap?outputCurrency=${pool?.stakingToken?.address?.[chainId as number]}`
+    : `${BASE_ADD_LIQUIDITY_URL}/${pool?.lpTokens?.token?.address?.[chainId as number]}/${
+        pool?.lpTokens?.quoteToken?.address?.[chainId as number]
+      }`
 
-  const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
+  const convertedLimit = new BigNumber(stakingLimit as number).multipliedBy(new BigNumber(10).pow(tokenDecimals))
 
   const [onPresentDeposit] = useModal(
     <DepositModal

@@ -8,7 +8,6 @@ import useWindowSize from 'hooks/useDimensions'
 import { ServiceData } from 'state/types'
 import { useFetchHomepageServiceStats, useHomepageServiceStats } from 'state/hooks'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
-import { LinkWrapper } from 'style/LinkWrapper'
 import { useTranslation } from 'contexts/Localization'
 import { ServiceWrapper, YieldCard, ColorWrap, Bubble } from './styles'
 import { defaultServiceData } from './defaultServiceData'
@@ -53,20 +52,20 @@ const Services: React.FC = () => {
     if (id === 'farmDetails' || id === 'poolDetails' || id === 'billDetails') {
       const tokenImage =
         id === 'farmDetails'
-          ? service.stakeToken.name.split('-')
+          ? service?.stakeToken?.name.split('-')
           : id === 'billDetails'
-          ? service.lpTokenName.split('-')
-          : [service.stakeToken.name, service.rewardToken.name]
+          ? service?.lpTokenName?.split('-')
+          : [service?.stakeToken?.name, service?.rewardToken?.name]
       const name =
         id === 'farmDetails'
-          ? service.stakeToken.name
+          ? service?.stakeToken?.name
           : id === 'billDetails'
           ? service.lpTokenName
-          : service.rewardToken.name
+          : service?.rewardToken?.name
       return { name, tokenImage }
     }
     if (id === 'lendingDetails') {
-      return { name: service.marketName, tokenImage: [service.token.name] }
+      return { name: service.marketName, tokenImage: [service?.token?.name] }
     }
     return {}
   }
@@ -96,41 +95,47 @@ const Services: React.FC = () => {
                 >
                   {id === 'farmDetails' ? (
                     <ServiceTokenDisplay
-                      token1={tokenImage[0]}
-                      token2={tokenImage[1]}
-                      token3={stat.rewardToken.name}
+                      token1={tokenImage?.[0] as string}
+                      token2={tokenImage?.[1] as string}
+                      token3={stat?.rewardToken?.name}
                       stakeLp
                       iconFill="white"
                     />
                   ) : id === 'billDetails' ? (
                     <ServiceTokenDisplay
-                      token1={tokenImage[0]}
-                      token2={tokenImage[1]}
+                      token1={tokenImage?.[0] as string}
+                      token2={tokenImage?.[1] as string}
                       token3="BANANA"
                       stakeLp
                       billArrow
                       iconFill="white"
                     />
                   ) : id === 'poolDetails' ? (
-                    <ServiceTokenDisplay token1={tokenImage[0]} token2={tokenImage[1]} iconFill="white" />
+                    <ServiceTokenDisplay
+                      token1={tokenImage?.[0] as string}
+                      token2={tokenImage?.[1] as string}
+                      iconFill="white"
+                    />
                   ) : (
-                    <ServiceTokenDisplay token1={tokenImage[0]} />
+                    <ServiceTokenDisplay token1={tokenImage?.[0] as string} />
                   )}
                   <Flex pl="15px" justifyContent="center" flexDirection="column">
                     <Text bold style={{ width: '100%', color: 'white' }}>
                       {name}
                     </Text>
                     {id === 'lendingDetails' ? (
-                      <Text style={{ width: '100%', color: 'white' }}>APY: {stat.apy.toFixed(2)}%</Text>
+                      <Text style={{ width: '100%', color: 'white' }}>APY: {stat?.apy?.toFixed(2)}%</Text>
                     ) : id === 'billDetails' ? (
                       <Text style={{ width: '100%', color: 'white' }}>
                         Discount:{' '}
-                        <span style={{ color: stat.discount > 0 ? 'white' : '#DF4141' }}>
-                          {stat.discount.toFixed(2)}%
+                        <span style={{ color: (stat?.discount as number) > 0 ? 'white' : '#DF4141' }}>
+                          {stat?.discount?.toFixed(2)}%
                         </span>
                       </Text>
                     ) : (
-                      <Text style={{ width: '100%', color: 'white' }}>APR: {(stat.apr * 100).toFixed(2)}%</Text>
+                      <Text style={{ width: '100%', color: 'white' }}>
+                        APR: {((stat?.apr as number) * 100).toFixed(2)}%
+                      </Text>
                     )}
                   </Flex>
                 </Flex>
@@ -155,7 +160,7 @@ const Services: React.FC = () => {
       <ColorWrap>
         <ServiceWrapper>
           {displayData ? (
-            width < 1488 ? (
+            (width as number) < 1488 ? (
               <Swiper
                 id="serviceSwiper"
                 initialSlide={0}

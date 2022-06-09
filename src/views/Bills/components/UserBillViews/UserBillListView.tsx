@@ -20,7 +20,7 @@ const UserBillListView: React.FC<{ bills: Bills[]; showAll?: boolean }> = ({ bil
   const billsListView = bills.flatMap((bill) => {
     const ownedBills = bill?.userOwnedBillsData
     const { token, quoteToken, earnToken } = bill
-    return ownedBills.flatMap((ownedBill) => {
+    return ownedBills?.flatMap((ownedBill) => {
       if (!showAll && parseFloat(ownedBill.pendingRewards) === 0 && parseFloat(ownedBill.payout) === 0) {
         return []
       }
@@ -68,7 +68,7 @@ const UserBillListView: React.FC<{ bills: Bills[]; showAll?: boolean }> = ({ bil
               <>
                 <Flex alignItems="center" style={{ height: '100%' }}>
                   <Claim
-                    billAddress={bill.contractAddress[chainId]}
+                    billAddress={bill?.contractAddress?.[chainId as number]}
                     billIds={[ownedBill.id]}
                     buttonSize={100}
                     pendingRewards={ownedBill?.pendingRewards}
@@ -86,7 +86,7 @@ const UserBillListView: React.FC<{ bills: Bills[]; showAll?: boolean }> = ({ bil
           <Flex flexDirection="column" alignItems="center" style={{ height: '110px', width: '100%' }}>
             <Flex alignItems="center" justifyContent="center">
               <Claim
-                billAddress={bill.contractAddress[chainId]}
+                billAddress={bill?.contractAddress?.[chainId as number]}
                 billIds={[ownedBill.id]}
                 pendingRewards={ownedBill?.pendingRewards}
               />
@@ -99,7 +99,7 @@ const UserBillListView: React.FC<{ bills: Bills[]; showAll?: boolean }> = ({ bil
       } as ExtendedListViewProps
     })
   })
-  return <ListView listViews={billsListView?.reverse()} />
+  return <ListView listViews={billsListView?.reverse() as ExtendedListViewProps[]} />
 }
 
 export default React.memo(UserBillListView)

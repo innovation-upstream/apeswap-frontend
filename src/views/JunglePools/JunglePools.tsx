@@ -428,14 +428,17 @@ const JunglePools: React.FC<IJunglePools> = ({ showHistory }) => {
         rootMargin: '0px',
         threshold: 1,
       })
-      loadMoreObserver.observe(loadMoreRef.current)
+      loadMoreObserver.observe(loadMoreRef?.current as Element)
       setObserverIsSet(true)
     }
   }, [observerIsSet])
 
   const allNonAdminPools = allPools.filter((pool) => !pool.forAdmins && pool?.poolCategory === PoolCategory.JUNGLE)
   const curPools = allNonAdminPools.map((pool) => {
-    return { ...pool, isFinished: pool.sousId === 0 ? false : pool.isFinished || currentBlock > pool.endBlock }
+    return {
+      ...pool,
+      isFinished: pool.sousId === 0 ? false : pool.isFinished || currentBlock > (pool?.endBlock as number),
+    }
   })
 
   const [finishedPools, openPools] = partition(curPools, (pool) => pool.isFinished)
@@ -523,7 +526,7 @@ const JunglePools: React.FC<IJunglePools> = ({ showHistory }) => {
       case 'totalStaked':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => getBalanceNumber(pool.totalStaked) * pool.stakingToken?.price,
+          (pool: Pool) => getBalanceNumber(pool?.totalStaked as BigNumber) * (pool?.stakingToken?.price as number),
           sortDirection,
         )
       default:
@@ -532,7 +535,7 @@ const JunglePools: React.FC<IJunglePools> = ({ showHistory }) => {
   }
 
   const poolsToShow = () => {
-    let chosenPools = []
+    let chosenPools: any[] = []
 
     if (stakedOnly && gnanaOnly && !bananaOnly) {
       chosenPools = isActive ? gnanaStakedOnlyPools : gnanaStakedInactivePools
@@ -552,7 +555,7 @@ const JunglePools: React.FC<IJunglePools> = ({ showHistory }) => {
 
     if (searchQuery) {
       const lowercaseQuery = searchQuery.toLowerCase()
-      chosenPools = chosenPools.filter((pool) => pool.tokenName.toLowerCase().includes(lowercaseQuery))
+      chosenPools = chosenPools.filter((pool) => pool?.tokenName?.toLowerCase().includes(lowercaseQuery))
     }
     return sortPools(chosenPools).slice(0, numberOfPoolsVisible)
   }
@@ -593,7 +596,7 @@ const JunglePools: React.FC<IJunglePools> = ({ showHistory }) => {
         />
         <ControlContainer>
           <ViewControls>
-            {size.width > 968 && viewMode !== null && (
+            {(size?.width as number) > 968 && viewMode !== null && (
               <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
             )}
             <LabelWrapper>
@@ -604,7 +607,7 @@ const JunglePools: React.FC<IJunglePools> = ({ showHistory }) => {
               <div />
               <MenuTabButtons />
               <div style={{ marginRight: '70px' }} />{' '}
-              <ToggleContainer size={size.width}>
+              <ToggleContainer size={size?.width as number}>
                 <ToggleWrapper onClick={() => setStakedOnly(!stakedOnly)}>
                   <StyledCheckbox checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
                   <StyledText>{t('Staked')}</StyledText>

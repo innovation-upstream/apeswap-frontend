@@ -76,7 +76,7 @@ const IfoCardContribute: React.FC<Props> = ({
   if (
     isActive &&
     currencyAddress !== ZERO_ADDRESS &&
-    (allowance.isLessThanOrEqualTo(new BigNumber('0')) || allowance.isLessThan(tokenBalance))
+    (allowance?.isLessThanOrEqualTo(new BigNumber('0')) || allowance?.isLessThan(tokenBalance))
   ) {
     return (
       <ApproveButton

@@ -9,7 +9,7 @@ const useBuyBill = (billAddress: string, amount: string) => {
   const { chainId, account } = useActiveWeb3React()
   const billContract = useBillContract(billAddress)
   const handleBuyBill = useCallback(async () => {
-    const tx = await userBuyBill(billContract, account, amount, '108377')
+    const tx = await userBuyBill(billContract, account as string, amount, '108377')
     track({
       event: 'bill',
       chain: chainId,

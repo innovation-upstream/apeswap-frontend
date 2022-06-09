@@ -132,15 +132,15 @@ const PoolTable: React.FC<HarvestProps> = ({ pool, removed }) => {
   const earnings = new BigNumber(pool.userData?.pendingReward || 0)
   const rawEarningsBalance = getBalanceNumber(earnings, tokenDecimals)
 
-  const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
-  const blocksRemaining = Math.max(endBlock - currentBlock, 0)
+  const blocksUntilStart = Math.max(Number(startBlock) - currentBlock, 0)
+  const blocksRemaining = Math.max(Number(endBlock) - currentBlock, 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const needsApproval = !allowance.gt(0)
   const isCompound = sousId === 0
   const isLoading = !pool.userData
 
-  const totalDollarAmountStaked = getBalanceNumber(totalStaked) * stakingToken?.price
+  const totalDollarAmountStaked = getBalanceNumber(totalStaked as BigNumber) * Number(stakingToken?.price)
 
   const cardHeaderButton = () => {
     if (!account) {
@@ -149,7 +149,7 @@ const PoolTable: React.FC<HarvestProps> = ({ pool, removed }) => {
     if (needsApproval) {
       return (
         <ApprovalAction
-          stakingTokenContractAddress={stakingToken.address[chainId]}
+          stakingTokenContractAddress={stakingToken?.address?.[chainId]}
           sousId={sousId}
           isLoading={isLoading}
         />
@@ -201,7 +201,7 @@ const PoolTable: React.FC<HarvestProps> = ({ pool, removed }) => {
         <APRContainer>
           <Apr
             poolApr={removed ? '0' : apr?.toFixed(2)}
-            apr={new BigNumber(apr)}
+            apr={new BigNumber(apr || 0)}
             rewardTokenPrice={rewardToken?.price}
             earnToken={tokenName}
           />
@@ -220,12 +220,12 @@ const PoolTable: React.FC<HarvestProps> = ({ pool, removed }) => {
               pool={pool}
               stakingTokenBalance={stakingTokenBalance}
               stakedBalance={stakedBalance}
-              isApproved={isApproved}
+              isApproved={isApproved as boolean}
               isStaked={accountHasStakedBalance}
             />
           </StakeContainer>
           <ContainerDetail
-            totalStaked={getBalanceNumber(totalStaked)}
+            totalStaked={getBalanceNumber(totalStaked as BigNumber)}
             personalValueStaked={getBalanceNumber(stakedBalance)}
             blocksRemaining={blocksRemaining}
             isFinished={isFinished}

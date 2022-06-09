@@ -12,6 +12,7 @@ import getTimePeriods from 'utils/getTimePeriods'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Toggle } from '@apeswapfinance/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { Contract } from 'ethers'
 import IfoCardHeader from '../CardHeader/IfoCardHeader'
 import IfoCardProgress from '../CardProgress/IfoCardProgress'
 import IfoCardDetails from '../CardDetails/IfoCardDetails'
@@ -107,7 +108,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
         },
       ]
       const [startBlock, endBlock, vestingEndBlock, raisingAmount, totalAmount] = await multicall(
-        chainId,
+        chainId as number,
         ifoLinearAbi,
         calls,
       ) // Do not need to switch the abi
@@ -116,7 +117,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
       const endBlockNum = parseInt(endBlock, 10)
       const vestingEndBlockNum = parseInt(vestingEndBlock, 10)
 
-      const status = getStatus(currentBlock, startBlockNum, endBlockNum)
+      const status: any = getStatus(currentBlock, startBlockNum, endBlockNum)
       const blocksRemaining = endBlockNum - currentBlock
 
       setState({
@@ -139,7 +140,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
   const {
     userTokenStatus,
     userInfo: { amount, refunded, offeringTokensClaimed, offeringAmount: userOfferingAmount, refundingAmount },
-  } = useUserInfo(contract, tokenDecimals, address)
+  } = useUserInfo(contract as Contract, tokenDecimals, address)
 
   const isComingSoon = state.status === 'coming_soon'
   const isActive = state.status === 'live'
@@ -242,7 +243,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
         gnana={gnana}
         isComingSoon={!address}
         isLoading={state.isLoading}
-        status={state.status}
+        status={state?.status as any}
         secondsUntilStart={state.secondsUntilStart}
         secondsUntilEnd={state.secondsUntilEnd}
       />

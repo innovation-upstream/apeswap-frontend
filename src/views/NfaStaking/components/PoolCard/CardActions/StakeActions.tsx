@@ -93,7 +93,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       onConfirm={async (val) => {
         await onUnstake(val)
       }}
-      stakedNfas={stakedNfas}
+      stakedNfas={stakedNfas as number[]}
     />,
   )
 

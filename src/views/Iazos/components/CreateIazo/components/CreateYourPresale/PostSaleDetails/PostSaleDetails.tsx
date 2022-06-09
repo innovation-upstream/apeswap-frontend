@@ -31,8 +31,8 @@ const PostSaleDetails: React.FC<PostSaleDetailsProp> = ({ quoteTokenSymbol, pres
   const { t } = useTranslation()
 
   const [liquidityDetails, setLiquidityDetails] = useState<LiquidityLockDetails>({
-    liquidityPercent: null,
-    listingPrice: null,
+    liquidityPercent: 0,
+    listingPrice: '',
     lockLiquidity: lockedLiquidityValues['1 Year'],
   })
 
@@ -44,7 +44,7 @@ const PostSaleDetails: React.FC<PostSaleDetailsProp> = ({ quoteTokenSymbol, pres
   const maxListPrice = presalePrice && parseFloat(presalePrice) + parseFloat(presalePrice) * 0.5
 
   useEffect(() => {
-    onChange(liquidityDetails)
+    onChange?.(liquidityDetails)
   }, [liquidityDetails, onChange])
 
   return (
@@ -73,8 +73,8 @@ const PostSaleDetails: React.FC<PostSaleDetailsProp> = ({ quoteTokenSymbol, pres
             quoteTokenSymbol={quoteTokenSymbol}
             size="md"
             backgroundColor={isDark ? '#383838' : '#F1EADA'}
-            min={minListPrice}
-            max={maxListPrice}
+            min={minListPrice as number}
+            max={maxListPrice as number}
           />
           <DropdownList
             onChange={(item) =>

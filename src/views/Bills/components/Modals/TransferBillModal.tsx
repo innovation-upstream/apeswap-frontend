@@ -10,7 +10,7 @@ import VestedTimer from '../VestedTimer'
 import { TopDescriptionText } from './styles'
 
 interface TransferBillModalProps {
-  onDismiss: () => void
+  onDismiss?: () => void
   bill?: Bills
   billId?: string
 }
@@ -19,8 +19,8 @@ const TransferBillModal: React.FC<TransferBillModalProps> = ({ onDismiss, bill, 
   const { t } = useTranslation()
   const [confirmSend, setConfirmSend] = useState(false)
   const [toAddress, setToAddress] = useState('')
-  const { earnToken, lpToken, billNftAddress, userOwnedBillsData } = bill
-  const userOwnedBill = userOwnedBillsData?.find((b) => parseInt(b.id) === parseInt(billId))
+  const { earnToken, lpToken, billNftAddress, userOwnedBillsData }: any = bill
+  const userOwnedBill = userOwnedBillsData?.find((b) => parseInt(b.id) === parseInt(billId as string))
   const pending = getBalanceNumber(new BigNumber(userOwnedBill?.payout), bill?.earnToken?.decimals)?.toFixed(4)
   return (
     <Modal onDismiss={onDismiss} maxWidth="385px" title="Transfer Bill">
@@ -75,7 +75,12 @@ const TransferBillModal: React.FC<TransferBillModalProps> = ({ onDismiss, bill, 
         </Text>
       </Flex>
       <ModalFooter onDismiss={onDismiss}>
-        <Transfer billNftAddress={billNftAddress} billId={billId} toAddress={toAddress} disabled={!confirmSend} />
+        <Transfer
+          billNftAddress={billNftAddress}
+          billId={billId as string}
+          toAddress={toAddress}
+          disabled={!confirmSend}
+        />
       </ModalFooter>
     </Modal>
   )

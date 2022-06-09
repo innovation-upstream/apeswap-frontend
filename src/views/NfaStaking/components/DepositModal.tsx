@@ -42,12 +42,12 @@ const DepositModal: React.FC<DepositModalProps> = ({ onConfirm, onDismiss, tier 
   const ownedFilteredNfas = profile?.ownedNfts?.filter((nfa) => {
     return nfa.attributes.rarityTierNumber === tier
   })
-  const [selectedNfas, setSelectedNfas] = useState([])
-  const [pendingTx, setPendingTx] = useState(false)
+  const [selectedNfas, setSelectedNfas] = useState<number[]>([])
+  const [pendingTx, setPendingTx] = useState<boolean>(false)
   const { t } = useTranslation()
 
   const handleNfaChange = (index) => {
-    if (selectedNfas.includes(index)) {
+    if (selectedNfas?.includes(index)) {
       setSelectedNfas(selectedNfas.filter((i) => i !== index))
     } else {
       setSelectedNfas([...selectedNfas, index])
@@ -66,7 +66,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ onConfirm, onDismiss, tier 
         {ownedFilteredNfas?.length !== 0 || ownedFilteredNfas === undefined ? (
           ownedFilteredNfas?.map((nfa) => {
             return (
-              <Nfa onClick={() => handleNfaChange(nfa.index)} active={selectedNfas?.includes(nfa.index)}>
+              <Nfa onClick={() => handleNfaChange(nfa.index)} active={selectedNfas?.includes(nfa?.index)}>
                 <Image src={nfa.image} alt={nfa.name} rarityTier={nfa.attributes.rarityTierNumber} />
               </Nfa>
             )
@@ -83,7 +83,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ onConfirm, onDismiss, tier 
             setPendingTx(true)
             await onConfirm(selectedNfas)
             setPendingTx(false)
-            onDismiss()
+            onDismiss?.()
           }}
           endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
           style={{

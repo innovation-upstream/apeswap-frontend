@@ -51,7 +51,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
             setPendingTx(true)
             try {
               await onConfirm(val)
-              onDismiss()
+              onDismiss?.()
             } catch (e) {
               console.error('Transaction Failed')
             } finally {

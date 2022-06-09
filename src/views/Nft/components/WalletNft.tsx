@@ -70,7 +70,7 @@ const StyledText = styled(Text)`
 
 const WalletNft: React.FC<NftCardProps> = ({ nft }) => {
   const { t } = useTranslation()
-  const { reInitialize } = useContext(NftProviderContext)
+  const { reInitialize }: any = useContext(NftProviderContext)
   const nfaAttributes = [
     'Face',
     'Base',

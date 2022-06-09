@@ -78,10 +78,10 @@ export default function RemoveLiquidity({
   },
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
-  const [currencyAPrice, setCurrencyAPrice] = useState<number>(null)
-  const [currencyBPrice, setCurrencyBPrice] = useState<number>(null)
+  const [currencyAPrice, setCurrencyAPrice] = useState<number | null>(null)
+  const [currencyBPrice, setCurrencyBPrice] = useState<number | null>(null)
   const [recentTransactions] = useUserRecentTransactions()
-  const [removeValueUsd, setRemoveValueUsd] = useState<number>(null)
+  const [removeValueUsd, setRemoveValueUsd] = useState<number | null>(null)
 
   const { isMd, isSm, isXs } = useMatchBreakpoints()
   const isMobile = isMd || isSm || isXs
@@ -98,9 +98,9 @@ export default function RemoveLiquidity({
   useEffect(() => {
     const fetchCurrencyATokenPrice = async () => {
       const tokenPriceReturned = await getTokenUsdPrice(
-        chainId,
+        chainId as number,
         currencyA instanceof Token ? currencyA?.address : '',
-        currencyA?.decimals,
+        currencyA?.decimals as number,
         false,
         isANative,
       )
@@ -111,9 +111,9 @@ export default function RemoveLiquidity({
   useEffect(() => {
     const fetchCurrencyBTokenPrice = async () => {
       const tokenPriceReturned = await getTokenUsdPrice(
-        chainId,
+        chainId as number,
         currencyB instanceof Token ? currencyB?.address : '',
-        currencyB?.decimals,
+        currencyB?.decimals as number,
         false,
         isBNative,
       )
@@ -150,13 +150,13 @@ export default function RemoveLiquidity({
       const isNative = currencyA?.symbol === 'ETH'
       const isLp = false
       const usdVal = await getTokenUsdPrice(
-        chainId,
+        chainId as number,
         currencyA instanceof Token ? currencyA?.address : '',
-        currencyA?.decimals,
+        currencyA?.decimals as number,
         isLp,
         isNative,
       )
-      setRemoveValueUsd(Number(parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)) * usdVal * 2)
+      setRemoveValueUsd(Number(parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)) * Number(usdVal) * 2)
     }
     getRemoveVal()
   }, [setRemoveValueUsd, chainId, currencyA, parsedAmounts])
@@ -184,7 +184,7 @@ export default function RemoveLiquidity({
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
-    parseAddress(ROUTER_ADDRESS, chainId),
+    parseAddress(ROUTER_ADDRESS, chainId as number),
   )
 
   const onAttemptToApprove = async () => {
@@ -397,7 +397,7 @@ export default function RemoveLiquidity({
           track({
             event: 'liquidity',
             chain: chainId,
-            value: removeValueUsd,
+            value: removeValueUsd as any,
             data: {
               token1: currencyA?.getSymbol(chainId),
               token2: currencyB?.getSymbol(chainId),

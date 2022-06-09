@@ -40,14 +40,14 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAdd
                 const trxHash = resp.transactionHash
                 toastSuccess(t('Approve Successful'), {
                   text: t('View Transaction'),
-                  url: getEtherscanLink(trxHash, 'transaction', chainId),
+                  url: getEtherscanLink(trxHash, 'transaction', chainId as number),
                 })
               })
               .catch((e) => {
                 console.error(e)
                 setPendingTrx(false)
               })
-            dispatch(updateFarmUserAllowances(chainId, pid, account))
+            dispatch(updateFarmUserAllowances(chainId as number, pid, account as string))
             setPendingTrx(false)
           }}
           endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}

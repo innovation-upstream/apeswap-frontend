@@ -421,7 +421,7 @@ const Vaults: React.FC<IVaults> = ({ showHistory }) => {
         rootMargin: '0px',
         threshold: 1,
       })
-      loadMoreObserver.observe(loadMoreRef.current)
+      loadMoreObserver.observe(loadMoreRef?.current as Element)
       setObserverIsSet(true)
     }
   }, [observerIsSet])
@@ -464,14 +464,14 @@ const Vaults: React.FC<IVaults> = ({ showHistory }) => {
       case 'yearlyapy':
         return orderBy(vaultsToSort, (vault: Vault) => vault?.apy?.daily, sortDirection)
       case 'totalstaked':
-        return orderBy(vaultsToSort, (vault: Vault) => parseInt(vault?.totalStaked), sortDirection)
+        return orderBy(vaultsToSort, (vault: Vault) => parseInt(vault?.totalStaked as string), sortDirection)
       default:
         return orderBy(vaultsToSort, (vault: Vault) => vault.platform, 'asc')
     }
   }
 
   const vaultsToShow = (): Vault[] => {
-    let chosenVaults = []
+    let chosenVaults: any = []
 
     if (stakedOnly && burnOnly) {
       chosenVaults = isActive ? burnOnlyVaultsStakedVaults : burnOnlyVaultsInactiveStakedVaults
@@ -528,7 +528,7 @@ const Vaults: React.FC<IVaults> = ({ showHistory }) => {
         />
         <ControlContainer>
           <ViewControls>
-            {size.width > 968 && viewMode !== null && (
+            {Number(size.width) > 968 && viewMode !== null && (
               <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
             )}
             <LabelWrapper>

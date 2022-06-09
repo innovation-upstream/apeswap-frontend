@@ -5,6 +5,7 @@ import getTimePeriods from 'utils/getTimePeriods'
 import { useWeb3React } from '@web3-react/core'
 import { useCurrentTime } from 'hooks/useTimer'
 import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
+import { Nft } from 'config/constants/types'
 import Image from '../../../Nft/components/Image'
 import Timer from '../Timer'
 import Bid from '../Actions/Bid'
@@ -73,7 +74,7 @@ const HighestBidder = styled.div`
     width: 125px;
     height: 125px;
     top: 150px;
-    right: 100px;s
+    right: 100px;
   }
 `
 
@@ -94,15 +95,15 @@ const LiveCard: React.FC<LiveCardProps> = ({ auction, minIncrementAmount, minInc
     if (expanded) {
       return (
         <>
-          <MobileHeader nfa={nfa} />
+          <MobileHeader nfa={nfa as Nft} />
           <MobileInformation onClick={handleClick} expanded={expanded} />
-          <MobileDescription nfa={nfa} />
+          <MobileDescription nfa={nfa as Nft} />
         </>
       )
     }
     return (
       <>
-        <MobileHeader nfa={nfa} />
+        <MobileHeader nfa={nfa as Nft} />
         <MobileInformation onClick={handleClick} expanded={expanded} />
       </>
     )
@@ -111,17 +112,22 @@ const LiveCard: React.FC<LiveCardProps> = ({ auction, minIncrementAmount, minInc
   return (
     <Card expanded={expanded} highestBidFlag={highestBidFlag}>
       <NfaImageHolder>
-        <Image src={nfa.image} rarityTier={nfa.attributes.rarityTierNumber} alt={nfa.name} borderRadius="10px" />
+        <Image
+          src={nfa?.image}
+          rarityTier={nfa?.attributes?.rarityTierNumber as number}
+          alt={nfa?.name}
+          borderRadius="10px"
+        />
       </NfaImageHolder>
       <Timer countdown={countdown} />
-      {isDesktop ? <Description nfa={nfa} /> : renderMobile()}
+      {isDesktop ? <Description nfa={nfa as Nft} /> : renderMobile()}
       <Price currentBid={highestBid} />
       {highestBidFlag && <HighestBidder />}
       <Bid
         currentBid={highestBid}
         minBidRaise={minIncrementAmount}
         minBidPercentage={minIncrementPercentage}
-        nfaId={nfa.index}
+        nfaId={nfa?.index as number}
         countdown={countdown}
         auctionId={auction.auctionId}
       />

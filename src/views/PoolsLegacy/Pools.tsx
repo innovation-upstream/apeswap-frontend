@@ -494,7 +494,7 @@ const Pools: React.FC = () => {
   const [gnanaOnly, setGnanaOnly] = useState(false)
   const [bananaOnly, setBananaOnly] = useState(false)
   const [observerIsSet, setObserverIsSet] = useState(false)
-  const [viewMode, setViewMode] = useState(null)
+  const [viewMode, setViewMode] = useState<any | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
@@ -535,14 +535,14 @@ const Pools: React.FC = () => {
         rootMargin: '0px',
         threshold: 1,
       })
-      loadMoreObserver.observe(loadMoreRef.current)
+      loadMoreObserver.observe(loadMoreRef?.current as Element)
       setObserverIsSet(true)
     }
   }, [observerIsSet])
 
   const allNonAdminPools = allPools.filter((pool) => !pool.forAdmins && pool?.poolCategory !== PoolCategory.JUNGLE)
   const curPools = allNonAdminPools.map((pool) => {
-    return { ...pool, isFinished: pool.sousId === 0 ? false : pool.isFinished || currentBlock > pool.endBlock }
+    return { ...pool, isFinished: pool.sousId === 0 ? false : pool.isFinished || currentBlock > Number(pool?.endBlock) }
   })
 
   const [finishedPools, openPools] = partition(curPools, (pool) => pool.isFinished)
@@ -630,7 +630,7 @@ const Pools: React.FC = () => {
       case 'totalStaked':
         return orderBy(
           poolsToSort,
-          (pool: Pool) => getBalanceNumber(pool.totalStaked) * pool.stakingToken?.price,
+          (pool: Pool) => getBalanceNumber(pool?.totalStaked as BigNumber) * (pool?.stakingToken?.price as number),
           sortDirection,
         )
       default:
@@ -639,7 +639,7 @@ const Pools: React.FC = () => {
   }
 
   const poolsToShow = () => {
-    let chosenPools = []
+    let chosenPools: any = []
 
     if (stakedOnly && gnanaOnly && !bananaOnly) {
       chosenPools = isActive ? gnanaStakedOnlyPools : gnanaStakedInactivePools
@@ -695,7 +695,7 @@ const Pools: React.FC = () => {
           <StyledHeading as="h1" style={{ color: 'white', marginBottom: '8px' }}>
             {t('Staking Pools')}
           </StyledHeading>
-          {size.width > 968 && (
+          {Number(size.width) > 968 && (
             <Text fontSize="22px" fontWeight={400} color="white">
               {t}
               <br />
@@ -712,7 +712,7 @@ const Pools: React.FC = () => {
       <StyledPage width="1130px">
         <ControlContainer>
           <ViewControls>
-            {size.width > 968 && viewMode !== null && (
+            {Number(size.width) > 968 && viewMode !== null && (
               <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
             )}
             <LabelWrapper>
@@ -723,7 +723,7 @@ const Pools: React.FC = () => {
               <div />
               <MenuTabButtons />
               <div style={{ marginRight: '70px' }} />
-              <ToggleContainer size={size.width}>
+              <ToggleContainer size={Number(size.width)}>
                 <ToggleWrapper onClick={() => setStakedOnly(!stakedOnly)}>
                   <StyledCheckbox checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} />
                   <StyledText>{t('Staked')}</StyledText>

@@ -12,7 +12,7 @@ import { ApproveProps } from './types'
 
 const Approve: React.FC<ApproveProps> = ({ lpToken, billAddress, billIndex }) => {
   const { chainId, account } = useActiveWeb3React()
-  const { onApprove } = useApproveBill(lpToken.address[chainId], billAddress)
+  const { onApprove } = useApproveBill(lpToken?.address?.[chainId as number], billAddress)
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
   const { toastSuccess, toastError } = useToast()
@@ -25,7 +25,7 @@ const Approve: React.FC<ApproveProps> = ({ lpToken, billAddress, billIndex }) =>
         const trxHash = resp.transactionHash
         toastSuccess(t('Approve Successful'), {
           text: t('View Transaction'),
-          url: getEtherscanLink(trxHash, 'transaction', chainId),
+          url: getEtherscanLink(trxHash, 'transaction', chainId as number),
         })
       })
       .catch((e) => {
@@ -33,7 +33,7 @@ const Approve: React.FC<ApproveProps> = ({ lpToken, billAddress, billIndex }) =>
         toastError(e?.data?.message || t('Something went wrong please try again'))
         setPendingTrx(false)
       })
-    dispatch(updateUserAllowance(chainId, billIndex, account))
+    dispatch(updateUserAllowance(chainId as number, billIndex, account as string))
     setPendingTrx(false)
   }
 

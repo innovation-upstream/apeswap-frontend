@@ -10,7 +10,7 @@ const useTransferBill = (billNftAddress: string, billId: string, toAddress: stri
   const billNftContract = useBillNftContract(billNftAddress)
   const handleTransfer = useCallback(async () => {
     try {
-      const tx = await userTransferBillNft(billNftContract, billId, account, toAddress)
+      const tx = await userTransferBillNft(billNftContract, billId, account as string, toAddress)
       track({
         event: 'bill',
         chain: chainId,

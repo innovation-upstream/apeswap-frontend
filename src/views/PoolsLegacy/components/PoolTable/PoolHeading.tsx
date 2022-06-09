@@ -44,8 +44,8 @@ const PoolHeading: React.FunctionComponent<PoolProps> = ({
   isLp = false,
   isEarnTokenLp = false,
 }) => {
-  const splitStakeToken = isLp && stakeToken.split('-')
-  const splitEarnToken = isEarnTokenLp && earnToken.split('-')
+  const splitStakeToken = isLp && stakeToken?.split('-')
+  const splitEarnToken = isEarnTokenLp && earnToken?.split('-')
   return (
     <Container>
       <StyledBackground>
@@ -60,15 +60,15 @@ const PoolHeading: React.FunctionComponent<PoolProps> = ({
         ) : (
           <>
             <IconImage
-              src={`/images/tokens/${splitStakeToken[0]}.svg`}
-              alt={splitStakeToken[0]}
+              src={`/images/tokens/${splitStakeToken?.[0]}.svg`}
+              alt={splitStakeToken?.[0]}
               width={50}
               height={50}
               marginLeft="7.5px"
             />
             <IconImage
-              src={`/images/tokens/${splitStakeToken[1]}.svg`}
-              alt={splitStakeToken[1]}
+              src={`/images/tokens/${splitStakeToken?.[1]}.svg`}
+              alt={splitStakeToken?.[1]}
               width={25}
               height={25}
               marginLeft="-15px"
@@ -88,15 +88,15 @@ const PoolHeading: React.FunctionComponent<PoolProps> = ({
         ) : (
           <>
             <IconImage
-              src={`/images/tokens/${splitStakeToken[0]}.svg`}
-              alt={splitEarnToken[0]}
+              src={`/images/tokens/${splitStakeToken?.[0]}.svg`}
+              alt={splitEarnToken?.[0]}
               width={50}
               height={50}
               marginLeft="7.5px"
             />
             <IconImage
-              src={`/images/tokens/${splitStakeToken[1]}.svg`}
-              alt={splitEarnToken[1]}
+              src={`/images/tokens/${splitStakeToken?.[1]}.svg`}
+              alt={splitEarnToken?.[1]}
               width={25}
               height={25}
               marginLeft="-15px"

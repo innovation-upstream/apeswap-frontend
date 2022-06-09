@@ -51,7 +51,7 @@ const VaultCard: React.FC<HarvestProps> = ({ vault, removed }) => {
 
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
 
-  const lpLabel = vault.isPair ? `${vault.token0.symbol}-${vault.token1.symbol}` : vault.token0.symbol
+  const lpLabel = vault.isPair ? `${vault.token0.symbol}-${vault?.token1?.symbol}` : vault.token0.symbol
 
   const toggleExpand = () => {
     setShowExpandableSection(!showExpandableSection)
@@ -71,7 +71,7 @@ const VaultCard: React.FC<HarvestProps> = ({ vault, removed }) => {
       <ExpandingWrapper expanded={showExpandableSection}>
         <DetailsSection
           totalStaked={totalStaked}
-          totalStakedRaw={getBalanceNumber(new BigNumber(vault?.strategyPairBalance)).toString()}
+          totalStakedRaw={getBalanceNumber(new BigNumber(vault?.strategyPairBalance as string)).toString()}
           personalValueStaked={getBalanceNumber(stakedBalance)}
           lpLabel={lpLabel}
           addLiquidityUrl="https://apeswap.finance/swap"

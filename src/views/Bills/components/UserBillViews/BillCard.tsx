@@ -55,7 +55,7 @@ const BillCard: React.FC<{ bills: Bills[]; ml?: string }> = ({ bills, ml }) => {
                 />
               </Flex>
               <Claim
-                billAddress={bill.contractAddress[chainId]}
+                billAddress={bill?.contractAddress?.[chainId as number]}
                 billIds={[ownedBill.id]}
                 pendingRewards={ownedBill?.pendingRewards}
               />

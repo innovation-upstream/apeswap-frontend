@@ -261,18 +261,18 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 }) => {
   const { t } = useTranslation()
   const { userData, tokenDecimals, stakingToken } = pool
-  const splitStakeToken = pool?.lpStaking && stakeToken.split('-')
-  const splitEarnToken = pool?.isEarnTokenLp && earnToken.split('-')
+  const splitStakeToken = pool?.lpStaking && stakeToken?.split('-')
+  const splitEarnToken = pool?.isEarnTokenLp && earnToken?.split('-')
   const chainId = useNetworkChainId()
   const { isXl: isDesktop } = useMatchBreakpoints()
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
-  const earnings = new BigNumber(pool.userData?.pendingReward || 0)
+  const earnings = new BigNumber(pool?.userData?.pendingReward || 0)
   const allowance = new BigNumber(userData?.allowance || 0)
   const rawEarningsBalance = getBalanceNumber(earnings, tokenDecimals)
   const displayBalance = rawEarningsBalance ? rawEarningsBalance.toLocaleString() : '?'
-  const isLoading = !pool.userData
+  const isLoading = !pool?.userData
   const needsApproval = !allowance.gt(0)
   const isCompound = sousId === 0
   const { account } = useWeb3React()
@@ -285,12 +285,12 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       return (
         <ApprovalAction
           stakingTokenContractAddress={stakingToken.address[chainId]}
-          sousId={sousId}
+          sousId={sousId as number}
           isLoading={isLoading}
         />
       )
     }
-    if (!needsApproval && !accountHasStakedBalance && !pool.emergencyWithdraw) {
+    if (!needsApproval && !accountHasStakedBalance && !pool?.emergencyWithdraw) {
       return (
         <StakeAction
           pool={pool}
@@ -304,11 +304,11 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
     return (
       <HarvestActions
         earnings={earnings}
-        sousId={sousId}
+        sousId={sousId as number}
         isLoading={isLoading}
-        tokenDecimals={pool.tokenDecimals}
+        tokenDecimals={pool?.tokenDecimals as number}
         compound={isCompound}
-        emergencyWithdraw={pool.emergencyWithdraw}
+        emergencyWithdraw={pool?.emergencyWithdraw}
       />
     )
   }

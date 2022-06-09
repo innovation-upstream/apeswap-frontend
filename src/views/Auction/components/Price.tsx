@@ -111,7 +111,7 @@ interface TimerProps {
 
 const Price: React.FC<TimerProps> = ({ currentBid }) => {
   const rawBidAmount = getBalanceNumber(new BigNumber(currentBid))
-  const bnbPrice = useTokenPriceFromSymbol('BNB')
+  const bnbPrice = useTokenPriceFromSymbol('BNB') as number
   const dollarValue = (getBalanceNumber(new BigNumber(bnbPrice), 0) * rawBidAmount).toFixed(2)
   const { t } = useTranslation()
 

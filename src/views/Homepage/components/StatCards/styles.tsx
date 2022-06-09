@@ -58,7 +58,8 @@ export const CardWrapper = styled.div`
   @media screen and (min-width: 1200px) {
     display: grid;
     justify-content: space-between;
-    ${StyledCard}:nth-child(1), ${StyledCard}:nth-child(2), 
+    ${StyledCard}:nth-child(1), ${StyledCard}:nth-child(2) {
+    }
     ${StyledCard}:nth-child(3), ${StyledCard}:nth-child(4) {
       border-radius: 10px;
     }

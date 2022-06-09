@@ -37,8 +37,8 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
 }) => {
   const { t } = useTranslation()
   const earningTokenBalance = getBalanceNumber(earnings, tokenDecimals)
-  const rewardRef = useRef(null)
-  const rewardRefApeHarder = useRef(null)
+  const rewardRef = useRef<any>(null)
+  const rewardRefApeHarder = useRef<any | null>(null)
   const [pendingTx, setPendingTx] = useState(false)
   const [typeOfReward, setTypeOfReward] = useState('rewardBanana')
   const { onHarvest } = useSousHarvest(sousId)
@@ -56,7 +56,7 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
             setTypeOfReward('rewardBanana')
             await onEmergencyWithdraw().catch(() => {
               setTypeOfReward('error')
-              rewardRefApeHarder.current?.rewardMe()
+              rewardRefApeHarder?.current?.rewardMe()
             })
             setPendingTx(false)
           }}
@@ -75,7 +75,7 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
             setTypeOfReward('rewardBanana')
             await onApeHarder(earningTokenBalance).catch(() => {
               setTypeOfReward('error')
-              rewardRefApeHarder.current?.rewardMe()
+              rewardRefApeHarder?.current?.rewardMe()
             })
             setPendingTx(false)
           }}

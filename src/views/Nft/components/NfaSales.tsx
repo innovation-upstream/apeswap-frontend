@@ -35,7 +35,7 @@ const NfaSales: React.FC<SaleHistory> = ({ tokenId, value, blockNumber }) => {
   }
 
   const getUsd = (num) => {
-    return (bnbPrice.c[0] * bigNumber(num)).toFixed(2)
+    return ((bnbPrice?.c?.[0] as number) * bigNumber(num)).toFixed(2)
   }
 
   return (

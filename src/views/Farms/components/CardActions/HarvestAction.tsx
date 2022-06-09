@@ -42,14 +42,14 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
               const trxHash = resp.transactionHash
               toastSuccess(t('Harvest Successful'), {
                 text: t('View Transaction'),
-                url: getEtherscanLink(trxHash, 'transaction', chainId),
+                url: getEtherscanLink(trxHash, 'transaction', chainId as number),
               })
             })
             .catch((e) => {
               console.error(e)
               setPendingTrx(false)
             })
-          dispatch(updateFarmUserEarnings(chainId, pid, account))
+          dispatch(updateFarmUserEarnings(chainId as number, pid, account as string))
           setPendingTrx(false)
         }}
         endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}

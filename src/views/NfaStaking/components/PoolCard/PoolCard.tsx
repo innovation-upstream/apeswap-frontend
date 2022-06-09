@@ -52,7 +52,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool, removed }) => {
   const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
 
-  const blocksUntilStart = Math.max(startBlock - currentBlock, 0)
+  const blocksUntilStart = Math.max((startBlock as number) - currentBlock, 0)
   const blocksRemaining = Math.max(endBlock - currentBlock, 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const isApproved = account && allowance
@@ -66,7 +66,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool, removed }) => {
         pool={pool}
         earnToken={rewardToken.symbol}
         sousId={sousId}
-        apr={new BigNumber(apr)}
+        apr={new BigNumber(apr as number)}
         poolAPR={apr?.toFixed(2)}
         showExpandableSection={showExpandableSection}
         removed={removed}
@@ -79,7 +79,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool, removed }) => {
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             stakedBalance={stakedBalance}
-            isApproved={isApproved}
+            isApproved={isApproved as boolean}
             isStaked={accountHasStakedBalance}
             tier={tier}
             stakedNfas={stakedNfas}
@@ -87,14 +87,14 @@ const PoolCard: React.FC<HarvestProps> = ({ pool, removed }) => {
           <></>
         </Flex>
         <DetailsSection
-          totalStaked={getBalanceNumber(totalStaked, 0)}
+          totalStaked={getBalanceNumber(totalStaked as BigNumber, 0)}
           personalValueStaked={getBalanceNumber(stakedBalance, 0)}
           blocksRemaining={blocksRemaining}
           blocksUntilStart={blocksUntilStart}
           rewardTokenPrice={rewardToken?.price}
           addLiquidityUrl="https://apeswap.finance/swap"
           pendingReward={pendingReward}
-          bscScanAddress={`https://bscscan.com/address/${contractAddress[CHAIN_ID]}`}
+          bscScanAddress={`https://bscscan.com/address/${contractAddress[CHAIN_ID as string]}`}
         />
       </ExpandingWrapper>
     </PCard>

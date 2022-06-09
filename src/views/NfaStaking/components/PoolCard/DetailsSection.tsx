@@ -60,7 +60,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
 
   const earnings = new BigNumber(pendingReward || 0)
   const rawEarningsBalance = getBalanceNumber(earnings, tokenDecimals)
-  const timeUntilEnd = getTimePeriods(blocksRemaining * BSC_BLOCK_TIME)
+  const timeUntilEnd = getTimePeriods((blocksRemaining as number) * BSC_BLOCK_TIME)
 
   return (
     <Wrapper>
@@ -70,7 +70,9 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
       </Flex>
       <Flex justifyContent="space-between">
         <StyledText fontSize="12px">{t('Earned Value')}:</StyledText>
-        <StyledTextGreen fontSize="12px">${(rawEarningsBalance * rewardTokenPrice).toFixed(2)}</StyledTextGreen>
+        <StyledTextGreen fontSize="12px">
+          ${(rawEarningsBalance * (rewardTokenPrice as number)).toFixed(2)}
+        </StyledTextGreen>
       </Flex>
       <Flex justifyContent="space-between">
         <StyledText fontSize="12px">{t('End')}:</StyledText>

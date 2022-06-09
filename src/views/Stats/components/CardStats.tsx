@@ -43,16 +43,16 @@ const ExpandingWrapper = styled.div<{ expanded: boolean }>`
 const CardStats: React.FC<PoolStatsProps> = ({ data, type, forceDetails = false }) => {
   const { t } = useTranslation()
   const pools = useAllPools()
-  const bscScanAddress = `https://bscscan.com/address/${data.address}`
-  let farmName = data.name
+  const bscScanAddress = `https://bscscan.com/address/${data?.address}`
+  let farmName = data?.name
     .replace(/[\])}[{(]/g, '')
     .replace('WBNB', 'BNB')
     .toUpperCase()
-  let farmImage = type !== 'pool' && farmsConfig.find((farm) => farm.pid === data.pid).image
-  const filteredFarm = type !== 'pool' && farmsConfig.find((farm) => farm.pid === data.pid)
-  const [showExpandableSection, setShowExpandableSection] = useState(false)
+  let farmImage = type !== 'pool' && farmsConfig.find((farm) => farm.pid === data?.pid)?.image
+  const filteredFarm = type !== 'pool' && (farmsConfig.find((farm) => farm.pid === data?.pid) as any)
+  const [showExpandableSection, setShowExpandableSection] = useState<boolean>(false)
   if (type === 'pool') {
-    const currentPool = pools.find((pool) => pool.sousId === data.id) || pools[0]
+    const currentPool = pools.find((pool) => pool.sousId === data?.id) || pools[0]
     farmImage = currentPool?.image
     farmName = `${currentPool.stakingToken.symbol} ➩ ${currentPool.tokenName}`
   }
@@ -63,7 +63,7 @@ const CardStats: React.FC<PoolStatsProps> = ({ data, type, forceDetails = false 
         <Flex justifyContent="flex-start" alignItems="center" marginBottom="12px">
           <StatsImageCard
             type={type}
-            image={farmImage}
+            image={farmImage as string}
             token0={filteredFarm?.quoteTokenSymbol}
             token1={filteredFarm?.tokenSymbol}
           />
@@ -73,17 +73,17 @@ const CardStats: React.FC<PoolStatsProps> = ({ data, type, forceDetails = false 
         </Flex>
         <Row>
           <Text fontSize="14px">{t('Your TVL')}</Text>
-          <CardValue fontSize="14px" decimals={2} value={data.stakedTvl} prefix="$" />
+          <CardValue fontSize="14px" decimals={2} value={data?.stakedTvl as number} prefix="$" />
         </Row>
         <Row>
           <Text fontSize="14px">{t('Your APR')}</Text>
-          <CardValue fontSize="14px" decimals={2} value={data.apr * 100} suffix="%" />
+          <CardValue fontSize="14px" decimals={2} value={Number(data?.apr) * 100} suffix="%" />
         </Row>
         <Row>
           <Text fontSize="14px">{t('Your Pending Rewards')}</Text>
           <div>
-            <CardValue fontSize="14px" decimals={2} value={data.pendingReward} />
-            <CardValue fontSize="10px" decimals={2} value={data.pendingRewardUsd} prefix="($" suffix=")" />
+            <CardValue fontSize="14px" decimals={2} value={data?.pendingReward as number} />
+            <CardValue fontSize="10px" decimals={2} value={data?.pendingRewardUsd as number} prefix="($" suffix=")" />
           </div>
         </Row>
         {!forceDetails && (

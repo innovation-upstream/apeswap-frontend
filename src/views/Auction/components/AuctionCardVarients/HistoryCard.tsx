@@ -136,13 +136,14 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ auction }) => {
   const highestBidFlag = highestBidder === account
   const notSold = highestBidder === ZERO_ADDRESS
   const rawBidAmount = getBalanceNumber(new BigNumber(highestBid))
-  const bnbPrice = useTokenPriceFromSymbol('BNB')
+  const bnbPrice = useTokenPriceFromSymbol('BNB') as number
   const dollarValue = (getBalanceNumber(new BigNumber(bnbPrice), 0) * rawBidAmount).toFixed(2)
   const { t } = useTranslation()
+
   return (
     <Card highestBidFlag={highestBidFlag}>
       <TextHolder>
-        <NameText>#{nfa.index}</NameText>
+        <NameText>#{nfa?.index}</NameText>
         {notSold ? (
           <>
             <BoughtText>{t('Did Not Sell')}</BoughtText>
@@ -158,7 +159,12 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ auction }) => {
         )}
       </TextHolder>
       <NfaImageHolder>
-        <Image src={nfa.image} rarityTier={nfa.attributes.rarityTierNumber} alt={nfa.name} borderRadius="10px" />
+        <Image
+          src={nfa?.image}
+          rarityTier={nfa?.attributes?.rarityTierNumber as number}
+          alt={nfa?.name}
+          borderRadius="10px"
+        />
       </NfaImageHolder>
       {highestBidFlag && <HighestBidder />}
     </Card>

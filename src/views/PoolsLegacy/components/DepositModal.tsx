@@ -52,7 +52,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
             setPendingTx(true)
             await onConfirm(val)
             setPendingTx(false)
-            onDismiss()
+            onDismiss?.()
           }}
           endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
           style={{
