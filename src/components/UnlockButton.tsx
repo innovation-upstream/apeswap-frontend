@@ -12,6 +12,11 @@ const UnlockButton = (props) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, t)
   const { large } = props
   const isMobile = useIsMobile()
+  const TooltipProps = {
+    style: {
+      color: 'red',
+    },
+  }
 
   return large ? (
     <LargeButton onClick={onPresentConnectModal}>{t('UNLOCK WALLET')}</LargeButton>
@@ -23,7 +28,7 @@ const UnlockButton = (props) => {
         </Button>
       ) : (
         <div style={{ display: 'inline-block' }}>
-          <TooltipBubble body={t('UNLOCK WALLET')} placement="bottomRight">
+          <TooltipBubble width="180px" body={t('UNLOCK WALLET')} placement="bottomRight" {...TooltipProps}>
             <Button onClick={onPresentConnectModal} {...props}>
               {t('UNLOCK WALLET')}
             </Button>

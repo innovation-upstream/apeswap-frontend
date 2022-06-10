@@ -539,7 +539,7 @@ const LiquidiyWidget: React.FC<ILiquidityWidgetProps> = ({ onCancel }) => {
         )}
       </Flex>
       <Flex sx={{ justifyContent: 'center', margin: '10px 0 0' }}>
-        <UnderlinedButton text="cancel" handleClick={onCancel} />
+        <UnderlinedButton text={t('Cancel')} handleClick={onCancel} />
       </Flex>
     </>
   )
