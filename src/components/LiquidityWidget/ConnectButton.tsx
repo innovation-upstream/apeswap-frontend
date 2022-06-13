@@ -13,7 +13,7 @@ const ConnectButton = () => {
 
   return (
     <Button onClick={onPresentConnectModal} csx={styles.button}>
-      {t('CONNECT WALLET')}
+      {t('Connect Wallet')}
     </Button>
   )
 }

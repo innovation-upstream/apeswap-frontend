@@ -829,6 +829,8 @@
   "Treasury Bill": "Казначейская облигация",
   "BUY BELOW": "КУПИТЬ НИЖЕ",
   "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens. Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Казначейские облигации позволяют пользователям получать доступ к токенам со скидкой в обмен на токены их поставщика ликвидности (LP). Каждая казначейская облигация — это уникальный NFT, который представляет собой контракт и соответствующие ему токены вознаграждения, которые передаются в течение определенного периода времени.",
+  "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens.": "Казначейские облигации позволяют пользователям получать доступ к токенам со скидкой в обмен на токены их поставщика ликвидности (LP).",
+  "Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Каждая казначейская облигация — это уникальный NFT, который представляет собой контракт и соответствующие ему токены вознаграждения, которые передаются в течение определенного периода времени.",
   "For more info, visit the Treasury Bills page in our Documentation.": "Для получения дополнительной информации посетите страницу «Казначейские облигации» в нашей документации.",
   "Your Treasury Bills": "Ваши казначейские облигации",
   "List View": "Просмотр списка",

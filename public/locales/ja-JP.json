@@ -829,6 +829,8 @@
   "Treasury Bill": "Treasury Bill",
   "BUY BELOW": "下記を購入",
   "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens. Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Treasure Billは、ユーザーが自分の流動性プロバイダ（LP）トークンと引き換えに安い価格でトークンにアクセスすることを可能にします。各Treasury Billは、コントラクトおよび、一定時間を超えてべスティングする各報酬トークンを表す独自のNFTです。",
+  "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens.": "Treasure Billは、ユーザーが自分の流動性プロバイダ（LP）トークンと引き換えに安い価格でトークンにアクセスすることを可能にします。",
+  "Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "各Treasury Billは、コントラクトおよび、一定時間を超えてべスティングする各報酬トークンを表す独自のNFTです。",
   "For more info, visit the Treasury Bills page in our Documentation.": "詳細については、当社のドキュメントのTreasury Billのページをご覧ください。",
   "Your Treasury Bills": "Treasury Bill",
   "List View": "リスト表示",

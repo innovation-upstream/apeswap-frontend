@@ -829,6 +829,8 @@
   "Treasury Bill": "Letras del Tesoro",
   "BUY BELOW": "COMPRAR ABAJO",
   "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens. Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Las Letras del Tesoro permiten a los usuarios acceder a los tokens con un descuento a cambio de sus tokens del proveedor de liquidez (LP). Cada Letra del Tesoro es una NFT única que representa el contrato y sus respectivos tokens de recompensa, que se van acumulando a lo largo de un tiempo determinado.",
+  "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens.": "Las Letras del Tesoro permiten a los usuarios acceder a los tokens con un descuento a cambio de sus tokens del proveedor de liquidez (LP)",
+  "Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Cada Letra del Tesoro es una NFT única que representa el contrato y sus respectivos tokens de recompensa, que se van acumulando a lo largo de un tiempo determinado.",
   "For more info, visit the Treasury Bills page in our Documentation.": "Para más información, visite la página de Letras del Tesoro en nuestra documentación.",
   "Your Treasury Bills": "Sus Letras del Tesoro",
   "List View": "Vista de lista",

@@ -829,6 +829,8 @@
   "Treasury Bill": "财库券",
   "BUY BELOW": "下方购买",
   "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens. Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "财库券允许用户在兑换他们的流动资金提供者 (LP) 代币时以折扣价访问代币。每张财库券都包含代表合约的唯一 NFT 及其各自的奖励代币，这些代币需要经过一定时间的等待期。",
+  "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens.": "财库券允许用户在兑换他们的流动资金提供者 (LP) 代币时以折扣价访问代币。",
+  "Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "财库券允许用户在兑换他们的流动资金提供者 (LP) 代币时以折扣价访问代币。",
   "For more info, visit the Treasury Bills page in our Documentation.": "详情请在文件中访问我们的财库券页面。",
   "Your Treasury Bills": "您的财库券",
   "List View": "列表视图",

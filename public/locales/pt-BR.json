@@ -829,6 +829,8 @@
   "Treasury Bill": "Título do Tesouro",
   "BUY BELOW": "COMPRE ABAIXO",
   "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens. Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Os Títulos do Tesouro permitem que os usuários acessem tokens com desconto em troca de seus tokens de provedor de liquidez (LP). Cada Título do Tesouro é um NFT único que representa o contrato e seus respectivos tokens de recompensa, que são desbloqueados ao longo de um determinado período.",
+  "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens.": "Os Títulos do Tesouro permitem que os usuários acessem tokens com desconto em troca de seus tokens de provedor de liquidez (LP).",
+  "Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Cada Título do Tesouro é um NFT único que representa o contrato e seus respectivos tokens de recompensa, que são desbloqueados ao longo de um determinado período.",
   "For more info, visit the Treasury Bills page in our Documentation.": "Para mais informações, visite a página dos Títulos do Tesouro em nossa Documentação.",
   "Your Treasury Bills": "Seus Títulos do Tesouro",
   "List View": "Exibição em lista",
