@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, useWalletModal } from '@apeswapfinance/uikit'
+import { Button, useWalletModal } from '@ape.swap/uikit'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
 
