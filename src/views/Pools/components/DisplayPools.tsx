@@ -9,7 +9,7 @@ import ListViewContent from 'components/ListViewContent'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ApyButton from 'components/ApyCalculator/ApyButton'
+import ApyButton from 'components/RoiCalculator/ApyButton'
 import useIsMobile from 'hooks/useIsMobile'
 import { Pool, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -31,6 +31,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
     const token1 = pool?.stakingToken?.symbol
     const token2 = pool?.rewardToken?.symbol
     const totalDollarAmountStaked = Math.round(getBalanceNumber(pool?.totalStaked) * pool?.stakingToken?.price)
+    const tokenAddress = pool.stakingToken.address[chainId]
     const liquidityUrl = !pool?.lpStaking
       ? pool.stakingToken.symbol === 'GNANA'
         ? 'https://apeswap.finance/gnana'
@@ -98,6 +99,8 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                 rewardTokenPrice={pool?.rewardToken?.price}
                 apy={pool?.apr / 100}
                 addLiquidityUrl={liquidityUrl}
+                apr={pool?.apr}
+                tokenAddress={tokenAddress}
               />
             }
           />
