@@ -143,6 +143,7 @@ const TransactionConfirmationModal: React.FC<ModalProps & ConfirmationModalProps
   currencyToAdd,
 }) => {
   const { chainId } = useActiveWeb3React()
+  const { t } = useTranslation()
 
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {
@@ -155,7 +156,7 @@ const TransactionConfirmationModal: React.FC<ModalProps & ConfirmationModalProps
 
   return (
     <div style={{ maxWidth: '420px', zIndex: 101 }}>
-      <Modal title={title} onDismiss={handleDismiss}>
+      <Modal title={t(`title`)} onDismiss={handleDismiss}>
         {attemptingTxn ? (
           <ConfirmationPendingContent pendingText={pendingText} />
         ) : hash ? (
