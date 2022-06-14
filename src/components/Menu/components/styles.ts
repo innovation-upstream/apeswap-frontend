@@ -131,6 +131,11 @@ export const buttonSection = {
   columnGap: '20px',
   background: 'navbar',
 }
+export const upperButtonSection = {
+  justifyContent: 'center',
+  background: 'navbar',
+  paddingTop: '9px',
+}
 
 interface Props {
   account?: string
