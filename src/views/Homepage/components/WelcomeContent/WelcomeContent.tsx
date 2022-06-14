@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useContext } from 'react'
 import { ApeSwapRoundIcon, Flex, Text } from '@apeswapfinance/uikit'
-import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
+import { useMatchBreakpoints } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { SSRContext } from 'contexts/SSRContext'
 import { BuyBanana, ContentContainer, HeadingText, LearnMore } from './styles'

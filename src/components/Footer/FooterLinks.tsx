@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { Box, Flex } from 'theme-ui'
-import { Text, Svg } from '@innovationupstream/apeswap-uikit'
+import { Text, Svg } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { footerLinks } from './Footer.data'
 import styles from './styles'

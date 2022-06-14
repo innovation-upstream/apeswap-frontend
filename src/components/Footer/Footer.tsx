@@ -21,16 +21,7 @@ const Footer: React.FC = () => {
   const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
 
   return (
-    <Box
-      sx={{
-        position: 'relative',
-        overflow: 'hidden',
-        pb: '32px',
-        backgroundColor: 'footer',
-        borderTop: '5px solid',
-        borderTopColor: 'lvl2',
-      }}
-    >
+    <Box sx={styles.footerHead}>
       <Box sx={styles.container}>
         <Box sx={styles.leftSection}>
           <Svg icon="textLogo" width="250px" />

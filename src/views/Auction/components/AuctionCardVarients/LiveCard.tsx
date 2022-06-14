@@ -4,7 +4,7 @@ import { Auction } from 'state/types'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useWeb3React } from '@web3-react/core'
 import { useCurrentTime } from 'hooks/useTimer'
-import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
+import { useMatchBreakpoints } from '@ape.swap/uikit'
 import Image from '../../../Nft/components/Image'
 import Timer from '../Timer'
 import Bid from '../Actions/Bid'
@@ -73,7 +73,7 @@ const HighestBidder = styled.div`
     width: 125px;
     height: 125px;
     top: 150px;
-    right: 100px;s
+    right: 100px;
   }
 `
 

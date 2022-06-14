@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
-import { useMatchBreakpoints, Tabs, Tab, Text } from '@innovationupstream/apeswap-uikit'
+import { useMatchBreakpoints, Tabs, Tab, Text } from '@ape.swap/uikit'
 
 import { AppBody } from '../../../components/App'
 import { useAllTokens } from '../../../hooks/Tokens'

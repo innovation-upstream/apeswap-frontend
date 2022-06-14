@@ -1,6 +1,9 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const menuItemContainer = {
+  borderColor: 'text',
+  position: 'relative',
+  columnGap: '40px',
   alignItems: 'center',
   pr: '20px',
   boxShadow: 'none',
@@ -8,6 +11,18 @@ export const menuItemContainer = {
   '&:hover': {
     cursor: 'pointer',
   },
+} as any
+export const menuMobile = {
+  width: '100%',
+  background: 'pink',
+  position: 'absolute',
+  overflow: 'hidden',
+  zIndex: 10,
+} as any
+export const dropdown = {
+  overflow: 'hidden',
+  padding: '10px 0px',
+  background: 'navbar',
 } as any
 
 export const desktopMenuItem = (label: string, active: boolean) => ({
@@ -67,6 +82,54 @@ export const connectButton = {
   '&:hover': {
     background: 'white4',
   },
+}
+export const socialMedia = {
+  justifyContent: 'center',
+  alignContent: 'center',
+  columnGap: '10px',
+  background: 'navbar',
+  borderRadius: '25px',
+  height: '50px',
+}
+export const menuItems = {
+  color: 'text',
+  fontWeight: 'bold',
+  fontSize: 2,
+  pl: '0px',
+}
+export const menuLink = {
+  color: 'text',
+  fontWeight: '400',
+  fontSize: 2,
+  pl: '20px',
+  '&:after': {
+    content: '""',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+  },
+}
+export const mobilemenutop = {
+  width: '100%',
+  background: 'navbar',
+  position: 'absolute',
+  overflow: 'hidden',
+  zIndex: 10,
+}
+export const connectButtonIcon = {
+  '&& button': { border: 'none', borderRadius: '50%' },
+  position: 'absolute',
+  right: -4,
+  top: '50%',
+  transform: 'translateY(-50%)',
+} as any
+export const buttonSection = {
+  justifyContent: 'center',
+  py: '30px',
+  columnGap: '20px',
+  background: 'navbar',
 }
 
 interface Props {

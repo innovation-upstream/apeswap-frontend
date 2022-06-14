@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Text, Skeleton } from '@apeswapfinance/uikit'
-import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
+import { useMatchBreakpoints } from '@ape.swap/uikit'
 
 interface IazoSymbolProps {
   iconImage: 'monkey' | 'lock' | 'dollar' | 'twitter' | 'medium' | 'website' | 'whitepaper' | 'telegram'

@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import { IconButton, Text, Flex } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
