@@ -53,12 +53,12 @@ const DexPanel: React.FC<DexPanelProps> = ({
           currency={currency}
           otherCurrency={otherCurrency}
           onCurrencySelect={(selectedCurrency: Currency) => onCurrencySelect(fieldType, selectedCurrency)}
-          showCommonBases
+          showCommonBases={showCommonBases}
         />
       </Flex>
       <Flex sx={{ ...styles.panelBottomContainer }}>
         <Text size="12px" sx={{ ...styles.panelBottomText }}>
-          {usdVal && value && `$${(usdVal * parseFloat(value)).toFixed(2)}`}
+          {usdVal && value !== '.' && value && `$${(usdVal * parseFloat(value)).toFixed(2)}`}
         </Text>
         {account && (
           <Flex sx={{ alignItems: 'center' }}>
