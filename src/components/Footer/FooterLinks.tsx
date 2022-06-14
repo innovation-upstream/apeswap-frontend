@@ -4,12 +4,13 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { Box, Flex } from 'theme-ui'
 import { Text, Svg } from '@ape.swap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { footerLinks } from './Footer.data'
 import styles from './styles'
 
 const FooterLinks: React.FC = () => {
   const [open, setOpen] = useState(new Array(footerLinks.length).fill(false))
-
+  const { t } = useTranslation()
   const toggleOpen = (index: number) => {
     const newOpen = [...open]
     newOpen[index] = !newOpen[index]
@@ -22,7 +23,7 @@ const FooterLinks: React.FC = () => {
         <Box>
           <Flex sx={styles.linkTitle} onClick={() => toggleOpen(index)}>
             <Text color="yellow" weight="bold" sx={{ fontSize: ['16px', '22px', '22px'] }}>
-              {col.title}
+              {t(col.title)}
             </Text>
             <span sx={{ display: ['block', 'none', 'none'] }}>
               <Svg width="8px" icon="caret" direction="down" />
@@ -39,7 +40,7 @@ const FooterLinks: React.FC = () => {
                 <Link href={link.href} passHref>
                   <a target="_blank">
                     <Text sx={{ fontSize: ['12px', '16px'] }} weight="normal">
-                      {link.label}
+                      {t(link.label)}
                     </Text>
                   </a>
                 </Link>

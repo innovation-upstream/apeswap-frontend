@@ -37,9 +37,10 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
     >
       {items?.map((item) => {
         const { label, href, items: subItems } = item
+        const itemClassName = label?.replace(/\s/gi, '_')
         const ImageElement = Icons[(colorMode === 'dark' ? item?.darkIcon : item?.lightIcon) || '']
         const style: any = desktopMenuItem(
-          label,
+          itemClassName,
           active === href || subItems?.some((subItem) => active === subItem.href),
         )
 
@@ -69,7 +70,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                             boxShadow: 'inset 0px -2px 0px',
                           },
                         }}
-                        target={label === 'More' && '_blank'}
+                        target={itemClassName === 'More' && '_blank'}
                       >
                         {subItem.label}
                       </NextLink>

@@ -20,6 +20,7 @@ import maticConfig from './chains/maticConfig'
 import { DesktopMenu, MobileMenu } from './components'
 import ConnectButton from './components/ConnectButton'
 import ethConfig from './chains/ethConfig'
+import LangSelectorButton from './components/LangSelectorButton'
 import { styles, dynamicStyles } from './styles'
 
 const Menu: React.FC<{ chain?: number }> = () => {
@@ -112,7 +113,9 @@ const Menu: React.FC<{ chain?: number }> = () => {
             </Link>
             {!isMobile && <DesktopMenu items={currentMenu(t) as any} />}
           </Flex>
+
           <Flex sx={{ alignItems: 'center', columnGap: 5, height: '100%' }}>
+            {!isMobile && <LangSelectorButton />}
             {!isMobile && <NetworkButton />}
             <ConnectButton />
             {isMobile && (
