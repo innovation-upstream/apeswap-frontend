@@ -4,8 +4,6 @@ import { Box, Flex } from 'theme-ui'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IconButton, MenuContext, Svg, Text } from '@innovationupstream/apeswap-uikit'
 import { NetworkButton } from 'components/NetworkButton'
-import { useTranslation } from 'contexts/Localization'
-import { languageList } from 'config/localization/languages'
 import { NextLink } from './Link'
 import { menuItemContainer, linkStyle } from './styles'
 import LangSelectorButton from './LangSelectorButton'
@@ -24,7 +22,6 @@ interface MobileMenuProps {
 const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
   const { active, collapse } = useContext(MenuContext)
   const [open, setOpen] = useState<any>({})
-  const { t, setLanguage, currentLanguage } = useTranslation()
 
   const handleClick = (label: string) => () => {
     setOpen((prev) => ({
@@ -148,12 +145,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
                 paddingTop: '9px',
               }}
             >
-              <LangSelectorButton
-                currentLang={currentLanguage?.language}
-                langs={languageList}
-                setLang={setLanguage}
-                t={t}
-              />
+              <LangSelectorButton />
               <NetworkButton />
             </Flex>
             <Flex

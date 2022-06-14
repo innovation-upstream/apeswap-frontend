@@ -129,14 +129,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
           </Flex>
 
           <Flex sx={{ alignItems: 'center', columnGap: 5, height: '100%' }}>
-            {!isMobile && (
-              <LangSelectorButton
-                currentLang={currentLanguage?.language}
-                langs={languageList}
-                setLang={setLanguage}
-                t={t}
-              />
-            )}
+            {!isMobile && <LangSelectorButton />}
             {!isMobile && <NetworkButton />}
             <ConnectButton />
             {isMobile && (
