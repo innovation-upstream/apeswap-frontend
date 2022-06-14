@@ -1,4 +1,5 @@
 import { Currency, Percent, Trade } from '@apeswapfinance/sdk'
+import { RouterTypes } from 'config/constants'
 import { WrapType } from 'hooks/useWrapCallback'
 import { Field } from 'state/swap/actions'
 
@@ -12,6 +13,7 @@ export interface DexActionProps {
   swapCallbackError: string
   userHasSpecifiedInputOutput: boolean
   disabled: boolean
+  routerType: RouterTypes
   onWrap: () => void
   handleSwap: () => void
   onPresentConfirmModal: () => void

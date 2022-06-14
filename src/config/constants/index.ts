@@ -2,6 +2,11 @@ import { JSBI, Percent, Token, ChainId, WETH } from '@apeswapfinance/sdk'
 
 import farms from './farms'
 
+export enum RouterTypes {
+  APE = 'APE',
+  SMART = 'SMART',
+}
+
 export const CHAIN_ID = parseInt(process.env.REACT_APP_CHAIN_ID)
 
 export const NetworkContextName = 'NETWORK'

@@ -17,13 +17,4 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'center',
     cursor: 'pointer',
   },
-  SwapConfirmDisabledInputContainer: {
-    backgroundColor: 'white3',
-    borderRadius: '10px',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    padding: '10px',
-    height: '60px',
-  },
 }

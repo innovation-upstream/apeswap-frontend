@@ -21,7 +21,7 @@ const ConfirmedIcon = styled(ColumnCenter)`
   padding: 24px 0;
 `
 
-function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
+export function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
   const { t } = useTranslation()
   return (
     <Wrapper>
@@ -43,7 +43,7 @@ function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
   )
 }
 
-function TransactionSubmittedContent({
+export function TransactionSubmittedContent({
   onDismiss,
   chainId,
   hash,

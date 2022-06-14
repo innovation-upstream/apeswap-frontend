@@ -4,7 +4,7 @@ import { currencyEquals, Trade } from '@apeswapfinance/sdk'
 import { ModalProps } from '@apeswapfinance/uikit'
 import { Flex } from '@ape.swap/uikit'
 import { dexStyles } from 'views/Dex/styles'
-import { WallchainParams } from 'state/swap/actions'
+import { RouterTypeParams } from 'state/swap/actions'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
@@ -35,7 +35,7 @@ interface ConfirmSwapModalProps {
   txHash?: string
   recipient: string | null
   allowedSlippage: number
-  bestRoute: WallchainParams | null
+  bestRoute: RouterTypeParams
   onAcceptChanges: () => void
   onConfirm: () => void
   swapErrorMessage?: string

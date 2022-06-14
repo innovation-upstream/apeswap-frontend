@@ -5,6 +5,7 @@ import NumericalInput from 'components/LiquidityWidget/CurrencyInput/NumericalIn
 import { CurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import UnlockButton from 'components/UnlockButton'
+import { RouterTypes } from 'config/constants'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
@@ -26,6 +27,7 @@ const DexActions: React.FC<DexActionProps> = ({
   priceImpactWithoutFee,
   swapCallbackError,
   userHasSpecifiedInputOutput,
+  routerType,
   disabled,
   onWrap,
   handleSwap,
@@ -39,7 +41,7 @@ const DexActions: React.FC<DexActionProps> = ({
   const [allowedSlippage] = useUserSlippageTolerance()
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
+  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage, false, routerType)
 
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
@@ -74,10 +76,12 @@ const DexActions: React.FC<DexActionProps> = ({
         <Button
           fullWidth
           onClick={approveCallback}
-          disabled={approval !== ApprovalState.NOT_APPROVED}
+          disabled={approval !== ApprovalState.NOT_APPROVED || disabled}
           load={approval === ApprovalState.PENDING}
         >
-          {approval === ApprovalState.PENDING ? t('Approving') : t('Approve Apeswap Router')}
+          {approval === ApprovalState.PENDING
+            ? t('Approving')
+            : t('Approve %route% Router', { route: routerType === RouterTypes.SMART ? RouterTypes.SMART : 'APESWAP' })}
         </Button>
       )
     }

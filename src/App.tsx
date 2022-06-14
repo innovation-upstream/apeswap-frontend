@@ -63,7 +63,7 @@ const RedirectToSwap = lazy(async () =>
   })),
 )
 
-const redirectAddLiquidity = () => import('./views/AddLiquidity/redirects')
+const redirectAddLiquidity = () => import('./views/Dex/AddLiquidity/redirects')
 const RedirectDuplicateTokenIds = lazy(async () =>
   redirectAddLiquidity().then((r) => ({
     default: r.RedirectDuplicateTokenIds,

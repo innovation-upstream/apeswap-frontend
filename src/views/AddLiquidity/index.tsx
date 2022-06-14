@@ -144,11 +144,11 @@ export default function AddLiquidity({
   // COMEBACK TO THIS
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
-    parseAddress(ROUTER_ADDRESS, chainId),
+    parseAddress({ 56: '0x5471F99bCB8F682f4Fd2b463Fd3609DadD56A929' }, chainId),
   )
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
-    parseAddress(ROUTER_ADDRESS, chainId),
+    parseAddress({ 56: '0x5471F99bCB8F682f4Fd2b463Fd3609DadD56A929' }, chainId),
   )
 
   useEffect(() => {

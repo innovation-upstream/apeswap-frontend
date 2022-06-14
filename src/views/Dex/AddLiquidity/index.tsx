@@ -1,180 +1,137 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useCurrency } from 'hooks/Tokens'
-import { Field } from 'state/swap/actions'
 import { ArrowDropLeftIcon, Button, Flex, Text, useModal } from '@ape.swap/uikit'
-import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import confirmPriceImpactWithoutFee from 'views/Swap/components/confirmPriceImpactWithoutFee'
-import { computeTradePriceBreakdown } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
-import { Link } from 'react-router-dom'
-import { CurrencyAmount, JSBI, Trade } from '@apeswapfinance/sdk'
-import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Currency, CurrencyAmount, JSBI, TokenAmount, Trade } from '@apeswapfinance/sdk'
 import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
-import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import maxAmountSpend from 'utils/maxAmountSpend'
+import { useAppDispatch } from 'state'
+import { Field, resetMintState } from 'state/mint/actions'
+import { currencyId } from 'utils/currencyId'
+import { useDerivedMintInfo, useMintActionHandlers, useMintState } from 'state/mint/hooks'
 import { dexStyles } from '../styles'
 import DexPanel from '../components/DexPanel'
 import DexNav from '../components/DexNav'
-import ConfirmSwapModal from '../Swap/components/ConfirmSwapModal'
-import SwapSwitchButton from '../Swap/components/SwapSwitchButton'
-import DexActions from '../components/DexActions'
-import DexTradeInfo from '../components/DexTradeInfo'
 import AddLiquiditySign from './components/AddLiquiditySign'
+import PoolInfo from './components/PoolInfo'
+import AddLiquidityActions from './components/Actions'
 
-const Swap: React.FC = () => {
-  // modal and loading
-  const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: Trade | undefined
-    attemptingTxn: boolean
-    swapErrorMessage: string | undefined
-    txHash: string | undefined
-  }>({
-    tradeToConfirm: undefined,
-    attemptingTxn: false,
-    swapErrorMessage: undefined,
-    txHash: undefined,
-  })
-
-  const loadedUrlParams = useDefaultsFromURLSearch()
-
-  const { chainId } = useActiveWeb3React()
-
+function AddLiquidity({
+  match: {
+    params: { currencyIdA, currencyIdB },
+  },
+  history,
+}: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
+  const { account, chainId, library } = useActiveWeb3React()
+  const dispatch = useAppDispatch()
+  const { INPUT, OUTPUT } = useSwapState()
   const { t } = useTranslation()
 
-  const [allowedSlippage] = useUserSlippageTolerance()
+  /**
+   * TODO: Setup first liquidity add message
+   *
+   */
 
-  // for expert mode
-  const [isExpertMode] = useExpertModeManager()
+  // Set either param currency or swap currency
+  currencyIdA = currencyIdA || INPUT.currencyId
+  currencyIdB = currencyIdB || OUTPUT.currencyId
 
-  const { INPUT, OUTPUT, independentField, typedValue, recipient } = useSwapState()
-  // the callback to execute the swap
+  // Set currencies
+  const currencyA = useCurrency(currencyIdA)
+  const currencyB = useCurrency(currencyIdB)
 
-  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
-  const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
+  // Check to reset mint state
+  useEffect(() => {
+    if (!currencyIdA && !currencyIdB) {
+      dispatch(resetMintState())
+    }
+  }, [dispatch, currencyIdA, currencyIdB])
 
-  console.log(v2Trade)
-  console.log(useDerivedSwapInfo())
-  console.log(parsedAmount)
-
-  const [inputCurrency, outputCurrency] = [useCurrency(INPUT?.currencyId), useCurrency(OUTPUT?.currencyId)]
-
+  // mint state
+  const { independentField, typedValue, otherTypedValue } = useMintState()
   const {
-    wrapType,
-    execute: onWrap,
-    inputError: wrapInputError,
-  } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
-  const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
-  const trade = showWrap ? undefined : v2Trade
-  const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
-  const parsedAmounts = showWrap
-    ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount,
+    dependentField,
+    currencies,
+    pair,
+    pairState,
+    currencyBalances,
+    parsedAmounts,
+    price,
+    noLiquidity,
+    liquidityMinted,
+    poolTokenPercentage,
+    error,
+  } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+
+  const { onUserInput } = useMintActionHandlers(noLiquidity)
+
+  // Handle currency selection
+  const handleCurrencySelect = useCallback(
+    (field: Field, currency: Currency) => {
+      const newCurrencyId = currencyId(currency)
+      if (field === Field.CURRENCY_A) {
+        if (newCurrencyId === currencyIdB) {
+          history.push(`/add/${currencyIdB}/${currencyIdA}`)
+        } else if (currencyIdB) {
+          history.push(`/add/${newCurrencyId}/${currencyIdB}`)
+        } else {
+          history.push(`/add/${newCurrencyId}`)
+        }
+      } else if (field === Field.CURRENCY_B) {
+        if (newCurrencyId === currencyIdA) {
+          if (currencyIdB) {
+            history.push(`/add/${currencyIdB}/${newCurrencyId}`)
+          } else {
+            history.push(`/add/${newCurrencyId}`)
+          }
+        } else {
+          history.push(`/add/${currencyIdA || 'ETH'}/${newCurrencyId}`)
+        }
       }
-    : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-      }
-
-  const formattedAmounts = {
-    [independentField]: typedValue,
-    [dependentField]: showWrap
-      ? parsedAmounts[independentField]?.toExact() ?? ''
-      : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
-  }
-
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
-
-  const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
-
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
-
-  const handleAcceptChanges = useCallback(() => {
-    setSwapState((prevState) => ({ ...prevState, tradeToConfirm: trade }))
-  }, [trade])
-
-  const handleConfirmDismiss = useCallback(() => {
-    setSwapState((prevState) => ({ ...prevState, showConfirm: false })) // if there was a tx hash, we want to clear the input
-    if (txHash) {
-      onUserInput(Field.INPUT, '')
-    }
-  }, [onUserInput, txHash])
-
-  const handleMaxInput = useCallback(() => {
-    if (maxAmountInput) {
-      onUserInput(Field.INPUT, maxAmountInput.toExact())
-    }
-  }, [maxAmountInput, onUserInput])
-
-  const userHasSpecifiedInputOutput = Boolean(
-    currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
+    },
+    [currencyIdA, history, currencyIdB],
   )
 
-  const handleSwap = useCallback(() => {
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
-      return
-    }
-    if (!swapCallback) {
-      return
-    }
-    setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
-    swapCallback()
-      .then(async (hash) => {
-        setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
-        //   track({
-        //     event: 'swap',
-        //     value: tradeValueUsd,
-        //     chain: chainId,
-        //     data: {
-        //       token1: trade?.inputAmount?.currency?.getSymbol(chainId),
-        //       token2: trade?.outputAmount?.currency?.getSymbol(chainId),
-        //       token1Amount: Number(trade?.inputAmount.toSignificant(6)),
-        //       token2Amount: Number(trade?.outputAmount.toSignificant(6)),
-        //     },
-        //   })
-      })
-      .catch((error) => {
-        setSwapState({
-          attemptingTxn: false,
-          tradeToConfirm,
-          swapErrorMessage: error.message,
-          txHash: undefined,
-        })
-      })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t])
+  // get formatted amounts
+  const formattedAmounts = {
+    [independentField]: typedValue,
+    [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+  }
 
-  // const handleCurrencySelection = useCallback(
-  //   (selectedCurrency: Currency, fieldType: Field) => {
-  //     onCurrencySelection(fieldType, selectedCurrency)
-  //     // updateParams('outputCurrency', outputCurrency.symbol !== 'ETH' ? outputCurrency.address : 'ETH')
-  //     // const showSwapWarning = shouldShowSwapWarning(outputCurrency)
-  //     // if (showSwapWarning) {
-  //     //   setSwapWarningCurrency(outputCurrency)
-  //     // } else {
-  //     //   setSwapWarningCurrency(null)
-  //     // }
-  //   },
-  //   [onCurrencySelection],
-  // )
+  // get the max amounts user can add
+  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+    (accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmountSpend(currencyBalances[field]),
+      }
+    },
+    {},
+  )
 
-  const [onPresentConfirmModal] = useModal(
-    <ConfirmSwapModal
-      trade={trade}
-      originalTrade={tradeToConfirm}
-      onAcceptChanges={handleAcceptChanges}
-      attemptingTxn={attemptingTxn}
-      txHash={txHash}
-      recipient={recipient}
-      bestRoute={null}
-      allowedSlippage={allowedSlippage}
-      onConfirm={handleSwap}
-      swapErrorMessage={swapErrorMessage}
-      customOnDismiss={handleConfirmDismiss}
-    />,
-    true,
-    true,
-    'swapConfirmModal',
+  const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+    (accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
+      }
+    },
+    {},
+  )
+
+  const handleMaxInput = useCallback(
+    (field: Field) => {
+      if (maxAmounts) {
+        if (field === Field.CURRENCY_A) {
+          onUserInput(Field.CURRENCY_A, maxAmounts[Field.CURRENCY_A]?.toExact())
+        } else {
+          onUserInput(Field.CURRENCY_B, maxAmounts[Field.CURRENCY_B]?.toExact())
+        }
+      }
+    },
+    [maxAmounts, onUserInput],
   )
 
   return (
@@ -184,50 +141,56 @@ const Swap: React.FC = () => {
         <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center' }}>
           <Text weight={700}>ADD LIQUIDITY</Text>
         </Flex>
-        <Flex sx={{ margin: '0px 0px 50px 0px', alignItems: 'center' }}>
+        <Flex sx={{ margin: '0px 0px 40px 0px', alignItems: 'center' }}>
           <Link to="/pool">
-            <ArrowDropLeftIcon width="7px" /> <Text size="12px">{t('Back')}</Text>
+            <ArrowDropLeftIcon width="7px" />{' '}
+            <Text size="12px" ml="5px">
+              {t('My positions')}
+            </Text>
           </Link>
         </Flex>
         <DexPanel
-          value={formattedAmounts[Field.INPUT]}
+          value={formattedAmounts[Field.CURRENCY_A]}
           panelText="Token 1"
-          currency={inputCurrency}
-          otherCurrency={outputCurrency}
-          fieldType={Field.INPUT}
-          onCurrencySelect={onCurrencySelection}
+          currency={currencyA}
+          otherCurrency={currencyB}
+          fieldType={Field.CURRENCY_A}
+          onCurrencySelect={handleCurrencySelect}
           onUserInput={onUserInput}
           handleMaxInput={handleMaxInput}
+          showCommonBases
         />
         <AddLiquiditySign />
         <DexPanel
-          value={formattedAmounts[Field.OUTPUT]}
+          value={formattedAmounts[Field.CURRENCY_B]}
           panelText="Token 2"
-          currency={outputCurrency}
-          otherCurrency={inputCurrency}
-          fieldType={Field.OUTPUT}
-          onCurrencySelect={onCurrencySelection}
+          currency={currencyB}
+          otherCurrency={currencyA}
+          fieldType={Field.CURRENCY_B}
+          onCurrencySelect={handleCurrencySelect}
           onUserInput={onUserInput}
+          handleMaxInput={handleMaxInput}
+          showCommonBases
         />
-        <DexTradeInfo trade={v2Trade} allowedSlippage={allowedSlippage} bestRoute={null} />
-        <DexActions
-          trade={trade}
-          swapInputError={swapInputError}
-          isExpertMode={isExpertMode}
-          showWrap={showWrap}
-          wrapType={wrapType}
-          swapCallbackError={swapCallbackError}
-          priceImpactWithoutFee={priceImpactWithoutFee}
-          userHasSpecifiedInputOutput={userHasSpecifiedInputOutput}
-          onWrap={onWrap}
-          handleSwap={handleSwap}
-          onPresentConfirmModal={onPresentConfirmModal}
-          setSwapState={setSwapState}
-          disabled={false}
+        <PoolInfo
+          currencies={currencies}
+          poolTokenPercentage={poolTokenPercentage}
+          noLiquidity={noLiquidity}
+          price={price}
+          chainId={chainId}
+        />
+        <AddLiquidityActions
+          currencies={currencies}
+          error={error}
+          parsedAmounts={parsedAmounts}
+          noLiquidity={noLiquidity}
+          liquidityMinted={liquidityMinted}
+          poolTokenPercentage={poolTokenPercentage}
+          price={price}
         />
       </Flex>
     </Flex>
   )
 }
 
-export default React.memo(Swap)
+export default React.memo(AddLiquidity)

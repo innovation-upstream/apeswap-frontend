@@ -7,7 +7,7 @@ import { useTranslation } from 'contexts/Localization'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import { wrappedCurrency, wrappedCurrencyAmount } from 'utils/wrappedCurrency'
-import { AppDispatch, AppState } from '../index'
+import { AppDispatch, AppState, useAppDispatch } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
@@ -19,10 +19,18 @@ export function useMintState(): AppState['mint'] {
 }
 
 export function useMintActionHandlers(noLiquidity: boolean | undefined): {
+  onUserInput: (field: Field, typedValue: string) => void
   onFieldAInput: (typedValue: string) => void
   onFieldBInput: (typedValue: string) => void
 } {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
+
+  const onUserInput = useCallback(
+    (field: Field, typedValue: string) => {
+      dispatch(typeInput({ field, typedValue, noLiquidity: noLiquidity === true }))
+    },
+    [dispatch, noLiquidity],
+  )
 
   const onFieldAInput = useCallback(
     (typedValue: string) => {
@@ -38,6 +46,7 @@ export function useMintActionHandlers(noLiquidity: boolean | undefined): {
   )
 
   return {
+    onUserInput,
     onFieldAInput,
     onFieldBInput,
   }

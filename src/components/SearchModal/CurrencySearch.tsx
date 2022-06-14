@@ -115,11 +115,11 @@ function CurrencySearch({
   const { t } = useTranslation()
   return (
     <div>
-      <Flex sx={{margin:'20px 0px'}}>
+      <Flex sx={{ margin: '20px 0px' }}>
         <Input
           id="token-search-input"
           width="100%"
-          sx={{width:'100%'}}
+          sx={{ width: '100%' }}
           placeholder={t('Name or Address')}
           autoComplete="off"
           value={searchQuery}

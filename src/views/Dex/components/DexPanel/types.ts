@@ -1,14 +1,16 @@
 import { Currency } from '@apeswapfinance/sdk'
 import { Field } from 'state/swap/actions'
+import { Field as MintField } from 'state/mint/actions'
 
 export interface DexPanelProps {
   value: string
   currency: Currency
   otherCurrency: Currency
   panelText: string
-  onCurrencySelect: (field: Field, currency: Currency) => void
-  onUserInput: (field: Field, val: string) => void
-  handleMaxInput?: () => void
-  fieldType?: Field
+  // Using any for field type to use the same functions for both swap and liqudity
+  onCurrencySelect: (field: any, currency: Currency) => void
+  onUserInput: (field: any, val: string) => void
+  handleMaxInput?: (field: any) => void
+  fieldType?: Field | MintField
   showCommonBases?: boolean
 }

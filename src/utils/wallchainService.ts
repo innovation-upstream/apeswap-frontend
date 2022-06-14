@@ -1,6 +1,7 @@
+import { RouterTypes } from 'config/constants'
 import { WALLCHAIN_PARAMS } from 'config/constants/chains'
 import { Contract } from 'ethers'
-import { SwapDelay, WallchainParams } from 'state/swap/actions'
+import { SwapDelay, RouterTypeParams } from 'state/swap/actions'
 
 type SearchSummary = {
   expectedProfit?: number
@@ -14,6 +15,7 @@ type TransactionArgs = {
   destination: string
   sender: string
   value: string
+  masterInput: string
 }
 
 type DataResponse = {
@@ -72,7 +74,7 @@ export default function callWallchainAPI(
   chainId: number,
   account: string,
   contract: Contract,
-  onBestRoute: (bestRoute: WallchainParams | null) => void,
+  onBestRoute: (bestRoute: RouterTypeParams) => void,
   onSetSwapDelay: (swapDelay: SwapDelay) => void,
 ): Promise<any> {
   const encodedData = contract.interface.encodeFunctionData(methodName, args)
@@ -99,14 +101,14 @@ export default function callWallchainAPI(
     })
     .then((responseJson) => {
       if (responseJson) {
-        const dataResonse: WallchainParams = responseJson
+        const dataResonse: DataResponse = responseJson
         console.log(dataResonse)
         console.log(wallchainResponseIsValid(dataResonse, value, account, contract.address))
         if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
-          onBestRoute(dataResonse)
+          onBestRoute({ routerType: RouterTypes.SMART, smartRouter: dataResonse })
           onSetSwapDelay(SwapDelay.VALID)
         } else {
-          onBestRoute(null)
+          onBestRoute({ routerType: RouterTypes.APE })
           onSetSwapDelay(SwapDelay.VALID)
         }
       }

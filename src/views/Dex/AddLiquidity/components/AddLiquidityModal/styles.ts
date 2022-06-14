@@ -1,28 +1,19 @@
 import { ThemeUIStyleObject } from 'theme-ui'
-import { buttonHover } from 'views/Dex/styles'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
-  swapSwitchContainer: {
-    width: '100%',
-    height: '50px',
-    alignItems: 'center',
-    justifyContent: 'center',
+  modalWrapper: {
+    flexDirection: 'column',
   },
   swapSwitchButton: {
-    background: 'yellow',
+    backgroundColor: 'yellow',
     height: '30px',
     width: '30px',
     borderRadius: '30px',
+    alignItems: 'center',
     justifyContent: 'center',
-    paddingRight: '1px',
     cursor: 'pointer',
-    transition: 'all .3s linear',
-    '&:active': {
-      transform: 'scale(0.9)',
-    },
-    ':hover': buttonHover,
   },
-  SwapConfirmDisabledInputContainer: {
+  confirmDisabledInputContainer: {
     backgroundColor: 'white3',
     borderRadius: '10px',
     justifyContent: 'space-between',

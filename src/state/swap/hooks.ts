@@ -14,6 +14,7 @@ import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
+import { RouterTypes } from 'config/constants'
 import { AppDispatch, AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import {
@@ -25,7 +26,7 @@ import {
   typeInput,
   setSwapDelay,
   SwapDelay,
-  WallchainParams,
+  RouterTypeParams,
   setBestRoute,
 } from './actions'
 
@@ -43,7 +44,7 @@ export function useSwapActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
   onSetSwapDelay: (swapDelay: SwapDelay) => void
-  onBestRoute: (bestRoute: WallchainParams | null) => void
+  onBestRoute: (bestRoute: RouterTypeParams) => void
 } {
   const dispatch = useAppDispatch()
   const timer = useRef(null)
@@ -103,7 +104,7 @@ export function useSwapActionHandlers(): {
   )
 
   const onBestRoute = useCallback(
-    (bestRoute: WallchainParams | null) => {
+    (bestRoute: RouterTypeParams) => {
       dispatch(setBestRoute({ bestRoute }))
     },
     [dispatch],
@@ -318,7 +319,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
 
   const recipient = validatedRecipient(parsedQs.recipient)
   const swapDelay = SwapDelay.INVALID
-  const bestRoute = null
+  const bestRoute = { routerType: RouterTypes.APE }
 
   return {
     [Field.INPUT]: {
@@ -343,14 +344,19 @@ export function useDefaultsFromURLSearch():
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
   const swapDelay = SwapDelay.INVALID
-  const bestRoute = null
+  const bestRoute = { routerType: RouterTypes.APE }
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
   >()
 
   useEffect(() => {
     if (!chainId) return
+    console.log(parsedQs)
     const parsed = queryParametersToSwapState(parsedQs, chainId)
+    console.log(parsed)
+    console.log(parsed)
+    console.log(parsed)
+    console.log(result)
 
     dispatch(
       replaceSwapState({

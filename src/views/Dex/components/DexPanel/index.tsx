@@ -8,6 +8,8 @@ import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useCallback, useState, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
+import { Field as MintField } from 'state/mint/actions'
+
 import { useDerivedSwapInfo } from 'state/swap/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { getCurrencyUsdPrice } from 'utils/getTokenUsdPrice'
@@ -51,6 +53,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
           currency={currency}
           otherCurrency={otherCurrency}
           onCurrencySelect={(selectedCurrency: Currency) => onCurrencySelect(fieldType, selectedCurrency)}
+          showCommonBases
         />
       </Flex>
       <Flex sx={{ ...styles.panelBottomContainer }}>
@@ -62,13 +65,14 @@ const DexPanel: React.FC<DexPanelProps> = ({
             <Text size="12px" sx={{ ...styles.panelBottomText }}>
               {t('Balance: %balance%', { balance: currencyBalance || 'loading' })}
             </Text>
-            {fieldType === Field.INPUT && parseFloat(currencyBalance) > 0 && (
-              <Flex sx={{ ...styles.maxButton }} size="sm" onClick={handleMaxInput}>
-                <Text color="primaryBright" sx={{ lineHeight: '0px' }}>
-                  {t('MAX')}
-                </Text>
-              </Flex>
-            )}
+            {(fieldType === Field.INPUT || fieldType === MintField.CURRENCY_A || fieldType === MintField.CURRENCY_B) &&
+              parseFloat(currencyBalance) > 0 && (
+                <Flex sx={{ ...styles.maxButton }} size="sm" onClick={() => handleMaxInput(fieldType)}>
+                  <Text color="primaryBright" sx={{ lineHeight: '0px' }}>
+                    {t('MAX')}
+                  </Text>
+                </Flex>
+              )}
           </Flex>
         )}
       </Flex>

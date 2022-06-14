@@ -36,6 +36,11 @@ const Swap: React.FC = () => {
     txHash: undefined,
   })
 
+  /**
+   * TODO: Add back tracking code.
+   * TODO: Make sure handle currency selection is okay
+   */
+
   const loadedUrlParams = useDefaultsFromURLSearch()
 
   const { chainId } = useActiveWeb3React()
@@ -87,7 +92,12 @@ const Swap: React.FC = () => {
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
+    trade,
+    allowedSlippage,
+    recipient,
+    bestRoute,
+  )
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
 
@@ -106,11 +116,14 @@ const Swap: React.FC = () => {
     }
   }, [onUserInput, txHash])
 
-  const handleMaxInput = useCallback(() => {
-    if (maxAmountInput) {
-      onUserInput(Field.INPUT, maxAmountInput.toExact())
-    }
-  }, [maxAmountInput, onUserInput])
+  const handleMaxInput = useCallback(
+    (field: Field) => {
+      if (maxAmountInput) {
+        onUserInput(field, maxAmountInput.toExact())
+      }
+    },
+    [maxAmountInput, onUserInput],
+  )
 
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
@@ -218,6 +231,7 @@ const Swap: React.FC = () => {
           isExpertMode={isExpertMode}
           showWrap={showWrap}
           wrapType={wrapType}
+          routerType={bestRoute.routerType}
           swapCallbackError={swapCallbackError}
           priceImpactWithoutFee={priceImpactWithoutFee}
           userHasSpecifiedInputOutput={userHasSpecifiedInputOutput}

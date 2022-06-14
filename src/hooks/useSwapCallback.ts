@@ -1,12 +1,21 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@apeswapfinance/sdk'
+import {
+  JSBI,
+  Percent,
+  Router,
+  SmartRouter,
+  SwapParameters,
+  Trade,
+  TradeType,
+  ROUTER_ADDRESS,
+} from '@apeswapfinance/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import truncateHash from 'utils/truncateHash'
-import callWallchainAPI from 'utils/wallchainService'
 import { useTranslation } from 'contexts/Localization'
-import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
+import { RouterTypeParams } from 'state/swap/actions'
+import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE, RouterTypes } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin, getRouterContract, isAddress } from '../utils'
 import isZero from '../utils/isZero'
@@ -53,6 +62,7 @@ export function useSwapCallArguments(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
+  bestRoute?: RouterTypeParams, // The best route that will be used to facilitate the trade
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
 
@@ -63,35 +73,57 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !library || !account || !chainId || !deadline) return []
 
-    const contract: Contract | null = getRouterContract(chainId, library, account)
+    const contract: Contract | null = getRouterContract(chainId, library, account, bestRoute?.routerType)
     if (!contract) {
       return []
     }
 
     const swapMethods = []
 
-    swapMethods.push(
-      Router.swapCallParameters(trade, {
-        feeOnTransfer: false,
-        allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
-        recipient,
-        deadline: deadline.toNumber(),
-      }),
-    )
-
-    if (trade.tradeType === TradeType.EXACT_INPUT) {
+    if (bestRoute?.routerType === RouterTypes.SMART) {
+      swapMethods.push(
+        SmartRouter.swapCallParameters(trade, {
+          allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
+          recipient,
+          deadline: deadline.toNumber(),
+          router: ROUTER_ADDRESS[56],
+          masterInput: bestRoute?.smartRouter.transactionArgs.masterInput,
+        }),
+      )
+      if (trade.tradeType === TradeType.EXACT_INPUT) {
+        swapMethods.push(
+          SmartRouter.swapCallParameters(trade, {
+            allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
+            recipient,
+            deadline: deadline.toNumber(),
+            router: ROUTER_ADDRESS[56],
+            masterInput: bestRoute?.smartRouter.transactionArgs.masterInput,
+          }),
+        )
+      }
+    } else {
       swapMethods.push(
         Router.swapCallParameters(trade, {
-          feeOnTransfer: true,
+          feeOnTransfer: false,
           allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
           recipient,
           deadline: deadline.toNumber(),
         }),
       )
+      if (trade.tradeType === TradeType.EXACT_INPUT) {
+        swapMethods.push(
+          Router.swapCallParameters(trade, {
+            feeOnTransfer: false,
+            allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
+            recipient,
+            deadline: deadline.toNumber(),
+          }),
+        )
+      }
     }
 
     return swapMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, deadline, library, recipient, bestRoute, trade])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -100,10 +132,11 @@ export function useSwapCallback(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
+  bestRoute?: RouterTypeParams, // The best route that will be used to facilitate the trade
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
+  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName, bestRoute)
   console.log(swapCalls)
   const addTransaction = useTransactionAdder()
 
@@ -134,22 +167,26 @@ export function useSwapCallback(
             } = call
             const options = !value || isZero(value) ? {} : { value }
 
+            console.error('WE HAPPENED TO ACTUALLY MAKE IT TO THSI MOINT ')
+            console.info()
             return contract.estimateGas[methodName](...args, options)
               .then((gasEstimate) => {
+                console.error(call)
                 return {
                   call,
                   gasEstimate,
                 }
               })
               .catch((gasError) => {
+                console.error('WE HAPPENED TO ACTUALLY MAKE IT TO THSI MOINT AGAIANNASDNASDASD ')
                 console.error('Gas estimate failed, trying eth_call to extract error', call)
-
                 return contract.callStatic[methodName](...args, options)
                   .then((result) => {
                     console.error('Unexpected successful call after failed estimate gas', call, gasError, result)
                     return { call, error: new Error(t('Unexpected issue with estimating the gas. Please try again.')) }
                   })
                   .catch((callError) => {
+                    console.log('Made it here')
                     console.error('Call threw error', call, callError)
                     const reason: string = callError.reason || callError.data?.message || callError.message
                     const errorMessage = t(
@@ -158,12 +195,14 @@ export function useSwapCallback(
                         'Unknown error, check the logs'
                       }.`,
                     )
-
                     return { call, error: new Error(errorMessage) }
                   })
               })
           }),
         )
+
+        console.error(estimatedCalls)
+        console.error('WE HAPPENED TO ACTUALLY MAKE IT TO THSI MOINT AGAIN ')
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         const successfulEstimation = estimatedCalls.find(
@@ -178,6 +217,7 @@ export function useSwapCallback(
         }
 
         console.log(successfulEstimation)
+        console.error(successfulEstimation)
 
         const {
           call: {
@@ -186,8 +226,6 @@ export function useSwapCallback(
           },
           gasEstimate,
         } = successfulEstimation
-
-        // callWallchainAPI(methodName, args, value, chainId, account, contract)
 
         return contract[methodName](...args, {
           gasLimit: calculateGasMargin(gasEstimate),

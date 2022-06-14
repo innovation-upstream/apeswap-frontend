@@ -6,7 +6,7 @@ import { AutoRow } from 'components/layout/Row'
 import { useTranslation } from 'contexts/Localization'
 import DexTradeInfo from 'views/Dex/components/DexTradeInfo'
 import { Button, Text, Flex } from '@ape.swap/uikit'
-import { Field, WallchainParams } from 'state/swap/actions'
+import { Field, RouterTypeParams } from 'state/swap/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 export default function SwapModalFooter({
@@ -20,7 +20,7 @@ export default function SwapModalFooter({
   trade: Trade
   allowedSlippage: number
   onConfirm: () => void
-  bestRoute: WallchainParams | null
+  bestRoute: RouterTypeParams
   swapErrorMessage: string | undefined
   disabledConfirm: boolean
 }) {

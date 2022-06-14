@@ -1,4 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
+import { RouterTypes } from 'config/constants'
 import {
   Field,
   replaceSwapState,
@@ -9,7 +10,7 @@ import {
   SwapDelay,
   switchCurrencies,
   typeInput,
-  WallchainParams,
+  RouterTypeParams,
 } from './actions'
 
 export interface SwapState {
@@ -24,7 +25,7 @@ export interface SwapState {
   // the typed recipient address or ENS name, or null if swap should go to sender
   readonly recipient: string | null
   readonly swapDelay: SwapDelay
-  readonly bestRoute: WallchainParams | null
+  readonly bestRoute: RouterTypeParams
 }
 
 const initialState: SwapState = {
@@ -38,7 +39,7 @@ const initialState: SwapState = {
   },
   recipient: null,
   swapDelay: SwapDelay.INVALID,
-  bestRoute: null,
+  bestRoute: { routerType: RouterTypes.APE },
 }
 
 export default createReducer<SwapState>(initialState, (builder) =>

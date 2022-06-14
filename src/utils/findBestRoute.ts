@@ -1,7 +1,7 @@
 import { Trade } from '@apeswapfinance/sdk'
 import { useState } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { SwapDelay, WallchainParams } from 'state/swap/actions'
+import { SwapDelay, RouterTypeParams } from 'state/swap/actions'
 import { useSwapActionHandlers } from 'state/swap/hooks'
 import callWallchainAPI from 'utils/wallchainService'
 
@@ -11,12 +11,13 @@ export const findBestRoute = (
   account: string,
   chainId: number,
   onSetSwapDelay: (swapDelay: SwapDelay) => void,
-  onBestRoute: (bestRoute: WallchainParams | null) => void,
+  onBestRoute: (bestRoute: RouterTypeParams) => void,
 ) => {
   console.log(swapDelay)
   if (swapDelay !== SwapDelay.INPUT_COMPLETE) {
     return false
   }
+  console.log(swapCalls)
   if (swapCalls[0]) {
     const {
       contract,

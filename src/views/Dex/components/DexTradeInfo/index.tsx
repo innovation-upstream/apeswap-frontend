@@ -4,11 +4,11 @@ import { Trade } from '@apeswapfinance/sdk'
 import { useTranslation } from 'contexts/Localization'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Divider } from 'theme-ui'
-import { Field, SwapDelay, WallchainParams } from 'state/swap/actions'
-import { findBestRoute } from 'utils/findBestRoute'
+import { Field, SwapDelay, RouterTypeParams } from 'state/swap/actions'
 import { useSwapCallArguments } from 'hooks/useSwapCallback'
 import { useRouterCheck } from 'hooks/useRouterCheck'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { RouterTypes } from 'config/constants'
 import TradePrice from 'views/Orders/components/TradePrice'
 import FormattedPriceImpact from 'views/Orders/components/FormattedPriceImpact'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -18,14 +18,14 @@ import { styles } from './styles'
 const DexTradeInfo: React.FC<{
   trade: Trade
   allowedSlippage: number
-  bestRoute: WallchainParams | null
+  bestRoute: RouterTypeParams
   swapDelay?: SwapDelay
   onSetSwapDelay?: (swapDelay: SwapDelay) => void
   open?: boolean
 }> = ({ trade, allowedSlippage, swapDelay, bestRoute, open = false }) => {
   const { chainId, account } = useActiveWeb3React()
   const [showMore, setShowMore] = useState(open)
-  const isSmartRouter = bestRoute && bestRoute?.pathFound
+  const isSmartRouter = bestRoute.routerType === RouterTypes.SMART
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState(false)
   const route = trade?.route?.path?.map((val, i) => {
@@ -116,7 +116,7 @@ const DexTradeInfo: React.FC<{
                     {t('Estimated Swap Kickback')}
                   </Text>
                   <Text color="primaryBright" size="10px">
-                    {bestRoute?.summary?.searchSummary?.expectedProfit?.toFixed(6)}{' '}
+                    {bestRoute?.smartRouter?.summary?.searchSummary?.expectedProfit?.toFixed(6)}{' '}
                     {trade.inputAmount.currency.getSymbol(chainId)}
                   </Text>
                 </Flex>
