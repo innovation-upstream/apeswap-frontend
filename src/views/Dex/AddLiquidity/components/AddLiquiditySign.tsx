@@ -5,7 +5,7 @@ import { styles } from './styles'
 const AddLiquiditySign: React.FC = () => (
   <Flex sx={{ ...styles.swapSwitchContainer }}>
     <Flex sx={{ ...styles.swapSwitchButton }}>
-      <Text weight={700} size="20px" color="primaryBright" sx={{lineHeight: '0px'}}>
+      <Text weight={700} size="20px" color="primaryBright" sx={{ lineHeight: '0px' }}>
         +
       </Text>
     </Flex>

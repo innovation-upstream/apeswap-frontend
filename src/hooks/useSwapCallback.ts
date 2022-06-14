@@ -166,19 +166,15 @@ export function useSwapCallback(
               contract,
             } = call
             const options = !value || isZero(value) ? {} : { value }
-
-            console.error('WE HAPPENED TO ACTUALLY MAKE IT TO THSI MOINT ')
-            console.info()
             return contract.estimateGas[methodName](...args, options)
               .then((gasEstimate) => {
-                console.error(call)
                 return {
                   call,
-                  gasEstimate,
+                  gasEstimate:
+                    bestRoute?.routerType === RouterTypes.SMART ? gasEstimate.mul(BigNumber.from('3')) : gasEstimate,
                 }
               })
               .catch((gasError) => {
-                console.error('WE HAPPENED TO ACTUALLY MAKE IT TO THSI MOINT AGAIANNASDNASDASD ')
                 console.error('Gas estimate failed, trying eth_call to extract error', call)
                 return contract.callStatic[methodName](...args, options)
                   .then((result) => {
@@ -266,5 +262,5 @@ export function useSwapCallback(
       },
       error: null,
     }
-  }, [trade, library, account, chainId, recipient, recipientAddressOrName, swapCalls, addTransaction, t])
+  }, [trade, library, account, chainId, recipient, bestRoute, recipientAddressOrName, swapCalls, addTransaction, t])
 }
