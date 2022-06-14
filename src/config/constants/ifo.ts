@@ -250,7 +250,7 @@ const ifos: (t: ContextApi['t']) => Ifo[] = (t) => [
     name: t('Jedi Yield'),
     subTitle: t('Yield Farm Aggregator'),
     description: t(
-      'Smart portal built to increase convenience and security for BSC yield farmers. Users can freely stake and/or unstake their funds regardless of the accessibility to their favorite yield farming websites. Moreover, users can monitor their portfolios, look at token graphs, and harvest their farms all in one page',
+      'JDIYield is building a smart portal to increase convenience and security for BNB Chain yield farmers. Users will be able to freely stake or unstake their funds regardless of their accessibility to yield farming dapps. Moreover, users can monitor their portfolios, look at token graphs, and harvest their farms all in one place.',
     ),
     launchDate: 'Apr. 2',
     launchTime: '03:00 UTC',

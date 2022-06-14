@@ -14,7 +14,7 @@ import { TokenDisplayAmount } from './types'
 
 const NUMBER_OF_TOKENS_TO_DISPLAY = 6
 const TOKEN_DELAY = 10000
-const CATEGORIES = ['primary', 'partner']
+const CATEGORIES = ['primary', 'partner', 'trending']
 
 const TrendingTokens: React.FC = () => {
   const { chainId } = useActiveWeb3React()
