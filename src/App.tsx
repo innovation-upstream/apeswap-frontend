@@ -60,7 +60,7 @@ const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 const Vote = lazy(() => import('./views/Vote'))
 const Proposal = lazy(() => import('./views/Vote/Proposal'))
-const CreateProposal = lazy(() => import('./views/Vote/CreateProposal'))
+const CreateProposal = lazy(() => import('./views/Vote/CreateProposal/CreateProposal'))
 
 const redirectSwap = () => import('./views/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
