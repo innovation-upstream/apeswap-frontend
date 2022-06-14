@@ -2,10 +2,11 @@
 import React, { useContext, useState } from 'react'
 import { Box, Flex } from 'theme-ui'
 import { AnimatePresence, motion } from 'framer-motion'
-import { IconButton, MenuContext, Svg, Text } from '@innovationupstream/apeswap-uikit'
+import { MenuContext } from '@innovationupstream/apeswap-uikit'
+import { Svg, Text, IconButton } from '@ape.swap/uikit'
 import { NetworkButton } from 'components/NetworkButton'
 import { NextLink } from './Link'
-import { menuItemContainer, linkStyle } from './styles'
+import { menuItemContainer, linkStyle, menuMobile, dropdown, buttonSection } from './styles'
 
 interface MobileMenuProps {
   items: {
@@ -37,13 +38,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
           animate={{ height: 'fit-content' }}
           transition={{ height: { duration: 0.3 } }}
           exit={{ height: 0 }}
-          sx={{
-            width: '100%',
-            background: 'navbar',
-            position: 'absolute',
-            overflow: 'hidden',
-            zIndex: 10,
-          }}
+          sx={menuMobile}
         >
           {items?.map((item) => {
             const { label, href, items: subItems } = item
@@ -95,11 +90,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
                       animate={{ height: 'fit-content' }}
                       transition={{ height: { duration: 0.3 } }}
                       exit={{ height: 0 }}
-                      sx={{
-                        overflow: 'hidden',
-                        padding: '10px 0px',
-                        background: 'navbar',
-                      }}
+                      sx={dropdown as any}
                     >
                       {subItems?.map((link, index) => (
                         <Flex
@@ -136,14 +127,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ items }) => {
               </>
             )
           })}
-          <Flex
-            sx={{
-              justifyContent: 'center',
-              py: '30px',
-              columnGap: '20px',
-              background: 'navbar',
-            }}
-          >
+          <Flex sx={buttonSection}>
             <a href="https://twitter.com/ape_swap" target="_blank" rel="noopener noreferrer">
               <IconButton
                 variant="primary"

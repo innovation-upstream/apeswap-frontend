@@ -1,9 +1,10 @@
 /** @jsxImportSource theme-ui */
 import React, { useContext } from 'react'
 import { Box, Flex, useColorMode } from 'theme-ui'
-import { Text, IconButton, MenuContext } from '@innovationupstream/apeswap-uikit'
+import { MenuContext } from '@innovationupstream/apeswap-uikit'
+import { Text, IconButton } from '@ape.swap/uikit'
 import { NextLink } from './Link'
-import { menuItemContainer, desktopMenuItem, desktopSubItem } from './styles'
+import { menuItemContainer, desktopMenuItem, desktopSubItem, socialMedia, menuItems } from './styles'
 import * as ImageModule from '../images'
 
 const Icons = ImageModule as unknown as { [key: string]: React.FC }
@@ -45,16 +46,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
         return (
           <Flex sx={style}>
             {subItems?.length ? (
-              <Text
-                sx={{
-                  color: 'text',
-                  fontWeight: 'bold',
-                  fontSize: 2,
-                  pl: '0px',
-                }}
-              >
-                {label}
-              </Text>
+              <Text sx={menuItems}>{label}</Text>
             ) : (
               <NextLink href={href} csx={{ fontWeight: 'bold', pl: 0 }}>
                 {label}
@@ -62,12 +54,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
             )}
             {subItems?.length && (
               <Flex id={`menu-modal-${label}`} sx={desktopSubItem as any}>
-                <ul
-                  sx={{
-                    listStyleType: 'none',
-                    marginLeft: 0,
-                  }}
-                >
+                <ul sx={{ listStyleType: 'none', marginLeft: 0 }}>
                   {subItems?.map((subItem) => (
                     <li sx={{ position: 'relative' }}>
                       <NextLink
@@ -91,16 +78,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ items }) => {
                 </ul>
                 <Box>
                   <ImageElement />
-                  <Flex
-                    sx={{
-                      justifyContent: 'center',
-                      alignContent: 'center',
-                      columnGap: '10px',
-                      background: 'navbar',
-                      borderRadius: '25px',
-                      height: '50px',
-                    }}
-                  >
+                  <Flex sx={socialMedia}>
                     {label === 'More' && (
                       <>
                         <a href="https://twitter.com/ape_swap" target="_blank" rel="noopener noreferrer">

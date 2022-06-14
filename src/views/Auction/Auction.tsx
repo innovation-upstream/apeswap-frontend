@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Flex } from '@apeswapfinance/uikit'
-import { useMatchBreakpoints } from '@innovationupstream/apeswap-uikit'
+import { useMatchBreakpoints } from '@ape.swap/uikit'
 import SwiperProvider from 'contexts/SwiperProvider'
 import Banner from 'components/Banner'
 import { useAuctions, useFetchAuctions } from 'state/hooks'

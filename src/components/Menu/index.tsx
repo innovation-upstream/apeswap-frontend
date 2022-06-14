@@ -3,7 +3,8 @@ import React, { useEffect, useContext, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import throttle from 'lodash/throttle'
 import { useMatchBreakpoints } from '@apeswapfinance/uikit'
-import { MenuContext, Svg, IconButton } from '@innovationupstream/apeswap-uikit'
+import { MenuContext } from '@innovationupstream/apeswap-uikit'
+import { Svg, IconButton } from '@ape.swap/uikit'
 import Link from 'next/link'
 import { useWeb3React } from '@web3-react/core'
 import Cookies from 'universal-cookie'
@@ -12,21 +13,19 @@ import { Flex, Box } from 'theme-ui'
 import { SSRContext } from 'contexts/SSRContext'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
-import { useNetworkChainId, useLiveIfoStatus } from 'state/hooks'
+import { useNetworkChainId } from 'state/hooks'
 import { NetworkButton } from 'components/NetworkButton'
-import useAuth from 'hooks/useAuth'
 import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { DesktopMenu, MobileMenu } from './components'
 import ConnectButton from './components/ConnectButton'
 import ethConfig from './chains/ethConfig'
+import { styles, dynamicStyles } from './styles'
 
 const Menu: React.FC<{ chain?: number }> = () => {
   const router = useRouter()
   const refPrevOffset = useRef(null)
   const [showMenu, setShowMenu] = useState(true)
-  const [showConnectPopup, setShowConnect] = useState(false)
-  const [showAccountPopup, setShowAccount] = useState(false)
   const { setActive, collapse, setCollapse } = useContext(MenuContext)
   const { account } = useWeb3React()
   const chainId = useNetworkChainId()
@@ -34,7 +33,6 @@ const Menu: React.FC<{ chain?: number }> = () => {
   const { isXxl } = useMatchBreakpoints()
   const isMobile = isBrowser ? isXxl === false : !isDesktop
   const { t } = useTranslation()
-  const { login, logout } = useAuth()
 
   const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC) {
@@ -48,7 +46,6 @@ const Menu: React.FC<{ chain?: number }> = () => {
     }
     return bscConfig(translate)
   }
-  const { liveIfos } = useLiveIfoStatus()
 
   useEffect(() => {
     refPrevOffset.current = window.pageYOffset
@@ -103,29 +100,15 @@ const Menu: React.FC<{ chain?: number }> = () => {
     }
   }, [])
 
+  const menuStyle = dynamicStyles.userBlockBtn({ showMenu })
+
   return (
     <>
-      <Box
-        sx={{
-          background: 'navbar',
-          position: 'fixed',
-          width: '100%',
-          height: '60px',
-          transform: `translateY(${showMenu ? 0 : '-100%'})`,
-          transition: 'transform linear 0.1s',
-          zIndex: 9,
-        }}
-      >
-        <Flex
-          sx={{ alignItems: 'center', height: '100%', justifyContent: 'space-between', px: ['25px', '25px', '20px'] }}
-        >
+      <Box sx={menuStyle}>
+        <Flex sx={styles.headerSetting}>
           <Flex sx={{ columnGap: '40px', height: '100%' }}>
             <Link href="/">
-              <IconButton
-                variant="transparent"
-                icon="logo"
-                sx={{ '&:hover:not([disabled])': { backgroundColor: 'transparent', filter: 'brightness(100%)' } }}
-              />
+              <IconButton variant="transparent" icon="logo" sx={styles.apeLogoHeader} />
             </Link>
             {!isMobile && <DesktopMenu items={currentMenu(t) as any} />}
           </Flex>
@@ -143,21 +126,7 @@ const Menu: React.FC<{ chain?: number }> = () => {
         </Flex>
         {isMobile && <MobileMenu items={currentMenu(t) as any} />}
       </Box>
-      {!collapse && (
-        <Box
-          onClick={() => setCollapse(true)}
-          sx={{
-            display: ['none', 'block', 'block'],
-            position: 'fixed',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            zIndex: 5,
-            background: 'rgb(56, 56, 56, 0.6)',
-          }}
-        />
-      )}
+      {!collapse && <Box onClick={() => setCollapse(true)} sx={styles.overlay} />}
     </>
   )
 }

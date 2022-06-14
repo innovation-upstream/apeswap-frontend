@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import { LiquidityWidget } from 'components/LiquidityWidget'
 import { Modal, ModalHeader, Heading, Link } from '@ape.swap/uikit'
@@ -5,6 +6,7 @@ import { HelpIcon, ModalProvider } from '@apeswapfinance/uikit'
 import { Flex } from 'theme-ui'
 import { merge } from 'lodash'
 import { useTranslation } from 'contexts/Localization'
+import styles from './styles'
 
 interface LiquidityModalProps {
   widgetProps?: Record<string, any>
@@ -28,15 +30,7 @@ const LiquidityModal: React.FC<LiquidityModalProps> = ({ widgetProps, modalProps
     <ModalProvider>
       <Modal open {...merge(modalProps, newModalProps)}>
         <ModalHeader onDismiss={handleClose}>
-          <Flex
-            sx={{
-              Svg: {
-                marginLeft: 0,
-                marginRight: '11px',
-              },
-              flexDirection: 'row-reverse',
-            }}
-          >
+          <Flex sx={styles.modalHeader}>
             <Link
               href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity"
               target="_blank"

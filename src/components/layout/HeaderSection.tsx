@@ -7,13 +7,7 @@ const HeaderSection: React.FC = ({ children }) => {
 
   return (
     <>
-      <Box
-        sx={{
-          marginLeft: collapse ? [0, 0, '56px'] : [0, 0, '240px'],
-        }}
-      >
-        {children}
-      </Box>
+      <Box sx={{ marginLeft: collapse ? [0, 0, '56px'] : [0, 0, '240px'] }}>{children}</Box>
     </>
   )
 }

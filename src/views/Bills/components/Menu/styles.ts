@@ -49,15 +49,6 @@ export const StyledText = styled(Text)`
   font-size: 16px !important;
 `
 
-export const LearnMoreButton = styled(Button)`
-  height: 36px;
-  width: auto;
-  min-width: 192px;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.yellow};
-  border: 2px solid ${({ theme }) => theme.colors.yellow};
-`
-
 export const ClaimAllWrapper = styled(Flex)`
   width: 100%;
   align-items: center;
@@ -65,4 +56,10 @@ export const ClaimAllWrapper = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
   }
+`
+export const LearnMoreButton = styled(Flex)`
+  height: '36px';
+  width: '192px';
+  border: '2px solid';
+  justify-content: 'center';
 `
