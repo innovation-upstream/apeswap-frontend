@@ -1,4 +1,5 @@
 import { Flex } from '@apeswapfinance/uikit'
+import { useLocation } from 'react-router-dom'
 import React, { useState } from 'react'
 import { usePollBills, useBills, usePollUserBills } from 'state/bills/hooks'
 import { Bills as BillType } from 'state/types'
@@ -15,18 +16,36 @@ const Bills: React.FC = () => {
   const bills = useBills()
   const { t } = useTranslation()
   const [query, setQuery] = useState('')
+  const [sortOption, setSortOption] = useState('all')
+  const location = useLocation()
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
   }
 
   const renderBills = (): BillType[] => {
-    let billsToReturn = bills
+    let billsToReturn = []
+    bills?.forEach((bill) => {
+      if (location.search.includes(`id=${bill.index}`)) {
+        billsToReturn.unshift(bill)
+      } else {
+        billsToReturn.push(bill)
+      }
+    })
+
     if (query) {
-      billsToReturn = bills?.filter((bill) => {
+      billsToReturn = billsToReturn?.filter((bill) => {
         return bill.lpToken.symbol.toUpperCase().includes(query.toUpperCase())
       })
     }
+
+    if (sortOption === 'bananaBill') {
+      billsToReturn = billsToReturn?.filter((bill) => bill.billType === 'BANANA Bill')
+    }
+    if (sortOption === 'jungleBill') {
+      billsToReturn = billsToReturn?.filter((bill) => bill.billType === 'JUNGLE Bill')
+    }
+
     return billsToReturn
   }
 
@@ -51,8 +70,8 @@ const Bills: React.FC = () => {
           <BillMenu
             bills={bills}
             onHandleQueryChange={handleChangeQuery}
-            onSetSortOption={(s) => s}
-            activeOption="all"
+            onSetSortOption={setSortOption}
+            activeOption={sortOption}
             query={query}
           />
           <UserBillViews bills={renderBills()} />
