@@ -292,6 +292,13 @@ const tokens = {
     },
     decimals: 18,
   },
+  stars: {
+    symbol: 'STARS',
+    address: {
+      56: '0xbd83010eb60f12112908774998f65761cf9f6f9a',
+    },
+    decimals: 18,
+  },
   krw: {
     symbol: 'KRW',
     address: {
@@ -1249,6 +1256,38 @@ const tokens = {
     symbol: 'GENv3-BNB',
     address: {
       56: '0xCfa1d8afFA4da8e6CaBE6fde66DDf4eDA89f0e42',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  ceekBnb: {
+    symbol: 'CEEK-BNB',
+    address: {
+      56: '0x119d6ebe840966c9cf4ff6603e76208d30ba2179',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  tlosBusd: {
+    symbol: 'TLOS-BUSD',
+    address: {
+      56: '0x4d90ddc0a30968c4c6b1ed0535b0264e75a3c5f3',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  starsBnb: {
+    symbol: 'STARS-BNB',
+    address: {
+      56: '0xbc8a4cad743d87e8754fd5f704c62e378802cbff',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  hotcrossBusd: {
+    symbol: 'HOTCROSS-BUSD',
+    address: {
+      56: '0x3b9aa711d1d90a4f8639f66c227881729a3317f2',
     },
     decimals: 18,
     lpToken: true,
