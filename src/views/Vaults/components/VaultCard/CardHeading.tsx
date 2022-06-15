@@ -245,7 +245,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
   const cardHeaderButton = () => {
     if (!account) {
-      return <StyledUnlockButton size="sm" />
+      return <UnlockButton sx={{ fontWeight: 600, fontSize: '11.5px', height: '44px' }} />
     }
     if (needsApproval) {
       return <ApprovalAction stakingContractAddress={stakingTokenAddress} pid={pid} isLoading={isLoading} />
