@@ -6,7 +6,12 @@ export const buttonHover = {
 }
 
 export const dexStyles: Record<string, ThemeUIStyleObject> = {
-  // Token selector container
+  pageContainer: {
+    justifyContent: 'center',
+    height: 'fit-content',
+    minHeight: '100vh',
+    padding: '75px 0px',
+  },
   dexContainer: {
     width: 'auto',
     maxWidth: '420px',

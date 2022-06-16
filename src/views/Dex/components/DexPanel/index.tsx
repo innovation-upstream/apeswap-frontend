@@ -1,20 +1,18 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Skeleton, Svg, Text, useModal } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import { Currency } from '@apeswapfinance/sdk'
-import NumericalInput from 'components/LiquidityWidget/CurrencyInput/NumericalInput'
-import { CurrencyLogo } from 'components/Logo'
-import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
+import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
+import { DoubleCurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import React, { useCallback, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { Field as MintField } from 'state/mint/actions'
-
-import { useDerivedSwapInfo } from 'state/swap/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { getCurrencyUsdPrice } from 'utils/getTokenUsdPrice'
 import TokenSelector from '../TokenSelector'
 import { styles } from './styles'
+import { styles as tokenSelectorStyles } from '../TokenSelector/styles'
 import { DexPanelProps } from './types'
 
 const DexPanel: React.FC<DexPanelProps> = ({
@@ -26,18 +24,24 @@ const DexPanel: React.FC<DexPanelProps> = ({
   otherCurrency,
   fieldType,
   panelText,
+  lpPair,
   showCommonBases = false,
 }) => {
   const [usdVal, setUsdVal] = useState(null)
   const { chainId, account } = useActiveWeb3React()
-  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const isRemoveLiquidity = !!lpPair
+  const selectedCurrencyBalance = useCurrencyBalance(
+    account ?? undefined,
+    isRemoveLiquidity ? lpPair?.liquidityToken ?? undefined : currency ?? undefined,
+  )
   const currencyBalance = selectedCurrencyBalance?.toSignificant(6)
   const { t } = useTranslation()
 
   useMemo(async () => {
     setUsdVal(null)
-    setUsdVal(await getCurrencyUsdPrice(chainId, currency))
-  }, [chainId, currency])
+    setUsdVal(await getCurrencyUsdPrice(chainId, lpPair?.liquidityToken || currency, isRemoveLiquidity))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId, currency, isRemoveLiquidity])
 
   return (
     <Flex sx={{ ...styles.dexPanelContainer }}>
@@ -46,26 +50,52 @@ const DexPanel: React.FC<DexPanelProps> = ({
         <NumericalInput
           value={value}
           onUserInput={(val) => onUserInput(fieldType, val)}
+          removeLiquidity={isRemoveLiquidity}
           align="left"
           id="token-amount-input"
         />
-        <TokenSelector
-          currency={currency}
-          otherCurrency={otherCurrency}
-          onCurrencySelect={(selectedCurrency: Currency) => onCurrencySelect(fieldType, selectedCurrency)}
-          showCommonBases={showCommonBases}
-        />
+        {!isRemoveLiquidity ? (
+          <TokenSelector
+            currency={currency}
+            otherCurrency={otherCurrency}
+            onCurrencySelect={(selectedCurrency: Currency) => onCurrencySelect(fieldType, selectedCurrency)}
+            showCommonBases={showCommonBases}
+          />
+        ) : (
+          <Flex
+            sx={{
+              ...tokenSelectorStyles.primaryFlex,
+              cursor: 'default',
+              '&:active': { transform: 'none' },
+              ':hover': { background: 'white4' },
+            }}
+          >
+            <DoubleCurrencyLogo currency0={currency} currency1={otherCurrency} size={30} />
+            <Text sx={{ ...tokenSelectorStyles.tokenText }}>
+              {currency?.getSymbol(chainId)} - {otherCurrency?.getSymbol(chainId)}
+            </Text>
+          </Flex>
+        )}
       </Flex>
       <Flex sx={{ ...styles.panelBottomContainer }}>
         <Text size="12px" sx={{ ...styles.panelBottomText }}>
-          {usdVal && value !== '.' && value && `$${(usdVal * parseFloat(value)).toFixed(2)}`}
+          {usdVal &&
+            value !== '.' &&
+            value &&
+            `$${(lpPair
+              ? usdVal * parseFloat(currencyBalance) * (parseFloat(value) / 100)
+              : usdVal * parseFloat(value)
+            ).toFixed(2)}`}
         </Text>
         {account && (
           <Flex sx={{ alignItems: 'center' }}>
             <Text size="12px" sx={{ ...styles.panelBottomText }}>
               {t('Balance: %balance%', { balance: currencyBalance || 'loading' })}
             </Text>
-            {(fieldType === Field.INPUT || fieldType === MintField.CURRENCY_A || fieldType === MintField.CURRENCY_B) &&
+            {(fieldType === Field.INPUT ||
+              fieldType === MintField.CURRENCY_A ||
+              fieldType === MintField.CURRENCY_B ||
+              isRemoveLiquidity) &&
               parseFloat(currencyBalance) > 0 && (
                 <Flex sx={{ ...styles.maxButton }} size="sm" onClick={() => handleMaxInput(fieldType)}>
                   <Text color="primaryBright" sx={{ lineHeight: '0px' }}>

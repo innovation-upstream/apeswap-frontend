@@ -13,7 +13,11 @@ import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
-import Pool from './views/Pool'
+import Pool from './views/Dex/Pool'
+import Swap from './views/Dex/Swap'
+import AddLiquidity from './views/Dex/AddLiquidity'
+import RemoveLiquidity from './views/Dex/RemoveLiquidity'
+import PoolFinder from './views/Dex/PoolFinder'
 import ResetScroll from './utils/resetScroll'
 
 declare module '@emotion/react' {
@@ -43,12 +47,8 @@ const AdminPools = lazy(() => import('./views/AdminPools'))
 const Vaults = lazy(() => import('./views/Vaults'))
 const NfaStaking = lazy(() => import('./views/NfaStaking'))
 const Bills = lazy(() => import('./views/Bills'))
-const Swap = lazy(() => import('./views/Dex/Swap'))
 const Orders = lazy(() => import('./views/Orders'))
-const PoolFinder = lazy(() => import('./views/PoolFinder'))
-const AddLiquidity = lazy(() => import('./views/Dex/AddLiquidity'))
 const Topup = lazy(() => import('./views/Topup'))
-const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
 const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/RemoveLiquidity/redirects'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')

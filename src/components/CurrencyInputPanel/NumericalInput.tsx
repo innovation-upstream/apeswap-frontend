@@ -1,17 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text } from '@apeswapfinance/uikit'
+import { Text, Flex } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { escapeRegExp } from '../../utils'
 
-const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
+const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string; removeLiquidity?: boolean }>`
   color: ${({ error, theme }) => (error ? theme.colors.error : theme.colors.text)};
-  width: 0;
+  display: inline-block;
+  width: inherit;
   height: 100%;
   position: relative;
-  font-weight: 500;
-  outline: none;
+  font-weight: 700;
+  minwidth: ${({ removeLiquidity }) => (removeLiquidity ? '40px' : 'auto')};
+  width: ${({ removeLiquidity }) => (removeLiquidity ? '40px' : 'auto')};
+  maxwidth: ${({ removeLiquidity }) => (removeLiquidity ? '40px' : 'auto')};
   border: none;
+  outline: none;
   flex: 1 1 auto;
   background-color: transparent;
   font-size: ${({ fontSize }) => fontSize || '16px'};
@@ -19,8 +23,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0px;
-  margin-left: ${({ align }) => (align === 'left' ? '20px' : '0px')};
+  padding: 0 0 0 0px;
   -webkit-appearance: textfield;
 
   ::-webkit-search-decoration {
@@ -38,10 +41,6 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.text};
-  }
-
-  :disabled {
-    opacity: 0.5;
   }
 `
 
@@ -69,7 +68,7 @@ export const Input = React.memo(function InnerInput({
   }
 
   return (
-    <>
+    <Flex>
       <StyledInput
         {...rest}
         value={value}
@@ -90,16 +89,17 @@ export const Input = React.memo(function InnerInput({
         maxLength={79}
         spellCheck="false"
         fontSize="22px"
-        style={{ marginRight: removeLiquidity ? '2.5px' : '10px' }}
+        style={{ marginRight: removeLiquidity ? '0px' : '10px' }}
+        removeLiquidity={removeLiquidity}
       />
       {removeLiquidity && (
-        <div style={{ marginRight: '10px' }}>
-          <Text fontSize="22px" mt=".55px" bold>
+        <Flex sx={{ alignItems: 'center' }}>
+          <Text size="20px" weight={700} sx={{ lineHeight: '0px' }}>
             %
           </Text>
-        </div>
+        </Flex>
       )}
-    </>
+    </Flex>
   )
 })
 

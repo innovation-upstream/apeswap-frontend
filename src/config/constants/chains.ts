@@ -131,7 +131,12 @@ export const WALLCHAIN_PARAMS = {
     apiKey: '5cf2b177-5fa5-477a-8cea-f2b54859af2a',
   },
   [CHAIN_ID.ETH]: {
-    apiUrl: 'https://matic.wallchain.xyz/upgrade_txn/',
-    apiKey: '5cf2b177-5fa5-477a-8cea-f2b54859af2a',
+    apiUrl: '',
+    apiKey: '',
   },
+}
+
+export const BONUS_ROUTER = {
+  [CHAIN_ID.BSC]: '0x5471F99bCB8F682f4Fd2b463Fd3609DadD56A929',
+  [CHAIN_ID.MATIC]: '0xBAe5dc9B19004883d0377419FeF3c2C8832d7d7B',
 }

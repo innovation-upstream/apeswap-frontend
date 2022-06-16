@@ -161,6 +161,11 @@ const AddLiquidityActions: React.FC<AddLiquidityActionsProps> = ({
       })
   }
 
+  const handleDismissConfirmation = useCallback(() => {
+    // if there was a tx hash, we want to clear the input
+    setTxHash('')
+  }, [])
+
   const [onPresentAddLiquidityModal] = useModal(
     <AddLiquidityModal
       title={noLiquidity ? t('You are creating a pool') : t('Confirm Add Liquidity')}
@@ -172,12 +177,9 @@ const AddLiquidityActions: React.FC<AddLiquidityActionsProps> = ({
       poolTokenPercentage={poolTokenPercentage}
       txHash={txHash}
       attemptingTxn={attemptingTxn}
-      onDismiss={() => null}
+      onDismiss={handleDismissConfirmation}
       onAdd={onAdd}
       // customOnDismiss={handleDismissConfirmation}
-      // attemptingTxn={attemptingTxn}
-      // hash={txHash}
-      // content={() => <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />}
       // pendingText={pendingText}
       // currencyToAdd={pair?.liquidityToken}
     />,

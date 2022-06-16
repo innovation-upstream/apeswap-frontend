@@ -2,12 +2,10 @@ import { ThemeUIStyleObject } from 'theme-ui'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   // Token selector container
-  dexNavContainer: {
+  dexActionsContainer: {
     position: 'relative',
     width: '100%',
-    height: '30px',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
+    marginTop: '10px',
   },
 
   navLinkContainer: {
@@ -21,12 +19,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   navIconContainer: {
     width: '100%',
     maxWidth: '60px',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
 
   navLink: {
     cursor: 'pointer',
-    opacity: 0.2,
   },
 }

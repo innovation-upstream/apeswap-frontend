@@ -9,6 +9,7 @@ import { useSwapCallArguments } from 'hooks/useSwapCallback'
 import { useRouterCheck } from 'hooks/useRouterCheck'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { RouterTypes } from 'config/constants'
+import { CHAIN_PARAMS } from 'config/constants/chains'
 import TradePrice from 'views/Orders/components/TradePrice'
 import FormattedPriceImpact from 'views/Orders/components/FormattedPriceImpact'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -54,7 +55,7 @@ const DexTradeInfo: React.FC<{
             }}
           >
             <Text size="8px" color={isSmartRouter ? 'primaryBright' : 'text'} weight={700}>
-              {isSmartRouter ? t('Smart Router') : t('ApeSwap Router')}
+              {isSmartRouter ? t('Bonus Router') : t('ApeSwap Router')}
             </Text>
           </Flex>
           <Svg icon="caret" direction={showMore ? 'up' : 'down'} />
@@ -106,20 +107,25 @@ const DexTradeInfo: React.FC<{
             >
               <Flex sx={{ justifyContent: 'space-between' }}>
                 <Text color={isSmartRouter ? 'primaryBright' : 'text'} size="12px" sx={{ fontWeight: '700' }}>
-                  {isSmartRouter ? t('Smart Router') : t('ApeSwap Router')}
+                  {isSmartRouter ? t('Bonus Router') : t('ApeSwap Router')}
                 </Text>
                 <HelpIcon width="12px" color={isSmartRouter ? 'primaryBright' : 'text'} />
               </Flex>
               {isSmartRouter && (
-                <Flex sx={{ justifyContent: 'space-between', height: '18px' }}>
-                  <Text color="primaryBright" size="10px">
-                    {t('Estimated Swap Kickback')}
-                  </Text>
-                  <Text color="primaryBright" size="10px">
-                    {bestRoute?.smartRouter?.summary?.searchSummary?.expectedProfit?.toFixed(6)}{' '}
-                    {trade.inputAmount.currency.getSymbol(chainId)}
-                  </Text>
-                </Flex>
+                <>
+                  <Flex sx={{ justifyContent: 'space-between', height: '18px' }}>
+                    <Text color="primaryBright" size="10px">
+                      {t('Estimated swap bonus')}
+                    </Text>
+                    <Text color="primaryBright" size="10px">
+                      ~ {(bestRoute?.smartRouter?.summary?.searchSummary?.expectedProfit * 1.2 * 0.3).toFixed(6)}{' '}
+                      {CHAIN_PARAMS[chainId].nativeCurrency.symbol}{' '}
+                      {`(~$${(bestRoute?.smartRouter?.summary?.searchSummary?.expectedUsdProfit * 1.2 * 0.3).toFixed(
+                        2,
+                      )})`}
+                    </Text>
+                  </Flex>
+                </>
               )}
               <Flex sx={{ justifyContent: 'space-between' }}>
                 <Text color={isSmartRouter ? 'primaryBright' : 'text'} size="10px">

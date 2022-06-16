@@ -6,7 +6,6 @@ import { escapeRegExp } from '../../../utils'
 
 const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
   color: ${({ error, theme }) => (error ? theme.colors.error : theme.colors.text)};
-  display: inline-block;
   width: inherit;
   height: 100%;
   position: relative;
@@ -20,22 +19,19 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0 0 0 0px;
+  padding: 0 0 0 15px;
+  text-align: right;
   -webkit-appearance: textfield;
-
   ::-webkit-search-decoration {
     -webkit-appearance: none;
   }
-
   [type='number'] {
     -moz-appearance: textfield;
   }
-
   ::-webkit-outer-spin-button,
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
-
   ::placeholder {
     color: ${({ theme }) => theme.colors.text};
   }
@@ -78,7 +74,6 @@ const NumericalInput = React.memo(function InnerInput({
         title={t('Token Amount')}
         autoComplete="off"
         autoCorrect="off"
-        align="left"
         // text-specific options
         type="text"
         pattern="^[0-9]*[.,]?[0-9]*$"

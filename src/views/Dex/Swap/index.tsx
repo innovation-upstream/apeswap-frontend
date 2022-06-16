@@ -39,6 +39,7 @@ const Swap: React.FC = () => {
   /**
    * TODO: Add back tracking code.
    * TODO: Make sure handle currency selection is okay
+   * TODO: Include Expert mode
    */
 
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -196,10 +197,10 @@ const Swap: React.FC = () => {
   )
 
   return (
-    <Flex sx={{ justifyContent: 'center', height: '100vh', paddingTop: '100px' }}>
+    <Flex sx={{...dexStyles.pageContainer}}>
       <Flex sx={{ ...dexStyles.dexContainer }}>
         <DexNav />
-        <Flex sx={{ margin: '25px 0px' }} />
+        <Flex sx={{ margin: '25px 0px', maxWidth: '100%', width: '420px' }} />
         <DexPanel
           value={formattedAmounts[Field.INPUT]}
           panelText="To"

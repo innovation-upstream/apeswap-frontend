@@ -6,7 +6,9 @@ import CurrencyLogo from './CurrencyLogo'
 const Wrapper = styled.div<{ margin: boolean }>`
   display: flex;
   flex-direction: row;
-  margin-right: ${({ margin }) => margin && '4px'};
+  margin-right: ${({ margin }) => margin && '0px'};
+  transform: translate(8px, 0px);
+  margin-left: -8px;
 `
 
 interface DoubleCurrencyLogoProps {
@@ -24,12 +26,12 @@ export default function DoubleCurrencyLogo({
 }: DoubleCurrencyLogoProps) {
   return (
     <Wrapper margin={margin}>
-      {currency0 && <CurrencyLogo currency={currency0} size={`${size.toString()}px`} style={{ marginLeft: '0px' }} />}
+      {currency0 && <CurrencyLogo currency={currency0} size={`${size.toString()}px`} />}
       {currency1 && (
         <CurrencyLogo
           currency={currency1}
           size={`${size.toString()}px`}
-          style={{ marginLeft: '-8px', marginRight: '4px' }}
+          style={{ transform: 'translate(-8px, 0px)' }}
         />
       )}
     </Wrapper>

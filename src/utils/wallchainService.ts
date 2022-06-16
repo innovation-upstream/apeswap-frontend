@@ -96,7 +96,7 @@ export default function callWallchainAPI(
         return response.json()
       }
       console.error('Wallchain Error', response.status, response.statusText)
-      onBestRoute(null)
+      onBestRoute({ routerType: RouterTypes.APE })
       return null
     })
     .then((responseJson) => {

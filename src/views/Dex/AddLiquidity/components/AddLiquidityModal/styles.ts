@@ -30,6 +30,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white2',
+    flexDirection: 'column',
   },
   innerLogoCircle: {
     height: '22.5px',
@@ -38,6 +39,5 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'yellow',
-    paddingRight: '.6px',
   },
 }

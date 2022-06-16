@@ -17,6 +17,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   panelTopContainer: {
     width: '100%',
     height: 'auto',
+    justifyContent: 'space-between',
   },
 
   panelBottomContainer: {

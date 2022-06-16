@@ -1,6 +1,7 @@
-import { Currency } from '@apeswapfinance/sdk'
+import { Currency, Pair } from '@apeswapfinance/sdk'
 import { Field } from 'state/swap/actions'
 import { Field as MintField } from 'state/mint/actions'
+import { Field as BurnField } from 'state/burn/actions'
 
 export interface DexPanelProps {
   value: string
@@ -11,6 +12,7 @@ export interface DexPanelProps {
   onCurrencySelect: (field: any, currency: Currency) => void
   onUserInput: (field: any, val: string) => void
   handleMaxInput?: (field: any) => void
-  fieldType?: Field | MintField
+  fieldType?: Field | MintField | BurnField
   showCommonBases?: boolean
+  lpPair?: Pair
 }

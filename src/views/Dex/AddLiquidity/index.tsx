@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback, useEffect, useState } from 'react'
 import { useCurrency } from 'hooks/Tokens'
 import { ArrowDropLeftIcon, Button, Flex, Text, useModal } from '@ape.swap/uikit'
@@ -12,6 +13,7 @@ import { Field, resetMintState } from 'state/mint/actions'
 import { currencyId } from 'utils/currencyId'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from 'state/mint/hooks'
 import { dexStyles } from '../styles'
+import { styles } from './styles'
 import DexPanel from '../components/DexPanel'
 import DexNav from '../components/DexNav'
 import AddLiquiditySign from './components/AddLiquiditySign'
@@ -30,7 +32,6 @@ function AddLiquidity({
   const { t } = useTranslation()
 
   /**
-   * TODO: Setup first liquidity add message
    *
    */
 
@@ -111,44 +112,40 @@ function AddLiquidity({
     {},
   )
 
-  const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
-      }
-    },
-    {},
-  )
-
   const handleMaxInput = useCallback(
     (field: Field) => {
       if (maxAmounts) {
-        if (field === Field.CURRENCY_A) {
-          onUserInput(Field.CURRENCY_A, maxAmounts[Field.CURRENCY_A]?.toExact())
-        } else {
-          onUserInput(Field.CURRENCY_B, maxAmounts[Field.CURRENCY_B]?.toExact())
-        }
+        onUserInput(field, maxAmounts[field]?.toExact() ?? '')
       }
     },
     [maxAmounts, onUserInput],
   )
 
   return (
-    <Flex sx={{ justifyContent: 'center', height: '100vh', paddingTop: '100px' }}>
+    <Flex sx={{ ...dexStyles.pageContainer }}>
       <Flex sx={{ ...dexStyles.dexContainer }}>
         <DexNav />
-        <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center' }}>
+        <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
           <Text weight={700}>ADD LIQUIDITY</Text>
         </Flex>
         <Flex sx={{ margin: '0px 0px 40px 0px', alignItems: 'center' }}>
-          <Link to="/pool">
-            <ArrowDropLeftIcon width="7px" />{' '}
-            <Text size="12px" ml="5px">
-              {t('My positions')}
-            </Text>
-          </Link>
+          <ArrowDropLeftIcon width="7px" />
+          <Text size="12px" ml="5px" as={Link} to="/pool">
+            {t('My positions')}
+          </Text>
         </Flex>
+        {noLiquidity && (
+          <Flex sx={{ ...styles.warningMessageContainer }}>
+            <Text size="18px" weight={700} mb="10px" color="primaryBright">
+              {t('You are the first liquidity provider.')}
+            </Text>
+            <Text size="16px" weight={500} color="primaryBright">
+              {t(
+                'The ratio of tokens you add will set the price of this pool. Once you are happy with the rate click supply to review.',
+              )}
+            </Text>
+          </Flex>
+        )}
         <DexPanel
           value={formattedAmounts[Field.CURRENCY_A]}
           panelText="Token 1"
@@ -178,6 +175,7 @@ function AddLiquidity({
           noLiquidity={noLiquidity}
           price={price}
           chainId={chainId}
+          liquidityMinted={liquidityMinted}
         />
         <AddLiquidityActions
           currencies={currencies}

@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { getAddress } from '@ethersproject/address'
-import { BLOCK_EXPLORER } from 'config/constants/chains'
+import { BLOCK_EXPLORER, BONUS_ROUTER } from 'config/constants/chains'
 import { Contract } from '@ethersproject/contracts'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
@@ -95,7 +95,7 @@ export function getRouterContract(
 ): Contract {
   if (routerType === RouterTypes.SMART) {
     return getContract(
-      parseAddress({ 56: '0x5471F99bCB8F682f4Fd2b463Fd3609DadD56A929' }, library.network?.chainId || 56),
+      parseAddress(BONUS_ROUTER, library.network?.chainId || 56),
       apeRouterManagerABI,
       library,
       account,
