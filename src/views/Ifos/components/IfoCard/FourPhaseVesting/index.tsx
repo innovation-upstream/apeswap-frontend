@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
 import ifoAbi from 'config/abi/ifo.json'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import BigNumber from 'bignumber.js'
@@ -21,13 +20,20 @@ import IfoCardContribute from './IfoCardContribute'
 import useUserInfo from './useUserInfo'
 import { Container, Wrapper } from './styles'
 
-const StyledUnlockButton = styled(UnlockButton)`
-  padding: 25px 35px;
-  display: flex;
-  align-self: center;
-  font-size: 16px;
-  font-weight: 600;
-`
+const StyledUnlockButton = () => {
+  return (
+    <UnlockButton
+      sx={{
+        padding: '10px 20px',
+        alignSelf: 'center',
+        fontSize: '16px',
+        fontWeight: 600,
+        height: '44px',
+      }}
+    />
+  )
+}
+
 export interface IfoCardProps {
   ifo: Ifo
   notLp?: boolean
@@ -247,7 +253,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
       )}
 
       {!account ? (
-        <StyledUnlockButton size="lg" />
+        <StyledUnlockButton />
       ) : (
         (isActive || isFinished) &&
         vesting && (

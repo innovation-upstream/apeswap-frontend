@@ -153,7 +153,7 @@ const VaultTable: React.FC<HarvestProps> = ({ vault, removed }) => {
 
   const cardHeaderButton = () => {
     if (!account) {
-      return <StyledUnlockButton size="sm" />
+      return <UnlockButton />
     }
     if (needsApproval) {
       return <ApprovalAction stakingContractAddress={stakeTokenAddress} pid={pid} isLoading={isLoading} />

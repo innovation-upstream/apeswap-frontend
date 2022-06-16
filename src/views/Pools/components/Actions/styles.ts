@@ -1,6 +1,5 @@
 import { Button, Flex } from '@ape.swap/uikit'
 import styled from '@emotion/styled'
-import UnlockButton from 'components/UnlockButton'
 
 export const StyledButtonSquare = styled(Button)<{ height?: number; minWidth?: number }>`
   border-radius: 10px;
@@ -9,15 +8,6 @@ export const StyledButtonSquare = styled(Button)<{ height?: number; minWidth?: n
   padding: 10px 20px;
   min-width: ${({ minWidth }) => minWidth || 227}px;
   height: ${({ height }) => height || 44}px;
-`
-
-export const StyledUnlockButton = styled(UnlockButton)`
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 10px 20px;
-  min-width: 227px;
-  height: 44px;
 `
 
 export const SmallButtonSquare = styled(Button)`
