@@ -5,6 +5,7 @@ import { userClaimBill } from 'utils/callHelpers'
 import { getContract } from 'utils'
 import { Bill } from 'config/abi/types'
 import track from 'utils/track'
+import { getBillType } from './getBillType'
 
 // Claim a Bill
 const useClaimBill = (billMap: { billAddress: string; billIds: string[] }[]) => {
@@ -12,8 +13,9 @@ const useClaimBill = (billMap: { billAddress: string; billIds: string[] }[]) => 
   const handleClaimBill = useCallback(async () => {
     const billTrxs = billMap.map(async (bm) => {
       const billContract = getContract(bm.billAddress, billAbi, library, account) as Bill
+      const billType: string = getBillType(bm.billAddress, chainId)
       track({
-        event: 'bill',
+        event: billType,
         chain: chainId,
         data: {
           cat: 'claimAll',
