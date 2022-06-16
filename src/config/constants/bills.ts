@@ -63,6 +63,78 @@ const bills: BillsConfig[] = [
     lpToken: tokens.bnbBtc,
     earnToken: tokens.banana,
   },
+  {
+    index: 5,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0x1c36913ca7c64365a54694cd91dde9c7cf5e44ec',
+    },
+    billType: 'JUNGLE Bill',
+    token: tokens.ceek,
+    quoteToken: tokens.wbnb,
+    lpToken: tokens.ceekBnb,
+    earnToken: tokens.ceek,
+  },
+  {
+    index: 6,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0xd9e18fae215f10f4ce35a24fcbfe944fbfb96643',
+    },
+    billType: 'JUNGLE Bill',
+    token: tokens.nfty,
+    quoteToken: tokens.wbnb,
+    lpToken: tokens.nftyBnb,
+    earnToken: tokens.nfty,
+  },
+  {
+    index: 7,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0xda0149da023cb204b3ffba33a88d9dd19393c6fc',
+    },
+    billType: 'JUNGLE Bill',
+    token: tokens.tlos,
+    quoteToken: tokens.busd,
+    lpToken: tokens.tlosBusd,
+    earnToken: tokens.tlos,
+  },
+  {
+    index: 8,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0xaf3016100f67c66af15c973cb8da94962653a726',
+    },
+    billType: 'JUNGLE Bill',
+    token: tokens.stars,
+    quoteToken: tokens.wbnb,
+    lpToken: tokens.starsBnb,
+    earnToken: tokens.stars,
+  },
+  {
+    index: 9,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0x6a5be77e3fc1c99ef4aae2846432d61fa78a564c',
+    },
+    billType: 'JUNGLE Bill',
+    token: tokens.hotcross,
+    quoteToken: tokens.busd,
+    lpToken: tokens.hotcrossBusd,
+    earnToken: tokens.hotcross,
+  },
+  {
+    index: 10,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0xb5fd0ac23267da501fc6c59c6e12ae32831e72bb',
+    },
+    billType: 'JUNGLE Bill',
+    token: tokens.hotcross,
+    quoteToken: tokens.busd,
+    lpToken: tokens.hotcrossBusd,
+    earnToken: tokens.hotcross,
+  },
 ]
 
 export default bills
