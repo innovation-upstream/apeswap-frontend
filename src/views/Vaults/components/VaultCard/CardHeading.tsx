@@ -216,10 +216,6 @@ const IconArrow = styled(Image)`
 const TitleContainer = styled.div`
   display: flex;
 `
-const StyledUnlockButton = styled(UnlockButton)`
-  font-weight: 600;
-  font-size: 11.5px;
-`
 
 const CardHeading: React.FC<ExpandableSectionProps> = ({
   vault,

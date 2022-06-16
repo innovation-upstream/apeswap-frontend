@@ -124,10 +124,6 @@ const StakeContainer = styled.div`
   }
 `
 
-const StyledUnlockButton = styled(UnlockButton)`
-  font-weight: 600;
-`
-
 const VaultTable: React.FC<HarvestProps> = ({ vault, removed }) => {
   const { pid, stakeTokenAddress, token0, token1, userData, isPair, apy, totalStaked } = vault
 
