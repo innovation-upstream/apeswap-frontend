@@ -73,13 +73,7 @@ const AddLiquidityModal: React.FC<AddLiquidityModalProps> = ({
                 </Text>
               </Flex>
             </Flex>
-            <Text
-              size="14px"
-              textAlign="left"
-              weight={500}
-              margin="10px 0px"
-              style={{ textAlign: 'center' }}
-            >
+            <Text size="14px" textAlign="left" weight={500} margin="10px 0px" style={{ textAlign: 'center' }}>
               {t(
                 'Output is estimated. If the price changes by more than %allowedSlippage%% your transaction will revert.',
                 { allowedSlippage: allowedSlippage / 100 },

@@ -111,8 +111,4 @@ export default {
     56: '0x624433b9C78dE84c8Dd3C9e906046017Bb03E3A6',
     97: '0x22FaB17bF074f07Ee2708868282897E619103369',
   },
-  wallchainRouter: {
-    56: '',
-    97: '0xBAe5dc9B19004883d0377419FeF3c2C8832d7d7B',
-  },
 }

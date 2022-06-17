@@ -100,7 +100,7 @@ export default function Pool() {
   }
 
   return (
-    <Flex sx={{...dexStyles.pageContainer}}>
+    <Flex sx={{ ...dexStyles.pageContainer }}>
       <Flex sx={{ ...dexStyles.dexContainer }}>
         <DexNav />
         <Flex sx={{ flexDirection: 'column', maxWidth: '100%', width: '420px' }}>

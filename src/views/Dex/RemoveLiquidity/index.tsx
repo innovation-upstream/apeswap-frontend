@@ -35,7 +35,6 @@ function RemoveLiquidity({
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-
   // burn state
   const { independentField, typedValue } = useBurnState()
   const { pair, parsedAmounts, error } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
@@ -66,7 +65,6 @@ function RemoveLiquidity({
       independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
   }
 
-
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, value: string) => {
@@ -84,7 +82,7 @@ function RemoveLiquidity({
   )
 
   return (
-    <Flex sx={{...dexStyles.pageContainer}}>
+    <Flex sx={{ ...dexStyles.pageContainer }}>
       <Flex sx={{ ...dexStyles.dexContainer }}>
         <DexNav />
         <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
@@ -122,7 +120,12 @@ function RemoveLiquidity({
           poolTokenPercentage={poolTokenPercentage}
           chainId={chainId}
         />
-        <RemoveLiquidityActions pair={pair} error={error} parsedAmounts={parsedAmounts} poolTokenPercentage={poolTokenPercentage} />
+        <RemoveLiquidityActions
+          pair={pair}
+          error={error}
+          parsedAmounts={parsedAmounts}
+          poolTokenPercentage={poolTokenPercentage}
+        />
       </Flex>
     </Flex>
   )

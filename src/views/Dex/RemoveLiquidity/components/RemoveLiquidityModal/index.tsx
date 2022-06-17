@@ -39,7 +39,7 @@ const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
       ) : (
         <Flex sx={{ ...styles.modalWrapper }}>
           <>
-            <Flex sx={{ ...styles.confirmDisabledInputContainer, marginTop:'10px' }} >
+            <Flex sx={{ ...styles.confirmDisabledInputContainer, marginTop: '10px' }}>
               <Text size="22px" weight={700}>
                 {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6)}
               </Text>
@@ -50,13 +50,7 @@ const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
                 </Text>
               </Flex>
             </Flex>
-            <Text
-              size="14px"
-              textAlign="left"
-              mt="15px"
-              weight={500}
-              style={{ textAlign: 'center' }}
-            >
+            <Text size="14px" textAlign="left" mt="15px" weight={500} style={{ textAlign: 'center' }}>
               {t(
                 'Output is estimated. If the price changes by more than %allowedSlippage%% your transaction will revert.',
                 { allowedSlippage: allowedSlippage / 100 },

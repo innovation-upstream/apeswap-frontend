@@ -86,7 +86,7 @@ export function useSwapCallArguments(
           allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
           recipient,
           deadline: deadline.toNumber(),
-          router: ROUTER_ADDRESS[56],
+          router: ROUTER_ADDRESS[chainId],
           masterInput: bestRoute?.smartRouter.transactionArgs.masterInput,
         }),
       )
@@ -96,7 +96,7 @@ export function useSwapCallArguments(
             allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
             recipient,
             deadline: deadline.toNumber(),
-            router: ROUTER_ADDRESS[56],
+            router: ROUTER_ADDRESS[chainId],
             masterInput: bestRoute?.smartRouter.transactionArgs.masterInput,
           }),
         )
@@ -137,7 +137,7 @@ export function useSwapCallback(
   const { account, chainId, library } = useActiveWeb3React()
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName, bestRoute)
-  console.log(swapCalls)
+
   const addTransaction = useTransactionAdder()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)

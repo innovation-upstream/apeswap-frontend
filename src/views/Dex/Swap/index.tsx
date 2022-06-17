@@ -197,7 +197,7 @@ const Swap: React.FC = () => {
   )
 
   return (
-    <Flex sx={{...dexStyles.pageContainer}}>
+    <Flex sx={{ ...dexStyles.pageContainer }}>
       <Flex sx={{ ...dexStyles.dexContainer }}>
         <DexNav />
         <Flex sx={{ margin: '25px 0px', maxWidth: '100%', width: '420px' }} />
