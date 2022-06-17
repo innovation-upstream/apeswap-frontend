@@ -26,6 +26,7 @@ const Bills: React.FC = () => {
   const renderBills = (): BillType[] => {
     let billsToReturn = []
     bills?.forEach((bill) => {
+      if (!bill.active) return
       if (location.search.includes(`id=${bill.index}`)) {
         billsToReturn.unshift(bill)
       } else {

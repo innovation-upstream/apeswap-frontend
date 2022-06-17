@@ -293,4 +293,5 @@ export interface BillsConfig {
   quoteToken: Token
   lpToken: Token
   earnToken: Token
+  active: boolean
 }
