@@ -117,7 +117,7 @@ const TrendingTokens: React.FC = () => {
                             $
                             <CountUp
                               end={token?.tokenPrice}
-                              decimals={token?.tokenPrice > 1 ? 2 : 4}
+                              decimals={token?.tokenPrice > 1 ? 2 : token?.tokenPrice > 0.01 ? 4 : 6}
                               duration={1.5}
                               separator=","
                             />
