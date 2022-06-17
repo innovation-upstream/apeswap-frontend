@@ -5,8 +5,12 @@ export const OPTIONS = [
     label: 'All',
     value: 'all',
   },
-  // {
-  //   label: 'BANANA Bill',
-  //   value: 'bananaBill',
-  // },
+  {
+    label: 'BANANA',
+    value: 'bananaBill',
+  },
+  {
+    label: 'Jungle',
+    value: 'jungleBill',
+  },
 ]

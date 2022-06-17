@@ -1,21 +1,19 @@
+/** @jsxImportSource theme-ui */
 import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
-import { Button } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Flex } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
+import { useTranslation } from 'contexts/Localization'
 import Banner from 'components/Banner'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import partition from 'lodash/partition'
-import useWindowSize, { Size } from 'hooks/useDimensions'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import { useVaults, usePollVaultsData } from 'state/vaults/hooks'
 import { Vault } from 'state/types'
-import { ViewMode } from './components/types'
 import DisplayVaults from './components/DisplayVaults'
 import VaultMenu from './components/Menu'
-import useCompound from './hooks/useCompound'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
@@ -23,23 +21,20 @@ const Vaults: React.FC = () => {
   usePollVaultsData()
   const { chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
+  const { t } = useTranslation()
   const [stakedOnly, setStakedOnly] = useState(false)
-  const [burnOnly, setBurnOnly] = useState(false)
   const [vaultType, setVaultType] = useState('allTypes')
   const [observerIsSet, setObserverIsSet] = useState(false)
-  const [viewMode, setViewMode] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const [numberOfVaultsVisible, setNumberOfVaultsVisible] = useState(NUMBER_OF_VAULTS_VISIBLE)
   const { pathname } = useLocation()
-  const size: Size = useWindowSize()
+  const { search } = window.location
   const { vaults: initVaults } = useVaults()
-  console.log(initVaults)
+  const params = new URLSearchParams(search)
+  const urlSearchedVault = parseInt(params.get('id'))
   const [allVaults, setAllVaults] = useState(initVaults)
   const isActive = !pathname.includes('history')
-  const { onCompound } = useCompound()
-  const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
-  const tableWrapperEl = useRef<HTMLDivElement>(null)
   const loadMoreRef = useRef<HTMLDivElement>(null)
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,16 +44,6 @@ const Vaults: React.FC = () => {
   useEffect(() => {
     setAllVaults(initVaults)
   }, [initVaults])
-
-  useEffect(() => {
-    if (size.width !== undefined) {
-      if (size.width < 968) {
-        setViewMode(ViewMode.CARD)
-      } else {
-        setViewMode(ViewMode.TABLE)
-      }
-    }
-  }, [size])
 
   useEffect(() => {
     const showMorePools = (entries) => {
@@ -96,11 +81,11 @@ const Vaults: React.FC = () => {
     switch (sortOption) {
       case 'dailyApy':
         // Ternary is needed to prevent pools without APR (like MIX) getting top spot
-        return orderBy(vaultsToSort, (vault: Vault) => vault?.apy?.daily, sortDirection)
+        return orderBy(vaultsToSort, (vault: Vault) => vault?.apy?.daily)
       case 'yearlyApy':
-        return orderBy(vaultsToSort, (vault: Vault) => vault?.apy?.daily, sortDirection)
+        return orderBy(vaultsToSort, (vault: Vault) => vault?.apy?.daily)
       case 'totalstaked':
-        return orderBy(vaultsToSort, (vault: Vault) => parseInt(vault?.totalStaked), sortDirection)
+        return orderBy(vaultsToSort, (vault: Vault) => parseInt(vault?.totalStaked))
       default:
         return orderBy(vaultsToSort, (vault: Vault) => vault.platform, 'asc')
     }
@@ -108,6 +93,23 @@ const Vaults: React.FC = () => {
 
   const renderVaults = (): Vault[] => {
     let chosenVaults = isActive ? activeVaults : inactiveVaults
+
+    if (urlSearchedVault) {
+      const vaultCheck =
+        activeVaults?.find((vault) => {
+          return vault.id === urlSearchedVault
+        }) !== undefined
+      if (vaultCheck) {
+        chosenVaults = [
+          activeVaults?.find((vault) => {
+            return vault.id === urlSearchedVault
+          }),
+          ...activeVaults?.filter((vault) => {
+            return vault.id !== urlSearchedVault
+          }),
+        ]
+      }
+    }
 
     if (stakedOnly) {
       chosenVaults = isActive ? stakedOnlyVaults : stakedInactiveVaults
@@ -138,9 +140,9 @@ const Vaults: React.FC = () => {
       >
         <ListViewLayout>
           <Banner
-            title="BANANA Maximizers"
+            title={t('BANANA Maximizers')}
             banner="banana-maximizers"
-            link=""
+            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/vaults"
             titleColor="primaryBright"
             maxWidth={1130}
           />
@@ -155,11 +157,8 @@ const Vaults: React.FC = () => {
             stakedOnly={stakedOnly}
             query={searchQuery}
           />
-          <DisplayVaults vaults={renderVaults()} />
+          <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
         </ListViewLayout>
-        <Button size="lg" sx={{ width: '300px', alignSelf: 'center', marginTop: '20px' }} onClick={onCompound}>
-          COMPOUND ME
-        </Button>
         <div ref={loadMoreRef} />
       </Flex>
     </>

@@ -291,6 +291,13 @@ const tokens = {
     },
     decimals: 18,
   },
+  stars: {
+    symbol: 'STARS',
+    address: {
+      56: '0xbd83010eb60f12112908774998f65761cf9f6f9a',
+    },
+    decimals: 18,
+  },
   krw: {
     symbol: 'KRW',
     address: {
@@ -1087,6 +1094,48 @@ const tokens = {
     },
     decimals: 18,
   },
+  lgx: {
+    symbol: 'LGX',
+    address: {
+      56: '0x9096B4309224d751FCB43d7eB178dcFFc122aD15',
+    },
+    decimals: 18,
+  },
+  roobee: {
+    symbol: 'ROOBEE',
+    address: {
+      56: '0xF77351D8f4eE853135961A936BB8d2e4fFa75f9D',
+    },
+    decimals: 18,
+  },
+  vtg: {
+    symbol: 'VTG',
+    address: {
+      56: '0x8de5aA37a7C40A53062EAD382b8EEAD3B08a7A46',
+    },
+    decimals: 18,
+  },
+  tlos: {
+    symbol: 'TLOS',
+    address: {
+      56: '0xb6C53431608E626AC81a9776ac3e999c5556717c',
+    },
+    decimals: 18,
+  },
+  bones: {
+    symbol: 'BONES',
+    address: {
+      56: '0x08426874d46f90e5E527604fA5E3e30486770Eb3',
+    },
+    decimals: 18,
+  },
+  genv3: {
+    symbol: 'GENv3',
+    address: {
+      56: '0x98a61CA1504b92Ae768eF20b85aa97030b7a1Edf',
+    },
+    decimals: 18,
+  },
 
   ever: {
     symbol: 'EVER',
@@ -1269,6 +1318,62 @@ const tokens = {
     symbol: 'LC-BNB',
     address: {
       56: '0xc5a69133432eF17CD15C501CAa5f9cF28C22aA00',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  lgxBusd: {
+    symbol: 'LGX-BUSD',
+    address: {
+      56: '0x004F72D474eE262701205E3637B4367594eFb11D',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  bonesBnb: {
+    symbol: 'BONES-BNB',
+    address: {
+      56: '0xe0900Db57d81DE4E6a13e90eb836Fa91Be50515A',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  genv3Bnb: {
+    symbol: 'GENv3-BNB',
+    address: {
+      56: '0xCfa1d8afFA4da8e6CaBE6fde66DDf4eDA89f0e42',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  ceekBnb: {
+    symbol: 'CEEK-BNB',
+    address: {
+      56: '0x119d6ebe840966c9cf4ff6603e76208d30ba2179',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  tlosBusd: {
+    symbol: 'TLOS-BUSD',
+    address: {
+      56: '0x4d90ddc0a30968c4c6b1ed0535b0264e75a3c5f3',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  starsBnb: {
+    symbol: 'STARS-BNB',
+    address: {
+      56: '0xbc8a4cad743d87e8754fd5f704c62e378802cbff',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  hotcrossBusd: {
+    symbol: 'HOTCROSS-BUSD',
+    address: {
+      56: '0x3b9aa711d1d90a4f8639f66c227881729a3317f2',
     },
     decimals: 18,
     lpToken: true,

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Skeleton } from '@apeswapfinance/uikit'
 import useApproveVault from 'views/Vaults/hooks/useApproveVault'
 import { useAppDispatch } from 'state'
-import { fetchVaultUserDataAsync, updateVaultUserAllowance } from 'state/vaults'
+import { fetchVaultUserDataAsync } from 'state/vaults'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useToast } from 'state/hooks'
@@ -18,7 +18,6 @@ interface ApprovalActionProps {
 const ApprovalAction: React.FC<ApprovalActionProps> = ({
   stakingTokenContractAddress,
   vaultVersion,
-  pid,
   isLoading = false,
 }) => {
   const { chainId, account } = useActiveWeb3React()

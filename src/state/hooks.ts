@@ -25,8 +25,6 @@ import {
   StatsOverallState,
   FarmOverall,
   AuctionsState,
-  Vault,
-  VaultsState,
   TokenPricesState,
   IazosState,
   Iazo,
@@ -50,9 +48,10 @@ import {
   fetchHomepageService,
   fetchHomepageTokenData,
   fetchLiveIfoStatus,
+  fetchLiveTags,
 } from './stats'
 import { fetchAuctions } from './auction'
-import { fetchVaultsPublicDataAsync, fetchVaultUserDataAsync, setFilteredVaults, setVaultsLoad } from './vaults'
+import { setVaultsLoad } from './vaults'
 import { fetchTokenPrices } from './tokenPrices'
 import { fetchIazo, fetchIazos, fetchSettings } from './iazos'
 import { fetchUserNetwork } from './network'
@@ -544,4 +543,27 @@ export const useLiveIfoStatus = () => {
   const { LiveIfo }: StatsState = useSelector((state: State) => state.stats)
 
   return { liveIfos: LiveIfo }
+}
+
+// TAGS
+export const useFetchLiveTags = () => {
+  const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+  useEffect(() => {
+    dispatch(fetchLiveTags())
+  }, [dispatch, slowRefresh])
+}
+
+export const useFarmTags = (chainId: number) => {
+  const { Tags }: StatsState = useSelector((state: State) => state.stats)
+  const farmTags = Tags?.[`${chainId}`].farms
+
+  return { farmTags }
+}
+
+export const usePoolTags = (chainId: number) => {
+  const { Tags }: StatsState = useSelector((state: State) => state.stats)
+  const poolTags = Tags?.[`${chainId}`]?.pools
+
+  return { poolTags }
 }

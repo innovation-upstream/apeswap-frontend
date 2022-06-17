@@ -18,7 +18,7 @@ export const YieldCard = styled.div<{ image?: string }>`
   opacity: 1;
   padding: 20px 20px;
   border-radius: 10px;
-  background: url(${({ image }) => image});
+  background: url(${({ theme, image }) => (theme.isDark ? `${image}-dark.svg` : `${image}-light.svg`)});
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

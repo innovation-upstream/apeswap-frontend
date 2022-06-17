@@ -1,5 +1,4 @@
 import { Currency, ETHER, Token } from '@apeswapfinance/sdk'
-import { BinanceIcon } from '@apeswapfinance/uikit'
 import { CHAIN_ID } from 'config/constants/chains'
 import { getMaticTokenLogoURL } from 'config/constants/maticTokenMapping'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -32,7 +31,6 @@ const StyledLogo = styled(Logo)<{ size: string }>`
 const StyledNativeCurrencyLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
   border-radius: 10px;
 `
 export default function CurrencyLogo({
@@ -79,7 +77,13 @@ export default function CurrencyLogo({
         />
       )
     }
-    return <BinanceIcon width={size} style={style} />
+    return (
+      <StyledNativeCurrencyLogo
+        size={size}
+        style={style}
+        src="https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/WBNB.svg"
+      />
+    )
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.getSymbol(chainId) ?? 'token'} logo`} style={style} />

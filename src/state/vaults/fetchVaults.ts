@@ -1,8 +1,7 @@
-import { farmsConfig, vaultsConfig } from 'config/constants'
+import { vaultsConfig } from 'config/constants'
 import erc20 from 'config/abi/erc20.json'
 import masterchefABI from 'config/abi/masterchef.json'
-import BigNumber from 'bignumber.js'
-import { FarmLpAprsType, LpTokenPrices, TokenPrices } from 'state/types'
+import { FarmLpAprsType, TokenPrices } from 'state/types'
 import { getContract } from 'utils/getContract'
 import { getVaultApeAddressV2 } from 'utils/addressHelper'
 import { chunk } from 'lodash'
@@ -11,11 +10,7 @@ import multicall from 'utils/multicall'
 import fetchVaultCalls from './fetchVaultCalls'
 import cleanVaultData from './cleanVaultData'
 
-// import fetchFarmCalls from './fetchFarmCalls'
-// import cleanFarmData from './cleanFarmData'
-
 const fetchVaults = async (chainId: number, tokenPrices: TokenPrices[], farmLpAprs: FarmLpAprsType) => {
-  console.log(farmLpAprs)
   const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
   const masterVaultApev2 = getContract(vaultApeV2ABI, getVaultApeAddressV2(chainId), chainId)
   const vaultIds = []

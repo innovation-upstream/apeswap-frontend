@@ -1,4 +1,3 @@
-import { getMasterChefAddress } from 'utils/addressHelper'
 import { Call } from 'utils/multicall'
 import { VaultConfig } from 'config/constants/types'
 
@@ -23,10 +22,6 @@ const fetchVaultCalls = (vault: VaultConfig, chainId: number): Call[] => {
       name: 'userInfo',
       params: [masterchef.pid[chainId], stratAddress],
     },
-    {
-      address: masterchef.address[chainId],
-      name: masterchef.rewardsPerBlock[chainId],
-    },
   ]
   const calls = [
     // Stake token balance in masterchef
@@ -34,17 +29,6 @@ const fetchVaultCalls = (vault: VaultConfig, chainId: number): Call[] => {
       address: stakeToken.address[chainId],
       name: 'balanceOf',
       params: [masterchef.address[chainId]],
-    },
-    // Stake token total supply
-    {
-      address: stakeToken.address[chainId],
-      name: 'totalSupply',
-    },
-    // Stake token amount in strategy
-    {
-      address: stakeToken.address[chainId],
-      name: 'balanceOf',
-      params: [stratAddress],
     },
   ]
   const bananaPoolCalls = [

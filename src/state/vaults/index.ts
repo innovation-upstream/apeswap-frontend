@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
 import vaultsConfig from 'config/constants/vaults'
-import fetchVaultData from './fetchVaultData'
 import {
   fetchVaultUserAllowances,
   fetchVaultUserStakedAndPendingBalances,
@@ -50,7 +49,6 @@ export const vaultSlice = createSlice({
 export const fetchVaultsPublicDataAsync =
   (chainId: number, tokenPrices: TokenPrices[], farmLpAprs: FarmLpAprsType) => async (dispatch) => {
     try {
-      console.log(farmLpAprs)
       const vaults = await fetchVaults(chainId, tokenPrices, farmLpAprs)
       dispatch(setLoadVaultData(vaults))
     } catch (error) {

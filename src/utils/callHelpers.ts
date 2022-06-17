@@ -13,6 +13,7 @@ import {
   Bill,
   BillNft,
   VaultApeV2,
+  JungleChef,
 } from 'config/abi/types'
 
 export const approve = async (lpContract: Erc20, masterChefContract: Contract) => {
@@ -49,6 +50,12 @@ export const sousStakeBnb = async (sousChefContract: SousChef, amount) => {
   })
 }
 
+export const jungleStake = async (jungleChefContract: JungleChef, amount) => {
+  return jungleChefContract.deposit(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()).then((trx) => {
+    return trx.wait()
+  })
+}
+
 export const unstake = async (masterChefContract: Masterchef, pid, amount) => {
   if (pid === 0) {
     return masterChefContract
@@ -66,6 +73,12 @@ export const unstake = async (masterChefContract: Masterchef, pid, amount) => {
 
 export const sousUnstake = async (sousChefContract: SousChef, amount) => {
   return sousChefContract.withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()).then((trx) => {
+    return trx.wait()
+  })
+}
+
+export const jungleUnstake = async (jungleChefContract: JungleChef, amount) => {
+  return jungleChefContract.withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()).then((trx) => {
     return trx.wait()
   })
 }
@@ -89,6 +102,12 @@ export const harvest = async (masterChefContract: Masterchef, pid) => {
 
 export const soushHarvest = async (sousChefContract: SousChef) => {
   return sousChefContract.deposit('0').then((trx) => {
+    return trx.wait()
+  })
+}
+
+export const jungleHarvest = async (jungleChefContract: JungleChef) => {
+  return jungleChefContract.deposit('0').then((trx) => {
     return trx.wait()
   })
 }
@@ -214,7 +233,7 @@ export const miniChefHarvest = async (miniChefContract: MiniApeV2, pid, account)
 
 export const miniChefUnstake = async (miniChefContract: MiniApeV2, pid, amount, account) => {
   return miniChefContract
-    .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(), account)
+    .withdrawAndHarvest(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(), account)
     .then((trx) => {
       return trx.wait()
     })

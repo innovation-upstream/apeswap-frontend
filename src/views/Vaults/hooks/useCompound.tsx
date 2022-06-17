@@ -1,14 +1,7 @@
 import { useCallback } from 'react'
-import { useVaultApeV1, useVaultApeV2 } from 'hooks/useContract'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useAppDispatch } from 'state'
-import { harvestMaximizer, stakeVaultV2 } from 'utils/callHelpers'
-import track from 'utils/track'
+import { useVaultApeV2 } from 'hooks/useContract'
 
-// dispatch(updateVaultUserBalance(account, chainId, pid))
-// dispatch(updateVaultUserStakedBalance(account, chainId, pid))
 const useCompound = () => {
-  const { account, chainId } = useActiveWeb3React()
   const vaultApeContractV2 = useVaultApeV2()
 
   const handleCompound = useCallback(async () => {

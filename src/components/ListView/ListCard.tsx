@@ -1,14 +1,8 @@
-import { Flex } from '@ape.swap/uikit'
+/** @jsxImportSource theme-ui */
+import { Flex, Svg } from '@ape.swap/uikit'
 import { InfoIcon, TooltipBubble } from '@apeswapfinance/uikit'
 import React, { useState } from 'react'
-import {
-  ContentContainer,
-  DropDownIcon,
-  ListCardContainer,
-  ListExpandedContainer,
-  TagContainer,
-  TitleContainer,
-} from './styles'
+import { ContentContainer, ListCardContainer, ListExpandedContainer, styles } from './styles'
 import { ListCardProps } from './types'
 
 const ListCard: React.FC<ListCardProps> = ({
@@ -28,21 +22,25 @@ const ListCard: React.FC<ListCardProps> = ({
   return (
     <>
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>
-        <TitleContainer titleContainerWidth={titleContainerWidth}>
-          {alignServiceTokens ? (
-            <Flex sx={{ width: '130px', justifyContent: 'flex-end' }}>{serviceTokenDisplay}</Flex>
-          ) : (
-            serviceTokenDisplay
-          )}
-          {tag && (
-            <TagContainer ml="10px" backgroundColor={tag.backgroundColor}>
-              {tag.text}
-            </TagContainer>
-          )}
-          {title}
-        </TitleContainer>
+        <Flex sx={{ ...styles.titleContainer, maxWidth: titleContainerWidth || '290px' }}>
+          <Flex sx={{ mr: '10px' }}>
+            {alignServiceTokens ? (
+              <Flex sx={{ width: '130px', justifyContent: 'flex-end' }}>{serviceTokenDisplay}</Flex>
+            ) : (
+              serviceTokenDisplay
+            )}
+          </Flex>
+          <Flex sx={{ justifyContent: 'center' }}>
+            {tag}
+            {title}
+          </Flex>
+        </Flex>
         <ContentContainer>{cardContent}</ContentContainer>
-        {expandedContent && <DropDownIcon open={expanded} mr="30px" />}
+        {expandedContent && (
+          <span style={{ marginRight: '30px' }}>
+            <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="15px" />
+          </span>
+        )}
         {infoContent && (
           <div style={{ display: 'inline-block' }}>
             <TooltipBubble

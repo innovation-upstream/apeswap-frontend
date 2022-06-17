@@ -1,8 +1,5 @@
 export interface ListViewProps {
-  tag?: {
-    text: string
-    backgroundColor: string
-  }
+  tag?: React.ReactNode
   title: React.ReactNode
   infoContent?: React.ReactNode
   infoContentPosition?: string

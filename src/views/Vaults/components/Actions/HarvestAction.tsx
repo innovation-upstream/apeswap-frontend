@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useSousHarvest } from 'hooks/useHarvest'
 import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
 import { getEtherscanLink } from 'utils'

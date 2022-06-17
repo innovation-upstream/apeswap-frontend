@@ -1,8 +1,7 @@
 import BigNumber from 'bignumber.js'
-import { BLOCKS_PER_YEAR, MATIC_BLOCK_TIME, SECONDS_PER_YEAR, VAULT_COMPOUNDS_PER_DAY } from 'config'
 import { vaultsConfig } from 'config/constants'
-import { CHAIN_ID } from 'config/constants/chains'
-import { FarmLpAprsType, LpTokenPrices, TokenPrices } from 'state/types'
+import { VaultConfig } from 'config/constants/types'
+import { FarmLpAprsType, TokenPrices } from 'state/types'
 import { getFarmApr } from 'utils/apr'
 import {
   getRoi,
@@ -23,22 +22,8 @@ const cleanVaultData = (
   const withdrawFee = parseFloat(vaultSettings[5]) / 100
   const data = chunkedVaults.map((chunk, index) => {
     const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
-    const vaultConfig = filteredVaults?.find((vault) => vault.id === vaultIds[index])
-    console.log(keeperFee)
-    console.log(withdrawFee)
-    const [
-      totalAllocPoint,
-      poolInfo,
-      userInfo,
-      rewardsPerBlock,
-      stakeTokenMCBalance,
-      stakeTokenTotalSupply,
-      stakeTokenStrategyBalance,
-      bananaPoolInfo,
-      bananaPoolTotalStaked,
-    ] = chunk
-    console.log(bananaPoolInfo)
-    console.log(bananaPoolTotalStaked.toString())
+    const vaultConfig: VaultConfig = filteredVaults?.find((vault) => vault.id === vaultIds[index])
+    const [totalAllocPoint, poolInfo, userInfo, stakeTokenMCBalance, bananaPoolInfo, bananaPoolTotalStaked] = chunk
 
     const rewardTokenPriceUsd = tokenPrices?.find(
       (token) =>
@@ -66,13 +51,10 @@ const cleanVaultData = (
 
     // Calculate APR
     const poolWeight = totalAllocPoint ? allocPoint.div(new BigNumber(totalAllocPoint)) : new BigNumber(0)
-    const rewardTokensPerBlock = rewardsPerBlock ? getBalanceNumber(new BigNumber(rewardsPerBlock)) : new BigNumber(0)
+
     // This only works for apeswap farms
     const lpApr = farmLpAprs?.lpAprs?.find((lp) => lp.pid === vaultConfig.masterchef.pid[chainId])?.lpApr * 100
-    console.log(farmLpAprs)
-    console.log(lpApr)
 
-    const yearlyRewardTokens = BLOCKS_PER_YEAR.times(rewardTokensPerBlock).times(poolWeight)
     const oneThousandDollarsWorthOfToken = 1000 / rewardTokenPriceUsd
 
     const apr = getFarmApr(poolWeight, new BigNumber(rewardTokenPriceUsd), new BigNumber(totalValueStakedInMCUsd))
@@ -81,9 +63,6 @@ const cleanVaultData = (
       new BigNumber(rewardTokenPriceUsd),
       new BigNumber(totalBananaValueStakedInMCUsd),
     )
-    console.log(bananaPoolWeight, rewardTokenPriceUsd, totalBananaValueStakedInMCUsd)
-
-    console.log(bananaPoolApr)
 
     let yearlyApy = 0
     let dailyApy = 0
@@ -118,12 +97,10 @@ const cleanVaultData = (
       dailyApy = getRoi({ amountEarned: amountEarnedDaily, amountInvested: oneThousandDollarsWorthOfToken })
     }
 
-    // console.log(amountEarnedYealry)
-
     return {
       ...vaultConfig,
-      keeperFee: keeperFee.toString(),
-      withdrawFee: withdrawFee.toString(),
+      keeperFee: vaultConfig.version === 'V2' ? keeperFee.toString() : '0.25',
+      withdrawFee: vaultConfig.version === 'V2' ? withdrawFee.toString() : '0',
       totalStaked: totalTokensStaked.toString(),
       totalAllocPoint: totalAllocPoint.toString(),
       allocPoint: allocPoint.toString(),

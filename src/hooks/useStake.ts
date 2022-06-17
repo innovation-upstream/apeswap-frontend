@@ -7,7 +7,7 @@ import {
   updateNfaStakingUserBalance,
   updateUserNfaStakingStakedBalance,
 } from 'state/actions'
-import { stake, sousStake, nfaStake, miniChefStake } from 'utils/callHelpers'
+import { stake, sousStake, nfaStake, miniChefStake, jungleStake } from 'utils/callHelpers'
 import track from 'utils/track'
 import { CHAIN_ID } from 'config/constants'
 import {
@@ -16,7 +16,7 @@ import {
   updateDualFarmUserTokenBalances,
 } from 'state/dualFarms'
 import { useNetworkChainId } from 'state/hooks'
-import { useMasterchef, useMiniChefContract, useNfaStakingChef, useSousChef } from './useContract'
+import { useJungleChef, useMasterchef, useMiniChefContract, useNfaStakingChef, useSousChef } from './useContract'
 import useActiveWeb3React from './useActiveWeb3React'
 
 const useStake = (pid: number) => {
@@ -45,6 +45,7 @@ const useStake = (pid: number) => {
 
 export const useSousStake = (sousId) => {
   const dispatch = useDispatch()
+  // TODO switch to useActiveWeb3React. useWeb3React is legacy hook and useActiveWeb3React should be used going forward
   const { account, chainId } = useWeb3React()
   const masterChefContract = useMasterchef()
   const sousChefContract = useSousChef(sousId)
@@ -78,8 +79,34 @@ export const useSousStake = (sousId) => {
   return { onStake: handleStake }
 }
 
+export const useJungleStake = (jungleId) => {
+  const jungleChefContract = useJungleChef(jungleId)
+
+  const handleStake = useCallback(
+    async (amount: string) => {
+      const trxHash = await jungleStake(jungleChefContract, amount)
+
+      track({
+        event: 'jungle_farm',
+        chain: CHAIN_ID,
+        data: {
+          cat: 'stake',
+          amount,
+          pid: jungleId,
+        },
+      })
+
+      return trxHash
+    },
+    [jungleChefContract, jungleId],
+  )
+
+  return { onStake: handleStake }
+}
+
 export const useNfaStake = (sousId) => {
   const dispatch = useDispatch()
+  // TODO switch to useActiveWeb3React. useWeb3React is legacy hook and useActiveWeb3React should be used going forward
   const { account } = useWeb3React()
   const chainId = useNetworkChainId()
   const nfaStakeChefContract = useNfaStakingChef(sousId)
@@ -107,6 +134,7 @@ export const useNfaStake = (sousId) => {
 
 export const useDualFarmStake = (pid: number) => {
   const dispatch = useDispatch()
+  // TODO switch to useActiveWeb3React. useWeb3React is legacy hook and useActiveWeb3React should be used going forward
   const { account, chainId } = useWeb3React()
   const miniChefContract = useMiniChefContract()
   const handleStake = useCallback(

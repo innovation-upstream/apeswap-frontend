@@ -9,14 +9,13 @@ import {
   ControlContainer,
   HarvestAllWrapper,
   LabelWrapper,
-  SectionOneWrapper,
-  SectionTwoWrapper,
+  MobilePadding,
   StyledCheckbox,
   StyledImage,
   StyledText,
   ToggleWrapper,
 } from './styles'
-import { OPTIONS } from './constants'
+import { OPTIONS, JUNGLE_OPTIONS } from './constants'
 
 const ListViewMenu: React.FC<ListViewProps> = ({
   onHandleQueryChange,
@@ -27,21 +26,25 @@ const ListViewMenu: React.FC<ListViewProps> = ({
   query,
   showMonkeyImage,
   activeOption,
+  isJungle,
 }) => {
+  const displayOptions = isJungle === true ? JUNGLE_OPTIONS : OPTIONS
   const { isDark } = useTheme()
   const { t } = useTranslation()
   return (
     <ControlContainer>
-      <SectionOneWrapper>
+      <MobilePadding>
         <LabelWrapper>
           <StyledText bold mr="15px">
             {t('Search')}
           </StyledText>
           <SearchInput onChange={onHandleQueryChange} value={query} />
         </LabelWrapper>
-        <Flex>
+      </MobilePadding>
+      <MobilePadding>
+        <Flex style={{ height: '40px' }}>
           <Select size="sm" width="126px" onChange={(e) => onSetSortOption(e.target.value)} active={activeOption}>
-            {OPTIONS.map((option) => {
+            {displayOptions.map((option) => {
               return (
                 <SelectItem size="sm" value={option.value}>
                   <Text>{t(option.label)}</Text>
@@ -50,15 +53,17 @@ const ListViewMenu: React.FC<ListViewProps> = ({
             })}
           </Select>
         </Flex>
-      </SectionOneWrapper>
-      <SectionTwoWrapper>
+      </MobilePadding>
+      <MobilePadding>
         <MenuTabButtons />
+      </MobilePadding>
+      <MobilePadding>
         <ToggleWrapper onClick={() => onSetStake(!stakedOnly)}>
           <StyledCheckbox checked={stakedOnly} onChange={() => onSetStake(!stakedOnly)} />
           <StyledText> {t('Staked')} </StyledText>
         </ToggleWrapper>
-      </SectionTwoWrapper>
-      {harvestAll && <HarvestAllWrapper> {harvestAll} </HarvestAllWrapper>}
+      </MobilePadding>
+      <MobilePadding>{harvestAll && <HarvestAllWrapper> {harvestAll} </HarvestAllWrapper>}</MobilePadding>
       {showMonkeyImage && isDark ? (
         <StyledImage src="/images/farm-night-farmer.svg" alt="night-monkey" />
       ) : (

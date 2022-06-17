@@ -1,24 +1,22 @@
-import { IconButton, Text, Flex, useModal } from '@ape.swap/uikit'
+/** @jsxImportSource theme-ui */
+import { Text, useModal } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
-import { Tag } from '@apeswapfinance/uikit'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Box } from 'theme-ui'
 import useIsMobile from 'hooks/useIsMobile'
 import { useAppDispatch } from 'state'
 import { Field, selectCurrency } from 'state/swap/actions'
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { Vault } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
 import { LiquidityModal } from 'components/LiquidityWidget'
-// import Actions from './Actions'
-// import HarvestAction from './Actions/HarvestAction'
-// import InfoContent from '../InfoContent'
-import { Container, StyledButton, ActionContainer } from './styles'
+import { Container, StyledButton, ActionContainer, StyledTag } from './styles'
 import { vaultTokenDisplay } from '../helpers'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
@@ -30,6 +28,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
   const isActive = !pathname.includes('history')
+  const { t } = useTranslation()
 
   // TODO: clean up this code
   // Hack to get the close modal function from the provider
@@ -73,58 +72,60 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
 
     const { tokenDisplay, stakeLp, earnLp } = vaultTokenDisplay(vault.stakeToken, vault.rewardToken)
 
-    // Token symbol logic is here temporarily for nfty
     return {
       tokens: tokenDisplay,
       alignServiceTokens: true,
       stakeLp,
       earnLp,
-      tag: {
-        text: vault.type,
-        backgroundColor: vault.type === 'AUTO' ? 'green' : 'red',
-      },
-      title: (
-        <Text ml={isMobile ? 5 : 10} weight="bold" style={{ fontSize: isMobile ? '14px' : '16px' }}>
-          {vault.stakeToken.symbol}
-        </Text>
+      tag: (
+        <Box sx={{ marginRight: '5px' }}>
+          <StyledTag key={vault?.id} variant={vault.type === 'AUTO' ? 'error' : 'success'}>
+            {t(vault?.type)}
+          </StyledTag>
+        </Box>
       ),
-      titleContainerWidth: 350,
+      title: <Text style={{ fontSize: isMobile ? '14px' : '16px' }}>{vault.stakeToken.symbol}</Text>,
+      titleContainerWidth: 400,
       id: vault.id,
       infoContent: <InfoContent vault={vault} />,
       infoContentPosition: 'translate(-82%, 28%)',
       expandedContentJustified: vault.version === 'V1' && 'center',
-      open: openId === vault.pid,
+      open: openId === vault.id,
       cardContent: (
         <>
           <ListViewContent
-            title="Daily APY"
+            title={t('Daily APY')}
             value={`${isActive ? vault?.apy?.daily?.toFixed(2) : '0.00'}%`}
             width={isMobile ? 90 : 140}
-            toolTip="Daily APY includes BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily."
+            toolTip={t(
+              'Daily APY includes BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.',
+            )}
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0, 40%)"
             height={50}
           />
           <ListViewContent
-            title="Yearly APY"
+            title={t('Yearly APY')}
             value={`${isActive ? vault?.apy?.yearly?.toFixed(2) : '0.00'}%`}
             width={isMobile ? 95 : 155}
-            toolTip="Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily."
+            toolTip={t(
+              'Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.',
+            )}
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0, 40%)"
             height={50}
           />
           <ListViewContent
-            title="Total Staked"
+            title={t('Total Staked')}
             value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
             width={isMobile ? 100 : 170}
-            toolTip="The total value of the tokens currently staked in this vault."
+            toolTip={t('The total value of the tokens currently staked in this vault.')}
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(0%, 75%)"
             height={50}
           />
           <ListViewContent
-            title={vault.version === 'V1' ? 'Staked' : 'Earned'}
+            title={vault.version === 'V1' ? t('Staked') : t('Earned')}
             value={vault.version === 'V1' ? userStakedBalanceUsd : userEarningsUsd}
             width={isMobile ? 50 : 115}
             height={50}
@@ -136,7 +137,9 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           <ActionContainer>
             {isMobile && (
               <ListViewContent
-                title={`Available ${vault.stakeToken.lpToken ? 'LP' : vault?.stakeToken?.symbol}`}
+                title={t('Available %stakeTokenSymbol%', {
+                  stakeTokenSymbol: vault.stakeToken.lpToken ? 'LP' : vault?.stakeToken?.symbol,
+                })}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary
@@ -165,7 +168,9 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             )}
             {!isMobile && (
               <ListViewContent
-                title={`Available ${vault.stakeToken.lpToken ? 'LP' : vault?.stakeToken?.symbol}`}
+                title={t('Available %stakeTokenSymbol%', {
+                  stakeTokenSymbol: vault.stakeToken.lpToken ? 'LP' : vault?.stakeToken?.symbol,
+                })}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary

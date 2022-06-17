@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import useIsMobile from 'hooks/useIsMobile'
@@ -8,6 +9,7 @@ import { ExtendedListViewProps } from './types'
 
 const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews }) => {
   const isMobile = useIsMobile()
+
   return (
     <ListViewContainer>
       {listViews.map((view) => {

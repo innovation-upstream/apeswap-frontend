@@ -1,13 +1,8 @@
-import { Flex, InfoIcon, TooltipBubble } from '@apeswapfinance/uikit'
+/** @jsxImportSource theme-ui */
+import { InfoIcon, TooltipBubble } from '@apeswapfinance/uikit'
+import { Flex } from '@ape.swap/uikit'
 import React, { useState } from 'react'
-import {
-  ContentContainer,
-  DropDownIcon,
-  ListCardContainer,
-  ListExpandedContainer,
-  TagContainer,
-  TitleContainer,
-} from './styles'
+import { ContentContainer, DropDownIcon, ListCardContainer, ListExpandedContainer, styles } from './styles'
 import { ListCardProps } from './types'
 
 const MobileListCard: React.FC<ListCardProps> = ({
@@ -25,16 +20,14 @@ const MobileListCard: React.FC<ListCardProps> = ({
   return (
     <>
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>
-        <Flex justifyContent="space-between" style={{ width: '100%' }}>
-          <TitleContainer>
+        <Flex sx={{ width: '100%', justifyContent: 'space-between' }}>
+          <Flex sx={styles.titleContainer}>
             {serviceTokenDisplay}
-            {tag && (
-              <TagContainer ml="10px" backgroundColor={tag.backgroundColor}>
-                {tag.text}
-              </TagContainer>
-            )}
-            {title}
-          </TitleContainer>
+            <Flex sx={{ flexDirection: 'column', marginLeft: '10px' }}>
+              {tag}
+              {title}
+            </Flex>
+          </Flex>
           <Flex>
             {expandedContent && <DropDownIcon open={expanded} mr="20px" />}
             {infoContent && (

@@ -1,5 +1,15 @@
+import { ThemeUIStyleObject } from 'theme-ui'
 import { ArrowDropDownIcon, Flex, Text } from '@apeswapfinance/uikit'
 import styled, { keyframes } from 'styled-components'
+
+export const styles: Record<string, ThemeUIStyleObject> = {
+  titleContainer: {
+    alignItems: 'center',
+    height: '100%',
+    maxWidth: '290px',
+    width: '100%',
+  },
+}
 
 const ExpandLargeAnimation = keyframes`
     0%{height: 0;}

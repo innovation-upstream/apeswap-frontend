@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import { LiquidityWidget } from 'components/LiquidityWidget'
 import { Modal, ModalHeader, Heading, Link } from '@ape.swap/uikit'
@@ -27,7 +28,7 @@ const LiquidityModal: React.FC<LiquidityModalProps> = ({ widgetProps, modalProps
   return (
     <ModalProvider>
       <Modal open {...merge(modalProps, newModalProps)}>
-        <ModalHeader>
+        <ModalHeader onDismiss={handleClose}>
           <Flex
             sx={{
               Svg: {
