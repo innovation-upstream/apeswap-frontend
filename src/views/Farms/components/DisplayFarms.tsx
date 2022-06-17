@@ -76,7 +76,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
       tag: (
         <>
           {fTag?.pid === farm.pid && (
-            <Box sx={{ marginRight: '5px' }}>
+            <Box sx={{ marginRight: '5px', mt: '1px' }}>
               <StyledTag key={fTag?.pid} variant={tagColor}>
                 {fTag?.text}
               </StyledTag>

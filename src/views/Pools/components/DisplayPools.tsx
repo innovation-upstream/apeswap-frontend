@@ -55,7 +55,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
       tag: (
         <>
           {pTag?.pid === pool.sousId && (
-            <Box sx={{ marginRight: '5px' }}>
+            <Box sx={{ marginRight: '5px', mt: '1px' }}>
               <StyledTag key={pTag?.pid} variant={tagColor}>
                 {pTag?.text}
               </StyledTag>
