@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { AutoRenewIcon, Flex, Text, useModal } from '@apeswapfinance/uikit'
 import { LiquidityModal } from 'components/LiquidityWidget'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useBuyBill from 'views/Bills/hooks/useBuyBill'
 import BigNumber from 'bignumber.js'
@@ -13,6 +13,8 @@ import { Field, selectCurrency } from 'state/swap/actions'
 import { useTranslation } from 'contexts/Localization'
 import { BuyProps } from './types'
 import { BuyButton, GetLPButton, MaxButton, StyledInput } from './styles'
+import multicall from '../../../../utils/multicall'
+import billsABI from '../../../../config/abi/bill.json'
 
 const Buy: React.FC<BuyProps> = ({
   userLpValue,
@@ -44,7 +46,27 @@ const Buy: React.FC<BuyProps> = ({
     onBillId(billId, transactionHash)
   }
 
+  const verifyMaxPayout = async () => {
+    const calls = [
+      {
+        address: billAddress,
+        name: 'maxTotalPayout',
+      },
+      {
+        address: billAddress,
+        name: 'totalPayoutGiven',
+      },
+    ]
+    const [maxTotalPayout, totalPayoutGiven] = await multicall(chainId, billsABI, calls)
+    const asd = getBalanceNumber(maxTotalPayout)
+    console.log(asd)
+    return getBalanceNumber(maxTotalPayout) - getBalanceNumber(totalPayoutGiven) < 100
+  }
+
   const handleBuy = async () => {
+    const exceedsMaxPayout = await verifyMaxPayout()
+    console.log(exceedsMaxPayout)
+    console.log(typeof amount)
     setPendingTrx(true)
     onTransactionSubmited(true)
     await onBuyBill()
@@ -114,11 +136,7 @@ const Buy: React.FC<BuyProps> = ({
           {formatUserLpValue?.slice(0, 15)} LP
         </Text>
       </Flex>
-      <BuyButton
-        onClick={handleBuy}
-        endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
-        disabled={disabled || parseFloat(formatUserLpValue) < parseFloat(amount) || pendingTrx}
-      >
+      <BuyButton onClick={handleBuy} endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}>
         {t('Buy')}
       </BuyButton>
     </>
