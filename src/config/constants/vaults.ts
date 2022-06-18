@@ -12,7 +12,6 @@ const vaults: VaultConfig[] = [
     stratAddress: {
       [CHAIN_ID.BSC]: '0x9a668d5482828a444d7322fe5420ab5b44ce3de7',
     },
-
     stakeToken: tokens.banana,
     token: tokens.banana,
     rewardToken: tokens.banana,
