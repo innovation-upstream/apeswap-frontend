@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'

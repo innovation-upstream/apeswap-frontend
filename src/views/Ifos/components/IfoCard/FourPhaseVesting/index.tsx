@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
 import ifoAbi from 'config/abi/ifo.json'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
