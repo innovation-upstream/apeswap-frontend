@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from '@emotion/styled'
@@ -242,11 +243,6 @@ const Container = styled.div`
   align-items: center;
 `
 
-const StyledUnlockButton = styled(UnlockButton)`
-  font-weight: 600;
-  font-size: 11.5px;
-`
-
 const CardHeading: React.FC<ExpandableSectionProps> = ({
   pool,
   apr,
@@ -279,7 +275,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
   const cardHeaderButton = () => {
     if (!account) {
-      return <StyledUnlockButton size="md" />
+      return <UnlockButton sx={{ fontWeight: 600, fontSize: '11.5px', height: '44px' }} />
     }
     if (needsApproval) {
       return (

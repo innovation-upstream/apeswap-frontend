@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import { MarketingModal } from '@apeswapfinance/uikit'
+import { MarketingModal } from '@ape.swap/uikit'
 import { LendingBodies } from 'components/MarketingModalContent/Lending/'
 import { FarmsBodies } from 'components/MarketingModalContent/Farms/'
 import { PoolsBodies } from 'components/MarketingModalContent/Pools/'
