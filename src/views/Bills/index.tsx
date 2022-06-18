@@ -26,7 +26,7 @@ const Bills: React.FC = () => {
   const renderBills = (showNonPurchaseable: boolean): BillType[] => {
     let billsToReturn = []
     bills?.forEach((bill) => {
-      if (!bill.active && !showNonPurchaseable) return
+      if (bill.inactive && !showNonPurchaseable) return
       if (location.search.includes(`id=${bill.index}`)) {
         billsToReturn.unshift(bill)
       } else {

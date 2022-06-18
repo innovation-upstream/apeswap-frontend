@@ -14,7 +14,6 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.wbnb,
     lpToken: tokens.bananaBnb,
     earnToken: tokens.banana,
-    active: true,
   },
   {
     index: 1,
@@ -27,7 +26,6 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.wbnb,
     lpToken: tokens.bnbBusd,
     earnToken: tokens.banana,
-    active: true,
   },
   {
     index: 2,
@@ -40,7 +38,6 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.usdc,
     lpToken: tokens.usdcBusd,
     earnToken: tokens.banana,
-    active: true,
   },
   {
     index: 3,
@@ -53,7 +50,6 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.wbnb,
     lpToken: tokens.bnbEth,
     earnToken: tokens.banana,
-    active: true,
   },
   {
     index: 4,
@@ -66,7 +62,6 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.wbnb,
     lpToken: tokens.bnbBtc,
     earnToken: tokens.banana,
-    active: true,
   },
   {
     index: 5,
@@ -79,7 +74,6 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.wbnb,
     lpToken: tokens.ceekBnb,
     earnToken: tokens.ceek,
-    active: true,
   },
   {
     index: 6,
@@ -92,7 +86,6 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.wbnb,
     lpToken: tokens.nftyBnb,
     earnToken: tokens.nfty,
-    active: true,
   },
   {
     index: 7,
@@ -105,7 +98,7 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.busd,
     lpToken: tokens.tlosBusd,
     earnToken: tokens.tlos,
-    active: false,
+    inactive: true,
   },
   {
     index: 8,
@@ -118,7 +111,6 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.wbnb,
     lpToken: tokens.starsBnb,
     earnToken: tokens.stars,
-    active: true,
   },
   {
     index: 9,
@@ -131,7 +123,6 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.busd,
     lpToken: tokens.hotcrossBusd,
     earnToken: tokens.hotcross,
-    active: true,
   },
   {
     index: 10,
@@ -144,7 +135,18 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.busd,
     lpToken: tokens.hotcrossBusd,
     earnToken: tokens.hotcross,
-    active: true,
+  },
+  {
+    index: 11,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0x4a3adf34b1f8830fb8d673477d52fa5cb91a2531',
+    },
+    billType: 'JUNGLE Bill',
+    token: tokens.tlos,
+    quoteToken: tokens.busd,
+    lpToken: tokens.tlosBusd,
+    earnToken: tokens.tlos,
   },
 ]
 
