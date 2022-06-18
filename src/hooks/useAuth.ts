@@ -9,7 +9,7 @@ import {
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector'
-import { ConnectorNames, localStorageKey } from '@apeswapfinance/uikit'
+import { ConnectorNames, localStorageKey } from '@ape.swap/uikit'
 import { connectorsByName } from 'utils/web3React'
 import { setupNetwork } from 'utils/wallet'
 import { useNetworkChainId, useToast } from 'state/hooks'

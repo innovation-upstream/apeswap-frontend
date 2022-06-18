@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import BigNumber from 'bignumber.js'
 import React, { useState } from 'react'
 import styled from 'styled-components'
@@ -94,11 +95,6 @@ const StakeContainer = styled.div`
   }
 `
 
-const StyledUnlockButton = styled(UnlockButton)`
-  font-weight: 600;
-  font-size: 12px;
-`
-
 const PoolTable: React.FC<HarvestProps> = ({ pool, removed }) => {
   const {
     sousId,
@@ -144,7 +140,7 @@ const PoolTable: React.FC<HarvestProps> = ({ pool, removed }) => {
 
   const cardHeaderButton = () => {
     if (!account) {
-      return <StyledUnlockButton size="md" />
+      return <UnlockButton sx={{ fontWeight: 600, fontSize: '12px', height: '44px' }} />
     }
     if (needsApproval) {
       return (

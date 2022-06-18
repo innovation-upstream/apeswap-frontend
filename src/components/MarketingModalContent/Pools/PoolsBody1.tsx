@@ -1,5 +1,5 @@
 import React from 'react'
-import { useWalletModal } from '@apeswapfinance/uikit'
+import { useWalletModal } from '@ape.swap/uikit'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
 import ModalContent from '../MarketingModalContent'

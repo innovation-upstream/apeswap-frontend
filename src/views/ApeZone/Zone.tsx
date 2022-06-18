@@ -10,7 +10,6 @@ import ReturnCard from './components/ReturnCard'
 import {
   PaddedCard,
   TopCon,
-  Warning,
   CenterCard,
   OuterContent,
   OuterContentText,
