@@ -98,6 +98,7 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.busd,
     lpToken: tokens.tlosBusd,
     earnToken: tokens.tlos,
+    inactive: true,
   },
   {
     index: 8,
@@ -134,6 +135,18 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.busd,
     lpToken: tokens.hotcrossBusd,
     earnToken: tokens.hotcross,
+  },
+  {
+    index: 11,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0x4a3adf34b1f8830fb8d673477d52fa5cb91a2531',
+    },
+    billType: 'JUNGLE Bill',
+    token: tokens.tlos,
+    quoteToken: tokens.busd,
+    lpToken: tokens.tlosBusd,
+    earnToken: tokens.tlos,
   },
 ]
 
