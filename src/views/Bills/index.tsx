@@ -23,9 +23,10 @@ const Bills: React.FC = () => {
     setQuery(event.target.value)
   }
 
-  const renderBills = (): BillType[] => {
+  const renderBills = (showNonPurchaseable: boolean): BillType[] => {
     let billsToReturn = []
     bills?.forEach((bill) => {
+      if (bill.inactive && !showNonPurchaseable) return
       if (location.search.includes(`id=${bill.index}`)) {
         billsToReturn.unshift(bill)
       } else {
@@ -74,8 +75,8 @@ const Bills: React.FC = () => {
             activeOption={sortOption}
             query={query}
           />
-          <UserBillViews bills={renderBills()} />
-          <BillsListView bills={renderBills()} />
+          <UserBillViews bills={renderBills(true)} />
+          <BillsListView bills={renderBills(false)} />
         </ListViewLayout>
       </Flex>
     </>
