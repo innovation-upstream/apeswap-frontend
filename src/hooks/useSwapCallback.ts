@@ -197,8 +197,7 @@ export function useSwapCallback(
           }),
         )
 
-        console.error(estimatedCalls)
-        console.error('WE HAPPENED TO ACTUALLY MAKE IT TO THSI MOINT AGAIN ')
+        console.info(estimatedCalls)
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         const successfulEstimation = estimatedCalls.find(
@@ -212,8 +211,7 @@ export function useSwapCallback(
           throw new Error(t('Unexpected error. Please contact support: none of the calls threw an error'))
         }
 
-        console.log(successfulEstimation)
-        console.error(successfulEstimation)
+        console.info(successfulEstimation)
 
         const {
           call: {

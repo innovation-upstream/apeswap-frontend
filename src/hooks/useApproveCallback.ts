@@ -5,6 +5,7 @@ import { AUTONOMY_MIDROUTER_ADDRESS } from '@autonomylabs/limit-stop-orders'
 import { useCallback, useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { RouterTypes } from 'config/constants'
+import { BONUS_ROUTER } from 'config/constants/chains'
 import useTokenAllowance from './useTokenAllowance'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
@@ -124,11 +125,7 @@ export function useApproveCallbackFromTrade(
   return useApproveCallback(
     amountToApprove,
     parseAddress(
-      useAutonomy
-        ? AUTONOMY_MIDROUTER_ADDRESS
-        : routerType === RouterTypes.SMART
-        ? { 56: '0x5471F99bCB8F682f4Fd2b463Fd3609DadD56A929' }
-        : ROUTER_ADDRESS,
+      useAutonomy ? AUTONOMY_MIDROUTER_ADDRESS : routerType === RouterTypes.SMART ? BONUS_ROUTER : ROUTER_ADDRESS,
       chainId,
     ),
   )
