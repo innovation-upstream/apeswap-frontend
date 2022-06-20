@@ -16,8 +16,6 @@ const CreateProposal = () => {
     textarea: '',
   })
 
-  console.log('proposalData.textarea', proposalData.textarea)
-
   const handleChange = (e) => {
     setPropposalData({ ...proposalData, title: e.target.value })
   }
