@@ -1,6 +1,10 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Modal, ModalProps, ButtonMenu, ButtonMenuItem } from '@apeswapfinance/uikit'
+import { Text, Flex, ModalProps, ButtonMenu, ButtonMenuItem } from '@ape.swap/uikit'
+import { Modal } from '@apeswapfinance/uikit'
+import { Switch } from 'theme-ui'
+
 import {
   useExpertModeManager,
   useUserExpertModeAcknowledgementShow,
@@ -12,6 +16,7 @@ import { useSwapActionHandlers } from 'state/swap/hooks'
 import { useTranslation } from 'contexts/Localization'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
+import { styles } from './styles'
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
@@ -55,81 +60,50 @@ const SettingsModal: React.FC<ModalProps> = ({ onDismiss }) => {
 
   return (
     <div style={{ zIndex: 101, width: '360px' }}>
-      <Modal title={t('Transaction Settings')} onDismiss={onDismiss}>
+      <Modal title={t('Settings')} onDismiss={onDismiss}>
         <ScrollableContainer>
           <TransactionSettings />
-          <Flex justifyContent="space-between" alignItems="center" mb="24px" mt="5px">
-            <Flex alignItems="center">
-              <Text>{t('Recent Transactions')}</Text>
+          <Flex sx={{ justifyContent: 'space-between', margin: '5px 0px' }}>
+            <Text>{t('Recent Transactions')}</Text>
+            <Flex>
+              <Switch
+                sx={styles.switch}
+                checked={recentTransactions}
+                onChange={() => {
+                  setRecentTransactions(!recentTransactions)
+                }}
+              />
             </Flex>
-            <ButtonMenu
-              activeIndex={recentTransactions ? 0 : 1}
-              size="sm"
-              variant="yellow"
-              onClick={() => {
-                setRecentTransactions(!recentTransactions)
-              }}
-            >
-              <ButtonMenuItem id="toggle-expert-mode-button" fontSize="12px">
-                {t('YES')}
-              </ButtonMenuItem>
-              <ButtonMenuItem id="toggle-expert-mode-button" fontSize="12px">
-                {t('NO')}
-              </ButtonMenuItem>
-            </ButtonMenu>
           </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>{t('Expert Mode')}</Text>
+          <Flex sx={{ justifyContent: 'space-between', margin: '5px 0px' }}>
+            <Text>{t('Expert Mode')}</Text>
+            <Flex>
+              <Switch sx={styles.switch} checked={expertMode} onChange={handleExpertModeToggle} />
             </Flex>
-            <ButtonMenu activeIndex={expertMode ? 0 : 1} size="sm" variant="yellow" onClick={handleExpertModeToggle}>
-              <ButtonMenuItem id="toggle-expert-mode-button" fontSize="12px">
-                {t('YES')}
-              </ButtonMenuItem>
-              <ButtonMenuItem id="toggle-expert-mode-button" fontSize="12px">
-                {t('NO')}
-              </ButtonMenuItem>
-            </ButtonMenu>
           </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="22px">
-            <Flex alignItems="center">
-              <Text>{t('Disable Multihops')}</Text>
+          <Flex sx={{ justifyContent: 'space-between', margin: '5px 0px' }}>
+            <Text>{t('Disable Multihops')}</Text>
+            <Flex>
+              <Switch
+                sx={styles.switch}
+                checked={singleHopOnly}
+                onChange={() => {
+                  setSingleHopOnly(!singleHopOnly)
+                }}
+              />
             </Flex>
-            <ButtonMenu
-              activeIndex={singleHopOnly ? 0 : 1}
-              size="sm"
-              variant="yellow"
-              onClick={() => {
-                setSingleHopOnly(!singleHopOnly)
-              }}
-            >
-              <ButtonMenuItem id="toggle-disable-multihop-button" fontSize="12px">
-                {t('YES')}
-              </ButtonMenuItem>
-              <ButtonMenuItem id="toggle-disable-multihop-button" fontSize="12px">
-                {t('NO')}
-              </ButtonMenuItem>
-            </ButtonMenu>
           </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="22px">
-            <Flex alignItems="center">
-              <Text>{t('Autonomy Prepay')}</Text>
+          <Flex sx={{ justifyContent: 'space-between', margin: '5px 0px' }}>
+            <Text>{t('Autonomy Prepay')}</Text>
+            <Flex>
+              <Switch
+                sx={styles.switch}
+                checked={autonomyPrepay}
+                onChange={() => {
+                  setAutonomyPrepay(!autonomyPrepay)
+                }}
+              />
             </Flex>
-            <ButtonMenu
-              activeIndex={autonomyPrepay ? 0 : 1}
-              size="sm"
-              variant="yellow"
-              onClick={() => {
-                setAutonomyPrepay(!autonomyPrepay)
-              }}
-            >
-              <ButtonMenuItem id="toggle-disable-multihop-button" fontSize="12px">
-                {t('YES')}
-              </ButtonMenuItem>
-              <ButtonMenuItem id="toggle-disable-multihop-button" fontSize="12px">
-                {t('NO')}
-              </ButtonMenuItem>
-            </ButtonMenu>
           </Flex>
         </ScrollableContainer>
       </Modal>
