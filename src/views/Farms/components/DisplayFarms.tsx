@@ -119,6 +119,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
           </Flex>
         </>
       ),
+      infoContentPosition: 'translate(-81.5%, 32%)',
       cardContent: (
         <>
           <ListViewContent
@@ -130,7 +131,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
               'APY includes annualized BANANA rewards and rewards for providing liquidity (DEX swap fees), compounded daily.',
             )}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 38%)"
+            toolTipTransform="translate(0, 50%)"
           />
           <ListViewContent
             title={t('APR')}
