@@ -100,7 +100,7 @@ const cleanVaultData = (
     return {
       ...vaultConfig,
       keeperFee: vaultConfig.version === 'V2' ? keeperFee.toString() : '0.25',
-      withdrawFee: vaultConfig.version === 'V2' ? withdrawFee.toString() : '0',
+      withdrawFee: vaultConfig.version === 'V2' ? withdrawFee.toString() : vaultConfig?.fee ? vaultConfig.fee : '0',
       totalStaked: totalTokensStaked.toString(),
       totalAllocPoint: totalAllocPoint.toString(),
       allocPoint: allocPoint.toString(),

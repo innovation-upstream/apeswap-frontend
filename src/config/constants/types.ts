@@ -238,6 +238,7 @@ export interface VaultConfig {
   inactive?: boolean
   depositFee?: number
   rewardsInSeconds?: boolean
+  fee?: string
 }
 
 export interface DualFarmConfig {

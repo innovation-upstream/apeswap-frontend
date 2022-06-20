@@ -29,6 +29,7 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
+    fee: '0.1',
   },
   {
     id: 1,
