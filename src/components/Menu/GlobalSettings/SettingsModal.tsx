@@ -59,7 +59,7 @@ const SettingsModal: React.FC<ModalProps> = ({ onDismiss }) => {
   }
 
   return (
-    <Modal title={t('Settings')} onDismiss={onDismiss} maxWidth="420px" >
+    <Modal title={t('Settings')} onDismiss={onDismiss} maxWidth="420px">
       <ScrollableContainer>
         <Flex sx={{ justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
           <Text
