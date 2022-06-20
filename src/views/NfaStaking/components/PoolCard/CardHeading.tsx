@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
@@ -279,11 +280,6 @@ const StyledNumber = styled.div`
   }
 `
 
-const StyledUnlockButton = styled(UnlockButton)`
-  font-weight: 600;
-  font-size: 11.5px;
-`
-
 const CardHeading: React.FC<ExpandableSectionProps> = ({
   pool,
   stakeToken,
@@ -311,7 +307,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
   const cardHeaderButton = () => {
     if (!account) {
-      return <StyledUnlockButton size="sm" />
+      return <UnlockButton sx={{ fontWeight: 600, fontSize: '11.5px' }} />
     }
     if (!allowance) {
       return (

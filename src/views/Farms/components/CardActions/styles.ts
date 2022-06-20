@@ -12,15 +12,6 @@ export const StyledButton = styled(Button)`
   height: 44px;
 `
 
-export const StyledUnlockButton = styled(UnlockButton)`
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 10px 20px;
-  min-width: 227px;
-  height: 44px;
-`
-
 export const SmallButton = styled(Button)`
   max-width: 44px;
   height: 44px;

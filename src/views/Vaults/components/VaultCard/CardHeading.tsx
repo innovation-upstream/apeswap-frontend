@@ -1,30 +1,28 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import styled from '@emotion/styled'
-import { Flex, Skeleton, Text, Image, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
-import { Pool } from 'state/types'
+import { Vault } from 'state/types'
+import styled from '@emotion/styled'
+import { Flex, Skeleton, Text, Image, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import UnlockButton from 'components/UnlockButton'
-import { useNetworkChainId } from 'state/hooks'
+import Tooltip from 'components/Tooltip/Tooltip'
 import { getBalanceNumber } from 'utils/formatBalance'
-import ApyButton from '../../../../components/ApyCalculator/ApyButton'
 import ExpandableSectionButton from './ExpandableSectionButton'
-import HarvestActions from './CardActions/HarvestActions'
 import ApprovalAction from './CardActions/ApprovalAction'
 import StakeAction from './CardActions/StakeActions'
 
 export interface ExpandableSectionProps {
   lpLabel?: string
-  apr?: BigNumber
-  pool?: Pool
+  apyDaily?: string
+  vault?: Vault
   stakeToken?: string
   earnToken?: string
   tokenSymbol?: string
   addLiquidityUrl?: string
   bananaPrice?: BigNumber
-  poolAPR?: string
+  apyYearly?: string
   removed?: boolean
   sousId?: number
   lpSymbol?: string
@@ -32,10 +30,11 @@ export interface ExpandableSectionProps {
   showExpandableSection?: boolean
   stakingTokenAddress?: string
   rewardTokenPrice?: number
+  image?: string
 }
 
 const StyledBackground = styled.div`
-  width: 120px;
+  width: 110px;
   height: 80px;
   background: rgb(255, 179, 0, 0.4);
   border-radius: 20px;
@@ -45,26 +44,24 @@ const StyledBackground = styled.div`
   margin-right: 5px;
   ${({ theme }) => theme.mediaQueries.sm} {
     height: 120px;
-    width: 200px;
+    width: 180px;
   }
 `
 
 const StyledHeading = styled(Text)`
   font-size: 12px;
-  font-weight: 800;
   ${({ theme }) => theme.mediaQueries.xs} {
     text-align: start;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 22px;
+    font-size: 21px;
   }
 `
 
 const StyledText1 = styled(Text)`
   font-weight: 600;
   font-size: 12px;
-
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 15px;
   }
@@ -87,17 +84,6 @@ const StyledText3 = styled(Text)`
   }
 `
 
-const StyledText4 = styled(Text)`
-  font-size: 12px;
-  font-weight: 600;
-  margin-top: 1px;
-  display: none;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: flex;
-  }
-`
-
 const StyledFlexContainer = styled(Flex)`
   display: flex;
   flex-direction: row;
@@ -108,7 +94,7 @@ const StyledFlexContainer = styled(Flex)`
   flex: 1;
 
   ${({ theme }) => theme.mediaQueries.xs} {
-    margin-right: 5px;
+    margin-right: 15px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -117,6 +103,7 @@ const StyledFlexContainer = styled(Flex)`
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    width: 100%;
   }
 `
 
@@ -129,17 +116,6 @@ const StyledFlexEarned = styled(Flex)`
     align-items: flex-start;
     margin-right: 0px;
     flex-direction: column;
-  }
-`
-
-const StyledFlexEarnedSmall = styled(Flex)`
-  margin-right: 10px;
-  flex-direction: row;
-  justify-content: center;
-  margin-bottom: 10px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: none;
   }
 `
 
@@ -202,7 +178,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   ${({ theme }) => theme.mediaQueries.sm} {
-    width: 150px;
+    width: 100%;
   }
 `
 
@@ -217,6 +193,17 @@ const IconImage = styled(Image)`
   }
 `
 
+const IconQuoteToken = styled(Image)`
+  align: center;
+  width: 20px;
+  height: 20px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 40px;
+    height: 40px;
+  }
+`
+
 const IconArrow = styled(Image)`
   align: center;
   width: 5px;
@@ -227,50 +214,30 @@ const IconArrow = styled(Image)`
     height: 10px;
   }
 `
-const IconQuoteToken = styled(Image)`
-  align: center;
-  width: 20px;
-  height: 20px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 35px;
-    height: 35px;
-  }
-`
-
-const Container = styled.div`
+const TitleContainer = styled.div`
   display: flex;
-  align-items: center;
 `
 
 const CardHeading: React.FC<ExpandableSectionProps> = ({
-  pool,
-  apr,
-  stakeToken,
-  earnToken,
-  poolAPR,
+  vault,
+  apyDaily,
+  apyYearly,
   removed,
-  sousId,
-  earnTokenImage,
   showExpandableSection,
-  rewardTokenPrice,
+  stakingTokenAddress,
+  image,
 }) => {
   const { t } = useTranslation()
-  const { userData, tokenDecimals, stakingToken } = pool
-  const splitStakeToken = pool?.lpStaking && stakeToken.split('-')
-  const splitEarnToken = pool?.isEarnTokenLp && earnToken.split('-')
-  const chainId = useNetworkChainId()
-  const { isXl: isDesktop } = useMatchBreakpoints()
-  const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
+  const { userData, isPair, token0, token1, pid, burning } = vault
+  const stakingTokenBalance = new BigNumber(userData?.tokenBalance || 0)
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
-  const earnings = new BigNumber(pool.userData?.pendingReward || 0)
   const allowance = new BigNumber(userData?.allowance || 0)
-  const rawEarningsBalance = getBalanceNumber(earnings, tokenDecimals)
-  const displayBalance = rawEarningsBalance ? rawEarningsBalance.toLocaleString() : '?'
-  const isLoading = !pool.userData
+  const isLoading = !vault?.userData
   const needsApproval = !allowance.gt(0)
-  const isCompound = sousId === 0
+  const lpLabel = vault.isPair ? `${vault?.token1?.symbol}-${vault?.token0?.symbol}` : vault?.token0?.symbol
+  const { isXl } = useMatchBreakpoints()
+  const isDesktop = isXl
   const { account } = useWeb3React()
 
   const cardHeaderButton = () => {
@@ -278,139 +245,125 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       return <UnlockButton sx={{ fontWeight: 600, fontSize: '11.5px', height: '44px' }} />
     }
     if (needsApproval) {
-      return (
-        <ApprovalAction
-          stakingTokenContractAddress={stakingToken.address[chainId]}
-          sousId={sousId}
-          isLoading={isLoading}
-        />
-      )
+      return <ApprovalAction stakingContractAddress={stakingTokenAddress} pid={pid} isLoading={isLoading} />
     }
-    if (!needsApproval && !accountHasStakedBalance && !pool.emergencyWithdraw) {
+    if (!needsApproval && !accountHasStakedBalance) {
       return (
         <StakeAction
-          pool={pool}
+          vault={vault}
           stakingTokenBalance={stakingTokenBalance}
           stakedBalance={stakedBalance}
           isStaked={accountHasStakedBalance}
           firstStake={!accountHasStakedBalance}
+          isApproved={!needsApproval}
+          isHeader
         />
       )
     }
-    return (
-      <HarvestActions
-        earnings={earnings}
-        sousId={sousId}
-        isLoading={isLoading}
-        tokenDecimals={pool.tokenDecimals}
-        compound={isCompound}
-        emergencyWithdraw={pool.emergencyWithdraw}
-      />
-    )
+    if (!needsApproval && accountHasStakedBalance) {
+      return (
+        <StakeAction
+          vault={vault}
+          stakingTokenBalance={stakingTokenBalance}
+          stakedBalance={stakedBalance}
+          isStaked={accountHasStakedBalance}
+          firstStake={!accountHasStakedBalance}
+          isApproved={!needsApproval}
+          isHeader
+        />
+      )
+    }
+    return <></>
   }
 
   return (
-    <Container>
+    <Flex>
       <StyledBackground>
-        {!pool?.lpStaking ? (
-          <IconImage
-            src={`/images/tokens/${stakeToken}.svg`}
-            alt={stakeToken}
-            width={70}
-            height={70}
-            marginLeft="7.5px"
-          />
-        ) : (
+        {isPair ? (
           <>
             <IconImage
-              src={`/images/tokens/${splitStakeToken[0]}.svg`}
-              alt={splitStakeToken[0]}
+              src={`/images/tokens/${image || `${token1?.symbol}.svg`}`}
+              alt={token1?.symbol}
               width={60}
               height={60}
               marginLeft="7.5px"
             />
             <IconQuoteToken
-              src={`/images/tokens/${splitStakeToken[1]}.svg`}
-              alt={splitStakeToken[1]}
+              src={`/images/tokens/${token0?.symbol}.svg`}
+              alt={token0?.symbol}
               width={35}
               height={35}
               marginLeft={isDesktop ? '-20px' : '-13px'}
               marginTop={isDesktop ? '45px' : '30px'}
+            />
+            <IconArrow src="/images/arrow.svg" alt="arrow" width={10} height={10} marginRight="8px" marginLeft="8px" />
+            <IconImage
+              src={`/images/tokens/${image || `${token1?.symbol}.svg`}`}
+              alt={token1?.symbol}
+              width={60}
+              height={60}
+            />
+            <IconQuoteToken
+              src={`/images/tokens/${token0?.symbol}.svg`}
+              alt={token0?.symbol}
+              width={35}
+              height={35}
+              marginLeft={isDesktop ? '-20px' : '-13px'}
+              marginTop={isDesktop ? '45px' : '30px'}
+              marginRight={7.5}
             />
           </>
-        )}
-        <IconArrow src="/images/arrow.svg" alt="arrow" width={10} height={10} />
-        {!pool?.isEarnTokenLp ? (
-          <IconImage
-            src={`/images/tokens/${earnTokenImage || `${earnToken}.svg`}`}
-            alt={earnToken}
-            width={70}
-            height={70}
-            marginRight="7.5px"
-          />
         ) : (
           <>
             <IconImage
-              src={`/images/tokens/${splitStakeToken[0]}.svg`}
-              alt={splitEarnToken[0]}
+              src={`/images/tokens/${image || `${token0?.symbol}.svg`}`}
+              alt={token0?.symbol}
               width={60}
               height={60}
               marginLeft="7.5px"
             />
-            <IconQuoteToken
-              src={`/images/tokens/${splitStakeToken[1]}.svg`}
-              alt={splitEarnToken[1]}
-              width={35}
-              height={35}
-              marginLeft={isDesktop ? '-20px' : '-13px'}
-              marginTop={isDesktop ? '45px' : '30px'}
+            <IconArrow src="/images/arrow.svg" alt="arrow" width={10} height={10} marginLeft="10px" marginRight="8px" />
+            <IconImage
+              src={`/images/tokens/${image || `${token0?.symbol}.svg`}`}
+              alt={token0?.symbol}
+              width={60}
+              height={60}
+              marginRight="10px"
             />
           </>
         )}
       </StyledBackground>
       <StyledFlexContainer>
         <LabelContainer>
-          <StyledHeading>{earnToken}</StyledHeading>
-          {!removed && !pool?.forAdmins && (
+          <TitleContainer>
+            <StyledHeading bold>{lpLabel}</StyledHeading>
+            {burning && <Tooltip content={t('Burns at least 50% of every harvest in the form of $BANANA')}>🔥</Tooltip>}
+          </TitleContainer>
+          {!removed && (
             <Text style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-              <StyledText1>APR:</StyledText1>
-              {apr ? (
-                <FlexSwitch className="noClick">
-                  <ApyButton
-                    lpLabel={stakeToken}
-                    rewardTokenName={earnToken}
-                    addLiquidityUrl="https://apeswap.finance/swap"
-                    rewardTokenPrice={rewardTokenPrice}
-                    apy={apr.div(100)?.toNumber()}
-                  />
-                  <StyledAPRText>{poolAPR}%</StyledAPRText>
+              <StyledText1>{t('APY')}:</StyledText1>
+              {apyDaily ? (
+                <FlexSwitch>
+                  <StyledAPRText>{apyYearly}%</StyledAPRText>
                 </FlexSwitch>
               ) : (
                 <Skeleton height={24} width={80} />
               )}
             </Text>
           )}
-          <StyledFlexEarnedSmall>
-            <StyledText4 color="primary" pr="3px">
-              {earnToken}
-            </StyledText4>
-            <StyledText2 color="primary" pr="3px">
-              {t('Earned')}
-            </StyledText2>
-            <StyledText3>{displayBalance}</StyledText3>
-          </StyledFlexEarnedSmall>
         </LabelContainer>
         <LabelContainer2>
           <StyledFlexEarned>
             <Flex>
-              <StyledText4 color="primary" pr="3px">
-                {earnToken}
-              </StyledText4>
               <StyledText2 color="primary" pr="3px">
-                {t('Earned')}
+                {t('Staked')}
               </StyledText2>
             </Flex>
-            <StyledText3>{displayBalance}</StyledText3>
+            <StyledText3>
+              {new BigNumber(vault?.userData?.stakedBalance).gt(0)
+                ? getBalanceNumber(new BigNumber(vault?.userData?.stakedBalance)).toFixed(4)
+                : '?'}
+            </StyledText3>
           </StyledFlexEarned>
           <ButtonContainer>
             {cardHeaderButton()}
@@ -418,7 +371,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
           </ButtonContainer>
         </LabelContainer2>
       </StyledFlexContainer>
-    </Container>
+    </Flex>
   )
 }
 

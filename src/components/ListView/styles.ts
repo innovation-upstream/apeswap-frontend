@@ -109,13 +109,6 @@ export const ContentContainer = styled(Flex)`
   }
 `
 
-export const TitleContainer = styled(Flex)<{ titleContainerWidth?: number }>`
-  align-items: center;
-  height: 100%;
-  max-width: ${({ titleContainerWidth }) => titleContainerWidth || 290}px;
-  width: 100%;
-`
-
 export const TitleText = styled(Text)`
   font-size: 12px;
   ${({ theme }) => theme.mediaQueries.md} {
