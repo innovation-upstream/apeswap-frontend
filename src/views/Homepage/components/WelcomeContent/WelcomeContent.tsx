@@ -31,7 +31,7 @@ const WelcomeContent: React.FC = () => {
               <Flex justifyContent="center" alignItems="center" flexDirection="column" style={{ width: '100%' }}>
                 <a href="/swap" rel="noopener noreferrer" style={{ width: '90%' }}>
                   <BuyBanana fullWidth>
-                    {t('Buy Banana')}
+                    {t('Ape In')}
                     <ApeSwapRoundIcon ml="10px" width="27px" height="27px" />
                   </BuyBanana>
                 </a>
@@ -48,7 +48,7 @@ const WelcomeContent: React.FC = () => {
               <Flex justifyContent="space-between" style={{ width: 'auto' }}>
                 <a href="/swap" rel="noopener noreferrer">
                   <BuyBanana>
-                    {t('Buy Banana')}
+                    {t('Ape In')}
                     <ApeSwapRoundIcon ml="10px" width="27px" height="27px" />
                   </BuyBanana>
                 </a>

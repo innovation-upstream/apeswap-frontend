@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
 import ifoLinearAbi from 'config/abi/ifoLinear.json'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -250,7 +251,9 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
       <IfoCardProgress progress={progress} amountLabel={progressBarAmountLabel} timeLabel={progressBarTimeLabel} />
 
       {!account ? (
-        <UnlockButton />
+        <UnlockButton
+          sx={{ alignSelf: 'center', fontWeight: 600, fontSize: '16px', margin: '0 auto 12px', width: '220px' }}
+        />
       ) : (
         (isActive || isFinished) &&
         vesting && (

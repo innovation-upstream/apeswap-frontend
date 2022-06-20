@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 import { Button, Text } from '@apeswapfinance/uikit'
-// import BaseUnlockButton from 'components/UnlockButton'
-import UnlockButtonSquare from 'components/UnlockButton'
 
 export const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.white3};
@@ -68,12 +66,6 @@ export const ApproveButton = styled(Button)`
   margin: 0 auto;
 `
 
-export const UnlockButton = styled(UnlockButtonSquare)`
-  width: 220px;
-  margin: 0 auto 12px auto;
-  height: 44px;
-  font-size: 16px;
-`
 export const Wrapper = styled.div`
   display: flex;
   justify-content: center;

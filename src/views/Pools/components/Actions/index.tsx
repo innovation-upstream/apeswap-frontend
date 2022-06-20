@@ -1,9 +1,10 @@
 import React from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import BigNumber from 'bignumber.js'
-import { CenterContainer, StyledUnlockButton } from './styles'
+import { CenterContainer } from './styles'
 import ApprovalAction from './ApprovalAction'
 import StakeAction from './StakeActions'
+import UnlockButton from '../../../../components/UnlockButton'
 
 // Changed props to type string because BigNumbers cause re-renders
 
@@ -31,7 +32,7 @@ const Actions: React.FC<CardActionProps> = ({
     if (!account) {
       return (
         <CenterContainer>
-          <StyledUnlockButton />
+          <UnlockButton table />
         </CenterContainer>
       )
     }

@@ -41,7 +41,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           <br />
           <br />
           <a
-            href="apeswap.click/partners"
+            href="https://apeswap.click/partners"
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: 'underline' }}

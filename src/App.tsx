@@ -7,7 +7,13 @@ import { ScrollToTop } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import MarketingModalCheck from 'components/MarketingModalCheck'
 import { CHAIN_ID } from 'config/constants/chains'
-import { useFetchTokenPrices, useFetchProfile, useUpdateNetwork, useFetchLiveIfoStatus } from 'state/hooks'
+import {
+  useFetchTokenPrices,
+  useFetchProfile,
+  useUpdateNetwork,
+  useFetchLiveIfoStatus,
+  useFetchLiveTags,
+} from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
@@ -30,7 +36,7 @@ declare module '@emotion/react' {
 const Home = lazy(() => import('./views/Homepage'))
 const Farms = lazy(() => import('./views/Farms'))
 const Pools = lazy(() => import('./views/Pools'))
-const JunglePools = lazy(() => import('./views/JunglePools'))
+const JungleFarms = lazy(() => import('./views/JungleFarms'))
 const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const DualFarms = lazy(() => import('./views/DualFarms'))
@@ -50,6 +56,8 @@ const Bills = lazy(() => import('./views/Bills'))
 const Orders = lazy(() => import('./views/Orders'))
 const Topup = lazy(() => import('./views/Topup'))
 const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/RemoveLiquidity/redirects'))
+const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
+const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -93,6 +101,7 @@ const App: React.FC = () => {
   usePollBlockNumber()
   useFetchProfile()
   useFetchLiveIfoStatus()
+  useFetchLiveTags()
 
   const { account, chainId } = useActiveWeb3React()
   const [showScrollIcon, setShowScrollIcon] = useState(false)
@@ -130,6 +139,12 @@ const App: React.FC = () => {
           <Suspense fallback={<PageLoader />}>
             <Switch>
               <Route path="/" exact component={Home} />
+              <Route path="/terms">
+                <TermsOfUse />
+              </Route>
+              <Route path="/privacy">
+                <PrivacyPolicy />
+              </Route>
               {/* Redirects */}
               <Route path="/admin-pools">
                 <Redirect to="/" />
@@ -218,6 +233,12 @@ const App: React.FC = () => {
               <Route path="/farms">
                 <DualFarms />
               </Route>
+              <Route path="/terms">
+                <TermsOfUse />
+              </Route>
+              <Route path="/privacy">
+                <PrivacyPolicy />
+              </Route>
               {/* Redirects */}
               <Route path="/vaults">
                 <Redirect to="/" />
@@ -300,7 +321,7 @@ const App: React.FC = () => {
               <Pools />
             </Route>
             <Route path="/jungle-farms">
-              <JunglePools />
+              <JungleFarms />
             </Route>
             <Route path="/vaults">
               <Vaults />
@@ -346,6 +367,12 @@ const App: React.FC = () => {
             </Route>
             <Route path="/spinner">
               <PageLoader />
+            </Route>
+            <Route path="/terms">
+              <TermsOfUse />
+            </Route>
+            <Route path="/privacy">
+              <PrivacyPolicy />
             </Route>
             {/* Redirect */}
             <Route path="/staking">

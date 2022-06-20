@@ -14,7 +14,7 @@ import { TokenDisplayAmount } from './types'
 
 const NUMBER_OF_TOKENS_TO_DISPLAY = 6
 const TOKEN_DELAY = 10000
-const CATEGORIES = ['primary', 'partner']
+const CATEGORIES = ['primary', 'partner', 'trending']
 
 const TrendingTokens: React.FC = () => {
   const { chainId } = useActiveWeb3React()
@@ -117,7 +117,7 @@ const TrendingTokens: React.FC = () => {
                             $
                             <CountUp
                               end={token?.tokenPrice}
-                              decimals={token?.tokenPrice > 1 ? 2 : 4}
+                              decimals={token?.tokenPrice > 1 ? 2 : token?.tokenPrice > 0.01 ? 4 : 6}
                               duration={1.5}
                               separator=","
                             />

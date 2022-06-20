@@ -13,6 +13,7 @@ export const getTokenUsdPrice = async (
 ) => {
   const apePriceGetterAddress = getApePriceGetterAddress(chainId)
   const nativeTokenAddress = getNativeWrappedAddress(chainId)
+  if (!apePriceGetterAddress) return 0
   if ((tokenAddress || isNative) && tokenDecimal) {
     const call = lp
       ? {

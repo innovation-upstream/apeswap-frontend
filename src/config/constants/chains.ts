@@ -126,6 +126,10 @@ export const WALLCHAIN_PARAMS = {
     apiUrl: 'https://bsc.wallchain.xyz/upgrade_txn/',
     apiKey: '85c578a5-ecb0-445c-8a95-4c0eba2f33b6',
   },
+  [CHAIN_ID.BSC_TESTNET]: {
+    apiUrl: 'https://bsc.wallchain.xyz/upgrade_txn/',
+    apiKey: '85c578a5-ecb0-445c-8a95-4c0eba2f33b6',
+  },
   [CHAIN_ID.MATIC]: {
     apiUrl: 'https://matic.wallchain.xyz/upgrade_txn/',
     apiKey: '5cf2b177-5fa5-477a-8cea-f2b54859af2a',
