@@ -25,6 +25,7 @@ const Buy: React.FC<BuyProps> = ({
   onValueChange,
   onBillId,
   onTransactionSubmited,
+  billValue,
 }) => {
   const formatUserLpValue = getFullDisplayBalance(new BigNumber(userLpValue))
   const [amount, setAmount] = useState('')
@@ -58,15 +59,18 @@ const Buy: React.FC<BuyProps> = ({
       },
     ]
     const [maxTotalPayout, totalPayoutGiven] = await multicall(chainId, billsABI, calls)
-    const asd = getBalanceNumber(maxTotalPayout)
-    console.log(asd)
-    return getBalanceNumber(maxTotalPayout) - getBalanceNumber(totalPayoutGiven) < 100
+    console.log(getBalanceNumber(maxTotalPayout))
+    console.log(getBalanceNumber(totalPayoutGiven))
+    console.log(parseInt(billValue))
+    return getBalanceNumber(maxTotalPayout) - getBalanceNumber(totalPayoutGiven) - parseInt(billValue)
   }
 
   const handleBuy = async () => {
     const exceedsMaxPayout = await verifyMaxPayout()
-    console.log(exceedsMaxPayout)
-    console.log(typeof amount)
+    if (exceedsMaxPayout <= 0) {
+      toastError(t(`Exceeds limit by: %amount%`, { amount: (exceedsMaxPayout * -1).toFixed(3) }))
+      return
+    }
     setPendingTrx(true)
     onTransactionSubmited(true)
     await onBuyBill()

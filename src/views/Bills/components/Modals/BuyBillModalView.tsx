@@ -123,6 +123,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                   onValueChange={onHandleValueChange}
                   onBillId={onHandleReturnedBillId}
                   onTransactionSubmited={(trxSent) => setLoading(trxSent)}
+                  billValue={billValue}
                 />
               </ActionButtonsContainer>
               {new BigNumber(userData?.allowance).gt(0) && (
