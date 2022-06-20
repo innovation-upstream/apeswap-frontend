@@ -1,12 +1,14 @@
+/** @jsxImportSource theme-ui */
 import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from '@apeswapfinance/sdk'
-import { Text, Card, Skeleton } from '@apeswapfinance/uikit'
+import { Text, Card, Skeleton, Flex, MetamaskIcon } from '@ape.swap/uikit'
 import styled from 'styled-components'
 import { FixedSizeList } from 'react-window'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { useCombinedActiveList } from '../../state/lists/hooks'
+import { registerToken } from 'utils/wallet'
+import { useCombinedActiveList, WrappedTokenInfo } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useIsUserAddedToken, useAllInactiveTokens } from '../../hooks/Tokens'
 import Column from '../layout/Column'
@@ -24,6 +26,8 @@ const StyledBalanceText = styled(Text)`
   overflow: hidden;
   max-width: 5rem;
   text-overflow: ellipsis;
+  weight: 400;
+  font-size: 14px;
 `
 
 const FixedContentRow = styled.div`
@@ -67,34 +71,60 @@ function CurrencyRow({
 }) {
   const { account, chainId } = useActiveWeb3React()
   const key = currencyKey(currency)
+  const token = currency as Token
   const selectedTokenList = useCombinedActiveList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
   const { t } = useTranslation()
+  const addToMetaMask = () => {
+    registerToken(
+      currency instanceof Token ? currency?.address : '',
+      currency?.symbol,
+      currency?.decimals,
+      currency instanceof WrappedTokenInfo ? currency?.tokenInfo.logoURI : '',
+    ).then(() => '')
+  }
 
   // only show add or remove buttons if not on selected list
   return (
-    <MenuItem
+    <Flex
       style={style}
+      sx={{
+        width: '100%',
+        background: 'white3',
+        height: '50px',
+        cursor: !isSelected && !otherSelected && 'pointer',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '4px 10px 4px 7px',
+        opacity: isSelected || otherSelected ? 0.5 : 1,
+        ':hover': {
+          background: !isSelected && !otherSelected && 'white4',
+        },
+      }}
+      key={`token-item-${key}`}
       className={`token-item-${key}`}
-      onClick={() => (isSelected ? null : onSelect())}
-      disabled={isSelected}
-      selected={otherSelected}
+      onClick={(event) => (event.currentTarget === event.target && isSelected ? null : onSelect())}
     >
-      <CurrencyLogo currency={currency} size="24px" />
-      <Column>
-        <Text title={currency.getName(chainId)} fontWeight={500}>
-          {currency.getSymbol(chainId)}
-        </Text>
-        <Text fontSize="13px">
-          {!isOnSelectedList && customAdded && t('Added by user •')} {currency.getName(chainId)}
-        </Text>
-      </Column>
-      <RowFixed style={{ justifySelf: 'flex-end' }}>
+      <Flex sx={{ alignItems: 'center' }}>
+        <CurrencyLogo currency={currency} size="30px" />
+        <Flex sx={{ flexDirection: 'column', ml: '10px', alignItems: 'space-between' }}>
+          <Flex sx={{ alignItems: 'center' }}>
+            <Text title={currency.getName(chainId)} weight={700} sx={{ lineHeight: '22px' }}>
+              {currency.getSymbol(chainId)}
+            </Text>
+            <MetamaskIcon width="13px" ml="7px" mb="1px" onClick={addToMetaMask} />
+          </Flex>
+          <Text size="12px" weight={300} sx={{ lineHeight: '16px' }}>
+            {!isOnSelectedList && customAdded && t('Added by user •')} {currency.getName(chainId)}
+          </Text>
+        </Flex>
+      </Flex>
+      <Flex sx={{ justifySelf: 'flex-end' }}>
         {balance ? <Balance balance={balance} /> : account ? <Skeleton width="50px" /> : null}
-      </RowFixed>
-    </MenuItem>
+      </Flex>
+    </Flex>
   )
 }
 
@@ -193,8 +223,8 @@ export default function CurrencyList({
   return (
     <FixedSizeList
       height={height}
+      width="100%"
       ref={fixedListRef as any}
-      width="360px"
       itemData={itemData}
       itemCount={itemData.length}
       itemSize={56}

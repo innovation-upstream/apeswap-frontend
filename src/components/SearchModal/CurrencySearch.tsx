@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
 import { Currency, ETHER, Token } from '@apeswapfinance/sdk'
-import { Text, Input, Flex } from '@ape.swap/uikit'
+import { Text, Flex, Input } from '@ape.swap/uikit'
 import { FixedSizeList } from 'react-window'
 import styled from '@emotion/styled'
 import useDebounce from 'hooks/useDebounce'
@@ -114,12 +114,10 @@ function CurrencySearch({
 
   const { t } = useTranslation()
   return (
-    <div>
-      <Flex sx={{ margin: '20px 0px' }}>
-        <Input
+    <Flex sx={{ flexDirection: 'column' }}>
+      <Flex sx={{ position: 'relative', margin: '10px 0px 15px 0px' }}>
+        <StyledInput
           id="token-search-input"
-          width="100%"
-          sx={{ width: '100%' }}
           placeholder={t('Name or Address')}
           autoComplete="off"
           value={searchQuery}
@@ -129,17 +127,17 @@ function CurrencySearch({
           icon="search"
           autoFocus
         />
-        {showCommonBases && (
-          <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
-        )}
       </Flex>
+      {showCommonBases && (
+        <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
+      )}
       {searchToken && !searchTokenIsAdded ? (
         <Column style={{ padding: '20px 0', height: '100%' }}>
           <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
         </Column>
       ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
         <CurrencyList
-          height={250}
+          height={335}
           showETH={showETH}
           currencies={
             filteredInactiveTokens ? filteredSortedTokens.concat(filteredInactiveTokens) : filteredSortedTokens
@@ -159,19 +157,22 @@ function CurrencySearch({
           </Text>
         </Column>
       )}
-    </div>
+    </Flex>
   )
 }
 
 const StyledInput = styled(Input)`
+  width: 420px;
+  max-width: 100% !important;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
   background-color: ${({ theme }) => theme.colors.white3};
   color: ${({ theme }) => theme.colors.text};
   placeholder-color: ${({ theme }) => theme.colors.gray};
-  width: 100% !important;
   ::placeholder {
     color: ${(props) => props.theme.colors.text};
   }
-
   :focus {
     box-shadow: none !important;
   }
