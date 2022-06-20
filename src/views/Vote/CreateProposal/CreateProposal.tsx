@@ -1,20 +1,37 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { Box, Flex, Text } from 'theme-ui'
-import { Svg, ArrowBackIcon, Link, Textarea, Button, Spinner, TooltipBubble } from '@ape.swap/uikit'
+import { Svg, ArrowBackIcon, Link, Textarea, Button, Spinner, TooltipBubble, Input } from '@ape.swap/uikit'
 import { create } from 'ipfs-http-client'
 import { MarkdownIcon } from 'components/Icons'
-import InputCreateProposal from './InputCreateProposal'
 import { styles } from './styles'
 import Preview from './Preview'
 
+export interface InputProps {
+  onChange: (e: React.FormEvent<HTMLInputElement>) => void
+  placeholder?: string
+  value: string
+}
+
 const CreateProposal = () => {
   const [proposalData, setPropposalData] = useState({
-    preview: true,
-    loader: false,
     title: '',
     dicussion: '',
     textarea: '',
   })
+
+  const [state, setState] = useState({
+    preview: true,
+    loader: false,
+  })
+
+  const InputCreateProposal: React.FC<InputProps> = ({ onChange, placeholder, value }) => {
+    return (
+      <Box sx={styles.inputMain}>
+        <Input sx={styles.input} placeholder={placeholder} value={value} onChange={onChange} width="100%" />
+      </Box>
+    )
+  }
 
   const handleChange = (e) => {
     setPropposalData({ ...proposalData, title: e.target.value })
@@ -30,26 +47,28 @@ const CreateProposal = () => {
       })
     }
   }
-  const client = create({ url: 'https://ipfs.infura.io:5001/api/v0' })
 
   const handleDrop = async (e) => {
     e.preventDefault()
     e.stopPropagation()
 
-    setPropposalData({ ...proposalData, loader: true })
+    setState({ ...state, loader: true })
     const imageFile = e.dataTransfer.files[0]
+    const client = create({ url: 'https://ipfs.infura.io:5001/api/v0' })
     try {
       const added = await client.add(imageFile)
 
       if (e.target.value.length <= 14400) {
-        console.log('length', imageFile?.name.length, 'textArea', proposalData?.textarea.length)
         const url = `https://ipfs.infura.io/ipfs/${added.path}`
-        proposalData.textarea = `${proposalData?.textarea} \n![${imageFile?.name}](${url})\n`
-        setPropposalData(proposalData)
+        setPropposalData((prevValue) => ({
+          ...prevValue,
+          textarea: `${prevValue.textarea} \n![${imageFile?.name}](${url})\n`,
+        }))
       }
-      setPropposalData({ ...proposalData, loader: false })
     } catch (error) {
       console.log('Error uploading file: ', error)
+    } finally {
+      setState({ ...state, loader: false })
     }
   }
 
@@ -84,7 +103,7 @@ const CreateProposal = () => {
               <Text sx={{ fontSize: '14px', marginTop: '5px' }}>Learn More</Text>
             </Link>
           </Box>
-          {proposalData.preview ? (
+          {state.preview ? (
             <>
               <Text sx={{ marginBottom: '10px', display: 'block' }}>Title</Text>
 
@@ -103,7 +122,7 @@ const CreateProposal = () => {
                   onChange={handleTextArea}
                 />
                 <Text sx={styles.textAreaBottom}>
-                  {proposalData.loader ? (
+                  {state.loader ? (
                     <LoaderAndtext />
                   ) : (
                     <Flex sx={{ justifyContent: 'space-between' }}>
@@ -140,12 +159,8 @@ const CreateProposal = () => {
         </Box>
 
         <Box sx={styles.action}>
-          <Button
-            variant="secondary"
-            onClick={() => setPropposalData({ ...proposalData, preview: !proposalData?.preview })}
-            fullWidth
-          >
-            {proposalData?.preview ? 'Preview' : 'Edit'}
+          <Button variant="secondary" onClick={() => setState({ ...state, preview: !state?.preview })} fullWidth>
+            {state?.preview ? 'Preview' : 'Edit'}
           </Button>
           &nbsp;
           <Button fullWidth>Continue</Button>
