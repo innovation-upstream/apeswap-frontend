@@ -33,8 +33,6 @@ const Container = styled.div`
       }
     }
   }
-
-  width: 184px;
 `
 
 const AprWrapper = styled.div`

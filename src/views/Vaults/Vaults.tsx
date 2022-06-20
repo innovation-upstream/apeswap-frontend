@@ -1,7 +1,9 @@
+/** @jsxImportSource theme-ui */
 import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
+import { ThemeUIStyleObject } from 'theme-ui'
 import { Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
@@ -56,7 +58,6 @@ const ToggleWrapper = styled.div`
 `
 
 const ToggleContainer = styled.div`
-  position: absolute;
   right: 5%;
   display: flex;
   flex-direction: column;
@@ -139,114 +140,49 @@ const StyledCheckbox = styled(Checkbox)<CheckboxProps>`
   width: 21px;
 `
 
-const ContainerLabels = styled.div`
+const ContainerLabels = styled.thead`
   background: ${({ theme }) => theme.colors.white2};
   border-radius: 16px;
   margin-top: 24px;
   height: 32px;
   width: 100%;
   position: relative;
-  display: flex;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
+
+  td:first-of-type {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+  td:last-of-type {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
 
   ${({ theme }) => theme.mediaQueries.xs} {
     margin-top: 34px;
   }
 `
 
-const StyledLabelContainerHot = styled.div`
+const StyledLabelContainerHot = styled.td`
   cursor: pointer;
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 35px;
-    margin-right: 35px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    position: absolute;
-    top: 6px;
-    left: 38px;
-    margin: 0px;
-  }
+  vertical-align: middle;
 `
 
-const StyledLabelContainerLP = styled.div`
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 35px;
-    margin-right: 35px;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    position: absolute;
-    top: 6px;
-    left: 169px;
-    margin: 0px;
-  }
+const StyledLabelContainerLP = styled.td`
+  vertical-align: middle;
+  width: 20%;
 `
 
-const StyledLabelContainerYearlyAPY = styled.div`
+const StyledLabelContainerYearlyAPY = styled.td`
   cursor: pointer;
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 35px;
-    margin-right: 35px;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    position: absolute;
-    top: 6px;
-    left: 500px;
-    margin: 0px;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    left: 565px;
-  }
+  vertical-align: middle;
 `
 
-const StyledLabelContainerTotalStaked = styled.div`
+const StyledLabelContainerTotalStaked = styled.td`
   cursor: pointer;
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 35px;
-    margin-right: 35px;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin: 0px;
-    position: absolute;
-    top: 6px;
-    left: 651px;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    left: 740px;
-  }
+  vertical-align: middle;
 `
 
 const CardContainer = styled.div`
@@ -281,6 +217,8 @@ const StyledPage = styled(Page)`
 
 const StyledLabel = styled.div<LabelProps>`
   display: flex;
+  width: fit-content;
+  margin-left: 20px;
   color: ${({ theme, active }) => (active ? '#FFFFFF' : theme.colors.primary)};
 
   padding: 4px 12px;
@@ -313,30 +251,9 @@ const FlexLayout = styled.div`
   }
 `
 
-const StyledLabelContainerDailyAPY = styled.div`
+const StyledLabelContainerDailyAPY = styled.td`
   cursor: pointer;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-left: 35px;
-    margin-right: 35px;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    position: absolute;
-    top: 6px;
-    left: 365px;
-    margin: 0px;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    left: 389px;
-  }
+  vertical-align: middle;
 `
 
 const StyledTable = styled.div`
@@ -355,8 +272,21 @@ const Container = styled.div`
   position: relative;
 `
 
-const TableWrapper = styled.div`
+const TableWrapper = styled.tbody`
   overflow: visible;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 4px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+
+  &:before {
+    content: '@';
+    display: block;
+    line-height: 10px;
+    text-indent: -99999px;
+  }
 
   &::-webkit-scrollbar {
     display: none;
@@ -366,6 +296,15 @@ const TableWrapper = styled.div`
 const TableContainer = styled.div`
   position: relative;
 `
+
+const tableStyle: ThemeUIStyleObject = {
+  width: '100%',
+  borderCollapse: 'separate',
+  tableLayout: 'fixed',
+  borderSpacing: '0 5px',
+  marginTop: '34px',
+}
+
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
 const Vaults: React.FC = () => {
@@ -384,7 +323,7 @@ const Vaults: React.FC = () => {
   const { t } = useTranslation()
   const isActive = !pathname.includes('history')
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
-  const tableWrapperEl = useRef<HTMLDivElement>(null)
+  const tableWrapperEl = useRef<HTMLTableSectionElement>(null)
   const loadMoreRef = useRef<HTMLDivElement>(null)
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -500,17 +439,11 @@ const Vaults: React.FC = () => {
   )
 
   const tableLayout = (
-    <Container>
-      <TableContainer>
-        <TableWrapper ref={tableWrapperEl}>
-          <StyledTable>
-            {vaultsToShow().map((vault) => (
-              <VaultTable key={vault.pid} vault={vault} removed={!isActive} />
-            ))}
-          </StyledTable>
-        </TableWrapper>
-      </TableContainer>
-    </Container>
+    <TableWrapper ref={tableWrapperEl}>
+      {vaultsToShow().map((vault) => (
+        <VaultTable key={vault.pid} vault={vault} removed={!isActive} />
+      ))}
+    </TableWrapper>
   )
 
   return (
@@ -549,41 +482,44 @@ const Vaults: React.FC = () => {
             </ButtonCheckWrapper>
           </ViewControls>
         </ControlContainer>
-        <ContainerLabels>
-          <StyledLabelContainerHot>
-            <StyledLabel active={sortOption === 'hot'} onClick={() => handleSortOptionChange('hot')}>
-              {t('Hot')}
-            </StyledLabel>
-          </StyledLabelContainerHot>
-          <StyledLabelContainerLP>
-            <StyledLabel>{t('Token')}</StyledLabel>
-          </StyledLabelContainerLP>
-          <StyledLabelContainerDailyAPY>
-            <StyledLabel active={sortOption === 'dailyapy'} onClick={() => handleSortOptionChange('dailyapy')}>
-              {t('Daily APY')}
-              {sortOption === 'dailyapy' ? (
-                <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
-              ) : null}
-            </StyledLabel>
-          </StyledLabelContainerDailyAPY>
-          <StyledLabelContainerYearlyAPY>
-            <StyledLabel active={sortOption === 'yearlyapy'} onClick={() => handleSortOptionChange('yearlyapy')}>
-              {t('Yearly APY')}
-              {sortOption === 'yearlyapy' ? (
-                <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
-              ) : null}
-            </StyledLabel>
-          </StyledLabelContainerYearlyAPY>
-          <StyledLabelContainerTotalStaked>
-            <StyledLabel active={sortOption === 'totalstaked'} onClick={() => handleSortOptionChange('totalstaked')}>
-              {t('Total Staked')}
-              {sortOption === 'totalstaked' ? (
-                <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
-              ) : null}
-            </StyledLabel>
-          </StyledLabelContainerTotalStaked>
-        </ContainerLabels>
-        {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
+        <table sx={tableStyle}>
+          <ContainerLabels>
+            <StyledLabelContainerHot>
+              <StyledLabel active={sortOption === 'hot'} onClick={() => handleSortOptionChange('hot')}>
+                {t('Hot')}
+              </StyledLabel>
+            </StyledLabelContainerHot>
+            <StyledLabelContainerLP>
+              <StyledLabel>{t('Token')}</StyledLabel>
+            </StyledLabelContainerLP>
+            <StyledLabelContainerDailyAPY>
+              <StyledLabel active={sortOption === 'dailyapy'} onClick={() => handleSortOptionChange('dailyapy')}>
+                {t('Daily APY')}
+                {sortOption === 'dailyapy' ? (
+                  <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
+                ) : null}
+              </StyledLabel>
+            </StyledLabelContainerDailyAPY>
+            <StyledLabelContainerYearlyAPY>
+              <StyledLabel active={sortOption === 'yearlyapy'} onClick={() => handleSortOptionChange('yearlyapy')}>
+                {t('Yearly APY')}
+                {sortOption === 'yearlyapy' ? (
+                  <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
+                ) : null}
+              </StyledLabel>
+            </StyledLabelContainerYearlyAPY>
+            <StyledLabelContainerTotalStaked>
+              <StyledLabel active={sortOption === 'totalstaked'} onClick={() => handleSortOptionChange('totalstaked')}>
+                {t('Total Staked')}
+                {sortOption === 'totalstaked' ? (
+                  <StyledArrowDropDownIcon width="7px" height="8px" color="white" down={sortDirection === 'desc'} />
+                ) : null}
+              </StyledLabel>
+            </StyledLabelContainerTotalStaked>
+            <td sx={{ width: '25%' }} />
+          </ContainerLabels>
+          {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
+        </table>
         <div ref={loadMoreRef} />
       </StyledPage>
     </>

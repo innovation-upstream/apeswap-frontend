@@ -1,6 +1,9 @@
+/** @jsxImportSource theme-ui */
 import BigNumber from 'bignumber.js'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { ThemeUIStyleObject } from 'theme-ui'
+import Tooltip from 'components/Tooltip/Tooltip'
 import { Flex, Heading, Text } from '@apeswapfinance/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { BLOCK_EXPLORER } from 'config/constants/chains'
@@ -8,6 +11,7 @@ import { useNetworkChainId } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import { Vault } from 'state/types'
+import { useTranslation } from 'contexts/Localization'
 import VaultHeading from './VaultHeading'
 import CellLayout from './CellLayout'
 import Details from './Details'
@@ -29,19 +33,29 @@ interface HarvestProps {
   removed: boolean
 }
 
-const StyledTr = styled.div`
+const StyledTr = styled.tr<{ actionPanelToggled: boolean }>`
   cursor: pointer;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
   margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
   background-color: ${({ theme }) => theme.colors.navbar};
+  white-space: nowrap;
+
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: ${({ actionPanelToggled }) => (actionPanelToggled ? 0 : '20px')};
+  border-bottom-right-radius: ${({ actionPanelToggled }) => (actionPanelToggled ? 0 : '20px')};
+
+  td:first-of-type {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: ${({ actionPanelToggled }) => (actionPanelToggled ? 0 : '20px')};
+  }
+  td:last-of-type {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: ${({ actionPanelToggled }) => (actionPanelToggled ? 0 : '20px')};
+  }
 `
 
 const DailyAPYContainer = styled.div`
-  position: absolute;
   left: 340px;
   top: 19px;
 
@@ -51,7 +65,6 @@ const DailyAPYContainer = styled.div`
 `
 
 const YearlyAPYContainer = styled.div`
-  position: absolute;
   left: 480px;
 
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -86,7 +99,6 @@ const StyledText = styled(Text)`
 `
 
 const ArrowContainer = styled(Flex)`
-  position: absolute;
   right: 23px;
 `
 
@@ -96,7 +108,6 @@ const StyledFlex = styled(Flex)`
 `
 
 const TotalStakedContainer = styled.div`
-  position: absolute;
   left: 660px;
   top: 19px;
 
@@ -106,7 +117,6 @@ const TotalStakedContainer = styled.div`
 `
 
 const UserStakedContainer = styled.div`
-  position: absolute;
   left: 830px;
   top: 8px;
 
@@ -126,10 +136,25 @@ const StakeContainer = styled.div`
 
 const StyledUnlockButton = styled(UnlockButton)`
   font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+  display: inline-block;
 `
+
+const TitleContainer = styled.div`
+  display: flex;
+`
+
+const cellStyle: ThemeUIStyleObject = {
+  verticalAlign: 'middle',
+  paddingLeft: '30px',
+}
 
 const VaultTable: React.FC<HarvestProps> = ({ vault, removed }) => {
   const { pid, stakeTokenAddress, token0, token1, userData, isPair, apy, totalStaked } = vault
+  const { t } = useTranslation()
 
   const { account } = useWeb3React()
   const [actionPanelToggled, setActionPanelToggled] = useState(false)
@@ -153,7 +178,7 @@ const VaultTable: React.FC<HarvestProps> = ({ vault, removed }) => {
 
   const cardHeaderButton = () => {
     if (!account) {
-      return <StyledUnlockButton size="sm" />
+      return <StyledUnlockButton size="sm" sx={{ display: 'inline-block' }} showTooltip />
     }
     if (needsApproval) {
       return <ApprovalAction stakingContractAddress={stakeTokenAddress} pid={pid} isLoading={isLoading} />
@@ -175,34 +200,44 @@ const VaultTable: React.FC<HarvestProps> = ({ vault, removed }) => {
   }
 
   return (
-    <StyledTr onClick={toggleActionPanel}>
-      <StyledFlex alignItems="center">
-        <CellLayout>
-          <VaultHeading
-            token0={token0.symbol}
-            token1={token1.symbol}
-            isPair={isPair}
-            image={vault?.image}
-            isBurning={vault?.burning}
-          />
-        </CellLayout>
-        <ArrowContainer justifyContent="center" alignItems="center">
-          {cardHeaderButton()}
-          <CellInner>
-            <CellLayout>
-              <Details actionPanelToggled={actionPanelToggled} />
-            </CellLayout>
-          </CellInner>
-        </ArrowContainer>
-        <DailyAPYContainer>
-          <Apr poolApr={removed ? '0' : apy?.daily?.toFixed(2)} apr={new BigNumber(apy?.daily)} />
-        </DailyAPYContainer>
-        <YearlyAPYContainer>
-          <Apr poolApr={removed ? '0' : apy?.yearly?.toFixed(2)} apr={new BigNumber(apy?.yearly)} />
-        </YearlyAPYContainer>
-        <TotalStakedContainer>
-          <Staked staked={parseInt(totalStaked)} />
-        </TotalStakedContainer>
+    <>
+      <StyledTr onClick={toggleActionPanel} actionPanelToggled={actionPanelToggled}>
+        <td>
+          <CellLayout>
+            <VaultHeading
+              token0={token0.symbol}
+              token1={token1.symbol}
+              isPair={isPair}
+              image={vault?.image}
+              isBurning={vault?.burning}
+            />
+          </CellLayout>
+        </td>
+        <td sx={cellStyle}>
+          <TitleContainer>
+            <Text fontSize="20px" fontWeight={800}>
+              {isPair ? `${token1.symbol}-${token0.symbol}` : token0.symbol}{' '}
+            </Text>
+            {vault?.burning && (
+              <Tooltip content={t('Burns at least 50% of every harvest in the form of $BANANA')}>🔥</Tooltip>
+            )}
+          </TitleContainer>
+        </td>
+        <td sx={cellStyle}>
+          <DailyAPYContainer>
+            <Apr poolApr={removed ? '0' : apy?.daily?.toFixed(2)} apr={new BigNumber(apy?.daily)} />
+          </DailyAPYContainer>
+        </td>
+        <td sx={cellStyle}>
+          <YearlyAPYContainer>
+            <Apr poolApr={removed ? '0' : apy?.yearly?.toFixed(2)} apr={new BigNumber(apy?.yearly)} />
+          </YearlyAPYContainer>
+        </td>
+        <td sx={cellStyle}>
+          <TotalStakedContainer>
+            <Staked staked={parseInt(totalStaked)} />
+          </TotalStakedContainer>
+        </td>
         {rawStakedBalance ? (
           <UserStakedContainer>
             <StyledText>Staked</StyledText>
@@ -213,32 +248,46 @@ const VaultTable: React.FC<HarvestProps> = ({ vault, removed }) => {
         ) : (
           <></>
         )}
-      </StyledFlex>
-      {actionPanelToggled && (
-        <>
-          <StakeContainer>
-            <StakeAction
-              vault={vault}
-              stakingTokenBalance={stakingTokenBalance}
-              stakedBalance={stakedBalance}
-              isStaked={accountHasStakedBalance}
-              firstStake={!accountHasStakedBalance}
-              isApproved={isApproved}
-            />
-          </StakeContainer>
-          <ActionPanel
-            totalStaked={getBalanceNumber(new BigNumber(vault?.strategyPairBalance))}
-            personalValueStaked={getBalanceNumber(stakedBalance)}
-            lpLabel={lpLabel}
-            addLiquidityUrl="https://apeswap.finance/swap"
-            blockExplorer={`${BLOCK_EXPLORER[chainId]}/address/${vault?.strat}`}
-            stakedTokenPrice={vault?.stakeTokenPrice}
-            withdrawFee={vault?.withdrawFee}
-            depositFee={vault?.depositFee}
-          />
-        </>
-      )}
-    </StyledTr>
+        <td sx={cellStyle}>
+          <ArrowContainer justifyContent="center" alignItems="center" marginRight={20}>
+            {cardHeaderButton()}
+            <CellInner>
+              <CellLayout>
+                <Details actionPanelToggled={actionPanelToggled} />
+              </CellLayout>
+            </CellInner>
+          </ArrowContainer>
+        </td>
+      </StyledTr>
+      <tr>
+        <td colSpan={6}>
+          {actionPanelToggled && (
+            <>
+              <StakeContainer>
+                <StakeAction
+                  vault={vault}
+                  stakingTokenBalance={stakingTokenBalance}
+                  stakedBalance={stakedBalance}
+                  isStaked={accountHasStakedBalance}
+                  firstStake={!accountHasStakedBalance}
+                  isApproved={isApproved}
+                />
+              </StakeContainer>
+              <ActionPanel
+                totalStaked={getBalanceNumber(new BigNumber(vault?.strategyPairBalance))}
+                personalValueStaked={getBalanceNumber(stakedBalance)}
+                lpLabel={lpLabel}
+                addLiquidityUrl="https://apeswap.finance/swap"
+                blockExplorer={`${BLOCK_EXPLORER[chainId]}/address/${vault?.strat}`}
+                stakedTokenPrice={vault?.stakeTokenPrice}
+                withdrawFee={vault?.withdrawFee}
+                depositFee={vault?.depositFee}
+              />
+            </>
+          )}
+        </td>
+      </tr>
+    </>
   )
 }
 

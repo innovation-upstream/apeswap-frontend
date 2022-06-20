@@ -829,6 +829,8 @@
   "Treasury Bill": "Treasury Bill",
   "BUY BELOW": "MUA VỚI GIÁ THẤP HƠN",
   "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens. Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Treasury Bill cho phép người dùng tiếp cận các token với mức chiết khấu để đổi lấy token nhà cung cấp thanh khoản (LP) của họ. Mỗi Treasury Bill là một NFT duy nhất đại diện cho hợp đồng và các token phần thưởng tương ứng, được trả dần trong một khoảng thời gian nhất định.",
+  "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens.": "reasury Bill cho phép người dùng tiếp cận các token với mức chiết khấu để đổi lấy token nhà cung cấp thanh khoản (LP) của họ",
+  "Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Mỗi Treasury Bill là một NFT duy nhất đại diện cho hợp đồng và các token phần thưởng tương ứng, được trả dần trong một khoảng thời gian nhất định.",
   "For more info, visit the Treasury Bills page in our Documentation.": "Để biết thêm thông tin, hãy truy cập trang Treasury Bill trong Tài liệu của chúng tôi.",
   "Your Treasury Bills": "Treasury Bill của Bạn",
   "List View": "Chế độ xem Danh sách",

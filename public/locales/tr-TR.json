@@ -829,6 +829,8 @@
   "Treasury Bill": "Hazine Bonosu",
   "BUY BELOW": "AŞAĞIDAKİNİ SATIN AL",
   "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens. Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Hazine Bonoları, kullanıcıların likidite sağlayıcı (LP) tokenleri karşılığında tokenlere indirimli olarak erişmelerine olanak tanır. Her Hazine Bonosu, sözleşmeyi ve belirli bir süre boyunca hak edilen ilgili ödül tokenlerini temsil eden benzersiz bir NFT'dir.",
+  "Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens.": "Hazine Bonoları, kullanıcıların likidite sağlayıcı (LP) tokenleri karşılığında tokenlere indirimli olarak erişmelerine olanak tanır.",
+  "Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.": "Her Hazine Bonosu, sözleşmeyi ve belirli bir süre boyunca hak edilen ilgili ödül tokenlerini temsil eden benzersiz bir NFT'dir.",
   "For more info, visit the Treasury Bills page in our Documentation.": "Daha fazla bilgi için Belgelerimizdeki Hazine Bonoları sayfasını ziyaret edin.",
   "Your Treasury Bills": "Hazine Bonolarınız",
   "List View": "Liste Görünümü",

@@ -37,6 +37,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   padding: 12px;
   background-color: ${({ theme }) => theme.colors.white3};
+  margin-top: -5px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     padding-left: 340px;
