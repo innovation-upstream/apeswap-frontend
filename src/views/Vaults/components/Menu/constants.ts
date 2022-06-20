@@ -21,11 +21,11 @@ export const OPTIONS = [
     value: 'hot',
   },
   {
-    label: 'Daily Apy',
+    label: 'Daily APY',
     value: 'dailyApy',
   },
   {
-    label: 'Yearly Apy',
+    label: 'Yearly APY',
     value: 'yearlyApy',
   },
   {
