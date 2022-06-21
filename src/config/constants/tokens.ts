@@ -46,8 +46,7 @@ const tokens = {
   busd: {
     symbol: 'BUSD',
     address: {
-      // Swapped to base token for now
-      97: '0x68d24fa18c00b5df32e91c1dddfa6419083606f9',
+      97: '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
       56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
     },
     decimals: 18,
@@ -891,6 +890,13 @@ const tokens = {
     },
     decimals: 18,
   },
+  ftm: {
+    symbol: 'FTM',
+    address: {
+      56: '0xAD29AbB318791D579433D831ed122aFeAf29dcfe',
+    },
+    decimals: 18,
+  },
   moonlight: {
     symbol: 'MOONLIGHT',
     address: {
@@ -1131,12 +1137,68 @@ const tokens = {
     decimals: 18,
   },
 
+  ever: {
+    symbol: 'EVER',
+    address: {
+      97: '0x78eA04b5B63ae22c697c7e629b7E7bfB876D4b6f',
+    },
+    decimals: 18,
+  },
+  for: {
+    symbol: 'FOR',
+    address: {
+      97: '0x9Fee03D36b184881A198201B925A00338b1e3Cc5',
+    },
+    decimals: 18,
+  },
+  hor: {
+    symbol: 'HOR',
+    address: {
+      97: '0xaB10D6f91add497b919c9FA584036408F8163b4C',
+    },
+    decimals: 18,
+  },
+  ney: {
+    symbol: 'NEY',
+    address: {
+      97: '0x93762B86736caa0658016fe55AD23e2f77EB7Cd5',
+    },
+    decimals: 18,
+  },
+
+  // Test LPs
+
+  horNey: {
+    symbol: 'HOR-NEY',
+    address: {
+      97: '0x30e74cefd298990880758e20223f03129f52e699',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  forEver: {
+    symbol: 'FOR-EVER',
+    address: {
+      97: '0x4419D815c9c9329f9679782e76ec15bCe1B14a6D',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+
   // LP Tokens
   bananaBnb: {
     symbol: 'BANANA-BNB',
     address: {
       56: '0xf65c1c0478efde3c19b49ecbe7acc57bb6b1d713',
       97: '0x90Fc86A7570063a9eA971ec74f01F89569Ad6237',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  bananaBusd: {
+    symbol: 'BANANA-BUSD',
+    address: {
+      56: '0x7Bd46f6Da97312AC2DBD1749f82E202764C0B914',
     },
     decimals: 18,
     lpToken: true,
@@ -1157,10 +1219,34 @@ const tokens = {
     decimals: 18,
     lpToken: true,
   },
+  bnbMatic: {
+    symbol: 'MATIC-BNB',
+    address: {
+      56: '0x29A4A3D77c010CE100A45831BF7e798f0f0B325D',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
   bnbBtc: {
     symbol: 'BTC-BNB',
     address: {
       56: '0x1E1aFE9D9c5f290d8F6996dDB190bd111908A43D',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  bnbFtm: {
+    symbol: 'FTM-BNB',
+    address: {
+      56: '0x47A0B7bA18Bb80E4888ca2576c2d34BE290772a6',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  bnbCeek: {
+    symbol: 'CEEK-BNB',
+    address: {
+      56: '0x119D6Ebe840966c9Cf4fF6603E76208d30BA2179',
     },
     decimals: 18,
     lpToken: true,

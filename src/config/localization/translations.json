@@ -867,5 +867,9 @@
   "Lend": "Lend",
 
   "HOL UP DEVZ": "THE ITEMS BELOW NEED TO BE TRANSLATED",
-  "Ape In": "Ape In"
+  "Ape In": "Ape In",
+  "Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.": "Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.",
+  "Daily APY includes BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.": "Daily APY includes BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.",
+  "BANANA Maximizers": "BANANA Maximizers",
+  "AUTO": "AUTO"
 }
