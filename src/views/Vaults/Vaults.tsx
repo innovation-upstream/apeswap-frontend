@@ -79,13 +79,11 @@ const Vaults: React.FC = () => {
 
   const sortVaults = (vaultsToSort: Vault[]) => {
     switch (sortOption) {
-      case 'dailyApy':
+      case 'apy':
         // Ternary is needed to prevent pools without APR (like MIX) getting top spot
-        return orderBy(vaultsToSort, (vault: Vault) => vault?.apy?.daily)
-      case 'yearlyApy':
-        return orderBy(vaultsToSort, (vault: Vault) => vault?.apy?.daily)
-      case 'totalstaked':
-        return orderBy(vaultsToSort, (vault: Vault) => parseInt(vault?.totalStaked))
+        return orderBy(vaultsToSort, (vault: Vault) => vault?.apy?.daily, 'desc')
+      case 'totalStaked':
+        return orderBy(vaultsToSort, (vault: Vault) => parseInt(vault?.totalStaked) * vault?.stakeTokenPrice, 'desc')
       default:
         return orderBy(vaultsToSort, (vault: Vault) => vault.platform, 'asc')
     }
