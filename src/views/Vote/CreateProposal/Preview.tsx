@@ -3,6 +3,18 @@ import { Text, Box } from 'theme-ui'
 import ReactMarkdown from 'react-markdown'
 
 const Preview = ({ title, description }) => {
+  const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g
+  const links = Array.from(new Set(description.match(urlRegex)))
+  let dataMain = description
+
+  links?.map((val, index) => {
+    if (!`'${val}'`.includes('ipfs.infura.io')) {
+      const data = dataMain?.replaceAll(val, `[${val}](${val})`)
+      dataMain = data
+    }
+    return dataMain
+  })
+
   return (
     <>
       <Box sx={{ minHeight: '80vh', maxWidth: '580px', wordBreak: 'break-all' }}>
@@ -11,7 +23,7 @@ const Preview = ({ title, description }) => {
         </Text>
         <br />
         <Box>
-          <ReactMarkdown>{description}</ReactMarkdown>
+          <ReactMarkdown>{dataMain}</ReactMarkdown>
         </Box>
       </Box>
     </>
