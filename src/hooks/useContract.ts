@@ -18,7 +18,8 @@ import jungleChef from 'config/abi/jungleChef.json'
 import nfaStakingAbi from 'config/abi/nfaStaking.json'
 import profile from 'config/abi/bananaProfile.json'
 import auction from 'config/abi/auction.json'
-import vaultApe from 'config/abi/vaultApe.json'
+import vaultApeV1 from 'config/abi/vaultApeV1.json'
+import vaultApeV2 from 'config/abi/vaultApeV2.json'
 import apePriceGetter from 'config/abi/apePriceGetter.json'
 import miniChef from 'config/abi/miniApeV2.json'
 import multi from 'config/abi/Multicall.json'
@@ -33,7 +34,6 @@ import iazoAbi from 'config/abi/iazo.json'
 import { useSelector } from 'react-redux'
 import { State } from 'state/types'
 import {
-  VaultApe,
   Treasury,
   IazoExposer,
   IazoFactory,
@@ -57,6 +57,8 @@ import {
   Ifo,
   Bill,
   BillNft,
+  VaultApeV1,
+  VaultApeV2,
   JungleChef,
 } from 'config/abi/types'
 import {
@@ -74,7 +76,8 @@ import {
   useNativeWrapCurrencyAddress,
   useNonFungibleApesAddress,
   useTreasuryAddress,
-  useVaultApeAddress,
+  useVaultApeAddressV1,
+  useVaultApeAddressV2,
 } from './useAddress'
 import useActiveWeb3React from './useActiveWeb3React'
 
@@ -157,8 +160,12 @@ export const useAuction = () => {
   return useContract(auction, useAuctionAddress()) as Auction
 }
 
-export const useVaultApe = () => {
-  return useContract(vaultApe, useVaultApeAddress()) as VaultApe
+export const useVaultApeV1 = () => {
+  return useContract(vaultApeV1, useVaultApeAddressV1()) as VaultApeV1
+}
+
+export const useVaultApeV2 = () => {
+  return useContract(vaultApeV2, useVaultApeAddressV2()) as VaultApeV2
 }
 
 export const useApePriceGetter = () => {

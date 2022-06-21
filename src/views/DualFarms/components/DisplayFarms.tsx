@@ -56,7 +56,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
       tag: (
         <>
           {fTag?.pid === farm.pid && (
-            <Box sx={{ marginRight: '5px', marginLeft: '10px', marginTop: ['0px', '2px'] }}>
+            <Box sx={{ marginRight: '5px', mt: '1px' }}>
               <StyledTag key={fTag?.pid} variant={tagColor}>
                 {fTag?.text}
               </StyledTag>

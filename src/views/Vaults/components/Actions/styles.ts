@@ -1,9 +1,17 @@
-import { Button, Flex } from '@apeswapfinance/uikit'
-import { Tag } from '@ape.swap/uikit'
+import { Button, Flex } from '@ape.swap/uikit'
+import styled from '@emotion/styled'
 import UnlockButton from 'components/UnlockButton'
-import styled from 'styled-components'
 
-export const StyledButton = styled(Button)`
+export const StyledButtonSquare = styled(Button)<{ height?: number; minWidth?: number }>`
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10px 20px;
+  min-width: ${({ minWidth }) => minWidth || 227}px;
+  height: ${({ height }) => height || 44}px;
+`
+
+export const StyledUnlockButton = styled(UnlockButton)`
   border-radius: 10px;
   font-size: 16px;
   font-weight: 700;
@@ -12,7 +20,7 @@ export const StyledButton = styled(Button)`
   height: 44px;
 `
 
-export const SmallButton = styled(Button)`
+export const SmallButtonSquare = styled(Button)`
   max-width: 44px;
   height: 44px;
 `
@@ -22,6 +30,7 @@ export const ActionContainer = styled(Flex)`
   justify-content: space-between;
   ${({ theme }) => theme.mediaQueries.md} {
     width: auto;
+    min-width: 225px;
   }
 `
 
@@ -32,14 +41,4 @@ export const CenterContainer = styled(Flex)`
     width: auto;
     justify-content: auto;
   }
-`
-
-export const StyledTag = styled(Tag)`
-  font-size: 10px;
-  padding: 0px 6px !important;
-  font-weight: 700;
-  border: none;
-  border-radius: 10px;
-  height: auto;
-  width: max-content;
 `

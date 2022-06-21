@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import useIsMobile from 'hooks/useIsMobile'
@@ -21,7 +22,8 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
                 token3={view.tokens?.token3}
                 token4={view.tokens?.token4}
                 billArrow={view?.billArrow}
-                stakeLp={view?.stakeLp != null}
+                earnLp={view?.earnLp}
+                stakeLp={view?.stakeLp}
                 dualEarn={view.tokens?.token4 != null}
               />
             }
@@ -34,6 +36,7 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
             key={view.id}
             open={view?.open}
             expandedContentSize={view?.expandedContentSize}
+            titleContainerWidth={view?.titleContainerWidth}
           />
         ) : (
           <ListCard
@@ -44,7 +47,8 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
                 token3={view.tokens?.token3}
                 token4={view.tokens?.token4}
                 billArrow={view?.billArrow}
-                stakeLp={view?.stakeLp != null}
+                earnLp={view?.earnLp}
+                stakeLp={view?.stakeLp}
                 dualEarn={view.tokens?.token4 != null}
               />
             }
@@ -54,8 +58,11 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
             expandedContent={view.expandedContent}
             infoContent={view.infoContent}
             infoContentPosition={view?.infoContentPosition}
+            expandedContentJustified={view?.expandedContentJustified}
+            titleContainerWidth={view?.titleContainerWidth}
             key={view.id}
             open={view?.open}
+            alignServiceTokens={view?.alignServiceTokens}
           />
         )
       })}

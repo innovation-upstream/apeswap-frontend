@@ -60,6 +60,18 @@ export interface Address {
   137?: string
 }
 
+export interface ChainToNumber {
+  97?: number
+  56?: number
+  137?: number
+}
+
+export interface ChainToString {
+  97?: string
+  56?: string
+  137?: string
+}
+
 export interface FarmStyles {
   deprecated: any
   warning: any
@@ -204,29 +216,29 @@ export type PageMeta = {
 
 // Interfaces used in Vaults
 export interface MasterChef {
-  pid: number
-  address: string
-  rewardsPerBlock: string
-  rewardToken: string
+  pid: ChainToNumber
+  address: Address
+  rewardsPerBlock: ChainToString
+  rewardToken: Token
 }
 
 export interface VaultConfig {
+  id: number
   pid: number
-  network: number
-  strat: string
-  stakeTokenAddress: string
+  type: 'MAX' | 'AUTO' | 'BURN'
+  version: 'V1' | 'V2'
+  availableChains: number[]
+  stratAddress: Address
   platform: string
-  token0: Token
-  image?: string
-  token1?: Token
-  isPair: boolean
+  token: Token
+  quoteToken?: Token
+  stakeToken: Token
+  rewardToken: Token
   masterchef: MasterChef
-  totalFees: number
-  withdrawFee: number
-  burning: boolean
   inactive?: boolean
   depositFee?: number
   rewardsInSeconds?: boolean
+  fee?: string
 }
 
 export interface DualFarmConfig {

@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import { InfoIcon, TooltipBubble } from '@apeswapfinance/uikit'
 import { Flex } from '@ape.swap/uikit'
 import React, { useState } from 'react'

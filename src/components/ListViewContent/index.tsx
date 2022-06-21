@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import { Flex, HelpIcon, TooltipBubble } from '@apeswapfinance/uikit'
 import React from 'react'
 import { TitleText, ListViewContentContainer, ValueText, ValueSkeleton } from './styles'

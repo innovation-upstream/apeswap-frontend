@@ -11,23 +11,23 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     darkIcon: 'StakeDarkImage',
     items: [
       {
-        label: t('BANANA Farms'),
-        href: '/farms',
-        isNew: false,
-      },
-      {
         label: t('Staking Pools'),
         href: '/pools',
         isNew: false,
       },
       {
-        label: t('Jungle Farms'),
-        href: '/jungle-farms',
+        label: t('BANANA Maximizers'),
+        href: '/vaults',
+        isNew: true,
+      },
+      {
+        label: t('BANANA Farms'),
+        href: '/farms',
         isNew: false,
       },
       {
-        label: t('Vaults'),
-        href: '/vaults',
+        label: t('Jungle Farms'),
+        href: '/jungle-farms',
         isNew: false,
       },
       {
@@ -45,7 +45,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Treasury Bills'),
         href: '/treasury-bills',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Official IAO'),

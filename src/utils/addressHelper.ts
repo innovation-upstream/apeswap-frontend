@@ -49,8 +49,11 @@ export const getAuctionAddress = (chainId: number) => {
 export const getApePriceGetterAddress = (chainId: number) => {
   return addresses.apePriceGetter[chainId]
 }
-export const getVaultApeAddress = (chainId: number) => {
-  return addresses.vaultApe[chainId]
+export const getVaultApeAddressV1 = (chainId: number) => {
+  return addresses.vaultApeV1[chainId]
+}
+export const getVaultApeAddressV2 = (chainId: number) => {
+  return addresses.vaultApeV2[chainId]
 }
 export const getMiniChefAddress = (chainId: number) => {
   return addresses.miniApeV2[chainId]
