@@ -22,7 +22,11 @@ const FirstTimeCard: React.FC = () => {
             'Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens. Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.',
           )}
           <br /> <br />
-          <a href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {t('For more info, visit the Treasury Bills page in our Documentation.')}
           </a>
           <br /> <br />
