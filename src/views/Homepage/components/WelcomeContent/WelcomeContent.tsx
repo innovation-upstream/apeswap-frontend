@@ -45,23 +45,21 @@ const WelcomeContent: React.FC = () => {
                 </a>
               </Flex>
             ) : (
-              <>
-                <Flex justifyContent="space-between" style={{ width: 'auto' }}>
-                  <a href="/swap" rel="noopener noreferrer">
-                    <BuyBanana>
-                      {t('Buy Banana')}
-                      <ApeSwapRoundIcon ml="10px" width="27px" height="27px" />
-                    </BuyBanana>
-                  </a>
-                  <a
-                    href="https://apeswap.gitbook.io/apeswap-finance/welcome/master"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LearnMore>{t('Learn More')}</LearnMore>
-                  </a>
-                </Flex>
-              </>
+              <Flex justifyContent="space-between" style={{ width: 'auto' }}>
+                <a href="/swap" rel="noopener noreferrer">
+                  <BuyBanana>
+                    {t('Buy Banana')}
+                    <ApeSwapRoundIcon ml="10px" width="27px" height="27px" />
+                  </BuyBanana>
+                </a>
+                <a
+                  href="https://apeswap.gitbook.io/apeswap-finance/welcome/master"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <LearnMore>{t('Learn More')}</LearnMore>
+                </a>
+              </Flex>
             )}
           </Flex>
         </Flex>
