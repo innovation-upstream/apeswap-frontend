@@ -21,12 +21,8 @@ export const OPTIONS = [
     value: 'hot',
   },
   {
-    label: 'Daily APY',
-    value: 'dailyApy',
-  },
-  {
-    label: 'Yearly APY',
-    value: 'yearlyApy',
+    label: 'APY',
+    value: 'apy',
   },
   {
     label: 'Total Staked',

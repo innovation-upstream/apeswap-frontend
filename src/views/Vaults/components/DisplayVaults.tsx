@@ -78,7 +78,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       stakeLp,
       earnLp,
       tag: (
-        <Box sx={{ marginRight: '5px', mt:"1px" }}>
+        <Box sx={{ marginRight: '5px', mt: '1px' }}>
           <StyledTag key={vault?.id} variant={vault.type === 'AUTO' ? 'error' : 'success'}>
             {t(vault?.type)}
           </StyledTag>
