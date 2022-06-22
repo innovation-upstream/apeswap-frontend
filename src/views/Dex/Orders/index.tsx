@@ -2,7 +2,8 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useCurrency } from 'hooks/Tokens'
 import { Field, SwapDelay } from 'state/swap/actions'
-import { Flex, useModal } from '@ape.swap/uikit'
+import { Flex, Text, useModal } from '@ape.swap/uikit'
+import { Link } from '@apeswapfinance/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import confirmPriceImpactWithoutFee from 'views/Swap/components/confirmPriceImpactWithoutFee'
 import { computeTradePriceBreakdown } from 'utils/prices'
@@ -16,14 +17,12 @@ import maxAmountSpend from 'utils/maxAmountSpend'
 import { dexStyles } from '../styles'
 import DexPanel from '../components/DexPanel'
 import DexNav from '../components/DexNav'
-import ConfirmSwapModal from './components/ConfirmSwapModal'
+import OrderSwapModal from './components/OrderSwapModal'
 import SwapSwitchButton from './components/SwapSwitchButton'
-import DexActions from '../components/DexActions'
-import DexTradeInfo from '../components/DexTradeInfo'
-import LoadingBestRoute from './components/LoadingBestRoute'
 import PriceInputPanel from './components/PriceInputPanel'
 import OrdersActions from './components/OrdersActions'
 import OrderHistoryPanel from './components/OrderHistoryPanel'
+import OrderTradeInfo from './components/OrderTradeInfo'
 
 const Swap: React.FC = () => {
   // modal and loading
@@ -216,18 +215,22 @@ const Swap: React.FC = () => {
   // )
 
   const [onPresentConfirmModal] = useModal(
-    <ConfirmSwapModal
+    <OrderSwapModal
       trade={trade}
       originalTrade={tradeToConfirm}
       onAcceptChanges={handleAcceptChanges}
       attemptingTxn={attemptingTxn}
       txHash={txHash}
       bestRoute={bestRoute}
+      currencies={currencies}
+      orderMarketStatus={orderMarketStatus}
       recipient={recipient}
       allowedSlippage={allowedSlippage}
       onConfirm={handleSwap}
       swapErrorMessage={swapErrorMessage}
       customOnDismiss={handleConfirmDismiss}
+      realPriceValue={realPriceValue}
+      realOutputAmount={realOutputValue}
     />,
     true,
     true,
@@ -273,16 +276,12 @@ const Swap: React.FC = () => {
             onUserInput={handleTypePrice}
             id="orders-currency-price"
           />
-          {fetchingBestRoute ? (
-            <LoadingBestRoute />
-          ) : (
-            <DexTradeInfo
-              trade={v2Trade}
-              allowedSlippage={allowedSlippage}
-              bestRoute={bestRoute}
-              swapDelay={swapDelay}
-            />
-          )}
+          <OrderTradeInfo
+            executionPrice={trade?.executionPrice}
+            currencies={currencies}
+            orderMarketStatus={orderMarketStatus}
+            realPriceValue={realPriceValue}
+          />
           <OrdersActions
             trade={trade}
             swapInputError={swapInputError}
@@ -299,6 +298,11 @@ const Swap: React.FC = () => {
             setSwapState={setSwapState}
             disabled={fetchingBestRoute}
           />
+          <Flex sx={{ justifyContent: 'center', mt: '8px', transform: 'translate(0px, 3px)' }}>
+            <Link external href="https://autonomynetwork.io">
+              <Text size="12px">Powered by Autonomy Network</Text>
+            </Link>
+          </Flex>
         </Flex>
         <OrderHistoryPanel />
       </Flex>

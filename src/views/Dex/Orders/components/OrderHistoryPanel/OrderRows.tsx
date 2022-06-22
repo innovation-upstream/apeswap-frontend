@@ -7,6 +7,7 @@ import { useTranslation } from 'contexts/Localization'
 import { formatUnits, getAddress } from 'ethers/lib/utils'
 import { useAllTokens } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useAutonomyOrdersLib from 'hooks/useAutonomyOrdersLib'
 import React, { useCallback } from 'react'
 import { Grid, Box, Divider } from 'theme-ui'
 import MonkeyImage from './MonkeyImage'
@@ -15,6 +16,7 @@ import { styles } from './styles'
 const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
   const { chainId } = useActiveWeb3React()
   const allTokens = useAllTokens()
+  const autonomyOrdersLib = useAutonomyOrdersLib()
   const { t } = useTranslation()
   return (
     <>
@@ -41,6 +43,11 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
             const inputAmount = formatUnits(order.inputAmount, inputToken?.decimals)
             const outputAmount = formatUnits(order.outputAmount, outputToken?.decimals)
             const orderStatus = order.status
+            const handleCancel = async () => {
+              if (autonomyOrdersLib) {
+                await autonomyOrdersLib.cancelOrder(order)
+              }
+            }
             return (
               <>
                 <Grid
@@ -56,7 +63,30 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
                       paddingLeft: '2.5px',
                     }}
                   >
-                    <TooltipBubble body={<>asdasdsad</>} translate="no">
+                    <TooltipBubble
+                      body={
+                        <Flex sx={{ flexDirection: 'column', padding: '0px' }}>
+                          <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Text size="12px">{t('Placed')}:</Text>
+                            <Text size="12px" weight={700}>
+                              {order.time}
+                            </Text>
+                          </Flex>
+                          {order.updateTime !== 'null' && (
+                            <Flex sx={{ justifyContent: 'space-between', alignItems: 'center', mt: '1px' }}>
+                              <Text size="12px">
+                                {order.status === 'executed' ? `${t('Closed')}:` : `${t('Cancelled')}:`}
+                              </Text>
+                              <Text size="12px" weight={700}>
+                                {order.updateTime}
+                              </Text>
+                            </Flex>
+                          )}
+                        </Flex>
+                      }
+                      width="300px"
+                      placement="bottomLeft"
+                    >
                       <Svg icon="info" width="12px" />
                     </TooltipBubble>
                   </Flex>
@@ -97,7 +127,9 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
                     {orderStatus === 'cancelled' ? (
                       <Svg icon="cancelled" width="12px" color="error" />
                     ) : orderStatus === 'open' ? (
-                      <Svg icon="trash" width="12px" />
+                      <Flex sx={{ cursor: 'pointer' }} onClick={handleCancel}>
+                        <Svg icon="trash" width="12px" />
+                      </Flex>
                     ) : (
                       <Svg icon="successOutline" width="12px" color="success" />
                     )}

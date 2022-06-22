@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback } from 'react'
 import { ChainId, Currency, Token } from '@apeswapfinance/sdk'
 import styled from 'styled-components'
@@ -156,22 +157,24 @@ const TransactionConfirmationModal: React.FC<ModalProps & ConfirmationModalProps
   if (!chainId) return null
 
   return (
-    <Modal title={title} onDismiss={handleDismiss} maxWidth="420px">
-      <Flex>
-        {attemptingTxn ? (
-          <ConfirmationPendingContent pendingText={pendingText} />
-        ) : hash ? (
-          <TransactionSubmittedContent
-            chainId={chainId}
-            hash={hash}
-            onDismiss={onDismiss}
-            currencyToAdd={currencyToAdd}
-          />
-        ) : (
-          content()
-        )}
-      </Flex>
-    </Modal>
+    <Flex sx={{ width: '420px' }}>
+      <Modal title={title} onDismiss={handleDismiss} maxWidth="100%">
+        <Flex sx={{ width: '380px', maxWidth: '100%' }}>
+          {attemptingTxn ? (
+            <ConfirmationPendingContent pendingText={pendingText} />
+          ) : hash ? (
+            <TransactionSubmittedContent
+              chainId={chainId}
+              hash={hash}
+              onDismiss={onDismiss}
+              currencyToAdd={currencyToAdd}
+            />
+          ) : (
+            content()
+          )}
+        </Flex>
+      </Modal>
+    </Flex>
   )
 }
 

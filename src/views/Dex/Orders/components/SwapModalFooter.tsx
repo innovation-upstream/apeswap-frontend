@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useMemo } from 'react'
-import { Trade, TradeType } from '@apeswapfinance/sdk'
+import { Currency, Trade, TradeType } from '@apeswapfinance/sdk'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
 import { AutoRow } from 'components/layout/Row'
 import { useTranslation } from 'contexts/Localization'
@@ -8,69 +8,45 @@ import DexTradeInfo from 'views/Dex/components/DexTradeInfo'
 import { Button, Text, Flex } from '@ape.swap/uikit'
 import { Field, RouterTypeParams } from 'state/swap/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import OrderTradeInfo from './OrderTradeInfo'
 
 export default function SwapModalFooter({
   trade,
   onConfirm,
-  allowedSlippage,
   swapErrorMessage,
-  bestRoute,
   disabledConfirm,
+  currencies,
+  orderMarketStatus,
+  realPriceValue,
 }: {
   trade: Trade
+  currencies: {
+    INPUT?: Currency
+    OUTPUT?: Currency
+  }
+  orderMarketStatus: number
   allowedSlippage: number
   onConfirm: () => void
   bestRoute: RouterTypeParams
   swapErrorMessage: string | undefined
   disabledConfirm: boolean
+  realPriceValue: string
 }) {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const severity = warningSeverity(priceImpactWithoutFee)
 
-  const slippageAdjustedAmounts = useMemo(
-    () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
-    [trade, allowedSlippage],
-  )
-
-  const amount =
-    trade.tradeType === TradeType.EXACT_INPUT
-      ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)
-      : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)
-  const symbol =
-    trade.tradeType === TradeType.EXACT_INPUT
-      ? trade.outputAmount.currency.getSymbol(chainId)
-      : trade.inputAmount.currency.getSymbol(chainId)
-
-  const tradeInfoText =
-    trade.tradeType === TradeType.EXACT_INPUT
-      ? t('Output is estimated. You will receive at least %amount% %symbol% or the transaction will be cancelled.', {
-          amount,
-          symbol,
-        })
-      : t('Input is estimated. You will sell at most %amount% %symbol% or the transaction will be cancelled.', {
-          amount,
-          symbol,
-        })
-
-  const [estimatedText, transactionRevertText] = tradeInfoText.split(`${amount} ${symbol}`)
-
   return (
-    <Flex sx={{ flexDirection: 'column', transform: 'translate(0px, -10px)' }}>
-      <DexTradeInfo trade={trade} allowedSlippage={allowedSlippage} bestRoute={bestRoute} />
-      <Flex sx={{ margin: '10px 0px' }}>
-        <Text size="12px" weight={500} sx={{ textAlign: 'center' }}>
-          {estimatedText}
-          <b>
-            {amount} {symbol}
-          </b>
-          {transactionRevertText}
-        </Text>
-      </Flex>
+    <Flex sx={{ flexDirection: 'column', transform: 'translate(0px, -10px)', maxWidth: '100%' }}>
+      <OrderTradeInfo
+        executionPrice={trade?.executionPrice}
+        currencies={currencies}
+        orderMarketStatus={orderMarketStatus}
+        realPriceValue={realPriceValue}
+      />
       <>
         <Button fullWidth onClick={onConfirm} disabled={disabledConfirm} mt="12px" id="confirm-swap-or-send">
-          {severity > 2 ? t('Swap Anyway') : t('Confirm Swap')}
+          {severity > 2 ? t('Order Anyway') : t('Confirm Order')}
         </Button>
         {swapErrorMessage ? 'eror' : null}
       </>

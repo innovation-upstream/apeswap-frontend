@@ -16,9 +16,13 @@ export default function SwapModalHeader({
   recipient,
   showAcceptChanges,
   onAcceptChanges,
+  realOutputAmount,
+  realPriceValue,
 }: {
   trade: Trade
   allowedSlippage: number
+  realPriceValue: string
+  realOutputAmount: string
   recipient: string | null
   showAcceptChanges: boolean
   onAcceptChanges: () => void
@@ -71,7 +75,7 @@ export default function SwapModalHeader({
               : 'text'
           }
         >
-          {trade.outputAmount.toSignificant(6)}
+          {realOutputAmount}
         </Text>
         <Flex sx={{ alignItems: 'center' }}>
           <CurrencyLogo currency={trade.outputAmount.currency} size="30px" />

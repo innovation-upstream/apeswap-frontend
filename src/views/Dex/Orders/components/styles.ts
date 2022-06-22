@@ -1,3 +1,5 @@
+import { Text } from '@ape.swap/uikit'
+import styled from '@emotion/styled'
 import { ThemeUIStyleObject } from 'theme-ui'
 import { buttonHover } from 'views/Dex/styles'
 
@@ -51,3 +53,16 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     paddingRight: '.6px',
   },
 }
+
+
+export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
+  font-size: 12px;
+  color: ${({ theme, severity }) =>
+    severity === 3 || severity === 4
+      ? theme.colors.error
+      : severity === 2
+      ? theme.colors.yellow
+      : severity === 1
+      ? theme.colors.text
+      : theme.colors.success};
+`

@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useMemo } from 'react'
-import { currencyEquals, Trade } from '@apeswapfinance/sdk'
+import { Currency, currencyEquals, Trade } from '@apeswapfinance/sdk'
 import { ModalProps } from '@apeswapfinance/uikit'
 import { Flex } from '@ape.swap/uikit'
 import { dexStyles } from 'views/Dex/styles'
@@ -32,9 +32,16 @@ interface ConfirmSwapModalProps {
   trade?: Trade
   originalTrade?: Trade
   attemptingTxn: boolean
+  currencies: {
+    INPUT?: Currency
+    OUTPUT?: Currency
+  }
+  orderMarketStatus: number
   txHash?: string
   recipient: string | null
   allowedSlippage: number
+  realPriceValue: string
+  realOutputAmount: string
   bestRoute: RouterTypeParams
   onAcceptChanges: () => void
   onConfirm: () => void
@@ -42,7 +49,7 @@ interface ConfirmSwapModalProps {
   customOnDismiss?: () => void
 }
 
-const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
+const OrderSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
   trade,
   originalTrade,
   onAcceptChanges,
@@ -55,6 +62,10 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
   swapErrorMessage,
   attemptingTxn,
   txHash,
+  currencies,
+  orderMarketStatus,
+  realPriceValue,
+  realOutputAmount,
 }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -71,9 +82,11 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
         recipient={recipient}
         showAcceptChanges={showAcceptChanges}
         onAcceptChanges={onAcceptChanges}
+        realOutputAmount={realOutputAmount}
+        realPriceValue={realPriceValue}
       />
     ) : null
-  }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])
+  }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade, realPriceValue, realOutputAmount])
 
   const modalBottom = useCallback(() => {
     return trade ? (
@@ -84,9 +97,22 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
         bestRoute={bestRoute}
         swapErrorMessage={swapErrorMessage}
         allowedSlippage={allowedSlippage}
+        currencies={currencies}
+        orderMarketStatus={orderMarketStatus}
+        realPriceValue={realPriceValue}
       />
     ) : null
-  }, [allowedSlippage, onConfirm, showAcceptChanges, swapErrorMessage, bestRoute, trade])
+  }, [
+    allowedSlippage,
+    onConfirm,
+    showAcceptChanges,
+    swapErrorMessage,
+    currencies,
+    orderMarketStatus,
+    bestRoute,
+    trade,
+    realPriceValue,
+  ])
 
   // text to show while loading
   const pendingText = `${t('Swapping')} ${trade?.inputAmount?.toSignificant(6) ?? ''} ${
@@ -98,7 +124,7 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
       swapErrorMessage ? (
         <TransactionErrorContent onDismiss={onDismiss} message={swapErrorMessage} />
       ) : (
-        <Flex sx={{ flexDirection: 'column' }}>
+        <Flex sx={{ flexDirection: 'column',width: '100%' }}>
           {modalHeader()}
           {modalBottom()}
         </Flex>
@@ -109,7 +135,7 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
 
   return (
     <TransactionConfirmationModal
-      title={t('Confirm Swap')}
+      title={t('Confirm Order')}
       onDismiss={onDismiss}
       customOnDismiss={customOnDismiss}
       attemptingTxn={attemptingTxn}
@@ -121,4 +147,4 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
   )
 }
 
-export default React.memo(ConfirmSwapModal)
+export default React.memo(OrderSwapModal)
