@@ -12,11 +12,12 @@ import {
   BillDescriptionContainer,
   BillsImage,
   BillTitleContainer,
-  BillValueTextWrapper,
+  BillValueContainer,
   ModalBodyContainer,
   StyledExit,
   StyledHeadingText,
   TopDescriptionText,
+  TextWrapper,
 } from './styles'
 import Actions from '../Actions'
 import UserBillModalView from './UserBillModalView'
@@ -41,6 +42,8 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
     index,
     discount,
     earnTokenPrice,
+    maxTotalPayOut,
+    totalPayoutGiven,
   } = bill
   const discountEarnTokenPrice = earnTokenPrice - earnTokenPrice * (parseFloat(discount) / 100)
   const [value, setValue] = useState('')
@@ -50,12 +53,23 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
   const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
   const billValue = bigValue.div(new BigNumber(price))?.toFixed(3)
 
+  const available = new BigNumber(maxTotalPayOut)?.minus(new BigNumber(totalPayoutGiven)).div(new BigNumber(10).pow(18))
+  // threshold equals to 2 usd in earned tokens (banana or jungle token)
+  const threshold = new BigNumber(2).div(earnTokenPrice)
+  const safeAvailable = available.minus(threshold)
+
   const onHandleValueChange = (val: string) => {
-    setValue(val)
+    const bigVal = new BigNumber(val).times(new BigNumber(10).pow(18))
+    const billVal = bigVal.div(new BigNumber(price))
+    if (billVal.gte(safeAvailable)) {
+      const strSafeAvailable = safeAvailable.times(new BigNumber(price)).div(new BigNumber(10).pow(18)).toFixed(8, 1)
+      setValue(strSafeAvailable)
+    } else setValue(val)
   }
   const onHandleReturnedBillId = async (id: string) => {
     setBillId(id)
   }
+
   return (
     <Modal onDismiss={onDismiss} maxWidth="1200px">
       {billId ? (
@@ -119,22 +133,34 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                   allowance={userData?.allowance}
                   billAddress={contractAddress[chainId]}
                   billIndex={index}
-                  disabled={billValue === 'NaN' || parseFloat(billValue) < 0.01}
+                  disabled={
+                    billValue === 'NaN' || parseFloat(billValue) < 0.01 || parseFloat(billValue) > available.toNumber()
+                  }
                   onValueChange={onHandleValueChange}
+                  value={value}
                   onBillId={onHandleReturnedBillId}
                   onTransactionSubmited={(trxSent) => setLoading(trxSent)}
-                  billValue={billValue}
                 />
               </ActionButtonsContainer>
               {new BigNumber(userData?.allowance).gt(0) && (
-                <BillValueTextWrapper>
-                  <Text fontSize="14px">
-                    {t('Bill Value')}:{' '}
-                    <span style={{ fontWeight: 700 }}>
-                      {billValue === 'NaN' ? '0' : billValue} {earnToken?.symbol}
-                    </span>
-                  </Text>
-                </BillValueTextWrapper>
+                <BillValueContainer>
+                  <TextWrapper>
+                    <Text fontSize="14px" pr={1}>
+                      {t('Bill Value')}:{' '}
+                      <span style={{ fontWeight: 700 }}>
+                        {billValue === 'NaN' ? '0' : billValue} {earnToken?.symbol}
+                      </span>
+                    </Text>
+                  </TextWrapper>
+                  <TextWrapper>
+                    <Text fontSize="14px">
+                      {t('Available')}:{' '}
+                      <span style={{ fontWeight: 700 }}>
+                        {!available ? '0' : safeAvailable.toFixed(3)} {earnToken?.symbol}
+                      </span>
+                    </Text>
+                  </TextWrapper>
+                </BillValueContainer>
               )}
             </Flex>
           </BillDescriptionContainer>

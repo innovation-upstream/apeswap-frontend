@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { AutoRenewIcon, Flex, Text, useModal } from '@apeswapfinance/uikit'
 import { LiquidityModal } from 'components/LiquidityWidget'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useBuyBill from 'views/Bills/hooks/useBuyBill'
 import BigNumber from 'bignumber.js'
@@ -13,8 +13,6 @@ import { Field, selectCurrency } from 'state/swap/actions'
 import { useTranslation } from 'contexts/Localization'
 import { BuyProps } from './types'
 import { BuyButton, GetLPButton, MaxButton, StyledInput } from './styles'
-import multicall from '../../../../utils/multicall'
-import billsABI from '../../../../config/abi/bill.json'
 
 const Buy: React.FC<BuyProps> = ({
   userLpValue,
@@ -25,19 +23,17 @@ const Buy: React.FC<BuyProps> = ({
   onValueChange,
   onBillId,
   onTransactionSubmited,
-  billValue,
+  value,
 }) => {
   const formatUserLpValue = getFullDisplayBalance(new BigNumber(userLpValue))
-  const [amount, setAmount] = useState('')
   const { chainId, account } = useActiveWeb3React()
-  const { onBuyBill } = useBuyBill(billAddress, amount)
+  const { onBuyBill } = useBuyBill(billAddress, value)
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
 
   const handleInput = (val: string) => {
-    setAmount(val)
     onValueChange(val)
   }
 
@@ -47,30 +43,7 @@ const Buy: React.FC<BuyProps> = ({
     onBillId(billId, transactionHash)
   }
 
-  const verifyMaxPayout = async () => {
-    const calls = [
-      {
-        address: billAddress,
-        name: 'maxTotalPayout',
-      },
-      {
-        address: billAddress,
-        name: 'totalPayoutGiven',
-      },
-    ]
-    const [maxTotalPayout, totalPayoutGiven] = await multicall(chainId, billsABI, calls)
-    console.log(getBalanceNumber(maxTotalPayout))
-    console.log(getBalanceNumber(totalPayoutGiven))
-    console.log(parseInt(billValue))
-    return getBalanceNumber(maxTotalPayout) - getBalanceNumber(totalPayoutGiven) - parseInt(billValue)
-  }
-
   const handleBuy = async () => {
-    const exceedsMaxPayout = await verifyMaxPayout()
-    if (exceedsMaxPayout <= 0) {
-      toastError(t(`Exceeds limit by: %amount%`, { amount: (exceedsMaxPayout * -1).toFixed(3) }))
-      return
-    }
     setPendingTrx(true)
     onTransactionSubmited(true)
     await onBuyBill()
@@ -132,7 +105,7 @@ const Buy: React.FC<BuyProps> = ({
         <MaxButton size="sm" onClick={() => handleInput(formatUserLpValue)}>
           {t('Max')}
         </MaxButton>
-        <StyledInput onChange={(e) => handleInput(e.target.value)} value={amount} />
+        <StyledInput onChange={(e) => handleInput(e.target.value)} value={value} />
         <Text fontSize="12px" style={{ position: 'absolute', bottom: 6, left: 10, zIndex: 1, opacity: 0.8 }}>
           {t('Balance')}:
         </Text>
@@ -140,7 +113,11 @@ const Buy: React.FC<BuyProps> = ({
           {formatUserLpValue?.slice(0, 15)} LP
         </Text>
       </Flex>
-      <BuyButton onClick={handleBuy} endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}>
+      <BuyButton
+        onClick={handleBuy}
+        endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
+        disabled={disabled || parseFloat(formatUserLpValue) < parseFloat(value) || pendingTrx}
+      >
         {t('Buy')}
       </BuyButton>
     </>
