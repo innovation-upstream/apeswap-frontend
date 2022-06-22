@@ -54,7 +54,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
 }
 
-
 export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
   font-size: 12px;
   color: ${({ theme, severity }) =>

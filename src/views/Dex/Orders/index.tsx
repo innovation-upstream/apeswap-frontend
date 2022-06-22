@@ -25,7 +25,7 @@ import OrderHistoryPanel from './components/OrderHistoryPanel'
 import OrderTradeInfo from './components/OrderTradeInfo'
 
 const Swap: React.FC = () => {
-  // modal and loading
+  // modal and loading 
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
