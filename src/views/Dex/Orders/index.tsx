@@ -1,9 +1,8 @@
 /** @jsxImportSource theme-ui */
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useCurrency } from 'hooks/Tokens'
 import { Field, SwapDelay } from 'state/swap/actions'
 import { Flex, useModal } from '@ape.swap/uikit'
-import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import confirmPriceImpactWithoutFee from 'views/Swap/components/confirmPriceImpactWithoutFee'
 import { computeTradePriceBreakdown } from 'utils/prices'
@@ -12,6 +11,7 @@ import { CurrencyAmount, JSBI, Trade } from '@apeswapfinance/sdk'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
 import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
+import { useOrderCallback } from 'hooks/useOrderCallback'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import { dexStyles } from '../styles'
 import DexPanel from '../components/DexPanel'
@@ -21,6 +21,9 @@ import SwapSwitchButton from './components/SwapSwitchButton'
 import DexActions from '../components/DexActions'
 import DexTradeInfo from '../components/DexTradeInfo'
 import LoadingBestRoute from './components/LoadingBestRoute'
+import PriceInputPanel from './components/PriceInputPanel'
+import OrdersActions from './components/OrdersActions'
+import OrderHistoryPanel from './components/OrderHistoryPanel'
 
 const Swap: React.FC = () => {
   // modal and loading
@@ -54,10 +57,8 @@ const Swap: React.FC = () => {
   const [isExpertMode] = useExpertModeManager()
 
   const { INPUT, OUTPUT, independentField, typedValue, recipient, swapDelay, bestRoute } = useSwapState()
-  console.log('This is swap delay', swapDelay)
-  console.log('This is the best route', bestRoute)
-  // the callback to execute the swap
 
+  // the callback to execute the swap
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient, onSetSwapDelay } =
     useSwapActionHandlers()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
@@ -86,6 +87,7 @@ const Swap: React.FC = () => {
         [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
       }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: showWrap
@@ -93,18 +95,46 @@ const Swap: React.FC = () => {
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
-    trade,
-    allowedSlippage,
-    recipient,
-    bestRoute,
-  )
-
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
 
   const fetchingBestRoute = swapDelay === SwapDelay.INPUT_DELAY || swapDelay === SwapDelay.LOADING_ROUTE
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+
+  const [limitOrderPrice, setLimitOrderPrice] = useState<string>('')
+  const [inputFocused, setInputFocused] = useState<boolean>(true)
+  const realPriceValue = useMemo(() => {
+    if (inputFocused) {
+      const price = Number(formattedAmounts[Field.OUTPUT]) / Number(formattedAmounts[Field.INPUT])
+      return price === Infinity || Number.isNaN(price) ? '' : price.toFixed(6)
+    }
+    return limitOrderPrice
+  }, [inputFocused, limitOrderPrice, formattedAmounts])
+
+  const outputMinAmount = useMemo(() => {
+    return (Number(realPriceValue) * Number(formattedAmounts[Field.INPUT])).toString()
+  }, [realPriceValue, formattedAmounts])
+
+  const realOutputValue = useMemo(
+    () => (inputFocused ? formattedAmounts[Field.OUTPUT] : outputMinAmount),
+    [inputFocused, formattedAmounts, outputMinAmount],
+  )
+
+  const orderMarketStatus = useMemo(() => {
+    const marketOutput = trade?.outputAmount.toExact()
+    if (marketOutput && outputMinAmount) {
+      return ((Number(outputMinAmount) - Number(marketOutput)) * 100) / Number(marketOutput)
+    }
+    return 0
+  }, [trade, outputMinAmount])
+
+  const handleTypePrice = useCallback(
+    (value: string) => {
+      setInputFocused(false)
+      setLimitOrderPrice(value)
+    },
+    [setInputFocused, setLimitOrderPrice],
+  )
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState((prevState) => ({ ...prevState, tradeToConfirm: trade }))
@@ -128,6 +158,14 @@ const Swap: React.FC = () => {
 
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
+  )
+
+  // the callback to execute the swap
+  const { callback: swapCallback, error: swapCallbackError } = useOrderCallback(
+    trade,
+    recipient,
+    outputMinAmount,
+    orderMarketStatus,
   )
 
   const handleSwap = useCallback(() => {
@@ -198,50 +236,71 @@ const Swap: React.FC = () => {
 
   return (
     <Flex sx={dexStyles.pageContainer}>
-      <Flex sx={dexStyles.dexContainer}>
-        <DexNav />
-        <Flex sx={{ margin: '25px 0px', maxWidth: '100%', width: '420px' }} />
-        <DexPanel
-          value={formattedAmounts[Field.INPUT]}
-          panelText="From"
-          currency={inputCurrency}
-          otherCurrency={outputCurrency}
-          fieldType={Field.INPUT}
-          onCurrencySelect={onCurrencySelection}
-          onUserInput={onUserInput}
-          handleMaxInput={handleMaxInput}
-        />
-        <SwapSwitchButton onClick={onSwitchTokens} />
-        <DexPanel
-          value={formattedAmounts[Field.OUTPUT]}
-          panelText="To"
-          currency={outputCurrency}
-          otherCurrency={inputCurrency}
-          fieldType={Field.OUTPUT}
-          onCurrencySelect={onCurrencySelection}
-          onUserInput={onUserInput}
-        />
-        {fetchingBestRoute ? (
-          <LoadingBestRoute />
-        ) : (
-          <DexTradeInfo trade={v2Trade} allowedSlippage={allowedSlippage} bestRoute={bestRoute} swapDelay={swapDelay} />
-        )}
-        <DexActions
-          trade={trade}
-          swapInputError={swapInputError}
-          isExpertMode={isExpertMode}
-          showWrap={showWrap}
-          wrapType={wrapType}
-          routerType={bestRoute.routerType}
-          swapCallbackError={swapCallbackError}
-          priceImpactWithoutFee={priceImpactWithoutFee}
-          userHasSpecifiedInputOutput={userHasSpecifiedInputOutput}
-          onWrap={onWrap}
-          handleSwap={handleSwap}
-          onPresentConfirmModal={onPresentConfirmModal}
-          setSwapState={setSwapState}
-          disabled={fetchingBestRoute}
-        />
+      <Flex sx={{ flexDirection: 'column' }}>
+        <Flex sx={dexStyles.dexContainer}>
+          <DexNav />
+          <Flex sx={{ margin: '25px 0px', maxWidth: '100%', width: '420px' }} />
+          <DexPanel
+            value={formattedAmounts[Field.INPUT]}
+            panelText="From"
+            currency={inputCurrency}
+            otherCurrency={outputCurrency}
+            fieldType={Field.INPUT}
+            onCurrencySelect={onCurrencySelection}
+            onUserInput={(field, val) => {
+              onUserInput(field, val)
+              setInputFocused(true)
+            }}
+            handleMaxInput={handleMaxInput}
+          />
+          <SwapSwitchButton onClick={onSwitchTokens} />
+          <DexPanel
+            value={realOutputValue}
+            panelText="To"
+            currency={outputCurrency}
+            otherCurrency={inputCurrency}
+            fieldType={Field.OUTPUT}
+            onCurrencySelect={onCurrencySelection}
+            onUserInput={onUserInput}
+            disabled
+          />
+          <PriceInputPanel
+            value={realPriceValue}
+            currentPrice={trade?.executionPrice.toSignificant(6)}
+            inputValue={formattedAmounts[Field.INPUT]}
+            inputCurrency={currencies[Field.INPUT]}
+            outputCurrency={currencies[Field.OUTPUT]}
+            onUserInput={handleTypePrice}
+            id="orders-currency-price"
+          />
+          {fetchingBestRoute ? (
+            <LoadingBestRoute />
+          ) : (
+            <DexTradeInfo
+              trade={v2Trade}
+              allowedSlippage={allowedSlippage}
+              bestRoute={bestRoute}
+              swapDelay={swapDelay}
+            />
+          )}
+          <OrdersActions
+            trade={trade}
+            swapInputError={swapInputError}
+            isExpertMode={isExpertMode}
+            showWrap={showWrap}
+            wrapType={wrapType}
+            routerType={bestRoute.routerType}
+            swapCallbackError={swapCallbackError}
+            priceImpactWithoutFee={priceImpactWithoutFee}
+            userHasSpecifiedInputOutput={userHasSpecifiedInputOutput}
+            onWrap={onWrap}
+            handleSwap={handleSwap}
+            onPresentConfirmModal={onPresentConfirmModal}
+            setSwapState={setSwapState}
+            disabled={fetchingBestRoute}
+          />
+        </Flex>
+        <OrderHistoryPanel />
       </Flex>
     </Flex>
   )

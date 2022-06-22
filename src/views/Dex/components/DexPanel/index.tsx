@@ -25,6 +25,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
   fieldType,
   panelText,
   lpPair,
+  disabled,
   showCommonBases = false,
 }) => {
   const [usdVal, setUsdVal] = useState(null)
@@ -53,6 +54,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
           removeLiquidity={isRemoveLiquidity}
           align="left"
           id="token-amount-input"
+          disabled={disabled}
         />
         {!isRemoveLiquidity ? (
           <TokenSelector

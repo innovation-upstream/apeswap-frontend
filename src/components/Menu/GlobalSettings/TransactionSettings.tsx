@@ -189,6 +189,7 @@ const StyledInput = styled(Input)`
 `
 const SelectButton = styled(Flex)`
   width: 64.67px;
+  min-width: 57px;
   height: 36px;
   radius: 10px;
   color: primaryBright;

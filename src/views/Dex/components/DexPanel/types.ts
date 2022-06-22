@@ -15,4 +15,5 @@ export interface DexPanelProps {
   fieldType?: Field | MintField | BurnField
   showCommonBases?: boolean
   lpPair?: Pair
+  disabled?: boolean
 }
