@@ -1165,6 +1165,13 @@ const tokens = {
     },
     decimals: 18,
   },
+  ape: {
+    symbol: 'APE',
+    address: {
+      56: '0x0b079b33b6e72311c6be245f9f660cc385029fc3',
+    },
+    decimals: 18,
+  },
 
   // Test LPs
 
@@ -1374,6 +1381,22 @@ const tokens = {
     symbol: 'HOTCROSS-BUSD',
     address: {
       56: '0x3b9aa711d1d90a4f8639f66c227881729a3317f2',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  ethBnb: {
+    symbol: 'ETH-BNB',
+    address: {
+      56: '0xA0C3Ef24414ED9C9B456740128d8E63D016A9e11',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  apeBNB: {
+    symbol: 'APE-BNB',
+    address: {
+      56: '0x8B3EBE3422aabEA9920ca820fE43679e3e2E78D3',
     },
     decimals: 18,
     lpToken: true,
