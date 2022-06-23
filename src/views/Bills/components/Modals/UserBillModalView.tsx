@@ -53,6 +53,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
     true,
     `transferModal${billId}-${index}`,
   )
+  console.log('in the bills')
   return (
     <Modal onDismiss={onDismiss} maxWidth="1200px">
       <Container>

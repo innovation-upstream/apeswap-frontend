@@ -103,7 +103,7 @@ const Services: React.FC = () => {
                     <ServiceTokenDisplay
                       token1={tokenImage[0]}
                       token2={tokenImage[1]}
-                      token3="BANANA"
+                      token3={stat.earnTokenName}
                       stakeLp
                       billArrow
                       iconFill="white"
