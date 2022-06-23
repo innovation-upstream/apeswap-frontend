@@ -2,7 +2,6 @@
 import React, { useMemo } from 'react'
 import { Trade, TradeType } from '@apeswapfinance/sdk'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
-import { AutoRow } from 'components/layout/Row'
 import { useTranslation } from 'contexts/Localization'
 import DexTradeInfo from 'views/Dex/components/DexTradeInfo'
 import { Button, Text, Flex } from '@ape.swap/uikit'

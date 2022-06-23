@@ -1,35 +1,12 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
-import { Text, Link, Flex } from '@ape.swap/uikit'
+import { Link, Flex } from '@ape.swap/uikit'
 import { NETWORK_LABEL } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
 import useENS from '../../../../hooks/ENS/useENS'
 import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
-import { AutoColumn } from '../../../../components/layout/Column'
-import { RowBetween } from '../../../../components/layout/Row'
 import { getEtherscanLink } from '../../../../utils'
-
-const InputPanel = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  position: relative;
-  border-radius: 1.25rem;
-  background-color: ${({ theme }) => theme.colors.background};
-  z-index: 1;
-  width: 100%;
-`
-
-const ContainerRow = styled.div<{ error: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 1.25rem;
-  border: 1px solid ${({ error, theme }) => (error ? theme.colors.error : theme.colors.background)};
-  transition: border-color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')},
-    color 500ms ${({ error }) => (error ? 'step-end' : 'step-start')};
-  background-color: ${({ theme }) => theme.colors.background};
-`
 
 const SInput = styled.input<{ error?: boolean }>`
   font-size: 1.25rem;

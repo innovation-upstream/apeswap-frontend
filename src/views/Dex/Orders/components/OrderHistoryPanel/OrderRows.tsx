@@ -1,15 +1,14 @@
 /** @jsxImportSource theme-ui */
-import { Flex, InfoIcon, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
-import { Order, OrderStatus } from '@autonomylabs/limit-stop-orders'
-import ListViewContent from 'components/ListViewContent'
+import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
+import { Order } from '@autonomylabs/limit-stop-orders'
 import { CurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import { formatUnits, getAddress } from 'ethers/lib/utils'
 import { useAllTokens } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAutonomyOrdersLib from 'hooks/useAutonomyOrdersLib'
-import React, { useCallback } from 'react'
-import { Grid, Box, Divider } from 'theme-ui'
+import React  from 'react'
+import { Grid, Divider } from 'theme-ui'
 import MonkeyImage from './MonkeyImage'
 import { styles } from './styles'
 
@@ -21,8 +20,8 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
   return (
     <>
       <Grid gap="0px" columns={['.5fr .2fr 2fr 2fr 2.5fr .5fr']} sx={styles.titleContainer}>
-        <span> </span>
-        <span> </span>
+        <span />
+        <span />
         <Text size="14px" weight={700} sx={{ alignSelf: 'center' }}>
           {t('Swap')}
         </Text>
@@ -32,7 +31,7 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
         <Text size="14px" weight={700} sx={{ alignSelf: 'center' }}>
           {t('Price')}
         </Text>
-        <span> </span>
+        <span />
       </Grid>
       <div sx={{ background: 'white3', borderRadius: '0px 0px 10px 10px' }}>
         {orders?.length !== 0 ? (
@@ -90,7 +89,7 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
                       <Svg icon="info" width="12px" />
                     </TooltipBubble>
                   </Flex>
-                  <span> </span>
+                  <span />
                   <Flex sx={{ flexDirection: 'column', justifyContent: 'center' }}>
                     <Text size="12px" weight={700} sx={{ lineHeight: '17.5px' }}>
                       {parseFloat((+inputAmount).toFixed(6))}

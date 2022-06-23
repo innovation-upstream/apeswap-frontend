@@ -4,7 +4,7 @@ import { Currency } from '@apeswapfinance/sdk'
 import { CurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import { styles } from './styles'
 
 const TokenSelector: React.FC<{
