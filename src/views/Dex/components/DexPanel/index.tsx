@@ -49,7 +49,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
       <Flex sx={{ ...styles.panelTopContainer }}>
         <Text sx={{ ...styles.swapDirectionText }}>{panelText}</Text>
         <NumericalInput
-          value={value}
+          value={isRemoveLiquidity ? `${value}%` : value}
           onUserInput={(val) => onUserInput(fieldType, val)}
           removeLiquidity={isRemoveLiquidity}
           align="left"

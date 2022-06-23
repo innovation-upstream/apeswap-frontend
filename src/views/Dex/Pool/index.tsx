@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@apeswapfinance/sdk'
-import { Text, Flex, AddIcon, Button, Card } from '@ape.swap/uikit'
+import { Text, Flex, AddIcon, Button, Card, Spinner } from '@ape.swap/uikit'
 import { Wrapper } from 'views/Swap/components/styled'
 import CurrencyInputHeader from 'views/Swap/components/CurrencyInputHeader'
 import { Link } from 'react-router-dom'
@@ -82,9 +82,9 @@ export default function Pool() {
     }
     if (v2IsLoading) {
       return (
-        <Text textAlign="center">
-          <Dots>{t('Loading')}</Dots>
-        </Text>
+        <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
+          <Spinner size={200} />
+        </Flex>
       )
     }
     if (allV2PairsWithLiquidity?.length > 0) {

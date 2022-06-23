@@ -1,8 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Text } from '@ape.swap/uikit'
-import { Currency, CurrencyAmount, Pair, Percent, Price, TokenAmount } from '@apeswapfinance/sdk'
+import { CurrencyAmount, Pair, Percent, TokenAmount } from '@apeswapfinance/sdk'
 import { CurrencyLogo } from 'components/Logo'
-import { ONE_BIPS } from 'config/constants'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { Field } from 'state/burn/actions'
@@ -24,10 +23,18 @@ const PoolInfo: React.FC<{
     <Flex sx={{ ...styles.poolInfoContainer }}>
       <Flex sx={{ justifyContent: 'space-between' }}>
         <Text size="12px" weight="light">
+          {t('LPs To Remove')}
+        </Text>
+        <Text size="12px" weight={700}>
+          {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) || '-'}
+        </Text>
+      </Flex>
+      <Flex sx={{ justifyContent: 'space-between' }}>
+        <Text size="12px" weight="light">
           {t('Share of Pool')}
         </Text>
         <Text size="12px" weight={700}>
-          {poolTokenPercentage ? `${poolTokenPercentage?.toFixed(6)}%` : '-'}
+          {poolTokenPercentage ? `${poolTokenPercentage.toFixed(6)}%` : '-'}
         </Text>
       </Flex>
       <Flex sx={{ justifyContent: 'space-between' }}>

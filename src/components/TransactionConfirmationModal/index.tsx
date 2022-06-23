@@ -25,22 +25,42 @@ const ConfirmedIcon = styled(ColumnCenter)`
 export function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
   const { t } = useTranslation()
   return (
-    <Wrapper>
-      <ConfirmedIcon>
-        <Spinner size={200} />
-      </ConfirmedIcon>
-      <AutoColumn gap="12px" justify="center">
-        <Text fontSize="20px">{t('Waiting For Confirmation')}</Text>
-        <AutoColumn gap="12px" justify="center">
-          <Text bold small textAlign="center">
+    <Flex
+      sx={{
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        background: 'white3',
+        margin: '15px 0px',
+        borderRadius: '10px',
+      }}
+    >
+      <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Spinner size={150} />
+      </Flex>
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          alignItems: 'center',
+          background: 'white4',
+          padding: '10px 20px',
+          margin: '10px',
+          borderRadius: '10px',
+        }}
+      >
+        <Text size="20px" weight={500} margin="5px 0px" sx={{ textAlign: 'center' }}>
+          {t('Waiting For Confirmation')}
+        </Text>
+        <Flex margin="10px 0px">
+          <Text weight={700} sx={{ textAlign: 'center' }}>
             {pendingText}
           </Text>
-        </AutoColumn>
-        <Text small textAlign="center">
+        </Flex>
+        <Text size="14px" weight={400}>
           {t('Confirm this transaction in your wallet')}
         </Text>
-      </AutoColumn>
-    </Wrapper>
+      </Flex>
+    </Flex>
   )
 }
 

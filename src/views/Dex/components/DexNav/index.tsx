@@ -22,18 +22,37 @@ const DexNav: React.FC = () => {
   return (
     <Flex sx={{ ...styles.dexNavContainer }}>
       <Flex sx={{ ...styles.navLinkContainer }}>
-        <Text size="14px" sx={{ ...styles.navLink, opacity: !pathname?.includes('swap') && 0.5 }} as={Link} to="/swap">
+        <Text
+          size="14px"
+          sx={{ ...styles.navLink, color: !pathname?.includes('swap') && 'textDisabled' }}
+          as={Link}
+          to="/swap"
+          id="swap-link"
+          className="swap"
+        >
           {t('Swap')}
         </Text>
         <Text
           size="14px"
-          sx={{ ...styles.navLink, opacity: !pathname?.includes('orders') && 0.5 }}
+          sx={{
+            ...styles.navLink,
+            color: !pathname?.includes('orders') && 'textDisabled',
+          }}
           as={Link}
           to="/orders"
+          id="orders-link"
+          className="orders"
         >
           {t('Orders')}
         </Text>
-        <Text size="14px" sx={{ ...styles.navLink, opacity: !onLiquidity && 0.5 }} as={Link} to="/add">
+        <Text
+          size="14px"
+          sx={{ ...styles.navLink, color: !onLiquidity && 'textDisabled' }}
+          as={Link}
+          to="/add"
+          id="liquidity-link"
+          className="liquidity"
+        >
           {t('Liquidity')}
         </Text>
       </Flex>

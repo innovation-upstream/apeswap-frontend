@@ -25,6 +25,7 @@ import { AppBody } from '../../../components/App'
 import { dexStyles } from '../styles'
 import { styles } from './styles'
 import DexNav from '../components/DexNav'
+import MyPositions from '../components/MyPositions'
 
 enum Fields {
   TOKEN0 = 0,
@@ -100,12 +101,7 @@ export default function PoolFinder() {
         <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
           <Text weight={700}>{t('FIND YOUR LIQUIDITY')}</Text>
         </Flex>
-        <Flex sx={{ margin: '0px 0px 40px 0px', alignItems: 'center' }}>
-          <ArrowDropLeftIcon width="7px" />
-          <Text size="12px" ml="5px" as={Link} to="/pool">
-            {t('My positions')}
-          </Text>
-        </Flex>
+        <MyPositions />
         <Flex sx={{ ...styles.tokenContainer }}>
           <Text sx={{ ...styles.swapDirectionText }}>{t('Token 1')}</Text>
           <Flex

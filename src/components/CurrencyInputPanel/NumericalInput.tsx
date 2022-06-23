@@ -11,9 +11,9 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   height: 100%;
   position: relative;
   font-weight: 700;
-  minwidth: ${({ removeLiquidity }) => (removeLiquidity ? '40px' : 'auto')};
-  width: ${({ removeLiquidity }) => (removeLiquidity ? '40px' : 'auto')};
-  maxwidth: ${({ removeLiquidity }) => (removeLiquidity ? '40px' : 'auto')};
+  minwidth: auto;
+  width: auto;
+  maxwidth: auto;
   border: none;
   outline: none;
   flex: 1 1 auto;
@@ -23,6 +23,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  content: '%';
   padding: 0 0 0 0px;
   -webkit-appearance: textfield;
 
@@ -41,6 +42,9 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
 
   ::placeholder {
     color: ${({ theme }) => theme.colors.text};
+  }
+  ::after {
+    content: '%';
   }
 `
 
@@ -75,6 +79,7 @@ export const Input = React.memo(function InnerInput({
         onChange={(event) => {
           // replace commas with periods, because we exclusively uses period as the decimal separator
           enforcer(event.target.value.replace(/,/g, '.'))
+          enforcer(event.target.value.replace(/%/g, ''))
         }}
         // universal input options
         inputMode="decimal"
@@ -92,13 +97,6 @@ export const Input = React.memo(function InnerInput({
         style={{ marginRight: removeLiquidity ? '0px' : '10px' }}
         removeLiquidity={removeLiquidity}
       />
-      {removeLiquidity && (
-        <Flex sx={{ alignItems: 'center' }}>
-          <Text size="20px" weight={700} sx={{ lineHeight: '0px' }}>
-            %
-          </Text>
-        </Flex>
-      )}
     </Flex>
   )
 })

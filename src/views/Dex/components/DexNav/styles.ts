@@ -1,4 +1,5 @@
 import { ThemeUIStyleObject } from 'theme-ui'
+import { textUnderlineHover } from 'views/Dex/styles'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   // Token selector container
@@ -24,9 +25,17 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-
+  underline: {
+    display: 'inline-block',
+    position: 'relative',
+    background: 'primaryBright',
+    height: '1px',
+    width: '100%',
+    borderRadius: '10px',
+  },
   navLink: {
+    position: 'relative',
     cursor: 'pointer',
-    opacity: 0.2,
+    ...textUnderlineHover,
   },
 }

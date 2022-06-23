@@ -12,13 +12,14 @@ import { useAppDispatch } from 'state'
 import { Field, resetMintState } from 'state/mint/actions'
 import { currencyId } from 'utils/currencyId'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from 'state/mint/hooks'
-import { dexStyles } from '../styles'
+import { dexStyles, textUnderlineHover } from '../styles'
 import { styles } from './styles'
 import DexPanel from '../components/DexPanel'
 import DexNav from '../components/DexNav'
 import AddLiquiditySign from './components/AddLiquiditySign'
 import PoolInfo from './components/PoolInfo'
 import AddLiquidityActions from './components/Actions'
+import MyPositions from '../components/MyPositions'
 
 function AddLiquidity({
   match: {
@@ -128,18 +129,13 @@ function AddLiquidity({
         <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
           <Text weight={700}>ADD LIQUIDITY</Text>
         </Flex>
-        <Flex sx={{ margin: '0px 0px 40px 0px', alignItems: 'center' }}>
-          <ArrowDropLeftIcon width="7px" />
-          <Text size="12px" ml="5px" as={Link} to="/pool">
-            {t('My positions')}
-          </Text>
-        </Flex>
+        <MyPositions />
         {noLiquidity && (
           <Flex sx={{ ...styles.warningMessageContainer }}>
-            <Text size="18px" weight={700} mb="10px" color="primaryBright">
+            <Text size="14px" weight={700} mb="10px" color="primaryBright">
               {t('You are the first liquidity provider.')}
             </Text>
-            <Text size="16px" weight={500} color="primaryBright">
+            <Text size="12px" weight={500} color="primaryBright" sx={{ textAlign: 'center' }}>
               {t(
                 'The ratio of tokens you add will set the price of this pool. Once you are happy with the rate click supply to review.',
               )}

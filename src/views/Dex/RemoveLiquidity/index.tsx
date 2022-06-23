@@ -15,6 +15,7 @@ import DexPanel from '../components/DexPanel'
 import DexNav from '../components/DexNav'
 import PoolInfo from './components/PoolInfo'
 import RemoveLiquidityActions from './components/Actions'
+import MyPositions from '../components/MyPositions'
 
 function RemoveLiquidity({
   match: {
@@ -45,11 +46,6 @@ function RemoveLiquidity({
   // allowance handling
   const [, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
 
-  const poolTokenPercentage =
-    !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
-      ? new Percent(userPoolBalance.raw, totalPoolTokens.raw)
-      : undefined
-
   // get formatted amounts
   const formattedAmounts = {
     [Field.LIQUIDITY_PERCENT]: parsedAmounts[Field.LIQUIDITY_PERCENT].equalTo('0')
@@ -64,6 +60,17 @@ function RemoveLiquidity({
     [Field.CURRENCY_B]:
       independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
   }
+
+  const dynamicUserPoolBalance = BigInt(
+    (
+      parseInt(userPoolBalance?.raw?.toString()) * (parseInt(formattedAmounts[Field.LIQUIDITY_PERCENT]) / 100) || 0
+    ).toFixed(0),
+  )
+
+  const poolTokenPercentage =
+    !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
+      ? new Percent(dynamicUserPoolBalance, totalPoolTokens.raw)
+      : undefined
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
@@ -88,14 +95,7 @@ function RemoveLiquidity({
         <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
           <Text weight={700}>{t('REMOVE LIQUIDITY')}</Text>
         </Flex>
-        <Flex sx={{ margin: '0px 0px 40px 0px', alignItems: 'center' }}>
-          <Link to="/pool">
-            <ArrowDropLeftIcon width="7px" />
-            <Text size="12px" ml="5px">
-              {t('My positions')}
-            </Text>
-          </Link>
-        </Flex>
+        <MyPositions />
         <DexPanel
           value={formattedAmounts[Field.LIQUIDITY_PERCENT]}
           panelText={t('Remove:')}

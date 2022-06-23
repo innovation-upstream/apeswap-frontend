@@ -184,11 +184,11 @@ export function useDerivedMintInfo(
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
 
   if (currencyAAmount && currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount)) {
-    error = `${t('Insufficient')} ${currencies[Field.CURRENCY_A]?.symbol} ${t('balance')}`
+    error = `${t('Insufficient')} ${currencies[Field.CURRENCY_A]?.getSymbol(chainId)} ${t('balance')}`
   }
 
   if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
-    error = `${t('Insufficient')} ${currencies[Field.CURRENCY_B]?.symbol} ${t('balance')}`
+    error = `${t('Insufficient')} ${currencies[Field.CURRENCY_B]?.getSymbol(chainId)} ${t('balance')}`
   }
 
   return {

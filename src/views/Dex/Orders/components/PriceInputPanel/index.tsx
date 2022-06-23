@@ -37,7 +37,7 @@ const PriceInputPanel: React.FC<PriceInputPanelProps> = ({
         <Flex sx={{ flexDirection: 'column' }}>
           <Text mb="5px">{t('Price')}</Text>
           <Flex sx={styles.currentButton} onClick={() => onUserInput(currentPrice)}>
-            <Text size="10px" weight={600} sx={{ lineHeight: '12px', textAlign: 'center' }}>
+            <Text size="10px" weight={600} color="primaryBright" sx={{ lineHeight: '12px', textAlign: 'center' }}>
               {t('Use Current')}
             </Text>
           </Flex>
