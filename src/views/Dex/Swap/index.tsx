@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from 'react'
 import { useCurrency } from 'hooks/Tokens'
 import { Field, SwapDelay } from 'state/swap/actions'
-import { Flex, useModal } from '@ape.swap/uikit'
+import { Flex, Text, useModal } from '@ape.swap/uikit'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import confirmPriceImpactWithoutFee from 'views/Swap/components/confirmPriceImpactWithoutFee'
@@ -21,6 +21,7 @@ import SwapSwitchButton from './components/SwapSwitchButton'
 import DexActions from '../components/DexActions'
 import DexTradeInfo from '../components/DexTradeInfo'
 import LoadingBestRoute from './components/LoadingBestRoute'
+import ExpertModeRecipient from './components/ExpertModeRecipient'
 
 const Swap: React.FC = () => {
   // modal and loading
@@ -220,6 +221,12 @@ const Swap: React.FC = () => {
           fieldType={Field.OUTPUT}
           onCurrencySelect={onCurrencySelection}
           onUserInput={onUserInput}
+        />
+        <ExpertModeRecipient
+          recipient={recipient}
+          showWrap={showWrap}
+          isExpertMode={isExpertMode}
+          onChangeRecipient={onChangeRecipient}
         />
         {fetchingBestRoute ? (
           <LoadingBestRoute />

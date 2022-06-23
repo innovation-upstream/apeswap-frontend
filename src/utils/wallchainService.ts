@@ -1,28 +1,7 @@
 import { RouterTypes } from 'config/constants'
 import { WALLCHAIN_PARAMS } from 'config/constants/chains'
 import { Contract } from 'ethers'
-import { SwapDelay, RouterTypeParams } from 'state/swap/actions'
-
-type SearchSummary = {
-  expectedProfit?: number
-  expectedUsdProfit?: number
-  firstTokenAddress?: string
-  firstTokenAmount?: number
-}
-
-type TransactionArgs = {
-  data: string
-  destination: string
-  sender: string
-  value: string
-  masterInput: string
-}
-
-type DataResponse = {
-  pathFound: boolean
-  summary?: { searchSummary?: SearchSummary }
-  transactionArgs: TransactionArgs
-}
+import { SwapDelay, RouterTypeParams, DataResponse } from 'state/swap/actions'
 
 const wallchainResponseIsValid = (
   dataResonse: DataResponse,

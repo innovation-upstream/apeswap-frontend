@@ -19,6 +19,7 @@ type SearchSummary = {
   expectedUsdProfit?: number
   firstTokenAddress?: string
   firstTokenAmount?: number
+  expectedKickbackProfit?: number
 }
 
 type TransactionArgs = {
@@ -29,7 +30,7 @@ type TransactionArgs = {
   masterInput: string
 }
 
-type DataResponse = {
+export type DataResponse = {
   pathFound: boolean
   summary?: { searchSummary?: SearchSummary }
   transactionArgs: TransactionArgs
