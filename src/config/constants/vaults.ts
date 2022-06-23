@@ -236,6 +236,7 @@ const vaults: VaultConfig[] = [
       rewardToken: tokens.banana,
     },
   },
+
   // ETH - BNB vault config
 
   {
@@ -257,7 +258,7 @@ const vaults: VaultConfig[] = [
         [CHAIN_ID.BSC]: 5,
       },
       address: {
-        [CHAIN_ID.BSC]: '0xA0C3Ef24414ED9C9B456740128d8E63D016A9e11',
+        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
       },
       rewardsPerBlock: {
         [CHAIN_ID.BSC]: 'cakePerBlock',
@@ -287,7 +288,7 @@ const vaults: VaultConfig[] = [
         [CHAIN_ID.BSC]: 191,
       },
       address: {
-        [CHAIN_ID.BSC]: '0x8B3EBE3422aabEA9920ca820fE43679e3e2E78D3',
+        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
       },
       rewardsPerBlock: {
         [CHAIN_ID.BSC]: 'cakePerBlock',
@@ -299,7 +300,7 @@ const vaults: VaultConfig[] = [
   // TESTNET VAULTS
 
   {
-    id: 8,
+    id: 1000,
     pid: 0,
     availableChains: [CHAIN_ID.BSC_TESTNET],
     type: 'MAX',
@@ -327,7 +328,7 @@ const vaults: VaultConfig[] = [
   },
 
   {
-    id: 9,
+    id: 1001,
     pid: 1,
     availableChains: [CHAIN_ID.BSC_TESTNET],
     type: 'MAX',
