@@ -237,42 +237,70 @@ const vaults: VaultConfig[] = [
     },
   },
 
-  // CEEK - BNB vault config
+  // ETH - BNB vault config
 
-  // Will be released later
+  {
+    id: 8,
+    pid: 5,
+    availableChains: [CHAIN_ID.BSC],
+    type: 'MAX',
+    version: 'V2',
+    stratAddress: {
+      [CHAIN_ID.BSC]: '0x17884b90f18B8875147D02a8119a6226841d282e',
+    },
+    stakeToken: tokens.ethBnb,
+    token: tokens.eth,
+    quoteToken: tokens.wbnb,
+    rewardToken: tokens.banana,
+    platform: 'ApeSwap',
+    masterchef: {
+      pid: {
+        [CHAIN_ID.BSC]: 5,
+      },
+      address: {
+        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
+      },
+      rewardsPerBlock: {
+        [CHAIN_ID.BSC]: 'cakePerBlock',
+      },
+      rewardToken: tokens.banana,
+    },
+  },
 
-  // {
-  //   id: 7,
-  //   pid: 4,
-  //   availableChains: [CHAIN_ID.BSC],
-  //   type: 'MAX',
-  //   version: 'V2',
-  //   stratAddress: {
-  //     [CHAIN_ID.BSC]: '0x5a850dD7a7A54AB82dB9A436a332A78fAeE040C8',
-  //   },
-  //   stakeToken: tokens.bnbCeek,
-  //   token: tokens.ceek,
-  //   quoteToken: tokens.wbnb,
-  //   rewardToken: tokens.banana,
-  //   platform: 'ApeSwap',
-  //   masterchef: {
-  //     pid: {
-  //       [CHAIN_ID.BSC]: 117,
-  //     },
-  //     address: {
-  //       [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
-  //     },
-  //     rewardsPerBlock: {
-  //       [CHAIN_ID.BSC]: 'cakePerBlock',
-  //     },
-  //     rewardToken: tokens.banana,
-  //   },
-  // },
+  // APE - BNB vault config
+
+  {
+    id: 9,
+    pid: 6,
+    availableChains: [CHAIN_ID.BSC],
+    type: 'MAX',
+    version: 'V2',
+    stratAddress: {
+      [CHAIN_ID.BSC]: '0x6862c220a88e0267D9B0652b7102A2d0c72bF7Eb',
+    },
+    stakeToken: tokens.apeBNB,
+    token: tokens.ape,
+    quoteToken: tokens.wbnb,
+    rewardToken: tokens.banana,
+    platform: 'ApeSwap',
+    masterchef: {
+      pid: {
+        [CHAIN_ID.BSC]: 191,
+      },
+      address: {
+        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
+      },
+      rewardsPerBlock: {
+        [CHAIN_ID.BSC]: 'cakePerBlock',
+      },
+      rewardToken: tokens.banana,
+    },
+  },
 
   // TESTNET VAULTS
 
   {
-    id: 8,
+    id: 1000,
     pid: 0,
     availableChains: [CHAIN_ID.BSC_TESTNET],
     type: 'MAX',
@@ -300,7 +328,7 @@ const vaults: VaultConfig[] = [
   },
 
   {
-    id: 9,
+    id: 1001,
     pid: 1,
     availableChains: [CHAIN_ID.BSC_TESTNET],
     type: 'MAX',
