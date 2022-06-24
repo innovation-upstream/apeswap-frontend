@@ -8,11 +8,12 @@ import { Field, SwapDelay, RouterTypeParams } from 'state/swap/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { RouterTypes } from 'config/constants'
 import { CHAIN_PARAMS } from 'config/constants/chains'
-import TradePrice from 'views/Orders/components/TradePrice'
-import FormattedPriceImpact from 'views/Orders/components/FormattedPriceImpact'
+import FormattedPriceImpact from 'views/LegacyOrders/components/FormattedPriceImpact'
 import { AnimatePresence, motion } from 'framer-motion'
 import { computeTradePriceBreakdown, computeSlippageAdjustedAmounts } from 'utils/prices'
 import { styles } from './styles'
+import TradePrice from './TradePrice'
+
 
 const DexTradeInfo: React.FC<{
   trade: Trade

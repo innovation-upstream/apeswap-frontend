@@ -73,12 +73,9 @@ function RemoveLiquidity({
     [_onUserInput],
   )
 
-  const handleMaxInput = useCallback(
-    () => {
-      onUserInput(Field.LIQUIDITY_PERCENT, '100')
-    },
-    [onUserInput],
-  )
+  const handleMaxInput = useCallback(() => {
+    onUserInput(Field.LIQUIDITY_PERCENT, '100')
+  }, [onUserInput])
 
   return (
     <Flex sx={{ ...dexStyles.pageContainer }}>

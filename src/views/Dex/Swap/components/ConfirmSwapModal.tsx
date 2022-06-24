@@ -4,9 +4,7 @@ import { currencyEquals, Trade } from '@apeswapfinance/sdk'
 import { ModalProps } from '@apeswapfinance/uikit'
 import { Flex } from '@ape.swap/uikit'
 import { RouterTypeParams } from 'state/swap/actions'
-import TransactionConfirmationModal, {
-  TransactionErrorContent,
-} from 'components/TransactionConfirmationModal'
+import TransactionConfirmationModal, { TransactionErrorContent } from 'components/TransactionConfirmationModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import SwapModalHeader from './SwapModalHeader'

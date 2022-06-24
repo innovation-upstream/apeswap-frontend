@@ -55,7 +55,7 @@ const NfaStaking = lazy(() => import('./views/NfaStaking'))
 const Bills = lazy(() => import('./views/Bills'))
 const Orders = lazy(() => import('./views/Dex/Orders'))
 const Topup = lazy(() => import('./views/Topup'))
-const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/RemoveLiquidity/redirects'))
+const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/LegacyRemoveLiquidity/redirects'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 
