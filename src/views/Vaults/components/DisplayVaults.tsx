@@ -35,7 +35,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
   // Need to export ModalContext from uikit to clean up the code
   const [, closeModal] = useModal(<></>)
   const [onPresentAddLiquidityWidgetModal] = useModal(
-    <LiquidityModal handleClose={closeModal} />,
+    <LiquidityModal onDismiss={closeModal} />,
     true,
     true,
     'liquidityWidgetModal',

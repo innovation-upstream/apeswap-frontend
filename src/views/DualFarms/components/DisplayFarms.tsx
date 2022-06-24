@@ -9,8 +9,8 @@ import { DualFarm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ApyButton from 'components/ApyCalculator/ApyButton'
 import { useTranslation } from 'contexts/Localization'
+import ApyButton from '../../../components/RoiCalculator/ApyButton'
 import CardActions from './CardActions'
 import { Container, FarmButton, NextArrow, ServiceTokenDisplayContainer, StyledTag } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
@@ -28,6 +28,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
   const isMobile = useIsMobile()
 
   const farmsListView = farms.map((farm, i) => {
+    const tokenAddress = farm.stakeTokens.token0.address[chainId]
     const polygonScanUrl = `https://polygonscan.com/address/${farm.stakeTokenAddress}`
 
     const liquidityUrl = `https://apeswap.finance/add/${
@@ -142,6 +143,11 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 rewardTokenPrice={farm.rewardToken0Price}
                 apy={farm?.apr / 100 + parseFloat(farm?.lpApr) / 100}
                 addLiquidityUrl={liquidityUrl}
+                apr={farm?.apr}
+                lpApr={parseFloat(farm?.lpApr)}
+                lpAddresses={tokenAddress}
+                multiplier={parseFloat(farm?.multiplier)}
+                isLp
               />
             }
           />

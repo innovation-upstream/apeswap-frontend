@@ -23,6 +23,17 @@ export const apyModalRoi = ({ amountEarned, amountInvested }) => {
   return percentage.toFixed(2)
 }
 
+/**
+ * @param {number}  numberOfDays - Number of days staked.
+ * @param {number} farmApr - Apr value of the farm to be used.
+ * @param {number} tokenPrice - Price of token in USD.
+ * @param {number} [roundingDecimals=2] - Rounding decimal.
+ * @param {number} [compoundFrequency=1] - 1 = compounding once per day.
+ * @param {number} [performanceFee=0] - Performance fee.
+ * @param {number} [amountDollar=1000] - Amount invested in the farm in USD.
+ * @returns {number} tokensEarned - Tokens earned.
+ */
+
 export const tokenEarnedPerThousandDollarsCompounding = ({
   numberOfDays,
   farmApr,
@@ -30,6 +41,7 @@ export const tokenEarnedPerThousandDollarsCompounding = ({
   roundingDecimals = 2,
   compoundFrequency = 1,
   performanceFee = 0,
+  amountDollar = 1000,
 }) => {
   // Everything here is worked out relative to a year, with the asset compounding at the compoundFrequency rate. 1 = once per day
   const timesCompounded = 365 * compoundFrequency
@@ -45,7 +57,7 @@ export const tokenEarnedPerThousandDollarsCompounding = ({
 
   const daysAsDecimalOfYear = numberOfDays / 365
   // Calculate the starting TOKEN balance with a dollar balance of $1000.
-  const principal = 1000 / tokenPrice
+  const principal = amountDollar / tokenPrice
   // This is a translation of the typical mathematical compounding APY formula. Details here: https://www.calculatorsoup.com/calculators/financial/compound-interest-calculator.php
   const finalAmount = principal * (1 + aprAsDecimal / timesCompounded) ** (timesCompounded * daysAsDecimalOfYear)
   // To get the TOKEN amount earned, deduct the amount after compounding (finalAmount) from the starting TOKEN balance (principal)

@@ -10,7 +10,7 @@ import { Farm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ApyButton from 'components/ApyCalculator/ApyButton'
+import ApyButton from 'components/RoiCalculator/ApyButton'
 import { useTranslation } from 'contexts/Localization'
 import useIsMobile from 'hooks/useIsMobile'
 import { Field, selectCurrency } from 'state/swap/actions'
@@ -26,16 +26,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
   const isMobile = useIsMobile()
   const dispatch = useAppDispatch()
 
-  // TODO: clean up this code
-  // Hack to get the close modal function from the provider
-  // Need to export ModalContext from uikit to clean up the code
-  const [, closeModal] = useModal(<></>)
-  const [onPresentAddLiquidityWidgetModal] = useModal(
-    <LiquidityModal handleClose={closeModal} />,
-    true,
-    true,
-    'liquidityWidgetModal',
-  )
+  const [onPresentAddLiquidityWidgetModal] = useModal(<LiquidityModal />, true, true, 'liquidityWidgetModal')
 
   const showLiquidity = (token, quoteToken) => {
     dispatch(
@@ -55,6 +46,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
 
   const farmsListView = farms.map((farm) => {
     const [token1, token2] = farm.lpSymbol.split('-')
+    const lpAddresses = farm.lpAddresses[chainId]
     const bscScanUrl = `https://bscscan.com/address/${farm.lpAddresses[chainId]}`
     const liquidityUrl = `https://apeswap.finance/add/${
       farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId]
@@ -160,6 +152,11 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                 rewardTokenPrice={farm.bananaPrice}
                 apy={parseFloat(farm?.apr) / 100 + parseFloat(farm?.lpApr) / 100}
                 addLiquidityUrl={liquidityUrl}
+                apr={parseFloat(farm?.apr)}
+                lpApr={parseFloat(farm?.lpApr)}
+                multiplier={parseFloat(farm?.multiplier)}
+                lpAddresses={lpAddresses}
+                isLp
               />
             }
           />
