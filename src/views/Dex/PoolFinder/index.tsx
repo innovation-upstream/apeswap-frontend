@@ -1,14 +1,8 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useEffect, useState } from 'react'
 import { Currency, ETHER, JSBI, TokenAmount } from '@apeswapfinance/sdk'
-import { Button, ChevronDownIcon, Text, AddIcon, useModal, Flex, ArrowDropLeftIcon, Svg } from '@ape.swap/uikit'
-import styled from 'styled-components'
-import Page from 'components/layout/Page'
-import CurrencyInputHeader from 'views/Swap/components/CurrencyInputHeader'
-import SwapBanner from 'components/SwapBanner'
-import LiquidityPositionLink from 'components/Links/LiquidityPositons'
+import { Text, useModal, Flex, Svg } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Link } from 'react-router-dom'
 import { AutoColumn, ColumnCenter } from '../../../components/layout/Column'
 import { CurrencyLogo } from '../../../components/Logo'
 import { MinimalPositionCard } from '../../../components/PositionCard'
@@ -21,7 +15,6 @@ import { useTokenBalance } from '../../../state/wallet/hooks'
 import StyledInternalLink from '../../../components/Links'
 import { currencyId } from '../../../utils/currencyId'
 import Dots from '../../../components/Loader/Dots'
-import { AppBody } from '../../../components/App'
 import { dexStyles } from '../styles'
 import { styles } from './styles'
 import DexNav from '../components/DexNav'
@@ -31,13 +24,6 @@ enum Fields {
   TOKEN0 = 0,
   TOKEN1 = 1,
 }
-
-const StyledButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
-  background-color: ${({ theme }) => theme.colors.white4};
-  color: ${({ theme }) => theme.colors.text};
-  box-shadow: none;
-  border-radius: 16px;
-`
 
 export default function PoolFinder() {
   const { account, chainId } = useActiveWeb3React()

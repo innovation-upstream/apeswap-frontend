@@ -116,11 +116,9 @@ const DexTradeInfo: React.FC<{
                       {t('Estimated swap bonus')}
                     </Text>
                     <Text color="primaryBright" size="10px">
-                      ~ {(bestRoute?.smartRouter?.summary?.searchSummary?.expectedKickbackProfit * (3 / 7)).toFixed(6)}{' '}
+                      ~ {(bestRoute?.smartRouter?.summary?.searchSummary?.expectedKickbackProfit * 0.3).toFixed(6)}{' '}
                       {CHAIN_PARAMS[chainId].nativeCurrency.symbol}{' '}
-                      {`(~$${(bestRoute?.smartRouter?.summary?.searchSummary?.expectedUsdProfit * (3 / 7)).toFixed(
-                        2,
-                      )})`}
+                      {`(~$${(bestRoute?.smartRouter?.summary?.searchSummary?.expectedUsdProfit * 0.3).toFixed(2)})`}
                     </Text>
                   </Flex>
                 </>

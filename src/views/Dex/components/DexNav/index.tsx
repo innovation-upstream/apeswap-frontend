@@ -13,7 +13,12 @@ const DexNav: React.FC = () => {
   const { pathname } = useLocation()
   const { chainId } = useActiveWeb3React()
 
-  const onLiquidity = pathname?.includes('add') || pathname?.includes('pool') || pathname?.includes('remove')
+  const onLiquidity =
+    pathname?.includes('add') ||
+    pathname?.includes('pool') ||
+    pathname?.includes('remove') ||
+    pathname?.includes('find')
+
   const [onPresentSettingsModal] = useModal(<SettingsModal />)
 
   return (

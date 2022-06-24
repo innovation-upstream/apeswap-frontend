@@ -34,19 +34,6 @@ const StyledText = styled(Text)`
   }
 `
 
-const Title = styled(Text)`
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 5px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 22px;
-    margin-top: 0px;
-  }
-`
-const StyledCard = styled(Card)`
-  background-color: ${({ theme }) => theme.colors.white3};
-`
-
 interface PositionCardProps extends CardProps {
   pair: Pair
   showUnwrapped?: boolean

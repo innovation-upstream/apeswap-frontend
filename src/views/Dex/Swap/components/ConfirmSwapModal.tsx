@@ -3,10 +3,8 @@ import React, { useCallback, useMemo } from 'react'
 import { currencyEquals, Trade } from '@apeswapfinance/sdk'
 import { ModalProps } from '@apeswapfinance/uikit'
 import { Flex } from '@ape.swap/uikit'
-import { dexStyles } from 'views/Dex/styles'
 import { RouterTypeParams } from 'state/swap/actions'
 import TransactionConfirmationModal, {
-  ConfirmationModalContent,
   TransactionErrorContent,
 } from 'components/TransactionConfirmationModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -102,7 +100,6 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
           {modalHeader()}
           {modalBottom()}
         </Flex>
-        // <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
       ),
     [onDismiss, modalBottom, modalHeader, swapErrorMessage],
   )

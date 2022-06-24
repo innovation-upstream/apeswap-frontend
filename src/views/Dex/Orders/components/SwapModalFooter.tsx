@@ -1,13 +1,10 @@
 /** @jsxImportSource theme-ui */
 import React, { useMemo } from 'react'
-import { Currency, Trade, TradeType } from '@apeswapfinance/sdk'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
-import { AutoRow } from 'components/layout/Row'
+import { Currency, Trade } from '@apeswapfinance/sdk'
+import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
-import DexTradeInfo from 'views/Dex/components/DexTradeInfo'
-import { Button, Text, Flex } from '@ape.swap/uikit'
-import { Field, RouterTypeParams } from 'state/swap/actions'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Button, Flex } from '@ape.swap/uikit'
+import { RouterTypeParams } from 'state/swap/actions'
 import OrderTradeInfo from './OrderTradeInfo'
 
 export default function SwapModalFooter({

@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from 'react'
 import { useCurrency } from 'hooks/Tokens'
-import { ArrowDropLeftIcon, Flex, Text } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { Link, RouteComponentProps } from 'react-router-dom'
-import { Currency, CurrencyAmount, JSBI, Percent, TokenAmount, Trade } from '@apeswapfinance/sdk'
-import { useAppDispatch } from 'state'
+import { RouteComponentProps } from 'react-router-dom'
+import { JSBI, Percent } from '@apeswapfinance/sdk'
 import { useBurnActionHandlers, useBurnState, useDerivedBurnInfo } from 'state/burn/hooks'
 import { useTokenBalance } from 'state/wallet/hooks'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -21,16 +20,9 @@ function RemoveLiquidity({
   match: {
     params: { currencyIdA, currencyIdB },
   },
-  history,
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
-  const { account, chainId, library } = useActiveWeb3React()
-  const dispatch = useAppDispatch()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-
-  /**
-   * TODO: Setup first liquidity add message
-   *
-   */
 
   // Set currencies
   const currencyA = useCurrency(currencyIdA)
@@ -82,7 +74,7 @@ function RemoveLiquidity({
   )
 
   const handleMaxInput = useCallback(
-    (_: Field) => {
+    () => {
       onUserInput(Field.LIQUIDITY_PERCENT, '100')
     },
     [onUserInput],

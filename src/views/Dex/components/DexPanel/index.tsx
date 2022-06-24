@@ -45,9 +45,9 @@ const DexPanel: React.FC<DexPanelProps> = ({
   }, [chainId, currency, isRemoveLiquidity])
 
   return (
-    <Flex sx={{ ...styles.dexPanelContainer }}>
-      <Flex sx={{ ...styles.panelTopContainer }}>
-        <Text sx={{ ...styles.swapDirectionText }}>{panelText}</Text>
+    <Flex sx={styles.dexPanelContainer}>
+      <Flex sx={styles.panelTopContainer}>
+        <Text sx={styles.swapDirectionText}>{panelText}</Text>
         <NumericalInput
           value={isRemoveLiquidity ? `${value}%` : value}
           onUserInput={(val) => onUserInput(fieldType, val)}
@@ -73,14 +73,14 @@ const DexPanel: React.FC<DexPanelProps> = ({
             }}
           >
             <DoubleCurrencyLogo currency0={currency} currency1={otherCurrency} size={30} />
-            <Text sx={{ ...tokenSelectorStyles.tokenText }}>
+            <Text sx={tokenSelectorStyles.tokenText}>
               {currency?.getSymbol(chainId)} - {otherCurrency?.getSymbol(chainId)}
             </Text>
           </Flex>
         )}
       </Flex>
-      <Flex sx={{ ...styles.panelBottomContainer }}>
-        <Text size="12px" sx={{ ...styles.panelBottomText }}>
+      <Flex sx={styles.panelBottomContainer}>
+        <Text size="12px" sx={styles.panelBottomText}>
           {usdVal &&
             value !== '.' &&
             value &&
@@ -91,7 +91,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
         </Text>
         {account && (
           <Flex sx={{ alignItems: 'center' }}>
-            <Text size="12px" sx={{ ...styles.panelBottomText }}>
+            <Text size="12px" sx={styles.panelBottomText}>
               {t('Balance: %balance%', { balance: currencyBalance || 'loading' })}
             </Text>
             {(fieldType === Field.INPUT ||
@@ -99,7 +99,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
               fieldType === MintField.CURRENCY_B ||
               isRemoveLiquidity) &&
               parseFloat(currencyBalance) > 0 && (
-                <Flex sx={{ ...styles.maxButton }} size="sm" onClick={() => handleMaxInput(fieldType)}>
+                <Flex sx={styles.maxButton} size="sm" onClick={() => handleMaxInput(fieldType)}>
                   <Text color="primaryBright" sx={{ lineHeight: '0px' }}>
                     {t('MAX')}
                   </Text>

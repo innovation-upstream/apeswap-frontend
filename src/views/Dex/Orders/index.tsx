@@ -4,13 +4,12 @@ import { useCurrency } from 'hooks/Tokens'
 import { Field, SwapDelay } from 'state/swap/actions'
 import { Flex, Text, useModal } from '@ape.swap/uikit'
 import { Link } from '@apeswapfinance/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import confirmPriceImpactWithoutFee from 'views/Swap/components/confirmPriceImpactWithoutFee'
 import { computeTradePriceBreakdown } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
 import { CurrencyAmount, JSBI, Trade } from '@apeswapfinance/sdk'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
-import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
+import { useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useOrderCallback } from 'hooks/useOrderCallback'
 import maxAmountSpend from 'utils/maxAmountSpend'
@@ -24,7 +23,7 @@ import OrdersActions from './components/OrdersActions'
 import OrderHistoryPanel from './components/OrderHistoryPanel'
 import OrderTradeInfo from './components/OrderTradeInfo'
 
-const Swap: React.FC = () => {
+const Orders: React.FC = () => {
   // modal and loading
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
@@ -41,12 +40,7 @@ const Swap: React.FC = () => {
   /**
    * TODO: Add back tracking code.
    * TODO: Make sure handle currency selection is okay
-   * TODO: Include Expert mode
    */
-
-  const loadedUrlParams = useDefaultsFromURLSearch()
-
-  const { chainId } = useActiveWeb3React()
 
   const { t } = useTranslation()
 
@@ -58,13 +52,8 @@ const Swap: React.FC = () => {
   const { INPUT, OUTPUT, independentField, typedValue, recipient, swapDelay, bestRoute } = useSwapState()
 
   // the callback to execute the swap
-  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient, onSetSwapDelay } =
-    useSwapActionHandlers()
+  const { onSwitchTokens, onCurrencySelection, onUserInput } = useSwapActionHandlers()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
-
-  console.log(v2Trade)
-  console.log(useDerivedSwapInfo())
-  console.log(parsedAmount)
 
   const [inputCurrency, outputCurrency] = [useCurrency(INPUT?.currencyId), useCurrency(OUTPUT?.currencyId)]
 
@@ -310,4 +299,4 @@ const Swap: React.FC = () => {
   )
 }
 
-export default React.memo(Swap)
+export default React.memo(Orders)

@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Svg, Text } from '@ape.swap/uikit'
+import { Button, Flex, Text } from '@ape.swap/uikit'
 import { Modal } from '@apeswapfinance/uikit'
-import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
+import { CurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import { Field } from 'state/mint/actions'
 import { ConfirmationPendingContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useUserSlippageTolerance } from 'state/user/hooks'
@@ -40,7 +40,7 @@ const AddLiquidityModal: React.FC<AddLiquidityModalProps> = ({
       ) : txHash ? (
         <TransactionSubmittedContent chainId={chainId} hash={txHash} onDismiss={onDismiss} />
       ) : (
-        <Flex sx={{ ...styles.modalWrapper }}>
+        <Flex sx={styles.modalWrapper}>
           <>
             <Flex sx={{ ...styles.confirmDisabledInputContainer, transform: 'translate(0px, 12px)' }}>
               <Text size="22px" weight={700}>
@@ -54,8 +54,8 @@ const AddLiquidityModal: React.FC<AddLiquidityModalProps> = ({
               </Flex>
             </Flex>
             <Flex sx={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Flex sx={{ ...styles.outerLogoCircle }}>
-                <Flex sx={{ ...styles.innerLogoCircle }}>
+              <Flex sx={styles.outerLogoCircle}>
+                <Flex sx={styles.innerLogoCircle}>
                   <Text weight={700} color="primaryBright" sx={{ lineHeight: '0px' }}>
                     +
                   </Text>

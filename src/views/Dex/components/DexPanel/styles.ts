@@ -2,7 +2,6 @@ import { ThemeUIStyleObject } from 'theme-ui'
 import { buttonHover } from 'views/Dex/styles'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
-  // Token selector container
   dexPanelContainer: {
     position: 'relative',
     width: '100%',

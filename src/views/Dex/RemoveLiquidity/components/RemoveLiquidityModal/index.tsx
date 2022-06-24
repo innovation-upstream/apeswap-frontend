@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Svg, Text } from '@ape.swap/uikit'
+import { Button, Flex, Text } from '@ape.swap/uikit'
 import { Modal } from '@apeswapfinance/uikit'
-import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
+import { DoubleCurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import { Field } from 'state/burn/actions'
 import { ConfirmationPendingContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useUserSlippageTolerance } from 'state/user/hooks'

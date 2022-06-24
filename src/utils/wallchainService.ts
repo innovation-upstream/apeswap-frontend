@@ -69,9 +69,7 @@ export default function callWallchainAPI(
     }),
   })
     .then((response) => {
-      console.log(response)
       if (response.ok) {
-        console.log(response)
         return response.json()
       }
       console.error('Wallchain Error', response.status, response.statusText)
@@ -81,8 +79,6 @@ export default function callWallchainAPI(
     .then((responseJson) => {
       if (responseJson) {
         const dataResonse: DataResponse = responseJson
-        console.log(dataResonse)
-        console.log(wallchainResponseIsValid(dataResonse, value, account, contract.address))
         if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
           onBestRoute({ routerType: RouterTypes.SMART, smartRouter: dataResonse })
           onSetSwapDelay(SwapDelay.VALID)

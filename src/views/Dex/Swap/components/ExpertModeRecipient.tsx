@@ -1,4 +1,4 @@
-import { ArrowDownIcon, Flex, Text } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { textUnderlineHover } from 'views/Dex/styles'

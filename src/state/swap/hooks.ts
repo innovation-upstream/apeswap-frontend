@@ -179,7 +179,6 @@ export function useDerivedSwapInfo(): {
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient,
     swapDelay,
-    bestRoute,
   } = useSwapState()
 
   const inputCurrency = useCurrency(inputCurrencyId)
@@ -248,7 +247,6 @@ export function useDerivedSwapInfo(): {
   const [allowedSlippage] = useUserSlippageTolerance()
 
   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
-  console.log(v2Trade)
   const swapCalls = useSwapCallArguments(v2Trade, allowedSlippage, recipient)
   findBestRoute(swapDelay, swapCalls, account, chainId, onSetSwapDelay, onBestRoute)
 
@@ -351,12 +349,7 @@ export function useDefaultsFromURLSearch():
 
   useEffect(() => {
     if (!chainId) return
-    console.log(parsedQs)
     const parsed = queryParametersToSwapState(parsedQs, chainId)
-    console.log(parsed)
-    console.log(parsed)
-    console.log(parsed)
-    console.log(result)
 
     dispatch(
       replaceSwapState({

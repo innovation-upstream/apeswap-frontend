@@ -1,19 +1,14 @@
 /** @jsxImportSource theme-ui */
-import { Button, Card, CardIcon, CogIcon, Flex, Svg, Text, useModal, AutoRenewIcon } from '@ape.swap/uikit'
-import { Currency } from '@apeswapfinance/sdk'
-import NumericalInput from 'components/LiquidityWidget/CurrencyInput/NumericalInput'
-import { CurrencyLogo } from 'components/Logo'
-import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
+import { Button, Flex, Text } from '@ape.swap/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { RouterTypes } from 'config/constants'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
 import { WrapType } from 'hooks/useWrapCallback'
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 import { useUserSlippageTolerance } from 'state/user/hooks'
-import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
-import ConfirmSwapModal from 'views/Swap/components/ConfirmSwapModal'
+import { warningSeverity } from 'utils/prices'
 import { styles } from './styles'
 import { OrdersActionProps } from './types'
 
@@ -113,7 +108,7 @@ const OrdersActions: React.FC<OrdersActionProps> = ({
     )
   }
 
-  return <Flex sx={{ ...styles.dexActionsContainer }}>{renderAction()}</Flex>
+  return <Flex sx={styles.dexActionsContainer}>{renderAction()}</Flex>
 }
 
 export default React.memo(OrdersActions)

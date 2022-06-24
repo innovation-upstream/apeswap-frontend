@@ -1,18 +1,18 @@
 /** @jsxImportSource theme-ui */
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useCurrency } from 'hooks/Tokens'
-import { ArrowDropLeftIcon, Button, Flex, Text, useModal } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { Link, RouteComponentProps } from 'react-router-dom'
-import { Currency, CurrencyAmount, JSBI, TokenAmount, Trade } from '@apeswapfinance/sdk'
-import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
+import { RouteComponentProps } from 'react-router-dom'
+import { Currency, TokenAmount } from '@apeswapfinance/sdk'
+import { useSwapState } from 'state/swap/hooks'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import { useAppDispatch } from 'state'
 import { Field, resetMintState } from 'state/mint/actions'
 import { currencyId } from 'utils/currencyId'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from 'state/mint/hooks'
-import { dexStyles, textUnderlineHover } from '../styles'
+import { dexStyles } from '../styles'
 import { styles } from './styles'
 import DexPanel from '../components/DexPanel'
 import DexNav from '../components/DexNav'
@@ -27,7 +27,7 @@ function AddLiquidity({
   },
   history,
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
-  const { account, chainId, library } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { INPUT, OUTPUT } = useSwapState()
   const { t } = useTranslation()
@@ -56,8 +56,6 @@ function AddLiquidity({
   const {
     dependentField,
     currencies,
-    pair,
-    pairState,
     currencyBalances,
     parsedAmounts,
     price,

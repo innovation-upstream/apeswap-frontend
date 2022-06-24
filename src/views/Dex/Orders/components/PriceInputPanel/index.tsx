@@ -1,8 +1,7 @@
 /** @jsxImportSource theme-ui */
-import React, { useCallback } from 'react'
+import React from 'react'
 import { Currency } from '@apeswapfinance/sdk'
-import styled from 'styled-components'
-import { Button, Text, Flex } from '@ape.swap/uikit'
+import { Text, Flex } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { CurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'

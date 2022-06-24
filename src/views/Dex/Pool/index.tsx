@@ -1,49 +1,22 @@
 /** @jsxImportSource theme-ui */
 import React, { useMemo } from 'react'
-import styled from 'styled-components'
 import { Pair } from '@apeswapfinance/sdk'
-import { Text, Flex, AddIcon, Button, Card, Spinner } from '@ape.swap/uikit'
-import { Wrapper } from 'views/Swap/components/styled'
-import CurrencyInputHeader from 'views/Swap/components/CurrencyInputHeader'
+import { Text, Flex, AddIcon, Button, Spinner } from '@ape.swap/uikit'
 import { Link } from 'react-router-dom'
-import Page from 'components/layout/Page'
 import UnlockButton from 'components/UnlockButton'
-import SwapBanner from 'components/SwapBanner'
-import WalletTransactions from 'components/RecentTransactions/WalletTransactions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import FullPositionCard from '../../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../../state/wallet/hooks'
 import { usePairs } from '../../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs, useUserRecentTransactions } from '../../../state/user/hooks'
-import Dots from '../../../components/Loader/Dots'
-import { AppBody } from '../../../components/App'
 import { dexStyles } from '../styles'
 import DexNav from '../components/DexNav'
 import { styles } from './styles'
 
-const StyledCard = styled(Card)`
-  /* background-color: ${({ theme }) => (theme.isDark ? '#383838' : '#F0F0F0')}; */
-  background-color: ${({ theme }) => theme.colors.white3};
-`
-
-const StyledText = styled(Text)`
-  font-size: 16px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 25px;
-  }
-`
-
-const StyledFlex = styled(Flex)`
-  background: ${({ theme }) => theme.colors.white2};
-`
-const InnerFlex = styled(Flex)`
-  background: ${({ theme }) => theme.colors.white3};
-`
-
 export default function Pool() {
   const { account } = useActiveWeb3React()
-  const [recentTransactions] = useUserRecentTransactions()
+  // const [recentTransactions] = useUserRecentTransactions()
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
@@ -96,7 +69,11 @@ export default function Pool() {
         />
       ))
     }
-    return <Text textAlign="center">{t('No liquidity found.')}</Text>
+    return (
+      <Flex sx={{ justifyContent: 'center' }}>
+        <Text textAlign="center">{t('No liquidity found.')}</Text>
+      </Flex>
+    )
   }
 
   return (

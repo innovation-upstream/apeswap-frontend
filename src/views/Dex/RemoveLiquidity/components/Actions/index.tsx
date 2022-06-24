@@ -1,33 +1,22 @@
 /** @jsxImportSource theme-ui */
-import { Button, Card, CardIcon, CogIcon, Flex, Svg, Text, useModal, AutoRenewIcon } from '@ape.swap/uikit'
-import { Currency, ETHER, ROUTER_ADDRESS } from '@apeswapfinance/sdk'
+import { Button, Flex, useModal } from '@ape.swap/uikit'
+import { ETHER, ROUTER_ADDRESS } from '@apeswapfinance/sdk'
 import { TransactionResponse } from '@ethersproject/providers'
-import NumericalInput from 'components/LiquidityWidget/CurrencyInput/NumericalInput'
-import { CurrencyLogo } from 'components/Logo'
-import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import UnlockButton from 'components/UnlockButton'
-import { RouterTypes } from 'config/constants'
 import { useTranslation } from 'contexts/Localization'
 import { BigNumber, Contract } from 'ethers'
-import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { parseAddress } from 'hooks/useAddress'
-import { ApprovalState, useApproveCallback, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { usePairContract } from 'hooks/useContract'
-import { PairState } from 'hooks/usePairs'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
-import { WrapType } from 'hooks/useWrapCallback'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Field } from 'state/burn/actions'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useIsExpertMode, useUserSlippageTolerance } from 'state/user/hooks'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from 'utils'
-import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
-import TokenSelector from 'views/Dex/components/TokenSelector'
-import ConfirmSwapModal from 'views/Swap/components/ConfirmSwapModal'
 import RemoveLiquidityModal from '../RemoveLiquidityModal'
-// import AddLiquidityModal from '../AddLiquidityModal'
 import { styles } from './styles'
 import { RemoveLiquidityActionProps } from './types'
 
@@ -53,7 +42,7 @@ const RemoveLiquidityActions: React.FC<RemoveLiquidityActionProps> = ({
   )
 
   // Signature data
-  const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
+  const [signatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
 
   // Approval
   const [approval, approveCallback] = useApproveCallback(
