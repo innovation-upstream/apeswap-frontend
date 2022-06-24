@@ -1172,6 +1172,20 @@ const tokens = {
     },
     decimals: 18,
   },
+  avax: {
+    symbol: 'AVAX',
+    address: {
+      56: '0x1ce0c2827e2ef14d5c4f29a091d735a204794041',
+    },
+    decimals: 18,
+  },
+  dot: {
+    symbol: 'DOT',
+    address: {
+      56: '0x7083609fce4d1d8dc0c979aab8c869ea2c873402',
+    },
+    decimals: 18,
+  },
 
   // Test LPs
 
@@ -1397,6 +1411,22 @@ const tokens = {
     symbol: 'APE-BNB',
     address: {
       56: '0x8B3EBE3422aabEA9920ca820fE43679e3e2E78D3',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  avaxBnb: {
+    symbol: 'AVAX-BNB',
+    address: {
+      56: '0x40aFc7CBd0Dc2bE5860F0035b717d20Afb4827b2',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  dotBnb: {
+    symbol: 'DOT-BNB',
+    address: {
+      56: '0x21CBb561c5d7D70e9E6Cc42136CB22F07552aEef',
     },
     decimals: 18,
     lpToken: true,
