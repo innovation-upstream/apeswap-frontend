@@ -1186,6 +1186,20 @@ const tokens = {
     },
     decimals: 18,
   },
+  comp: {
+    symbol: 'COMP',
+    address: {
+      56: '0x52ce071bd9b1c4b00a0b92d298c512478cad67e8',
+    },
+    decimals: 18,
+  },
+  fil: {
+    symbol: 'FIL',
+    address: {
+      56: '0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153',
+    },
+    decimals: 18,
+  },
 
   // Test LPs
 
@@ -1427,6 +1441,30 @@ const tokens = {
     symbol: 'DOT-BNB',
     address: {
       56: '0x21CBb561c5d7D70e9E6Cc42136CB22F07552aEef',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  primateBnb: {
+    symbol: 'PRIMATE-BNB',
+    address: {
+      56: '0x6acabA892562719085C8418EbA49b8B3475D995a',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  compBnb: {
+    symbol: 'COMP-BNB',
+    address: {
+      56: '0xb4c0c621B2eDfE6C22585ebAC56b0e634907B8A7',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  filBnb: {
+    symbol: 'FIL-BNB',
+    address: {
+      56: '0xcAEC8648dbaC41b6504A8E408892931796D67d87',
     },
     decimals: 18,
     lpToken: true,
