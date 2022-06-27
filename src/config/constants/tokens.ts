@@ -46,8 +46,7 @@ const tokens = {
   busd: {
     symbol: 'BUSD',
     address: {
-      // Swapped to base token for now
-      97: '0x68d24fa18c00b5df32e91c1dddfa6419083606f9',
+      97: '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
       56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
     },
     decimals: 18,
@@ -891,6 +890,13 @@ const tokens = {
     },
     decimals: 18,
   },
+  ftm: {
+    symbol: 'FTM',
+    address: {
+      56: '0xAD29AbB318791D579433D831ed122aFeAf29dcfe',
+    },
+    decimals: 18,
+  },
   moonlight: {
     symbol: 'MOONLIGHT',
     address: {
@@ -1131,12 +1137,110 @@ const tokens = {
     decimals: 18,
   },
 
+  ever: {
+    symbol: 'EVER',
+    address: {
+      97: '0x78eA04b5B63ae22c697c7e629b7E7bfB876D4b6f',
+    },
+    decimals: 18,
+  },
+  for: {
+    symbol: 'FOR',
+    address: {
+      97: '0x9Fee03D36b184881A198201B925A00338b1e3Cc5',
+    },
+    decimals: 18,
+  },
+  hor: {
+    symbol: 'HOR',
+    address: {
+      97: '0xaB10D6f91add497b919c9FA584036408F8163b4C',
+    },
+    decimals: 18,
+  },
+  ney: {
+    symbol: 'NEY',
+    address: {
+      97: '0x93762B86736caa0658016fe55AD23e2f77EB7Cd5',
+    },
+    decimals: 18,
+  },
+  ape: {
+    symbol: 'APE',
+    address: {
+      56: '0x0b079b33b6e72311c6be245f9f660cc385029fc3',
+    },
+    decimals: 18,
+  },
+  avax: {
+    symbol: 'AVAX',
+    address: {
+      56: '0x1ce0c2827e2ef14d5c4f29a091d735a204794041',
+    },
+    decimals: 18,
+  },
+  dot: {
+    symbol: 'DOT',
+    address: {
+      56: '0x7083609fce4d1d8dc0c979aab8c869ea2c873402',
+    },
+    decimals: 18,
+  },
+  comp: {
+    symbol: 'COMP',
+    address: {
+      56: '0x52ce071bd9b1c4b00a0b92d298c512478cad67e8',
+    },
+    decimals: 18,
+  },
+  fil: {
+    symbol: 'FIL',
+    address: {
+      56: '0x0d8ce2a99bb6e3b7db580ed848240e4a0f9ae153',
+    },
+    decimals: 18,
+  },
+  ada: {
+    symbol: 'ADA',
+    address: {
+      56: '0x3ee2200efb3400fabb9aacf31297cbdd1d435d47',
+    },
+    decimals: 18,
+  },
+
+  // Test LPs
+
+  horNey: {
+    symbol: 'HOR-NEY',
+    address: {
+      97: '0x30e74cefd298990880758e20223f03129f52e699',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  forEver: {
+    symbol: 'FOR-EVER',
+    address: {
+      97: '0x4419D815c9c9329f9679782e76ec15bCe1B14a6D',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+
   // LP Tokens
   bananaBnb: {
     symbol: 'BANANA-BNB',
     address: {
       56: '0xf65c1c0478efde3c19b49ecbe7acc57bb6b1d713',
       97: '0x90Fc86A7570063a9eA971ec74f01F89569Ad6237',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  bananaBusd: {
+    symbol: 'BANANA-BUSD',
+    address: {
+      56: '0x7Bd46f6Da97312AC2DBD1749f82E202764C0B914',
     },
     decimals: 18,
     lpToken: true,
@@ -1157,10 +1261,34 @@ const tokens = {
     decimals: 18,
     lpToken: true,
   },
+  bnbMatic: {
+    symbol: 'MATIC-BNB',
+    address: {
+      56: '0x29A4A3D77c010CE100A45831BF7e798f0f0B325D',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
   bnbBtc: {
     symbol: 'BTC-BNB',
     address: {
       56: '0x1E1aFE9D9c5f290d8F6996dDB190bd111908A43D',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  bnbFtm: {
+    symbol: 'FTM-BNB',
+    address: {
+      56: '0x47A0B7bA18Bb80E4888ca2576c2d34BE290772a6',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  bnbCeek: {
+    symbol: 'CEEK-BNB',
+    address: {
+      56: '0x119D6Ebe840966c9Cf4fF6603E76208d30BA2179',
     },
     decimals: 18,
     lpToken: true,
@@ -1288,6 +1416,78 @@ const tokens = {
     symbol: 'HOTCROSS-BUSD',
     address: {
       56: '0x3b9aa711d1d90a4f8639f66c227881729a3317f2',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  ethBnb: {
+    symbol: 'ETH-BNB',
+    address: {
+      56: '0xA0C3Ef24414ED9C9B456740128d8E63D016A9e11',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  apeBNB: {
+    symbol: 'APE-BNB',
+    address: {
+      56: '0x8B3EBE3422aabEA9920ca820fE43679e3e2E78D3',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  avaxBnb: {
+    symbol: 'AVAX-BNB',
+    address: {
+      56: '0x40aFc7CBd0Dc2bE5860F0035b717d20Afb4827b2',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  dotBnb: {
+    symbol: 'DOT-BNB',
+    address: {
+      56: '0x21CBb561c5d7D70e9E6Cc42136CB22F07552aEef',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  primateBnb: {
+    symbol: 'PRIMATE-BNB',
+    address: {
+      56: '0x6acabA892562719085C8418EbA49b8B3475D995a',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  compBnb: {
+    symbol: 'COMP-BNB',
+    address: {
+      56: '0xb4c0c621B2eDfE6C22585ebAC56b0e634907B8A7',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  filBnb: {
+    symbol: 'FIL-BNB',
+    address: {
+      56: '0xcAEC8648dbaC41b6504A8E408892931796D67d87',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  adaBnb: {
+    symbol: 'ADA-BNB',
+    address: {
+      56: '0x40d4543887E4170A1A40Cd8dB15A6b297c812Cb1',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  adaEth: {
+    symbol: 'ADA-ETH',
+    address: {
+      56: '0x61FE209E404166a53Cc627d0ae30A65606315dA7',
     },
     decimals: 18,
     lpToken: true,

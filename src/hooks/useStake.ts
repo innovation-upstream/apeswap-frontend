@@ -7,24 +7,16 @@ import {
   updateNfaStakingUserBalance,
   updateUserNfaStakingStakedBalance,
 } from 'state/actions'
-import { stake, sousStake, nfaStake, stakeVault, miniChefStake, jungleStake } from 'utils/callHelpers'
+import { stake, sousStake, nfaStake, miniChefStake, jungleStake } from 'utils/callHelpers'
 import track from 'utils/track'
 import { CHAIN_ID } from 'config/constants'
-import { updateVaultUserBalance, updateVaultUserStakedBalance } from 'state/vaults'
 import {
   updateDualFarmUserEarnings,
   updateDualFarmUserStakedBalances,
   updateDualFarmUserTokenBalances,
 } from 'state/dualFarms'
 import { useNetworkChainId } from 'state/hooks'
-import {
-  useJungleChef,
-  useMasterchef,
-  useMiniChefContract,
-  useNfaStakingChef,
-  useSousChef,
-  useVaultApe,
-} from './useContract'
+import { useJungleChef, useMasterchef, useMiniChefContract, useNfaStakingChef, useSousChef } from './useContract'
 import useActiveWeb3React from './useActiveWeb3React'
 
 const useStake = (pid: number) => {
@@ -135,41 +127,6 @@ export const useNfaStake = (sousId) => {
       })
     },
     [account, dispatch, nfaStakeChefContract, sousId, chainId],
-  )
-
-  return { onStake: handleStake }
-}
-
-export const useVaultStake = (pid: number) => {
-  // TODO switch to useActiveWeb3React. useWeb3React is legacy hook and useActiveWeb3React should be used going forward
-  const { account } = useWeb3React()
-  const vaultApeContract = useVaultApe()
-  const dispatch = useDispatch()
-  const chainId = useNetworkChainId()
-
-  const handleStake = useCallback(
-    async (amount: string) => {
-      try {
-        const txHash = await stakeVault(vaultApeContract, pid, amount)
-        track({
-          event: 'vault',
-          chain: chainId,
-          data: {
-            cat: 'stake',
-            amount,
-            pid,
-          },
-        })
-        dispatch(updateVaultUserBalance(account, chainId, pid))
-        dispatch(updateVaultUserStakedBalance(account, chainId, pid))
-        console.info(txHash)
-        return txHash
-      } catch (e) {
-        console.error(e)
-      }
-      return null
-    },
-    [account, vaultApeContract, dispatch, pid, chainId],
   )
 
   return { onStake: handleStake }

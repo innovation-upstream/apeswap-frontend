@@ -21,10 +21,10 @@ const ExpandSmallAnimation = (size?: number) => keyframes`
     100%{height: ${size || 234}px;}
 `
 
-export const ListExpandedContainer = styled(Flex)<{ size?: number }>`
+export const ListExpandedContainer = styled(Flex)<{ size?: number; justifyContent?: string }>`
   height: ${({ size }) => size || 234}px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${({ justifyContent }) => justifyContent || 'space-between'};
   flex-wrap: wrap;
   animation: ${({ size }) => ExpandSmallAnimation(size)} 0.3s ease;
   overflow: hidden;
@@ -85,16 +85,17 @@ export const DropDownIcon = styled(ArrowDropDownIcon)<{ open: boolean }>`
   cursor: pointer;
 `
 
-export const TagContainer = styled(Flex)`
+export const TagContainer = styled(Flex)<{ backgroundColor: string }>`
   align-items: center;
   justify-content: center;
-  width: 31px;
   height: 15px;
   border-radius: 7px;
   color: white;
+  font-weight: 800;
   line-height: 0px;
   font-size: 10px;
-  background-color: red;
+  padding: 9px 5px;
+  background-color: ${({ backgroundColor }) => backgroundColor};
 `
 
 export const ContentContainer = styled(Flex)`

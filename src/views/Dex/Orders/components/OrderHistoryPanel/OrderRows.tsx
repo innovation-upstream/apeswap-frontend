@@ -85,7 +85,7 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
                       }
                       width="300px"
                       placement="topLeft"
-                      transformTip='translate(-18px, 0px)'
+                      transformTip="translate(-18px, 0px)"
                     >
                       <Svg icon="info" width="12px" />
                     </TooltipBubble>

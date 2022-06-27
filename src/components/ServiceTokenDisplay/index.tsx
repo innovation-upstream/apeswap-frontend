@@ -91,8 +91,10 @@ const ServiceTokenDisplay: React.FC<ServiceTokenDisplayProps> = ({
       <TokenContainer ml={-15} srcs={token3Urls} size={size} />
     </Flex>
   )
-
   const displayToReturn = () => {
+    if (stakeLp && earnLp) {
+      return StakeLpEarnLp
+    }
     if (noEarnToken) {
       return LpToken
     }
@@ -111,9 +113,6 @@ const ServiceTokenDisplay: React.FC<ServiceTokenDisplayProps> = ({
     }
     if (stakeLp && !earnLp) {
       return StakeLpEarnToken
-    }
-    if (stakeLp && earnLp) {
-      return StakeLpEarnLp
     }
     return StakeTokenEarnLp
   }

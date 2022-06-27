@@ -7,8 +7,12 @@ export interface ListViewProps {
   cardContent: React.ReactNode
   expandedContent?: React.ReactNode
   expandedContentSize?: number
+  expandedContentJustified?: string
   billArrow?: boolean
   stakeLp?: boolean
+  earnLp?: boolean
+  titleContainerWidth?: number
+  alignServiceTokens?: boolean
 }
 
 export interface ListCardProps extends ListViewProps {

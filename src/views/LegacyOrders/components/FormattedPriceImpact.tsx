@@ -9,7 +9,7 @@ import { ErrorText } from './styled'
  */
 export default function FormattedPriceImpact({ priceImpact }: { priceImpact?: Percent }) {
   return (
-    <ErrorText fontSize="14px" severity={warningSeverity(priceImpact)} style={{lineHeight: '15px'}}>
+    <ErrorText fontSize="14px" severity={warningSeverity(priceImpact)} style={{ lineHeight: '15px' }}>
       {priceImpact ? (priceImpact.lessThan(ONE_BIPS) ? '<0.01%' : `${priceImpact.toFixed(2)}%`) : '-'}
     </ErrorText>
   )

@@ -144,9 +144,12 @@ export interface Bills extends BillsConfig {
 export interface Vault extends VaultConfig {
   totalStaked?: string
   totalAllocPoint?: string
+  keeperFee?: string
+  withdrawFee?: string
   allocPoint?: string
   weight?: number
   stakeTokenPrice?: number
+  rewardTokenPrice?: number
   strategyPairBalance?: string
   strategyPairBalanceFixed?: string
   totalInQuoteToken?: string
@@ -162,6 +165,7 @@ export interface Vault extends VaultConfig {
     tokenBalance: string
     stakedBalance: string
     stakedWantBalance: string
+    pendingRewards: string
   }
 }
 

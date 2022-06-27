@@ -1,7 +1,8 @@
+/** @jsxImportSource theme-ui */
+import { Flex, Svg } from '@ape.swap/uikit'
 import { InfoIcon, TooltipBubble } from '@apeswapfinance/uikit'
-import { Flex } from '@ape.swap/uikit'
 import React, { useState } from 'react'
-import { ContentContainer, DropDownIcon, ListCardContainer, ListExpandedContainer, styles } from './styles'
+import { ContentContainer, ListCardContainer, ListExpandedContainer, styles } from './styles'
 import { ListCardProps } from './types'
 
 const ListCard: React.FC<ListCardProps> = ({
@@ -12,21 +13,34 @@ const ListCard: React.FC<ListCardProps> = ({
   expandedContent,
   infoContent,
   infoContentPosition,
+  expandedContentJustified,
+  titleContainerWidth,
   open,
+  alignServiceTokens,
 }) => {
   const [expanded, setExpanded] = useState(open)
   return (
     <>
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>
-        <Flex sx={styles.titleContainer}>
-          {serviceTokenDisplay}
-          <Flex sx={{ flexDirection: 'row', marginLeft: '10px' }}>
+        <Flex sx={{ ...styles.titleContainer, maxWidth: titleContainerWidth || '290px' }}>
+          <Flex sx={{ mr: '10px' }}>
+            {alignServiceTokens ? (
+              <Flex sx={{ width: '130px', justifyContent: 'flex-end' }}>{serviceTokenDisplay}</Flex>
+            ) : (
+              serviceTokenDisplay
+            )}
+          </Flex>
+          <Flex sx={{ justifyContent: 'center' }}>
             {tag}
             {title}
           </Flex>
         </Flex>
         <ContentContainer>{cardContent}</ContentContainer>
-        {expandedContent && <DropDownIcon open={expanded} mr="30px" />}
+        {expandedContent && (
+          <span style={{ marginRight: '30px' }}>
+            <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="15px" />
+          </span>
+        )}
         {infoContent && (
           <div style={{ display: 'inline-block' }}>
             <TooltipBubble
@@ -39,7 +53,9 @@ const ListCard: React.FC<ListCardProps> = ({
           </div>
         )}
       </ListCardContainer>
-      {expandedContent && expanded && <ListExpandedContainer>{expandedContent}</ListExpandedContainer>}
+      {expandedContent && expanded && (
+        <ListExpandedContainer justifyContent={expandedContentJustified}>{expandedContent}</ListExpandedContainer>
+      )}
     </>
   )
 }

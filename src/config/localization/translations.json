@@ -867,5 +867,12 @@
   "Lend": "Lend",
 
   "HOL UP DEVZ": "THE ITEMS BELOW NEED TO BE TRANSLATED",
-  "Ape In": "Ape In"
+  "Ape In": "Ape In",
+  "Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.": "Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.",
+  "Daily APY includes BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.": "Daily APY includes BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.",
+  "BANANA Maximizers": "BANANA Maximizers",
+  "AUTO": "AUTO",
+  "The native router that powers the majority of trades on the ApeSwap DEX.": "The native router that powers the majority of trades on the ApeSwap DEX.",
+  "The router used to upgrade transactions and return a swap bonus if the trade meets certain conditions.": "The router used to upgrade transactions and return a swap bonus if the trade meets certain conditions.",
+  "The router used to facilitate transactions through other DEXs if ApeSwap’s DEX cannot fulfill them.": "The router used to facilitate transactions through other DEXs if ApeSwap’s DEX cannot fulfill them."
 }
