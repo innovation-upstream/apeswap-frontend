@@ -149,7 +149,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
   return (
     <Modal
       onDismiss={onDismiss}
-      title={t('ROI Calculator')}
+      title={t('Return Calculator')}
       minWidth={isMobile ? '320px' : '400px'}
       maxWidth={isMobile ? '90vw' : '400px'}
       onAnimationComplete={() => setKeySuffix(keySuffix + 1)}
@@ -209,7 +209,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
             ))}
           </Tabs>
         </Box>
-        <Heading sx={styles.title}>{t('ROI AT CURRENT RATES')}</Heading>
+        <Heading sx={styles.title}>{t('RETURN AT CURRENT RATES')}</Heading>
         <Flex sx={styles.roiContainer(isDark)}>
           <Logo srcs={tokenUrl || []} width={46} />
           <Box>

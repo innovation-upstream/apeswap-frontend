@@ -7,16 +7,12 @@ export const tokenInfo = [
     text: 'APY (1x daily compound)',
     value: 'detailApy',
   },
-  {
-    text: 'Farm Multiplier',
-    value: 'multiplier',
-  },
 ]
 
 export const tokenListInfo = {
   lpPair: [
     'Calculated based on current rates.',
-    'LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.',
+    'LP Rewards: 0.15% of trading fees on BNB Chain, 0.05% on Polygon. Distributed proportionally among LP token holders.',
     'All figures are estimates for <i>illustrative purposes only</i>, and do not represent guaranteed returns. <i>Your actual returns may vary.</i>',
   ],
   notLpPair: [
