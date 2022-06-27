@@ -159,6 +159,14 @@ export function useDerivedMintInfo(
     return undefined
   }, [liquidityMinted, totalSupply])
 
+  const getSymbol = (symbol) => {
+    if (symbol === 'ETH') {
+      if (chainId === 56) return 'BNB'
+      if (chainId === 137) return 'MATIC'
+    }
+    return symbol
+  }
+
   let error: string | undefined
   if (!account) {
     error = t('Connect Wallet')
@@ -175,11 +183,11 @@ export function useDerivedMintInfo(
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
 
   if (currencyAAmount && currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount)) {
-    error = `${t('Insufficient')} ${currencies[Field.CURRENCY_A]?.symbol} ${t('balance')}`
+    error = `${t('Insufficient')} ${getSymbol(currencies[Field.CURRENCY_A]?.symbol)} ${t('balance')}`
   }
 
   if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
-    error = `${t('Insufficient')} ${currencies[Field.CURRENCY_B]?.symbol} ${t('balance')}`
+    error = `${t('Insufficient')} ${getSymbol(currencies[Field.CURRENCY_B]?.symbol)} ${t('balance')}`
   }
 
   return {
