@@ -16,7 +16,18 @@ const QuestSlide4 = () => {
         <Heading>{t('Congratulations!')}</Heading>
       </Box>
       <Box sx={{ marginTop: '10px' }}>
-        <Text size="14px">{t('You are officialy ready to begin your DeFi journey with ApeSwap. Good luck!')}</Text>
+        <Text size="14px">{t('You are officialy ready to begin your')}</Text>{' '}
+        <Text color="yellow" size="14px">
+          <a
+            href="https://box.genki.io/RJ4LP3"
+            style={{ textDecoration: 'underline' }}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {t('DeFi journey')}
+          </a>
+        </Text>{' '}
+        <Text size="14px">{t('with ApeSwap. Good luck!')}</Text>
       </Box>
     </Box>
   )

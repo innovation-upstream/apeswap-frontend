@@ -16,7 +16,18 @@ const QuestSlide3 = () => {
         <Heading>{t('Can You Complete Them All?')}</Heading>
       </Box>
       <Box sx={{ marginTop: '10px' }}>
-        <Text size="14px">{t('Complete the Quests - the more you complete, the more chances you get!')}</Text>
+        <Text size="14px">{t('Complete the')}</Text>{' '}
+        <Text color="yellow" size="14px">
+          <a
+            href="https://box.genki.io/RJ4LP3"
+            style={{ textDecoration: 'underline' }}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {t('Quests')}
+          </a>
+        </Text>{' '}
+        <Text size="14px">{t('- the more you complete, the more chances you get!')}</Text>
       </Box>
     </Box>
   )

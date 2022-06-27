@@ -18,7 +18,7 @@ const QuestSlide2 = () => {
       <Box sx={{ marginTop: '10px' }}>
         <Text color="yellow" size="14px">
           <a
-            href="https://beta-box.genki.io/FLMHAQ"
+            href="https://box.genki.io/RJ4LP3"
             style={{ textDecoration: 'underline' }}
             target="_blank"
             rel="noreferrer noopener"

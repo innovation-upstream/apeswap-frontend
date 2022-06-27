@@ -16,7 +16,18 @@ const QuestSlide1 = () => {
         <Heading>{t('Hello, Crypto Adventurer.')}</Heading>
       </Box>
       <Box sx={{ marginTop: '10px' }}>
-        <Text size="14px">{t('Complete the introductory Quests to earn great rewards while you learn!')}</Text>
+        <Text size="14px">{t('Complete the')}</Text>{' '}
+        <Text color="yellow" size="14px">
+          <a
+            href="https://box.genki.io/RJ4LP3"
+            style={{ textDecoration: 'underline' }}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {t('introductory Quests')}
+          </a>
+        </Text>{' '}
+        <Text size="14px">{t('to earn great rewards while you learn!')}</Text>
       </Box>
     </Box>
   )
