@@ -1200,6 +1200,13 @@ const tokens = {
     },
     decimals: 18,
   },
+  ada: {
+    symbol: 'ADA',
+    address: {
+      56: '0x3ee2200efb3400fabb9aacf31297cbdd1d435d47',
+    },
+    decimals: 18,
+  },
 
   // Test LPs
 
@@ -1465,6 +1472,22 @@ const tokens = {
     symbol: 'FIL-BNB',
     address: {
       56: '0xcAEC8648dbaC41b6504A8E408892931796D67d87',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  adaBnb: {
+    symbol: 'ADA-BNB',
+    address: {
+      56: '0x40d4543887E4170A1A40Cd8dB15A6b297c812Cb1',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  adaEth: {
+    symbol: 'ADA-ETH',
+    address: {
+      56: '0x61FE209E404166a53Cc627d0ae30A65606315dA7',
     },
     decimals: 18,
     lpToken: true,
