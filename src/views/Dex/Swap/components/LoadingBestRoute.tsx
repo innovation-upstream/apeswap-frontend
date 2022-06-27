@@ -9,9 +9,9 @@ import { styles } from './DexTradeInfo/styles'
 const LoadingBestRoute: React.FC = () => {
   const { t } = useTranslation()
   return (
-    <Flex sx={{ ...styles.dexTradeInfoContainer }}>
+    <Flex sx={styles.dexTradeInfoContainer}>
       <Flex sx={{ alignItems: 'center' }}>
-        <Spinner size="22.5px" mr="15px" color="text" />
+        <Spinner size="22px" mr="15px" color="text" />
         <Text size="12px" sx={dexStyles.textWrap}>
           {t('Fetching the best route')}
         </Text>

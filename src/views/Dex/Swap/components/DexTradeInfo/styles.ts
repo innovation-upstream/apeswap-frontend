@@ -17,8 +17,9 @@ export const styles: Record<string, ThemeUIStyleObject> = {
 
   normalRouterContainer: {
     borderRadius: 4,
-    padding: '0px 6px',
-    minHeight: '23px',
+    padding: '4px 6px',
+    margin: '2px 0px',
+    minHeight: '16px',
     mr: '7px',
     justifyContent: 'center',
     alignItems: 'center',

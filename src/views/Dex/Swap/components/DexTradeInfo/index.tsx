@@ -57,7 +57,7 @@ const DexTradeInfo: React.FC<{
               size="8px"
               color={isBonusRouter ? 'primaryBright' : 'text'}
               weight={700}
-              sx={{ ...dexStyles.textWrap, lineHeight: isBonusRouter ? '12px' : '15px' }}
+              sx={{ ...dexStyles.textWrap, lineHeight: isBonusRouter ? '10px' : '10px' }}
             >
               {isBonusRouter ? t('Bonus Router') : t('ApeSwap Router')}
             </Text>
