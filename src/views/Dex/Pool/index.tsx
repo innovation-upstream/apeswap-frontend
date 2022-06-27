@@ -13,10 +13,11 @@ import { toV2LiquidityToken, useTrackedTokenPairs, useUserRecentTransactions } f
 import { dexStyles } from '../styles'
 import DexNav from '../components/DexNav'
 import { styles } from './styles'
+import RecentTransactions from '../components/RecentTransactions'
 
 export default function Pool() {
   const { account } = useActiveWeb3React()
-  // const [recentTransactions] = useUserRecentTransactions()
+  const [recentTransactions] = useUserRecentTransactions()
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
@@ -110,8 +111,8 @@ export default function Pool() {
             </Text>
           </Flex>
         )}
-        {/* {recentTransactions && <WalletTransactions />} */}
       </Flex>
+      {recentTransactions && <RecentTransactions />}
     </Flex>
   )
 }

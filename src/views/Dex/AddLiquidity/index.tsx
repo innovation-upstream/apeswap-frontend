@@ -7,6 +7,7 @@ import { useTranslation } from 'contexts/Localization'
 import { RouteComponentProps } from 'react-router-dom'
 import { Currency, TokenAmount } from '@apeswapfinance/sdk'
 import { useSwapState } from 'state/swap/hooks'
+import { useUserRecentTransactions } from 'state/user/hooks'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import { useAppDispatch } from 'state'
 import { Field, resetMintState } from 'state/mint/actions'
@@ -20,6 +21,7 @@ import AddLiquiditySign from './components/AddLiquiditySign'
 import PoolInfo from './components/PoolInfo'
 import AddLiquidityActions from './components/Actions'
 import MyPositions from '../components/MyPositions'
+import RecentTransactions from '../components/RecentTransactions'
 
 function AddLiquidity({
   match: {
@@ -39,6 +41,8 @@ function AddLiquidity({
   // Set either param currency or swap currency
   currencyIdA = currencyIdA || INPUT.currencyId
   currencyIdB = currencyIdB || OUTPUT.currencyId
+
+  const [recentTransactions] = useUserRecentTransactions()
 
   // Set currencies
   const currencyA = useCurrency(currencyIdA)
@@ -181,6 +185,7 @@ function AddLiquidity({
           price={price}
         />
       </Flex>
+      {recentTransactions && <RecentTransactions />}
     </Flex>
   )
 }

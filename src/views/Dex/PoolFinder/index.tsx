@@ -10,7 +10,7 @@ import Row from '../../../components/layout/Row'
 import CurrencySearchModal from '../../../components/SearchModal/CurrencySearchModal'
 import { PairState, usePair } from '../../../hooks/usePairs'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
-import { usePairAdder } from '../../../state/user/hooks'
+import { usePairAdder, useUserRecentTransactions } from '../../../state/user/hooks'
 import { useTokenBalance } from '../../../state/wallet/hooks'
 import StyledInternalLink from '../../../components/Links'
 import { currencyId } from '../../../utils/currencyId'
@@ -19,6 +19,7 @@ import { dexStyles } from '../styles'
 import { styles } from './styles'
 import DexNav from '../components/DexNav'
 import MyPositions from '../components/MyPositions'
+import RecentTransactions from '../components/RecentTransactions'
 
 enum Fields {
   TOKEN0 = 0,
@@ -27,6 +28,7 @@ enum Fields {
 
 export default function PoolFinder() {
   const { account, chainId } = useActiveWeb3React()
+  const [recentTransactions] = useUserRecentTransactions()
 
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
   const [currency0, setCurrency0] = useState<Currency | null>(ETHER)
@@ -205,6 +207,7 @@ export default function PoolFinder() {
           selectedCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
         /> */}
       </Flex>
+      {recentTransactions && <RecentTransactions />}
     </Flex>
   )
 }

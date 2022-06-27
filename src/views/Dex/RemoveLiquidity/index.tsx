@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { RouteComponentProps } from 'react-router-dom'
 import { JSBI, Percent } from '@apeswapfinance/sdk'
 import { useBurnActionHandlers, useBurnState, useDerivedBurnInfo } from 'state/burn/hooks'
+import { useUserRecentTransactions } from 'state/user/hooks'
 import { useTokenBalance } from 'state/wallet/hooks'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { Field } from 'state/burn/actions'
@@ -15,6 +16,7 @@ import DexNav from '../components/DexNav'
 import PoolInfo from './components/PoolInfo'
 import RemoveLiquidityActions from './components/Actions'
 import MyPositions from '../components/MyPositions'
+import RecentTransactions from '../components/RecentTransactions'
 
 function RemoveLiquidity({
   match: {
@@ -23,6 +25,7 @@ function RemoveLiquidity({
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
+  const [recentTransactions] = useUserRecentTransactions()
 
   // Set currencies
   const currencyA = useCurrency(currencyIdA)
@@ -116,6 +119,7 @@ function RemoveLiquidity({
           poolTokenPercentage={poolTokenPercentage}
         />
       </Flex>
+      {recentTransactions && <RecentTransactions />}
     </Flex>
   )
 }

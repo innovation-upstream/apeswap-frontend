@@ -8,7 +8,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { computeTradePriceBreakdown } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
 import { CurrencyAmount, JSBI, Trade } from '@apeswapfinance/sdk'
-import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
+import { useExpertModeManager, useUserRecentTransactions, useUserSlippageTolerance } from 'state/user/hooks'
 import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import maxAmountSpend from 'utils/maxAmountSpend'
@@ -22,6 +22,7 @@ import DexTradeInfo from '../components/DexTradeInfo'
 import LoadingBestRoute from './components/LoadingBestRoute'
 import ExpertModeRecipient from './components/ExpertModeRecipient'
 import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
+import RecentTransactions from '../components/RecentTransactions'
 
 const Swap: React.FC = () => {
   // modal and loading
@@ -50,12 +51,13 @@ const Swap: React.FC = () => {
 
   const [allowedSlippage] = useUserSlippageTolerance()
 
+  const [recentTransactions] = useUserRecentTransactions()
+
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
 
   const { INPUT, OUTPUT, independentField, typedValue, recipient, swapDelay, bestRoute } = useSwapState()
 
-  
   // the callback to execute the swap
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient, onSetSwapDelay } =
     useSwapActionHandlers()
@@ -244,6 +246,7 @@ const Swap: React.FC = () => {
           disabled={fetchingBestRoute}
         />
       </Flex>
+      {recentTransactions && <RecentTransactions />}
     </Flex>
   )
 }
