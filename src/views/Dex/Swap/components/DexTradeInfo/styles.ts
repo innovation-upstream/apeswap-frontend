@@ -12,15 +12,16 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     flexDirection: 'column',
     height: 'fit-content',
     cursor: 'pointer',
+    overflow: 'hidden',
   },
 
   normalRouterContainer: {
     borderRadius: 4,
-    height: '16px',
-    padding: '2px 6px',
+    padding: '0px 6px',
+    minHeight: '23px',
+    mr: '7px',
     justifyContent: 'center',
     alignItems: 'center',
-    mr: '7px',
   },
 
   bottomRouterContainer: {

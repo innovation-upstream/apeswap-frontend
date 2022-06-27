@@ -3,7 +3,8 @@ import { Flex, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { Spinner } from 'theme-ui'
-import { styles } from '../../components/DexTradeInfo/styles'
+import { dexStyles } from 'views/Dex/styles'
+import { styles } from './DexTradeInfo/styles'
 
 const LoadingBestRoute: React.FC = () => {
   const { t } = useTranslation()
@@ -11,7 +12,9 @@ const LoadingBestRoute: React.FC = () => {
     <Flex sx={{ ...styles.dexTradeInfoContainer }}>
       <Flex sx={{ alignItems: 'center' }}>
         <Spinner size="22.5px" mr="15px" color="text" />
-        <Text size="12px">{t('Fetching the best route')}</Text>
+        <Text size="12px" sx={dexStyles.textWrap}>
+          {t('Fetching the best route')}
+        </Text>
       </Flex>
     </Flex>
   )

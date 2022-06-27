@@ -43,4 +43,8 @@ export const dexStyles: Record<string, ThemeUIStyleObject> = {
     margin: '0px 10px',
     flexDirection: 'column',
   },
+  textWrap: {
+    wordBreak: 'break-all',
+    lineHeight: '15px',
+  },
 }

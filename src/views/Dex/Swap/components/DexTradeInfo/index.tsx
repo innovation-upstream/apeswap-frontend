@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Flex, HelpIcon, Svg, Text } from '@ape.swap/uikit'
+import { Flex, HelpIcon, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import { Trade } from '@apeswapfinance/sdk'
 import { useTranslation } from 'contexts/Localization'
 import React, { useMemo, useState } from 'react'
@@ -8,6 +8,7 @@ import { Field, SwapDelay, RouterTypeParams } from 'state/swap/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { RouterTypes } from 'config/constants'
 import { CHAIN_PARAMS } from 'config/constants/chains'
+import { dexStyles } from 'views/Dex/styles'
 import FormattedPriceImpact from 'views/LegacyOrders/components/FormattedPriceImpact'
 import { AnimatePresence, motion } from 'framer-motion'
 import { computeTradePriceBreakdown, computeSlippageAdjustedAmounts } from 'utils/prices'
@@ -52,7 +53,12 @@ const DexTradeInfo: React.FC<{
               background: isBonusRouter ? 'smartGradient' : 'white4',
             }}
           >
-            <Text size="8px" color={isBonusRouter ? 'primaryBright' : 'text'} weight={700}>
+            <Text
+              size="8px"
+              color={isBonusRouter ? 'primaryBright' : 'text'}
+              weight={700}
+              sx={{ ...dexStyles.textWrap, lineHeight: isBonusRouter ? '12px' : '15px' }}
+            >
               {isBonusRouter ? t('Bonus Router') : t('ApeSwap Router')}
             </Text>
           </Flex>
@@ -66,29 +72,37 @@ const DexTradeInfo: React.FC<{
             animate={{ opacity: 1, height: 'fit-content' }}
             transition={{ opacity: { duration: 0.2 } }}
             exit={{ opacity: 0, height: 0 }}
-            sx={{ overflow: 'hidden', position: 'relative' }}
+            sx={{ position: 'relative' }}
           >
             <Divider />
-            <Flex sx={{ justifyContent: 'space-between' }}>
-              <Text size="12px">{t('Price impact')}</Text>
+            <Flex sx={{ justifyContent: 'space-between', margin: '10px 0px' }}>
+              <Text size="12px" sx={dexStyles.textWrap} mr="10px">
+                {t('Price impact')}
+              </Text>
               <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
             </Flex>
-            <Flex sx={{ justifyContent: 'space-between' }}>
-              <Text size="12px">{t('Expected output')}</Text>
-              <Text size="12px">
+            <Flex sx={{ justifyContent: 'space-between', margin: '10px 0px' }}>
+              <Text size="12px" sx={dexStyles.textWrap} mr="10px">
+                {t('Expected output')}
+              </Text>
+              <Text size="12px" sx={dexStyles.textWrap}>
                 {expectedOutput} {trade.outputAmount.currency.getSymbol(chainId)}
               </Text>
             </Flex>
-            <Flex sx={{ justifyContent: 'space-between' }}>
-              <Text size="12px">{t('Minimum recieved')}</Text>
-              <Text size="12px">
+            <Flex sx={{ justifyContent: 'space-between', margin: '10px 0px' }}>
+              <Text size="12px" sx={dexStyles.textWrap} mr="10px">
+                {t('Minimum recieved')}
+              </Text>
+              <Text size="12px" sx={dexStyles.textWrap}>
                 {slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)}{' '}
                 {trade.outputAmount.currency.getSymbol(chainId)}
               </Text>
             </Flex>
-            <Flex sx={{ justifyContent: 'space-between' }}>
-              <Text size="12px">{t('Liquidity provider fee')}</Text>
-              <Text size="12px">
+            <Flex sx={{ justifyContent: 'space-between', margin: '10px 0px' }}>
+              <Text size="12px" sx={dexStyles.textWrap} mr="10px">
+                {t('Liquidity provider fee')}
+              </Text>
+              <Text size="12px" sx={dexStyles.textWrap}>
                 {realizedLPFee
                   ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.getSymbol(chainId)}`
                   : '-'}
@@ -103,19 +117,40 @@ const DexTradeInfo: React.FC<{
                 background: isBonusRouter ? 'smartGradient' : 'white4',
               }}
             >
-              <Flex sx={{ justifyContent: 'space-between' }}>
-                <Text color={isBonusRouter ? 'primaryBright' : 'text'} size="12px" sx={{ fontWeight: '700' }}>
+              <Flex sx={{ justifyContent: 'space-between', margin: '4px 0px' }}>
+                <Text color={isBonusRouter ? 'primaryBright' : 'text'} size="12px" weight={700} sx={dexStyles.textWrap}>
                   {isBonusRouter ? t('Bonus Router') : t('ApeSwap Router')}
                 </Text>
-                <HelpIcon width="12px" color={isBonusRouter ? 'primaryBright' : 'text'} />
+                <Flex sx={{ alignSelf: 'flex-end' }}>
+                  <TooltipBubble
+                    body={
+                      <Text size="12px" weight={500} sx={{ lineHeight: '10px' }}>
+                        {isBonusRouter
+                          ? t(
+                              'The router used to upgrade transactions and return a swap bonus if the trade meets certain conditions.',
+                            )
+                          : t('The native router that powers the majority of trades on the ApeSwap DEX.')}
+                      </Text>
+                    }
+                    placement="topRight"
+                    transformTip="translate(22px, 0px)"
+                    width="200px"
+                  >
+                    <HelpIcon
+                      width="12px"
+                      color={isBonusRouter ? 'primaryBright' : 'text'}
+                      sx={{ alignSelf: 'flex-end' }}
+                    />
+                  </TooltipBubble>
+                </Flex>
               </Flex>
               {isBonusRouter && (
                 <>
-                  <Flex sx={{ justifyContent: 'space-between', height: '18px' }}>
-                    <Text color="primaryBright" size="10px">
+                  <Flex sx={{ justifyContent: 'space-between', margin: '2px 0px' }}>
+                    <Text color="primaryBright" size="10px" sx={dexStyles.textWrap} mr="10px">
                       {t('Estimated swap bonus')}
                     </Text>
-                    <Text color="primaryBright" size="10px">
+                    <Text color="primaryBright" size="10px" sx={dexStyles.textWrap}>
                       ~ {(bestRoute?.bonusRouter?.summary?.searchSummary?.expectedKickbackProfit * 0.3).toFixed(6)}{' '}
                       {CHAIN_PARAMS[chainId].nativeCurrency.symbol}{' '}
                       {`(~$${(bestRoute?.bonusRouter?.summary?.searchSummary?.expectedUsdProfit * 0.3).toFixed(2)})`}
@@ -123,11 +158,11 @@ const DexTradeInfo: React.FC<{
                   </Flex>
                 </>
               )}
-              <Flex sx={{ justifyContent: 'space-between' }}>
-                <Text color={isBonusRouter ? 'primaryBright' : 'text'} size="10px">
+              <Flex sx={{ justifyContent: 'space-between', margin: '4px 0px' }}>
+                <Text color={isBonusRouter ? 'primaryBright' : 'text'} size="10px" sx={dexStyles.textWrap}>
                   {t('Route')}
                 </Text>
-                <Text color={isBonusRouter ? 'primaryBright' : 'text'} size="10px">
+                <Text color={isBonusRouter ? 'primaryBright' : 'text'} size="10px" sx={dexStyles.textWrap}>
                   {route}
                 </Text>
               </Flex>

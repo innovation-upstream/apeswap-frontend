@@ -3,7 +3,7 @@ import { Flex, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { Spinner } from 'theme-ui'
-import { styles } from '../../components/DexTradeInfo/styles'
+import { styles } from '../../Swap/components/DexTradeInfo/styles'
 
 const LoadingBestRoute: React.FC = () => {
   const { t } = useTranslation()

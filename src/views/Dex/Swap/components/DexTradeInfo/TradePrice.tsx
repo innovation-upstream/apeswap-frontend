@@ -1,7 +1,9 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import { Price } from '@apeswapfinance/sdk'
 import { Text } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { dexStyles } from 'views/Dex/styles'
 
 interface TradePriceProps {
   price?: Price
@@ -20,7 +22,13 @@ export default function TradePrice({ price, showInverted, setShowInverted }: Tra
     : `1 ${price?.quoteCurrency?.getSymbol(chainId)} = ${formattedPrice} ${price?.baseCurrency?.getSymbol(chainId)}`
 
   return (
-    <Text size="12px" sx={{ fontWeight: '500' }} onClick={() => setShowInverted(!showInverted)}>
+    <Text
+      size="12px"
+      weight={700}
+      sx={{ ...dexStyles.textWrap }}
+      onClick={() => setShowInverted(!showInverted)}
+      mr="10px"
+    >
       {show && label}
     </Text>
   )
