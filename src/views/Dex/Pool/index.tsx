@@ -79,40 +79,42 @@ export default function Pool() {
 
   return (
     <Flex sx={{ ...dexStyles.pageContainer }}>
-      <Flex sx={{ ...dexStyles.dexContainer }}>
-        <DexNav />
-        <Flex sx={{ flexDirection: 'column', maxWidth: '100%', width: '420px' }}>
-          <Flex sx={{ ...styles.topContainer }}>
-            <Text weight={700} sx={{ textTransform: 'uppercase' }}>
-              {t('Add liquidity to receive LP tokens')}
-            </Text>
-            {account ? (
-              <Button
-                id="join-pool-button"
-                as={Link}
-                to="/add"
-                startIcon={<AddIcon color="white" />}
-                fullWidth
-                mt="10px"
-              >
-                {t('Add Liquidity')}
-              </Button>
-            ) : (
-              <UnlockButton fullWidth mt="10px" />
-            )}
+      <Flex sx={{ flexDirection: 'column' }}>
+        <Flex sx={{ ...dexStyles.dexContainer }}>
+          <DexNav />
+          <Flex sx={{ flexDirection: 'column', maxWidth: '100%', width: '420px' }}>
+            <Flex sx={{ ...styles.topContainer }}>
+              <Text weight={700} sx={{ textTransform: 'uppercase' }}>
+                {t('Add liquidity to receive LP tokens')}
+              </Text>
+              {account ? (
+                <Button
+                  id="join-pool-button"
+                  as={Link}
+                  to="/add"
+                  startIcon={<AddIcon color="white" />}
+                  fullWidth
+                  mt="10px"
+                >
+                  {t('Add Liquidity')}
+                </Button>
+              ) : (
+                <UnlockButton fullWidth mt="10px" />
+              )}
+            </Flex>
+            {renderBody()}
           </Flex>
-          {renderBody()}
+          {account && !v2IsLoading && (
+            <Flex sx={{ flexDirection: 'column', alignItems: 'center', margin: '20px 0px 10px 0px' }}>
+              <Text mb="8px">{t('Dont see a pool you joined?')}</Text>
+              <Text style={{ textDecoration: 'underline' }} mb="8px" as={Link} to="/find">
+                {t('Find other LP tokens')}
+              </Text>
+            </Flex>
+          )}
         </Flex>
-        {account && !v2IsLoading && (
-          <Flex sx={{ flexDirection: 'column', alignItems: 'center', margin: '20px 0px 10px 0px' }}>
-            <Text mb="8px">{t('Dont see a pool you joined?')}</Text>
-            <Text style={{ textDecoration: 'underline' }} mb="8px" as={Link} to="/find">
-              {t('Find other LP tokens')}
-            </Text>
-          </Flex>
-        )}
+        {recentTransactions && <RecentTransactions />}
       </Flex>
-      {recentTransactions && <RecentTransactions />}
     </Flex>
   )
 }

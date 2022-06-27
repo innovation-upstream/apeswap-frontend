@@ -82,44 +82,46 @@ function RemoveLiquidity({
 
   return (
     <Flex sx={{ ...dexStyles.pageContainer }}>
-      <Flex sx={{ ...dexStyles.dexContainer }}>
-        <DexNav />
-        <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
-          <Text weight={700}>{t('REMOVE LIQUIDITY')}</Text>
+      <Flex sx={{ flexDirection: 'column' }}>
+        <Flex sx={{ ...dexStyles.dexContainer }}>
+          <DexNav />
+          <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
+            <Text weight={700}>{t('REMOVE LIQUIDITY')}</Text>
+          </Flex>
+          <MyPositions />
+          <DexPanel
+            value={formattedAmounts[Field.LIQUIDITY_PERCENT]}
+            panelText={t('Remove:')}
+            currency={currencyA}
+            otherCurrency={currencyB}
+            fieldType={Field.LIQUIDITY_PERCENT}
+            onCurrencySelect={null}
+            onUserInput={(field, val) =>
+              parseInt(val) > 100
+                ? onUserInput(field, '100')
+                : val.toString() === ''
+                ? onUserInput(field, '0')
+                : onUserInput(field, parseInt(val).toString())
+            }
+            handleMaxInput={handleMaxInput}
+            showCommonBases
+            lpPair={pair}
+          />
+          <PoolInfo
+            pair={pair}
+            parsedAmounts={parsedAmounts}
+            poolTokenPercentage={poolTokenPercentage}
+            chainId={chainId}
+          />
+          <RemoveLiquidityActions
+            pair={pair}
+            error={error}
+            parsedAmounts={parsedAmounts}
+            poolTokenPercentage={poolTokenPercentage}
+          />
         </Flex>
-        <MyPositions />
-        <DexPanel
-          value={formattedAmounts[Field.LIQUIDITY_PERCENT]}
-          panelText={t('Remove:')}
-          currency={currencyA}
-          otherCurrency={currencyB}
-          fieldType={Field.LIQUIDITY_PERCENT}
-          onCurrencySelect={null}
-          onUserInput={(field, val) =>
-            parseInt(val) > 100
-              ? onUserInput(field, '100')
-              : val.toString() === ''
-              ? onUserInput(field, '0')
-              : onUserInput(field, parseInt(val).toString())
-          }
-          handleMaxInput={handleMaxInput}
-          showCommonBases
-          lpPair={pair}
-        />
-        <PoolInfo
-          pair={pair}
-          parsedAmounts={parsedAmounts}
-          poolTokenPercentage={poolTokenPercentage}
-          chainId={chainId}
-        />
-        <RemoveLiquidityActions
-          pair={pair}
-          error={error}
-          parsedAmounts={parsedAmounts}
-          poolTokenPercentage={poolTokenPercentage}
-        />
+        {recentTransactions && <RecentTransactions />}
       </Flex>
-      {recentTransactions && <RecentTransactions />}
     </Flex>
   )
 }

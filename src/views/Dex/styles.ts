@@ -28,8 +28,7 @@ export const textUnderlineHover: Record<string, ThemeUIStyleObject> = {
 
 export const dexStyles: Record<string, ThemeUIStyleObject> = {
   pageContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
+    justifyContent: 'center',
     height: 'fit-content',
     minHeight: '100vh',
     padding: '75px 0px',

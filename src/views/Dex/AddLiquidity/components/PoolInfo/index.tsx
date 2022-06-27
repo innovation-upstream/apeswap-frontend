@@ -25,7 +25,7 @@ const PoolInfo: React.FC<{
             ${currencies[Field.CURRENCY_B]?.getSymbol(chainId) || ''} LP`}
         </Text>
         <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Text size="12px" weight={700} mr="5px">
+          <Text size="12px" weight={700} mr="5px" sx={{ wordBreak: 'break-all' }}>
             {liquidityMinted?.toSignificant(6)}
           </Text>
           <DoubleCurrencyLogo
@@ -39,7 +39,7 @@ const PoolInfo: React.FC<{
         <Text size="12px" weight="light">
           {t('Share of Pool')}
         </Text>
-        <Text size="12px" weight={700}>
+        <Text size="12px" weight={700} sx={{ wordBreak: 'break-all' }}>
           {noLiquidity && price
             ? '100'
             : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'}
@@ -53,7 +53,7 @@ const PoolInfo: React.FC<{
             currencyB: currencies[Field.CURRENCY_B]?.getSymbol(chainId) || '',
           })}
         </Text>
-        <Text size="12px" weight={700}>
+        <Text size="12px" weight={700} sx={{ wordBreak: 'break-all' }}>
           {price?.invert()?.toSignificant(6) ?? '-'}
         </Text>
       </Flex>
@@ -64,7 +64,7 @@ const PoolInfo: React.FC<{
             currencyA: currencies[Field.CURRENCY_A]?.getSymbol(chainId) || '',
           })}
         </Text>
-        <Text size="12px" weight={700}>
+        <Text size="12px" weight={700} sx={{ wordBreak: 'break-all' }}>
           {price?.toSignificant(6) ?? '-'}
         </Text>
       </Flex>

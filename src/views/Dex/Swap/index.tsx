@@ -195,58 +195,65 @@ const Swap: React.FC = () => {
 
   return (
     <Flex sx={dexStyles.pageContainer}>
-      <Flex sx={dexStyles.dexContainer}>
-        <DexNav />
-        <Flex sx={{ margin: '25px 0px', maxWidth: '100%', width: '420px' }} />
-        <DexPanel
-          value={formattedAmounts[Field.INPUT]}
-          panelText="From"
-          currency={inputCurrency}
-          otherCurrency={outputCurrency}
-          fieldType={Field.INPUT}
-          onCurrencySelect={onCurrencySelection}
-          onUserInput={onUserInput}
-          handleMaxInput={handleMaxInput}
-        />
-        <SwapSwitchButton onClick={onSwitchTokens} />
-        <DexPanel
-          value={formattedAmounts[Field.OUTPUT]}
-          panelText="To"
-          currency={outputCurrency}
-          otherCurrency={inputCurrency}
-          fieldType={Field.OUTPUT}
-          onCurrencySelect={onCurrencySelection}
-          onUserInput={onUserInput}
-        />
-        <ExpertModeRecipient
-          recipient={recipient}
-          showWrap={showWrap}
-          isExpertMode={isExpertMode}
-          onChangeRecipient={onChangeRecipient}
-        />
-        {fetchingBestRoute ? (
-          <LoadingBestRoute />
-        ) : (
-          <DexTradeInfo trade={v2Trade} allowedSlippage={allowedSlippage} bestRoute={bestRoute} swapDelay={swapDelay} />
-        )}
-        <DexActions
-          trade={trade}
-          swapInputError={swapInputError}
-          isExpertMode={isExpertMode}
-          showWrap={showWrap}
-          wrapType={wrapType}
-          routerType={bestRoute.routerType}
-          swapCallbackError={swapCallbackError}
-          priceImpactWithoutFee={priceImpactWithoutFee}
-          userHasSpecifiedInputOutput={userHasSpecifiedInputOutput}
-          onWrap={onWrap}
-          handleSwap={handleSwap}
-          onPresentConfirmModal={onPresentConfirmModal}
-          setSwapState={setSwapState}
-          disabled={fetchingBestRoute}
-        />
+      <Flex sx={{ flexDirection: 'column' }}>
+        <Flex sx={dexStyles.dexContainer}>
+          <DexNav />
+          <Flex sx={{ margin: '25px 0px', maxWidth: '100%', width: '420px' }} />
+          <DexPanel
+            value={formattedAmounts[Field.INPUT]}
+            panelText="From"
+            currency={inputCurrency}
+            otherCurrency={outputCurrency}
+            fieldType={Field.INPUT}
+            onCurrencySelect={onCurrencySelection}
+            onUserInput={onUserInput}
+            handleMaxInput={handleMaxInput}
+          />
+          <SwapSwitchButton onClick={onSwitchTokens} />
+          <DexPanel
+            value={formattedAmounts[Field.OUTPUT]}
+            panelText="To"
+            currency={outputCurrency}
+            otherCurrency={inputCurrency}
+            fieldType={Field.OUTPUT}
+            onCurrencySelect={onCurrencySelection}
+            onUserInput={onUserInput}
+          />
+          <ExpertModeRecipient
+            recipient={recipient}
+            showWrap={showWrap}
+            isExpertMode={isExpertMode}
+            onChangeRecipient={onChangeRecipient}
+          />
+          {fetchingBestRoute ? (
+            <LoadingBestRoute />
+          ) : (
+            <DexTradeInfo
+              trade={v2Trade}
+              allowedSlippage={allowedSlippage}
+              bestRoute={bestRoute}
+              swapDelay={swapDelay}
+            />
+          )}
+          <DexActions
+            trade={trade}
+            swapInputError={swapInputError}
+            isExpertMode={isExpertMode}
+            showWrap={showWrap}
+            wrapType={wrapType}
+            routerType={bestRoute.routerType}
+            swapCallbackError={swapCallbackError}
+            priceImpactWithoutFee={priceImpactWithoutFee}
+            userHasSpecifiedInputOutput={userHasSpecifiedInputOutput}
+            onWrap={onWrap}
+            handleSwap={handleSwap}
+            onPresentConfirmModal={onPresentConfirmModal}
+            setSwapState={setSwapState}
+            disabled={fetchingBestRoute}
+          />
+        </Flex>
+        {recentTransactions && <RecentTransactions />}
       </Flex>
-      {recentTransactions && <RecentTransactions />}
     </Flex>
   )
 }

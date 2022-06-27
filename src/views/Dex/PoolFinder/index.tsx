@@ -84,130 +84,132 @@ export default function PoolFinder() {
 
   return (
     <Flex sx={{ ...dexStyles.pageContainer }}>
-      <Flex sx={{ ...dexStyles.dexContainer }}>
-        <DexNav />
-        <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
-          <Text weight={700}>{t('FIND YOUR LIQUIDITY')}</Text>
-        </Flex>
-        <MyPositions />
-        <Flex sx={{ ...styles.tokenContainer }}>
-          <Text sx={{ ...styles.swapDirectionText }}>{t('Token 1')}</Text>
-          <Flex
-            sx={{ ...styles.primaryFlex }}
-            onClick={() => {
-              onPresentCurrencyModal()
-              setActiveField(Fields.TOKEN0)
-            }}
-          >
-            <>
-              {currency0 ? (
-                <Row>
-                  <CurrencyLogo currency={currency0} size="30px" />
-                  <Text sx={{ ...styles.tokenText }}>{currency0.getSymbol(chainId)}</Text>
-                </Row>
-              ) : (
-                <Text sx={{ ...styles.tokenText }}>{t('Select a Token')}</Text>
-              )}
-              <Svg icon="caret" />
-            </>
+      <Flex sx={{ flexDirection: 'column' }}>
+        <Flex sx={{ ...dexStyles.dexContainer }}>
+          <DexNav />
+          <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
+            <Text weight={700}>{t('FIND YOUR LIQUIDITY')}</Text>
           </Flex>
-        </Flex>
-        <Flex sx={{ margin: '10px 0px', justifyContent: 'center' }}>
-          <Flex
-            sx={{
-              ...styles.addContainer,
-            }}
-          >
-            <Text weight={700} sx={{ lineHeight: '0px' }}>
-              +
-            </Text>
+          <MyPositions />
+          <Flex sx={{ ...styles.tokenContainer }}>
+            <Text sx={{ ...styles.swapDirectionText }}>{t('Token 1')}</Text>
+            <Flex
+              sx={{ ...styles.primaryFlex }}
+              onClick={() => {
+                onPresentCurrencyModal()
+                setActiveField(Fields.TOKEN0)
+              }}
+            >
+              <>
+                {currency0 ? (
+                  <Row>
+                    <CurrencyLogo currency={currency0} size="30px" />
+                    <Text sx={{ ...styles.tokenText }}>{currency0.getSymbol(chainId)}</Text>
+                  </Row>
+                ) : (
+                  <Text sx={{ ...styles.tokenText }}>{t('Select a Token')}</Text>
+                )}
+                <Svg icon="caret" />
+              </>
+            </Flex>
           </Flex>
-        </Flex>
-        <Flex sx={{ ...styles.tokenContainer }}>
-          <Text sx={{ ...styles.swapDirectionText }}>{t('Token 2')}</Text>
-          <Flex
-            sx={{ ...styles.primaryFlex }}
-            onClick={() => {
-              onPresentCurrencyModal()
-              setActiveField(Fields.TOKEN1)
-            }}
-          >
-            <>
-              {currency1 ? (
-                <Row>
-                  <CurrencyLogo currency={currency1} size="30px" />
-                  <Text sx={{ ...styles.tokenText }}>{currency1.getSymbol(chainId)}</Text>
-                </Row>
-              ) : (
-                <Text sx={{ ...styles.tokenText }}>{t('Select a Token')}</Text>
-              )}
-              <Svg icon="caret" />
-            </>
-          </Flex>
-        </Flex>
-        {hasPosition && (
-          <ColumnCenter
-            style={{ justifyItems: 'center', backgroundColor: '', margin: '20px 0px', borderRadius: '12px' }}
-          >
-            <Text textAlign="center">{t('Pool Found!')}</Text>
-            <StyledInternalLink to="/pool">
-              <Text textAlign="center" style={{ textDecoration: 'underline' }}>
-                {t('Manage this pool.')}
+          <Flex sx={{ margin: '10px 0px', justifyContent: 'center' }}>
+            <Flex
+              sx={{
+                ...styles.addContainer,
+              }}
+            >
+              <Text weight={700} sx={{ lineHeight: '0px' }}>
+                +
               </Text>
-            </StyledInternalLink>
-          </ColumnCenter>
-        )}
+            </Flex>
+          </Flex>
+          <Flex sx={{ ...styles.tokenContainer }}>
+            <Text sx={{ ...styles.swapDirectionText }}>{t('Token 2')}</Text>
+            <Flex
+              sx={{ ...styles.primaryFlex }}
+              onClick={() => {
+                onPresentCurrencyModal()
+                setActiveField(Fields.TOKEN1)
+              }}
+            >
+              <>
+                {currency1 ? (
+                  <Row>
+                    <CurrencyLogo currency={currency1} size="30px" />
+                    <Text sx={{ ...styles.tokenText }}>{currency1.getSymbol(chainId)}</Text>
+                  </Row>
+                ) : (
+                  <Text sx={{ ...styles.tokenText }}>{t('Select a Token')}</Text>
+                )}
+                <Svg icon="caret" />
+              </>
+            </Flex>
+          </Flex>
+          {hasPosition && (
+            <ColumnCenter
+              style={{ justifyItems: 'center', backgroundColor: '', margin: '20px 0px', borderRadius: '12px' }}
+            >
+              <Text textAlign="center">{t('Pool Found!')}</Text>
+              <StyledInternalLink to="/pool">
+                <Text textAlign="center" style={{ textDecoration: 'underline' }}>
+                  {t('Manage this pool.')}
+                </Text>
+              </StyledInternalLink>
+            </ColumnCenter>
+          )}
 
-        {currency0 && currency1 ? (
-          pairState === PairState.EXISTS ? (
-            hasPosition && pair ? (
-              <MinimalPositionCard pair={pair} />
-            ) : (
+          {currency0 && currency1 ? (
+            pairState === PairState.EXISTS ? (
+              hasPosition && pair ? (
+                <MinimalPositionCard pair={pair} />
+              ) : (
+                <AutoColumn gap="sm" justify="center" style={{ margin: '20px 0px' }}>
+                  <Text textAlign="center">{t('You don’t have liquidity in this pool yet.')}</Text>
+                  <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                    <Text style={{ textDecoration: 'underline' }} textAlign="center">
+                      {t('Add Liquidity')}
+                    </Text>
+                  </StyledInternalLink>
+                </AutoColumn>
+              )
+            ) : validPairNoLiquidity ? (
               <AutoColumn gap="sm" justify="center" style={{ margin: '20px 0px' }}>
-                <Text textAlign="center">{t('You don’t have liquidity in this pool yet.')}</Text>
-                <StyledInternalLink to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                  <Text style={{ textDecoration: 'underline' }} textAlign="center">
-                    {t('Add Liquidity')}
-                  </Text>
+                <Text textAlign="center">No pool found.</Text>
+                <StyledInternalLink
+                  to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                  style={{ textDecoration: 'underline' }}
+                >
+                  {t('Create pool.')}
                 </StyledInternalLink>
               </AutoColumn>
-            )
-          ) : validPairNoLiquidity ? (
-            <AutoColumn gap="sm" justify="center" style={{ margin: '20px 0px' }}>
-              <Text textAlign="center">No pool found.</Text>
-              <StyledInternalLink
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
-                style={{ textDecoration: 'underline' }}
-              >
-                {t('Create pool.')}
-              </StyledInternalLink>
-            </AutoColumn>
-          ) : pairState === PairState.INVALID ? (
-            <AutoColumn gap="sm" justify="center">
-              <Text textAlign="center" fontWeight={500}>
-                {t('Invalid pair.')}
-              </Text>
-            </AutoColumn>
-          ) : pairState === PairState.LOADING ? (
-            <AutoColumn gap="sm" justify="center">
-              <Text textAlign="center">
-                {t('Loading')}
-                <Dots />
-              </Text>
-            </AutoColumn>
-          ) : null
-        ) : (
-          <Flex sx={{ margin: '20px 0px', justifyContent: 'center' }}>{prerequisiteMessage}</Flex>
-        )}
-        {/* <CurrencySearchModal
+            ) : pairState === PairState.INVALID ? (
+              <AutoColumn gap="sm" justify="center">
+                <Text textAlign="center" fontWeight={500}>
+                  {t('Invalid pair.')}
+                </Text>
+              </AutoColumn>
+            ) : pairState === PairState.LOADING ? (
+              <AutoColumn gap="sm" justify="center">
+                <Text textAlign="center">
+                  {t('Loading')}
+                  <Dots />
+                </Text>
+              </AutoColumn>
+            ) : null
+          ) : (
+            <Flex sx={{ margin: '20px 0px', justifyContent: 'center' }}>{prerequisiteMessage}</Flex>
+          )}
+          {/* <CurrencySearchModal
           isOpen={showSearch}
           onCurrencySelect={handleCurrencySelect}
           onDismiss={handleSearchDismiss}
           showCommonBases
           selectedCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
         /> */}
+        </Flex>
+        {recentTransactions && <RecentTransactions />}
       </Flex>
-      {recentTransactions && <RecentTransactions />}
     </Flex>
   )
 }
