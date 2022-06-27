@@ -3,7 +3,6 @@ import { Price } from '@apeswapfinance/sdk'
 import { Text } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
-
 interface TradePriceProps {
   price?: Price
   showInverted: boolean

@@ -38,7 +38,7 @@ export type DataResponse = {
 
 export interface RouterTypeParams {
   routerType: RouterTypes
-  smartRouter?: DataResponse
+  bonusRouter?: DataResponse
 }
 
 export const selectCurrency = createAction<{ field: Field; currencyId: string }>('swap/selectCurrency')

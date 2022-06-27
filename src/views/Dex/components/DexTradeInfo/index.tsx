@@ -14,7 +14,6 @@ import { computeTradePriceBreakdown, computeSlippageAdjustedAmounts } from 'util
 import { styles } from './styles'
 import TradePrice from './TradePrice'
 
-
 const DexTradeInfo: React.FC<{
   trade: Trade
   allowedSlippage: number
@@ -25,7 +24,7 @@ const DexTradeInfo: React.FC<{
 }> = ({ trade, allowedSlippage, swapDelay, bestRoute, open = false }) => {
   const { chainId } = useActiveWeb3React()
   const [showMore, setShowMore] = useState(open)
-  const isSmartRouter = bestRoute.routerType === RouterTypes.SMART
+  const isBonusRouter = bestRoute.routerType === RouterTypes.BONUS
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState(false)
   const route = trade?.route?.path?.map((val, i) => {
@@ -50,11 +49,11 @@ const DexTradeInfo: React.FC<{
           <Flex
             sx={{
               ...styles.normalRouterContainer,
-              background: isSmartRouter ? 'smartGradient' : 'white4',
+              background: isBonusRouter ? 'smartGradient' : 'white4',
             }}
           >
-            <Text size="8px" color={isSmartRouter ? 'primaryBright' : 'text'} weight={700}>
-              {isSmartRouter ? t('Bonus Router') : t('ApeSwap Router')}
+            <Text size="8px" color={isBonusRouter ? 'primaryBright' : 'text'} weight={700}>
+              {isBonusRouter ? t('Bonus Router') : t('ApeSwap Router')}
             </Text>
           </Flex>
           <Svg icon="caret" direction={showMore ? 'up' : 'down'} />
@@ -101,34 +100,34 @@ const DexTradeInfo: React.FC<{
             <Flex
               sx={{
                 ...styles.bottomRouterContainer,
-                background: isSmartRouter ? 'smartGradient' : 'white4',
+                background: isBonusRouter ? 'smartGradient' : 'white4',
               }}
             >
               <Flex sx={{ justifyContent: 'space-between' }}>
-                <Text color={isSmartRouter ? 'primaryBright' : 'text'} size="12px" sx={{ fontWeight: '700' }}>
-                  {isSmartRouter ? t('Bonus Router') : t('ApeSwap Router')}
+                <Text color={isBonusRouter ? 'primaryBright' : 'text'} size="12px" sx={{ fontWeight: '700' }}>
+                  {isBonusRouter ? t('Bonus Router') : t('ApeSwap Router')}
                 </Text>
-                <HelpIcon width="12px" color={isSmartRouter ? 'primaryBright' : 'text'} />
+                <HelpIcon width="12px" color={isBonusRouter ? 'primaryBright' : 'text'} />
               </Flex>
-              {isSmartRouter && (
+              {isBonusRouter && (
                 <>
                   <Flex sx={{ justifyContent: 'space-between', height: '18px' }}>
                     <Text color="primaryBright" size="10px">
                       {t('Estimated swap bonus')}
                     </Text>
                     <Text color="primaryBright" size="10px">
-                      ~ {(bestRoute?.smartRouter?.summary?.searchSummary?.expectedKickbackProfit * 0.3).toFixed(6)}{' '}
+                      ~ {(bestRoute?.bonusRouter?.summary?.searchSummary?.expectedKickbackProfit * 0.3).toFixed(6)}{' '}
                       {CHAIN_PARAMS[chainId].nativeCurrency.symbol}{' '}
-                      {`(~$${(bestRoute?.smartRouter?.summary?.searchSummary?.expectedUsdProfit * 0.3).toFixed(2)})`}
+                      {`(~$${(bestRoute?.bonusRouter?.summary?.searchSummary?.expectedUsdProfit * 0.3).toFixed(2)})`}
                     </Text>
                   </Flex>
                 </>
               )}
               <Flex sx={{ justifyContent: 'space-between' }}>
-                <Text color={isSmartRouter ? 'primaryBright' : 'text'} size="10px">
+                <Text color={isBonusRouter ? 'primaryBright' : 'text'} size="10px">
                   {t('Route')}
                 </Text>
-                <Text color={isSmartRouter ? 'primaryBright' : 'text'} size="10px">
+                <Text color={isBonusRouter ? 'primaryBright' : 'text'} size="10px">
                   {route}
                 </Text>
               </Flex>

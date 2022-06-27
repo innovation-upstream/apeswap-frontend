@@ -75,7 +75,7 @@ const DexActions: React.FC<DexActionProps> = ({
         >
           {approval === ApprovalState.PENDING
             ? t('Approving')
-            : t('Approve %route% Router', { route: routerType === RouterTypes.SMART ? RouterTypes.SMART : 'APESWAP' })}
+            : t('Approve %route% Router', { route: routerType === RouterTypes.BONUS ? RouterTypes.BONUS : 'APESWAP' })}
         </Button>
       )
     }

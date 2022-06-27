@@ -57,6 +57,7 @@ export type EstimatedSwapCall = SuccessfulCall | FailedCall
  * @param trade trade to execute
  * @param allowedSlippage user allowed slippage
  * @param recipientAddressOrName
+ * @param bestRoute The best route that will be used to facilitate the trade
  */
 export function useSwapCallArguments(
   trade: Trade | undefined, // trade to execute, required
@@ -80,14 +81,15 @@ export function useSwapCallArguments(
 
     const swapMethods = []
 
-    if (bestRoute?.routerType === RouterTypes.SMART) {
+    // TODO: Need to change SmartRouter to BonusRouter in SDK
+    if (bestRoute?.routerType === RouterTypes.BONUS) {
       swapMethods.push(
         SmartRouter.swapCallParameters(trade, {
           allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
           recipient,
           deadline: deadline.toNumber(),
           router: ROUTER_ADDRESS[chainId],
-          masterInput: bestRoute?.smartRouter.transactionArgs.masterInput,
+          masterInput: bestRoute?.bonusRouter.transactionArgs.masterInput,
         }),
       )
       if (trade.tradeType === TradeType.EXACT_INPUT) {
@@ -97,7 +99,7 @@ export function useSwapCallArguments(
             recipient,
             deadline: deadline.toNumber(),
             router: ROUTER_ADDRESS[chainId],
-            masterInput: bestRoute?.smartRouter.transactionArgs.masterInput,
+            masterInput: bestRoute?.bonusRouter.transactionArgs.masterInput,
           }),
         )
       }
@@ -171,7 +173,7 @@ export function useSwapCallback(
                 return {
                   call,
                   gasEstimate:
-                    bestRoute?.routerType === RouterTypes.SMART ? gasEstimate.mul(BigNumber.from('3')) : gasEstimate,
+                    bestRoute?.routerType === RouterTypes.BONUS ? gasEstimate.mul(BigNumber.from('3')) : gasEstimate,
                 }
               })
               .catch((gasError) => {

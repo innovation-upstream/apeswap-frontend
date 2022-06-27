@@ -125,7 +125,7 @@ export function useApproveCallbackFromTrade(
   return useApproveCallback(
     amountToApprove,
     parseAddress(
-      useAutonomy ? AUTONOMY_MIDROUTER_ADDRESS : routerType === RouterTypes.SMART ? BONUS_ROUTER : ROUTER_ADDRESS,
+      useAutonomy ? AUTONOMY_MIDROUTER_ADDRESS : routerType === RouterTypes.BONUS ? BONUS_ROUTER : ROUTER_ADDRESS,
       chainId,
     ),
   )

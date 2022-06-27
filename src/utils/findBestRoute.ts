@@ -1,6 +1,7 @@
 import { SwapDelay, RouterTypeParams } from 'state/swap/actions'
 import callWallchainAPI from 'utils/wallchainService'
 
+// This file will be more involved with V2 launch.
 export const findBestRoute = (
   swapDelay: SwapDelay,
   swapCalls: any,
@@ -9,6 +10,7 @@ export const findBestRoute = (
   onSetSwapDelay: (swapDelay: SwapDelay) => void,
   onBestRoute: (bestRoute: RouterTypeParams) => void,
 ) => {
+  // To not cause a call on every user input the code will be executed when the delay is complete
   if (swapDelay !== SwapDelay.INPUT_COMPLETE) {
     return false
   }

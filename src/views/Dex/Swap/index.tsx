@@ -40,7 +40,6 @@ const Swap: React.FC = () => {
   /**
    * TODO: Add back tracking code.
    * TODO: Make sure handle currency selection is okay
-   * TODO: Include Expert mode
    */
 
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -55,17 +54,12 @@ const Swap: React.FC = () => {
   const [isExpertMode] = useExpertModeManager()
 
   const { INPUT, OUTPUT, independentField, typedValue, recipient, swapDelay, bestRoute } = useSwapState()
-  console.log('This is swap delay', swapDelay)
-  console.log('This is the best route', bestRoute)
-  // the callback to execute the swap
 
+  
+  // the callback to execute the swap
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient, onSetSwapDelay } =
     useSwapActionHandlers()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
-
-  console.log(v2Trade)
-  console.log(useDerivedSwapInfo())
-  console.log(parsedAmount)
 
   const [inputCurrency, outputCurrency] = [useCurrency(INPUT?.currencyId), useCurrency(OUTPUT?.currencyId)]
 

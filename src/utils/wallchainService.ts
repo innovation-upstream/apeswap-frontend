@@ -20,23 +20,6 @@ const wallchainResponseIsValid = (
   )
 }
 
-const recordTransactionSummary = (dataResponse: DataResponse, chainId: number) => {
-  return fetch('https://apeswap-strapi.herokuapp.com/arbitrage-testings', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      firstTokenAddress: dataResponse.summary?.searchSummary?.firstTokenAddress || '',
-      expectedProfit: dataResponse.summary?.searchSummary?.expectedProfit || 0,
-      expectedUsdProfit: dataResponse.summary?.searchSummary?.expectedUsdProfit || 0,
-      firstTokenAmount: dataResponse.summary?.searchSummary?.firstTokenAmount || 0,
-      chainId,
-      sender: dataResponse.transactionArgs.sender,
-    }),
-  }).catch((error) => {
-    console.error('Wallchain Txn Summary Recording Error', error)
-  })
-}
-
 /**
  * Call Wallchain API to analyze the expected opportunity.
  * @param methodName function to execute in transaction
@@ -45,6 +28,8 @@ const recordTransactionSummary = (dataResponse: DataResponse, chainId: number) =
  * @param chainId chainId of the blockchain
  * @param account account address from sender
  * @param contract ApeSwap Router contract
+ * @param onBestRoute Callback function to set the best route
+ * @param onSetSwapDelay Callback function to set the swap delay state
  */
 export default function callWallchainAPI(
   methodName: string,
@@ -56,8 +41,9 @@ export default function callWallchainAPI(
   onBestRoute: (bestRoute: RouterTypeParams) => void,
   onSetSwapDelay: (swapDelay: SwapDelay) => void,
 ): Promise<any> {
-  const encodedData = contract.interface.encodeFunctionData(methodName, args)
   onSetSwapDelay(SwapDelay.LOADING_ROUTE)
+  const encodedData = contract.interface.encodeFunctionData(methodName, args)
+  // If the intiial call fails APE router will be the default router
   return fetch(`${WALLCHAIN_PARAMS[chainId].apiUrl}?key=${WALLCHAIN_PARAMS[chainId].apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -74,13 +60,14 @@ export default function callWallchainAPI(
       }
       console.error('Wallchain Error', response.status, response.statusText)
       onBestRoute({ routerType: RouterTypes.APE })
+      onSetSwapDelay(SwapDelay.VALID)
       return null
     })
     .then((responseJson) => {
       if (responseJson) {
         const dataResonse: DataResponse = responseJson
         if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
-          onBestRoute({ routerType: RouterTypes.SMART, smartRouter: dataResonse })
+          onBestRoute({ routerType: RouterTypes.BONUS, bonusRouter: dataResonse })
           onSetSwapDelay(SwapDelay.VALID)
         } else {
           onBestRoute({ routerType: RouterTypes.APE })

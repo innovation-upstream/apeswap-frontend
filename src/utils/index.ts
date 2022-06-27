@@ -93,7 +93,7 @@ export function getRouterContract(
   account?: string,
   routerType?: RouterTypes,
 ): Contract {
-  if (routerType === RouterTypes.SMART) {
+  if (routerType === RouterTypes.BONUS) {
     return getContract(
       parseAddress(BONUS_ROUTER, library.network?.chainId || 56),
       apeRouterManagerABI,

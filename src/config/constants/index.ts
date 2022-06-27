@@ -5,6 +5,7 @@ import farms from './farms'
 export enum RouterTypes {
   APE = 'APE',
   SMART = 'SMART',
+  BONUS = 'BONUS',
 }
 
 export const CHAIN_ID = parseInt(process.env.REACT_APP_CHAIN_ID)
