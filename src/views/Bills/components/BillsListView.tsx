@@ -18,12 +18,15 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
   const isMobile = !isLg && !isXl && !isXxl
   const billsListView = bills.map((bill) => {
-    const { token, quoteToken, earnToken, maxTotalPayOut, totalPayoutGiven } = bill
+    const { token, quoteToken, earnToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
     const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
     const available = new BigNumber(maxTotalPayOut)
       ?.minus(new BigNumber(totalPayoutGiven))
       ?.div(new BigNumber(10).pow(18))
-      ?.toNumber()
+    // set in 3500 just for testing purposes
+    const threshold = new BigNumber(3500).div(earnTokenPrice)
+    const disabled = available.lte(threshold)
+
     return {
       tokens: { token1: token.symbol, token2: quoteToken.symbol, token3: earnToken.symbol },
       stakeLp: true,
@@ -81,7 +84,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
                   buttonText={t('BUY')}
                   id={bill.index}
                   buyFlag
-                  disabled={!bill.discount || bill.discount.includes('NaN') || available < 5}
+                  disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
                 />
               ) : (
                 <UnlockButton />
@@ -99,7 +102,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
               buttonText={t('BUY')}
               id={bill.index}
               buyFlag
-              disabled={!bill.discount || bill.discount.includes('NaN') || available < 5}
+              disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
             />
           ) : (
             <UnlockButton />

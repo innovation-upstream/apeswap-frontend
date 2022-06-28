@@ -53,7 +53,9 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
   const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
   const billValue = bigValue.div(new BigNumber(price))?.toFixed(3)
 
-  const available = new BigNumber(maxTotalPayOut)?.minus(new BigNumber(totalPayoutGiven)).div(new BigNumber(10).pow(18))
+  const available = new BigNumber(maxTotalPayOut)
+    ?.minus(new BigNumber(totalPayoutGiven))
+    ?.div(new BigNumber(10).pow(18))
   // threshold equals to 2 usd in earned tokens (banana or jungle token)
   const threshold = new BigNumber(2).div(earnTokenPrice)
   const safeAvailable = available.minus(threshold)
