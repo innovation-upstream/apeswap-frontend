@@ -567,6 +567,66 @@ const vaults: VaultConfig[] = [
     },
   },
 
+  // LINK - BNB vault config
+
+  {
+    id: 19,
+    pid: 16,
+    availableChains: [CHAIN_ID.BSC],
+    type: 'MAX',
+    version: 'V2',
+    stratAddress: {
+      [CHAIN_ID.BSC]: '0x1282d55fe7e8cc0eb1895476e2666dd59d7a4171',
+    },
+    stakeToken: tokens.linkBnb,
+    token: tokens.link,
+    quoteToken: tokens.wbnb,
+    rewardToken: tokens.banana,
+    platform: 'ApeSwap',
+    masterchef: {
+      pid: {
+        [CHAIN_ID.BSC]: 36,
+      },
+      address: {
+        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
+      },
+      rewardsPerBlock: {
+        [CHAIN_ID.BSC]: 'cakePerBlock',
+      },
+      rewardToken: tokens.banana,
+    },
+  },
+
+  // AAVE - BNB vault config
+
+  {
+    id: 20,
+    pid: 17,
+    availableChains: [CHAIN_ID.BSC],
+    type: 'MAX',
+    version: 'V2',
+    stratAddress: {
+      [CHAIN_ID.BSC]: '0x28b8fe88897d507b051b1d16c35d163b27a79e23',
+    },
+    stakeToken: tokens.aaveBnb,
+    token: tokens.aave,
+    quoteToken: tokens.wbnb,
+    rewardToken: tokens.banana,
+    platform: 'ApeSwap',
+    masterchef: {
+      pid: {
+        [CHAIN_ID.BSC]: 46,
+      },
+      address: {
+        [CHAIN_ID.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
+      },
+      rewardsPerBlock: {
+        [CHAIN_ID.BSC]: 'cakePerBlock',
+      },
+      rewardToken: tokens.banana,
+    },
+  },
+
   // TESTNET VAULTS
 
   {
