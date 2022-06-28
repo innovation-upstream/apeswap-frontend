@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
-import { Text, useModal } from '@ape.swap/uikit'
+import { Text } from '@ape.swap/uikit'
+import { useModal } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
