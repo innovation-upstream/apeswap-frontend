@@ -51,7 +51,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
   const [loading, setLoading] = useState(false)
   const bigValue = new BigNumber(value).times(new BigNumber(10).pow(18))
   const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
-  const billValue = bigValue.div(new BigNumber(price))?.toFixed(3)
+  const billValue = bigValue.div(new BigNumber(price))?.toString()
 
   const available = new BigNumber(maxTotalPayOut)
     ?.minus(new BigNumber(totalPayoutGiven))
@@ -152,7 +152,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                     <Text fontSize="14px" pr={1}>
                       {t('Bill Value')}:{' '}
                       <span style={{ fontWeight: 700 }}>
-                        {billValue === 'NaN' ? '0' : billValue} {earnToken?.symbol}
+                        {billValue === 'NaN' ? '0' : parseFloat(billValue).toFixed(3)} {earnToken?.symbol}
                       </span>
                     </Text>
                   </TextWrapper>
