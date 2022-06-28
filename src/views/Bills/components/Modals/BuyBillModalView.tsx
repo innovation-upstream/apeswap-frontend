@@ -136,7 +136,9 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                   billAddress={contractAddress[chainId]}
                   billIndex={index}
                   disabled={
-                    billValue === 'NaN' || parseFloat(billValue) < 0.01 || parseFloat(billValue) > available.toNumber()
+                    billValue === 'NaN' ||
+                    parseFloat(billValue) < 0.01 ||
+                    parseFloat(billValue) > safeAvailable.toNumber()
                   }
                   onValueChange={onHandleValueChange}
                   value={value}

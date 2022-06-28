@@ -116,7 +116,7 @@ const Buy: React.FC<BuyProps> = ({
       <BuyButton
         onClick={handleBuy}
         endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
-        disabled={disabled || parseFloat(formatUserLpValue) < parseFloat(value) || pendingTrx}
+        disabled={disabled /* || parseFloat(formatUserLpValue) < parseFloat(value) */ || pendingTrx}
       >
         {t('Buy')}
       </BuyButton>
