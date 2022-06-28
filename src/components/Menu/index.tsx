@@ -14,8 +14,10 @@ import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { languageList } from '../../config/localization/languages'
 import ethConfig from './chains/ethConfig'
+import iframeConfig from './chains/iframeConfig'
 
 const Menu = (props) => {
+  const isIframe = window.self !== window.top
   const { account, chainId } = useActiveWeb3React()
   const { login, logout } = useAuth()
   const { switchNetwork } = useSelectNetwork()
@@ -26,14 +28,18 @@ const Menu = (props) => {
   const { t, setLanguage, currentLanguage } = useTranslation()
   const { onTopup } = useTopup()
   const currentMenu = (translate: ContextApi['t']) => {
-    if (chainId === CHAIN_ID.BSC) {
+    if (chainId === CHAIN_ID.BSC && isIframe !== true) {
       return bscConfig(translate)
     }
-    if (chainId === CHAIN_ID.MATIC) {
+    if (chainId === CHAIN_ID.MATIC && isIframe !== true) {
       return maticConfig(translate)
     }
-    if (chainId === CHAIN_ID.ETH) {
+    if (chainId === CHAIN_ID.ETH && isIframe !== true) {
       return ethConfig(translate)
+    }
+    if (isIframe === true)
+    {
+      return iframeConfig(translate)
     }
     return bscConfig(translate)
   }
@@ -62,6 +68,7 @@ const Menu = (props) => {
       runFiat={onTopup}
       track={track}
       liveResult={liveIfos}
+      iframe={isIframe}
       {...props}
     />
   )
