@@ -14,7 +14,7 @@ export const Bubble = styled.div<{ isActive?: boolean }>`
 export const showApe = (slide, isDark): ThemeUIStyleObject => ({
   width: '100%',
   height: '250px',
-  '@media screen and (min-width: 844px)': {
+  '@media screen and (min-width: 853px)': {
     height: '460px',
   },
   background: `url(images/marketing-modals/questApe-${isDark ? 'dark-' : 'light-'}${slide}.svg)`,
@@ -28,8 +28,9 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     alignItems: 'flex-start',
     overflow: 'hidden',
     height: '570px',
-    '@media screen and (min-width: 844px)': {
+    '@media screen and (min-width: 853px)': {
       width: '100%',
+      minWidth: '640px',
       maxWidth: '800px',
       height: '460px',
     },
@@ -37,7 +38,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
   imagesWrapper: {
     width: '100%',
-    '@media screen and (min-width: 844px)': {
+    '@media screen and (min-width: 853px)': {
       width: '45%',
     },
     justifyContent: 'center',
@@ -46,8 +47,8 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     width: '100%',
     textAlign: 'center',
     justifyContent: 'center',
-    '@media screen and (min-width: 844px)': {
-      padding: '85px 30px 0px 30px',
+    '@media screen and (min-width: 853px)': {
+      padding: '85px 0 0 30px',
       width: '55%',
       textAlign: 'start',
       justifyContent: 'flex-start',
@@ -56,9 +57,9 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
   bubbleWrapper: {
     width: '100%',
-    paddingBottom: '20px',
+    margin: '10px 0',
     justifyContent: 'center',
-    '@media screen and (min-width: 844px)': {
+    '@media screen and (min-width: 853px)': {
       justifyContent: 'flex-start',
     },
   },

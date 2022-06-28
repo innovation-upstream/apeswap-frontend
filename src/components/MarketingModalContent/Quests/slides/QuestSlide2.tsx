@@ -8,12 +8,12 @@ import { styles } from '../styles'
 const QuestSlide2 = () => {
   const { t } = useTranslation()
   return (
-    <Box sx={{ marginBottom: '20px' }}>
+    <>
       <Box sx={styles.text}>
         <Heading as="h5" color="yellow" style={{ fontSize: '12px' }}>
           {t('Connect to Genki').toUpperCase()}
         </Heading>
-        <Heading>{t('You Have New Quests!')}</Heading>
+        <Heading sx={{ fontSize: '21px' }}>{t('You Have New Quests!')}</Heading>
       </Box>
       <Box sx={{ marginTop: '10px' }}>
         <Text color="yellow" size="14px">
@@ -28,7 +28,7 @@ const QuestSlide2 = () => {
         </Text>{' '}
         <Text size="14px"> {t('and connect your Wallet to access your available Quests.')}</Text>
       </Box>
-    </Box>
+    </>
   )
 }
 

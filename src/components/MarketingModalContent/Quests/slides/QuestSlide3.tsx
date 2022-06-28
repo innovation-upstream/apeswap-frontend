@@ -8,12 +8,12 @@ import { styles } from '../styles'
 const QuestSlide3 = () => {
   const { t } = useTranslation()
   return (
-    <Box sx={{ marginBottom: '20px' }}>
+    <>
       <Box sx={styles.text}>
         <Heading as="h5" color="yellow" style={{ fontSize: '12px' }}>
           {t('Get it done').toUpperCase()}
         </Heading>
-        <Heading>{t('Can You Complete Them All?')}</Heading>
+        <Heading sx={{ fontSize: '21px' }}>{t('Can You Complete Them All?')}</Heading>
       </Box>
       <Box sx={{ marginTop: '10px' }}>
         <Text size="14px">{t('Complete the')}</Text>{' '}
@@ -29,7 +29,7 @@ const QuestSlide3 = () => {
         </Text>{' '}
         <Text size="14px">{t('- the more you complete, the more chances you get!')}</Text>
       </Box>
-    </Box>
+    </>
   )
 }
 
