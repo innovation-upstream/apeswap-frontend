@@ -56,6 +56,7 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
+    inactive: true,
   },
 
   // BANANA - BUSD Vault config
@@ -85,6 +86,7 @@ const vaults: VaultConfig[] = [
       },
       rewardToken: tokens.banana,
     },
+    inactive: true,
   },
 
   // BANANA - BNB vault config
