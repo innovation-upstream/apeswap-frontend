@@ -135,7 +135,7 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
                     )}
                   </Flex>
                 </Grid>
-                {i !== orders?.length - 1 && <Divider sx={{ background: 'text' }} />}
+                {i !== orders?.length - 1 && <Divider sx={{ background: 'text', opacity: 0.1 }} />}
               </>
             )
           })

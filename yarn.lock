@@ -43,10 +43,10 @@
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
 
-"@apeswapfinance/sdk@^2.0.0-alpha.21":
-  version "2.0.0-alpha.21"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/sdk/2.0.0-alpha.21/24e9234ef29a10e34bb2441950ead8d06a2927ea747ca4e127851cee1ac55608#75d57661c1fe40e7f41159186fd36d06ac8de562"
-  integrity sha512-hlnVoPaI7U09HJqvfmReQpzvf2wPiqOVWytGMMMO4MB34kreVBjr7PvcMeZ2P7kXnK+bOvyCM7zgo0x6fwYyHA==
+"@apeswapfinance/sdk@^3.0.0":
+  version "3.0.0"
+  resolved "https://npm.pkg.github.com/download/@apeswapfinance/sdk/3.0.0/6ee3956c2129151a5ead034739b447cb66f4e003406e6406c245e0b9e22e0d8e#8c050188e305843ac40a84f0e44c1888713bb3f3"
+  integrity sha512-QN+Fbswab9KuRNnrr5RCSjWuRxhzITwvn/AQYGFM7IcIyRpgd/PveD9nkKkZNHUsH0eTAD11GWkakvpd4u0Thg==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"

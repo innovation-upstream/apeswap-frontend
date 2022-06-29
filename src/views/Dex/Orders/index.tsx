@@ -8,7 +8,7 @@ import { computeTradePriceBreakdown } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
 import { CurrencyAmount, JSBI, Trade } from '@apeswapfinance/sdk'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
-import { useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
+import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useOrderCallback } from 'hooks/useOrderCallback'
 import maxAmountSpend from 'utils/maxAmountSpend'
@@ -24,6 +24,7 @@ import OrderHistoryPanel from './components/OrderHistoryPanel'
 import OrderTradeInfo from './components/OrderTradeInfo'
 
 const Orders: React.FC = () => {
+  const loadedUrlParams = useDefaultsFromURLSearch()
   // modal and loading
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
