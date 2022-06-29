@@ -1522,6 +1522,22 @@ const tokens = {
     decimals: 18,
     lpToken: true,
   },
+  froyoBnb: {
+    symbol: 'FROYO-BNB',
+    address: {
+      56: '0x58ceF3eeDB9A4adc6B5a2Ee5c85Aea07D72787f0',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  anmlBnb: {
+    symbol: 'ANML-BNB',
+    address: {
+      56: '0x0aB82Ec81c80F75B02A117fbA9B414c17379ae8C',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
 }
 
 export default tokens
