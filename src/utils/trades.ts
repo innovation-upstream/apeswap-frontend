@@ -11,7 +11,7 @@ export function isTradeBetter(
   if (tradeA && !tradeB) return false
   if (tradeB && !tradeA) return true
   if (!tradeA || !tradeB) return undefined
-  console.warn("Made it past the first checks")
+  console.warn('Made it past the first checks')
 
   if (
     tradeA.tradeType !== tradeB.tradeType ||
@@ -22,7 +22,9 @@ export function isTradeBetter(
   }
   console.warn(tradeA.executionPrice.lessThan(tradeB.executionPrice))
   console.log(tradeB.priceImpact.toSignificant(6))
-  console.warn(tradeA.executionPrice.raw.multiply(minimumDelta.add(ONE_HUNDRED_PERCENT)).lessThan(tradeB.executionPrice))
+  console.warn(
+    tradeA.executionPrice.raw.multiply(minimumDelta.add(ONE_HUNDRED_PERCENT)).lessThan(tradeB.executionPrice),
+  )
   if (minimumDelta.equalTo(ZERO_PERCENT)) {
     return tradeA.executionPrice.lessThan(tradeB.executionPrice)
   }

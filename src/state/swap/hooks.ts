@@ -208,7 +208,6 @@ export function useDerivedSwapInfo(): {
 
   const v2Trade = useFindBestRoute()
 
-
   // const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
   const currencyBalances = useMemo(
@@ -218,7 +217,6 @@ export function useDerivedSwapInfo(): {
     }),
     [relevantTokenBalances],
   )
-
 
   const currencies: { [field in Field]?: Currency | null } = useMemo(
     () => ({
@@ -253,7 +251,6 @@ export function useDerivedSwapInfo(): {
   // }
 
   const [allowedSlippage] = useUserSlippageTolerance()
-
 
   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
   // const swapCalls = useSwapCallArguments(v2Trade, allowedSlippage, recipient)
