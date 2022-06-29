@@ -139,6 +139,7 @@ export interface Bills extends BillsConfig {
   }
   userOwnedBillsData?: UserBill[]
   userOwnedBillsNftData?: UserBillNft[]
+  maxTotalPayOut?: string
 }
 
 export interface Vault extends VaultConfig {
