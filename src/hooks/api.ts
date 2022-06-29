@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
+import { setChainIdFromUrl } from 'state/network'
+import useActiveWeb3React from './useActiveWeb3React'
 import useRefresh from './useRefresh'
 
 export const baseUrl = 'https://api.apeswap.com/api/v1'
 
 export const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://ape-swap-api.herokuapp.com'
+export const moonPayBaseUrl = process.env.REACT_APP_MOONPAY_BASE_URL || 'https://buy-staging.moonpay.io?apiKey=pk_test_ofxbUiq0BDNvCBwRbO5mHjG7gKBKLWY2&currencyCode=eth&colorCode=%23ffb300'
 
 export const baseUrlStrapi = 'https://apeswap-strapi.herokuapp.com'
 const EXCHANGE_SUBGRAPH_URL = 'https://graph.apeswap.finance/subgraphs/name/ape-swap/apeswap-subgraph'
@@ -202,6 +205,31 @@ export const useLiquidityData = () => {
   }, [setData, slowRefresh])
 
   return data
+}
+
+export const useMoonPayUrl = () => {
+  const [url, setUrl] = useState<string>(moonPayBaseUrl)
+  const { account } = useActiveWeb3React()
+
+  useEffect(() => {
+    const fetchUrl = async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}/user/sign/${account}?${new URLSearchParams({
+          url: moonPayBaseUrl,
+        })}`)
+        const text = await response.text()
+        setUrl(text)
+      } catch (error) {
+        console.warn('Unable to load signed moonpay url data:', error)
+      }
+    }
+
+    if (account)
+      fetchUrl()
+    else setUrl(moonPayBaseUrl)
+  }, [account])
+
+  return url
 }
 
 const PAIR_CONFIGS = {

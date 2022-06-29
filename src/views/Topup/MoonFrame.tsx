@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Iframe from 'react-iframe'
+import { useMoonPayUrl } from 'hooks/api'
 
 const StyledIframe = styled(Iframe)`
   width: 100%;
@@ -8,7 +9,8 @@ const StyledIframe = styled(Iframe)`
   height: 560px;
   overflow: hidden;
   margin: 0 auto;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
+  margin-top: 16px;
   border-radius: 1rem;
 
   & > div {
@@ -30,12 +32,12 @@ const StyledIframe = styled(Iframe)`
 `
 
 export default function MoonPayIframe() {
-  const baseUrl = 'https://buy-staging.moonpay.io?apiKey=pk_test_ofxbUiq0BDNvCBwRbO5mHjG7gKBKLWY2&colorCode=%23ffb300'
+  const url = useMoonPayUrl()
 
   return (
     <StyledIframe
       title="Moonpay topup"
-      url={baseUrl}
+      url={url}
       scrolling="no"
       allow="accelerometer; autoplay; camera; gyroscope; payment"
     />
