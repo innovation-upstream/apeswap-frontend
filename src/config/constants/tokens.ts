@@ -1523,7 +1523,7 @@ const tokens = {
     lpToken: true,
   },
   froyoBnb: {
-    symbol: 'Froyo-BNB',
+    symbol: 'FROYO-BNB',
     address: {
       56: '0x58ceF3eeDB9A4adc6B5a2Ee5c85Aea07D72787f0',
     },
