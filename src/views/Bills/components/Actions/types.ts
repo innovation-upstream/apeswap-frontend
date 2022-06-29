@@ -9,6 +9,7 @@ export interface BuyProps {
   onValueChange: (val: string) => void
   onBillId: (billId: string, transactionHash: string) => void
   onTransactionSubmited: (trxSent: boolean) => void
+  value: string
 }
 
 export interface ApproveProps {
