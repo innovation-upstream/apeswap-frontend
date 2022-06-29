@@ -1,5 +1,7 @@
 // Network chain ids
 
+import { Fraction, JSBI, Percent, SmartRouter } from '@apeswapfinance/sdk'
+
 export const CHAIN_ID = {
   BSC: 56,
   BSC_TESTNET: 97,
@@ -140,7 +142,12 @@ export const WALLCHAIN_PARAMS = {
   },
 }
 
-export const BONUS_ROUTER = {
-  [CHAIN_ID.BSC]: '0x5471F99bCB8F682f4Fd2b463Fd3609DadD56A929',
-  [CHAIN_ID.MATIC]: '0xBAe5dc9B19004883d0377419FeF3c2C8832d7d7B',
+// Ape price impact cutoff
+export const APE_PRICE_IMPACT = 15
+
+// This sets the priority of when a router is used
+export const PRIORITY_SMART_ROUTERS = {
+  [CHAIN_ID.ETH]: [SmartRouter.APE],
+  [CHAIN_ID.BSC]: [SmartRouter.APE, SmartRouter.PANCAKE],
+  [CHAIN_ID.MATIC]: [SmartRouter.APE],
 }

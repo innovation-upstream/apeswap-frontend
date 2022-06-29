@@ -1,3 +1,4 @@
+import { SmartRouter } from '@apeswapfinance/sdk'
 import { RouterTypes } from 'config/constants'
 import { WALLCHAIN_PARAMS } from 'config/constants/chains'
 import { Contract } from 'ethers'
@@ -59,7 +60,7 @@ export default function callWallchainAPI(
         return response.json()
       }
       console.error('Wallchain Error', response.status, response.statusText)
-      onBestRoute({ routerType: RouterTypes.APE })
+      onBestRoute({ routerType: RouterTypes.APE, smartRouter: SmartRouter.APE })
       onSetSwapDelay(SwapDelay.VALID)
       return null
     })
@@ -67,10 +68,10 @@ export default function callWallchainAPI(
       if (responseJson) {
         const dataResonse: DataResponse = responseJson
         if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
-          onBestRoute({ routerType: RouterTypes.BONUS, bonusRouter: dataResonse })
+          onBestRoute({ routerType: RouterTypes.BONUS, smartRouter: SmartRouter.APE, bonusRouter: dataResonse })
           onSetSwapDelay(SwapDelay.VALID)
         } else {
-          onBestRoute({ routerType: RouterTypes.APE })
+          onBestRoute({ routerType: RouterTypes.APE, smartRouter: SmartRouter.APE })
           onSetSwapDelay(SwapDelay.VALID)
         }
       }

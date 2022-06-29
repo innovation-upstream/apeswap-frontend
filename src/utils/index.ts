@@ -1,12 +1,21 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { getAddress } from '@ethersproject/address'
-import { BLOCK_EXPLORER, BONUS_ROUTER } from 'config/constants/chains'
+import { BLOCK_EXPLORER } from 'config/constants/chains'
 import { Contract } from '@ethersproject/contracts'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import apeRouterManagerABI from 'config/abi/apeRouterManager.json'
-import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER, ROUTER_ADDRESS } from '@apeswapfinance/sdk'
+import {
+  JSBI,
+  Percent,
+  Token,
+  CurrencyAmount,
+  Currency,
+  ETHER,
+  ROUTER_ADDRESS,
+  BONUS_ROUTER_ADDRESS,
+} from '@apeswapfinance/sdk'
 import { parseAddress } from 'hooks/useAddress'
 import { RouterTypes } from 'config/constants'
 import { TokenAddressMap } from '../state/lists/hooks'
@@ -95,7 +104,7 @@ export function getRouterContract(
 ): Contract {
   if (routerType === RouterTypes.BONUS) {
     return getContract(
-      parseAddress(BONUS_ROUTER, library.network?.chainId || 56),
+      parseAddress(BONUS_ROUTER_ADDRESS, library.network?.chainId || 56),
       apeRouterManagerABI,
       library,
       account,

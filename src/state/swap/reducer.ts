@@ -1,3 +1,4 @@
+import { SmartRouter } from '@apeswapfinance/sdk'
 import { createReducer } from '@reduxjs/toolkit'
 import { RouterTypes } from 'config/constants'
 import {
@@ -39,7 +40,7 @@ const initialState: SwapState = {
   },
   recipient: null,
   swapDelay: SwapDelay.INVALID,
-  bestRoute: { routerType: RouterTypes.APE },
+  bestRoute: { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE },
 }
 
 export default createReducer<SwapState>(initialState, (builder) =>

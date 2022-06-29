@@ -5,6 +5,8 @@ import { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useBlock } from 'state/block/hooks'
+import { SmartRouter } from '@apeswapfinance/sdk'
+import { PRIORITY_SMART_ROUTERS } from 'config/constants/chains'
 import { AppDispatch, AppState } from '../index'
 import {
   addMulticallListeners,

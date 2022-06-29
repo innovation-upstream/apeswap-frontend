@@ -16,27 +16,10 @@ export const BIG_INT_ZERO = JSBI.BigInt(0)
 
 export const WRAPPED_NATIVE_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
-  [ChainId.ROPSTEN]: [WETH[ChainId.ROPSTEN]],
-  [ChainId.RINKEBY]: [WETH[ChainId.RINKEBY]],
-  [ChainId.GÖRLI]: [WETH[ChainId.GÖRLI]],
-  [ChainId.KOVAN]: [WETH[ChainId.KOVAN]],
-  [ChainId.FANTOM]: [WETH[ChainId.FANTOM]],
-  [ChainId.FANTOM_TESTNET]: [WETH[ChainId.FANTOM_TESTNET]],
   [ChainId.MATIC]: [WETH[ChainId.MATIC]],
   [ChainId.MATIC_TESTNET]: [WETH[ChainId.MATIC_TESTNET]],
-  [ChainId.XDAI]: [WETH[ChainId.XDAI]],
   [ChainId.BSC]: [WETH[ChainId.BSC]],
   [ChainId.BSC_TESTNET]: [WETH[ChainId.BSC_TESTNET]],
-  [ChainId.ARBITRUM]: [WETH[ChainId.ARBITRUM]],
-  [ChainId.MOONBASE]: [WETH[ChainId.MOONBASE]],
-  [ChainId.AVALANCHE]: [WETH[ChainId.AVALANCHE]],
-  [ChainId.FUJI]: [WETH[ChainId.FUJI]],
-  [ChainId.HECO]: [WETH[ChainId.HECO]],
-  [ChainId.HECO_TESTNET]: [WETH[ChainId.HECO_TESTNET]],
-  [ChainId.HARMONY]: [WETH[ChainId.HARMONY]],
-  [ChainId.HARMONY_TESTNET]: [WETH[ChainId.HARMONY_TESTNET]],
-  [ChainId.OKEX]: [WETH[ChainId.OKEX]],
-  [ChainId.OKEX_TESTNET]: [WETH[ChainId.OKEX_TESTNET]],
 }
 
 export const MIN_BNB: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 BNB
@@ -60,13 +43,6 @@ export const BSC: { [key: string]: Token } = {
   BANANA: new Token(ChainId.BSC, '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95', 18, 'BANANA', 'ApeSwapFinance BANANA'),
   FRM: new Token(ChainId.BSC, '0xa719b8ab7ea7af0ddb4358719a34631bb79d15dc', 18, 'FRM', 'Ferrum Network Token'),
   FRMX: new Token(ChainId.BSC, '0x8523518001ad5d24b2a04e8729743c0643a316c0', 18, 'FRMX', 'FRMx Token'),
-}
-
-export const FANTOM: { [key: string]: Token } = {
-  USDC: new Token(ChainId.FANTOM, '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75', 6, 'USDC', 'USD Coin'),
-  WBTC: new Token(ChainId.FANTOM, '0x321162Cd933E2Be498Cd2267a90534A804051b11', 8, 'WBTC', 'Wrapped Bitcoin'),
-  DAI: new Token(ChainId.FANTOM, '0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E', 18, 'DAI', 'Dai Stablecoin'),
-  WETH: new Token(ChainId.FANTOM, '0x74b23882a30290451A17c44f4F05243b6b58C76d', 18, 'WETH', 'Wrapped Ether'),
 }
 
 export const MATIC: { [key: string]: Token } = {
@@ -97,7 +73,8 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
-export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(JSBI.BigInt(50), JSBI.BigInt(10000))
+export const BIPS_BASE = JSBI.BigInt(10000)
+export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(JSBI.BigInt(50), BIPS_BASE)
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.MAINNET]: [
@@ -173,7 +150,6 @@ export const DEFAULT_DEADLINE_FROM_NOW = 60 * 20
 
 // one basis point
 export const ONE_BIPS = new Percent(JSBI.BigInt(1), JSBI.BigInt(10000))
-export const BIPS_BASE = JSBI.BigInt(10000)
 
 export const ALLOWED_PRICE_IMPACT_LOW: Percent = new Percent(JSBI.BigInt(100), BIPS_BASE) // 1%
 export const ALLOWED_PRICE_IMPACT_MEDIUM: Percent = new Percent(JSBI.BigInt(300), BIPS_BASE) // 3%

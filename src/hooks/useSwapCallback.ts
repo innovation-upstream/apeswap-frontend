@@ -4,7 +4,7 @@ import {
   JSBI,
   Percent,
   Router,
-  SmartRouter,
+  BonusRouter,
   SwapParameters,
   Trade,
   TradeType,
@@ -81,10 +81,9 @@ export function useSwapCallArguments(
 
     const swapMethods = []
 
-    // TODO: Need to change SmartRouter to BonusRouter in SDK
     if (bestRoute?.routerType === RouterTypes.BONUS) {
       swapMethods.push(
-        SmartRouter.swapCallParameters(trade, {
+        BonusRouter.swapCallParameters(trade, {
           allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
           recipient,
           deadline: deadline.toNumber(),
@@ -94,7 +93,7 @@ export function useSwapCallArguments(
       )
       if (trade.tradeType === TradeType.EXACT_INPUT) {
         swapMethods.push(
-          SmartRouter.swapCallParameters(trade, {
+          BonusRouter.swapCallParameters(trade, {
             allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
             recipient,
             deadline: deadline.toNumber(),
@@ -115,7 +114,7 @@ export function useSwapCallArguments(
       if (trade.tradeType === TradeType.EXACT_INPUT) {
         swapMethods.push(
           Router.swapCallParameters(trade, {
-            feeOnTransfer: false,
+            feeOnTransfer: true,
             allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
             recipient,
             deadline: deadline.toNumber(),
@@ -184,7 +183,6 @@ export function useSwapCallback(
                     return { call, error: new Error(t('Unexpected issue with estimating the gas. Please try again.')) }
                   })
                   .catch((callError) => {
-                    console.log('Made it here')
                     console.error('Call threw error', call, callError)
                     const reason: string = callError.reason || callError.data?.message || callError.message
                     const errorMessage = t(

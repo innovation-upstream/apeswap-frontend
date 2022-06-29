@@ -1,4 +1,4 @@
-import { Pair, Token } from '@apeswapfinance/sdk'
+import { Pair, SmartRouter, Token } from '@apeswapfinance/sdk'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -372,9 +372,16 @@ export function usePairAdder(): (pair: Pair) => void {
  * Given two tokens return the liquidity token that represents its liquidity shares
  * @param tokenA one of the two tokens
  * @param tokenB the other token
+ * @param smartRouter the router to be used
  */
-export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
-  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'Ape-LP', 'Apeswap LPs')
+export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token], smartRouter?: SmartRouter): Token {
+  return new Token(
+    tokenA.chainId,
+    Pair.getAddress(tokenA, tokenB, smartRouter || SmartRouter.APE),
+    18,
+    'Ape-LP',
+    'Apeswap LPs',
+  )
 }
 
 /**

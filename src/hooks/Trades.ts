@@ -1,9 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { isTradeBetter } from 'utils/trades'
-import { Currency, CurrencyAmount, Pair, Token, Trade } from '@apeswapfinance/sdk'
+import { Currency, CurrencyAmount, Token, Trade, Pair, SmartRouter, Fraction, Percent } from '@apeswapfinance/sdk'
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { APE_PRICE_IMPACT, PRIORITY_SMART_ROUTERS } from 'config/constants/chains'
 
 import { useUserSingleHopOnly } from 'state/user/hooks'
 import {
@@ -12,12 +13,12 @@ import {
   BETTER_TRADE_LESS_HOPS_THRESHOLD,
   ADDITIONAL_BASES,
 } from '../config/constants'
-import { PairState, usePairs } from './usePairs'
+import { PairState, useAllSmartPairs, usePairs } from './usePairs'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
 import { useUnsupportedTokens } from './Tokens'
 
-function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
+function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency) {
   const { chainId } = useActiveWeb3React()
 
   const [tokenA, tokenB] = chainId
@@ -72,21 +73,26 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
     [tokenA, tokenB, bases, basePairs, chainId],
   )
 
-  const allPairs = usePairs(allPairCombinations)
+  const allPairs = useAllSmartPairs(allPairCombinations)
+  console.log(allPairs)
 
   // only pass along valid pairs, non-duplicated pairs
   return useMemo(
     () =>
-      Object.values(
-        allPairs
-          // filter out invalid pairs
-          .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
-          // filter out duplicated pairs
-          .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
-            memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
-            return memo
-          }, {}),
-      ),
+      allPairs.map((currPair) => {
+        return Object.values(
+          currPair
+            // filter out invalid pairs
+            .filter((result): result is [PairState.EXISTS, Pair] =>
+              Boolean(result[0] === PairState.EXISTS && result[1]),
+            )
+            // filter out duplicated pairs
+            .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
+              memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
+              return memo
+            }, {}),
+        )
+      }),
     [allPairs],
   )
 }
@@ -96,41 +102,87 @@ const MAX_HOPS = 3
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
-export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Trade | null {
+export function useTradeExactIn(
+  currencyAmountIn?: CurrencyAmount,
+  currencyOut?: Currency,
+  smartRouter?: SmartRouter,
+): Trade | null {
   const allowedPairs = useAllCommonPairs(currencyAmountIn?.currency, currencyOut)
+  const { chainId } = useActiveWeb3React()
+  console.log('ALLOWED PAIRS')
+  console.log(allowedPairs)
 
   const [singleHopOnly] = useUserSingleHopOnly()
 
-  return useMemo(() => {
-    if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
-      if (singleHopOnly) {
-        return (
-          Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: 1, maxNumResults: 1 })[0] ??
-          null
-        )
-      }
-      // search through trades with varying hops, find best trade out of them
-      let bestTradeSoFar: Trade | null = null
-      for (let i = 1; i <= MAX_HOPS; i++) {
-        const currentTrade: Trade | null =
-          Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: i, maxNumResults: 1 })[0] ??
-          null
-        // if current trade is best yet, save it
-        if (isTradeBetter(bestTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
-          bestTradeSoFar = currentTrade
+  const bestTrades = useMemo(() => {
+    // search through trades with varying hops, find best trade out of them
+    let bestTradeSoFar: Trade | null = null
+    // Save the best ApeRouter trade if it exists
+    let bestApeTradeSoFar: Trade | null = null
+    for (let index = 0; index < allowedPairs.length; index++) {
+      console.log(index)
+      console.log(index)
+      console.log(index)
+      console.log(index)
+      console.log(allowedPairs.length)
+      console.log(allowedPairs.length)
+      console.log(allowedPairs.length)
+      console.log(allowedPairs.length)
+      console.log(allowedPairs.length)
+      if (currencyAmountIn && currencyOut && allowedPairs[index].length > 0) {
+        if (singleHopOnly) {
+          bestTradeSoFar =
+            Trade.bestTradeExactIn(allowedPairs[index], currencyAmountIn, currencyOut, {
+              maxHops: 1,
+              maxNumResults: 1,
+            })[0] ?? null
         }
+        for (let i = 1; i <= MAX_HOPS; i++) {
+          const currentTrade: Trade | null =
+            Trade.bestTradeExactIn(allowedPairs[index], currencyAmountIn, currencyOut, {
+              maxHops: i,
+              maxNumResults: 1,
+            })[0] ?? null
+          if (PRIORITY_SMART_ROUTERS[chainId][0] === SmartRouter.APE) {
+            if (currentTrade?.route?.pairs?.[0]?.router === SmartRouter.APE) {
+              if (isTradeBetter(bestApeTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
+                bestApeTradeSoFar = currentTrade
+              }
+            }
+          }
+          console.log(currentTrade)
+          if (isTradeBetter(bestTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
+            console.warn('IN HERHE')
+            console.log(currentTrade)
+            // if current trade is best yet, save it
+            bestTradeSoFar = currentTrade
+          }
+        }
+        console.log('VERY IMPORTANT!@!@!@!@!@!')
+        console.log(bestApeTradeSoFar)
+        console.log(bestTradeSoFar)
       }
-      return bestTradeSoFar
     }
 
-    return null
-  }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly])
+    if (bestApeTradeSoFar) {
+      if (parseFloat(bestApeTradeSoFar.priceImpact.toSignificant(6)) < APE_PRICE_IMPACT) {
+        return bestApeTradeSoFar
+      }
+    }
+    return bestTradeSoFar
+  }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly, chainId])
+
+  return bestTrades
 }
 
 /**
  * Returns the best trade for the token in to the exact amount of token out
  */
-export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: CurrencyAmount): Trade | null {
+export function useTradeExactOut(
+  currencyIn?: Currency,
+  currencyAmountOut?: CurrencyAmount,
+  smartRouter?: SmartRouter,
+): Trade | null {
   const allowedPairs = useAllCommonPairs(currencyIn, currencyAmountOut?.currency)
 
   const [singleHopOnly] = useUserSingleHopOnly()
@@ -139,16 +191,20 @@ export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: Curr
     if (currencyIn && currencyAmountOut && allowedPairs.length > 0) {
       if (singleHopOnly) {
         return (
-          Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: 1, maxNumResults: 1 })[0] ??
-          null
+          Trade.bestTradeExactOut([], currencyIn, currencyAmountOut, {
+            maxHops: 1,
+            maxNumResults: 1,
+          })[0] ?? null
         )
       }
       // search through trades with varying hops, find best trade out of them
       let bestTradeSoFar: Trade | null = null
       for (let i = 1; i <= MAX_HOPS; i++) {
         const currentTrade =
-          Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: i, maxNumResults: 1 })[0] ??
-          null
+          Trade.bestTradeExactOut([], currencyIn, currencyAmountOut, {
+            maxHops: i,
+            maxNumResults: 1,
+          })[0] ?? null
         if (isTradeBetter(bestTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
           bestTradeSoFar = currentTrade
         }

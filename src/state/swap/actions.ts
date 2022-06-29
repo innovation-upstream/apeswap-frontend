@@ -1,3 +1,4 @@
+import { SmartRouter } from '@apeswapfinance/sdk'
 import { createAction } from '@reduxjs/toolkit'
 import { RouterTypes } from 'config/constants'
 
@@ -38,6 +39,7 @@ export type DataResponse = {
 
 export interface RouterTypeParams {
   routerType: RouterTypes
+  smartRouter: SmartRouter
   bonusRouter?: DataResponse
 }
 

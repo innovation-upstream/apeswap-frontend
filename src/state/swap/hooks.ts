@@ -1,5 +1,15 @@
 import { parseUnits } from '@ethersproject/units'
-import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade, ChainId } from '@apeswapfinance/sdk'
+import {
+  Currency,
+  CurrencyAmount,
+  ETHER,
+  JSBI,
+  Token,
+  TokenAmount,
+  Trade,
+  ChainId,
+  SmartRouter,
+} from '@apeswapfinance/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,6 +21,7 @@ import { findBestRoute } from 'utils/findBestRoute'
 import { useSwapCallArguments } from 'hooks/useSwapCallback'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import useParsedQueryString from 'hooks/useParsedQueryString'
+import useFindBestRoute from 'hooks/useFindBestRoute'
 import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
 import { RouterTypes } from 'config/constants'
@@ -161,14 +172,13 @@ function involvesAddress(trade: Trade, checksummedAddress: string): boolean {
 export function useDerivedSwapInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
-  currencyUsdValues: { [field in Field]?: number }
   parsedAmount: CurrencyAmount | undefined
   v2Trade: Trade | undefined
   inputError?: string
   v1Trade: Trade | undefined
 } {
   const { account, chainId } = useActiveWeb3React()
-  const { onSetSwapDelay, onBestRoute } = useSwapActionHandlers()
+  // const { onSetSwapDelay, onBestRoute } = useSwapActionHandlers()
   const { t } = useTranslation()
 
   const {
@@ -193,10 +203,13 @@ export function useDerivedSwapInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
-  const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
+  // const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
+  // const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 
-  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
+  const v2Trade = useFindBestRoute()
+
+
+  // const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
   const currencyBalances = useMemo(
     () => ({
@@ -206,10 +219,6 @@ export function useDerivedSwapInfo(): {
     [relevantTokenBalances],
   )
 
-  const currencyUsdValues = {
-    [Field.INPUT]: 0,
-    [Field.OUTPUT]: 0,
-  }
 
   const currencies: { [field in Field]?: Currency | null } = useMemo(
     () => ({
@@ -232,22 +241,23 @@ export function useDerivedSwapInfo(): {
     inputError = inputError ?? t('Select a token')
   }
 
-  const formattedTo = isAddress(to)
-  if (!to || !formattedTo) {
-    inputError = inputError ?? t('Enter a recipient')
-  } else if (
-    BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
-    (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
-    (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
-  ) {
-    inputError = inputError ?? t('Invalid recipient')
-  }
+  // const formattedTo = isAddress(to)
+  // if (!to || !formattedTo) {
+  //   inputError = inputError ?? t('Enter a recipient')
+  // } else if (
+  //   BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
+  //   (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
+  //   (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
+  // ) {
+  //   inputError = inputError ?? t('Invalid recipient')
+  // }
 
   const [allowedSlippage] = useUserSlippageTolerance()
 
+
   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
-  const swapCalls = useSwapCallArguments(v2Trade, allowedSlippage, recipient)
-  findBestRoute(swapDelay, swapCalls, account, chainId, onSetSwapDelay, onBestRoute)
+  // const swapCalls = useSwapCallArguments(v2Trade, allowedSlippage, recipient)
+  // findBestRoute(swapDelay, swapCalls, account, chainId, onSetSwapDelay, onBestRoute)
 
   // compare input balance to max input based on version
   const [balanceIn, amountIn] = [
@@ -262,7 +272,6 @@ export function useDerivedSwapInfo(): {
   return {
     currencies,
     currencyBalances,
-    currencyUsdValues,
     parsedAmount,
     v2Trade: v2Trade ?? undefined,
     inputError,
@@ -316,7 +325,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
 
   const recipient = validatedRecipient(parsedQs.recipient)
   const swapDelay = SwapDelay.INVALID
-  const bestRoute = { routerType: RouterTypes.APE }
+  const bestRoute = { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE }
 
   return {
     [Field.INPUT]: {
@@ -341,7 +350,7 @@ export function useDefaultsFromURLSearch():
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
   const swapDelay = SwapDelay.INVALID
-  const bestRoute = { routerType: RouterTypes.APE }
+  const bestRoute = { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE }
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
   >()
