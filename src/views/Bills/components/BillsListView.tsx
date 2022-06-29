@@ -23,8 +23,8 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
     const available = new BigNumber(maxTotalPayOut)
       ?.minus(new BigNumber(totalPayoutGiven))
       ?.div(new BigNumber(10).pow(18))
-    // set in 3500 just for testing purposes
-    const threshold = new BigNumber(3500).div(earnTokenPrice)
+
+    const threshold = new BigNumber(5).div(earnTokenPrice)
     const disabled = available.lte(threshold)
 
     return {
