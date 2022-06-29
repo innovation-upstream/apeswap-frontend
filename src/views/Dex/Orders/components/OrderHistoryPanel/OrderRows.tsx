@@ -98,7 +98,7 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
                     <Flex sx={{ alignItems: 'center' }}>
                       <CurrencyLogo currency={inputToken} size="12px" />
                       <Text size="10px" weight={400} ml="3px" sx={{ lineHeight: '15px' }}>
-                        {inputToken.getSymbol(chainId)}
+                        {inputToken?.getSymbol(chainId)}
                       </Text>
                     </Flex>
                   </Flex>
@@ -109,7 +109,7 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
                     <Flex sx={{ alignItems: 'center' }}>
                       <CurrencyLogo currency={outputToken} size="12px" />
                       <Text size="10px" weight={400} ml="3px" sx={{ lineHeight: '15px' }}>
-                        {outputToken.getSymbol(chainId)}
+                        {outputToken?.getSymbol(chainId)}
                       </Text>
                     </Flex>
                   </Flex>
@@ -119,7 +119,7 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
                     </Text>
                     <Flex sx={{ alignItems: 'center' }}>
                       <Text size="10px" weight={400} sx={{ lineHeight: '15px', wordBreak: 'break-all' }}>
-                        {outputToken.getSymbol(chainId)} / {inputToken.getSymbol(chainId)}
+                        {outputToken?.getSymbol(chainId)} / {inputToken?.getSymbol(chainId)}
                       </Text>
                     </Flex>
                   </Flex>
