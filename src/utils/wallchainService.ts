@@ -43,13 +43,16 @@ export default function callWallchainAPI(
 ): Promise<any> {
   onSetSwapDelay(SwapDelay.LOADING_ROUTE)
   const encodedData = contract.interface.encodeFunctionData(methodName, args)
+  // Allowing transactions to be checked even if no user is connected
+  const activeAccount = account || '0x0000000000000000000000000000000000000000'
+
   // If the intiial call fails APE router will be the default router
   return fetch(`${WALLCHAIN_PARAMS[chainId].apiUrl}?key=${WALLCHAIN_PARAMS[chainId].apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       value,
-      sender: account,
+      sender: activeAccount,
       data: encodedData,
       destination: contract.address,
     }),
@@ -66,7 +69,7 @@ export default function callWallchainAPI(
     .then((responseJson) => {
       if (responseJson) {
         const dataResonse: DataResponse = responseJson
-        if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
+        if (wallchainResponseIsValid(dataResonse, value, activeAccount, contract.address)) {
           onBestRoute({ routerType: RouterTypes.BONUS, bonusRouter: dataResonse })
           onSetSwapDelay(SwapDelay.VALID)
         } else {
@@ -78,7 +81,7 @@ export default function callWallchainAPI(
       return null
     })
     .catch((error) => {
-      onBestRoute(null)
+      onBestRoute({ routerType: RouterTypes.APE })
       onSetSwapDelay(SwapDelay.VALID)
       console.error('Wallchain Error', error)
     })
