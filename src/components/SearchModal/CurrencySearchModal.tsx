@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from 'react'
 import { Currency, Token } from '@apeswapfinance/sdk'
 import styled from '@emotion/styled'
-import {Flex, Text } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import { ModalProps, ModalFooter, Modal } from '@apeswapfinance/uikit'
 import { TokenList } from '@uniswap/token-lists'
 import { useTranslation } from 'contexts/Localization'

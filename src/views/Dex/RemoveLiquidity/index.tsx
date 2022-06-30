@@ -28,7 +28,6 @@ function RemoveLiquidity({
   const [recentTransactions] = useUserRecentTransactions()
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
 
-
   // Set currencies
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)

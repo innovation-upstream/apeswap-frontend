@@ -34,7 +34,6 @@ function AddLiquidity({
   const { INPUT, OUTPUT } = useSwapState()
   const { t } = useTranslation()
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
-  
 
   // Set either param currency or swap currency
   currencyIdA = currencyIdA || INPUT.currencyId

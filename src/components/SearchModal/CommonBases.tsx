@@ -6,7 +6,6 @@ import { useTranslation } from 'contexts/Localization'
 import { SUGGESTED_BASES } from '../../config/constants'
 import { CurrencyLogo } from '../Logo'
 
-
 const style = {
   wrapper: {
     background: 'white3',
