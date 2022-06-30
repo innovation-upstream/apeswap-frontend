@@ -1,6 +1,8 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { escapeRegExp } from 'utils'
-import { Text, Input, Flex } from '@apeswapfinance/uikit'
+import { Text, Flex, Input as NewInput } from '@ape.swap/uikit'
+import { Input } from '@apeswapfinance/uikit'
 import { useUserSlippageTolerance, useUserTransactionTTL } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import styled from '@emotion/styled'
@@ -75,41 +77,47 @@ const SlippageTabs = () => {
   }
 
   return (
-    <Flex flexDirection="column">
-      <Flex flexDirection="column" mb="24px">
+    <Flex sx={{ flexDirection: 'column' }}>
+      <Flex sx={{ flexDirection: 'column', mb: '5px' }}>
         <Flex mb="12px">
-          <Text>{t('Slippage Tolerance')}</Text>
+          <Text weight={500}>{t('Slippage Tolerance')}</Text>
         </Flex>
         <Flex flexWrap="wrap">
           <SelectButton
+            sx={{ background: userSlippageTolerance === 10 ? 'yellow' : 'white3' }}
             onClick={() => {
               setSlippageInput('')
               setUserSlippageTolerance(10)
             }}
-            active={userSlippageTolerance === 10}
           >
-            0.1%
+            <Text weight={700} sx={{ lineHeight: '0px' }}>
+              0.1%
+            </Text>
           </SelectButton>
           <SelectButton
+            sx={{ background: userSlippageTolerance === 50 ? 'yellow' : 'white3' }}
             onClick={() => {
               setSlippageInput('')
               setUserSlippageTolerance(50)
             }}
-            active={userSlippageTolerance === 50}
           >
-            0.5%
+            <Text weight={700} sx={{ lineHeight: '0px' }}>
+              0.5%
+            </Text>
           </SelectButton>
           <SelectButton
+            sx={{ background: userSlippageTolerance === 100 ? 'yellow' : 'white3' }}
             onClick={() => {
               setSlippageInput('')
               setUserSlippageTolerance(100)
             }}
-            active={userSlippageTolerance === 100}
           >
-            1.0%
+            <Text weight={700} sx={{ lineHeight: '0px' }}>
+              1.0%
+            </Text>
           </SelectButton>
-          <Flex alignItems="center">
-            <Flex style={{ position: 'relative' }}>
+          <Flex sx={{ alignItems: 'center' }}>
+            <Flex sx={{ alignItems: 'center', position: 'relative' }}>
               <StyledInput
                 inputMode="decimal"
                 pattern="^[0-9]*[.,]?[0-9]{0,2}$"
@@ -125,12 +133,14 @@ const SlippageTabs = () => {
                 }}
                 isWarning={!slippageInputIsValid}
               />
-              <Text style={{ position: 'absolute', right: '10px', marginTop: '2px' }}>%</Text>
+              <Text color="yellow" weight={700} style={{ position: 'absolute', right: '10px' }}>
+                %
+              </Text>
             </Flex>
           </Flex>
         </Flex>
         {!!slippageError && (
-          <Text fontSize="14px" color={slippageError === SlippageError.InvalidInput ? 'red' : '#F3841E'} mt="8px">
+          <Text weight={500} color={slippageError === SlippageError.InvalidInput ? 'error' : 'error'} mt="8px">
             {slippageError === SlippageError.InvalidInput
               ? t('Enter a valid slippage percentage')
               : slippageError === SlippageError.RiskyLow
@@ -139,14 +149,23 @@ const SlippageTabs = () => {
           </Text>
         )}
       </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mb="24px">
-        <Text>{t('Tx deadline (mins)')}</Text>
-        <StyledInput
+      <Flex sx={{ justifyContent: 'space-between', alignItems: 'center', margin: '5px 0px' }}>
+        <Text weight={500}>{t('Tx deadline (mins)')}</Text>
+        <NewInput
           inputMode="numeric"
           pattern="^[0-9]+$"
           color={deadlineError && 'red'}
           onBlur={() => {
             parseCustomDeadline((ttl / 60).toString())
+          }}
+          sx={{
+            width: '91px',
+            height: '36px',
+            borderRadius: '10px',
+            borderColor: 'yellow',
+            color: 'yellow',
+            fontWeight: '700',
+            textAlign: 'center',
           }}
           placeholder={(ttl / 60).toString()}
           value={deadlineInput}
@@ -162,30 +181,23 @@ const SlippageTabs = () => {
 }
 
 const StyledInput = styled(Input)`
-  width: 120px;
-  height: 28px;
-  color: ${(props) => props.theme.colors.text};
-  outline: none;
-  :focus {
-    outline: 2px solid rgba(255, 179, 0, 1) !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-  ::placeholder {
-    color: ${(props) => props.theme.colors.text};
-  }
+  width: 100%;
+  height: 36px;
+  font-weight: 700;
+  color: ${(props) => props.theme.colors.yellow};
+  border-color: ${(props) => props.theme.colors.yellow};
 `
-const SelectButton = styled.div<{ active: boolean }>`
-  display: flex;
-  width: 56px;
-  height: 28px;
-  background: ${(props) => (props.active ? 'rgba(255, 179, 0, 1)' : props.theme.colors.inputBorder)};
-  color: ${(props) => (props.active ? 'white' : props.theme.colors.primary)};
-  border-radius: 20px;
+const SelectButton = styled(Flex)`
+  width: 64.67px;
+  min-width: 57px;
+  height: 36px;
+  radius: 10px;
+  color: primaryBright;
+  border-radius: 10px;
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  margin: 0 7px 0 0px;
+  margin-right: 5px;
 `
 
 export default SlippageTabs

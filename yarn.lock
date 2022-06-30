@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/uikit@1.3.9":
-  version "1.3.9"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.9.tgz#b2bfba24f1d3ac8448c25e2d8e901d779d3d16e4"
-  integrity sha512-VpcM01EaJv8UShVEmWvFo9SCGWffvcUZfzIb698dTAuz1KnZTKafbEq9aBq41lt/cFUODbghIPKhVzIiBNKN2w==
+"@ape.swap/uikit@^1.3.11":
+  version "1.3.11"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.11.tgz#81f4785dec11683a303055591042c03628cff1df"
+  integrity sha512-LqDScNKBDdVZMqRzr3Ow6wj6vY3w2duTysv/nGjcbzh8sVMDeKUhmhxLrXNlo4Ura4jCedytdihBKi8ZuP9ZDg==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
@@ -43,10 +43,10 @@
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
 
-"@apeswapfinance/sdk@^2.0.0-alpha.14":
-  version "2.0.0-alpha.16"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/sdk/2.0.0-alpha.16/5b47336b1aff1793de891820278ee300d25068b59e6e6964099e08939ce7905a#020eab899cf631e72015ecbc75ba1c7c7bda9df8"
-  integrity sha512-HbAy3iMIp8pdUac1S10ULqwoFTbhSakHQSTX1vGf7GiFL7fiXzpEgw1vwdP9mkrHMALzy7VKtCUhRVdMWS0OHg==
+"@apeswapfinance/sdk@^3.0.0":
+  version "3.0.0"
+  resolved "https://npm.pkg.github.com/download/@apeswapfinance/sdk/3.0.0/6ee3956c2129151a5ead034739b447cb66f4e003406e6406c245e0b9e22e0d8e#8c050188e305843ac40a84f0e44c1888713bb3f3"
+  integrity sha512-QN+Fbswab9KuRNnrr5RCSjWuRxhzITwvn/AQYGFM7IcIyRpgd/PveD9nkKkZNHUsH0eTAD11GWkakvpd4u0Thg==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"
@@ -56,10 +56,10 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@apeswapfinance/token-lists@1.0.288":
-  version "1.0.288"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.288/e0cf79d89bff97dd36b6bb1d9b6179bb2222c437350aadfd451f4b12c0d6bcd8#cf51414b6d5f5bcc45d7402d97815fa526e84cf0"
-  integrity sha512-ySSyJqXQaTFkJl/UgNQjeGgJ/JtF4SaQqsvTfwRUxM2U6RO4fVf42Hju3cBU4t6mcdNO0Zkb7NQtqcaCQ6VSAw==
+"@apeswapfinance/token-lists@1.0.290":
+  version "1.0.290"
+  resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.290/d43a08035e88baa0544f3553ba185206382b06d59e788b14f5eb5fbc9eeb3e3b#da454ecb2834e0b04dad38141c0e7180d776a07a"
+  integrity sha512-r6WZw3x5jd57K6RwRiCk0B9MEt0quu9zmCFw0//3iAW+Hm4SiCP8yKhxuFa0WxcuCqL1y3ukXIuk5uItTrTy7g==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
