@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Pair, Percent, Price, TokenAmount } from '@apeswapfinance/sdk'
+import { CurrencyAmount, Pair, Percent, TokenAmount } from '@apeswapfinance/sdk'
 
 export interface RemoveLiquidityModalProps {
   pair: Pair
