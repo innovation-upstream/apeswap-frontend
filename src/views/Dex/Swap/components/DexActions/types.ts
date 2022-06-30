@@ -14,6 +14,7 @@ export interface DexActionProps {
   userHasSpecifiedInputOutput: boolean
   disabled: boolean
   routerType: RouterTypes
+  wrapInputError: string
   onWrap: () => void
   handleSwap: () => void
   onPresentConfirmModal: () => void

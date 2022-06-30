@@ -173,7 +173,7 @@ export function useSwapCallback(
                 return {
                   call,
                   gasEstimate:
-                    bestRoute?.routerType === RouterTypes.BONUS ? gasEstimate.mul(BigNumber.from('3')) : gasEstimate,
+                    bestRoute?.routerType === RouterTypes.BONUS ? gasEstimate.mul(BigNumber.from('2')) : gasEstimate,
                 }
               })
               .catch((gasError) => {
@@ -184,7 +184,6 @@ export function useSwapCallback(
                     return { call, error: new Error(t('Unexpected issue with estimating the gas. Please try again.')) }
                   })
                   .catch((callError) => {
-                    console.log('Made it here')
                     console.error('Call threw error', call, callError)
                     const reason: string = callError.reason || callError.data?.message || callError.message
                     const errorMessage = t(
@@ -198,8 +197,6 @@ export function useSwapCallback(
               })
           }),
         )
-
-        console.info(estimatedCalls)
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         const successfulEstimation = estimatedCalls.find(

@@ -8,6 +8,7 @@ export interface AddLiquidityActionsProps {
   parsedAmounts: { CURRENCY_A?: CurrencyAmount; CURRENCY_B?: CurrencyAmount }
   error: string
   noLiquidity: boolean
+  tradeValueUsd: number
   price: Price
   poolTokenPercentage: Percent
   liquidityMinted: TokenAmount

@@ -36,7 +36,6 @@ const OrderRows: React.FC<{ orders: Order[] }> = ({ orders }) => {
       <div sx={{ background: 'white3', borderRadius: '0px 0px 10px 10px' }}>
         {orders?.length !== 0 ? (
           orders.map((order, i) => {
-            console.log(order)
             const inputToken = allTokens[getAddress(order.inputToken)]
             const outputToken = allTokens[getAddress(order.outputToken)]
             const inputAmount = formatUnits(order.inputAmount, inputToken?.decimals)

@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { AutoRenewIcon, BlockIcon, Flex, Text, CheckmarkCircleIcon, LinkExternal, Svg } from '@ape.swap/uikit'
+import { AutoRenewIcon, BlockIcon, Flex, Text, CheckmarkCircleIcon, Svg } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { orderBy } from 'lodash'

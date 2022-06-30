@@ -26,6 +26,8 @@ function RemoveLiquidity({
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const [recentTransactions] = useUserRecentTransactions()
+  const [tradeValueUsd, setTradeValueUsd] = useState(0)
+
 
   // Set currencies
   const currencyA = useCurrency(currencyIdA)
@@ -91,6 +93,7 @@ function RemoveLiquidity({
           <MyPositions />
           <DexPanel
             value={formattedAmounts[Field.LIQUIDITY_PERCENT]}
+            setTradeValueUsd={setTradeValueUsd}
             panelText={t('Remove:')}
             currency={currencyA}
             otherCurrency={currencyB}
@@ -118,6 +121,7 @@ function RemoveLiquidity({
             error={error}
             parsedAmounts={parsedAmounts}
             poolTokenPercentage={poolTokenPercentage}
+            tradeValueUsd={tradeValueUsd}
           />
         </Flex>
         {recentTransactions && <RecentTransactions />}
