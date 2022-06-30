@@ -1,6 +1,7 @@
+/** @jsxImportSource theme-ui */
 import React, { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
 import { Currency, ETHER, Token } from '@apeswapfinance/sdk'
-import { Text, Input, Flex } from '@apeswapfinance/uikit'
+import { Text, Flex, Input } from '@ape.swap/uikit'
 import { FixedSizeList } from 'react-window'
 import styled from '@emotion/styled'
 import useDebounce from 'hooks/useDebounce'
@@ -8,8 +9,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } from '../../hooks/Tokens'
 import { isAddress } from '../../utils'
-import Column, { AutoColumn } from '../layout/Column'
-import Row from '../layout/Row'
+import Column from '../layout/Column'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { filterTokens, useSortedTokensByQuery } from './filtering'
@@ -113,34 +113,30 @@ function CurrencySearch({
 
   const { t } = useTranslation()
   return (
-    <div>
-      <AutoColumn style={{ margin: '20px 0 20px 0' }}>
-        <Row padding="0 15px 0 15px">
-          <Flex alignItems="center" justifyContent="center" mb="10px" style={{ width: '100%' }}>
-            <StyledInput
-              id="token-search-input"
-              placeholder={t('Name or Address')}
-              autoComplete="off"
-              value={searchQuery}
-              // ref={inputRef as RefObject<HTMLInputElement>}
-              onChange={handleInput}
-              onKeyDown={handleEnter}
-              icon="search"
-              autoFocus
-            />
-          </Flex>
-        </Row>
-        {showCommonBases && (
-          <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
-        )}
-      </AutoColumn>
+    <Flex sx={{ flexDirection: 'column' }}>
+      <Flex sx={{ position: 'relative', margin: '10px 0px 15px 0px' }}>
+        <StyledInput
+          id="token-search-input"
+          placeholder={t('Name or Address')}
+          autoComplete="off"
+          value={searchQuery}
+          // ref={inputRef as RefObject<HTMLInputElement>}
+          onChange={handleInput}
+          onKeyDown={handleEnter}
+          icon="search"
+          autoFocus
+        />
+      </Flex>
+      {showCommonBases && (
+        <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
+      )}
       {searchToken && !searchTokenIsAdded ? (
         <Column style={{ padding: '20px 0', height: '100%' }}>
           <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
         </Column>
       ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
         <CurrencyList
-          height={250}
+          height={335}
           showETH={showETH}
           currencies={
             filteredInactiveTokens ? filteredSortedTokens.concat(filteredInactiveTokens) : filteredSortedTokens
@@ -160,19 +156,22 @@ function CurrencySearch({
           </Text>
         </Column>
       )}
-    </div>
+    </Flex>
   )
 }
 
 const StyledInput = styled(Input)`
+  width: 420px;
+  max-width: 100% !important;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
   background-color: ${({ theme }) => theme.colors.white3};
   color: ${({ theme }) => theme.colors.text};
   placeholder-color: ${({ theme }) => theme.colors.gray};
-  width: 100% !important;
   ::placeholder {
     color: ${(props) => props.theme.colors.text};
   }
-
   :focus {
     box-shadow: none !important;
   }

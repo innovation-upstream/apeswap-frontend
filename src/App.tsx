@@ -19,7 +19,11 @@ import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
-import Pool from './views/Pool'
+import Pool from './views/Dex/Pool'
+import Swap from './views/Dex/Swap'
+import AddLiquidity from './views/Dex/AddLiquidity'
+import RemoveLiquidity from './views/Dex/RemoveLiquidity'
+import PoolFinder from './views/Dex/PoolFinder'
 import ResetScroll from './utils/resetScroll'
 
 declare module '@emotion/react' {
@@ -49,17 +53,13 @@ const AdminPools = lazy(() => import('./views/AdminPools'))
 const Vaults = lazy(() => import('./views/Vaults'))
 const NfaStaking = lazy(() => import('./views/NfaStaking'))
 const Bills = lazy(() => import('./views/Bills'))
-const Swap = lazy(() => import('./views/Swap'))
-const Orders = lazy(() => import('./views/Orders'))
-const PoolFinder = lazy(() => import('./views/PoolFinder'))
-const AddLiquidity = lazy(() => import('./views/AddLiquidity'))
+const Orders = lazy(() => import('./views/Dex/Orders'))
 const Topup = lazy(() => import('./views/Topup'))
-const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
-const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/RemoveLiquidity/redirects'))
+const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/LegacyRemoveLiquidity/redirects'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 
-const redirectSwap = () => import('./views/Swap/redirects')
+const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
   redirectSwap().then((r) => ({
     default: r.RedirectPathToSwapOnly,
@@ -71,7 +71,7 @@ const RedirectToSwap = lazy(async () =>
   })),
 )
 
-const redirectAddLiquidity = () => import('./views/AddLiquidity/redirects')
+const redirectAddLiquidity = () => import('./views/Dex/AddLiquidity/redirects')
 const RedirectDuplicateTokenIds = lazy(async () =>
   redirectAddLiquidity().then((r) => ({
     default: r.RedirectDuplicateTokenIds,
