@@ -55,11 +55,7 @@ const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
                 { allowedSlippage: allowedSlippage / 100 },
               )}
             </Text>
-            <PoolInfo
-              pair={pair}
-              parsedAmounts={parsedAmounts}
-              chainId={chainId}
-            />
+            <PoolInfo pair={pair} parsedAmounts={parsedAmounts} chainId={chainId} />
             <Button onClick={onRemove} fullWidth mt="15px">
               {t('Confirm Remove Liquidity')}
             </Button>

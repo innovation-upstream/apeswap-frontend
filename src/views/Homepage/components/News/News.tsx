@@ -9,6 +9,7 @@ import { Flex, Skeleton } from '@apeswapfinance/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useFetchHomepageNews, useHomepageNews } from 'state/hooks'
 import track from 'utils/track'
+import { getDotPos } from 'utils/getDotPos'
 import { Bubble, NewsCard, NewsWrapper, SkeletonWrapper } from './styles'
 
 const SLIDE_DELAY = 5000
@@ -37,7 +38,8 @@ const News: React.FC = () => {
   }
 
   const handleSlide = (event: SwiperCore) => {
-    setActiveSlide(event.activeIndex - newsLength === newsLength ? 0 : event.activeIndex - newsLength)
+    const slideNumber = getDotPos(event.activeIndex, newsLength)
+    setActiveSlide(slideNumber)
   }
 
   useEffect(() => {
