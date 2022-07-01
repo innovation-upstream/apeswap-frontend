@@ -9,6 +9,5 @@ export interface RemoveLiquidityActionProps {
     CURRENCY_B?: CurrencyAmount
   }
   error: string
-  poolTokenPercentage: Percent
   tradeValueUsd: number
 }
