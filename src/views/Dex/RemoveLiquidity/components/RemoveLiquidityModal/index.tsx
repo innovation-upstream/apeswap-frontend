@@ -16,7 +16,6 @@ const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
   pair,
   title,
   parsedAmounts,
-  poolTokenPercentage,
   txHash,
   attemptingTxn,
   onDismiss,
@@ -59,7 +58,6 @@ const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
             <PoolInfo
               pair={pair}
               parsedAmounts={parsedAmounts}
-              poolTokenPercentage={poolTokenPercentage}
               chainId={chainId}
             />
             <Button onClick={onRemove} fullWidth mt="15px">
