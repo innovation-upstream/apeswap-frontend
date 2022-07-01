@@ -25,7 +25,6 @@ const RemoveLiquidityActions: React.FC<RemoveLiquidityActionProps> = ({
   pair,
   error,
   parsedAmounts,
-  poolTokenPercentage,
   tradeValueUsd,
 }) => {
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false)
@@ -232,7 +231,6 @@ const RemoveLiquidityActions: React.FC<RemoveLiquidityActionProps> = ({
       title={t('Confirm Remove Liquidity')}
       pair={pair}
       parsedAmounts={parsedAmounts}
-      poolTokenPercentage={poolTokenPercentage}
       txHash={txHash}
       attemptingTxn={attemptingTxn}
       onDismiss={handleDismissConfirmation}

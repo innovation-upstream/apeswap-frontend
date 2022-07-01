@@ -4,11 +4,9 @@ import { Flex, Text } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { RouteComponentProps } from 'react-router-dom'
-import { JSBI, Percent } from '@apeswapfinance/sdk'
+import { Percent } from '@apeswapfinance/sdk'
 import { useBurnActionHandlers, useBurnState, useDerivedBurnInfo } from 'state/burn/hooks'
 import { useUserRecentTransactions } from 'state/user/hooks'
-import { useTokenBalance } from 'state/wallet/hooks'
-import useTotalSupply from 'hooks/useTotalSupply'
 import { Field } from 'state/burn/actions'
 import { dexStyles } from '../styles'
 import DexPanel from '../components/DexPanel'
@@ -23,7 +21,7 @@ function RemoveLiquidity({
     params: { currencyIdA, currencyIdB },
   },
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
-  const { account, chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const [recentTransactions] = useUserRecentTransactions()
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
@@ -36,8 +34,6 @@ function RemoveLiquidity({
   const { independentField, typedValue } = useBurnState()
   const { pair, parsedAmounts, error } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
-  const userPoolBalance = useTokenBalance(account ?? undefined, pair?.liquidityToken)
-  const totalPoolTokens = useTotalSupply(pair?.liquidityToken)
 
   // allowance handling
   const [, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
@@ -56,17 +52,6 @@ function RemoveLiquidity({
     [Field.CURRENCY_B]:
       independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
   }
-
-  const dynamicUserPoolBalance = BigInt(
-    (
-      parseInt(userPoolBalance?.raw?.toString()) * (parseInt(formattedAmounts[Field.LIQUIDITY_PERCENT]) / 100) || 0
-    ).toFixed(0),
-  )
-
-  const poolTokenPercentage =
-    !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
-      ? new Percent(dynamicUserPoolBalance, totalPoolTokens.raw)
-      : undefined
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
@@ -109,17 +94,11 @@ function RemoveLiquidity({
             showCommonBases
             lpPair={pair}
           />
-          <PoolInfo
-            pair={pair}
-            parsedAmounts={parsedAmounts}
-            poolTokenPercentage={poolTokenPercentage}
-            chainId={chainId}
-          />
+          <PoolInfo pair={pair} parsedAmounts={parsedAmounts} chainId={chainId} />
           <RemoveLiquidityActions
             pair={pair}
             error={error}
             parsedAmounts={parsedAmounts}
-            poolTokenPercentage={poolTokenPercentage}
             tradeValueUsd={tradeValueUsd}
           />
         </Flex>

@@ -242,7 +242,9 @@ const Swap: React.FC = () => {
             isExpertMode={isExpertMode}
             onChangeRecipient={onChangeRecipient}
           />
-          {fetchingBestRoute ? (
+          {showWrap ? (
+            <></>
+          ) : fetchingBestRoute ? (
             <LoadingBestRoute />
           ) : (
             <DexTradeInfo
