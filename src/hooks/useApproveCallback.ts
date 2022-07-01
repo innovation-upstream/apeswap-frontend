@@ -4,6 +4,8 @@ import { Trade, TokenAmount, CurrencyAmount, ETHER, ROUTER_ADDRESS } from '@apes
 import { AUTONOMY_MIDROUTER_ADDRESS } from '@autonomylabs/limit-stop-orders'
 import { useCallback, useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { RouterTypes } from 'config/constants'
+import { BONUS_ROUTER } from 'config/constants/chains'
 import useTokenAllowance from './useTokenAllowance'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
@@ -107,7 +109,12 @@ export function useApproveCallback(
 }
 
 // wraps useApproveCallback in the context of a swap
-export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0, useAutonomy?: boolean) {
+export function useApproveCallbackFromTrade(
+  trade?: Trade,
+  allowedSlippage = 0,
+  useAutonomy?: boolean,
+  routerType?: RouterTypes,
+) {
   const { chainId } = useActiveWeb3React()
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
@@ -116,6 +123,9 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0, 
 
   return useApproveCallback(
     amountToApprove,
-    parseAddress(useAutonomy ? AUTONOMY_MIDROUTER_ADDRESS : ROUTER_ADDRESS, chainId),
+    parseAddress(
+      useAutonomy ? AUTONOMY_MIDROUTER_ADDRESS : routerType === RouterTypes.BONUS ? BONUS_ROUTER : ROUTER_ADDRESS,
+      chainId,
+    ),
   )
 }

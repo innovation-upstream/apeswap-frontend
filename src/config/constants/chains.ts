@@ -123,19 +123,24 @@ export const CHAIN_PARAMS = {
 // Wallchain Configs
 export const WALLCHAIN_PARAMS = {
   [CHAIN_ID.BSC]: {
-    apiUrl: 'https://bsc.wallchain.xyz/upgrade_txn/',
+    apiUrl: 'https://bsc.wallchains.com/upgrade_txn/',
     apiKey: '85c578a5-ecb0-445c-8a95-4c0eba2f33b6',
   },
   [CHAIN_ID.BSC_TESTNET]: {
-    apiUrl: 'https://bsc.wallchain.xyz/upgrade_txn/',
+    apiUrl: 'https://bsc.wallchains.com/upgrade_txn/',
     apiKey: '85c578a5-ecb0-445c-8a95-4c0eba2f33b6',
   },
   [CHAIN_ID.MATIC]: {
-    apiUrl: 'https://matic.wallchain.xyz/upgrade_txn/',
+    apiUrl: 'https://matic.wallchains.com/upgrade_txn/',
     apiKey: '5cf2b177-5fa5-477a-8cea-f2b54859af2a',
   },
   [CHAIN_ID.ETH]: {
-    apiUrl: 'https://matic.wallchain.xyz/upgrade_txn/',
-    apiKey: '5cf2b177-5fa5-477a-8cea-f2b54859af2a',
+    apiUrl: '',
+    apiKey: '',
   },
+}
+
+export const BONUS_ROUTER = {
+  [CHAIN_ID.BSC]: '0x5471F99bCB8F682f4Fd2b463Fd3609DadD56A929',
+  [CHAIN_ID.MATIC]: '0xBAe5dc9B19004883d0377419FeF3c2C8832d7d7B',
 }
