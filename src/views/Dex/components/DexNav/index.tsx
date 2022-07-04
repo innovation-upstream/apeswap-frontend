@@ -1,10 +1,11 @@
 /** @jsxImportSource theme-ui */
 import { Link, useLocation } from 'react-router-dom'
-import { CogIcon, Flex, Text, useModal } from '@ape.swap/uikit'
+import { CardIcon, CogIcon, Flex, Text, useModal } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { CHAIN_ID } from 'config/constants/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import MoonPayModal from 'views/Topup/MoonpayModal'
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
 
@@ -20,6 +21,7 @@ const DexNav: React.FC = () => {
     pathname?.includes('find')
 
   const [onPresentSettingsModal] = useModal(<SettingsModal />)
+  const [onPresentModal] = useModal(<MoonPayModal />)
 
   return (
     <Flex sx={styles.dexNavContainer}>
@@ -67,7 +69,7 @@ const DexNav: React.FC = () => {
         </Text>
       </Flex>
       <Flex sx={{ ...styles.navIconContainer }}>
-        {/* <CardIcon sx={{cursor: 'pointer'}}/> */}
+        <CardIcon sx={{ cursor: 'pointer', marginRight: '5px' }} width="20px" onClick={onPresentModal} />
         <CogIcon sx={{ cursor: 'pointer' }} onClick={onPresentSettingsModal} />
       </Flex>
     </Flex>
