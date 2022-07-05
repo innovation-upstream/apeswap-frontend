@@ -221,8 +221,13 @@ export const useMoonPayUrl = () => {
             url: moonPayBaseUrl,
           })}`,
         )
-        const text = await response.text()
-        setUrl(text)
+        if (response.ok) {
+          const text = await response.text()
+          setUrl(text)
+        } else {
+          console.warn('Unable to load signed moonpay url data:', response.statusText)
+          setUrl(moonPayBaseUrl)
+        }
       } catch (error) {
         console.warn('Unable to load signed moonpay url data:', error)
         setUrl(moonPayBaseUrl)
