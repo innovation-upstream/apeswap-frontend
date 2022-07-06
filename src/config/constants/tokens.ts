@@ -1221,6 +1221,13 @@ const tokens = {
     },
     decimals: 18,
   },
+  radar: {
+    symbol: 'RADAR',
+    address: {
+      56: '0x489580eB70a50515296eF31E8179fF3e77E24965',
+    },
+    decimals: 18,
+  },
 
   // Test LPs
 

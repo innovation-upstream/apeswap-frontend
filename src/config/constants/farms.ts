@@ -55,6 +55,23 @@ const farms: FarmConfig[] = [
 
   // Optional: Place latest farm here
   {
+    pid: 207,
+    image: 'RADAR.png',
+    lpSymbol: 'RADAR-BNB',
+    lpAddresses: {
+      97: '0xed89477d619c7e73f752d5fc7be60308ceb63663',
+      56: '0xe6fF591f818664865eCab584B1fe679DbB4904dB',
+    },
+    tokenSymbol: 'RADAR',
+    tokenAddresses: {
+      97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
+      56: '0x489580eB70a50515296eF31E8179fF3e77E24965',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+    projectLink: 'https://dappradar.com/',
+  },
+  {
     pid: 199,
     image: 'CPO.svg',
     lpSymbol: 'CPO-BNB',
