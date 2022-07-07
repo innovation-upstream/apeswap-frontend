@@ -17,7 +17,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import tokens from 'config/constants/tokens'
 import useENS from 'hooks/ENS/useENS'
 import { useCurrency } from 'hooks/Tokens'
-import { findBestRoute } from 'utils/findBestRoute'
 import { useSwapCallArguments } from 'hooks/useSwapCallback'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import useParsedQueryString from 'hooks/useParsedQueryString'
@@ -178,8 +177,10 @@ export function useDerivedSwapInfo(): {
   v1Trade: Trade | undefined
 } {
   const { account, chainId } = useActiveWeb3React()
-  // const { onSetSwapDelay, onBestRoute } = useSwapActionHandlers()
+
   const { t } = useTranslation()
+
+  const v2Trade = useFindBestRoute()
 
   const {
     independentField,
@@ -205,8 +206,6 @@ export function useDerivedSwapInfo(): {
 
   // const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   // const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
-
-  const v2Trade = useFindBestRoute()
 
   // const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
@@ -254,7 +253,6 @@ export function useDerivedSwapInfo(): {
 
   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
   // const swapCalls = useSwapCallArguments(v2Trade, allowedSlippage, recipient)
-  // findBestRoute(swapDelay, swapCalls, account, chainId, onSetSwapDelay, onBestRoute)
 
   // compare input balance to max input based on version
   const [balanceIn, amountIn] = [

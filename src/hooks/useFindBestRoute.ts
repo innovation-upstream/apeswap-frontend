@@ -26,21 +26,24 @@ const useFindBestRoute = () => {
   const outputCurrency = useCurrency(outputCurrencyId)
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
-  // eslint-disable-next-line no-restricted-syntax
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
-
-  const swapCalls = useSwapCallArguments(v2Trade, allowedSlippage, recipient, bestRoute, false)
 
   // Get the current router the trade will be going through
   const currentSmartRouter: SmartRouter = v2Trade?.route?.pairs?.[0]?.router || bestRoute.smartRouter
   // Get the current router type based on the router
   const currentRouterType: RouterTypes =
     (currentSmartRouter !== SmartRouter.APE ? RouterTypes.SMART : RouterTypes.APE) || bestRoute.routerType
-  // onBestRoute({ routerType: smartRouter === SmartRouter.APE ? RouterTypes.APE : RouterTypes.SMART, smartRouter })
+
+  // This is to get the correct swap arguments for a bonus trade
+  const swapCalls = useSwapCallArguments(
+    v2Trade,
+    allowedSlippage,
+    recipient,
+    { routerType: currentRouterType, smartRouter: currentSmartRouter },
+    false,
+  )
 
   // To not cause a call on every user input the code will be executed when the delay is complete
   if (swapDelay !== SwapDelay.INPUT_COMPLETE) {
@@ -64,7 +67,6 @@ const useFindBestRoute = () => {
       onSetSwapDelay,
     )
   }
-  // onSetSwapDelay(SwapDelay.VALID)
   return v2Trade
 }
 

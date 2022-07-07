@@ -16,7 +16,7 @@ describe('swap reducer', () => {
       swapDelay: SwapDelay.INVALID,
       bestRoute: {
         routerType: RouterTypes.APE,
-        smartRouter: SmartRouter.APE
+        smartRouter: SmartRouter.APE,
       },
       recipient: null,
     })
@@ -39,7 +39,7 @@ describe('swap reducer', () => {
         swapDelay: SwapDelay.INVALID,
         bestRoute: {
           routerType: RouterTypes.APE,
-          smartRouter: SmartRouter.APE
+          smartRouter: SmartRouter.APE,
         },
         recipient: null,
       })

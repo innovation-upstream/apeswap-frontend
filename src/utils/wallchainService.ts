@@ -10,6 +10,7 @@ const wallchainResponseIsValid = (
   account: string,
   contractAddress: string,
 ) => {
+  console.error(value, account, contractAddress, dataResonse)
   if (!dataResonse.pathFound) {
     // Opportunity was not found -> response should be ignored -> valid.
     return false
@@ -46,10 +47,11 @@ export default function callWallchainAPI(
   onBestRoute: (bestRoute: RouterTypeParams) => void,
   onSetSwapDelay: (swapDelay: SwapDelay) => void,
 ): Promise<any> {
-  onSetSwapDelay(SwapDelay.LOADING_ROUTE)
+  onSetSwapDelay(SwapDelay.LOADING_BONUS_ROUTE)
   const encodedData = contract.interface.encodeFunctionData(methodName, args)
   // Allowing transactions to be checked even if no user is connected
   const activeAccount = account || '0x0000000000000000000000000000000000000000'
+
 
   // If the intiial call fails APE router will be the default router
   return fetch(
@@ -79,9 +81,11 @@ export default function callWallchainAPI(
         const dataResonse: DataResponse = responseJson
         console.log(dataResonse)
         if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
+          console.error('In here')
           onBestRoute({ routerType: RouterTypes.BONUS, smartRouter, bonusRouter: dataResonse })
           onSetSwapDelay(SwapDelay.VALID)
         } else {
+          console.error('Actually here')
           onBestRoute({ routerType, smartRouter })
           onSetSwapDelay(SwapDelay.VALID)
         }
