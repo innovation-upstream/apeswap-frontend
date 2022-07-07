@@ -1,3 +1,4 @@
+import { SmartRouter } from '@apeswapfinance/sdk'
 import { RouterTypes } from 'config/constants'
 import { parse } from 'qs'
 import { Field, SwapDelay } from './actions'
@@ -22,6 +23,7 @@ describe('hooks', () => {
         swapDelay: SwapDelay.INVALID,
         bestRoute: {
           routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE
         },
         recipient: null,
       })
@@ -41,6 +43,7 @@ describe('hooks', () => {
         swapDelay: SwapDelay.INVALID,
         bestRoute: {
           routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE
         },
         recipient: null,
       })
@@ -60,6 +63,7 @@ describe('hooks', () => {
         swapDelay: SwapDelay.INVALID,
         bestRoute: {
           routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE
         },
         recipient: null,
       })
@@ -79,6 +83,7 @@ describe('hooks', () => {
         swapDelay: SwapDelay.INVALID,
         bestRoute: {
           routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE
         },
         recipient: null,
       })
@@ -101,6 +106,7 @@ describe('hooks', () => {
         swapDelay: SwapDelay.INVALID,
         bestRoute: {
           routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE
         },
         recipient: '0x0fF2D1eFd7A57B7562b2bf27F3f37899dB27F4a5',
       })
@@ -122,6 +128,7 @@ describe('hooks', () => {
         swapDelay: SwapDelay.INVALID,
         bestRoute: {
           routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE
         },
         recipient: 'bob.argent.xyz',
       })
