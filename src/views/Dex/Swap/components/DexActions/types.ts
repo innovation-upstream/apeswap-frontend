@@ -1,7 +1,6 @@
-import { Currency, Percent, Trade } from '@apeswapfinance/sdk'
+import { Percent, SmartRouter, Trade } from '@apeswapfinance/sdk'
 import { RouterTypes } from 'config/constants'
 import { WrapType } from 'hooks/useWrapCallback'
-import { Field } from 'state/swap/actions'
 
 export interface DexActionProps {
   trade: Trade
@@ -14,6 +13,8 @@ export interface DexActionProps {
   userHasSpecifiedInputOutput: boolean
   disabled: boolean
   routerType: RouterTypes
+  smartRouter: SmartRouter
+  wrapInputError: string
   onWrap: () => void
   handleSwap: () => void
   onPresentConfirmModal: () => void

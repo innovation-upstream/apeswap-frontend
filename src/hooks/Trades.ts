@@ -74,7 +74,6 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency) {
   )
 
   const allPairs = useAllSmartPairs(allPairCombinations)
-  console.log(allPairs)
 
   // only pass along valid pairs, non-duplicated pairs
   return useMemo(

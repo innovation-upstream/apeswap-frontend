@@ -84,8 +84,6 @@ export function useAllSmartPairs(currencies: [Currency | undefined, Currency | u
     () =>
       PRIORITY_SMART_ROUTERS[chainId].flatMap((smartRouter: SmartRouter) => {
         return tokens.map(([tokenA, tokenB]) => {
-          console.log('This is the smart router')
-          console.log(smartRouter)
           return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB, smartRouter) : undefined
         })
       }),
@@ -98,7 +96,6 @@ export function useAllSmartPairs(currencies: [Currency | undefined, Currency | u
   const pairResults = useMemo(() => {
     return chunkedResults.map((chunkedResult, i) => {
       return chunkedResult.map((result, j) => {
-        console.log(PRIORITY_SMART_ROUTERS[chainId][i])
         const { result: reserves, loading } = result
         const tokenA = tokens[j][0]
         const tokenB = tokens[j][1]
@@ -112,14 +109,12 @@ export function useAllSmartPairs(currencies: [Currency | undefined, Currency | u
           new Pair(
             new TokenAmount(token0, reserve0.toString()),
             new TokenAmount(token1, reserve1.toString()),
-            SmartRouter[PRIORITY_SMART_ROUTERS[chainId][i]],
+            PRIORITY_SMART_ROUTERS[chainId][i],
           ),
         ]
       })
     })
   }, [tokens, chunkedResults, chainId])
-
-  console.log(pairResults)
 
   return pairResults
 }

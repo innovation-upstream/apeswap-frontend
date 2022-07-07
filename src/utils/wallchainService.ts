@@ -29,6 +29,8 @@ const wallchainResponseIsValid = (
  * @param chainId chainId of the blockchain
  * @param account account address from sender
  * @param contract ApeSwap Router contract
+ * @param smartRouter The type of router the trade will go through
+ * @param routerType The router that the trade will go through
  * @param onBestRoute Callback function to set the best route
  * @param onSetSwapDelay Callback function to set the swap delay state
  */
@@ -39,39 +41,48 @@ export default function callWallchainAPI(
   chainId: number,
   account: string,
   contract: Contract,
+  smartRouter: SmartRouter,
+  routerType: RouterTypes,
   onBestRoute: (bestRoute: RouterTypeParams) => void,
   onSetSwapDelay: (swapDelay: SwapDelay) => void,
 ): Promise<any> {
   onSetSwapDelay(SwapDelay.LOADING_ROUTE)
   const encodedData = contract.interface.encodeFunctionData(methodName, args)
+  // Allowing transactions to be checked even if no user is connected
+  const activeAccount = account || '0x0000000000000000000000000000000000000000'
+
   // If the intiial call fails APE router will be the default router
-  return fetch(`${WALLCHAIN_PARAMS[chainId].apiUrl}?key=${WALLCHAIN_PARAMS[chainId].apiKey}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      value,
-      sender: account,
-      data: encodedData,
-      destination: contract.address,
-    }),
-  })
+  return fetch(
+    `${WALLCHAIN_PARAMS[chainId][smartRouter].apiUrl}?key=${WALLCHAIN_PARAMS[chainId][smartRouter].apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        value,
+        sender: activeAccount,
+        data: encodedData,
+        destination: contract.address,
+      }),
+    },
+  )
     .then((response) => {
       if (response.ok) {
         return response.json()
       }
       console.error('Wallchain Error', response.status, response.statusText)
-      onBestRoute({ routerType: RouterTypes.APE, smartRouter: SmartRouter.APE })
+      onBestRoute({ routerType, smartRouter })
       onSetSwapDelay(SwapDelay.VALID)
       return null
     })
     .then((responseJson) => {
       if (responseJson) {
         const dataResonse: DataResponse = responseJson
+        console.log(dataResonse)
         if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
-          onBestRoute({ routerType: RouterTypes.BONUS, smartRouter: SmartRouter.APE, bonusRouter: dataResonse })
+          onBestRoute({ routerType: RouterTypes.BONUS, smartRouter, bonusRouter: dataResonse })
           onSetSwapDelay(SwapDelay.VALID)
         } else {
-          onBestRoute({ routerType: RouterTypes.APE, smartRouter: SmartRouter.APE })
+          onBestRoute({ routerType, smartRouter })
           onSetSwapDelay(SwapDelay.VALID)
         }
       }
@@ -79,7 +90,7 @@ export default function callWallchainAPI(
       return null
     })
     .catch((error) => {
-      onBestRoute(null)
+      onBestRoute({ routerType, smartRouter })
       onSetSwapDelay(SwapDelay.VALID)
       console.error('Wallchain Error', error)
     })

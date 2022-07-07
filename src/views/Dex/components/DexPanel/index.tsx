@@ -5,6 +5,7 @@ import { Input as NumericalInput } from 'components/CurrencyInputPanel/Numerical
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Spinner } from 'theme-ui'
 import React, { useState, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { Field as MintField } from 'state/mint/actions'
@@ -21,11 +22,13 @@ const DexPanel: React.FC<DexPanelProps> = ({
   onCurrencySelect,
   onUserInput,
   handleMaxInput,
+  setTradeValueUsd,
   otherCurrency,
   fieldType,
   panelText,
   lpPair,
   disabled,
+  smartRouter,
   showCommonBases = false,
 }) => {
   const [usdVal, setUsdVal] = useState(null)
@@ -40,9 +43,19 @@ const DexPanel: React.FC<DexPanelProps> = ({
 
   useMemo(async () => {
     setUsdVal(null)
-    setUsdVal(await getCurrencyUsdPrice(chainId, lpPair?.liquidityToken || currency, isRemoveLiquidity))
+    setUsdVal(await getCurrencyUsdPrice(chainId, lpPair?.liquidityToken || currency, isRemoveLiquidity, smartRouter))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chainId, currency, isRemoveLiquidity])
+  }, [chainId, currency, isRemoveLiquidity, smartRouter])
+
+  useMemo(async () => {
+    if (setTradeValueUsd) {
+      setTradeValueUsd(
+        isRemoveLiquidity
+          ? usdVal * parseFloat(currencyBalance) * (parseFloat(value) / 100)
+          : usdVal * parseFloat(value),
+      )
+    }
+  }, [usdVal, value, currencyBalance, isRemoveLiquidity, setTradeValueUsd])
 
   return (
     <Flex sx={styles.dexPanelContainer}>
@@ -80,15 +93,18 @@ const DexPanel: React.FC<DexPanelProps> = ({
         )}
       </Flex>
       <Flex sx={styles.panelBottomContainer}>
-        <Text size="12px" sx={styles.panelBottomText}>
-          {usdVal &&
-            value !== '.' &&
-            value &&
-            `$${(lpPair
-              ? usdVal * parseFloat(currencyBalance) * (parseFloat(value) / 100)
-              : usdVal * parseFloat(value)
-            ).toFixed(2)}`}
-        </Text>
+        <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
+          {!usdVal && (value || value === '.') && <Spinner width="15px" height="15px" />}
+          <Text size="12px" sx={styles.panelBottomText}>
+            {usdVal &&
+              value !== '.' &&
+              value &&
+              `$${(lpPair
+                ? usdVal * parseFloat(currencyBalance) * (parseFloat(value) / 100)
+                : usdVal * parseFloat(value)
+              ).toFixed(2)}`}
+          </Text>
+        </Flex>
         {account && (
           <Flex sx={{ alignItems: 'center' }}>
             <Text size="12px" sx={styles.panelBottomText}>

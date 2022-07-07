@@ -1,6 +1,6 @@
 // Network chain ids
 
-import { Fraction, JSBI, Percent, SmartRouter } from '@apeswapfinance/sdk'
+import { SmartRouter } from '@apeswapfinance/sdk'
 
 export const CHAIN_ID = {
   BSC: 56,
@@ -48,10 +48,7 @@ export const NETWORK_RPC = {
   [CHAIN_ID.BSC_TESTNET]: ['https://data-seed-prebsc-2-s3.binance.org:8545/'],
   [CHAIN_ID.MATIC]: ['https://polygon-rpc.com/'],
   [CHAIN_ID.MATIC_TESTNET]: ['https://matic-mumbai.chainstacklabs.com'],
-  [CHAIN_ID.ETH]: [
-    'https://speedy-nodes-nyc.moralis.io/243a3247900299b295ca4962/eth/mainnet',
-    'https://mainnet.infura.io/v3/db68086081a640d6999f0b58d049b0c4',
-  ],
+  [CHAIN_ID.ETH]: ['https://mainnet.infura.io/v3/db68086081a640d6999f0b58d049b0c4'],
 }
 
 // Network block explorers
@@ -122,32 +119,80 @@ export const CHAIN_PARAMS = {
   },
 }
 
-// Wallchain Configs
-export const WALLCHAIN_PARAMS = {
-  [CHAIN_ID.BSC]: {
-    apiUrl: 'https://bsc.wallchains.com/upgrade_txn/',
-    apiKey: '85c578a5-ecb0-445c-8a95-4c0eba2f33b6',
-  },
-  [CHAIN_ID.BSC_TESTNET]: {
-    apiUrl: 'https://bsc.wallchains.com/upgrade_txn/',
-    apiKey: '85c578a5-ecb0-445c-8a95-4c0eba2f33b6',
-  },
-  [CHAIN_ID.MATIC]: {
-    apiUrl: 'https://matic.wallchains.com/upgrade_txn/',
-    apiKey: '5cf2b177-5fa5-477a-8cea-f2b54859af2a',
-  },
-  [CHAIN_ID.ETH]: {
-    apiUrl: '',
-    apiKey: '',
-  },
-}
-
 // Ape price impact cutoff
 export const APE_PRICE_IMPACT = 15
 
 // This sets the priority of when a router is used
 export const PRIORITY_SMART_ROUTERS = {
-  [CHAIN_ID.ETH]: [SmartRouter.APE],
-  [CHAIN_ID.BSC]: [SmartRouter.APE, SmartRouter.PANCAKE],
-  [CHAIN_ID.MATIC]: [SmartRouter.APE],
+  [CHAIN_ID.ETH]: [SmartRouter.APE, SmartRouter.UNISWAP],
+  [CHAIN_ID.BSC]: [SmartRouter.APE, SmartRouter.BISWAP, SmartRouter.PANCAKE],
+  [CHAIN_ID.MATIC]: [SmartRouter.APE, SmartRouter.QUICKSWAP],
+}
+
+// Wallchain Configs
+// If a router is in the priority list for a certain chain it must be added to the wallchain params
+export const WALLCHAIN_PARAMS = {
+  [CHAIN_ID.BSC]: {
+    [SmartRouter.APE]: {
+      apiUrl: 'https://bsc.wallchains.com/upgrade_txn/',
+      apiKey: '85c578a5-ecb0-445c-8a95-4c0eba2f33b6',
+    },
+    [SmartRouter.PANCAKE]: {
+      apiUrl: 'https://bsc.wallchains.com/upgrade_txn/',
+      apiKey: 'c5f0eb9a-180b-4787-a5c0-db68292f6926',
+    },
+    [SmartRouter.BISWAP]: {
+      apiUrl: '',
+      apiKey: '',
+    },
+  },
+  [CHAIN_ID.BSC_TESTNET]: {
+    [SmartRouter.APE]: {
+      apiUrl: 'https://bsc.wallchains.com/upgrade_txn/',
+      apiKey: '85c578a5-ecb0-445c-8a95-4c0eba2f33b6',
+    },
+  },
+  [CHAIN_ID.MATIC]: {
+    [SmartRouter.APE]: {
+      apiUrl: 'https://matic.wallchains.com/upgrade_txn/',
+      apiKey: '5cf2b177-5fa5-477a-8cea-f2b54859af2a',
+    },
+    [SmartRouter.QUICKSWAP]: {
+      apiUrl: '',
+      apiKey: '',
+    },
+  },
+  [CHAIN_ID.ETH]: {
+    [SmartRouter.APE]: {
+      apiUrl: '',
+      apiKey: '',
+    },
+    [SmartRouter.UNISWAP]: {
+      apiUrl: '',
+      apiKey: '',
+    },
+  },
+}
+
+// To display correct prices for each liquidity pool when need to swap the contract out
+// Routers in prioirty list must be in here
+export const SMART_PRICE_GETTERS = {
+  [CHAIN_ID.BSC]: {
+    [SmartRouter.APE]: '0x5e545322b83626c745FE46144a15C00C94cBD803',
+    // Change these
+    [SmartRouter.PANCAKE]: '0x5e545322b83626c745FE46144a15C00C94cBD803',
+    [SmartRouter.BISWAP]: '0x5e545322b83626c745FE46144a15C00C94cBD803',
+  },
+  [CHAIN_ID.BSC_TESTNET]: {
+    [SmartRouter.APE]: '0xd722f9A2950E35Ab3EeD1d013c214671750A638B',
+  },
+  [CHAIN_ID.MATIC]: {
+    [SmartRouter.APE]: '0x05D6C73D7de6E02B3f57677f849843c03320681c',
+    // Change this
+    [SmartRouter.QUICKSWAP]: '0x05D6C73D7de6E02B3f57677f849843c03320681c',
+  },
+  [CHAIN_ID.ETH]: {
+    [SmartRouter.APE]: '0x5fbFd1955EeA2F62F1AfD6d6E92223Ae859F7887',
+    [SmartRouter.UNISWAP]: '0x0187D959A28B0D3B490c2D898fA1CcD054cCC3cd',
+  },
 }

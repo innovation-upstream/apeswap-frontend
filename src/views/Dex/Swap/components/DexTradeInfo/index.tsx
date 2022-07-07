@@ -26,6 +26,7 @@ const DexTradeInfo: React.FC<{
   const { chainId } = useActiveWeb3React()
   const [showMore, setShowMore] = useState(open)
   const isBonusRouter = bestRoute.routerType === RouterTypes.BONUS
+  const isSmartRouter = bestRoute.routerType === RouterTypes.SMART
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState(false)
   const route = trade?.route?.path?.map((val, i) => {
@@ -59,7 +60,7 @@ const DexTradeInfo: React.FC<{
               weight={700}
               sx={{ ...dexStyles.textWrap, lineHeight: isBonusRouter ? '10px' : '10px' }}
             >
-              {isBonusRouter ? t('Bonus Router') : t('ApeSwap Router')}
+              {isBonusRouter ? t('Bonus Router') : isSmartRouter ? t('Smart Router') : t('ApeSwap Router')}
             </Text>
           </Flex>
           <Svg icon="caret" direction={showMore ? 'up' : 'down'} />
@@ -91,7 +92,7 @@ const DexTradeInfo: React.FC<{
             </Flex>
             <Flex sx={{ justifyContent: 'space-between', margin: '10px 0px' }}>
               <Text size="12px" sx={dexStyles.textWrap} mr="10px">
-                {t('Minimum recieved')}
+                {t('Minimum received')}
               </Text>
               <Text size="12px" sx={dexStyles.textWrap}>
                 {slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)}{' '}
@@ -119,7 +120,7 @@ const DexTradeInfo: React.FC<{
             >
               <Flex sx={{ justifyContent: 'space-between', margin: '4px 0px' }}>
                 <Text color={isBonusRouter ? 'primaryBright' : 'text'} size="12px" weight={700} sx={dexStyles.textWrap}>
-                  {isBonusRouter ? t('Bonus Router') : t('ApeSwap Router')}
+                  {isBonusRouter ? t('Bonus Router') : isSmartRouter ? t('Smart Router') : t('ApeSwap Router')}
                 </Text>
                 <Flex sx={{ alignSelf: 'flex-end' }}>
                   <TooltipBubble
@@ -128,6 +129,10 @@ const DexTradeInfo: React.FC<{
                         {isBonusRouter
                           ? t(
                               'The router used to upgrade transactions and return a swap bonus if the trade meets certain conditions.',
+                            )
+                          : isSmartRouter
+                          ? t(
+                              'The router used to facilitate transactions through other DEXs if ApeSwap’s DEX cannot fulfill them.',
                             )
                           : t('The native router that powers the majority of trades on the ApeSwap DEX.')}
                       </Text>

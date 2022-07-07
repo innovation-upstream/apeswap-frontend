@@ -1,8 +1,8 @@
-import { getApePriceGetterAddress, getNativeWrappedAddress } from 'utils/addressHelper'
+import { getApePriceGetterAddress, getNativeWrappedAddress, getSmartPriceGetter } from 'utils/addressHelper'
 import apePriceGetterABI from 'config/abi/apePriceGetter.json'
 import { getBalanceNumber } from 'utils/formatBalance'
 import multicall from 'utils/multicall'
-import { Currency, Token } from '@apeswapfinance/sdk'
+import { Currency, SmartRouter, Token } from '@apeswapfinance/sdk'
 
 export const getTokenUsdPrice = async (
   chainId: number,
@@ -11,18 +11,18 @@ export const getTokenUsdPrice = async (
   lp?: boolean,
   isNative?: boolean,
 ) => {
-  const apePriceGetterAddress = getApePriceGetterAddress(chainId)
+  const priceGetterAddress = getApePriceGetterAddress(chainId)
   const nativeTokenAddress = getNativeWrappedAddress(chainId)
-  if (!apePriceGetterAddress) return 0
+  if (!priceGetterAddress) return 0
   if ((tokenAddress || isNative) && tokenDecimal) {
     const call = lp
       ? {
-          address: apePriceGetterAddress,
+          address: priceGetterAddress,
           name: 'getLPPrice',
           params: [tokenAddress, 18],
         }
       : {
-          address: apePriceGetterAddress,
+          address: priceGetterAddress,
           name: 'getPrice',
           params: [isNative ? nativeTokenAddress : tokenAddress, tokenDecimal],
         }
@@ -34,20 +34,26 @@ export const getTokenUsdPrice = async (
   return null
 }
 
-export const getCurrencyUsdPrice = async (chainId: number, currency: Currency, lp = false) => {
+export const getCurrencyUsdPrice = async (
+  chainId: number,
+  currency: Currency,
+  lp = false,
+  smartRouter?: SmartRouter,
+) => {
   const isNative = currency?.symbol === 'ETH'
   const [address, decimals] = currency instanceof Token ? [currency?.address, currency?.decimals] : ['', 18]
-  const apePriceGetterAddress = getApePriceGetterAddress(chainId)
+  const priceGetterAddress = getSmartPriceGetter(chainId, smartRouter)
+
   const nativeTokenAddress = getNativeWrappedAddress(chainId)
   if ((address || isNative) && decimals) {
     const call = lp
       ? {
-          address: apePriceGetterAddress,
+          address: priceGetterAddress,
           name: 'getLPPrice',
           params: [address, 18],
         }
       : {
-          address: apePriceGetterAddress,
+          address: priceGetterAddress,
           name: 'getPrice',
           params: [isNative ? nativeTokenAddress : address, decimals],
         }

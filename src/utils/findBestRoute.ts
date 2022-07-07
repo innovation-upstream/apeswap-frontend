@@ -11,15 +11,15 @@ export const findBestRoute = (
   onBestRoute: (bestRoute: RouterTypeParams) => void,
 ) => {
   // To not cause a call on every user input the code will be executed when the delay is complete
-  if (swapDelay !== SwapDelay.INPUT_COMPLETE) {
-    return false
-  }
-  if (swapCalls[0]) {
-    const {
-      contract,
-      parameters: { methodName, args, value },
-    } = swapCalls[0]
-    callWallchainAPI(methodName, args, value, chainId, account, contract, onBestRoute, onSetSwapDelay)
-  }
-  return false
+  // if (swapDelay !== SwapDelay.INPUT_COMPLETE) {
+  //   return false
+  // }
+  // if (swapCalls[0]) {
+  //   const {
+  //     contract,
+  //     parameters: { methodName, args, value },
+  //   } = swapCalls[0]
+  //   callWallchainAPI(methodName, args, value, chainId, account, contract, onBestRoute, onSetSwapDelay)
+  // }
+  // return false
 }
