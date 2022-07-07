@@ -9,7 +9,7 @@ export interface DexPanelProps {
   otherCurrency: Currency
   panelText: string
   // Using any for field type to use the same functions for both swap and liqudity
-  onCurrencySelect: (field: any, currency: Currency) => void
+  onCurrencySelect: (field: any, currency: Currency, typedValue?: string) => void
   onUserInput: (field: any, val: string) => void
   handleMaxInput?: (field: any) => void
   setTradeValueUsd?: (val: number) => void
@@ -18,4 +18,5 @@ export interface DexPanelProps {
   showCommonBases?: boolean
   lpPair?: Pair
   disabled?: boolean
+  independentField?: Field
 }

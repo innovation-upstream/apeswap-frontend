@@ -10,7 +10,6 @@ const wallchainResponseIsValid = (
   account: string,
   contractAddress: string,
 ) => {
-  console.error(value, account, contractAddress, dataResonse)
   if (!dataResonse.pathFound) {
     // Opportunity was not found -> response should be ignored -> valid.
     return false
@@ -78,12 +77,10 @@ export default function callWallchainAPI(
     .then((responseJson) => {
       if (responseJson) {
         const dataResonse: DataResponse = responseJson
-        if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
-          console.error('In here')
+        if (wallchainResponseIsValid(dataResonse, value, activeAccount, contract.address)) {
           onBestRoute({ routerType: RouterTypes.BONUS, smartRouter, bonusRouter: dataResonse })
           onSetSwapDelay(SwapDelay.SWAP_REFRESH)
         } else {
-          console.error('Actually here')
           onBestRoute({ routerType, smartRouter })
           onSetSwapDelay(SwapDelay.SWAP_REFRESH)
         }

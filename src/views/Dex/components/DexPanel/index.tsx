@@ -29,6 +29,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
   lpPair,
   disabled,
   smartRouter,
+  independentField,
   showCommonBases = false,
 }) => {
   const [usdVal, setUsdVal] = useState(null)
@@ -67,13 +68,14 @@ const DexPanel: React.FC<DexPanelProps> = ({
           removeLiquidity={isRemoveLiquidity}
           align="left"
           id="token-amount-input"
-          disabled={disabled}
+          disabled={independentField && independentField !== fieldType && disabled}
+          disabledText={independentField && independentField !== fieldType && disabled}
         />
         {!isRemoveLiquidity ? (
           <TokenSelector
             currency={currency}
             otherCurrency={otherCurrency}
-            onCurrencySelect={(selectedCurrency: Currency) => onCurrencySelect(fieldType, selectedCurrency)}
+            onCurrencySelect={(selectedCurrency: Currency) => onCurrencySelect(fieldType, selectedCurrency, value)}
             showCommonBases={showCommonBases}
           />
         ) : (
@@ -93,7 +95,13 @@ const DexPanel: React.FC<DexPanelProps> = ({
         )}
       </Flex>
       <Flex sx={styles.panelBottomContainer}>
-        <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Flex
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: independentField !== fieldType && disabled && 0.4,
+          }}
+        >
           {!usdVal && (value || value === '.') && <Spinner width="15px" height="15px" />}
           <Text size="12px" sx={styles.panelBottomText}>
             {usdVal &&

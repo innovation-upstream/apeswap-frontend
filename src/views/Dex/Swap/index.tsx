@@ -229,6 +229,8 @@ const Swap: React.FC = () => {
             onUserInput={onUserInput}
             handleMaxInput={handleMaxInput}
             smartRouter={bestRoute.smartRouter}
+            independentField={independentField}
+            disabled={fetchingBestRoute}
           />
           <SwapSwitchButton onClick={onSwitchTokens} />
           <DexPanel
@@ -240,7 +242,10 @@ const Swap: React.FC = () => {
             onCurrencySelect={onCurrencySelection}
             onUserInput={onUserInput}
             smartRouter={bestRoute.smartRouter}
+            independentField={independentField}
+            disabled={fetchingBestRoute}
           />
+
           <ExpertModeRecipient
             recipient={recipient}
             showWrap={showWrap}

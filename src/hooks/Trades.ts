@@ -94,8 +94,7 @@ export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency) {
             }, {}),
         )
       }),
-    /* eslint-disable react-hooks/exhaustive-deps */
-    [validPairLength, tokenA, tokenB],
+    [allPairs],
   )
 }
 
@@ -118,16 +117,13 @@ export function useTradeExactIn(
   const [singleHopOnly] = useUserSingleHopOnly()
 
   bestTradeExactIn = useMemo(() => {
-    console.log(swapDelay)
-    console.log(currencyAmountIn)
     if (!currencyAmountIn) {
       return null
     }
-    if (swapDelay !== SwapDelay.USER_INPUT_COMPLETE) {
-      console.log('in here')
+    if (swapDelay !== SwapDelay.USER_INPUT_COMPLETE && swapDelay !== SwapDelay.SWAP_REFRESH) {
       return bestTradeExactIn
     }
-    console.log('made it past here')
+
     // search through trades with varying hops, find best trade out of them
     let bestTradeSoFar: Trade | null = null
     // Save the best ApeRouter trade if it exists
@@ -161,24 +157,26 @@ export function useTradeExactIn(
         }
       }
     }
-
+    if (swapDelay !== SwapDelay.SWAP_REFRESH) {
+      onSetSwapDelay(SwapDelay.SWAP_COMPLETE)
+    }
     if (bestApeTradeSoFar) {
       if (parseFloat(bestApeTradeSoFar.priceImpact.toSignificant(6)) < APE_PRICE_IMPACT) {
         return bestApeTradeSoFar
       }
     }
-    onSetSwapDelay(SwapDelay.SWAP_COMPLETE)
     return bestTradeSoFar
-    /* eslint-disable react-hooks/exhaustive-deps */
-  }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly, chainId, swapDelay])
+  }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly, chainId, swapDelay, onSetSwapDelay])
 
-  console.log(bestTradeExactIn)
   return bestTradeExactIn
 }
 
 /**
  * Returns the best trade for the token in to the exact amount of token out
  */
+
+let bestTradeExactOut = null
+
 export function useTradeExactOut(
   currencyIn?: Currency,
   currencyAmountOut?: CurrencyAmount,
@@ -190,9 +188,12 @@ export function useTradeExactOut(
 
   const [singleHopOnly] = useUserSingleHopOnly()
 
-  const bestTrades = useMemo(() => {
-    if (swapDelay !== SwapDelay.USER_INPUT_COMPLETE) {
+  bestTradeExactOut = useMemo(() => {
+    if (!currencyAmountOut) {
       return null
+    }
+    if (swapDelay !== SwapDelay.USER_INPUT_COMPLETE && swapDelay !== SwapDelay.SWAP_REFRESH) {
+      return bestTradeExactOut
     }
     // search through trades with varying hops, find best trade out of them
     let bestTradeSoFar: Trade | null = null
@@ -227,18 +228,18 @@ export function useTradeExactOut(
         }
       }
     }
-
+    if (swapDelay !== SwapDelay.SWAP_REFRESH) {
+      onSetSwapDelay(SwapDelay.SWAP_COMPLETE)
+    }
     if (bestApeTradeSoFar) {
       if (parseFloat(bestApeTradeSoFar.priceImpact.toSignificant(6)) < APE_PRICE_IMPACT) {
         return bestApeTradeSoFar
       }
     }
-    onSetSwapDelay(SwapDelay.SWAP_COMPLETE)
     return bestTradeSoFar
-    /* eslint-disable react-hooks/exhaustive-deps */
-  }, [allowedPairs, currencyAmountOut, currencyIn, singleHopOnly, chainId, swapDelay])
+  }, [allowedPairs, currencyAmountOut, currencyIn, singleHopOnly, chainId, swapDelay, onSetSwapDelay])
 
-  return bestTrades
+  return bestTradeExactOut
 }
 
 export function useIsTransactionUnsupported(currencyIn?: Currency, currencyOut?: Currency): boolean {

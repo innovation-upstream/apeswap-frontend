@@ -48,7 +48,7 @@ export function useSwapState(): AppState['swap'] {
 }
 
 export function useSwapActionHandlers(): {
-  onCurrencySelection: (field: Field, currency: Currency) => void
+  onCurrencySelection: (field: Field, currency: Currency, typedValue?: string) => void
   onSwitchTokens: () => void
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
@@ -63,20 +63,6 @@ export function useSwapActionHandlers(): {
       dispatch(setSwapDelay({ swapDelay }))
     },
     [dispatch],
-  )
-
-  const onCurrencySelection = useCallback(
-    (field: Field, currency: Currency) => {
-      dispatch(
-        selectCurrency({
-          field,
-          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
-        }),
-      )
-      // Set input to complete to recalculate the best path
-      onSetSwapDelay(SwapDelay.USER_INPUT_COMPLETE)
-    },
-    [dispatch, onSetSwapDelay],
   )
 
   const onSwitchTokens = useCallback(() => {
@@ -103,6 +89,29 @@ export function useSwapActionHandlers(): {
       }, 300)
     },
     [dispatch, onSetSwapDelay, timer],
+  )
+
+  const onCurrencySelection = useCallback(
+    (field: Field, currency: Currency, typedValue?: string) => {
+      // We dont need to timeout if their is no typed value
+      dispatch(
+        selectCurrency({
+          field,
+          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
+        }),
+      )
+      // Set input to complete to recalculate the best path
+      if (!typedValue) {
+        onSetSwapDelay(SwapDelay.USER_INPUT_COMPLETE)
+      } else {
+        onSetSwapDelay(SwapDelay.USER_INPUT)
+        timer.current = setTimeout(() => {
+          // Set state that user has finished inputing
+          onSetSwapDelay(SwapDelay.USER_INPUT_COMPLETE)
+        }, 1000)
+      }
+    },
+    [dispatch, onSetSwapDelay],
   )
 
   const onChangeRecipient = useCallback(
@@ -188,7 +197,6 @@ export function useDerivedSwapInfo(): {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient,
-    swapDelay,
   } = useSwapState()
 
   const inputCurrency = useCurrency(inputCurrencyId)
