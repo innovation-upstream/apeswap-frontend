@@ -18,7 +18,7 @@ import tokens from 'config/constants/tokens'
 import useENS from 'hooks/ENS/useENS'
 import { useCurrency } from 'hooks/Tokens'
 import { useSwapCallArguments } from 'hooks/useSwapCallback'
-import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
+import { useAllCommonPairs, useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import useFindBestRoute from 'hooks/useFindBestRoute'
 import { isAddress } from 'utils'
@@ -74,7 +74,7 @@ export function useSwapActionHandlers(): {
         }),
       )
       // Set input to complete to recalculate the best path
-      onSetSwapDelay(SwapDelay.INPUT_COMPLETE)
+      onSetSwapDelay(SwapDelay.USER_INPUT_COMPLETE)
     },
     [dispatch, onSetSwapDelay],
   )
@@ -82,25 +82,25 @@ export function useSwapActionHandlers(): {
   const onSwitchTokens = useCallback(() => {
     dispatch(switchCurrencies())
     // Set input to complete to recalculate the best path
-    onSetSwapDelay(SwapDelay.INPUT_COMPLETE)
+    onSetSwapDelay(SwapDelay.USER_INPUT_COMPLETE)
   }, [dispatch, onSetSwapDelay])
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
       dispatch(typeInput({ field, typedValue }))
       if (!typedValue) {
-        onSetSwapDelay(SwapDelay.INVALID)
+        onSetSwapDelay(SwapDelay.INIT)
         return
       }
       // Set state as user input delay
-      onSetSwapDelay(SwapDelay.INPUT_DELAY)
+      onSetSwapDelay(SwapDelay.USER_INPUT)
       // Reset previous timer on user input
       clearTimeout(timer.current)
       // Set new timer to check wallchain router
       timer.current = setTimeout(() => {
         // Set state that user has finished inputing
-        onSetSwapDelay(SwapDelay.INPUT_COMPLETE)
-      }, 500)
+        onSetSwapDelay(SwapDelay.USER_INPUT_COMPLETE)
+      }, 300)
     },
     [dispatch, onSetSwapDelay, timer],
   )
@@ -193,6 +193,7 @@ export function useDerivedSwapInfo(): {
 
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
+  useAllCommonPairs(inputCurrency, outputCurrency)
   const recipientLookup = useENS(recipient ?? undefined)
   const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
 
@@ -319,7 +320,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
   }
 
   const recipient = validatedRecipient(parsedQs.recipient)
-  const swapDelay = SwapDelay.INVALID
+  const swapDelay = SwapDelay.INIT
   const bestRoute = { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE }
 
   return {
@@ -344,7 +345,7 @@ export function useDefaultsFromURLSearch():
   const { chainId } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
-  const swapDelay = SwapDelay.INVALID
+  const swapDelay = SwapDelay.INIT
   const bestRoute = { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE }
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined

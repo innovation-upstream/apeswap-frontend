@@ -39,7 +39,7 @@ const initialState: SwapState = {
     currencyId: '',
   },
   recipient: null,
-  swapDelay: SwapDelay.INVALID,
+  swapDelay: SwapDelay.INIT,
   bestRoute: { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE },
 }
 

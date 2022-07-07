@@ -158,18 +158,18 @@ export const WALLCHAIN_PARAMS = {
       apiKey: '5cf2b177-5fa5-477a-8cea-f2b54859af2a',
     },
     [SmartRouter.QUICKSWAP]: {
-      apiUrl: '',
-      apiKey: '',
+      apiUrl: 'https://matic.wallchains.com/upgrade_txn/',
+      apiKey: '31f565ed-7bc1-44f4-8ca7-331897d65132',
     },
   },
   [CHAIN_ID.ETH]: {
     [SmartRouter.APE]: {
-      apiUrl: '',
-      apiKey: '',
+      apiUrl: 'https://eth.wallchains.com/upgrade_txn/',
+      apiKey: '498288e3-4c04-40e9-95a7-3ceb3f75096c',
     },
     [SmartRouter.UNISWAP]: {
-      apiUrl: '',
-      apiKey: '',
+      apiUrl: 'https://eth.wallchains.com/upgrade_txn/',
+      apiKey: 'ff1e792c-b199-4393-8385-40e533e3687a',
     },
   },
 }
@@ -179,17 +179,15 @@ export const WALLCHAIN_PARAMS = {
 export const SMART_PRICE_GETTERS = {
   [CHAIN_ID.BSC]: {
     [SmartRouter.APE]: '0x5e545322b83626c745FE46144a15C00C94cBD803',
-    // Change these
-    [SmartRouter.PANCAKE]: '0x5e545322b83626c745FE46144a15C00C94cBD803',
-    [SmartRouter.BISWAP]: '0x5e545322b83626c745FE46144a15C00C94cBD803',
+    [SmartRouter.PANCAKE]: '0xF724471B00B5fACBA78D195bD241d090350a04Bd',
+    [SmartRouter.BISWAP]: '0x1828e426fF3ec9E037cff888CB13f84d5e95F4eF',
   },
   [CHAIN_ID.BSC_TESTNET]: {
     [SmartRouter.APE]: '0xd722f9A2950E35Ab3EeD1d013c214671750A638B',
   },
   [CHAIN_ID.MATIC]: {
     [SmartRouter.APE]: '0x05D6C73D7de6E02B3f57677f849843c03320681c',
-    // Change this
-    [SmartRouter.QUICKSWAP]: '0x05D6C73D7de6E02B3f57677f849843c03320681c',
+    [SmartRouter.QUICKSWAP]: '0xEe57c38d678CaE0cE16168189dB47238d8fe6553',
   },
   [CHAIN_ID.ETH]: {
     [SmartRouter.APE]: '0x5fbFd1955EeA2F62F1AfD6d6E92223Ae859F7887',

@@ -104,7 +104,6 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
           // eslint-disable-next-line prefer-destructuring
           data = result.data
         }
-
         return { valid: true, data, blockNumber: result?.blockNumber }
       }),
     [callResults, calls, chainId],

@@ -13,7 +13,7 @@ describe('swap reducer', () => {
       [Field.INPUT]: { currencyId: '' },
       typedValue: '',
       independentField: Field.INPUT,
-      swapDelay: SwapDelay.INVALID,
+      swapDelay: SwapDelay.INIT,
       bestRoute: {
         routerType: RouterTypes.APE,
         smartRouter: SmartRouter.APE,
@@ -36,7 +36,7 @@ describe('swap reducer', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '',
         independentField: Field.INPUT,
-        swapDelay: SwapDelay.INVALID,
+        swapDelay: SwapDelay.INIT,
         bestRoute: {
           routerType: RouterTypes.APE,
           smartRouter: SmartRouter.APE,

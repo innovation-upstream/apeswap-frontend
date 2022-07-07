@@ -40,7 +40,7 @@ const DexTradeInfo: React.FC<{
   )
   const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
 
-  return trade && swapDelay !== SwapDelay.INVALID ? (
+  return trade && swapDelay !== SwapDelay.INIT ? (
     <Flex sx={{ ...styles.dexTradeInfoContainer }}>
       <Flex
         sx={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}

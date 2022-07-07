@@ -47,7 +47,7 @@ export default function callWallchainAPI(
   onBestRoute: (bestRoute: RouterTypeParams) => void,
   onSetSwapDelay: (swapDelay: SwapDelay) => void,
 ): Promise<any> {
-  onSetSwapDelay(SwapDelay.LOADING_BONUS_ROUTE)
+  onSetSwapDelay(SwapDelay.FETCHING_BONUS)
   const encodedData = contract.interface.encodeFunctionData(methodName, args)
   // Allowing transactions to be checked even if no user is connected
   const activeAccount = account || '0x0000000000000000000000000000000000000000'
@@ -72,7 +72,7 @@ export default function callWallchainAPI(
       }
       console.error('Wallchain Error', response.status, response.statusText)
       onBestRoute({ routerType, smartRouter })
-      onSetSwapDelay(SwapDelay.VALID)
+      onSetSwapDelay(SwapDelay.SWAP_REFRESH)
       return null
     })
     .then((responseJson) => {
@@ -81,19 +81,19 @@ export default function callWallchainAPI(
         if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
           console.error('In here')
           onBestRoute({ routerType: RouterTypes.BONUS, smartRouter, bonusRouter: dataResonse })
-          onSetSwapDelay(SwapDelay.VALID)
+          onSetSwapDelay(SwapDelay.SWAP_REFRESH)
         } else {
           console.error('Actually here')
           onBestRoute({ routerType, smartRouter })
-          onSetSwapDelay(SwapDelay.VALID)
+          onSetSwapDelay(SwapDelay.SWAP_REFRESH)
         }
       }
-      onSetSwapDelay(SwapDelay.VALID)
+      onSetSwapDelay(SwapDelay.SWAP_REFRESH)
       return null
     })
     .catch((error) => {
       onBestRoute({ routerType, smartRouter })
-      onSetSwapDelay(SwapDelay.VALID)
+      onSetSwapDelay(SwapDelay.SWAP_REFRESH)
       console.error('Wallchain Error', error)
     })
 }

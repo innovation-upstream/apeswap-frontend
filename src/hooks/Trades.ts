@@ -5,7 +5,7 @@ import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { APE_PRICE_IMPACT, PRIORITY_SMART_ROUTERS } from 'config/constants/chains'
-
+import { SwapDelay } from 'state/swap/actions'
 import { useUserSingleHopOnly } from 'state/user/hooks'
 import {
   BASES_TO_CHECK_TRADES_AGAINST,
@@ -18,7 +18,7 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 
 import { useUnsupportedTokens } from './Tokens'
 
-function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency) {
+export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency) {
   const { chainId } = useActiveWeb3React()
 
   const [tokenA, tokenB] = chainId
@@ -104,12 +104,30 @@ const MAX_HOPS = 3
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
-export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Trade | null {
+
+let bestTradeExactIn = null
+
+export function useTradeExactIn(
+  currencyAmountIn?: CurrencyAmount,
+  currencyOut?: Currency,
+  swapDelay?: SwapDelay,
+  onSetSwapDelay?: (swapDelay: SwapDelay) => void,
+): Trade | null {
   const allowedPairs = useAllCommonPairs(currencyAmountIn?.currency, currencyOut)
   const { chainId } = useActiveWeb3React()
   const [singleHopOnly] = useUserSingleHopOnly()
 
-  const bestTrades = useMemo(() => {
+  bestTradeExactIn = useMemo(() => {
+    console.log(swapDelay)
+    console.log(currencyAmountIn)
+    if (!currencyAmountIn) {
+      return null
+    }
+    if (swapDelay !== SwapDelay.USER_INPUT_COMPLETE) {
+      console.log('in here')
+      return bestTradeExactIn
+    }
+    console.log('made it past here')
     // search through trades with varying hops, find best trade out of them
     let bestTradeSoFar: Trade | null = null
     // Save the best ApeRouter trade if it exists
@@ -149,23 +167,33 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
         return bestApeTradeSoFar
       }
     }
+    onSetSwapDelay(SwapDelay.SWAP_COMPLETE)
     return bestTradeSoFar
     /* eslint-disable react-hooks/exhaustive-deps */
-  }, [currencyAmountIn, currencyOut, singleHopOnly, chainId])
+  }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly, chainId, swapDelay])
 
-  return bestTrades
+  console.log(bestTradeExactIn)
+  return bestTradeExactIn
 }
 
 /**
  * Returns the best trade for the token in to the exact amount of token out
  */
-export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: CurrencyAmount): Trade | null {
+export function useTradeExactOut(
+  currencyIn?: Currency,
+  currencyAmountOut?: CurrencyAmount,
+  swapDelay?: SwapDelay,
+  onSetSwapDelay?: (swapDelay: SwapDelay) => void,
+): Trade | null {
   const allowedPairs = useAllCommonPairs(currencyIn, currencyAmountOut?.currency)
   const { chainId } = useActiveWeb3React()
 
   const [singleHopOnly] = useUserSingleHopOnly()
 
-  return useMemo(() => {
+  const bestTrades = useMemo(() => {
+    if (swapDelay !== SwapDelay.USER_INPUT_COMPLETE) {
+      return null
+    }
     // search through trades with varying hops, find best trade out of them
     let bestTradeSoFar: Trade | null = null
     // Save the best ApeRouter trade if it exists
@@ -205,9 +233,12 @@ export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: Curr
         return bestApeTradeSoFar
       }
     }
+    onSetSwapDelay(SwapDelay.SWAP_COMPLETE)
     return bestTradeSoFar
     /* eslint-disable react-hooks/exhaustive-deps */
-  }, [currencyAmountOut, currencyIn, singleHopOnly, chainId])
+  }, [allowedPairs, currencyAmountOut, currencyIn, singleHopOnly, chainId, swapDelay])
+
+  return bestTrades
 }
 
 export function useIsTransactionUnsupported(currencyIn?: Currency, currencyOut?: Currency): boolean {

@@ -20,7 +20,7 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: 'ETH' },
         typedValue: '20.5',
         independentField: Field.OUTPUT,
-        swapDelay: SwapDelay.INVALID,
+        swapDelay: SwapDelay.INIT,
         bestRoute: {
           routerType: RouterTypes.APE,
           smartRouter: SmartRouter.APE,
@@ -40,7 +40,7 @@ describe('hooks', () => {
         [Field.OUTPUT]: { currencyId: 'ETH' },
         typedValue: '',
         independentField: Field.INPUT,
-        swapDelay: SwapDelay.INVALID,
+        swapDelay: SwapDelay.INIT,
         bestRoute: {
           routerType: RouterTypes.APE,
           smartRouter: SmartRouter.APE,
@@ -60,7 +60,7 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
-        swapDelay: SwapDelay.INVALID,
+        swapDelay: SwapDelay.INIT,
         bestRoute: {
           routerType: RouterTypes.APE,
           smartRouter: SmartRouter.APE,
@@ -80,7 +80,7 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
-        swapDelay: SwapDelay.INVALID,
+        swapDelay: SwapDelay.INIT,
         bestRoute: {
           routerType: RouterTypes.APE,
           smartRouter: SmartRouter.APE,
@@ -103,7 +103,7 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
-        swapDelay: SwapDelay.INVALID,
+        swapDelay: SwapDelay.INIT,
         bestRoute: {
           routerType: RouterTypes.APE,
           smartRouter: SmartRouter.APE,
@@ -125,7 +125,7 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
-        swapDelay: SwapDelay.INVALID,
+        swapDelay: SwapDelay.INIT,
         bestRoute: {
           routerType: RouterTypes.APE,
           smartRouter: SmartRouter.APE,

@@ -110,7 +110,7 @@ const Orders: React.FC = () => {
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
 
-  const fetchingBestRoute = swapDelay === SwapDelay.INPUT_DELAY || swapDelay === SwapDelay.LOADING_BONUS_ROUTE
+  const fetchingBestRoute = swapDelay === SwapDelay.FETCHING_BONUS || swapDelay === SwapDelay.USER_INPUT
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
 

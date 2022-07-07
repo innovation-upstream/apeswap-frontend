@@ -26,8 +26,18 @@ const useFindBestRoute = () => {
   const outputCurrency = useCurrency(outputCurrencyId)
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
-  const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
-  const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
+  const bestTradeExactIn = useTradeExactIn(
+    isExactIn ? parsedAmount : undefined,
+    outputCurrency ?? undefined,
+    swapDelay,
+    onSetSwapDelay,
+  )
+  const bestTradeExactOut = useTradeExactOut(
+    inputCurrency ?? undefined,
+    !isExactIn ? parsedAmount : undefined,
+    swapDelay,
+    onSetSwapDelay,
+  )
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
   // Get the current router the trade will be going through
@@ -46,7 +56,7 @@ const useFindBestRoute = () => {
   )
 
   // To not cause a call on every user input the code will be executed when the delay is complete
-  if (swapDelay !== SwapDelay.INPUT_COMPLETE) {
+  if (swapDelay !== SwapDelay.SWAP_COMPLETE) {
     return v2Trade
   }
   if (swapCalls[0]) {
