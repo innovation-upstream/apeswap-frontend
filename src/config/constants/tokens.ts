@@ -1228,6 +1228,13 @@ const tokens = {
     },
     decimals: 18,
   },
+  h2on: {
+    symbol: 'H2ON',
+    address: {
+      56: '0xE0E81c29A68bFDd7c48072fD94e7c58F1f0146C1',
+    },
+    decimals: 18,
+  },
 
   // Test LPs
 

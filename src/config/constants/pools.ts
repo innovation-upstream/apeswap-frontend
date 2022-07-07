@@ -2,6 +2,7 @@ import { BANANA_PER_BLOCK } from 'config'
 import { PoolConfig, PoolCategory } from './types'
 import tokens from './tokens'
 
+// Next Sous ID should be: 214
 const pools: PoolConfig[] = [
   {
     sousId: 0,
@@ -56,6 +57,26 @@ const pools: PoolConfig[] = [
     twitter: 'https://twitter.com/dappradar',
     harvest: true,
     tokenPerBlock: `0.936383680555555555`,
+    sortOrder: 1,
+    reflect: false,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
+    sousId: 213,
+    tokenName: 'H2ON',
+    image: 'H2ON.svg',
+    stakingToken: tokens.gnana,
+    rewardToken: tokens.h2on,
+    contractAddress: {
+      97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
+      56: '0x4ad206384a88d53a80f45407da12dd6af95c1db1',
+    },
+    poolCategory: PoolCategory.APEZONE,
+    projectLink: 'https://h2o-securities.com/',
+    twitter: 'https://twitter.com/H2O_Coin',
+    harvest: true,
+    tokenPerBlock: `0.014704861111111111`,
     sortOrder: 1,
     reflect: false,
     isFinished: false,
