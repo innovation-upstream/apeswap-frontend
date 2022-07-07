@@ -56,6 +56,7 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency) {
             .filter((tokens): tokens is [Token, Token] => Boolean(tokens[0] && tokens[1]))
             .filter(([t0, t1]) => t0.address !== t1.address)
             .filter(([tokenA_, tokenB_]) => {
+              console.error('Hoe oftern in i in nedis?')
               if (!chainId) return true
               const customBases = CUSTOM_BASES[chainId]
 
@@ -74,8 +75,10 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency) {
   )
 
   const allPairs = useAllSmartPairs(allPairCombinations)
+  const validPairLength = allPairs?.flatMap((list) => list?.filter((item) => item?.[0] === 2)).length
 
   // only pass along valid pairs, non-duplicated pairs
+  // Since useMemo was re-calculating each pair from the list on each keystroke we will only update on valid pair length changing and token switches
   return useMemo(
     () =>
       allPairs.map((currPair) => {
@@ -92,7 +95,8 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency) {
             }, {}),
         )
       }),
-    [allPairs],
+    /* eslint-disable react-hooks/exhaustive-deps */
+    [validPairLength, tokenA, tokenB],
   )
 }
 
