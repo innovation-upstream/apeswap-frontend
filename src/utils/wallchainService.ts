@@ -78,7 +78,6 @@ export default function callWallchainAPI(
     .then((responseJson) => {
       if (responseJson) {
         const dataResonse: DataResponse = responseJson
-        console.log(dataResonse)
         if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
           console.error('In here')
           onBestRoute({ routerType: RouterTypes.BONUS, smartRouter, bonusRouter: dataResonse })

@@ -80,9 +80,6 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !library || !chainId || !activeAccount || !deadline) return []
 
-    console.warn(bestRoute)
-    console.warn(trade)
-
     const contract: Contract | null = getRouterContract(
       chainId,
       library,

@@ -24,7 +24,6 @@ const useTopup = () => {
     try {
       const paymentStatus = await torus.initiateTopup('moonpay', paymentParams)
       toastSuccess('Succesful topup')
-      console.log(paymentStatus)
       track({
         event: 'topup',
         chain: CHAIN_ID,

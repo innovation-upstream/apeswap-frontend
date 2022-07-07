@@ -56,7 +56,6 @@ function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency) {
             .filter((tokens): tokens is [Token, Token] => Boolean(tokens[0] && tokens[1]))
             .filter(([t0, t1]) => t0.address !== t1.address)
             .filter(([tokenA_, tokenB_]) => {
-              console.error('Hoe oftern in i in nedis?')
               if (!chainId) return true
               const customBases = CUSTOM_BASES[chainId]
 
@@ -151,7 +150,8 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
       }
     }
     return bestTradeSoFar
-  }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly, chainId])
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [currencyAmountIn, currencyOut, singleHopOnly, chainId])
 
   return bestTrades
 }
@@ -206,7 +206,8 @@ export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: Curr
       }
     }
     return bestTradeSoFar
-  }, [allowedPairs, currencyAmountOut, currencyIn, singleHopOnly, chainId])
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [currencyAmountOut, currencyIn, singleHopOnly, chainId])
 }
 
 export function useIsTransactionUnsupported(currencyIn?: Currency, currencyOut?: Currency): boolean {
