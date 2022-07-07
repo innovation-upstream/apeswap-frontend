@@ -1552,6 +1552,14 @@ const tokens = {
     decimals: 18,
     lpToken: true,
   },
+  radarBnb: {
+    symbol: 'RADAR-BNB',
+    address: {
+      56: '0xe6fF591f818664865eCab584B1fe679DbB4904dB',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
 }
 
 export default tokens
