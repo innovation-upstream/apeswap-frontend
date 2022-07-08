@@ -25,8 +25,6 @@ const News: React.FC = () => {
   useFetchHomepageNews(loadImages)
   const today = new Date()
   const fetchedNews = useHomepageNews()
-  console.log('fetchedNews:::', fetchedNews)
-  // id: 173, cardLink: https://apeswap.finance/?modal=tutorial
   const sortedNews = orderBy(fetchedNews, 'CardPosition')
   const filterNews = sortedNews?.filter(
     (news) =>
@@ -64,12 +62,7 @@ const News: React.FC = () => {
     })
   }
 
-  const clickNews = (newsUrl, isModal) =>
-    isModal ? history.push({ pathname: newsUrl }) : window.open(newsUrl, '_blank')
-  // isModal: Boolean,
-  // cardLink: "?modal=tutorial"
-  // if modal -> get the cardLink and append it to location path
-  // otherwise, open cardLink in new tab
+  const clickNews = (newsUrl, isModal) => (isModal ? history.push({ search: newsUrl }) : window.open(newsUrl, '_blank'))
 
   return (
     <>
