@@ -305,6 +305,7 @@ export interface NewsCardType {
   CardLink: string
   StartTime: string
   EndTime: string
+  isModal: boolean
 }
 
 export interface FarmLpAprsType {
