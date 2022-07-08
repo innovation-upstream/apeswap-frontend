@@ -1221,6 +1221,20 @@ const tokens = {
     },
     decimals: 18,
   },
+  radar: {
+    symbol: 'RADAR',
+    address: {
+      56: '0x489580eB70a50515296eF31E8179fF3e77E24965',
+    },
+    decimals: 18,
+  },
+  h2on: {
+    symbol: 'H2ON',
+    address: {
+      56: '0xE0E81c29A68bFDd7c48072fD94e7c58F1f0146C1',
+    },
+    decimals: 18,
+  },
 
   // Test LPs
 
@@ -1534,6 +1548,14 @@ const tokens = {
     symbol: 'ANML-BNB',
     address: {
       56: '0x0aB82Ec81c80F75B02A117fbA9B414c17379ae8C',
+    },
+    decimals: 18,
+    lpToken: true,
+  },
+  radarBnb: {
+    symbol: 'RADAR-BNB',
+    address: {
+      56: '0xe6fF591f818664865eCab584B1fe679DbB4904dB',
     },
     decimals: 18,
     lpToken: true,
