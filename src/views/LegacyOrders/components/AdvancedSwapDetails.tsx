@@ -3,7 +3,7 @@ import { Trade, TradeType } from '@apeswapfinance/sdk'
 import { Text } from '@apeswapfinance/uikit'
 import { Field } from 'state/swap/actions'
 import { useUserSlippageTolerance } from 'state/user/hooks'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/prices'
+import { computeSlippageAdjustedAmounts, computeLegacyPriceBreakdown } from 'utils/prices'
 import { AutoColumn } from 'components/layout/Column'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { RowBetween, RowFixed } from 'components/layout/Row'
@@ -12,7 +12,7 @@ import FormattedPriceImpact from './FormattedPriceImpact'
 import SwapRoute from './SwapRoute'
 
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
+  const { priceImpactWithoutFee, realizedLPFee } = computeLegacyPriceBreakdown(trade)
   const { chainId } = useActiveWeb3React()
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
   const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)

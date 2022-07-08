@@ -12,6 +12,7 @@ import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks
 import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useOrderCallback } from 'hooks/useOrderCallback'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import { dexStyles } from '../styles'
 import DexPanel from '../components/DexPanel'
@@ -41,6 +42,8 @@ const Orders: React.FC = () => {
   })
 
   const { t } = useTranslation()
+
+  const { chainId } = useActiveWeb3React()
 
   const [allowedSlippage] = useUserSlippageTolerance()
 
@@ -112,7 +115,7 @@ const Orders: React.FC = () => {
 
   const fetchingBestRoute = swapDelay === SwapDelay.FETCHING_BONUS || swapDelay === SwapDelay.USER_INPUT
 
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const { priceImpactWithoutFee } = computeTradePriceBreakdown(chainId, bestRoute.smartRouter, trade)
 
   const [limitOrderPrice, setLimitOrderPrice] = useState<string>('')
   const [inputFocused, setInputFocused] = useState<boolean>(true)

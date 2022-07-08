@@ -136,6 +136,7 @@ export function useTradeExactIn(
               maxHops: 1,
               maxNumResults: 1,
             })[0] ?? null
+          break
         }
         for (let i = 1; i <= MAX_HOPS; i++) {
           const currentTrade: Trade | null =
@@ -207,6 +208,7 @@ export function useTradeExactOut(
               maxHops: 1,
               maxNumResults: 1,
             })[0] ?? null
+          break
         }
         for (let i = 1; i <= MAX_HOPS; i++) {
           const currentTrade: Trade | null =
