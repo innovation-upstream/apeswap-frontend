@@ -14,7 +14,6 @@ const bills: BillsConfig[] = [
     quoteToken: tokens.wbnb,
     lpToken: tokens.radarBnb,
     earnToken: tokens.radar,
-    inactive: true,
   },
   {
     index: 0,
