@@ -22,20 +22,16 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   padding: 0 0 0 15px;
   text-align: right;
   -webkit-appearance: textfield;
-
   ::-webkit-search-decoration {
     -webkit-appearance: none;
   }
-
   [type='number'] {
     -moz-appearance: textfield;
   }
-
   ::-webkit-outer-spin-button,
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
-
   ::placeholder {
     color: ${({ theme }) => theme.colors.text};
   }

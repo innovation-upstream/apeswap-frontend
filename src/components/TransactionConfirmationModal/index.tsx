@@ -1,9 +1,12 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback } from 'react'
 import { ChainId, Currency, Token } from '@apeswapfinance/sdk'
 import styled from 'styled-components'
-import { Button, Text, ErrorIcon, Flex, Link, Modal, ModalProps, MetamaskIcon, Spinner } from '@apeswapfinance/uikit'
+import { Button, Text, ErrorIcon, Flex, Link, MetamaskIcon, Spinner } from '@ape.swap/uikit'
+import { Modal, ModalProps } from '@apeswapfinance/uikit'
 import { registerToken } from 'utils/wallet'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { dexStyles } from 'views/Dex/styles'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { ArrowUpCircle } from 'react-feather'
 import { useTranslation } from 'contexts/Localization'
@@ -19,29 +22,49 @@ const ConfirmedIcon = styled(ColumnCenter)`
   padding: 24px 0;
 `
 
-function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
+export function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
   const { t } = useTranslation()
   return (
-    <Wrapper>
-      <ConfirmedIcon>
-        <Spinner size={200} />
-      </ConfirmedIcon>
-      <AutoColumn gap="12px" justify="center">
-        <Text fontSize="20px">{t('Waiting For Confirmation')}</Text>
-        <AutoColumn gap="12px" justify="center">
-          <Text bold small textAlign="center">
+    <Flex
+      sx={{
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        background: 'white3',
+        margin: '15px 0px',
+        borderRadius: '10px',
+      }}
+    >
+      <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Spinner size={150} />
+      </Flex>
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          alignItems: 'center',
+          background: 'white4',
+          padding: '10px 20px',
+          margin: '10px',
+          borderRadius: '10px',
+        }}
+      >
+        <Text size="20px" weight={500} margin="5px 0px" sx={{ textAlign: 'center' }}>
+          {t('Waiting For Confirmation')}
+        </Text>
+        <Flex margin="10px 0px">
+          <Text weight={700} sx={{ textAlign: 'center' }}>
             {pendingText}
           </Text>
-        </AutoColumn>
-        <Text small textAlign="center">
+        </Flex>
+        <Text size="14px" weight={400}>
           {t('Confirm this transaction in your wallet')}
         </Text>
-      </AutoColumn>
-    </Wrapper>
+      </Flex>
+    </Flex>
   )
 }
 
-function TransactionSubmittedContent({
+export function TransactionSubmittedContent({
   onDismiss,
   chainId,
   hash,
@@ -97,10 +120,10 @@ export function ConfirmationModalContent({
   bottomContent: () => React.ReactNode
 }) {
   return (
-    <Wrapper>
+    <Flex sx={{ ...dexStyles.dexContainer, padding: '0px' }}>
       <div>{topContent()}</div>
       <div>{bottomContent()}</div>
-    </Wrapper>
+    </Flex>
   )
 }
 
@@ -154,22 +177,24 @@ const TransactionConfirmationModal: React.FC<ModalProps & ConfirmationModalProps
   if (!chainId) return null
 
   return (
-    <div style={{ maxWidth: '420px', zIndex: 101 }}>
-      <Modal title={title} onDismiss={handleDismiss}>
-        {attemptingTxn ? (
-          <ConfirmationPendingContent pendingText={pendingText} />
-        ) : hash ? (
-          <TransactionSubmittedContent
-            chainId={chainId}
-            hash={hash}
-            onDismiss={onDismiss}
-            currencyToAdd={currencyToAdd}
-          />
-        ) : (
-          content()
-        )}
+    <Flex sx={{ width: '420px' }}>
+      <Modal title={title} onDismiss={handleDismiss} maxWidth="100%">
+        <Flex sx={{ width: '380px', maxWidth: '100%' }}>
+          {attemptingTxn ? (
+            <ConfirmationPendingContent pendingText={pendingText} />
+          ) : hash ? (
+            <TransactionSubmittedContent
+              chainId={chainId}
+              hash={hash}
+              onDismiss={onDismiss}
+              currencyToAdd={currencyToAdd}
+            />
+          ) : (
+            content()
+          )}
+        </Flex>
       </Modal>
-    </div>
+    </Flex>
   )
 }
 

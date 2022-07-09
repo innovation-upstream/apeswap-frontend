@@ -1,25 +1,7 @@
+import { RouterTypes } from 'config/constants'
 import { WALLCHAIN_PARAMS } from 'config/constants/chains'
 import { Contract } from 'ethers'
-
-type SearchSummary = {
-  expectedProfit?: number
-  expectedUsdProfit?: number
-  firstTokenAddress?: string
-  firstTokenAmount?: number
-}
-
-type TransactionArgs = {
-  data: string
-  destination: string
-  sender: string
-  value: string
-}
-
-type DataResponse = {
-  pathFound: boolean
-  summary?: { searchSummary?: SearchSummary }
-  transactionArgs: TransactionArgs
-}
+import { SwapDelay, RouterTypeParams, DataResponse } from 'state/swap/actions'
 
 const wallchainResponseIsValid = (
   dataResonse: DataResponse,
@@ -38,23 +20,6 @@ const wallchainResponseIsValid = (
   )
 }
 
-const recordTransactionSummary = (dataResponse: DataResponse, chainId: number) => {
-  return fetch('https://apeswap-strapi.herokuapp.com/arbitrage-testings', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      firstTokenAddress: dataResponse.summary?.searchSummary?.firstTokenAddress || '',
-      expectedProfit: dataResponse.summary?.searchSummary?.expectedProfit || 0,
-      expectedUsdProfit: dataResponse.summary?.searchSummary?.expectedUsdProfit || 0,
-      firstTokenAmount: dataResponse.summary?.searchSummary?.firstTokenAmount || 0,
-      chainId,
-      sender: dataResponse.transactionArgs.sender,
-    }),
-  }).catch((error) => {
-    console.error('Wallchain Txn Summary Recording Error', error)
-  })
-}
-
 /**
  * Call Wallchain API to analyze the expected opportunity.
  * @param methodName function to execute in transaction
@@ -63,6 +28,8 @@ const recordTransactionSummary = (dataResponse: DataResponse, chainId: number) =
  * @param chainId chainId of the blockchain
  * @param account account address from sender
  * @param contract ApeSwap Router contract
+ * @param onBestRoute Callback function to set the best route
+ * @param onSetSwapDelay Callback function to set the swap delay state
  */
 export default function callWallchainAPI(
   methodName: string,
@@ -71,15 +38,21 @@ export default function callWallchainAPI(
   chainId: number,
   account: string,
   contract: Contract,
+  onBestRoute: (bestRoute: RouterTypeParams) => void,
+  onSetSwapDelay: (swapDelay: SwapDelay) => void,
 ): Promise<any> {
+  onSetSwapDelay(SwapDelay.LOADING_ROUTE)
   const encodedData = contract.interface.encodeFunctionData(methodName, args)
+  // Allowing transactions to be checked even if no user is connected
+  const activeAccount = account || '0x0000000000000000000000000000000000000000'
 
+  // If the intiial call fails APE router will be the default router
   return fetch(`${WALLCHAIN_PARAMS[chainId].apiUrl}?key=${WALLCHAIN_PARAMS[chainId].apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       value,
-      sender: account,
+      sender: activeAccount,
       data: encodedData,
       destination: contract.address,
     }),
@@ -89,18 +62,27 @@ export default function callWallchainAPI(
         return response.json()
       }
       console.error('Wallchain Error', response.status, response.statusText)
+      onBestRoute({ routerType: RouterTypes.APE })
+      onSetSwapDelay(SwapDelay.VALID)
       return null
     })
     .then((responseJson) => {
       if (responseJson) {
         const dataResonse: DataResponse = responseJson
-        if (wallchainResponseIsValid(dataResonse, value, account, contract.address)) {
-          return recordTransactionSummary(dataResonse, chainId)
+        if (wallchainResponseIsValid(dataResonse, value, activeAccount, contract.address)) {
+          onBestRoute({ routerType: RouterTypes.BONUS, bonusRouter: dataResonse })
+          onSetSwapDelay(SwapDelay.VALID)
+        } else {
+          onBestRoute({ routerType: RouterTypes.APE })
+          onSetSwapDelay(SwapDelay.VALID)
         }
       }
+      onSetSwapDelay(SwapDelay.VALID)
       return null
     })
     .catch((error) => {
+      onBestRoute({ routerType: RouterTypes.APE })
+      onSetSwapDelay(SwapDelay.VALID)
       console.error('Wallchain Error', error)
     })
 }

@@ -1,13 +1,13 @@
 import { Currency, CurrencyAmount, ETHER, JSBI, Pair, Percent, Price, TokenAmount } from '@apeswapfinance/sdk'
 import { useCallback, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PairState, usePair } from 'hooks/usePairs'
 import { useTranslation } from 'contexts/Localization'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import { wrappedCurrency, wrappedCurrencyAmount } from 'utils/wrappedCurrency'
-import { AppDispatch, AppState } from '../index'
+import { AppState, useAppDispatch } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
@@ -19,10 +19,18 @@ export function useMintState(): AppState['mint'] {
 }
 
 export function useMintActionHandlers(noLiquidity: boolean | undefined): {
+  onUserInput: (field: Field, typedValue: string) => void
   onFieldAInput: (typedValue: string) => void
   onFieldBInput: (typedValue: string) => void
 } {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
+
+  const onUserInput = useCallback(
+    (field: Field, typedValue: string) => {
+      dispatch(typeInput({ field, typedValue, noLiquidity: noLiquidity === true }))
+    },
+    [dispatch, noLiquidity],
+  )
 
   const onFieldAInput = useCallback(
     (typedValue: string) => {
@@ -38,6 +46,7 @@ export function useMintActionHandlers(noLiquidity: boolean | undefined): {
   )
 
   return {
+    onUserInput,
     onFieldAInput,
     onFieldBInput,
   }
@@ -175,11 +184,11 @@ export function useDerivedMintInfo(
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
 
   if (currencyAAmount && currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount)) {
-    error = `${t('Insufficient')} ${currencies[Field.CURRENCY_A]?.symbol} ${t('balance')}`
+    error = `${t('Insufficient')} ${currencies[Field.CURRENCY_A]?.getSymbol(chainId)} ${t('balance')}`
   }
 
   if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
-    error = `${t('Insufficient')} ${currencies[Field.CURRENCY_B]?.symbol} ${t('balance')}`
+    error = `${t('Insufficient')} ${currencies[Field.CURRENCY_B]?.getSymbol(chainId)} ${t('balance')}`
   }
 
   return {

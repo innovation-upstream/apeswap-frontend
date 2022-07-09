@@ -1,8 +1,10 @@
+/** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
 import { JSBI, Pair, Percent } from '@apeswapfinance/sdk'
-import { Text, Card, Flex, CardProps, Button, ArrowDropDownIcon, ArrowDropUpIcon } from '@apeswapfinance/uikit'
+import { Text, Card, Flex, CardProps, Button, Svg } from '@ape.swap/uikit'
 import { Link } from 'react-router-dom'
-import { Box } from 'theme-ui'
+import { Box, Divider } from 'theme-ui'
+import { AnimatePresence, motion } from 'framer-motion'
 import styled from 'styled-components'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
@@ -19,6 +21,7 @@ import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../layout/Row'
 import { BIG_INT_ZERO } from '../../config/constants'
 import Dots from '../Loader/Dots'
+import { styles } from './styles'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -29,19 +32,6 @@ const StyledText = styled(Text)`
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 20px;
   }
-`
-
-const Title = styled(Text)`
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 5px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 22px;
-    margin-top: 0px;
-  }
-`
-const StyledCard = styled(Card)`
-  background-color: ${({ theme }) => theme.colors.white3};
 `
 
 interface PositionCardProps extends CardProps {
@@ -151,7 +141,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
   )
 }
 
-export default function FullPositionCard({ pair, ...props }: PositionCardProps) {
+export default function FullPositionCard({ pair }: PositionCardProps) {
   const { account, chainId } = useActiveWeb3React()
 
   const [currencyPrice, setCurrencyPrice] = useState<number>(null)
@@ -191,107 +181,108 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
       : [undefined, undefined]
 
   return (
-    <StyledCard style={{ borderRadius: '20px' }} {...props}>
-      <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)} p="16px">
-        <Flex flexDirection="column">
-          <Flex alignItems="center" mb="4px">
-            <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={28} />
-            <Title bold ml="8px" fontSize="22px">
-              {!currency0 || !currency1 ? (
-                <Dots>Loading</Dots>
-              ) : (
-                `${currency0.getSymbol(chainId)}/${currency1.getSymbol(chainId)}`
-              )}
-            </Title>
-            <Text small style={{ position: 'absolute', right: '40px' }} mt="5px" mr="20px">
-              {currencyPrice ? `~ $${(currencyPrice * parseFloat(userPoolBalance?.toSignificant(4))).toFixed(2)}` : '-'}
-            </Text>
-          </Flex>
+    <Flex sx={{ ...styles.poolContainer }} onClick={() => setShowMore((prev) => !prev)}>
+      <Flex sx={{ ...styles.innerContainer }}>
+        <Flex sx={{ ...styles.titleContainer }}>
+          <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={28} />
+          <Text size="14px" weight={700} ml="5px">
+            {!currency0 || !currency1 ? (
+              <Dots>Loading</Dots>
+            ) : (
+              `${currency0.getSymbol(chainId)} - ${currency1.getSymbol(chainId)}`
+            )}
+          </Text>
         </Flex>
-        {showMore ? <ArrowDropUpIcon width="13px" /> : <ArrowDropDownIcon width="13px" />}
+        <Flex sx={{ alignItems: 'center' }}>
+          <Text mr="10px" weight={700}>
+            {currencyPrice ? `$${(currencyPrice * parseFloat(userPoolBalance?.toSignificant(4))).toFixed(2)}` : '-'}
+          </Text>
+          <Svg icon="caret" width="8px" direction={showMore ? 'up' : 'down'} />
+        </Flex>
       </Flex>
-
-      {showMore && (
-        <AutoColumn gap="16px" style={{ padding: '16px' }}>
-          <FixedHeightRow>
-            <RowFixed>
-              <StyledText>{t('Total pooled tokens')}</StyledText>
-            </RowFixed>
-            {userPoolBalance ? (
-              <RowFixed>
-                <StyledText ml="6px">{userPoolBalance?.toSignificant(4)}</StyledText>
-              </RowFixed>
-            ) : (
-              '-'
-            )}
-          </FixedHeightRow>
-          <FixedHeightRow>
-            <RowFixed>
-              <StyledText>
-                {t('Pooled')} {currency0.getSymbol(chainId)}
-              </StyledText>
-            </RowFixed>
-            {token0Deposited ? (
-              <RowFixed>
-                <StyledText ml="6px" mr="6px">
-                  {token0Deposited?.toSignificant(6)}
-                </StyledText>
-                <CurrencyLogo size="20px" currency={currency0} />
-              </RowFixed>
-            ) : (
-              '-'
-            )}
-          </FixedHeightRow>
-          <FixedHeightRow>
-            <RowFixed>
-              <StyledText fontSize="20px">
-                {t('Pooled')} {currency1.getSymbol(chainId)}
-              </StyledText>
-            </RowFixed>
-            {token1Deposited ? (
-              <RowFixed>
-                <StyledText ml="6px" mr="6px" fontSize="20px">
-                  {token1Deposited?.toSignificant(6)}
-                </StyledText>
-                <CurrencyLogo size="20px" currency={currency1} />
-              </RowFixed>
-            ) : (
-              '-'
-            )}
-          </FixedHeightRow>
-
-          <FixedHeightRow>
-            <StyledText>{t('Share of pool')}</StyledText>
-            <StyledText>
-              {poolTokenPercentage
-                ? `${poolTokenPercentage.toFixed(2) === '0.00' ? '<0.01' : poolTokenPercentage.toFixed(2)}%`
-                : '-'}
-            </StyledText>
-          </FixedHeightRow>
-
-          {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) && (
-            <Flex flexDirection="row" mt="10px">
-              <Button
-                as={Link}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
-                fullWidth
-                style={{ height: '40px', fontSize: '20px', marginRight: '8px' }}
-              >
-                <Title color="white">{t('Add')}</Title>
-              </Button>
-              <Button
-                as={Link}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
-                mb="8px"
-                fullWidth
-                style={{ height: '40px', marginLeft: '8px' }}
-              >
-                <Title color="white">{t('Remove')}</Title>
-              </Button>
+      <AnimatePresence>
+        {showMore && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'fit-content' }}
+            transition={{ opacity: { duration: 0.2 } }}
+            exit={{ opacity: 0, height: 0 }}
+            sx={{ overflow: 'hidden', position: 'relative', width: '100%' }}
+          >
+            <Divider />
+            <Flex sx={{ width: '100%', flexDirection: 'column' }}>
+              <Flex sx={{ justifyContent: 'space-between', margin: '2.5px 0px' }}>
+                <Text size="14px" weight={500}>
+                  {t('Total pooled tokens')}
+                </Text>
+                {userPoolBalance ? (
+                  <Text size="14px" weight={700}>
+                    {userPoolBalance?.toSignificant(4)}
+                  </Text>
+                ) : (
+                  '-'
+                )}
+              </Flex>
+              <Flex sx={{ justifyContent: 'space-between', margin: '2.5px 0px' }}>
+                <Text size="14px" weight={500}>
+                  {t('Pooled')} {currency0.getSymbol(chainId)}
+                </Text>
+                {token0Deposited ? (
+                  <Flex sx={{ alignItems: 'center' }}>
+                    <Text size="14px" weight={700} mr="8px">
+                      {token0Deposited?.toSignificant(6)}
+                    </Text>
+                    <CurrencyLogo size="20px" currency={currency0} />
+                  </Flex>
+                ) : (
+                  '-'
+                )}
+              </Flex>
+              <Flex sx={{ justifyContent: 'space-between', margin: '2.5px 0px' }}>
+                <Text size="14px" weight={500}>
+                  {t('Pooled')} {currency1.getSymbol(chainId)}
+                </Text>
+                {token1Deposited ? (
+                  <Flex sx={{ alignItems: 'center' }}>
+                    <Text size="14px" weight={700} mr="8px">
+                      {token1Deposited?.toSignificant(6)}
+                    </Text>
+                    <CurrencyLogo size="20px" currency={currency1} />
+                  </Flex>
+                ) : (
+                  '-'
+                )}
+              </Flex>
+              <Flex sx={{ justifyContent: 'space-between', margin: '2.5px 0px' }}>
+                <Text size="14px" weight={500}>
+                  {t('Share of pool')}
+                </Text>
+                <Text size="14px" weight={700}>
+                  {poolTokenPercentage
+                    ? `${poolTokenPercentage.toFixed(2) === '0.00' ? '<0.01' : poolTokenPercentage.toFixed(2)}%`
+                    : '-'}
+                </Text>
+              </Flex>
+              {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) && (
+                <Flex mt="10px">
+                  <Button
+                    as={Link}
+                    to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                    fullWidth
+                    mb="8px"
+                    mr="10px"
+                  >
+                    {t('Add')}
+                  </Button>
+                  <Button as={Link} to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`} mb="8px" fullWidth>
+                    {t('Remove')}
+                  </Button>
+                </Flex>
+              )}
             </Flex>
-          )}
-        </AutoColumn>
-      )}
-    </StyledCard>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </Flex>
   )
 }
