@@ -23,13 +23,13 @@ export const UNSUPPORTED_LIST_URLS: string[] = []
 // const SUSHI_SWAP = 'https://unpkg.com/@sushiswap/default-token-list@latest/build/sushiswap-default.tokenlist.json'
 // const BUIDL = 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/lists/buidl.json'
 const NFT_INDEX = 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/lists/nftindex.json'
-// const COINGECKO = 'https://tokens.pancakeswap.finance/coingecko.json'
+const COINGECKO = 'https://tokens.pancakeswap.finance/coingecko.json'
 const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-extended.json'
 
 // lower index == higher priority for token import
 export const DEFAULT_LIST_OF_LISTS: string[] = [
   NFT_INDEX,
-  // COINGECKO,
+  COINGECKO,
   PANCAKE_EXTENDED,
   /* YEARN_LIST,
     COMPOUND_LIST,

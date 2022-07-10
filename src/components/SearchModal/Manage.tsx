@@ -1,7 +1,9 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { Token } from '@apeswapfinance/sdk'
-import { ButtonMenu, ButtonMenuItem, Toggle } from '@ape.swap/uikit'
+import { Flex, Svg, Text, Toggle } from '@ape.swap/uikit'
 import { TokenList } from '@uniswap/token-lists'
+import { textUnderlineHover } from 'views/Dex/styles'
 import { useTranslation } from 'contexts/Localization'
 import ManageLists from './ManageLists'
 import ManageTokens from './ManageTokens'
@@ -21,10 +23,17 @@ export default function Manage({
   const [showLists, setShowLists] = useState(true)
   const { t } = useTranslation()
   return (
-    <div style={{ padding: '0px 10px 20px 10px' }}>
-      <div style={{ margin: '10px 0px 20px 0px' }}>
-        <Toggle labels={[t('LIST'), t('TOKENS')]} checked={!showLists} onChange={() => setShowLists((prev) => !prev)} />
-      </div>
+    <div>
+      <Flex sx={{ alignItems: 'center', margin: '10px 0px 20px 0px' }}>
+        <Flex
+          sx={{ cursor: 'pointer', position: 'relative', width: 'fit-content', ...textUnderlineHover }}
+          onClick={() => setModalView(CurrencyModalView.search)}
+        >
+          <Svg icon="caret" direction="left" width='8px' />
+          <Text size='14px' ml="5px">Back</Text>
+        </Flex>
+        <Toggle labels={[t('LIST'), t('TOKENS')]} checked={!showLists} onChange={() => setShowLists((prev) => !prev)} sx={{ml:'20px'}}/>
+      </Flex>
       {showLists ? (
         <ManageLists setModalView={setModalView} setImportList={setImportList} setListUrl={setListUrl} />
       ) : (
