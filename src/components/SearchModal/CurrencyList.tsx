@@ -11,9 +11,8 @@ import { useTranslation } from 'contexts/Localization'
 import { registerToken } from 'utils/wallet'
 import { useCombinedActiveList, WrappedTokenInfo } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
-import { useIsUserAddedToken, useAllInactiveTokens } from '../../hooks/Tokens'
-import Column from '../layout/Column'
-import { RowFixed, RowBetween } from '../layout/Row'
+import { useIsUserAddedToken } from '../../hooks/Tokens'
+import { RowBetween } from '../layout/Row'
 import { CurrencyLogo } from '../Logo'
 import { isTokenOnList } from '../../utils'
 import ImportRow from './ImportRow'
@@ -43,19 +42,6 @@ function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance?.toExact()}>{balance?.toSignificant(4)}</StyledBalanceText>
 }
 
-const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
-  padding: 4px 20px;
-  height: 56px;
-  display: grid;
-  grid-template-columns: auto minmax(auto, 1fr) minmax(0, 72px);
-  grid-gap: 8px;
-  cursor: ${({ disabled }) => !disabled && 'pointer'};
-  pointer-events: ${({ disabled }) => disabled && 'none'};
-  :hover {
-    background-color: ${({ theme, disabled }) => !disabled && theme.colors.background};
-  }
-  opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
-`
 
 function CurrencyRow({
   currency,
@@ -71,12 +57,12 @@ function CurrencyRow({
   style: CSSProperties
 }) {
   const { account, chainId } = useActiveWeb3React()
+  const { t } = useTranslation()
   const key = currencyKey(currency)
   const selectedTokenList = useCombinedActiveList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
-  const { t } = useTranslation()
   const addToMetaMask = useCallback(
     () =>
       registerToken(
@@ -129,10 +115,11 @@ function CurrencyRow({
   )
 }
 
-function CurrencyList({
+export default function CurrencyList({
   height,
   currencies,
   selectedCurrency,
+  inactiveCurrencies,
   onCurrencySelect,
   otherCurrency,
   fixedListRef,
@@ -143,6 +130,7 @@ function CurrencyList({
 }: {
   height: number
   currencies: Currency[]
+  inactiveCurrencies: Currency[]
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherCurrency?: Currency | null
@@ -157,16 +145,14 @@ function CurrencyList({
   const { t } = useTranslation()
 
   const itemData: (Currency | undefined)[] = useMemo(() => {
-    let formatted: (Currency | undefined)[] = showETH ? [Currency.ETHER, ...currencies] : currencies
+    let formatted: (Currency | undefined)[] = showETH
+      ? [Currency.ETHER, ...currencies, ...inactiveCurrencies]
+      : [...currencies, ...inactiveCurrencies]
     if (breakIndex !== undefined) {
       formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted.length)]
     }
     return formatted
-  }, [breakIndex, currencies, showETH])
-
-  const inactiveTokens: {
-    [address: string]: Token
-  } = useAllInactiveTokens()
+  }, [breakIndex, currencies, inactiveCurrencies, showETH])
 
   const Row = useCallback(
     ({ data, index, style }) => {
@@ -177,7 +163,7 @@ function CurrencyList({
 
       const token = wrappedCurrency(currency, chainId)
 
-      const showImport = inactiveTokens && token && Object.keys(inactiveTokens).includes(token.address)
+      const showImport = index > currencies.length
 
       if (index === breakIndex || !data) {
         return (
@@ -208,13 +194,13 @@ function CurrencyList({
     },
     [
       chainId,
-      inactiveTokens,
       onCurrencySelect,
       otherCurrency,
       selectedCurrency,
       setImportToken,
       showImportView,
       breakIndex,
+      currencies.length,
       t,
     ],
   )
@@ -235,5 +221,3 @@ function CurrencyList({
     </FixedSizeList>
   )
 }
-
-export default React.memo(CurrencyList)

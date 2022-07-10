@@ -40,6 +40,9 @@ export const getCurrencyUsdPrice = async (
   lp = false,
   smartRouter?: SmartRouter,
 ) => {
+  if (!currency) {
+    return null
+  }
   const isNative = currency?.symbol === 'ETH'
   const [address, decimals] = currency instanceof Token ? [currency?.address, currency?.decimals] : ['', 18]
   const priceGetterAddress = getSmartPriceGetter(chainId, smartRouter)

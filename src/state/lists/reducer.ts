@@ -1,9 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { getVersionUpgrade, TokenList, VersionUpgrade } from '@uniswap/token-lists'
+import { getVersionUpgrade, VersionUpgrade } from '@uniswap/token-lists'
+// eslint-disable-next-line import/no-unresolved
+import { TokenList } from '@uniswap/token-lists/dist/types'
+import { DEFAULT_ACTIVE_LIST_URLS, UNSUPPORTED_LIST_URLS, DEFAULT_LIST_OF_LISTS } from '../../config/constants/lists'
 
-import { DEFAULT_ACTIVE_LIST_URLS, DEFAULT_LIST_OF_LISTS } from 'config/constants/lists'
 import { updateVersion } from '../global/actions'
-import { acceptListUpdate, addList, disableList, enableList, fetchTokenList, removeList } from './actions'
+import { acceptListUpdate, addList, fetchTokenList, removeList, enableList, disableList } from './actions'
 
 export interface ListsState {
   readonly byUrl: {
@@ -32,10 +34,10 @@ const NEW_LIST_STATE: ListState = {
 
 type Mutable<T> = { -readonly [P in keyof T]: T[P] extends ReadonlyArray<infer U> ? U[] : T[P] }
 
-const initialState: ListsState = {
+export const initialState: ListsState = {
   lastInitializedDefaultListOfLists: DEFAULT_LIST_OF_LISTS,
   byUrl: {
-    ...DEFAULT_LIST_OF_LISTS.reduce<Mutable<ListsState['byUrl']>>((memo, listUrl) => {
+    ...DEFAULT_LIST_OF_LISTS.concat(...UNSUPPORTED_LIST_URLS).reduce<Mutable<ListsState['byUrl']>>((memo, listUrl) => {
       memo[listUrl] = NEW_LIST_STATE
       return memo
     }, {}),
@@ -46,12 +48,10 @@ const initialState: ListsState = {
 export default createReducer(initialState, (builder) =>
   builder
     .addCase(fetchTokenList.pending, (state, { payload: { requestId, url } }) => {
-      const current = state.byUrl[url]?.current ?? null
-      const pendingUpdate = state.byUrl[url]?.pendingUpdate ?? null
-
       state.byUrl[url] = {
-        current,
-        pendingUpdate,
+        current: null,
+        pendingUpdate: null,
+        ...state.byUrl[url],
         loadingRequestId: requestId,
         error: null,
       }
@@ -67,10 +67,11 @@ export default createReducer(initialState, (builder) =>
         if (upgradeType === VersionUpgrade.NONE) return
         if (loadingRequestId === null || loadingRequestId === requestId) {
           state.byUrl[url] = {
-            current,
-            pendingUpdate: tokenList,
+            ...state.byUrl[url],
             loadingRequestId: null,
             error: null,
+            current,
+            pendingUpdate: tokenList,
           }
         }
       } else {
@@ -80,10 +81,11 @@ export default createReducer(initialState, (builder) =>
         }
 
         state.byUrl[url] = {
-          current: tokenList,
-          pendingUpdate: null,
+          ...state.byUrl[url],
           loadingRequestId: null,
           error: null,
+          current: tokenList,
+          pendingUpdate: null,
         }
       }
     })
@@ -94,10 +96,11 @@ export default createReducer(initialState, (builder) =>
       }
 
       state.byUrl[url] = {
-        current: state.byUrl[url].current ? state.byUrl[url].current : null,
-        pendingUpdate: null,
+        ...state.byUrl[url],
         loadingRequestId: null,
         error: errorMessage,
+        current: null,
+        pendingUpdate: null,
       }
     })
     .addCase(addList, (state, { payload: url }) => {
@@ -138,8 +141,8 @@ export default createReducer(initialState, (builder) =>
       }
       state.byUrl[url] = {
         ...state.byUrl[url],
-        current: state.byUrl[url].pendingUpdate,
         pendingUpdate: null,
+        current: state.byUrl[url].pendingUpdate,
       }
     })
     .addCase(updateVersion, (state) => {
@@ -174,7 +177,7 @@ export default createReducer(initialState, (builder) =>
         state.activeListUrls = DEFAULT_ACTIVE_LIST_URLS
 
         // for each list on default list, initialize if needed
-        DEFAULT_ACTIVE_LIST_URLS.map((listUrl: string) => {
+        DEFAULT_ACTIVE_LIST_URLS.forEach((listUrl: string) => {
           if (!state.byUrl[listUrl]) {
             state.byUrl[listUrl] = NEW_LIST_STATE
           }
