@@ -8,7 +8,7 @@ import { parseENSAddress } from 'utils/ENS/parseENSAddress'
 import { useTranslation } from 'contexts/Localization'
 
 import useFetchListCallback from '../../hooks/useFetchListCallback'
-import { AppDispatch, AppState, useAppDispatch } from '../../state'
+import { AppDispatch, AppState } from '../../state'
 import { disableList, enableList } from '../../state/lists/actions'
 import { useIsListActive, useAllLists, useActiveListUrls } from '../../state/lists/hooks'
 
@@ -43,12 +43,10 @@ function listUrlRowHTMLId(listUrl: string) {
 
 const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
   const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const { current: list } = listsByUrl[listUrl]
-  console.log(listsByUrl)
 
   const isActive = useIsListActive(listUrl)
-  console.log(isActive)
   const { t } = useTranslation()
 
   const handleEnableList = useCallback(() => {

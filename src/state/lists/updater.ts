@@ -4,7 +4,7 @@ import { useCallback, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAllInactiveTokens } from 'hooks/Tokens'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
-import useWeb3Provider from 'hooks/useActiveWeb3React'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useFetchListCallback from 'hooks/useFetchListCallback'
 import useInterval from 'hooks/useInterval'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
@@ -13,7 +13,7 @@ import { acceptListUpdate } from './actions'
 import { useActiveListUrls } from './hooks'
 
 export default function Updater(): null {
-  const { library } = useWeb3Provider()
+  const { library } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const isWindowVisible = useIsWindowVisible()
 
@@ -27,6 +27,7 @@ export default function Updater(): null {
   const fetchList = useFetchListCallback()
   const fetchAllListsCallback = useCallback(() => {
     if (!isWindowVisible) return
+    console.log('In dis')
     Object.keys(lists).forEach((url) =>
       fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
     )

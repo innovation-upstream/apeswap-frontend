@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers'
 // eslint-disable-next-line import/no-unresolved
@@ -15,7 +15,7 @@ const useActiveWeb3React = (): Web3ReactContextInterface<Web3Provider> => {
   const refEth = useRef(library || appProvider)
   const [provider, setProvider] = useState(library || appProvider)
 
-  useMemo(() => {
+  useEffect(() => {
     if (library !== refEth.current || appProvider !== refEth.current) {
       setProvider(library || appProvider)
       refEth.current = library || appProvider

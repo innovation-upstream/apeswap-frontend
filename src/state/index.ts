@@ -28,7 +28,7 @@ import mint from './mint/reducer'
 import lpPricesReducer from './lpPrices'
 import nfasReducer from './nfas'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
 
 const store = configureStore({
   reducer: {

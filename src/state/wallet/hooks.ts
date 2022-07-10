@@ -56,7 +56,12 @@ export function useTokenBalancesWithLoadingIndicator(
   )
 
   const validatedTokenAddresses = useMemo(() => validatedTokens.map((vt) => vt.address), [validatedTokens])
-  const balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20_INTERFACE, 'balanceOf', [address])
+  const balances = useMultipleContractSingleData(
+    validatedTokenAddresses,
+    ERC20_INTERFACE,
+    'balanceOf',
+    useMemo(() => [address], [address]),
+  )
 
   const anyLoading: boolean = useMemo(() => balances.some((callState) => callState.loading), [balances])
 
@@ -88,7 +93,10 @@ export function useTokenBalances(
 
 // get the balance for a single token/account combo
 export function useTokenBalance(account?: string, token?: Token): TokenAmount | undefined {
-  const tokenBalances = useTokenBalances(account, [token])
+  const tokenBalances = useTokenBalances(
+    account,
+    useMemo(() => [token], [token]),
+  )
   if (!token) return undefined
   return tokenBalances[token.address]
 }
@@ -104,7 +112,7 @@ export function useCurrencyBalances(
 
   const tokenBalances = useTokenBalances(account, tokens)
   const containsETH: boolean = useMemo(() => currencies?.some((currency) => currency === ETHER) ?? false, [currencies])
-  const ethBalance = useETHBalances(containsETH ? [account] : [])
+  const ethBalance = useETHBalances(useMemo(() => (containsETH ? [account] : []), [containsETH, account]))
 
   return useMemo(
     () =>
@@ -119,7 +127,10 @@ export function useCurrencyBalances(
 }
 
 export function useCurrencyBalance(account?: string, currency?: Currency): CurrencyAmount | undefined {
-  return useCurrencyBalances(account, [currency])[0]
+  return useCurrencyBalances(
+    account,
+    useMemo(() => [currency], [currency]),
+  )[0]
 }
 
 // mimics useAllBalances

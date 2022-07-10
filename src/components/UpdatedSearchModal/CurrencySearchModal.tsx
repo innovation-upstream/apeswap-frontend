@@ -3,10 +3,10 @@ import React, { useCallback, useState } from 'react'
 import { Currency, Token } from '@apeswapfinance/sdk'
 import styled from '@emotion/styled'
 import { Flex, Text } from '@ape.swap/uikit'
+import usePrevious from 'hooks/usePreviousValue'
 import { ModalProps, ModalFooter, Modal } from '@apeswapfinance/uikit'
 import { TokenList } from '@uniswap/token-lists'
 import { useTranslation } from 'contexts/Localization'
-import { Field } from 'state/swap/actions'
 import CurrencySearch from './CurrencySearch'
 import ImportToken from './ImportToken'
 import Manage from './Manage'
@@ -46,12 +46,17 @@ export default function CurrencySearchModal({
     },
     [onDismiss, onCurrencySelect],
   )
+
+  // for token import view
+  const prevView = usePrevious(modalView)
+
   // used for import token flow
   const [importToken, setImportToken] = useState<Token | undefined>()
 
   // used for import list
   const [importList, setImportList] = useState<TokenList | undefined>()
   const [listURL, setListUrl] = useState<string | undefined>()
+
   const { t } = useTranslation()
 
   return (

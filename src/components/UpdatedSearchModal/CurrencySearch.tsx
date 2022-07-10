@@ -1,20 +1,19 @@
-/** @jsxImportSource theme-ui */
-import React, { KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { Currency, ETHER, Token } from '@apeswapfinance/sdk'
-import { Text, Flex, Input } from '@ape.swap/uikit'
+import { Text, Input, Flex } from '@ape.swap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { FixedSizeList } from 'react-window'
-import styled from '@emotion/styled'
+import { useAudioModeManager } from 'state/user/hooks'
 import useDebounce from 'hooks/useDebounce'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTranslation } from 'contexts/Localization'
 import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } from '../../hooks/Tokens'
 import { isAddress } from '../../utils'
-import Column from '../layout/Column'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { filterTokens, useSortedTokensByQuery } from './filtering'
-
 import useTokenComparator from './sorting'
+import { getSwapSound } from './swapSound'
+
 import ImportRow from './ImportRow'
 
 interface CurrencySearchProps {
@@ -34,6 +33,7 @@ function CurrencySearch({
   showImportView,
   setImportToken,
 }: CurrencySearchProps) {
+  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
 
   // refs for fixed size lists
@@ -50,9 +50,11 @@ function CurrencySearch({
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
 
+  const [audioPlay] = useAudioModeManager()
+
   const showETH: boolean = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
-    return s === '' || s === 'e' || s === 'et' || s === 'eth'
+    return s === '' || s === 'b' || s === 'bn' || s === 'bnb'
   }, [debouncedQuery])
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
@@ -70,9 +72,19 @@ function CurrencySearch({
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
       onCurrencySelect(currency)
+      if (audioPlay) {
+        getSwapSound().play()
+      }
     },
-    [onCurrencySelect],
+    [audioPlay, onCurrencySelect],
   )
+
+  // manage focus on modal show
+  const inputRef = useRef<HTMLInputElement>()
+
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
 
   const handleInput = useCallback((event) => {
     const input = event.target.value
@@ -85,7 +97,7 @@ function CurrencySearch({
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const s = debouncedQuery.toLowerCase().trim()
-        if (s === 'eth') {
+        if (s === 'bnb') {
           handleCurrencySelect(ETHER)
         } else if (filteredSortedTokens.length > 0) {
           if (
@@ -104,70 +116,57 @@ function CurrencySearch({
   const inactiveTokens = useFoundOnInactiveList(debouncedQuery)
   const filteredInactiveTokens: Token[] = useSortedTokensByQuery(inactiveTokens, debouncedQuery)
 
-  const { t } = useTranslation()
   return (
-    <Flex sx={{ flexDirection: 'column' }}>
-      <Flex sx={{ position: 'relative', margin: '10px 0px 15px 0px' }}>
-        <StyledInput
-          id="token-search-input"
-          placeholder={t('Name or Address')}
-          autoComplete="off"
-          value={searchQuery}
-          // ref={inputRef as RefObject<HTMLInputElement>}
-          onChange={handleInput}
-          onKeyDown={handleEnter}
-          icon="search"
-          autoFocus
-        />
-      </Flex>
-      {showCommonBases && (
-        <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
-      )}
-      {searchToken && !searchTokenIsAdded ? (
-        <Column style={{ padding: '20px 0', height: '100%' }}>
-          <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
-        </Column>
-      ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
-        <CurrencyList
-          height={335}
-          showETH={showETH}
-          currencies={
-            filteredInactiveTokens ? filteredSortedTokens.concat(filteredInactiveTokens) : filteredSortedTokens
-          }
-          breakIndex={inactiveTokens && filteredSortedTokens ? filteredSortedTokens.length : undefined}
-          onCurrencySelect={handleCurrencySelect}
-          otherCurrency={otherSelectedCurrency}
-          selectedCurrency={selectedCurrency}
-          fixedListRef={fixedList}
-          showImportView={showImportView}
-          setImportToken={setImportToken}
-        />
-      ) : (
-        <Column style={{ padding: '20px', height: '100%' }}>
-          <Text color="gray" textAlign="center" mb="20px">
-            {t('No results found')}
-          </Text>
-        </Column>
-      )}
-    </Flex>
+    <>
+      <div>
+        <Flex gap="16px">
+          <Flex>
+            <Input
+              id="token-search-input"
+              placeholder={t('Search name or paste address')}
+              autoComplete="off"
+              width="100%"
+              value={searchQuery}
+              ref={inputRef as RefObject<HTMLInputElement>}
+              onChange={handleInput}
+              onKeyDown={handleEnter}
+            />
+          </Flex>
+          {showCommonBases && (
+            <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
+          )}
+        </Flex>
+        {searchToken && !searchTokenIsAdded ? (
+          <Flex style={{ padding: '20px 0', height: '100%' }}>
+            <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
+          </Flex>
+        ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
+          <Flex margin="24px -24px">
+            <CurrencyList
+              height={390}
+              showETH={showETH}
+              currencies={
+                filteredInactiveTokens ? filteredSortedTokens.concat(filteredInactiveTokens) : filteredSortedTokens
+              }
+              breakIndex={inactiveTokens && filteredSortedTokens ? filteredSortedTokens.length : undefined}
+              onCurrencySelect={handleCurrencySelect}
+              otherCurrency={otherSelectedCurrency}
+              selectedCurrency={selectedCurrency}
+              fixedListRef={fixedList}
+              showImportView={showImportView}
+              setImportToken={setImportToken}
+            />
+          </Flex>
+        ) : (
+          <Flex style={{ padding: '20px', height: '100%' }}>
+            <Text textAlign="center" mb="20px">
+              {t('No results found.')}
+            </Text>
+          </Flex>
+        )}
+      </div>
+    </>
   )
 }
-
-const StyledInput = styled(Input)`
-  width: 420px;
-  max-width: 100% !important;
-  height: 40px;
-  border-radius: 10px;
-  border: none;
-  background-color: ${({ theme }) => theme.colors.white3};
-  color: ${({ theme }) => theme.colors.text};
-  placeholder-color: ${({ theme }) => theme.colors.gray};
-  ::placeholder {
-    color: ${(props) => props.theme.colors.text};
-  }
-  :focus {
-    box-shadow: none !important;
-  }
-`
 
 export default CurrencySearch

@@ -6,14 +6,13 @@ import { DoubleCurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Spinner } from 'theme-ui'
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Field } from 'state/swap/actions'
 import { Field as MintField } from 'state/mint/actions'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { getCurrencyUsdPrice } from 'utils/getTokenUsdPrice'
 import TokenSelector from '../TokenSelector'
 import { styles } from './styles'
-import { styles as tokenSelectorStyles } from '../TokenSelector/styles'
 import { DexPanelProps } from './types'
 
 const DexPanel: React.FC<DexPanelProps> = ({
@@ -48,7 +47,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainId, currency, isRemoveLiquidity, smartRouter])
 
-  useMemo(async () => {
+  useEffect(() => {
     if (setTradeValueUsd) {
       setTradeValueUsd(
         isRemoveLiquidity
@@ -71,28 +70,15 @@ const DexPanel: React.FC<DexPanelProps> = ({
           disabled={independentField && independentField !== fieldType && disabled}
           disabledText={independentField && independentField !== fieldType && disabled}
         />
-        {!isRemoveLiquidity ? (
-          <TokenSelector
-            currency={currency}
-            otherCurrency={otherCurrency}
-            onCurrencySelect={(selectedCurrency: Currency) => onCurrencySelect(fieldType, selectedCurrency, value)}
-            showCommonBases={showCommonBases}
-          />
-        ) : (
-          <Flex
-            sx={{
-              ...tokenSelectorStyles.primaryFlex,
-              cursor: 'default',
-              '&:active': { transform: 'none' },
-              ':hover': { background: 'white4' },
-            }}
-          >
-            <DoubleCurrencyLogo currency0={currency} currency1={otherCurrency} size={30} />
-            <Text sx={tokenSelectorStyles.tokenText}>
-              {currency?.getSymbol(chainId)} - {otherCurrency?.getSymbol(chainId)}
-            </Text>
-          </Flex>
-        )}
+        <TokenSelector
+          currency={currency}
+          otherCurrency={otherCurrency}
+          onCurrencySelect={onCurrencySelect}
+          showCommonBases={showCommonBases}
+          isRemoveLiquidity={isRemoveLiquidity}
+          field={fieldType}
+          typedValue={value}
+        />
       </Flex>
       <Flex sx={styles.panelBottomContainer}>
         <Flex
