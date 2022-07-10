@@ -29,10 +29,17 @@ export default function Manage({
           sx={{ cursor: 'pointer', position: 'relative', width: 'fit-content', ...textUnderlineHover }}
           onClick={() => setModalView(CurrencyModalView.search)}
         >
-          <Svg icon="caret" direction="left" width='8px' />
-          <Text size='14px' ml="5px">Back</Text>
+          <Svg icon="caret" direction="left" width="8px" />
+          <Text size="14px" ml="5px">
+            Back
+          </Text>
         </Flex>
-        <Toggle labels={[t('LIST'), t('TOKENS')]} checked={!showLists} onChange={() => setShowLists((prev) => !prev)} sx={{ml:'20px'}}/>
+        <Toggle
+          labels={[t('LIST'), t('TOKENS')]}
+          checked={!showLists}
+          onChange={() => setShowLists((prev) => !prev)}
+          sx={{ ml: '20px' }}
+        />
       </Flex>
       {showLists ? (
         <ManageLists setModalView={setModalView} setImportList={setImportList} setListUrl={setListUrl} />
