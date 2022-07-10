@@ -29,7 +29,7 @@ export default function SwapModalHeader({
   const { t } = useTranslation()
 
   const { chainId } = useActiveWeb3React()
-  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(null, null, trade), [trade])
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
   const truncatedRecipient = recipient ? truncateHash(recipient) : ''

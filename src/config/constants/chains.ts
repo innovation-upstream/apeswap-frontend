@@ -194,3 +194,22 @@ export const SMART_PRICE_GETTERS = {
     [SmartRouter.UNISWAP]: '0x0187D959A28B0D3B490c2D898fA1CcD054cCC3cd',
   },
 }
+
+export const SMART_LP_FEES = {
+  [CHAIN_ID.BSC]: {
+    [SmartRouter.APE]: 20,
+    [SmartRouter.PANCAKE]: 25,
+    [SmartRouter.BISWAP]: 10,
+  },
+  [CHAIN_ID.BSC_TESTNET]: {
+    [SmartRouter.APE]: 20,
+  },
+  [CHAIN_ID.MATIC]: {
+    [SmartRouter.APE]: 20,
+    [SmartRouter.QUICKSWAP]: 30,
+  },
+  [CHAIN_ID.ETH]: {
+    [SmartRouter.APE]: 20,
+    [SmartRouter.UNISWAP]: 30,
+  },
+}

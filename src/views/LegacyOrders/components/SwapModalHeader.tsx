@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { Trade } from '@apeswapfinance/sdk'
 import { Text, ArrowDownIcon } from '@apeswapfinance/uikit'
-import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
+import { computeLegacyPriceBreakdown, warningSeverity } from 'utils/prices'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AutoColumn } from 'components/layout/Column'
 import { CurrencyLogo } from 'components/Logo'
@@ -21,7 +21,7 @@ export default function SwapModalHeader({
   realOutputAmount?: string
 }) {
   const { chainId } = useActiveWeb3React()
-  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const { priceImpactWithoutFee } = useMemo(() => computeLegacyPriceBreakdown(trade), [trade])
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
   const { t } = useTranslation()
 

@@ -38,7 +38,10 @@ const DexTradeInfo: React.FC<{
     () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
     [allowedSlippage, trade],
   )
-  const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const { priceImpactWithoutFee, realizedLPFee } = useMemo(
+    () => computeTradePriceBreakdown(chainId, bestRoute.smartRouter, trade),
+    [trade, bestRoute, chainId],
+  )
 
   return trade && swapDelay !== SwapDelay.INIT ? (
     <Flex sx={{ ...styles.dexTradeInfoContainer }}>

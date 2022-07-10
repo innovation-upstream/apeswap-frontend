@@ -57,7 +57,6 @@ export const getCurrencyUsdPrice = async (
           name: 'getPrice',
           params: [isNative ? nativeTokenAddress : address, decimals],
         }
-
     const tokenPrice = await multicall(chainId, apePriceGetterABI, [call])
     const filterPrice = getBalanceNumber(tokenPrice[0], decimals)
     return filterPrice

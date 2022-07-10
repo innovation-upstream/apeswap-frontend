@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Trade } from '@apeswapfinance/sdk'
 import { Text } from '@apeswapfinance/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { formatExecutionPrice, warningSeverity, computeTradePriceBreakdown } from 'utils/prices'
+import { formatExecutionPrice, warningSeverity, computeLegacyPriceBreakdown } from 'utils/prices'
 import { AutoColumn } from 'components/layout/Column'
 import { AutoRow, RowBetween } from 'components/layout/Row'
 import { useTranslation } from 'contexts/Localization'
@@ -31,7 +31,7 @@ export default function SwapModalFooter({
   realSwapPrice?: string
 }) {
   const { chainId } = useActiveWeb3React()
-  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const { priceImpactWithoutFee } = useMemo(() => computeLegacyPriceBreakdown(trade), [trade])
   const severity = warningSeverity(priceImpactWithoutFee)
   const { t } = useTranslation()
 

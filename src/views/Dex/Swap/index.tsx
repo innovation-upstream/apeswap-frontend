@@ -134,7 +134,7 @@ const Swap: React.FC = () => {
     swapDelay === SwapDelay.FETCHING_SWAP ||
     swapDelay === SwapDelay.FETCHING_BONUS
 
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const { priceImpactWithoutFee } = computeTradePriceBreakdown(chainId, bestRoute.smartRouter, trade)
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState((prevState) => ({ ...prevState, tradeToConfirm: trade }))
