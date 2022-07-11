@@ -87,7 +87,7 @@ const DexActions: React.FC<DexActionProps> = ({
                 route:
                   routerType === RouterTypes.BONUS
                     ? RouterTypes.BONUS
-                    : RouterTypes.SMART
+                    : routerType === RouterTypes.SMART
                     ? RouterTypes.SMART
                     : 'APESWAP',
               })}

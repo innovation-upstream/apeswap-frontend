@@ -42,7 +42,6 @@ function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance?.toExact()}>{balance?.toSignificant(4)}</StyledBalanceText>
 }
 
-
 function CurrencyRow({
   currency,
   onSelect,
