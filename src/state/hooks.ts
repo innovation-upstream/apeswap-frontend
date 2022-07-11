@@ -49,6 +49,7 @@ import {
   fetchHomepageTokenData,
   fetchLiveIfoStatus,
   fetchLiveTags,
+  fetchLiveOrdering,
 } from './stats'
 import { fetchAuctions } from './auction'
 import { setVaultsLoad } from './vaults'
@@ -566,4 +567,41 @@ export const usePoolTags = (chainId: number) => {
   const poolTags = Tags?.[`${chainId}`]?.pools
 
   return { poolTags }
+}
+
+export const useJungleFarmTags = (chainId: number) => {
+  const { Tags }: StatsState = useSelector((state: State) => state.stats)
+  const jungleFarmTags = Tags?.[`${chainId}`]?.jungleFarms
+
+  return { jungleFarmTags }
+}
+
+// ORDERING
+export const useFetchLiveOrdering = () => {
+  const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+  useEffect(() => {
+    dispatch(fetchLiveOrdering())
+  }, [dispatch, slowRefresh])
+}
+
+export const useFarmOrderings = (chainId: number) => {
+  const { Ordering }: StatsState = useSelector((state: State) => state.stats)
+  const farmOrderings = Ordering?.[`${chainId}`]?.farms
+
+  return { farmOrderings }
+}
+
+export const usePoolOrderings = (chainId: number) => {
+  const { Ordering }: StatsState = useSelector((state: State) => state.stats)
+  const poolOrderings = Ordering?.[`${chainId}`]?.pools
+
+  return { poolOrderings }
+}
+
+export const useJungleFarmOrderings = (chainId: number) => {
+  const { Ordering }: StatsState = useSelector((state: State) => state.stats)
+  const jungleFarmOrderings = Ordering?.[`${chainId}`]?.jungleFarms
+
+  return { jungleFarmOrderings }
 }

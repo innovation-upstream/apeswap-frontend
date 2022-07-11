@@ -1,4 +1,5 @@
-import { IconButton, Text, Flex } from '@ape.swap/uikit'
+import { IconButton, Text, Flex, TagVariants } from '@ape.swap/uikit'
+import { Box } from 'theme-ui'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
@@ -8,7 +9,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ApyButton from 'components/ApyCalculator/ApyButton'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
-import { JungleFarm } from 'state/types'
+import { JungleFarm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
@@ -20,8 +21,13 @@ import { Container, StyledButton, ActionContainer } from './styles'
 import { LiquidityModal } from '../../../components/LiquidityWidget'
 import { Field, selectCurrency } from '../../../state/swap/actions'
 import { useAppDispatch } from '../../../state'
+import { StyledTag } from '../../Pools/components/styles'
 
-const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number }> = ({ jungleFarms, openId }) => {
+const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
+  jungleFarms,
+  openId,
+  jungleFarmTags,
+}) => {
   const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
@@ -72,19 +78,28 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number 
     const userTokenBalanceUsd = `$${(
       getBalanceNumber(farm?.userData?.stakingTokenBalance || new BigNumber(0)) * farm?.stakingToken?.price
     ).toFixed(2)}`
+    const jTag = jungleFarmTags?.find((tag) => tag.pid === farm.jungleId)
+    const tagColor = jTag?.color as TagVariants
 
     return {
+      tag: (
+        <>
+          {jTag?.pid === farm.jungleId && (
+            <Box sx={{ marginRight: '5px', marginTop: ['0px', '2px'] }}>
+              <StyledTag key={jTag?.pid} variant={tagColor}>
+                {jTag?.text}
+              </StyledTag>
+            </Box>
+          )}
+        </>
+      ),
       tokens: {
         token1: token1 === 'LC' ? 'LC2' : token1,
         token2,
         token3: farm?.rewardToken?.symbol === 'LC' ? 'LC2' : farm?.rewardToken?.symbol,
       },
       stakeLp: true,
-      title: (
-        <Text ml={10} weight="bold">
-          {farm?.tokenName}
-        </Text>
-      ),
+      title: <Text bold>{farm?.tokenName}</Text>,
       id: farm.jungleId,
       infoContent: <InfoContent farm={farm} />,
       infoContentPosition: 'translate(-82%, 28%)',

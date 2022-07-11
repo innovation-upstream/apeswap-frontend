@@ -55,7 +55,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           />
           <ListViewContent
             title={t('Discount')}
-            valueColor={parseFloat(bill?.discount) < 0 ? '#DF4141' : null}
+            valueColor={parseFloat(bill?.discount) < 0 ? '#DF4141' : parseFloat(bill?.discount) > 0 ? '#38A611' : null}
             value={`${bill?.discount}%`}
             width={isMobile ? 90 : 140}
             height={52.5}
@@ -81,7 +81,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
               {account ? (
                 <BillModal
                   bill={bill}
-                  buttonText={t('BUY')}
+                  buttonText={!bill.discount || bill.discount.includes('NaN') || disabled ? t('SOLD OUT') : t('BUY')}
                   id={bill.index}
                   buyFlag
                   disabled={!bill.discount || bill.discount.includes('NaN') || disabled}

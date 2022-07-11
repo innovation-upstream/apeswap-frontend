@@ -10,7 +10,7 @@ import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import { useBlock } from 'state/block/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePollPools, usePools, usePoolTags } from 'state/hooks'
+import { usePollPools, usePoolOrderings, usePools, usePoolTags } from 'state/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { Pool } from 'state/types'
@@ -32,6 +32,7 @@ const Pools: React.FC = () => {
   const { pathname } = useLocation()
   const allPools = usePools(account)
   const { poolTags } = usePoolTags(chainId)
+  const { poolOrderings } = usePoolOrderings(chainId)
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const { search } = window.location
@@ -96,8 +97,24 @@ const Pools: React.FC = () => {
           (pool: Pool) => getBalanceNumber(pool.totalStaked) * pool.stakingToken?.price,
           'desc',
         )
+      case 'hot':
+        return orderBy(
+          poolsToSort,
+          (pool: Pool) => poolTags?.find((tag) => tag.pid === pool.sousId && tag.text.toLowerCase() === 'hot'),
+          'asc',
+        )
+      case 'new':
+        return orderBy(
+          poolsToSort,
+          (pool: Pool) => poolTags?.find((tag) => tag.pid === pool.sousId && tag.text.toLowerCase() === 'new'),
+          'asc',
+        )
       default:
-        return orderBy(poolsToSort, (pool: Pool) => pool.sortOrder, 'asc')
+        return orderBy(
+          poolsToSort,
+          (pool: Pool) => poolOrderings?.find((ordering) => ordering.pid === pool.sousId)?.order,
+          'asc',
+        )
     }
   }
 

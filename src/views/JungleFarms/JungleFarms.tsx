@@ -15,11 +15,14 @@ import { JungleFarm } from 'state/types'
 import DisplayJungleFarms from './components/DisplayJungleFarms'
 import ListViewMenu from '../../components/ListViewMenu'
 import HarvestAll from './components/Actions/HarvestAll'
+import { useJungleFarmOrderings, useJungleFarmTags } from '../../state/hooks'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
 const NUMBER_OF_FARMS_VISIBLE = 10
 
 const JungleFarms: React.FC = () => {
   usePollJungleFarms()
+  const { chainId } = useActiveWeb3React()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -35,6 +38,8 @@ const JungleFarms: React.FC = () => {
   const urlSearchedFarm = parseInt(params.get('id'))
   const isActive = !pathname.includes('history')
   const loadMoreRef = useRef<HTMLDivElement>(null)
+  const { jungleFarmTags } = useJungleFarmTags(chainId)
+  const { jungleFarmOrderings } = useJungleFarmOrderings(chainId)
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
   }
@@ -98,8 +103,26 @@ const JungleFarms: React.FC = () => {
           },
           'desc',
         )
+      case 'hot':
+        return orderBy(
+          farmsToSort,
+          (farm: JungleFarm) =>
+            jungleFarmTags?.find((tag) => tag.pid === farm.jungleId && tag.text.toLowerCase() === 'hot'),
+          'asc',
+        )
+      case 'new':
+        return orderBy(
+          farmsToSort,
+          (farm: JungleFarm) =>
+            jungleFarmTags?.find((tag) => tag.pid === farm.jungleId && tag.text.toLowerCase() === 'new'),
+          'asc',
+        )
       default:
-        return orderBy(farmsToSort, (farm: JungleFarm) => farm.sortOrder, 'asc')
+        return orderBy(
+          farmsToSort,
+          (farm: JungleFarm) => jungleFarmOrderings?.find((ordering) => ordering.pid === farm.jungleId)?.order,
+          'asc',
+        )
     }
   }
 
@@ -162,7 +185,11 @@ const JungleFarms: React.FC = () => {
               isJungle
             />
           </Flex>
-          <DisplayJungleFarms jungleFarms={renderJungleFarms()} openId={urlSearchedFarm} />
+          <DisplayJungleFarms
+            jungleFarms={renderJungleFarms()}
+            openId={urlSearchedFarm}
+            jungleFarmTags={jungleFarmTags}
+          />
         </ListViewLayout>
       </Flex>
       <div ref={loadMoreRef} />

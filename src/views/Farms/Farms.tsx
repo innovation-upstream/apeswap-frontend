@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Flex } from '@apeswapfinance/uikit'
-import { useFarmTags, useFetchFarmLpAprs, useFetchLpTokenPrices } from 'state/hooks'
+import { useFarmOrderings, useFarmTags, useFetchFarmLpAprs, useFetchLpTokenPrices } from 'state/hooks'
 import ListViewMenu from 'components/ListViewMenu'
 import { orderBy } from 'lodash'
 import ListViewLayout from 'components/layout/ListViewLayout'
@@ -32,6 +32,7 @@ const Farms: React.FC = () => {
   const [sortOption, setSortOption] = useState('all')
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const { farmTags } = useFarmTags(chainId)
+  const { farmOrderings } = useFarmOrderings(chainId)
 
   useEffect(() => {
     const showMoreFarms = (entries) => {
@@ -107,23 +108,41 @@ const Farms: React.FC = () => {
 
     switch (sortOption) {
       case 'all':
-        return farms.slice(0, numberOfFarmsVisible)
+        return orderBy(
+          farms,
+          (farm: Farm) => farmOrderings.find((ordering) => ordering.pid === farm.pid)?.order,
+          'asc',
+        ).slice(0, numberOfFarmsVisible)
       case 'stables':
         return farms
           .filter((farm) => STABLES.includes(farm.tokenSymbol) && STABLES.includes(farm.quoteTokenSymbol))
           .slice(0, numberOfFarmsVisible)
       case 'apr':
         return orderBy(farms, (farm) => parseFloat(farm.apy), 'desc').slice(0, numberOfFarmsVisible)
-      case 'new':
-        return farms
       case 'blueChips':
         return farms
           .filter((farm) => BLUE_CHIPS.includes(farm.tokenSymbol) || BLUE_CHIPS.includes(farm.quoteTokenSymbol))
           .slice(0, numberOfFarmsVisible)
       case 'liquidity':
         return orderBy(farms, (farm: Farm) => parseFloat(farm.totalLpStakedUsd), 'desc').slice(0, numberOfFarmsVisible)
+      case 'hot':
+        return orderBy(
+          farms,
+          (farm: Farm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'hot'),
+          'asc',
+        ).slice(0, numberOfFarmsVisible)
+      case 'new':
+        return orderBy(
+          farms,
+          (farm: Farm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'new'),
+          'asc',
+        ).slice(0, numberOfFarmsVisible)
       default:
-        return farms.slice(0, numberOfFarmsVisible)
+        return orderBy(
+          farms,
+          (farm: Farm) => farmOrderings.find((ordering) => ordering.pid === farm.pid)?.order,
+          'asc',
+        ).slice(0, numberOfFarmsVisible)
     }
   }
 

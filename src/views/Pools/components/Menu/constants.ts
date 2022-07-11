@@ -21,6 +21,10 @@ export const OPTIONS = [
     value: 'hot',
   },
   {
+    label: 'New',
+    value: 'new',
+  },
+  {
     label: 'APR',
     value: 'apr',
   },
