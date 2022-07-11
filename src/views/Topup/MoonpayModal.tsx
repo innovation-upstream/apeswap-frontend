@@ -1,12 +1,14 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
+import useIsMobile from 'hooks/useIsMobile'
 import { Modal, ModalProps } from '@ape.swap/uikit'
 import MoonPayIframe from './MoonFrame'
 
 export default function MoonPayModal({ onDismiss }: ModalProps) {
+  const isMobile = useIsMobile()
   const modalProps = {
-    minWidth: '385px',
-    maxWidth: '385px',
+    minWidth: isMobile ? '90%' : '437px',
+    maxWidth: '437px',
     style: {
       zIndex: 10,
       overflowY: 'auto',

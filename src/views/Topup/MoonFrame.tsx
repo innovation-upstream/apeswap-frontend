@@ -6,10 +6,10 @@ import { useMoonPayUrl } from 'hooks/api'
 const StyledIframe = styled(Iframe)`
   width: 100%;
   max-width: 398px;
-  height: 560px;
+  height: calc(100vh - 130px);
+  max-height: 738px;
   overflow: hidden;
   margin: 0 auto;
-  margin-bottom: 16px;
   margin-top: 16px;
   border-radius: 1rem;
 
