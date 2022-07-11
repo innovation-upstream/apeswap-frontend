@@ -123,9 +123,10 @@ export const CHAIN_PARAMS = {
 export const APE_PRICE_IMPACT = 15
 
 // This sets the priority of when a router is used
+// After APE router should be in order of highest liquidity
 export const PRIORITY_SMART_ROUTERS = {
   [CHAIN_ID.ETH]: [SmartRouter.APE, SmartRouter.UNISWAP],
-  [CHAIN_ID.BSC]: [SmartRouter.APE, SmartRouter.BISWAP, SmartRouter.PANCAKE],
+  [CHAIN_ID.BSC]: [SmartRouter.APE, SmartRouter.PANCAKE, SmartRouter.BISWAP],
   [CHAIN_ID.MATIC]: [SmartRouter.APE, SmartRouter.QUICKSWAP],
 }
 

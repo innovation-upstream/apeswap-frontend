@@ -144,6 +144,7 @@ export function useTradeExactIn(
               maxHops: i,
               maxNumResults: 1,
             })[0] ?? null
+
           if (PRIORITY_SMART_ROUTERS[chainId][0] === SmartRouter.APE) {
             if (currentTrade?.route?.pairs?.[0]?.router === SmartRouter.APE) {
               if (isTradeBetter(bestApeTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
@@ -168,6 +169,8 @@ export function useTradeExactIn(
     }
     return bestTradeSoFar
   }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly, chainId, swapDelay, onSetSwapDelay])
+
+  console.log("This is the best trade", bestTradeExactIn)
 
   return bestTradeExactIn
 }
