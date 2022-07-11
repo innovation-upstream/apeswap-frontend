@@ -19,7 +19,6 @@ import Column, { AutoColumn } from '../layout/Column'
 import { ListLogo } from '../Logo'
 import Row, { RowFixed, RowBetween } from '../layout/Row'
 import { CurrencyModalView } from './types'
-import WarningModal from './WarningModal'
 
 const Wrapper = styled(Column)`
   width: 100%;
@@ -58,7 +57,6 @@ const ListRow = memo(function ListRow({
   setImportList: (list: TokenList) => void
 }) {
   const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
-  const [approveList, setApproveList] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const { current: list, pendingUpdate: pending } = listsByUrl[listUrl]
   // Extended doesn't need to be defined for each list
@@ -89,27 +87,6 @@ const ListRow = memo(function ListRow({
   const handleDisableList = useCallback(() => {
     dispatch(disableList(listUrl))
   }, [dispatch, listUrl])
-
-  const handleConfirmList = useCallback(
-    (approve: boolean) => {
-      setApproveList((prev) => !prev)
-      console.log('In dis')
-      console.log(approveList)
-      console.log(approve)
-    },
-    [setApproveList, approveList],
-  )
-
-  console.log('reRender')
-
-  const [onPresentBuyWarning] = useModal(
-    <WarningModal warning={extendedWarning} setApproveList={handleConfirmList} onDismiss={null} />,
-    true,
-    true,
-    `tokenListWarning${list.name}`,
-  )
-
-  console.log(approveList)
 
   return (
     <RowWrapper active={isActive} key={listUrl} id={listUrlRowHTMLId(listUrl)}>

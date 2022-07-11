@@ -197,8 +197,6 @@ export function useDerivedSwapInfo(): {
     recipient,
   } = useSwapState()
 
-  console.log(useSwapState())
-
   const v2Trade = useFindBestRoute()
 
   const inputCurrency = useCurrency(inputCurrencyId)
