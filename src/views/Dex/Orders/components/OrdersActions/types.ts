@@ -11,7 +11,7 @@ export interface OrdersActionProps {
   priceImpactWithoutFee: Percent
   swapCallbackError: string
   userHasSpecifiedInputOutput: boolean
-  disabled: boolean
+  disabled?: boolean
   routerType: RouterTypes
   onWrap: () => void
   handleSwap: () => void

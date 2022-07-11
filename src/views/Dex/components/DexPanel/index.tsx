@@ -67,7 +67,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
           removeLiquidity={isRemoveLiquidity}
           align="left"
           id="token-amount-input"
-          disabled={independentField && independentField !== fieldType && disabled}
+          disabled={(independentField && independentField !== fieldType && disabled) || disabled}
           disabledText={independentField && independentField !== fieldType && disabled}
         />
         <TokenSelector
@@ -85,7 +85,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
           sx={{
             alignItems: 'center',
             justifyContent: 'center',
-            opacity: independentField !== fieldType && disabled && 0.4,
+            opacity: independentField && independentField !== fieldType && disabled && 0.4,
           }}
         >
           {!usdVal && (value || value === '.') && <Spinner width="15px" height="15px" />}

@@ -20,6 +20,7 @@ import blockReducer from './block'
 import multicall from './multicall/reducer'
 import billsReducer from './bills'
 import swap from './swap/reducer'
+import orders from './orders/reducer'
 import user from './user/reducer'
 import lists from './lists/reducer'
 import transactions from './transactions/reducer'
@@ -57,6 +58,7 @@ const store = configureStore({
     transactions,
     burn,
     mint,
+    orders
   },
   middleware: [...getDefaultMiddleware({ thunk: true }), save({ states: PERSISTED_KEYS })],
   preloadedState: load({ states: PERSISTED_KEYS }),
