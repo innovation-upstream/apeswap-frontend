@@ -1,19 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Text } from '@apeswapfinance/uikit'
 import { Flex } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { escapeRegExp } from '../../utils'
 
-const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string; removeLiquidity?: boolean }>`
+const StyledInput = styled.input<{
+  error?: boolean
+  fontSize?: string
+  align?: string
+  width?: string
+  fontWeight?: number
+  marginRight: string
+  removeLiquidity: boolean
+}>`
   color: ${({ error, theme }) => (error ? theme.colors.error : theme.colors.text)};
-  display: inline-block;
-  width: inherit;
+  width: ${({ width }) => (width === 'full' ? 'initial' : 0)};
   height: 100%;
   position: relative;
-  font-weight: 700;
-  minwidth: auto;
-  width: auto;
-  maxwidth: auto;
+  font-weight: 500;
+  outline: none;
   border: none;
   outline: none;
   flex: 1 1 auto;
@@ -24,9 +30,11 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   overflow: hidden;
   text-overflow: ellipsis;
   content: '%';
-  padding: 0 0 0 0px;
+  padding: 0px;
+  margin-left: ${({ align, width }) => (align === 'left' || width === 'full' ? '20px' : '0px')};
+  margin-right: ${({ marginRight }) => marginRight}
   -webkit-appearance: textfield;
-
+  
   ::-webkit-search-decoration {
     -webkit-appearance: none;
   }
@@ -46,6 +54,9 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   ::after {
     content: '%';
   }
+  :disabled {
+    opacity: 0.5;
+  }
 `
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
@@ -63,6 +74,8 @@ export const Input = React.memo(function InnerInput({
   error?: boolean
   fontSize?: string
   align?: 'right' | 'left'
+  width?: 'default' | 'full'
+  fontWeight?: number
 } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'as'>) {
   const { t } = useTranslation()
   const enforcer = (nextUserInput: string) => {
@@ -93,9 +106,9 @@ export const Input = React.memo(function InnerInput({
         minLength={1}
         maxLength={79}
         spellCheck="false"
-        fontSize="22px"
-        style={{ marginRight: removeLiquidity ? '0px' : '10px' }}
+        fontSize="20px"
         removeLiquidity={removeLiquidity}
+        marginRight="0"
       />
     </Flex>
   )

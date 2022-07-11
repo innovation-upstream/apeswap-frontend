@@ -78,7 +78,7 @@ export const ListViewContainer = styled.div`
 `
 
 export const DropDownIcon = styled(ArrowDropDownIcon)<{ open: boolean }>`
-  width: 15px;
+  width: 10px;
   transform: ${({ open }) => (open ? 'rotate(-180deg)' : '')};
   transition: transform 0.3s ease;
   right: 0;

@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Text } from '@ape.swap/uikit'
-import { useModal } from '@apeswapfinance/uikit'
+import { Text, useModal } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
@@ -36,7 +35,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
   // Need to export ModalContext from uikit to clean up the code
   const [, closeModal] = useModal(<></>)
   const [onPresentAddLiquidityWidgetModal] = useModal(
-    <LiquidityModal handleClose={closeModal} />,
+    <LiquidityModal onDismiss={closeModal} />,
     true,
     true,
     'liquidityWidgetModal',
