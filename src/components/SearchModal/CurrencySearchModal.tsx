@@ -6,13 +6,11 @@ import { Flex, Text } from '@ape.swap/uikit'
 import { ModalProps, ModalFooter, Modal } from '@apeswapfinance/uikit'
 import { TokenList } from '@uniswap/token-lists'
 import { useTranslation } from 'contexts/Localization'
-import { Field } from 'state/swap/actions'
 import CurrencySearch from './CurrencySearch'
 import ImportToken from './ImportToken'
 import Manage from './Manage'
 import ImportList from './ImportList'
 import { CurrencyModalView } from './types'
-import WarningModal from './WarningModal'
 
 interface CurrencySearchModalProps extends ModalProps {
   selectedCurrency?: Currency | null
