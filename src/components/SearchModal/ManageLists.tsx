@@ -273,7 +273,9 @@ function ManageLists({
                   <Text>{t('Loaded')}</Text>
                 </RowFixed>
               ) : (
-                <Button onClick={handleImport}>{t('Import')}</Button>
+                <Button onClick={handleImport} size="sm">
+                  {t('Import')}
+                </Button>
               )}
             </RowBetween>
           </Card>
