@@ -1,11 +1,11 @@
 /** @jsxImportSource theme-ui */
 import React, { memo, useCallback, useMemo, useState, useEffect } from 'react'
-import { Button, Text, CheckmarkIcon, CogIcon, Card, Flex, Input } from '@ape.swap/uikit'
+import { Button, Text, CheckmarkIcon, CogIcon, Card, Flex, Input, useModal } from '@ape.swap/uikit'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from '@emotion/styled'
 import { Switch } from 'theme-ui'
 import { TokenList } from '@uniswap/token-lists'
-import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
+import { EXTENDED_LIST_DETAILS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { parseENSAddress } from 'utils/ENS/parseENSAddress'
 import { useTranslation } from 'contexts/Localization'
 
@@ -19,6 +19,7 @@ import Column, { AutoColumn } from '../layout/Column'
 import { ListLogo } from '../Logo'
 import Row, { RowFixed, RowBetween } from '../layout/Row'
 import { CurrencyModalView } from './types'
+import WarningModal from './WarningModal'
 
 const Wrapper = styled(Column)`
   width: 100%;
@@ -45,10 +46,25 @@ function listUrlRowHTMLId(listUrl: string) {
   return `list-row-${listUrl.replace(/\./g, '-')}`
 }
 
-const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
+const ListRow = memo(function ListRow({
+  listUrl,
+  setListUrl,
+  setModalView,
+  setImportList,
+}: {
+  listUrl: string
+  setListUrl: (url: string) => void
+  setModalView: (view: CurrencyModalView) => void
+  setImportList: (list: TokenList) => void
+}) {
   const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
+  const [approveList, setApproveList] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const { current: list, pendingUpdate: pending } = listsByUrl[listUrl]
+  // Extended doesn't need to be defined for each list
+  const extendedLogo = EXTENDED_LIST_DETAILS[list?.name]?.logo
+  const extendedName = EXTENDED_LIST_DETAILS[list?.name]?.name
+  const extendedWarning = EXTENDED_LIST_DETAILS[list?.name]?.warning
 
   const isActive = useIsListActive(listUrl)
 
@@ -74,16 +90,42 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
     dispatch(disableList(listUrl))
   }, [dispatch, listUrl])
 
+  const handleConfirmList = useCallback(
+    (approve: boolean) => {
+      setApproveList((prev) => !prev)
+      console.log('In dis')
+      console.log(approveList)
+      console.log(approve)
+    },
+    [setApproveList, approveList],
+  )
+
+  console.log('reRender')
+
+  const [onPresentBuyWarning] = useModal(
+    <WarningModal warning={extendedWarning} setApproveList={handleConfirmList} onDismiss={null} />,
+    true,
+    true,
+    `tokenListWarning${list.name}`,
+  )
+
+  console.log(approveList)
+
   return (
     <RowWrapper active={isActive} key={listUrl} id={listUrlRowHTMLId(listUrl)}>
-      {list.logoURI ? (
-        <ListLogo size="40px" style={{ marginRight: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
+      {extendedLogo || list.logoURI ? (
+        <ListLogo
+          size="40px"
+          style={{ marginRight: '1rem', borderRadius: '20px' }}
+          logoURI={extendedLogo || list.logoURI}
+          alt={`${extendedName || list.name} list logo`}
+        />
       ) : (
         <div style={{ width: '24px', height: '24px', marginRight: '1rem' }} />
       )}
       <Column style={{ flex: '1' }}>
         <Row>
-          <Text bold>{list.name}</Text>
+          <Text bold>{extendedName || list.name}</Text>
         </Row>
         <RowFixed>
           <Text fontSize="12px" mr="6px" textTransform="lowercase">
@@ -108,7 +150,14 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
             if (isActive) {
               handleDisableList()
             } else {
-              handleEnableList()
+              if (!extendedWarning) {
+                handleEnableList()
+              }
+              if (extendedWarning) {
+                setImportList(list)
+                setModalView(CurrencyModalView.importList)
+                setListUrl(listUrl)
+              }
             }
           }}
         />
@@ -142,7 +191,6 @@ function ManageLists({
   const { t } = useTranslation()
 
   const lists = useAllLists()
-  console.log(lists)
 
   // sort by active but only if not visible
   const activeListUrls = useActiveListUrls()
@@ -284,7 +332,13 @@ function ManageLists({
       <ListContainer>
         <AutoColumn gap="md">
           {sortedLists.map((listUrl) => (
-            <ListRow key={listUrl} listUrl={listUrl} />
+            <ListRow
+              key={listUrl}
+              listUrl={listUrl}
+              setListUrl={setListUrl}
+              setModalView={setModalView}
+              setImportList={setImportList}
+            />
           ))}
         </AutoColumn>
       </ListContainer>

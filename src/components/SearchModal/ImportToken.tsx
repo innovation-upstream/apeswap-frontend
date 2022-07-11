@@ -6,9 +6,10 @@ import { useAddUserToken } from 'state/user/hooks'
 import { getEtherscanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCombinedInactiveList } from 'state/lists/hooks'
+import { useCombinedInactiveList, useInactiveListUrls } from 'state/lists/hooks'
 import { ListLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
+import { EXTENDED_LIST_DETAILS } from 'config/constants/lists'
 
 interface ImportProps {
   tokens: Token[]
@@ -52,6 +53,9 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
         {tokens.map((token) => {
           const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
+          // Extended doesn't need to be defined for each list
+          const extendedLogo = EXTENDED_LIST_DETAILS[list?.name]?.logo
+          const extendedName = EXTENDED_LIST_DETAILS[list?.name]?.name
           const address = token.address ? `${truncateHash(token.address)}` : null
           return (
             <div key={token.address}>
@@ -59,9 +63,17 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                 <Tag
                   variant="success"
                   outline
-                  startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
+                  startIcon={
+                    (list.logoURI || extendedLogo) && (
+                      <ListLogo
+                        logoURI={extendedLogo || list.logoURI}
+                        size="12px"
+                        style={{ borderRadius: '6px', marginRight: '5px' }}
+                      />
+                    )
+                  }
                 >
-                  via {list.name}
+                  via {extendedName || list.name}
                 </Tag>
               ) : (
                 <Tag variant="danger" outline startIcon={<ErrorIcon color="error" />}>

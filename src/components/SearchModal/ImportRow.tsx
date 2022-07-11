@@ -3,6 +3,7 @@ import React, { CSSProperties } from 'react'
 import { Token } from '@apeswapfinance/sdk'
 import { Button, Text, CheckmarkCircleIcon, Flex } from '@ape.swap/uikit'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
+import { EXTENDED_LIST_DETAILS } from 'config/constants/lists'
 import { ListLogo } from 'components/Logo'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
@@ -58,6 +59,10 @@ export default function ImportRow({
   const inactiveTokenList = useCombinedInactiveList()
   const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
 
+  // Extended doesn't need to be defined for each list
+  const extendedLogo = EXTENDED_LIST_DETAILS[list?.name]?.logo
+  const extendedName = EXTENDED_LIST_DETAILS[list?.name]?.name
+
   // check if already active on list or local storage tokens
   const isAdded = useIsUserAddedToken(token)
   const isActive = useIsTokenActive(token)
@@ -70,15 +75,15 @@ export default function ImportRow({
         <Flex sx={{ alignItems: 'center' }}>
           <Text>{token.symbol}</Text>
           <Text color="textDisabled" ml="8px">
-            <NameOverflow title={token.name}>{token.name}</NameOverflow>
+            <NameOverflow title={extendedName || token.name}>{extendedName || token.name}</NameOverflow>
           </Text>
         </Flex>
-        {list && list.logoURI && (
+        {list && (list.logoURI || extendedLogo) && (
           <Flex sx={{ alignItems: 'center' }}>
             <Text size="8px" mr="10px" color="textDisabled" sx={{ lineHeight: '0px' }}>
-              via {list.name}
+              via {extendedName || list.name}
             </Text>
-            <ListLogo logoURI={list.logoURI} size="12px" />
+            <ListLogo logoURI={extendedLogo || list.logoURI} size="12px" style={{ borderRadius: '6px' }} />
           </Flex>
         )}
       </Flex>

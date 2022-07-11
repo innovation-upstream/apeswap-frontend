@@ -12,6 +12,7 @@ import ImportToken from './ImportToken'
 import Manage from './Manage'
 import ImportList from './ImportList'
 import { CurrencyModalView } from './types'
+import WarningModal from './WarningModal'
 
 interface CurrencySearchModalProps extends ModalProps {
   selectedCurrency?: Currency | null

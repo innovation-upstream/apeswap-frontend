@@ -170,7 +170,7 @@ export function useTradeExactIn(
     return bestTradeSoFar
   }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly, chainId, swapDelay, onSetSwapDelay])
 
-  console.log("This is the best trade", bestTradeExactIn)
+  console.log('This is the best trade', bestTradeExactIn)
 
   return bestTradeExactIn
 }

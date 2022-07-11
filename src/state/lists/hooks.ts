@@ -167,6 +167,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   })
 
   listCache?.set(list, tokenAddressMap)
+  console.log('HEere')
   return tokenAddressMap
 }
 
@@ -178,7 +179,7 @@ export function useAllLists(): {
     readonly error: string | null
   }
 } {
-  return useSelector(selectorByUrls)
+  return useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
 }
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
@@ -240,8 +241,10 @@ export function useActiveListUrls(): string[] | undefined {
   return useSelector(activeListUrlsSelector)
 }
 
-export function useInactiveListUrls() {
-  return useSelector(inactiveUrlSelector)
+export function useInactiveListUrls(): string[] {
+  const lists = useAllLists()
+  const allActiveListUrls = useActiveListUrls()
+  return Object.keys(lists).filter((url) => !allActiveListUrls?.includes(url) && !UNSUPPORTED_LIST_URLS.includes(url))
 }
 
 // get all the tokens from active lists, combine with local default tokens
