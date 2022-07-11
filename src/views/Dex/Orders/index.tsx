@@ -252,7 +252,7 @@ const Orders: React.FC = () => {
             fieldType={Field.OUTPUT}
             onCurrencySelect={onCurrencySelection}
             onUserInput={onUserInput}
-            disabled
+            ordersDisabled
           />
           <PriceInputPanel
             value={realPriceValue}

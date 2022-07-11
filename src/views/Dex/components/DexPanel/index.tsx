@@ -29,6 +29,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
   disabled,
   smartRouter,
   independentField,
+  ordersDisabled,
   showCommonBases = false,
 }) => {
   const [usdVal, setUsdVal] = useState(null)
@@ -67,7 +68,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
           removeLiquidity={isRemoveLiquidity}
           align="left"
           id="token-amount-input"
-          disabled={independentField && independentField !== fieldType && disabled}
+          disabled={(independentField && independentField !== fieldType && disabled) || ordersDisabled}
           disabledText={independentField && independentField !== fieldType && disabled}
         />
         <TokenSelector

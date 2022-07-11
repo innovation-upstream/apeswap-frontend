@@ -18,5 +18,6 @@ export interface DexPanelProps {
   showCommonBases?: boolean
   lpPair?: Pair
   disabled?: boolean
+  ordersDisabled?: boolean
   independentField?: Field
 }
