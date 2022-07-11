@@ -67,7 +67,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
           removeLiquidity={isRemoveLiquidity}
           align="left"
           id="token-amount-input"
-          disabled={(independentField && independentField !== fieldType && disabled) || disabled}
+          disabled={independentField && independentField !== fieldType && disabled}
           disabledText={independentField && independentField !== fieldType && disabled}
         />
         <TokenSelector

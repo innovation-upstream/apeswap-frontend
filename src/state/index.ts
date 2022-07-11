@@ -58,7 +58,7 @@ const store = configureStore({
     transactions,
     burn,
     mint,
-    orders
+    orders,
   },
   middleware: [...getDefaultMiddleware({ thunk: true }), save({ states: PERSISTED_KEYS })],
   preloadedState: load({ states: PERSISTED_KEYS }),

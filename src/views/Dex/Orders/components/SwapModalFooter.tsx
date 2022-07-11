@@ -30,10 +30,7 @@ export default function SwapModalFooter({
   realPriceValue: string
 }) {
   const { t } = useTranslation()
-  const { priceImpactWithoutFee } = useMemo(
-    () => computeLegacyPriceBreakdown(trade),
-    [trade],
-  )
+  const { priceImpactWithoutFee } = useMemo(() => computeLegacyPriceBreakdown(trade), [trade])
   const severity = warningSeverity(priceImpactWithoutFee)
 
   return (
