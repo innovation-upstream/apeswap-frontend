@@ -1,5 +1,7 @@
 import React from 'react'
 import { Flex, useMatchBreakpoints, Text } from '@apeswapfinance/uikit'
+import { IconButton } from '@ape.swap/uikit'
+import { Box } from 'theme-ui'
 import ListView from 'components/ListView'
 import { Bills } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
@@ -13,6 +15,7 @@ import { Container } from './styles'
 import BillModal from './Modals'
 
 const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
+  console.log('bills:::', bills)
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
@@ -46,7 +49,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           <ListViewContent
             title={t('Price')}
             value={`$${bill?.priceUsd}`}
-            width={isMobile ? 90 : 160}
+            width={isMobile ? 90 : 120}
             ml={20}
             height={52.5}
             toolTip={t('This is the current discounted price of the tokens.')}
@@ -57,7 +60,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
             title={t('Discount')}
             valueColor={parseFloat(bill?.discount) < 0 ? '#DF4141' : null}
             value={`${bill?.discount}%`}
-            width={isMobile ? 90 : 140}
+            width={isMobile ? 90 : 120}
             height={52.5}
             toolTip={
               parseFloat(bill?.discount) < 0
@@ -70,12 +73,40 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           <ListViewContent
             title={t('Vesting Term')}
             value={`${vestingTime.days}d, ${vestingTime.minutes}h, ${vestingTime.seconds}m`}
-            width={isMobile ? 150 : 180}
+            width={isMobile ? 120 : 120}
             height={52.5}
             toolTip={t('This is how long it will take for all tokens in the Bill to fully vest.')}
             toolTipPlacement={isMobile ? 'bottomRight' : 'bottomLeft'}
             toolTipTransform={isMobile ? 'translate(-75%, 75%)' : 'translate(0%, 80%)'}
           />
+          {!isMobile && (
+            <>
+              {bill?.projectLink ||
+                (bill?.twitter && (
+                  <Box
+                    sx={{
+                      alignItems: 'center',
+                      display: 'flex',
+                      width: isMobile ? 50 : 90,
+                      height: 52.5,
+                      justifyContent: 'space-between',
+                      marginBottom: '0.3em',
+                    }}
+                  >
+                    {bill?.projectLink && (
+                      <a href="function () { void }" target="_blank" rel="noreferrer">
+                        <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
+                      </a>
+                    )}
+                    {bill?.twitter && (
+                      <a href="function () { void }" target="_blank" rel="noreferrer">
+                        <IconButton icon="twitter" color="primaryBright" width={20} />
+                      </a>
+                    )}
+                  </Box>
+                ))}
+            </>
+          )}
           {!isMobile && (
             <Flex alignItems="center" style={{ height: '100%' }}>
               {account ? (

@@ -2,12 +2,12 @@ import { Flex, Skeleton, Text } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 
 export const ListViewContentContainer = styled(Flex)<{ width?: number; height?: number }>`
-    flex-direction: column;
-    align-items: flex-start:
-    justify-content: flex-start;
-    height: ${({ height }) => (height ? `${height}px` : '100%')};
-    max-width: ${({ width }) => width || 100}px;
-    width: 100%;
+  flex-direction: column;
+  align-items: flex-start:
+  justify-content: flex-start;
+  height: ${({ height }) => (height ? `${height}px` : '100%')};
+  max-width: ${({ width }) => width || 100}px;
+  width: 100%;
 `
 
 export const TitleText = styled(Text)<{ lineHeight?: number }>`
