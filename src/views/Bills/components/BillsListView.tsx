@@ -81,30 +81,29 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           />
           {!isMobile && (
             <>
-              {bill?.projectLink ||
-                (bill?.twitter && (
-                  <Box
-                    sx={{
-                      alignItems: 'center',
-                      display: 'flex',
-                      width: isMobile ? 50 : 90,
-                      height: 52.5,
-                      justifyContent: 'space-between',
-                      marginBottom: '0.3em',
-                    }}
-                  >
-                    {bill?.projectLink && (
-                      <a href="function () { void }" target="_blank" rel="noreferrer">
-                        <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
-                      </a>
-                    )}
-                    {bill?.twitter && (
-                      <a href="function () { void }" target="_blank" rel="noreferrer">
-                        <IconButton icon="twitter" color="primaryBright" width={20} />
-                      </a>
-                    )}
-                  </Box>
-                ))}
+              {(bill?.projectLink || bill?.twitter) && (
+                <Box
+                  sx={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    width: isMobile ? 50 : 90,
+                    height: 52.5,
+                    justifyContent: 'space-between',
+                    marginBottom: '0.3em',
+                  }}
+                >
+                  {bill?.projectLink && (
+                    <a href={bill?.projectLink} target="_blank" rel="noreferrer">
+                      <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
+                    </a>
+                  )}
+                  {bill?.twitter && (
+                    <a href={bill?.twitter} target="_blank" rel="noreferrer">
+                      <IconButton icon="twitter" color="primaryBright" width={20} />
+                    </a>
+                  )}
+                </Box>
+              )}
             </>
           )}
           {!isMobile && (

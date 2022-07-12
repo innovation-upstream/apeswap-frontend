@@ -141,8 +141,6 @@ export interface Bills extends BillsConfig {
   userOwnedBillsNftData?: UserBillNft[]
   maxTotalPayOut?: string
   lpPrice?: number
-  projectLink?: string
-  twitter?: string
 }
 
 export interface Vault extends VaultConfig {
