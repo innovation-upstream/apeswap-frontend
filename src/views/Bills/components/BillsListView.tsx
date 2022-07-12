@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import { Flex, useMatchBreakpoints, Text } from '@apeswapfinance/uikit'
 import { IconButton } from '@ape.swap/uikit'
@@ -11,7 +12,7 @@ import ListViewContent from 'components/ListViewContent'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
-import { Container } from './styles'
+import { Container, styles } from './styles'
 import BillModal from './Modals'
 
 const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
@@ -82,16 +83,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           {!isMobile && (
             <>
               {(bill?.projectLink || bill?.twitter) && (
-                <Box
-                  sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    width: isMobile ? 50 : 90,
-                    height: 52.5,
-                    justifyContent: 'space-between',
-                    marginBottom: '0.3em',
-                  }}
-                >
+                <Box sx={styles.links}>
                   {bill?.projectLink && (
                     <a href={bill?.projectLink} target="_blank" rel="noreferrer">
                       <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
