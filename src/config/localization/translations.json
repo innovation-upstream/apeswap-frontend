@@ -865,7 +865,6 @@
   "Create protocol-owned liquidity with yield-generating NFTs": "Create protocol-owned liquidity with yield-generating NFTs",
   "Collect": "Collect",
   "Lend": "Lend",
-
   "HOL UP DEVZ": "THE ITEMS BELOW NEED TO BE TRANSLATED",
   "Ape In": "Ape In",
   "Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.": "Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.",
@@ -874,5 +873,18 @@
   "AUTO": "AUTO",
   "The native router that powers the majority of trades on the ApeSwap DEX.": "The native router that powers the majority of trades on the ApeSwap DEX.",
   "The router used to upgrade transactions and return a swap bonus if the trade meets certain conditions.": "The router used to upgrade transactions and return a swap bonus if the trade meets certain conditions.",
-  "The router used to facilitate transactions through other DEXs if ApeSwap’s DEX cannot fulfill them.": "The router used to facilitate transactions through other DEXs if ApeSwap’s DEX cannot fulfill them."
+  "The router used to facilitate transactions through other DEXs if ApeSwap’s DEX cannot fulfill them.": "The router used to facilitate transactions through other DEXs if ApeSwap’s DEX cannot fulfill them.",
+  "Return Calculator": "Return Calculator",
+  "STAKING PERIOD": "STAKING PERIOD",
+  "COMPOUNDING FREQUENCY": "COMPOUNDING FREQUENCY",
+  "RETURN AT CURRENT RATES": "RETURN AT CURRENT RATES",
+  "Details": "Details",
+  "APR (incl. LP rewards)": "APR (incl. LP rewards)",
+  "rewards": "rewards",
+  "Base APR (BANANA yield only)": "Base APR (BANANA yield only)",
+  "Calculated based on current rates.": "Calculated based on current rates.",
+  "LP Rewards: 0.15% of trading fees on BNB Chain, 0.05% on Polygon. Distributed proportionally among LP token holders.": "LP Rewards: 0.15% of trading fees on BNB Chain, 0.05% on Polygon. Distributed proportionally among LP token holders.",
+  "Returns are calculated based on current rates. Estimated returns are not guaranteed and are provided for convenience only.": "Returns are calculated based on current rates. Estimated returns are not guaranteed and are provided for convenience only.",
+  "D": "D",
+  "Letter D above is abbreviation for Days": "Letter D above is abbreviation for Days"
 }

@@ -28,7 +28,6 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
   const isMobile = useIsMobile()
 
   const farmsListView = farms.map((farm, i) => {
-    const tokenAddress = farm.stakeTokens.token0.address[chainId]
     const polygonScanUrl = `https://polygonscan.com/address/${farm.stakeTokenAddress}`
 
     const liquidityUrl = `https://apeswap.finance/add/${
@@ -144,9 +143,10 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 apr={farm?.apr}
                 lpApr={parseFloat(farm?.lpApr)}
                 apy={parseFloat(farm?.apy)}
-                lpAddress={tokenAddress}
+                lpAddress={farm.stakeTokenAddress}
                 isLp
                 liquidityUrl={liquidityUrl}
+                lpPrice={farm.stakeTokenPrice}
               />
             }
           />

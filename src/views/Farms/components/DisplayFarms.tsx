@@ -26,7 +26,16 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
   const isMobile = useIsMobile()
   const dispatch = useAppDispatch()
 
-  const [onPresentAddLiquidityWidgetModal] = useModal(<LiquidityModal />, true, true, 'liquidityWidgetModal')
+  // TODO: clean up this code
+  // Hack to get the close modal function from the provider
+  // Need to export ModalContext from uikit to clean up the code
+  const [, closeModal] = useModal(<></>)
+  const [onPresentAddLiquidityWidgetModal] = useModal(
+    <LiquidityModal handleClose={closeModal} />,
+    true,
+    true,
+    'liquidityWidgetModal',
+  )
 
   const showLiquidity = (token, quoteToken) => {
     dispatch(
@@ -46,11 +55,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
 
   const farmsListView = farms.map((farm) => {
     const [token1, token2] = farm.lpSymbol.split('-')
-    const lpAddresses = farm.lpAddresses[chainId]
     const bscScanUrl = `https://bscscan.com/address/${farm.lpAddresses[chainId]}`
-    const liquidityUrl = `https://apeswap.finance/add/${
-      farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId]
-    }/${farm.tokenAddresses[chainId]}`
     const { projectLink } = farm
     const userAllowance = farm?.userData?.allowance
     const userEarnings = getBalanceNumber(farm?.userData?.earnings || new BigNumber(0))?.toFixed(2)
@@ -152,9 +157,8 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                 apr={parseFloat(farm?.apr)}
                 lpApr={parseFloat(farm?.lpApr)}
                 apy={parseFloat(farm?.apy)}
-                lpAddress={lpAddresses}
+                lpAddress={farm.lpAddresses[chainId]}
                 isLp
-                tokenAddress={farm.tokenAddresses[chainId]}
                 quoteTokenAddress={farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId]}
               />
             }

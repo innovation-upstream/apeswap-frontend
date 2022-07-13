@@ -37,6 +37,7 @@ export default function CurrencyInputPanelRoi({
             width="full"
             fontWeight={700}
             onUserInput={onUserInput}
+            autoFocus
           />
         </RowBetween>
         <Text weight="light" variant="sm">

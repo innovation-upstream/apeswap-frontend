@@ -1,25 +1,20 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { apyModalRoi, tokenEarnedPerThousandDollarsCompounding } from 'utils/compoundApyHelpers'
-import { Field } from 'state/mint/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useDerivedMintInfo } from 'state/mint/hooks'
 import { useCurrency } from 'hooks/Tokens'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { Modal, Button, Text, Tab, Tabs } from '@ape.swap/uikit'
-import Logo from 'components/Logo/Logo'
 import { Box, Flex, Heading } from 'theme-ui'
 import { Farm } from 'state/types'
 import useIsMobile from 'hooks/useIsMobile'
 import { useTranslation } from 'contexts/Localization'
-import useTheme from 'hooks/useTheme'
-import useTokenUrl from 'hooks/useTokenUrl'
 import maxAmountSpend from 'utils/maxAmountSpend'
-import { Token } from '@apeswapfinance/sdk'
-import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
+import { useLpTokenPrices, useTokenPrices } from 'state/hooks'
 import CurrencyInputPanel from './CurrencyInput'
 import DetailsContent from './DetailsContent'
 import styles from './styles'
+import ServiceTokenDisplay from '../ServiceTokenDisplay'
 
 interface RoiCalculatorModalProps {
   onDismiss?: () => void
@@ -35,6 +30,7 @@ interface RoiCalculatorModalProps {
   isLp?: boolean
   farm?: Farm
   liquidityUrl?: string
+  lpPrice?: number
 }
 
 const modalStyle = {
@@ -49,18 +45,17 @@ const intervals = [1, 7, 30, 365]
 const compoundIntervals = [1, 7, 14, 30]
 
 const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
-  const { onDismiss, label, rewardTokenName, rewardTokenPrice, apr, lpApr, lpAddress, tokenAddress, isLp } = props
+  const { onDismiss, label, rewardTokenName, rewardTokenPrice, apr, lpApr, lpAddress, tokenAddress, isLp, lpPrice } =
+    props
   const [numberOfDays, setNumberOfDays] = useState(1)
   const [compoundFrequency, setCompoundFrequency] = useState(1)
-  const [amountDollars, setAmountDollars] = useState('1000')
+  const [amountDollars, setAmountDollars] = useState('')
   const [inputValue, setInputValue] = useState('0')
-  const [keySuffix, setKeySuffix] = useState(0)
   const { account, chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
   const { t } = useTranslation()
-  const { isDark } = useTheme()
-  const [tokenUrl] = useTokenUrl([rewardTokenName])
-  const firstRun = useRef(true)
+  const { tokenPrices } = useTokenPrices()
+  const { lpTokenPrices } = useLpTokenPrices()
 
   useEffect(() => {
     if (compoundFrequency > numberOfDays) {
@@ -68,24 +63,20 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
     }
   }, [compoundFrequency, numberOfDays])
 
-  const tokenPrice =
-    typeof rewardTokenPrice === 'number' ? rewardTokenPrice : new BigNumber(rewardTokenPrice).toNumber()
+  const tokenPrice = new BigNumber(rewardTokenPrice).toNumber()
   const tokensWorthForDollarSelected = parseFloat(amountDollars || inputValue) / tokenPrice
 
-  const onIntervalClick = useCallback(
-    (type: 'staked' | 'compound') => (index: number) => {
-      if (type === 'staked') {
-        setNumberOfDays(intervals[index])
-      } else {
-        setCompoundFrequency(compoundIntervals[index])
-      }
-    },
-    [setNumberOfDays, setCompoundFrequency],
-  )
+  const onIntervalClick = (type: 'staked' | 'compound') => (index: number) => {
+    if (type === 'staked') {
+      setNumberOfDays(intervals[index])
+    } else {
+      setCompoundFrequency(compoundIntervals[index])
+    }
+  }
 
-  const currencyA = useCurrency(isLp ? lpAddress : tokenAddress)
-  const { currencies } = useDerivedMintInfo(currencyA ?? undefined, undefined)
-  const balanceA = useCurrencyBalance(account ?? undefined, currencies[Field.CURRENCY_A])
+  const currency = useCurrency(isLp ? lpAddress : tokenAddress)
+
+  const balanceA = useCurrencyBalance(account ?? undefined, currency)
 
   const compoundROIRates = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays,
@@ -105,53 +96,32 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
   const compoundROIRatesValue = Number.isNaN(compoundROIRates) ? 0 : compoundROIRates
   const percentageCompoundValue = Number.isNaN(parseFloat(percentageCompound)) ? 0 : percentageCompound
 
-  const currency = currencies[Field.CURRENCY_A]
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  const [selectedTokenPrice, setSelectedTokenPrice] = useState<number>(null)
   const maxAmount = maxAmountSpend(selectedCurrencyBalance)?.toExact() || '0'
 
-  const onTokenAmountChange = useCallback(
-    (value: string) => {
-      setInputValue(value)
-      const fiatValue = parseFloat(!!currency && value ? (selectedTokenPrice * parseFloat(value))?.toFixed(2) : '0')
-      setAmountDollars(Number.isFinite(fiatValue) ? fiatValue.toString() : '0')
-    },
-    [currency, selectedTokenPrice],
-  )
-
-  const onDollarAmountChange = useCallback(
-    (value: string) => {
-      setAmountDollars(value)
-      const expectedValue = parseFloat(!!currency && value ? (parseFloat(value) / selectedTokenPrice)?.toFixed(2) : '0')
-      setInputValue(Number.isFinite(expectedValue) ? expectedValue.toString() : '0')
-    },
-    [currency, selectedTokenPrice],
-  )
-
-  useEffect(() => {
-    if (!currency) return
-    const isFirstRun = firstRun.current
-    const fetchTokenPrice = async () => {
-      const isNative = currency?.symbol === 'ETH'
-      const tokenPriceReturned = await getTokenUsdPrice(
-        chainId,
-        currency instanceof Token ? currency?.address : '',
-        currency?.decimals,
-        isLp,
-        isNative,
-      )
-      setSelectedTokenPrice(tokenPriceReturned)
-      if (isFirstRun) {
-        onDollarAmountChange('1000')
-        firstRun.current = false
-      }
+  const rewardPrice = useMemo(() => {
+    if (!isLp) {
+      const { price } = tokenPrices.find((tok) => tok.address[chainId].toLowerCase() === tokenAddress.toLowerCase())
+      return price
     }
-    fetchTokenPrice()
-  }, [chainId, isLp, currency, onDollarAmountChange])
+    if (isLp && !lpPrice) {
+      const { price } = lpTokenPrices.find((tok) => tok.address[chainId].toLowerCase() === lpAddress.toLowerCase())
+      return price
+    }
+    return lpPrice
+  }, [chainId, isLp, lpAddress, lpPrice, lpTokenPrices, tokenAddress, tokenPrices])
 
-  console.log(inputValue)
-  console.log(selectedTokenPrice)
-  console.log(currency)
+  const onTokenAmountChange = (value: string) => {
+    setInputValue(value)
+    const fiatValue = parseFloat(!!currency && value ? (rewardPrice * parseFloat(value))?.toFixed(2) : '0')
+    setAmountDollars(Number.isFinite(fiatValue) ? fiatValue.toString() : '0')
+  }
+
+  const onDollarAmountChange = (value: string) => {
+    setAmountDollars(value)
+    const expectedValue = parseFloat(!!currency && value ? (parseFloat(value) / rewardPrice)?.toFixed(6) : '0')
+    setInputValue(Number.isFinite(expectedValue) ? expectedValue.toString() : '0')
+  }
 
   return (
     <Modal
@@ -159,12 +129,11 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
       title={t('Return Calculator')}
       minWidth={isMobile ? '320px' : '400px'}
       maxWidth={isMobile ? '90vw' : '400px'}
-      onAnimationComplete={() => setKeySuffix(keySuffix + 1)}
       {...modalStyle}
     >
       <Box>
         <Heading as="h3" style={styles.title}>
-          {t(label)} {isLp && 'LP'}
+          {label} {isLp && t('LP')}
         </Heading>
         <CurrencyInputPanel
           dollarValue={amountDollars?.toString()}
@@ -185,9 +154,8 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
               </Button>
             ))}
           </Flex>
-          <Text>
-            {t('Balance: ')}
-            <Text style={styles.balance}>{balanceA?.toSignificant(4)}</Text>
+          <Text style={styles.balance}>
+            {t('Balance')}: {balanceA?.toSignificant(4)}
           </Text>
         </Flex>
         <Heading as="h3" style={styles.title}>
@@ -197,9 +165,8 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
           <Tabs activeTab={intervals.indexOf(numberOfDays)} variant="fullWidth">
             {intervals.map((interval, index) => (
               <Tab
-                key={`${interval}${keySuffix}D`}
                 index={index}
-                label={t(`${interval}D`)}
+                label={`${interval}D`}
                 onClick={onIntervalClick('staked')}
                 size="sm"
                 variant="fullWidth"
@@ -215,9 +182,9 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
           <Tabs activeTab={compoundIntervals.indexOf(compoundFrequency)} variant="fullWidth">
             {compoundIntervals.map((interval, index) => (
               <Tab
-                key={`${interval}${keySuffix}D`}
+                key={`${interval}D`}
                 index={index}
-                label={t(`${interval}D`)}
+                label={`${interval}${t('D')}`}
                 onClick={onIntervalClick('compound')}
                 size="sm"
                 variant="fullWidth"
@@ -230,8 +197,8 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
         <Heading as="h3" style={styles.title}>
           {t('RETURN AT CURRENT RATES')}
         </Heading>
-        <Flex sx={styles.roiContainer(isDark)}>
-          <Logo srcs={tokenUrl || []} width={46} />
+        <Flex sx={styles.roiContainer}>
+          <ServiceTokenDisplay token1={rewardTokenName} size={46} />
           <Box>
             <Text sx={{ fontSize: '24px' }} as="p" weight="bold" variant="lg">
               ${(compoundROIRatesValue * tokenPrice).toFixed(2)}
@@ -251,4 +218,4 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
   )
 }
 
-export default RoiCalculatorModal
+export default React.memo(RoiCalculatorModal)

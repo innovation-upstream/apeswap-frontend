@@ -5,38 +5,27 @@ import { Modal, ModalHeader, Heading, Link, ModalProvider, HelpIcon } from '@ape
 import { Flex } from 'theme-ui'
 import { merge } from 'lodash'
 import { useTranslation } from 'contexts/Localization'
-import useIsMobile from 'hooks/useIsMobile'
-import { useMintActionHandlers } from 'state/mint/hooks'
 
 interface LiquidityModalProps {
   widgetProps?: Record<string, any>
   modalProps?: Record<string, any>
-  onDismiss?: () => void
+  handleClose?: () => void
 }
 
-const LiquidityModal: React.FC<LiquidityModalProps> = ({ widgetProps, onDismiss, modalProps: newModalProps }) => {
+const LiquidityModal: React.FC<LiquidityModalProps> = ({ widgetProps, modalProps: newModalProps, handleClose }) => {
   const { t } = useTranslation()
-  const isMobile = useIsMobile()
-  const { onFieldAInput } = useMintActionHandlers(false)
-
   const modalProps = {
-    minWidth: isMobile ? '320px' : '385px',
-    maxWidth: isMobile ? '90vw' : '385px',
+    minWidth: '385px',
+    maxWidth: '385px',
     style: {
       zIndex: 10,
       overflowY: 'auto',
       maxHeight: 'calc(100% - 30px)',
     },
   }
-
-  const handleClose = () => {
-    onFieldAInput('')
-    onDismiss()
-  }
-
   return (
     <ModalProvider>
-      <Modal open {...merge(modalProps, newModalProps)} onDismiss={handleClose}>
+      <Modal open {...merge(modalProps, newModalProps)}>
         <ModalHeader onDismiss={handleClose}>
           <Flex
             sx={{

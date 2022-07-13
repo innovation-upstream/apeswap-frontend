@@ -19,6 +19,7 @@ export interface CalcButtonProps {
   isLp?: boolean
   farm?: Farm
   liquidityUrl?: string
+  lpPrice?: number
 }
 
 const CalcButton: React.FC<CalcButtonProps> = (props) => {
@@ -32,4 +33,4 @@ const CalcButton: React.FC<CalcButtonProps> = (props) => {
   )
 }
 
-export default CalcButton
+export default React.memo(CalcButton)

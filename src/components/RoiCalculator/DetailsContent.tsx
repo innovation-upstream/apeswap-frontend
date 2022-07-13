@@ -8,11 +8,11 @@ import { LiquidityModal } from 'components/LiquidityWidget'
 import { Field, selectCurrency } from 'state/swap/actions'
 import { useAppDispatch } from 'state'
 import tokens from 'config/constants/tokens'
+import { FarmButton } from 'views/Farms/components/styles'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Farm } from 'state/types'
 import { tokenInfo, tokenListInfo } from './tokenInfo'
 import styles from './styles'
-import { FarmButton } from '../../views/Farms/components/styles'
-import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { Farm } from '../../state/types'
 
 interface DetailsContentProps {
   onDismiss?: () => void
@@ -32,12 +32,14 @@ interface DetailsContentProps {
 
 const DetailsContent: React.FC<DetailsContentProps> = ({
   apr,
+  lpApr,
   isLp,
   label,
   tokenAddress,
   quoteTokenAddress,
   apy,
   liquidityUrl,
+  rewardTokenName,
 }) => {
   const [expanded, setExpanded] = useState(false)
   const [link, setLink] = useState('')
@@ -87,8 +89,14 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
       </Flex>
       <Box sx={styles.detailContainer(!expanded)}>
         <Flex sx={styles.detailRow}>
-          <Text>{t(isLp ? 'APR (incl. LP rewards)' : `APR - ${label} rewards`)}</Text>
-          <Text>{apr.toFixed(2)}%</Text>
+          {isLp ? (
+            <Text>{t('APR (incl. LP rewards)')}</Text>
+          ) : (
+            <Text>
+              {t('APR')} - {rewardTokenName} {t('rewards')}
+            </Text>
+          )}
+          <Text>{(apr + (lpApr || 0)).toFixed(2)}%</Text>
         </Flex>
 
         {isLp &&
@@ -111,7 +119,9 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
 
         <Flex sx={{ marginTop: '25px', justifyContent: 'center' }}>
           {isLp && !liquidityUrl && (
-            <FarmButton onClick={() => showLiquidity(tokenAddress, quoteTokenAddress)}>{t(`GET ${label}`)}</FarmButton>
+            <FarmButton onClick={() => showLiquidity(tokenAddress, quoteTokenAddress)}>
+              {t('GET')} {label}
+            </FarmButton>
           )}
           {isLp && liquidityUrl && (
             <Link
@@ -122,7 +132,9 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
                 },
               }}
             >
-              <Button style={{ fontSize: '16px' }}>{t(`GET ${label}`)}</Button>
+              <Button style={{ fontSize: '16px' }}>
+                {t('GET')} {label}
+              </Button>
             </Link>
           )}
           {!isLp && (
@@ -134,7 +146,9 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
                 },
               }}
             >
-              <Button style={{ fontSize: '16px' }}>{t(`GET ${label}`)}</Button>
+              <Button style={{ fontSize: '16px' }}>
+                {t('GET')} {label}
+              </Button>
             </Link>
           )}
         </Flex>
@@ -142,4 +156,4 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
     </>
   )
 }
-export default DetailsContent
+export default React.memo(DetailsContent)

@@ -15,6 +15,7 @@ interface ServiceTokenDisplayProps {
   size?: number
   billArrow?: boolean
   dualEarn?: boolean
+  sx?: any
 }
 
 const setUrls = (tokenSymbol: string) => {

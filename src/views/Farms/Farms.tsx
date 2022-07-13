@@ -126,6 +126,7 @@ const Farms: React.FC = () => {
         return farms.slice(0, numberOfFarmsVisible)
     }
   }
+  console.log('asd')
 
   return (
     <>

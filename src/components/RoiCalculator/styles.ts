@@ -77,7 +77,7 @@ const styles = {
     textOverflow: 'ellipsis',
     fontSize: '14px',
   },
-  roiContainer: (isDark) => ({
+  roiContainer: {
     backgroundColor: 'white4',
     borderRadius: '20px',
     justifyContent: 'center',
@@ -85,7 +85,7 @@ const styles = {
     padding: '17px 0',
     marginBottom: '25px',
     columnGap: '20px',
-  }),
+  },
   roiBanana: {
     '& span': {
       fontSize: '12px',
