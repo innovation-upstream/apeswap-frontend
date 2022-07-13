@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+/** @jsxImportSource theme-ui */
+import React, { useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { apyModalRoi, tokenEarnedPerThousandDollarsCompounding } from 'utils/compoundApyHelpers'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -56,6 +57,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
   const { t } = useTranslation()
   const { tokenPrices } = useTokenPrices()
   const { lpTokenPrices } = useLpTokenPrices()
+  const [keySuffix, setKeySuffix] = useState(0)
 
   useEffect(() => {
     if (compoundFrequency > numberOfDays) {
@@ -129,6 +131,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
       title={t('Return Calculator')}
       minWidth={isMobile ? '320px' : '400px'}
       maxWidth={isMobile ? '90vw' : '400px'}
+      onAnimationComplete={() => setKeySuffix(keySuffix + 1)}
       {...modalStyle}
     >
       <Box>
@@ -155,7 +158,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
             ))}
           </Flex>
           <Text style={styles.balance}>
-            {t('Balance')}: {balanceA?.toSignificant(4)}
+            {t('Balance')}: {balanceA?.toSignificant(4) || 0}
           </Text>
         </Flex>
         <Heading as="h3" style={styles.title}>
@@ -165,6 +168,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
           <Tabs activeTab={intervals.indexOf(numberOfDays)} variant="fullWidth">
             {intervals.map((interval, index) => (
               <Tab
+                key={`${interval}${keySuffix}D`}
                 index={index}
                 label={`${interval}D`}
                 onClick={onIntervalClick('staked')}
@@ -182,7 +186,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
           <Tabs activeTab={compoundIntervals.indexOf(compoundFrequency)} variant="fullWidth">
             {compoundIntervals.map((interval, index) => (
               <Tab
-                key={`${interval}D`}
+                key={`${interval}${keySuffix}D`}
                 index={index}
                 label={`${interval}${t('D')}`}
                 onClick={onIntervalClick('compound')}
@@ -200,10 +204,9 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
         <Flex sx={styles.roiContainer}>
           <ServiceTokenDisplay token1={rewardTokenName} size={46} />
           <Box>
-            <Text sx={{ fontSize: '24px' }} as="p" weight="bold" variant="lg">
+            <Text sx={{ fontSize: '18px' }} as="p" weight="bold" variant="lg">
               ${(compoundROIRatesValue * tokenPrice).toFixed(2)}
             </Text>
-
             <Box sx={styles.roiBanana}>
               <Text variant="sm">
                 ~{compoundROIRatesValue.toFixed(2)} {rewardTokenName}

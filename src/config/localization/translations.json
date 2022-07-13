@@ -865,6 +865,7 @@
   "Create protocol-owned liquidity with yield-generating NFTs": "Create protocol-owned liquidity with yield-generating NFTs",
   "Collect": "Collect",
   "Lend": "Lend",
+
   "HOL UP DEVZ": "THE ITEMS BELOW NEED TO BE TRANSLATED",
   "Ape In": "Ape In",
   "Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.": "Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.",
@@ -885,6 +886,7 @@
   "Calculated based on current rates.": "Calculated based on current rates.",
   "LP Rewards: 0.15% of trading fees on BNB Chain, 0.05% on Polygon. Distributed proportionally among LP token holders.": "LP Rewards: 0.15% of trading fees on BNB Chain, 0.05% on Polygon. Distributed proportionally among LP token holders.",
   "Returns are calculated based on current rates. Estimated returns are not guaranteed and are provided for convenience only.": "Returns are calculated based on current rates. Estimated returns are not guaranteed and are provided for convenience only.",
+
   "D": "D",
   "Letter D above is abbreviation for Days": "Letter D above is abbreviation for Days"
 }

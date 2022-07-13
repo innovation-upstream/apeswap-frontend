@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
 import { Flex, Text, Box, Link } from 'theme-ui'
 import { Button } from '@ape.swap/uikit'
