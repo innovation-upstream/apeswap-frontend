@@ -174,7 +174,7 @@ export function useSwapCallback(
                 return {
                   call,
                   gasEstimate:
-                    bestRoute?.routerType === RouterTypes.BONUS ? gasEstimate.mul(BigNumber.from('2')) : gasEstimate,
+                    bestRoute?.routerType === RouterTypes.BONUS ? gasEstimate.mul(BigNumber.from('3')) : gasEstimate,
                 }
               })
               .catch((gasError) => {

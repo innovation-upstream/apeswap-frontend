@@ -85,8 +85,8 @@ const farms: FarmConfig[] = [
       97: '0x4Fb99590cA95fc3255D9fA66a1cA46c43C34b09a',
       56: '0xe0e81c29a68bfdd7c48072fd94e7c58f1f0146c1',
     },
-    quoteTokenSymbol: QuoteToken.BNB,
-    quoteTokenAdresses: contracts.wbnb,
+    quoteTokenSymbol: QuoteToken.USDT,
+    quoteTokenAdresses: contracts.usdt,
     projectLink: 'https://h2o-securities.com/',
   },
   {
