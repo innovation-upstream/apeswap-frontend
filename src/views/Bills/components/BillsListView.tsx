@@ -16,7 +16,6 @@ import { Container, styles } from './styles'
 import BillModal from './Modals'
 
 const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
-  console.log('bills:::', bills)
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
