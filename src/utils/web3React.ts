@@ -12,11 +12,6 @@ import UAuth from '@uauth/js'
 
 const POLLING_INTERVAL = 15000
 
-// Unstoppable Domains Login
-const UD_PRODUCTION_REDIRECT_URI = 'https://apeswap.finance/'
-const UD_DEVELOPMENT_REDIRECT_URI = 'http://localhost:3000'
-const UD_CLIENT_ID = '19016188-8a32-4a76-b38f-94d4593a5d2a'
-
 // When adding a new chain we need to add the CHAIN_ID to the supported chains
 
 const injected = new InjectedConnector({
@@ -44,8 +39,8 @@ export const walletlink = new WalletLinkConnector({
 
 export const uauth = new UAuthConnector({
   uauth: new UAuth({
-    clientID: UD_CLIENT_ID,
-    redirectUri: UD_DEVELOPMENT_REDIRECT_URI,
+    clientID: process.env.REACT_APP_UD_CLIENT_ID,
+    redirectUri: process.env.REACT_APP_UD_REDIRECT_URI,
     scope: 'openid wallet',
   }),
   connectors: { injected, walletconnect },
