@@ -78,8 +78,6 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
 
   const currency = useCurrency(isLp ? lpAddress : tokenAddress)
 
-  const balanceA = useCurrencyBalance(account ?? undefined, currency)
-
   const compoundROIRates = tokenEarnedPerThousandDollarsCompounding({
     numberOfDays,
     farmApr: apr + (lpApr || 0),
@@ -99,7 +97,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
   const percentageCompoundValue = Number.isNaN(parseFloat(percentageCompound)) ? 0 : percentageCompound
 
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  const maxAmount = maxAmountSpend(selectedCurrencyBalance)?.toExact() || '0'
+  const maxAmount = maxAmountSpend(selectedCurrencyBalance)?.toFixed(6) || '0'
 
   const rewardPrice = useMemo(() => {
     if (!isLp) {
@@ -158,7 +156,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
             ))}
           </Flex>
           <Text style={styles.balance}>
-            {t('Balance')}: {balanceA?.toSignificant(4) || 0}
+            {t('Balance')}: {maxAmount || 0}
           </Text>
         </Flex>
         <Heading as="h3" style={styles.title}>

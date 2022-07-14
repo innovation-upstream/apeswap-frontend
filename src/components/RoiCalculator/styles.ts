@@ -73,7 +73,6 @@ const styles = {
   balance: {
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    maxWidth: '5rem',
     textOverflow: 'ellipsis',
     fontSize: '14px',
   },
