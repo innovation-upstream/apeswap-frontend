@@ -227,6 +227,31 @@ const jungleFarms: JungleFarmConfig[] = [
     isEarnTokenLp: false,
     network: CHAIN_ID.BSC,
   },
+  {
+    jungleId: 8,
+    tokenName: 'PXP-BNB',
+    image: 'PXP.png',
+    stakingToken: tokens.pxpBnb,
+    rewardToken: tokens.pxp,
+    lpTokens: {
+      token: tokens.pxp,
+      quoteToken: tokens.wbnb,
+    },
+    contractAddress: {
+      97: '0xb1108939748A635C5ed982a17FF5C6E7D79ECF62',
+      56: '0xBE36303aeCc8F1A71fa1076349117BE2fb94f7cD',
+    },
+    projectLink: 'https://piratexpirate.io/',
+    twitter: 'https://twitter.com/PXPNFTsGame',
+    harvest: true,
+    tokenPerBlock: '15.659722222222222222',
+    sortOrder: 1,
+    isFinished: false,
+    tokenDecimals: 18,
+    lpStaking: true,
+    isEarnTokenLp: false,
+    network: CHAIN_ID.BSC,
+  },
 ]
 
 export default jungleFarms
