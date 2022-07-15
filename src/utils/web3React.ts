@@ -37,10 +37,11 @@ export const walletlink = new WalletLinkConnector({
   appLogoUrl: 'https://apeswap.finance/logo.png',
 })
 
+console.log('windowLocationOrigin', window.location.origin)
 export const uauth = new UAuthConnector({
   uauth: new UAuth({
     clientID: process.env.REACT_APP_UD_CLIENT_ID,
-    redirectUri: process.env.REACT_APP_UD_REDIRECT_URI,
+    redirectUri: window.location.origin,
     scope: 'openid wallet',
   }),
   connectors: { injected, walletconnect },
