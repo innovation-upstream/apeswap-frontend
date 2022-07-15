@@ -38,6 +38,7 @@ export const walletlink = new WalletLinkConnector({
 })
 
 console.log('windowLocationOrigin', window.location.origin)
+console.log('windowLocationOrigin', process.env.REACT_APP_UD_REDIRECT_URI)
 export const uauth = new UAuthConnector({
   uauth: new UAuth({
     clientID: process.env.REACT_APP_UD_CLIENT_ID,
