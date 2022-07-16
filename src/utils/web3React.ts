@@ -37,6 +37,7 @@ export const walletlink = new WalletLinkConnector({
   appLogoUrl: 'https://apeswap.finance/logo.png',
 })
 
+console.log('CLIENT ID:::', process.env.REACT_APP_UD_CLIENT_ID)
 console.log('Redirect URI:::', process.env.REACT_APP_UD_REDIRECT_URI)
 export const uauth = new UAuthConnector({
   uauth: new UAuth({
