@@ -1125,7 +1125,7 @@ const pools: PoolConfig[] = [
       56: '0xda04ae1d4651e63c130921c6227397d58dd9167a',
     },
     poolCategory: PoolCategory.APEZONE,
-    projectLink: 'https://ceek.com/',
+    projectLink: 'https://ceek.io/',
     twitter: 'https://twitter.com/ceek',
     harvest: true,
     tokenPerBlock: `15.432098765432098765`,
