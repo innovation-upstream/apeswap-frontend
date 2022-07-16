@@ -2,10 +2,12 @@ import { ChainId, Token } from '@apeswapfinance/sdk'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import { CHAIN_ID } from 'config/constants/chains'
+
 import { createSelector } from '@reduxjs/toolkit'
 import { fromPairs, groupBy, uniqBy } from 'lodash'
 import DEFAULT_TOKEN_LIST from '@apeswapfinance/token-lists/lists/apeswap.json'
-import { UNSUPPORTED_LIST_URLS, DEFAULT_LIST_OF_LISTS } from 'config/constants/lists'
+import { UNSUPPORTED_LIST_URLS, DEFAULT_LIST_OF_LISTS, DEFAULT_ACTIVE_LIST_URLS } from 'config/constants/lists'
 import UNSUPPORTED_TOKEN_LIST from 'config/constants/token-lists/sushiswap-v2-unsupported.tokenlist.json'
 import { AppState } from '../index'
 
@@ -167,7 +169,6 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   })
 
   listCache?.set(list, tokenAddressMap)
-  console.log('HEere')
   return tokenAddressMap
 }
 
@@ -184,56 +185,12 @@ export function useAllLists(): {
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
   return {
-    1: { ...map1[1], ...map2[1] }, // mainnet
-    // 3: { ...map1[3], ...map2[3] }, // ropsten
-    // 4: { ...map1[4], ...map2[4] }, // rinkeby
-    // 5: { ...map1[5], ...map2[5] }, // goerli
-    // 42: { ...map1[42], ...map2[42] }, // kovan
-    // 250: { ...map1[250], ...map2[250] }, // fantom
-    // 4002: { ...map1[4002], ...map2[4002] }, // fantom testnet
-    137: { ...map1[137], ...map2[137] }, // matic
-    80001: { ...map1[80001], ...map2[80001] }, // matic testnet
-    // 100: { ...map1[100], ...map2[100] }, // xdai
-    56: { ...map1[56], ...map2[56] }, // bsc
-    97: { ...map1[97], ...map2[97] }, // bsc testnet
-    // 79377087078960: { ...map1[79377087078960], ...map2[79377087078960] }, // arbitrum
-    // 1287: { ...map1[1287], ...map2[1287] }, // moonbase
-    // 128: { ...map1[128], ...map2[128] }, // heco
-    // 256: { ...map1[256], ...map2[256] }, // heco testnet
-    // 43114: { ...map1[43114], ...map2[43114] }, // avax mainnet
-    // 43113: { ...map1[43113], ...map2[43113] }, // avax testnet fuji
-    // 1666600000: { ...map1[1666600000], ...map2[1666600000] }, // harmony
-    // 1666700000: { ...map1[1666700000], ...map2[1666700000] }, // harmony testnet
-    // 66: { ...map1[66], ...map2[66] }, // okex
-    // 65: { ...map1[65], ...map2[65] }, // okex testnet
+    [ChainId.MAINNET]: { ...map1[ChainId.MAINNET], ...map2[ChainId.MAINNET] }, // mainnet
+    [ChainId.MATIC]: { ...map1[ChainId.MATIC], ...map2[ChainId.MATIC] }, // matic
+    [ChainId.MATIC_TESTNET]: { ...map1[ChainId.MATIC_TESTNET], ...map2[ChainId.MATIC_TESTNET] }, // matic testnet
+    [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2[CHAIN_ID.BSC] }, // bsc
+    [ChainId.BSC_TESTNET]: { ...map1[ChainId.BSC_TESTNET], ...map2[ChainId.BSC_TESTNET] }, // bsc testnet
   }
-}
-
-// merge tokens contained within lists from urls
-function useCombinedTokenMapFromUrls(urls: string[] | undefined): TokenAddressMap {
-  const lists = useAllLists()
-
-  return useMemo(() => {
-    if (!urls) return EMPTY_LIST
-
-    return (
-      urls
-        .slice()
-        // sort by priority so top priority goes last
-        .sort(sortByListPriority)
-        .reduce((allTokens, currentUrl) => {
-          const current = lists[currentUrl]?.current
-          if (!current) return allTokens
-          try {
-            const newTokens = Object.assign(listToTokenMap(current))
-            return combineMaps(allTokens, newTokens)
-          } catch (error) {
-            console.error('Could not show token list due to error', error)
-            return allTokens
-          }
-        }, EMPTY_LIST)
-    )
-  }, [lists, urls])
 }
 
 // filter out unsupported lists

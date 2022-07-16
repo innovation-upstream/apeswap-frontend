@@ -91,8 +91,9 @@ const DexPanel: React.FC<DexPanelProps> = ({
         >
           {!usdVal && (value || value === '.') && <Spinner width="15px" height="15px" />}
           <Text size="12px" sx={styles.panelBottomText}>
-            {usdVal &&
+            {usdVal !== null &&
               value !== '.' &&
+              usdVal !== 0 &&
               value &&
               `$${(lpPair
                 ? usdVal * parseFloat(currencyBalance) * (parseFloat(value) / 100)

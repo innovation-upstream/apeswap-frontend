@@ -38,6 +38,10 @@ const FixedContentRow = styled.div`
   align-items: center;
 `
 
+const CustomFixedList = styled(FixedSizeList)`
+  border-radius: 10px 0px 0px 10px;
+`
+
 function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance?.toExact()}>{balance?.toSignificant(4)}</StyledBalanceText>
 }
@@ -94,7 +98,7 @@ function CurrencyRow({
       onClick={() => (isSelected ? null : onSelect())}
     >
       <Flex sx={{ alignItems: 'center' }}>
-        <CurrencyLogo currency={currency} size="30px" />
+        <CurrencyLogo currency={currency} size="30px" style={{ borderRadius: '15px' }} />
         <Flex sx={{ flexDirection: 'column', ml: '10px', alignItems: 'space-between' }}>
           <Flex sx={{ alignItems: 'center' }}>
             <Text title={currency.getName(chainId)} weight={700} sx={{ lineHeight: '22px' }}>
@@ -166,12 +170,8 @@ export default function CurrencyList({
 
       if (index === breakIndex || !data) {
         return (
-          <FixedContentRow style={style}>
-            <Card padding="8px 12px">
-              <RowBetween>
-                <Text small>{t('Expanded results from inactive Token Lists')}</Text>
-              </RowBetween>
-            </Card>
+          <FixedContentRow style={style} sx={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Text size="14px">{t('Expanded results from inactive Token Lists')}</Text>
           </FixedContentRow>
         )
       }
@@ -207,7 +207,7 @@ export default function CurrencyList({
   const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
 
   return (
-    <FixedSizeList
+    <CustomFixedList
       height={height}
       width="100%"
       ref={fixedListRef as any}
@@ -217,6 +217,6 @@ export default function CurrencyList({
       itemKey={itemKey}
     >
       {Row}
-    </FixedSizeList>
+    </CustomFixedList>
   )
 }

@@ -131,30 +131,37 @@ export function useTradeExactIn(
     for (let index = 0; index < allowedPairs.length; index++) {
       if (currencyAmountIn && currencyOut && allowedPairs[index].length > 0) {
         if (singleHopOnly) {
-          bestTradeSoFar =
+          const currentSingleHopTrade =
             Trade.bestTradeExactIn(allowedPairs[index], currencyAmountIn, currencyOut, {
               maxHops: 1,
               maxNumResults: 1,
             })[0] ?? null
-          break
-        }
-        for (let i = 1; i <= MAX_HOPS; i++) {
-          const currentTrade: Trade | null =
-            Trade.bestTradeExactIn(allowedPairs[index], currencyAmountIn, currencyOut, {
-              maxHops: i,
-              maxNumResults: 1,
-            })[0] ?? null
+          if (isTradeBetter(bestTradeSoFar, currentSingleHopTrade)) {
+            // if current trade is best yet, save it
+            bestTradeSoFar = currentSingleHopTrade
+          }
+          if (index === allowedPairs.length - 1) {
+            break
+          }
+        } else {
+          for (let i = 1; i <= MAX_HOPS; i++) {
+            const currentTrade: Trade | null =
+              Trade.bestTradeExactIn(allowedPairs[index], currencyAmountIn, currencyOut, {
+                maxHops: i,
+                maxNumResults: 1,
+              })[0] ?? null
 
-          if (PRIORITY_SMART_ROUTERS[chainId][0] === SmartRouter.APE) {
-            if (currentTrade?.route?.pairs?.[0]?.router === SmartRouter.APE) {
-              if (isTradeBetter(bestApeTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
-                bestApeTradeSoFar = currentTrade
+            if (PRIORITY_SMART_ROUTERS[chainId][0] === SmartRouter.APE) {
+              if (currentTrade?.route?.pairs?.[0]?.router === SmartRouter.APE) {
+                if (isTradeBetter(bestApeTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
+                  bestApeTradeSoFar = currentTrade
+                }
               }
             }
-          }
-          if (isTradeBetter(bestTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
-            // if current trade is best yet, save it
-            bestTradeSoFar = currentTrade
+            if (isTradeBetter(bestTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
+              // if current trade is best yet, save it
+              bestTradeSoFar = currentTrade
+            }
           }
         }
       }
@@ -169,8 +176,6 @@ export function useTradeExactIn(
     }
     return bestTradeSoFar
   }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly, chainId, swapDelay, onSetSwapDelay])
-
-  console.log('This is the best trade', bestTradeExactIn)
 
   return bestTradeExactIn
 }
@@ -206,29 +211,36 @@ export function useTradeExactOut(
     for (let index = 0; index < allowedPairs.length; index++) {
       if (currencyAmountOut && currencyIn && allowedPairs[index].length > 0) {
         if (singleHopOnly) {
-          bestTradeSoFar =
+          const currentSingleHopTrade =
             Trade.bestTradeExactOut(allowedPairs[index], currencyIn, currencyAmountOut, {
               maxHops: 1,
               maxNumResults: 1,
             })[0] ?? null
-          break
-        }
-        for (let i = 1; i <= MAX_HOPS; i++) {
-          const currentTrade: Trade | null =
-            Trade.bestTradeExactOut(allowedPairs[index], currencyIn, currencyAmountOut, {
-              maxHops: i,
-              maxNumResults: 1,
-            })[0] ?? null
-          if (PRIORITY_SMART_ROUTERS[chainId][0] === SmartRouter.APE) {
-            if (currentTrade?.route?.pairs?.[0]?.router === SmartRouter.APE) {
-              if (isTradeBetter(bestApeTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
-                bestApeTradeSoFar = currentTrade
+          if (isTradeBetter(bestTradeSoFar, currentSingleHopTrade)) {
+            // if current trade is best yet, save it
+            bestTradeSoFar = currentSingleHopTrade
+          }
+          if (index === allowedPairs.length - 1) {
+            break
+          }
+        } else {
+          for (let i = 1; i <= MAX_HOPS; i++) {
+            const currentTrade: Trade | null =
+              Trade.bestTradeExactOut(allowedPairs[index], currencyIn, currencyAmountOut, {
+                maxHops: i,
+                maxNumResults: 1,
+              })[0] ?? null
+            if (PRIORITY_SMART_ROUTERS[chainId][0] === SmartRouter.APE) {
+              if (currentTrade?.route?.pairs?.[0]?.router === SmartRouter.APE) {
+                if (isTradeBetter(bestApeTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
+                  bestApeTradeSoFar = currentTrade
+                }
               }
             }
-          }
-          if (isTradeBetter(bestTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
-            // if current trade is best yet, save it
-            bestTradeSoFar = currentTrade
+            if (isTradeBetter(bestTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
+              // if current trade is best yet, save it
+              bestTradeSoFar = currentTrade
+            }
           }
         }
       }
