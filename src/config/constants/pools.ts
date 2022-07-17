@@ -1125,7 +1125,7 @@ const pools: PoolConfig[] = [
       56: '0xda04ae1d4651e63c130921c6227397d58dd9167a',
     },
     poolCategory: PoolCategory.APEZONE,
-    projectLink: 'https://ceek.com/',
+    projectLink: 'https://ceek.io/',
     twitter: 'https://twitter.com/ceek',
     harvest: true,
     tokenPerBlock: `15.432098765432098765`,
@@ -3058,6 +3058,26 @@ const pools: PoolConfig[] = [
   //
   // JUNGLE FARMS
   //
+  {
+    sousId: 214,
+    tokenName: 'PXP',
+    image: 'PXP.png',
+    stakingToken: tokens.pxpBnb,
+    rewardToken: tokens.pxp,
+    contractAddress: {
+      97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
+      56: '0xBE36303aeCc8F1A71fa1076349117BE2fb94f7cD',
+    },
+    poolCategory: PoolCategory.JUNGLE,
+    projectLink: 'https://piratexpirate.io/',
+    twitter: 'https://twitter.com/PXPNFTsGame',
+    harvest: true,
+    tokenPerBlock: `15.659722222222222222`,
+    sortOrder: 1,
+    reflect: false,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
   {
     sousId: 211,
     tokenName: 'GENv3',
