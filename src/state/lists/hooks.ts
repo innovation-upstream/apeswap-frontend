@@ -7,7 +7,7 @@ import { CHAIN_ID } from 'config/constants/chains'
 import { createSelector } from '@reduxjs/toolkit'
 import { fromPairs, groupBy, uniqBy } from 'lodash'
 import DEFAULT_TOKEN_LIST from '@apeswapfinance/token-lists/lists/apeswap.json'
-import { UNSUPPORTED_LIST_URLS, DEFAULT_LIST_OF_LISTS, DEFAULT_ACTIVE_LIST_URLS } from 'config/constants/lists'
+import { UNSUPPORTED_LIST_URLS, DEFAULT_LIST_OF_LISTS } from 'config/constants/lists'
 import UNSUPPORTED_TOKEN_LIST from 'config/constants/token-lists/sushiswap-v2-unsupported.tokenlist.json'
 import { AppState } from '../index'
 

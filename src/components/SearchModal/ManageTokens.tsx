@@ -1,8 +1,8 @@
 /** @jsxImportSource theme-ui */
 import React, { useRef, RefObject, useCallback, useState, useMemo } from 'react'
 import { Token } from '@apeswapfinance/sdk'
-import { Text, Button, CloseIcon, IconButton, LinkExternal, Link, Flex, Input } from '@ape.swap/uikit'
-import Row, { RowBetween, RowFixed } from 'components/layout/Row'
+import { Text, Button, CloseIcon, LinkExternal, Link, Flex, Input } from '@ape.swap/uikit'
+import { RowBetween, RowFixed } from 'components/layout/Row'
 import { useToken } from 'hooks/Tokens'
 import styled from '@emotion/styled'
 import { useRemoveUserAddedToken } from 'state/user/hooks'
@@ -11,7 +11,6 @@ import { CurrencyLogo } from 'components/Logo'
 import { getEtherscanLink, isAddress } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import Column, { AutoColumn } from '../layout/Column'
 import ImportRow from './ImportRow'
 import { CurrencyModalView } from './types'
 

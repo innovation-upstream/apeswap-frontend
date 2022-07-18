@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 /* eslint-disable no-restricted-syntax */
-import React, { KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
 import { Currency, ETHER, Token } from '@apeswapfinance/sdk'
 import { Text, Flex, Input } from '@ape.swap/uikit'
 import { FixedSizeList } from 'react-window'
@@ -9,12 +9,12 @@ import useDebounce from 'hooks/useDebounce'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { TagInfo, useAllLists, useInactiveListUrls, WrappedTokenInfo } from 'state/lists/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } from '../../hooks/Tokens'
+import { useAllTokens, useToken, useIsUserAddedToken } from '../../hooks/Tokens'
 import { isAddress } from '../../utils'
 import Column from '../layout/Column'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
-import { createFilterToken, filterTokens, useSortedTokensByQuery } from './filtering'
+import { createFilterToken, useSortedTokensByQuery } from './filtering'
 import useTokenComparator from './sorting'
 import ImportRow from './ImportRow'
 

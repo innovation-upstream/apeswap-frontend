@@ -8,9 +8,7 @@ import {
   SwapParameters,
   Trade,
   TradeType,
-  ROUTER_ADDRESS,
   SMART_ROUTER_ADDRESS,
-  SmartRouter,
 } from '@apeswapfinance/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

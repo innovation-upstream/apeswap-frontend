@@ -17,8 +17,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import tokens from 'config/constants/tokens'
 import useENS from 'hooks/ENS/useENS'
 import { useCurrency } from 'hooks/Tokens'
-import { useSwapCallArguments } from 'hooks/useSwapCallback'
-import { useAllCommonPairs, useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
+import { useAllCommonPairs } from 'hooks/Trades'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import useFindBestRoute from 'hooks/useFindBestRoute'
 import { isAddress } from 'utils'
@@ -196,12 +195,10 @@ export function useDerivedSwapInfo(): {
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient,
   } = useSwapState()
-
-  const v2Trade = useFindBestRoute()
-
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   useAllCommonPairs(inputCurrency, outputCurrency)
+  const { v2Trade, bestTradeExactIn, bestTradeExactOut } = useFindBestRoute()
   const recipientLookup = useENS(recipient ?? undefined)
   const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
 
@@ -212,11 +209,6 @@ export function useDerivedSwapInfo(): {
 
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
-
-  // const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
-  // const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
-
-  // const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
   const currencyBalances = useMemo(
     () => ({
@@ -247,16 +239,16 @@ export function useDerivedSwapInfo(): {
     inputError = inputError ?? t('Select a token')
   }
 
-  // const formattedTo = isAddress(to)
-  // if (!to || !formattedTo) {
-  //   inputError = inputError ?? t('Enter a recipient')
-  // } else if (
-  //   BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
-  //   (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
-  //   (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
-  // ) {
-  //   inputError = inputError ?? t('Invalid recipient')
-  // }
+  const formattedTo = isAddress(to)
+  if (!to || !formattedTo) {
+    inputError = inputError ?? t('Enter a recipient')
+  } else if (
+    BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
+    (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
+    (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
+  ) {
+    inputError = inputError ?? t('Invalid recipient')
+  }
 
   const [allowedSlippage] = useUserSlippageTolerance()
 

@@ -13,7 +13,6 @@ import {
   CurrencyAmount,
   Currency,
   ETHER,
-  ROUTER_ADDRESS,
   BONUS_ROUTER_ADDRESS,
   SMART_ROUTER_ADDRESS,
   SmartRouter,

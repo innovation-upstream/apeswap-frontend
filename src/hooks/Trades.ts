@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { isTradeBetter } from 'utils/trades'
-import { Currency, CurrencyAmount, Token, Trade, Pair, SmartRouter, Fraction, Percent } from '@apeswapfinance/sdk'
+import { Currency, CurrencyAmount, Token, Trade, Pair, SmartRouter } from '@apeswapfinance/sdk'
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -13,7 +13,7 @@ import {
   BETTER_TRADE_LESS_HOPS_THRESHOLD,
   ADDITIONAL_BASES,
 } from '../config/constants'
-import { PairState, useAllSmartPairs, usePairs } from './usePairs'
+import { PairState, useAllSmartPairs } from './usePairs'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
 import { useUnsupportedTokens } from './Tokens'
@@ -74,7 +74,6 @@ export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency) {
   )
 
   const allPairs = useAllSmartPairs(allPairCombinations)
-  const validPairLength = allPairs?.flatMap((list) => list?.filter((item) => item?.[0] === 2)).length
 
   // only pass along valid pairs, non-duplicated pairs
   // Since useMemo was re-calculating each pair from the list on each keystroke we will only update on valid pair length changing and token switches

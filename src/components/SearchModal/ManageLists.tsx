@@ -1,17 +1,16 @@
 /** @jsxImportSource theme-ui */
 import React, { memo, useCallback, useMemo, useState, useEffect } from 'react'
-import { Button, Text, CheckmarkIcon, CogIcon, Card, Flex, Input, useModal } from '@ape.swap/uikit'
-import { useDispatch, useSelector } from 'react-redux'
+import { Button, Text, CheckmarkIcon, CogIcon, Card, Flex, Input } from '@ape.swap/uikit'
+import { useSelector } from 'react-redux'
 import styled from '@emotion/styled'
 import { Switch } from 'theme-ui'
 import { TokenList } from '@uniswap/token-lists'
 import { EXTENDED_LIST_DETAILS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
-import { parseENSAddress } from 'utils/ENS/parseENSAddress'
 import { useTranslation } from 'contexts/Localization'
 
 import useFetchListCallback from '../../hooks/useFetchListCallback'
-import { AppDispatch, AppState, useAppDispatch } from '../../state'
-import { acceptListUpdate, disableList, enableList, removeList } from '../../state/lists/actions'
+import { AppState, useAppDispatch } from '../../state'
+import { disableList, enableList } from '../../state/lists/actions'
 import { useIsListActive, useAllLists, useActiveListUrls } from '../../state/lists/hooks'
 
 import uriToHttp from '../../utils/uriToHttp'
@@ -58,7 +57,7 @@ const ListRow = memo(function ListRow({
 }) {
   const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
   const dispatch = useAppDispatch()
-  const { current: list, pendingUpdate: pending } = listsByUrl[listUrl]
+  const { current: list } = listsByUrl[listUrl]
   // Extended doesn't need to be defined for each list
   const extendedLogo = EXTENDED_LIST_DETAILS[list?.name]?.logo
   const extendedName = EXTENDED_LIST_DETAILS[list?.name]?.name
@@ -68,6 +67,7 @@ const ListRow = memo(function ListRow({
 
   const { t } = useTranslation()
 
+  // TODO: allow users to update list versions and remove unwanted list
   // const handleAcceptListUpdate = useCallback(() => {
   //   if (!pending) return
   //   dispatch(acceptListUpdate(listUrl))

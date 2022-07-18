@@ -5,7 +5,6 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useCallback } from 'react'
-import { Field } from 'state/swap/actions'
 import { styles } from './styles'
 
 const TokenSelector: React.FC<{

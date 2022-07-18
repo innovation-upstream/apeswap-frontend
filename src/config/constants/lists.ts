@@ -6,8 +6,8 @@ export const UNSUPPORTED_LIST_URLS: string[] = []
 
 const NFT_INDEX = 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/lists/nftindex.json'
 const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-extended.json'
-const CMC_ALL_LIST = 'https://api.coinmarketcap.com/data-api/v3/uniswap/all.json'
-const COINGECKO_LIST = 'https://tokens.coingecko.com/uniswap/all.json'
+// const CMC_ALL_LIST = 'https://api.coinmarketcap.com/data-api/v3/uniswap/all.json'
+// const COINGECKO_LIST = 'https://tokens.coingecko.com/uniswap/all.json'
 const UNI_LIST = 'https://tokens.uniswap.org'
 const QUICKSWAP = 'https://unpkg.com/quickswap-default-token-list@1.2.18/build/quickswap-default.tokenlist.json'
 

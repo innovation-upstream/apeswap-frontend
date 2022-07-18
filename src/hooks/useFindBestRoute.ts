@@ -57,7 +57,7 @@ const useFindBestRoute = () => {
 
   // To not cause a call on every user input the code will be executed when the delay is complete
   if (swapDelay !== SwapDelay.SWAP_COMPLETE) {
-    return v2Trade
+    return { v2Trade, bestTradeExactIn, bestTradeExactOut }
   }
   if (swapCalls[0]) {
     const {
@@ -77,7 +77,7 @@ const useFindBestRoute = () => {
       onSetSwapDelay,
     )
   }
-  return v2Trade
+  return { v2Trade, bestTradeExactIn, bestTradeExactOut }
 }
 
 export default useFindBestRoute

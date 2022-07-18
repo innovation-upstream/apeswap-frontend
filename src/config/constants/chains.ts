@@ -11,23 +11,12 @@ export const CHAIN_ID = {
 }
 
 // Network labels
-
 export const NETWORK_LABEL = {
   [CHAIN_ID.BSC]: 'BSC',
   [CHAIN_ID.BSC_TESTNET]: 'BSC Testnet',
   [CHAIN_ID.MATIC]: 'Polygon',
   [CHAIN_ID.MATIC_TESTNET]: 'Polygon Testnet',
   [CHAIN_ID.ETH]: 'Ethereum',
-}
-
-// Network icons
-
-export const NETWORK_ICON = {
-  [CHAIN_ID.BSC]: '',
-  [CHAIN_ID.BSC_TESTNET]: '',
-  [CHAIN_ID.MATIC]: '',
-  [CHAIN_ID.MATIC_TESTNET]: '',
-  [CHAIN_ID.ETH]: '',
 }
 
 export const NETWORK_INFO_LINK = {
@@ -48,11 +37,10 @@ export const NETWORK_RPC = {
   [CHAIN_ID.BSC_TESTNET]: ['https://data-seed-prebsc-2-s3.binance.org:8545/'],
   [CHAIN_ID.MATIC]: ['https://polygon-rpc.com/'],
   [CHAIN_ID.MATIC_TESTNET]: ['https://matic-mumbai.chainstacklabs.com'],
-  [CHAIN_ID.ETH]: ['https://mainnet.infura.io/v3/db68086081a640d6999f0b58d049b0c4'],
+  [CHAIN_ID.ETH]: ['https://eth-mainnet.nodereal.io/v1/43f9100965104de49b580d1fa1ab28c0'],
 }
 
 // Network block explorers
-
 export const BLOCK_EXPLORER = {
   [CHAIN_ID.BSC]: 'https://bscscan.com',
   [CHAIN_ID.BSC_TESTNET]: 'https://testnet.bscscan.com/',

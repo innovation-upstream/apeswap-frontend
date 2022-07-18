@@ -1,8 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Text } from '@ape.swap/uikit'
-import { Currency } from '@apeswapfinance/sdk'
 import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
-import { DoubleCurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Spinner } from 'theme-ui'

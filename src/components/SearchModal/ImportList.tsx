@@ -18,10 +18,6 @@ interface ImportProps {
   onImport: () => void
 }
 
-const Wrapper = styled.div`
-  position: relative;
-  width: 100%;
-`
 
 const TextDot = styled.div`
   height: 3px;
