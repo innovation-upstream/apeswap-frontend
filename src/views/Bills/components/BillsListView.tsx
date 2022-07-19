@@ -104,7 +104,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           />
           {!isMobile && (
             <>
-              <Flex alignItems="center" style={{ height: '100%' }}>
+              <Flex style={{ height: '100%', alignItems: 'center' }}>
                 {account ? (
                   <BillModal
                     bill={bill}
