@@ -2023,7 +2023,7 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-    projectLink: 'https://ceek.com/',
+    projectLink: 'https://ceek.io/',
   },
   {
     pid: 118,

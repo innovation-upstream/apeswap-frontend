@@ -16,7 +16,7 @@ import BillModal from './Modals'
 const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
-  const { isXl, isLg, isXxl, isMd } = useMatchBreakpoints()
+  const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isXl && !isXxl
   const billsListView = bills.map((bill) => {
     const { token, quoteToken, earnToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
@@ -81,8 +81,8 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           />
           <ListViewContent
             title={t('Discount')}
-            valueColor={parseFloat(bill?.discount) < 0 ? '#DF4141' : null}
-            value={`${bill?.discount}%`}
+            valueColor={disabled ? null : parseFloat(bill?.discount) < 0 ? '#DF4141' : '#38A611'}
+            value={disabled ? 'N/A' : `${bill?.discount}%`}
             width={isMobile ? 90 : 120}
             height={52.5}
             toolTip={
