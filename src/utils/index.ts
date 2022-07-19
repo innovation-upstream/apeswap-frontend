@@ -1,13 +1,23 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { getAddress } from '@ethersproject/address'
-import { BLOCK_EXPLORER, BONUS_ROUTER } from 'config/constants/chains'
+import { BLOCK_EXPLORER } from 'config/constants/chains'
 import { Contract } from '@ethersproject/contracts'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import apeRouterManagerABI from 'config/abi/apeRouterManager.json'
-import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER, ROUTER_ADDRESS } from '@apeswapfinance/sdk'
-import { parseAddress } from 'hooks/useAddress'
+import {
+  JSBI,
+  Percent,
+  Token,
+  CurrencyAmount,
+  Currency,
+  ETHER,
+  BONUS_ROUTER_ADDRESS,
+  SMART_ROUTER_ADDRESS,
+  SmartRouter,
+} from '@apeswapfinance/sdk'
+import { parseAddress, parseSmartAddress } from 'hooks/useAddress'
 import { RouterTypes } from 'config/constants'
 import { TokenAddressMap } from '../state/lists/hooks'
 
@@ -92,17 +102,19 @@ export function getRouterContract(
   library: Web3Provider,
   account?: string,
   routerType?: RouterTypes,
+  smartRouter?: SmartRouter,
+  executedSwap = true, // To be able to correctly differentiate between a executed swap vs a bonus check we need this flag
 ): Contract {
-  if (routerType === RouterTypes.BONUS) {
+  if (routerType === RouterTypes.BONUS && executedSwap) {
     return getContract(
-      parseAddress(BONUS_ROUTER, library.network?.chainId || 56),
+      parseAddress(BONUS_ROUTER_ADDRESS, library.network?.chainId || 56),
       apeRouterManagerABI,
       library,
       account,
     )
   }
   return getContract(
-    parseAddress(ROUTER_ADDRESS, library.network?.chainId || 56),
+    parseSmartAddress(SMART_ROUTER_ADDRESS, library.network?.chainId || 56, smartRouter || SmartRouter.APE),
     IUniswapV2Router02ABI,
     library,
     account,

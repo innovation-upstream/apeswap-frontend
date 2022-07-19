@@ -25,7 +25,10 @@ export default function SwapModalFooter({
 }) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const { priceImpactWithoutFee } = useMemo(
+    () => computeTradePriceBreakdown(chainId, bestRoute.smartRouter, trade),
+    [trade, chainId, bestRoute],
+  )
   const severity = warningSeverity(priceImpactWithoutFee)
 
   const slippageAdjustedAmounts = useMemo(

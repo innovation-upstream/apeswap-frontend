@@ -1,8 +1,9 @@
 /** @jsxImportSource theme-ui */
 import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from '@apeswapfinance/sdk'
-import { Text, Card, Skeleton, Flex, MetamaskIcon } from '@ape.swap/uikit'
+import { Text, Flex, MetamaskIcon } from '@ape.swap/uikit'
 import styled from 'styled-components'
+import { Spinner } from 'theme-ui'
 import { FixedSizeList } from 'react-window'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -10,8 +11,7 @@ import { useTranslation } from 'contexts/Localization'
 import { registerToken } from 'utils/wallet'
 import { useCombinedActiveList, WrappedTokenInfo } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
-import { useIsUserAddedToken, useAllInactiveTokens } from '../../hooks/Tokens'
-import { RowBetween } from '../layout/Row'
+import { useIsUserAddedToken } from '../../hooks/Tokens'
 import { CurrencyLogo } from '../Logo'
 import { isTokenOnList } from '../../utils'
 import ImportRow from './ImportRow'
@@ -37,6 +37,10 @@ const FixedContentRow = styled.div`
   align-items: center;
 `
 
+const CustomFixedList = styled(FixedSizeList)`
+  border-radius: 10px 0px 0px 10px;
+`
+
 function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance?.toExact()}>{balance?.toSignificant(4)}</StyledBalanceText>
 }
@@ -55,21 +59,22 @@ function CurrencyRow({
   style: CSSProperties
 }) {
   const { account, chainId } = useActiveWeb3React()
+  const { t } = useTranslation()
   const key = currencyKey(currency)
   const selectedTokenList = useCombinedActiveList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
-  const { t } = useTranslation()
-  const addToMetaMask = () => {
-    registerToken(
-      currency instanceof Token ? currency?.address : '',
-      currency?.symbol,
-      currency?.decimals,
-      currency instanceof WrappedTokenInfo ? currency?.tokenInfo.logoURI : '',
-    ).then(() => '')
-  }
-
+  const addToMetaMask = useCallback(
+    () =>
+      registerToken(
+        currency instanceof Token ? currency?.address : '',
+        currency?.symbol,
+        currency?.decimals,
+        currency instanceof WrappedTokenInfo ? currency?.tokenInfo.logoURI : '',
+      ).then(() => ''),
+    [currency],
+  )
   // only show add or remove buttons if not on selected list
   return (
     <Flex
@@ -89,10 +94,10 @@ function CurrencyRow({
       }}
       key={`token-item-${key}`}
       className={`token-item-${key}`}
-      onClick={(event) => (event.currentTarget === event.target && isSelected ? null : onSelect())}
+      onClick={() => (isSelected ? null : onSelect())}
     >
       <Flex sx={{ alignItems: 'center' }}>
-        <CurrencyLogo currency={currency} size="30px" />
+        <CurrencyLogo currency={currency} size="30px" style={{ borderRadius: '15px' }} />
         <Flex sx={{ flexDirection: 'column', ml: '10px', alignItems: 'space-between' }}>
           <Flex sx={{ alignItems: 'center' }}>
             <Text title={currency.getName(chainId)} weight={700} sx={{ lineHeight: '22px' }}>
@@ -106,7 +111,7 @@ function CurrencyRow({
         </Flex>
       </Flex>
       <Flex sx={{ justifySelf: 'flex-end' }}>
-        {balance ? <Balance balance={balance} /> : account ? <Skeleton width="50px" /> : null}
+        {balance ? <Balance balance={balance} /> : account ? <Spinner width="20px" height="20px" /> : null}
       </Flex>
     </Flex>
   )
@@ -116,6 +121,7 @@ export default function CurrencyList({
   height,
   currencies,
   selectedCurrency,
+  inactiveCurrencies,
   onCurrencySelect,
   otherCurrency,
   fixedListRef,
@@ -126,6 +132,7 @@ export default function CurrencyList({
 }: {
   height: number
   currencies: Currency[]
+  inactiveCurrencies: Currency[]
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherCurrency?: Currency | null
@@ -140,16 +147,14 @@ export default function CurrencyList({
   const { t } = useTranslation()
 
   const itemData: (Currency | undefined)[] = useMemo(() => {
-    let formatted: (Currency | undefined)[] = showETH ? [Currency.ETHER, ...currencies] : currencies
+    let formatted: (Currency | undefined)[] = showETH
+      ? [Currency.ETHER, ...currencies, ...inactiveCurrencies]
+      : [...currencies, ...inactiveCurrencies]
     if (breakIndex !== undefined) {
       formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted.length)]
     }
     return formatted
-  }, [breakIndex, currencies, showETH])
-
-  const inactiveTokens: {
-    [address: string]: Token
-  } = useAllInactiveTokens()
+  }, [breakIndex, currencies, inactiveCurrencies, showETH])
 
   const Row = useCallback(
     ({ data, index, style }) => {
@@ -160,16 +165,12 @@ export default function CurrencyList({
 
       const token = wrappedCurrency(currency, chainId)
 
-      const showImport = inactiveTokens && token && Object.keys(inactiveTokens).includes(token.address)
+      const showImport = index > currencies.length
 
       if (index === breakIndex || !data) {
         return (
-          <FixedContentRow style={style}>
-            <Card padding="8px 12px">
-              <RowBetween>
-                <Text small>{t('Expanded results from inactive Token Lists')}</Text>
-              </RowBetween>
-            </Card>
+          <FixedContentRow style={style} sx={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Text size="14px">{t('Expanded results from inactive Token Lists')}</Text>
           </FixedContentRow>
         )
       }
@@ -191,13 +192,13 @@ export default function CurrencyList({
     },
     [
       chainId,
-      inactiveTokens,
       onCurrencySelect,
       otherCurrency,
       selectedCurrency,
       setImportToken,
       showImportView,
       breakIndex,
+      currencies.length,
       t,
     ],
   )
@@ -205,7 +206,7 @@ export default function CurrencyList({
   const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
 
   return (
-    <FixedSizeList
+    <CustomFixedList
       height={height}
       width="100%"
       ref={fixedListRef as any}
@@ -215,6 +216,6 @@ export default function CurrencyList({
       itemKey={itemKey}
     >
       {Row}
-    </FixedSizeList>
+    </CustomFixedList>
   )
 }

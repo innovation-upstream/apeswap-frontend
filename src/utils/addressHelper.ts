@@ -1,3 +1,5 @@
+import { SmartRouter } from '@apeswapfinance/sdk'
+import { SMART_PRICE_GETTERS } from 'config/constants/chains'
 import addresses from 'config/constants/contracts'
 import tokens from 'config/constants/tokens'
 
@@ -48,6 +50,9 @@ export const getAuctionAddress = (chainId: number) => {
 }
 export const getApePriceGetterAddress = (chainId: number) => {
   return addresses.apePriceGetter[chainId]
+}
+export const getSmartPriceGetter = (chainId: number, smartRouter?: SmartRouter) => {
+  return SMART_PRICE_GETTERS[chainId][smartRouter || SmartRouter.APE]
 }
 export const getVaultApeAddressV1 = (chainId: number) => {
   return addresses.vaultApeV1[chainId]
