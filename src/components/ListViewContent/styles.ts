@@ -14,8 +14,6 @@ export const TitleText = styled(Text)<{ lineHeight?: number }>`
   opacity: 0.6;
   font-size: 12px;
   line-height: ${({ lineHeight }) => lineHeight || 20}px;
-  ${({ theme }) => theme.mediaQueries.md} {
-  }
 `
 
 export const ValueText = styled(Text)<{ lineHeight?: number; value2Secondary?: boolean; valueColor?: string }>`

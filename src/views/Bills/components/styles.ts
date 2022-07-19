@@ -6,8 +6,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   links: {
     alignItems: 'center',
     display: 'flex',
-    width: 90,
-    height: 52.5,
+    width: 'max-content',
     justifyContent: 'space-between',
     marginBottom: '0.3em',
   },

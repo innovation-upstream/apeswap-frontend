@@ -15,6 +15,9 @@ const MobileListCard: React.FC<ListCardProps> = ({
   infoContentPosition,
   open,
   expandedContentSize,
+  toolTipIconWidth,
+  toolTipStyle,
+  ttWidth,
 }) => {
   const [expanded, setExpanded] = useState(open)
   return (
@@ -31,9 +34,13 @@ const MobileListCard: React.FC<ListCardProps> = ({
           <Flex>
             {expandedContent && <DropDownIcon open={expanded} mr="20px" />}
             {infoContent && (
-              <div style={{ display: 'inline-block' }}>
-                <TooltipBubble body={infoContent} transformTip={infoContentPosition || 'translate(-82%, 50%)'}>
-                  <InfoIcon width="25px" />
+              <div style={{ display: 'inline-block', ...toolTipStyle }}>
+                <TooltipBubble
+                  body={infoContent}
+                  transformTip={infoContentPosition || 'translate(-82%, 50%)'}
+                  width={ttWidth && '200px'}
+                >
+                  <InfoIcon width={toolTipIconWidth || '25px'} />
                 </TooltipBubble>
               </div>
             )}

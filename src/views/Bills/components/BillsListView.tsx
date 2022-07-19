@@ -1,8 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, useMatchBreakpoints, Text } from '@apeswapfinance/uikit'
-import { IconButton } from '@ape.swap/uikit'
-import { Box } from 'theme-ui'
+import { Flex, TooltipBubble, Text, InfoIcon, LinkExternal, useMatchBreakpoints } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
 import { Bills } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
@@ -18,8 +16,8 @@ import BillModal from './Modals'
 const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
-  const { isXl, isLg, isXxl } = useMatchBreakpoints()
-  const isMobile = !isLg && !isXl && !isXxl
+  const { isXl, isLg, isXxl, isMd } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
   const billsListView = bills.map((bill) => {
     const { token, quoteToken, earnToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
     const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
@@ -44,6 +42,31 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           ml={10}
         />
       ),
+      infoContent: isMobile && (
+        <Flex className="iCBody">
+          {(bill?.projectLink || bill?.twitter) && (
+            <Flex sx={styles.links}>
+              {bill?.projectLink && (
+                <Flex alignItems="center" justifyContent="center" mt="5px">
+                  <LinkExternal href={bill?.projectLink} style={{ fontSize: (isMobile && '12px') || '14px' }}>
+                    {t('Website')}
+                  </LinkExternal>
+                </Flex>
+              )}
+              {bill?.twitter && (
+                <Flex alignItems="center" justifyContent="center" mt="5px" ml="20px">
+                  <LinkExternal href={bill?.twitter} style={{ fontSize: (isMobile && '12px') || '14px' }}>
+                    {t('Twitter')}
+                  </LinkExternal>
+                </Flex>
+              )}
+            </Flex>
+          )}
+        </Flex>
+      ),
+      ttWidth: isMobile && '200px',
+      toolTipIconWidth: isMobile && '20px',
+      toolTipStyle: isMobile && { marginTop: '12px', marginRight: '10px' },
       cardContent: (
         <>
           <ListViewContent
@@ -81,42 +104,60 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           />
           {!isMobile && (
             <>
-              {(bill?.projectLink || bill?.twitter) && (
-                <Box sx={styles.links}>
-                  {bill?.projectLink && (
-                    <a href={bill?.projectLink} target="_blank" rel="noreferrer">
-                      <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
-                    </a>
-                  )}
-                  {bill?.twitter && (
-                    <a href={bill?.twitter} target="_blank" rel="noreferrer">
-                      <IconButton icon="twitter" color="primaryBright" width={20} />
-                    </a>
-                  )}
-                </Box>
-              )}
+              <Flex alignItems="center" style={{ height: '100%' }}>
+                {account ? (
+                  <BillModal
+                    bill={bill}
+                    buttonText={disabled ? t('SOLD OUT') : t('BUY')}
+                    id={bill.index}
+                    buyFlag
+                    disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
+                  />
+                ) : (
+                  <UnlockButton />
+                )}
+              </Flex>
+              <Flex sx={{ alignItems: 'center', height: '100%' }}>
+                <Flex sx={{ alignItems: 'flex-start' }}>
+                  <div style={{ display: 'inline-block' }}>
+                    <TooltipBubble
+                      placement="bottomRight"
+                      transformTip="translate(8%, -2%)"
+                      body={
+                        <Flex>
+                          {(bill?.projectLink || bill?.twitter) && (
+                            <Flex sx={styles.links}>
+                              {bill?.projectLink && (
+                                <Flex sx={{ justifyContent: 'center', alignItems: 'center' }} mt="10px">
+                                  <LinkExternal href={bill?.projectLink} style={{ fontSize: '14px' }}>
+                                    {t('Website')}
+                                  </LinkExternal>
+                                </Flex>
+                              )}
+                              {bill?.twitter && (
+                                <Flex sx={{ justifyContent: 'center', alignItems: 'center' }} mt="10px" ml="20px">
+                                  <LinkExternal href={bill?.twitter} style={{ fontSize: '14px' }}>
+                                    {t('Twitter')}
+                                  </LinkExternal>
+                                </Flex>
+                              )}
+                            </Flex>
+                          )}
+                        </Flex>
+                      }
+                    >
+                      <InfoIcon width="24px" />
+                    </TooltipBubble>
+                  </div>
+                </Flex>
+              </Flex>
             </>
-          )}
-          {!isMobile && (
-            <Flex alignItems="center" style={{ height: '100%' }}>
-              {account ? (
-                <BillModal
-                  bill={bill}
-                  buttonText={disabled ? t('SOLD OUT') : t('BUY')}
-                  id={bill.index}
-                  buyFlag
-                  disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
-                />
-              ) : (
-                <UnlockButton />
-              )}
-            </Flex>
           )}
         </>
       ),
       expandedContentSize: 100,
       expandedContent: isMobile && (
-        <Flex alignItems="center" justifyContent="center" style={{ height: '100%', width: '100%' }}>
+        <Flex sx={{ alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
           {account ? (
             <BillModal
               bill={bill}
