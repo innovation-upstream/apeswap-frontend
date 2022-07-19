@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navbar as UikitMenu } from '@ape.swap/uikit'
+import { uauth } from 'utils/web3React'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
@@ -38,9 +39,21 @@ const Menu = (props) => {
     return bscConfig(translate)
   }
   const { liveIfos } = useLiveIfoStatus()
+  const [uDName, setUDName] = useState(null)
+
+  useEffect(() => {
+    uauth.uauth
+      .user()
+      .then((user) => setUDName(user.sub))
+      .catch((err) => console.info(err.message))
+  }, [])
+  console.log('uDName:::', uDName)
+  // Doesn't update UDName on first try
+  // Have to refresh the page (Fix This)
 
   return (
     <UikitMenu
+      uDName={uDName}
       account={account}
       login={login}
       logout={logout}
