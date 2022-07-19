@@ -97,6 +97,7 @@ function CurrencySearch({
   // if they input an address, use it
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
+  const { t } = useTranslation()
 
   const showETH: boolean = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
@@ -151,9 +152,55 @@ function CurrencySearch({
 
   // if no results on main list, show option to expand into inactive
   const filteredInactiveTokens = useSearchInactiveTokenLists(debouncedQuery)
-  const inactiveTokens = Boolean(filteredInactiveTokens?.length)
+  const hasFilteredInactiveTokens = Boolean(filteredInactiveTokens?.length)
 
-  const { t } = useTranslation()
+  const getCurrencyListRows = useCallback(() => {
+    if (searchToken && !searchTokenIsAdded && !hasFilteredInactiveTokens) {
+      return (
+        <Column style={{ padding: '20px 0', height: '100%' }}>
+          <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
+        </Column>
+      )
+    }
+
+    return filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
+      <CurrencyList
+        height={335}
+        showETH={showETH}
+        currencies={filteredSortedTokens}
+        breakIndex={
+          Boolean(filteredInactiveTokens?.length) && filteredSortedTokens ? filteredSortedTokens.length : undefined
+        }
+        onCurrencySelect={handleCurrencySelect}
+        otherCurrency={otherSelectedCurrency}
+        selectedCurrency={selectedCurrency}
+        inactiveCurrencies={filteredInactiveTokens}
+        fixedListRef={fixedList}
+        showImportView={showImportView}
+        setImportToken={setImportToken}
+      />
+    ) : (
+      <Column style={{ padding: '20px', height: '100%' }}>
+        <Text color="gray" textAlign="center" mb="20px">
+          {t('No results found')}
+        </Text>
+      </Column>
+    )
+  }, [
+    filteredInactiveTokens,
+    filteredSortedTokens,
+    handleCurrencySelect,
+    hasFilteredInactiveTokens,
+    otherSelectedCurrency,
+    searchToken,
+    searchTokenIsAdded,
+    selectedCurrency,
+    setImportToken,
+    showETH,
+    showImportView,
+    t,
+  ])
+
   return (
     <Flex sx={{ flexDirection: 'column' }}>
       <Flex sx={{ position: 'relative', margin: '10px 0px 15px 0px' }}>
@@ -162,7 +209,6 @@ function CurrencySearch({
           placeholder={t('Name or Address')}
           autoComplete="off"
           value={searchQuery}
-          // ref={inputRef as RefObject<HTMLInputElement>}
           onChange={handleInput}
           onKeyDown={handleEnter}
           icon="search"
@@ -172,33 +218,7 @@ function CurrencySearch({
       {showCommonBases && (
         <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
       )}
-      {searchToken && !searchTokenIsAdded ? (
-        <Column style={{ padding: '20px 0', height: '100%' }}>
-          <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
-        </Column>
-      ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
-        <CurrencyList
-          height={335}
-          showETH={showETH}
-          currencies={
-            filteredInactiveTokens ? filteredSortedTokens.concat(filteredInactiveTokens) : filteredSortedTokens
-          }
-          breakIndex={inactiveTokens && filteredSortedTokens ? filteredSortedTokens.length : undefined}
-          onCurrencySelect={handleCurrencySelect}
-          otherCurrency={otherSelectedCurrency}
-          selectedCurrency={selectedCurrency}
-          inactiveCurrencies={filteredInactiveTokens}
-          fixedListRef={fixedList}
-          showImportView={showImportView}
-          setImportToken={setImportToken}
-        />
-      ) : (
-        <Column style={{ padding: '20px', height: '100%' }}>
-          <Text color="gray" textAlign="center" mb="20px">
-            {t('No results found')}
-          </Text>
-        </Column>
-      )}
+      {getCurrencyListRows()}
     </Flex>
   )
 }
