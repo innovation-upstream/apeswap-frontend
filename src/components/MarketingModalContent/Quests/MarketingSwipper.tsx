@@ -42,9 +42,11 @@ const MarketingSwipper = ({ onDismiss }) => {
         <Box sx={{ position: 'absolute', top: '20px', right: '20px' }}>
           <IconButton width="15px" icon="close" color="text" variant="transparent" onClick={onDismiss} />
         </Box>
+
         <Flex sx={styles.imagesWrapper}>
           <Box sx={showApe(activeSlide, isDark)} />
         </Flex>
+
         <Flex sx={styles.textWrapper}>
           <Box sx={{ width: '100%' }}>
             <Heading>{t('Welcome to ApeSwap').toUpperCase()}</Heading>
@@ -73,7 +75,7 @@ const MarketingSwipper = ({ onDismiss }) => {
               return <Bubble isActive={i === activeSlide} onClick={() => slideNav(i)} style={{ marginRight: '10px' }} />
             })}
           </Flex>
-          <Flex sx={{ width: '240px' }}>
+          <Flex sx={{ width: '240px', marginBottom: '20px' }}>
             <Button fullWidth onClick={handleNext}>
               {activeSlide + 1 === QuestSlides.length ? t("I'm ready") : t('Next')}
             </Button>

@@ -98,6 +98,7 @@ function CurrencySearch({
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
 
+
   const showETH: boolean = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
     return s === '' || s === 'e' || s === 'et' || s === 'eth'

@@ -18,7 +18,6 @@ interface ImportProps {
   onImport: () => void
 }
 
-
 const TextDot = styled.div`
   height: 3px;
   width: 3px;
@@ -92,10 +91,25 @@ function ImportList({ listURL, list, onImport }: ImportProps) {
       </Flex>
       <Flex sx={{ flexDirection: 'column', margin: '10px 0px' }}>
         <Text size="20px" weight={700} textAlign="center" color="error" mb="16px">
-          {t('Import at your own risk')}
+          {t('Trade at your own risk!')}
         </Text>
         {extendedWarning ? (
-          <Text color="error">{extendedWarning}</Text>
+          <>
+            <Text color="error">{extendedWarning}</Text>
+            <br />
+            <Text>
+              {t('Want to see your crypto project listed? ')}
+              <br />
+              <a
+                href="https://apeswap.click/partners"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'underline' }}
+              >
+                {t('Apply to be listed today!')}
+              </a>
+            </Text>
+          </>
         ) : (
           <>
             <Text color="error" mb="8px">
@@ -105,6 +119,19 @@ function ImportList({ listURL, list, onImport }: ImportProps) {
             </Text>
             <Text bold color="error" mb="16px">
               {typeof t('If you purchase a token from this list, you may not be able to sell it back.')}
+            </Text>
+            <Text>
+              {t('Want to see your crypto project listed? ')}
+              <br />
+              <br />
+              <a
+                href="https://apeswap.click/partners"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'underline' }}
+              >
+                {t('Apply to be listed today!')}
+              </a>
             </Text>
           </>
         )}

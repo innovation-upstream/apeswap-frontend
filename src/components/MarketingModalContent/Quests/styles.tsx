@@ -25,8 +25,10 @@ export const showApe = (slide, isDark): ThemeUIStyleObject => ({
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   container: {
+    marginTop: '20px',
     alignItems: 'flex-start',
     overflow: 'hidden',
+    overflowY: 'auto',
     height: '570px',
     '@media screen and (min-width: 853px)': {
       width: '100%',
