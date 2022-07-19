@@ -6,7 +6,7 @@ import { Field } from 'state/swap/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import {
   computeSlippageAdjustedAmounts,
-  computeTradePriceBreakdown,
+  computeLegacyPriceBreakdown,
   formatExecutionPrice,
   warningSeverity,
 } from 'utils/prices'
@@ -45,7 +45,7 @@ export default function SwapModalFooter({
     () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
     [allowedSlippage, trade],
   )
-  const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeLegacyPriceBreakdown(trade), [trade])
   const severity = warningSeverity(priceImpactWithoutFee)
 
   return (

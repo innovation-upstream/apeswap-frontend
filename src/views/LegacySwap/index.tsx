@@ -43,7 +43,7 @@ import {
   useUserRecentTransactions,
 } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
+import { computeLegacyPriceBreakdown, warningSeverity } from '../../utils/prices'
 import { StyledInputCurrencyWrapper, StyledSwapContainer, LargeStyledButton, ExpertButton } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 import FormattedPriceImpact from './components/FormattedPriceImpact'
@@ -211,7 +211,7 @@ export default function Swap({ history }: RouteComponentProps) {
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
 
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const { priceImpactWithoutFee } = computeLegacyPriceBreakdown(trade)
 
   const [singleHopOnly] = useUserSingleHopOnly()
   const [recentTransactions] = useUserRecentTransactions()

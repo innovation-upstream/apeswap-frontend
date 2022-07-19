@@ -9,6 +9,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { ListLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
+import { EXTENDED_LIST_DETAILS } from 'config/constants/lists'
 
 interface ImportProps {
   tokens: Token[]
@@ -31,13 +32,14 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
     <div style={{ padding: '20px 20px 20px 20px' }}>
       <AutoColumn gap="lg">
         <Text textAlign="center">
-          <h1 style={{ fontSize: '26px' }}>{t('Trade at your own risk!')}</h1>
+          <h1 style={{ fontSize: '26px', color: 'red' }}>{t('Trade at your own risk!')}</h1>
+          <br />
           {t(
-            'ApeSwap is a Decentralized Exchange. By nature, this means anyone can create a token and add liquidity. Unlisted tokens may unfortunately be a scam.',
+            'The ApeSwap DEX is decentralized, meaning that anyone can create or add liquidity for a token. Unlisted tokens have not been reviewed by ApeSwap or passed our due diligence process. Unlisted tokens may present scam risks, including the loss of funds.',
           )}
           <br />
           <br />
-          {t('Are you a project owner?')}
+          {t('Want to see your crypto project listed? ')}
           <br />
           <br />
           <a
@@ -52,6 +54,9 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
         {tokens.map((token) => {
           const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
+          // Extended doesn't need to be defined for each list
+          const extendedLogo = EXTENDED_LIST_DETAILS[list?.name]?.logo
+          const extendedName = EXTENDED_LIST_DETAILS[list?.name]?.name
           const address = token.address ? `${truncateHash(token.address)}` : null
           return (
             <div key={token.address}>
@@ -59,9 +64,17 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                 <Tag
                   variant="success"
                   outline
-                  startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
+                  startIcon={
+                    (list.logoURI || extendedLogo) && (
+                      <ListLogo
+                        logoURI={extendedLogo || list.logoURI}
+                        size="12px"
+                        style={{ borderRadius: '6px', marginRight: '5px' }}
+                      />
+                    )
+                  }
                 >
-                  via {list.name}
+                  via {extendedName || list.name}
                 </Tag>
               ) : (
                 <Tag variant="danger" outline startIcon={<ErrorIcon color="error" />}>
