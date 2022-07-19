@@ -32,7 +32,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
     <div style={{ padding: '20px 20px 20px 20px' }}>
       <AutoColumn gap="lg">
         <Text textAlign="center">
-          <h1 style={{ fontSize: '26px', color:'red' }}>{t('Trade at your own risk!')}</h1>
+          <h1 style={{ fontSize: '26px', color: 'red' }}>{t('Trade at your own risk!')}</h1>
           <br />
           {t(
             'The ApeSwap DEX is decentralized, meaning that anyone can create or add liquidity for a token. Unlisted tokens have not been reviewed by ApeSwap or passed our due diligence process. Unlisted tokens may present scam risks, including the loss of funds.',

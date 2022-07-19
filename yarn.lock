@@ -56,10 +56,10 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@apeswapfinance/token-lists@1.0.298":
-  version "1.0.298"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.298/66f0cfb5300daca42c79a36917c79b2d02956a0038bb44c23e610de74612d32e#2e6dd54e286cb03c5d2c61d70fec19460b1cbe42"
-  integrity sha512-RtmA4vOeQv1cWzgZddEB5tfPwEDzUs5/h4WqxQ2bu1lqIR8iKVT40sDB7Bh7BxyBkgSxvXP/913GcaDG7TLt3A==
+"@apeswapfinance/token-lists@1.0.299":
+  version "1.0.299"
+  resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.299/8c39be9e17ec1e189f276d5db7be43d6c3629756ea2d7a45b9b7dc317cbfaae5#1441751167af4f95274bb3f3e567fdffa48384bd"
+  integrity sha512-d9WHvCCp6u2PyAs7bMkXQMx0YQuODoPZvsn2f6DZpoSF60WqBcheC+OSYp6TaA/09PYnGbuWAMZyVUxVnhcBuQ==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"

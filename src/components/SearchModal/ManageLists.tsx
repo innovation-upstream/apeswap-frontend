@@ -7,6 +7,7 @@ import { Switch } from 'theme-ui'
 import { TokenList } from '@uniswap/token-lists'
 import { EXTENDED_LIST_DETAILS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useTranslation } from 'contexts/Localization'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 import useFetchListCallback from '../../hooks/useFetchListCallback'
 import { AppState, useAppDispatch } from '../../state'
@@ -55,6 +56,7 @@ const ListRow = memo(function ListRow({
   setModalView: (view: CurrencyModalView) => void
   setImportList: (list: TokenList) => void
 }) {
+  const { chainId } = useActiveWeb3React()
   const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
   const dispatch = useAppDispatch()
   const { current: list } = listsByUrl[listUrl]
@@ -62,6 +64,7 @@ const ListRow = memo(function ListRow({
   const extendedLogo = EXTENDED_LIST_DETAILS[list?.name]?.logo
   const extendedName = EXTENDED_LIST_DETAILS[list?.name]?.name
   const extendedWarning = EXTENDED_LIST_DETAILS[list?.name]?.warning
+  const extendedChainId = EXTENDED_LIST_DETAILS[list?.name]?.chainId
 
   const isActive = useIsListActive(listUrl)
 
@@ -88,7 +91,9 @@ const ListRow = memo(function ListRow({
     dispatch(disableList(listUrl))
   }, [dispatch, listUrl])
 
-  return (
+  return extendedChainId && extendedChainId !== chainId ? (
+    <></>
+  ) : (
     <RowWrapper active={isActive} key={listUrl} id={listUrlRowHTMLId(listUrl)}>
       {extendedLogo || list.logoURI ? (
         <ListLogo
