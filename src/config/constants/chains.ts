@@ -113,7 +113,7 @@ export const APE_PRICE_IMPACT = 15
 // This sets the priority of when a router is used
 // After APE router should be in order of highest liquidity
 export const PRIORITY_SMART_ROUTERS = {
-  [CHAIN_ID.ETH]: [SmartRouter.APE, SmartRouter.UNISWAP],
+  [CHAIN_ID.ETH]: [SmartRouter.APE, SmartRouter.SUSHISWAP, SmartRouter.UNISWAP],
   [CHAIN_ID.BSC]: [SmartRouter.APE, SmartRouter.PANCAKE, SmartRouter.BISWAP],
   [CHAIN_ID.MATIC]: [SmartRouter.APE, SmartRouter.QUICKSWAP],
 }
@@ -131,8 +131,8 @@ export const WALLCHAIN_PARAMS = {
       apiKey: 'c5f0eb9a-180b-4787-a5c0-db68292f6926',
     },
     [SmartRouter.BISWAP]: {
-      apiUrl: '',
-      apiKey: '',
+      apiUrl: 'https://bsc.wallchains.com/upgrade_txn/',
+      apiKey: '1cdb6a88-fc95-4831-906a-9ed0e16c9c52',
     },
   },
   [CHAIN_ID.BSC_TESTNET]: {
@@ -160,6 +160,10 @@ export const WALLCHAIN_PARAMS = {
       apiUrl: 'https://eth.wallchains.com/upgrade_txn/',
       apiKey: 'ff1e792c-b199-4393-8385-40e533e3687a',
     },
+    [SmartRouter.SUSHISWAP]: {
+      apiUrl: 'https://eth.wallchains.com/upgrade_txn/',
+      apiKey: 'e04868d1-c99d-4bb3-9af9-fb2336310eaa',
+    },
   },
 }
 
@@ -181,6 +185,7 @@ export const SMART_PRICE_GETTERS = {
   [CHAIN_ID.ETH]: {
     [SmartRouter.APE]: '0x5fbFd1955EeA2F62F1AfD6d6E92223Ae859F7887',
     [SmartRouter.UNISWAP]: '0x0187D959A28B0D3B490c2D898fA1CcD054cCC3cd',
+    [SmartRouter.SUSHISWAP]: '0x0187D959A28B0D3B490c2D898fA1CcD054cCC3cd',
   },
 }
 
@@ -200,5 +205,6 @@ export const SMART_LP_FEES = {
   [CHAIN_ID.ETH]: {
     [SmartRouter.APE]: 20,
     [SmartRouter.UNISWAP]: 30,
+    [SmartRouter.SUSHISWAP]: 25,
   },
 }
