@@ -210,9 +210,9 @@ export const useLiquidityData = () => {
 
 // TODO: Update with production currencies once URL is updated
 const defaultCurrencies = {
-  56: 'aave',
+  56: 'bnb_bsc',
   1: 'eth',
-  137: 'bat',
+  137: 'matic_polygon',
 }
 
 export const useMoonPayUrl = () => {
