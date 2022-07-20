@@ -1,6 +1,6 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { load, save } from 'redux-localstorage-simple'
-import { useDispatch } from 'react-redux'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { updateVersion } from './global/actions'
 import farmsReducer from './farms'
 import toastsReducer from './toasts'
@@ -20,6 +20,7 @@ import blockReducer from './block'
 import multicall from './multicall/reducer'
 import billsReducer from './bills'
 import swap from './swap/reducer'
+import orders from './orders/reducer'
 import user from './user/reducer'
 import lists from './lists/reducer'
 import transactions from './transactions/reducer'
@@ -28,7 +29,7 @@ import mint from './mint/reducer'
 import lpPricesReducer from './lpPrices'
 import nfasReducer from './nfas'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
 
 const store = configureStore({
   reducer: {
@@ -57,6 +58,7 @@ const store = configureStore({
     transactions,
     burn,
     mint,
+    orders,
   },
   middleware: [...getDefaultMiddleware({ thunk: true }), save({ states: PERSISTED_KEYS })],
   preloadedState: load({ states: PERSISTED_KEYS }),
@@ -67,5 +69,6 @@ store.dispatch(updateVersion())
 export type AppState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 export const useAppDispatch = () => useDispatch()
+export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector
 
 export default store

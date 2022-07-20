@@ -43,10 +43,10 @@
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
 
-"@apeswapfinance/sdk@^3.0.0":
-  version "3.0.0"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/sdk/3.0.0/6ee3956c2129151a5ead034739b447cb66f4e003406e6406c245e0b9e22e0d8e#8c050188e305843ac40a84f0e44c1888713bb3f3"
-  integrity sha512-QN+Fbswab9KuRNnrr5RCSjWuRxhzITwvn/AQYGFM7IcIyRpgd/PveD9nkKkZNHUsH0eTAD11GWkakvpd4u0Thg==
+"@apeswapfinance/sdk@^4.0.1":
+  version "4.0.1"
+  resolved "https://npm.pkg.github.com/download/@apeswapfinance/sdk/4.0.1/6e9e1b801331456d023844dab9a1d7ddf5cded27777d277d2f54cefbbbae3a12#444d666ccfff1832fb27699392cc76a0e448d52d"
+  integrity sha512-U2Fd748x9MhggkxL5/gskJ5AFzFG5oRT3Uc2rtePC5kkkh40SDLc/ipDcpfTH3mvev6jELwaIBZ0VkvGmh2Kxg==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"
@@ -55,11 +55,11 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
-
-"@apeswapfinance/token-lists@1.0.297":
-  version "1.0.297"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.297/675793add03f213ae64214443f5bb00373ac459a80fc4589441930f3d627a6b2#c1e3e2c3ac9d56eb2d846a2846771ce8fb4931e7"
-  integrity sha512-XvUb3MJiD2LVhIhGUzqfUTx2Ej8BDaiBGaguyE5s5XWt04Ass7z1N1fqJcCizXPrBLqL+cj2OiBb0D4bhHb28g==
+    
+"@apeswapfinance/token-lists@1.0.301":
+  version "1.0.301"
+  resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.301/5d551835dc3575a675ee295dc65caab472be22542be55ddc969beadc06903d97#9642cd96810764fa9b4ad8206627cad0765fbae0"
+  integrity sha512-yO+x9A4WADyO1RvPUg6N/JHHg1w1L73tlMV0fm8/vPP8rHp3SSFxJXZiXLwz1WKJlwSFUEfxsVYhpOIxNcwkAQ==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
