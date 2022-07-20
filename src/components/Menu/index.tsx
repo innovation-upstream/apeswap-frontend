@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Navbar as UikitMenu } from '@ape.swap/uikit'
 import { uauth } from 'utils/web3React'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useRefresh from 'hooks/useRefresh'
 import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
 import useTheme from 'hooks/useTheme'
@@ -40,20 +41,19 @@ const Menu = (props) => {
   }
   const { liveIfos } = useLiveIfoStatus()
   const [uDName, setUDName] = useState(null)
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     uauth.uauth
       .user()
       .then((user) => setUDName(user.sub))
       .catch((err) => console.info(err.message))
-  }, [])
+  }, [fastRefresh])
   console.log('uDName:::', uDName)
-  // Doesn't update UDName on first try
-  // Have to refresh the page (Fix This)
 
   return (
     <UikitMenu
-      uDName={uDName}
+      uDName={uDName !== 'no username given' && uDName}
       account={account}
       login={login}
       logout={logout}
