@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, TooltipBubble, Text, InfoIcon, LinkExternal, useMatchBreakpoints } from '@ape.swap/uikit'
+import { Flex, TooltipBubble, Text, InfoIcon, useMatchBreakpoints } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
 import { Bills } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
@@ -10,8 +10,9 @@ import ListViewContent from 'components/ListViewContent'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
-import { Container, styles } from './styles'
+import { Container } from './styles'
 import BillModal from './Modals'
+import ProjectLinks from './UserBillViews/ProjectLinks'
 
 const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
   const { account } = useActiveWeb3React()
@@ -42,28 +43,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           ml={10}
         />
       ),
-      infoContent: isMobile && (
-        <Flex className="iCBody">
-          {(bill?.projectLink || bill?.twitter) && (
-            <Flex sx={styles.links}>
-              {bill?.projectLink && (
-                <Flex alignItems="center" justifyContent="center" mt="5px">
-                  <LinkExternal href={bill?.projectLink} style={{ fontSize: (isMobile && '12px') || '14px' }}>
-                    {t('Website')}
-                  </LinkExternal>
-                </Flex>
-              )}
-              {bill?.twitter && (
-                <Flex alignItems="center" justifyContent="center" mt="5px" ml="20px">
-                  <LinkExternal href={bill?.twitter} style={{ fontSize: (isMobile && '12px') || '14px' }}>
-                    {t('Twitter')}
-                  </LinkExternal>
-                </Flex>
-              )}
-            </Flex>
-          )}
-        </Flex>
-      ),
+      infoContent: isMobile && <ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} isMobile />,
       ttWidth: isMobile && '200px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '12px', marginRight: '10px' },
@@ -123,28 +103,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
                     <TooltipBubble
                       placement="bottomRight"
                       transformTip="translate(8%, -2%)"
-                      body={
-                        <Flex>
-                          {(bill?.projectLink || bill?.twitter) && (
-                            <Flex sx={styles.links}>
-                              {bill?.projectLink && (
-                                <Flex sx={{ justifyContent: 'center', alignItems: 'center' }} mt="10px">
-                                  <LinkExternal href={bill?.projectLink} style={{ fontSize: '14px' }}>
-                                    {t('Website')}
-                                  </LinkExternal>
-                                </Flex>
-                              )}
-                              {bill?.twitter && (
-                                <Flex sx={{ justifyContent: 'center', alignItems: 'center' }} mt="10px" ml="20px">
-                                  <LinkExternal href={bill?.twitter} style={{ fontSize: '14px' }}>
-                                    {t('Twitter')}
-                                  </LinkExternal>
-                                </Flex>
-                              )}
-                            </Flex>
-                          )}
-                        </Flex>
-                      }
+                      body={<ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} />}
                     >
                       <InfoIcon width="24px" />
                     </TooltipBubble>

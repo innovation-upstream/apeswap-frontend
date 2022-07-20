@@ -1,16 +1,5 @@
 import styled from 'styled-components'
 import { Button, ArrowDropUpIcon, Flex } from '@apeswapfinance/uikit'
-import { ThemeUIStyleObject } from 'theme-ui'
-
-export const styles: Record<string, ThemeUIStyleObject> = {
-  links: {
-    alignItems: 'center',
-    display: 'flex',
-    width: 'max-content',
-    justifyContent: 'space-between',
-    marginBottom: '0.3em',
-  },
-}
 
 export const StyledButton = styled(Button)<{ buttonSize?: number }>`
   border-radius: 10px;
