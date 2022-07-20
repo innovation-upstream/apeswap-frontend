@@ -1,20 +1,7 @@
-import { SmartRouter } from '@apeswapfinance/sdk'
 import { createReducer } from '@reduxjs/toolkit'
-import { RouterTypes } from 'config/constants'
-import {
-  Field,
-  replaceSwapState,
-  selectCurrency,
-  setBestRoute,
-  setRecipient,
-  setSwapDelay,
-  SwapDelay,
-  switchCurrencies,
-  typeInput,
-  RouterTypeParams,
-} from './actions'
+import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
 
-export interface SwapState {
+export interface OrdersState {
   readonly independentField: Field
   readonly typedValue: string
   readonly [Field.INPUT]: {
@@ -25,11 +12,9 @@ export interface SwapState {
   }
   // the typed recipient address or ENS name, or null if swap should go to sender
   readonly recipient: string | null
-  readonly swapDelay: SwapDelay
-  readonly bestRoute: RouterTypeParams
 }
 
-const initialState: SwapState = {
+const initialState: OrdersState = {
   independentField: Field.INPUT,
   typedValue: '',
   [Field.INPUT]: {
@@ -39,18 +24,13 @@ const initialState: SwapState = {
     currencyId: '',
   },
   recipient: null,
-  swapDelay: SwapDelay.INIT,
-  bestRoute: { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE },
 }
 
-export default createReducer<SwapState>(initialState, (builder) =>
+export default createReducer<OrdersState>(initialState, (builder) =>
   builder
     .addCase(
       replaceSwapState,
-      (
-        state,
-        { payload: { typedValue, recipient, field, inputCurrencyId, outputCurrencyId, swapDelay, bestRoute } },
-      ) => {
+      (state, { payload: { typedValue, recipient, field, inputCurrencyId, outputCurrencyId } }) => {
         return {
           [Field.INPUT]: {
             currencyId: inputCurrencyId,
@@ -61,8 +41,6 @@ export default createReducer<SwapState>(initialState, (builder) =>
           independentField: field,
           typedValue,
           recipient,
-          swapDelay,
-          bestRoute,
         }
       },
     )
@@ -100,11 +78,5 @@ export default createReducer<SwapState>(initialState, (builder) =>
     })
     .addCase(setRecipient, (state, { payload: { recipient } }) => {
       state.recipient = recipient
-    })
-    .addCase(setSwapDelay, (state, { payload: { swapDelay } }) => {
-      state.swapDelay = swapDelay
-    })
-    .addCase(setBestRoute, (state, { payload: { bestRoute } }) => {
-      state.bestRoute = bestRoute
     }),
 )

@@ -22,6 +22,7 @@ const DexActions: React.FC<DexActionProps> = ({
   swapCallbackError,
   userHasSpecifiedInputOutput,
   routerType,
+  smartRouter,
   disabled,
   wrapInputError,
   onWrap,
@@ -36,7 +37,13 @@ const DexActions: React.FC<DexActionProps> = ({
   const [allowedSlippage] = useUserSlippageTolerance()
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage, false, routerType)
+  const [approval, approveCallback] = useApproveCallbackFromTrade(
+    trade,
+    allowedSlippage,
+    false,
+    routerType,
+    smartRouter,
+  )
 
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
@@ -59,7 +66,7 @@ const DexActions: React.FC<DexActionProps> = ({
         </Button>
       )
     }
-    if (!trade?.route && userHasSpecifiedInputOutput) {
+    if (!trade?.route && userHasSpecifiedInputOutput && !disabled) {
       return (
         <Text margin="10px 0px" sx={{ width: '100%', textAlign: 'center' }}>
           {t('Insufficient liquidity for this trade')}
@@ -76,7 +83,14 @@ const DexActions: React.FC<DexActionProps> = ({
         >
           {approval === ApprovalState.PENDING
             ? t('Approving')
-            : t('Approve %route% Router', { route: routerType === RouterTypes.BONUS ? RouterTypes.BONUS : 'APESWAP' })}
+            : t('Approve %route% Router', {
+                route:
+                  routerType === RouterTypes.BONUS
+                    ? RouterTypes.BONUS
+                    : routerType === RouterTypes.SMART
+                    ? RouterTypes.SMART
+                    : 'APESWAP',
+              })}
         </Button>
       )
     }

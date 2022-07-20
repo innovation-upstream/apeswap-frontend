@@ -37,7 +37,7 @@ import {
 } from '../../state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance, useUserSingleHopOnly } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
+import { computeLegacyPriceBreakdown, warningSeverity } from '../../utils/prices'
 import { StyledInputCurrencyWrapper, StyledSwapContainer, LargeStyledButton } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 import OrderHistoryPanel from './components/OrderHistoryPanel'
@@ -230,7 +230,7 @@ export default function Orders({ history }: RouteComponentProps) {
     orderMarketStatus,
   )
 
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const { priceImpactWithoutFee } = computeLegacyPriceBreakdown(trade)
 
   const [singleHopOnly] = useUserSingleHopOnly()
 

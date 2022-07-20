@@ -14,7 +14,7 @@ const getTokenLogoURL = (address: string, chainId: any) => {
     if (address?.toLowerCase() === '0x55d398326f99059fF775485246999027B3197955'.toLowerCase()) {
       imageURL = 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/USDT.svg'
     } else {
-      imageURL = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/${address}/logo.png`
+      imageURL = `https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/${address}/logo.png`
     }
   } else if (chainId === CHAIN_ID.MATIC) {
     imageURL = getMaticTokenLogoURL(address)
@@ -52,7 +52,6 @@ export default function CurrencyLogo({
       if (currency instanceof WrappedTokenInfo) {
         return [...uriLocations, getTokenLogoURL(currency.address, chainId)]
       }
-
       return [getTokenLogoURL(currency.address, chainId)]
     }
     return []
