@@ -1,11 +1,19 @@
 import { useEffect, useState } from 'react'
 import addresses from 'config/constants/contracts'
 import { Address } from 'config/constants/types'
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId, SmartRouter } from '@apeswapfinance/sdk'
 import useActiveWeb3React from './useActiveWeb3React'
 
 export const parseAddress = (currAddress: Address, chainId: ChainId) => {
   return currAddress[chainId]
+}
+
+export const parseSmartAddress = (
+  currAddress: Record<ChainId, Record<SmartRouter, string>>,
+  chainId: ChainId,
+  smartRouter: SmartRouter,
+) => {
+  return currAddress[chainId][smartRouter]
 }
 
 const useAddress = (curAddresses: Address) => {

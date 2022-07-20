@@ -63,7 +63,7 @@ const JungleFarms: React.FC = () => {
   }, [observerIsSet])
 
   const currJungleFarms = allJungleFarms.map((farm) => {
-    return { ...farm, isFinished: farm.jungleId === 0 ? false : farm.isFinished || currentBlock > farm.endBlock }
+    return { ...farm, isFinished: farm.isFinished || currentBlock > farm.endBlock }
   })
 
   const farmsWithHarvestAvailable = currJungleFarms.filter((farm) =>

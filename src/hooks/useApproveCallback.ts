@@ -1,11 +1,18 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, ETHER, ROUTER_ADDRESS } from '@apeswapfinance/sdk'
+import {
+  Trade,
+  TokenAmount,
+  CurrencyAmount,
+  ETHER,
+  BONUS_ROUTER_ADDRESS,
+  SMART_ROUTER_ADDRESS,
+  SmartRouter,
+} from '@apeswapfinance/sdk'
 import { AUTONOMY_MIDROUTER_ADDRESS } from '@autonomylabs/limit-stop-orders'
 import { useCallback, useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { RouterTypes } from 'config/constants'
-import { BONUS_ROUTER } from 'config/constants/chains'
 import useTokenAllowance from './useTokenAllowance'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
@@ -13,7 +20,7 @@ import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
-import { parseAddress } from './useAddress'
+import { parseAddress, parseSmartAddress } from './useAddress'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -114,6 +121,7 @@ export function useApproveCallbackFromTrade(
   allowedSlippage = 0,
   useAutonomy?: boolean,
   routerType?: RouterTypes,
+  smartRouter?: SmartRouter,
 ) {
   const { chainId } = useActiveWeb3React()
   const amountToApprove = useMemo(
@@ -123,9 +131,10 @@ export function useApproveCallbackFromTrade(
 
   return useApproveCallback(
     amountToApprove,
-    parseAddress(
-      useAutonomy ? AUTONOMY_MIDROUTER_ADDRESS : routerType === RouterTypes.BONUS ? BONUS_ROUTER : ROUTER_ADDRESS,
-      chainId,
-    ),
+    useAutonomy
+      ? parseAddress(AUTONOMY_MIDROUTER_ADDRESS, chainId)
+      : routerType === RouterTypes.BONUS
+      ? parseAddress(BONUS_ROUTER_ADDRESS, chainId)
+      : parseSmartAddress(SMART_ROUTER_ADDRESS, chainId, smartRouter || SmartRouter.APE),
   )
 }
