@@ -23,10 +23,14 @@ const Menu = (props) => {
   const { switchNetwork } = useSelectNetwork()
   const { isDark, toggleTheme } = useTheme()
   const { tokenPrices } = useTokenPrices()
-  const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const { profile } = useProfile()
   const { t, setLanguage, currentLanguage } = useTranslation()
   const { onTopup } = useTopup()
+  const { liveIfos } = useLiveIfoStatus()
+  const { fastRefresh } = useRefresh()
+  const [uDName, setUDName] = useState(null)
+
+  const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC) {
       return bscConfig(translate)
@@ -39,9 +43,6 @@ const Menu = (props) => {
     }
     return bscConfig(translate)
   }
-  const { liveIfos } = useLiveIfoStatus()
-  const [uDName, setUDName] = useState(null)
-  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     uauth.uauth
@@ -49,11 +50,10 @@ const Menu = (props) => {
       .then((user) => setUDName(user.sub))
       .catch((err) => console.info(err.message))
   }, [fastRefresh])
-  console.log('uDName:::', uDName)
 
   return (
     <UikitMenu
-      uDName={uDName !== 'no username given' && uDName}
+      uDName={uDName}
       account={account}
       login={login}
       logout={logout}

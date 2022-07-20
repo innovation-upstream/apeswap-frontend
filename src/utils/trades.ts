@@ -18,7 +18,6 @@ export function isTradeBetter(
   ) {
     throw new Error('Trades are not comparable')
   }
-
   if (minimumDelta.equalTo(ZERO_PERCENT)) {
     return tradeA.executionPrice.lessThan(tradeB.executionPrice)
   }

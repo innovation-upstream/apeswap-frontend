@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { CogIcon, Flex, Text, useModal } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
@@ -8,9 +8,9 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
 
-const DexNav: React.FC = () => {
+const DexNav = () => {
   const { t } = useTranslation()
-  const { pathname } = useLocation()
+  const { pathname } = useHistory().location
   const { chainId } = useActiveWeb3React()
 
   const onLiquidity =
