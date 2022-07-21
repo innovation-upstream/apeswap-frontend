@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { Flex } from '@apeswapfinance/uikit'
-import { useFarmTags, useFetchFarmLpAprs } from 'state/hooks'
+import { useFarmOrderings, useFarmTags, useFetchFarmLpAprs } from 'state/hooks'
 import { useDualFarms, usePollDualFarms } from 'state/dualFarms/hooks'
-import { DualFarm } from 'state/types'
+import { DualFarm, Farm } from 'state/types'
 import { orderBy } from 'lodash'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
@@ -25,6 +25,7 @@ const DualFarms: React.FC = () => {
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
   const { farmTags } = useFarmTags(chainId)
+  const { farmOrderings } = useFarmOrderings(chainId)
 
   const { t } = useTranslation()
   const { pathname } = useLocation()
@@ -118,7 +119,11 @@ const DualFarms: React.FC = () => {
 
     switch (sortOption) {
       case 'all':
-        return farms.slice(0, numberOfFarmsVisible)
+        return orderBy(
+          farms,
+          (farm: DualFarm) => farmOrderings.find((ordering) => ordering.pid === farm.pid)?.order,
+          'asc',
+        ).slice(0, numberOfFarmsVisible)
       case 'stables':
         return farms
           .filter(
@@ -141,7 +146,11 @@ const DualFarms: React.FC = () => {
       case 'liquidity':
         return orderBy(farms, (farm: DualFarm) => parseFloat(farm.totalStaked), 'desc').slice(0, numberOfFarmsVisible)
       default:
-        return farms.slice(0, numberOfFarmsVisible)
+        return orderBy(
+          farms,
+          (farm: DualFarm) => farmOrderings.find((ordering) => ordering.pid === farm.pid)?.order,
+          'asc',
+        ).slice(0, numberOfFarmsVisible)
     }
   }
 
