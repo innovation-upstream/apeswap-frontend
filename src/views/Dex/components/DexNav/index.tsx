@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
-import { Link, useLocation } from 'react-router-dom'
-import { CardIcon, CogIcon, Flex, Text, useModal } from '@ape.swap/uikit'
+import { Link, useHistory } from 'react-router-dom'
+import { CogIcon, Flex, Text, useModal, CardIcon } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { CHAIN_ID } from 'config/constants/chains'
@@ -9,9 +9,9 @@ import MoonPayModal from 'views/Topup/MoonpayModal'
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
 
-const DexNav: React.FC = () => {
+const DexNav = () => {
   const { t } = useTranslation()
-  const { pathname } = useLocation()
+  const { pathname } = useHistory().location
   const { chainId } = useActiveWeb3React()
 
   const onLiquidity =

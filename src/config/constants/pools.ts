@@ -2,6 +2,7 @@ import { BANANA_PER_BLOCK } from 'config'
 import { PoolConfig, PoolCategory } from './types'
 import tokens from './tokens'
 
+// Next Sous ID should be: 214
 const pools: PoolConfig[] = [
   {
     sousId: 0,
@@ -38,6 +39,46 @@ const pools: PoolConfig[] = [
     harvest: true,
     tokenPerBlock: `0.150000000000000000`,
     sortOrder: 1,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
+    sousId: 212,
+    tokenName: 'RADAR',
+    image: 'RADAR.png',
+    stakingToken: tokens.gnana,
+    rewardToken: tokens.radar,
+    contractAddress: {
+      97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
+      56: '0x6bE84367AC627617c3d4143fbBD288cC5e9fb7c3',
+    },
+    poolCategory: PoolCategory.APEZONE,
+    projectLink: 'https://dappradar.com/',
+    twitter: 'https://twitter.com/dappradar',
+    harvest: true,
+    tokenPerBlock: `0.936383680555555555`,
+    sortOrder: 1,
+    reflect: false,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
+  {
+    sousId: 213,
+    tokenName: 'H2ON',
+    image: 'H2ON.svg',
+    stakingToken: tokens.gnana,
+    rewardToken: tokens.h2on,
+    contractAddress: {
+      97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
+      56: '0x4ad206384a88d53a80f45407da12dd6af95c1db1',
+    },
+    poolCategory: PoolCategory.APEZONE,
+    projectLink: 'https://h2o-securities.com/',
+    twitter: 'https://twitter.com/H2O_Coin',
+    harvest: true,
+    tokenPerBlock: `0.014704861111111111`,
+    sortOrder: 1,
+    reflect: false,
     isFinished: false,
     tokenDecimals: 18,
   },
@@ -1084,7 +1125,7 @@ const pools: PoolConfig[] = [
       56: '0xda04ae1d4651e63c130921c6227397d58dd9167a',
     },
     poolCategory: PoolCategory.APEZONE,
-    projectLink: 'https://ceek.com/',
+    projectLink: 'https://ceek.io/',
     twitter: 'https://twitter.com/ceek',
     harvest: true,
     tokenPerBlock: `15.432098765432098765`,
@@ -3017,6 +3058,26 @@ const pools: PoolConfig[] = [
   //
   // JUNGLE FARMS
   //
+  {
+    sousId: 214,
+    tokenName: 'PXP',
+    image: 'PXP.png',
+    stakingToken: tokens.pxpBnb,
+    rewardToken: tokens.pxp,
+    contractAddress: {
+      97: '0x6c6248ea3ff05200b9df0bc91cec2dea4f57a95d',
+      56: '0xBE36303aeCc8F1A71fa1076349117BE2fb94f7cD',
+    },
+    poolCategory: PoolCategory.JUNGLE,
+    projectLink: 'https://piratexpirate.io/',
+    twitter: 'https://twitter.com/PXPNFTsGame',
+    harvest: true,
+    tokenPerBlock: `15.659722222222222222`,
+    sortOrder: 1,
+    reflect: false,
+    isFinished: false,
+    tokenDecimals: 18,
+  },
   {
     sousId: 211,
     tokenName: 'GENv3',

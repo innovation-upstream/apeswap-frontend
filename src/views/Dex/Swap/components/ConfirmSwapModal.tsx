@@ -67,9 +67,10 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
         recipient={recipient}
         showAcceptChanges={showAcceptChanges}
         onAcceptChanges={onAcceptChanges}
+        bestRoute={bestRoute}
       />
     ) : null
-  }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])
+  }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade, bestRoute])
 
   const modalBottom = useCallback(() => {
     return trade ? (

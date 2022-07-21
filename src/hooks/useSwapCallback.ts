@@ -4,11 +4,11 @@ import {
   JSBI,
   Percent,
   Router,
-  SmartRouter,
+  BonusRouter,
   SwapParameters,
   Trade,
   TradeType,
-  ROUTER_ADDRESS,
+  SMART_ROUTER_ADDRESS,
 } from '@apeswapfinance/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -21,6 +21,7 @@ import { calculateGasMargin, getRouterContract, isAddress } from '../utils'
 import isZero from '../utils/isZero'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './ENS/useENS'
+import { parseSmartAddress } from './useAddress'
 
 export enum SwapCallbackState {
   INVALID,
@@ -58,12 +59,14 @@ export type EstimatedSwapCall = SuccessfulCall | FailedCall
  * @param allowedSlippage user allowed slippage
  * @param recipientAddressOrName
  * @param bestRoute The best route that will be used to facilitate the trade
+ * @param executedSwap To be able to correctly differentiate between a executed swap vs a bonus check we need this flag
  */
 export function useSwapCallArguments(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   bestRoute?: RouterTypeParams, // The best route that will be used to facilitate the trade
+  executedSwap = true, // To be able to correctly differentiate between a executed swap vs a bonus check we need this flag
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
   // Allowing transactions to be encoded even if no user is connected
@@ -75,31 +78,37 @@ export function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !library || !chainId || !activeAccount || !deadline) return []
 
-    const contract: Contract | null = getRouterContract(chainId, library, activeAccount, bestRoute?.routerType)
+    const contract: Contract | null = getRouterContract(
+      chainId,
+      library,
+      activeAccount,
+      bestRoute?.routerType,
+      bestRoute?.smartRouter,
+      executedSwap,
+    )
     if (!contract) {
       return []
     }
 
     const swapMethods = []
 
-    // TODO: Need to change SmartRouter to BonusRouter in SDK
-    if (bestRoute?.routerType === RouterTypes.BONUS) {
+    if (bestRoute?.routerType === RouterTypes.BONUS && executedSwap) {
       swapMethods.push(
-        SmartRouter.swapCallParameters(trade, {
+        BonusRouter.swapCallParameters(trade, {
           allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
           recipient,
           deadline: deadline.toNumber(),
-          router: ROUTER_ADDRESS[chainId],
+          router: parseSmartAddress(SMART_ROUTER_ADDRESS, chainId, bestRoute.smartRouter),
           masterInput: bestRoute?.bonusRouter.transactionArgs.masterInput,
         }),
       )
       if (trade.tradeType === TradeType.EXACT_INPUT) {
         swapMethods.push(
-          SmartRouter.swapCallParameters(trade, {
+          BonusRouter.swapCallParameters(trade, {
             allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
             recipient,
             deadline: deadline.toNumber(),
-            router: ROUTER_ADDRESS[chainId],
+            router: parseSmartAddress(SMART_ROUTER_ADDRESS, chainId, bestRoute.smartRouter),
             masterInput: bestRoute?.bonusRouter.transactionArgs.masterInput,
           }),
         )
@@ -126,7 +135,7 @@ export function useSwapCallArguments(
     }
 
     return swapMethods.map((parameters) => ({ parameters, contract }))
-  }, [activeAccount, allowedSlippage, chainId, deadline, library, recipient, bestRoute, trade])
+  }, [activeAccount, allowedSlippage, chainId, deadline, library, recipient, bestRoute, trade, executedSwap])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -174,7 +183,7 @@ export function useSwapCallback(
                 return {
                   call,
                   gasEstimate:
-                    bestRoute?.routerType === RouterTypes.BONUS ? gasEstimate.mul(BigNumber.from('2')) : gasEstimate,
+                    bestRoute?.routerType === RouterTypes.BONUS ? gasEstimate.mul(BigNumber.from('3')) : gasEstimate,
                 }
               })
               .catch((gasError) => {
@@ -210,8 +219,6 @@ export function useSwapCallback(
           if (errorCalls.length > 0) throw errorCalls[errorCalls.length - 1].error
           throw new Error(t('Unexpected error. Please contact support: none of the calls threw an error'))
         }
-
-        console.info(successfulEstimation)
 
         const {
           call: {
