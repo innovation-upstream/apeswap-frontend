@@ -10,6 +10,7 @@ export interface BuyProps {
   onBillId: (billId: string, transactionHash: string) => void
   onTransactionSubmited: (trxSent: boolean) => void
   value: string
+  lpPrice: number
 }
 
 export interface ApproveProps {

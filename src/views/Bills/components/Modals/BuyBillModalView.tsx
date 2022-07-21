@@ -44,6 +44,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
     earnTokenPrice,
     maxTotalPayOut,
     totalPayoutGiven,
+    lpPrice,
   } = bill
   const discountEarnTokenPrice = earnTokenPrice - earnTokenPrice * (parseFloat(discount) / 100)
   const [value, setValue] = useState('')
@@ -144,6 +145,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                   value={value}
                   onBillId={onHandleReturnedBillId}
                   onTransactionSubmited={(trxSent) => setLoading(trxSent)}
+                  lpPrice={lpPrice}
                 />
               </ActionButtonsContainer>
               {new BigNumber(userData?.allowance).gt(0) && (

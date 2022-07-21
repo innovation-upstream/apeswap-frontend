@@ -129,9 +129,12 @@ const Swap: React.FC = () => {
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
 
-  const fetchingBestRoute = swapDelay === SwapDelay.INPUT_DELAY || swapDelay === SwapDelay.LOADING_ROUTE
+  const fetchingBestRoute =
+    swapDelay === SwapDelay.USER_INPUT ||
+    swapDelay === SwapDelay.FETCHING_SWAP ||
+    swapDelay === SwapDelay.FETCHING_BONUS
 
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const { priceImpactWithoutFee } = computeTradePriceBreakdown(chainId, bestRoute.smartRouter, trade)
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState((prevState) => ({ ...prevState, tradeToConfirm: trade }))
@@ -225,6 +228,9 @@ const Swap: React.FC = () => {
             onCurrencySelect={onCurrencySelection}
             onUserInput={onUserInput}
             handleMaxInput={handleMaxInput}
+            smartRouter={bestRoute.smartRouter}
+            independentField={independentField}
+            disabled={fetchingBestRoute}
           />
           <SwapSwitchButton onClick={onSwitchTokens} />
           <DexPanel
@@ -235,7 +241,11 @@ const Swap: React.FC = () => {
             fieldType={Field.OUTPUT}
             onCurrencySelect={onCurrencySelection}
             onUserInput={onUserInput}
+            smartRouter={bestRoute.smartRouter}
+            independentField={independentField}
+            disabled={fetchingBestRoute}
           />
+
           <ExpertModeRecipient
             recipient={recipient}
             showWrap={showWrap}
@@ -262,6 +272,7 @@ const Swap: React.FC = () => {
             showWrap={showWrap}
             wrapType={wrapType}
             routerType={bestRoute.routerType}
+            smartRouter={bestRoute.smartRouter}
             swapCallbackError={swapCallbackError}
             priceImpactWithoutFee={priceImpactWithoutFee}
             userHasSpecifiedInputOutput={userHasSpecifiedInputOutput}
