@@ -110,11 +110,13 @@ const Pools: React.FC = () => {
           'asc',
         )
       default:
-        return orderBy(
-          poolsToSort,
-          (pool: Pool) => poolOrderings?.find((ordering) => ordering.pid === pool.sousId)?.order,
-          'asc',
-        )
+        return poolOrderings
+          ? orderBy(
+              poolsToSort,
+              (pool: Pool) => poolOrderings?.find((ordering) => ordering.pid === pool.sousId)?.order,
+              'asc',
+            )
+          : poolsToSort
     }
   }
 

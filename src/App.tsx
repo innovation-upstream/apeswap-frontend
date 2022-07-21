@@ -12,8 +12,7 @@ import {
   useFetchProfile,
   useUpdateNetwork,
   useFetchLiveIfoStatus,
-  useFetchLiveTags,
-  useFetchLiveOrdering,
+  useFetchLiveTagsAndOrdering,
 } from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
 import GlobalStyle from './style/Global'
@@ -102,8 +101,7 @@ const App: React.FC = () => {
   usePollBlockNumber()
   useFetchProfile()
   useFetchLiveIfoStatus()
-  useFetchLiveTags()
-  useFetchLiveOrdering()
+  useFetchLiveTagsAndOrdering()
 
   const { account, chainId } = useActiveWeb3React()
   const [showScrollIcon, setShowScrollIcon] = useState(false)

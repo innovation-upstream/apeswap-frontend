@@ -8,14 +8,13 @@ import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import { useBlock } from 'state/block/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePollJungleFarms, useJungleFarms } from 'state/jungleFarms/hooks'
+import { usePollJungleFarms, useJungleFarms, useJungleFarmOrderings, useJungleFarmTags } from 'state/jungleFarms/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { JungleFarm } from 'state/types'
 import DisplayJungleFarms from './components/DisplayJungleFarms'
 import ListViewMenu from '../../components/ListViewMenu'
 import HarvestAll from './components/Actions/HarvestAll'
-import { useJungleFarmOrderings, useJungleFarmTags } from '../../state/hooks'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
 const NUMBER_OF_FARMS_VISIBLE = 10
@@ -118,11 +117,13 @@ const JungleFarms: React.FC = () => {
           'asc',
         )
       default:
-        return orderBy(
-          farmsToSort,
-          (farm: JungleFarm) => jungleFarmOrderings?.find((ordering) => ordering.pid === farm.jungleId)?.order,
-          'asc',
-        )
+        return jungleFarmOrderings
+          ? orderBy(
+              farmsToSort,
+              (farm: JungleFarm) => jungleFarmOrderings?.find((ordering) => ordering.pid === farm.jungleId)?.order,
+              'asc',
+            )
+          : farmsToSort
     }
   }
 
