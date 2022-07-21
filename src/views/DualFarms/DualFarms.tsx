@@ -5,7 +5,7 @@ import { Flex } from '@apeswapfinance/uikit'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import { useDualFarms, usePollDualFarms } from 'state/dualFarms/hooks'
 import { useFarmOrderings, useFarmTags } from 'state/farms/hooks'
-import { DualFarm } from 'state/types'
+import { DualFarm, Farm } from 'state/types'
 import { orderBy } from 'lodash'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
@@ -136,8 +136,18 @@ const DualFarms: React.FC = () => {
           .slice(0, numberOfFarmsVisible)
       case 'apr':
         return orderBy(farms, (farm) => parseFloat(farm.apy), 'desc').slice(0, numberOfFarmsVisible)
+      case 'hot':
+        return orderBy(
+          farms,
+          (farm: DualFarm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'hot'),
+          'asc',
+        ).slice(0, numberOfFarmsVisible)
       case 'new':
-        return farms
+        return orderBy(
+          farms,
+          (farm: DualFarm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'new'),
+          'asc',
+        ).slice(0, numberOfFarmsVisible)
       case 'blueChips':
         return farms
           .filter(
