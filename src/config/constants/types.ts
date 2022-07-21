@@ -307,4 +307,6 @@ export interface BillsConfig {
   lpToken: Token
   earnToken: Token
   inactive?: boolean
+  projectLink?: string
+  twitter?: string
 }
