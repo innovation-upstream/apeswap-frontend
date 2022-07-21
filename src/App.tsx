@@ -374,9 +374,6 @@ const App: React.FC = () => {
             <Route path="/privacy">
               <PrivacyPolicy />
             </Route>
-            <Route path="/topup">
-              <Topup />
-            </Route>
             {/* Redirect */}
             <Route path="/staking">
               <Redirect to="/pools" />
