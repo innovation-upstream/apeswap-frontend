@@ -1,10 +1,9 @@
 import React from 'react'
-import { Navbar as UikitMenu } from '@ape.swap/uikit'
+import { Navbar as UikitMenu, useModal } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
 import useTheme from 'hooks/useTheme'
-import useTopup from 'hooks/useTopup'
 import { ContextApi } from 'contexts/Localization/types'
 import { useTranslation } from 'contexts/Localization'
 import { useProfile, useTokenPrices, useLiveIfoStatus } from 'state/hooks'
@@ -14,6 +13,7 @@ import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { languageList } from '../../config/localization/languages'
 import ethConfig from './chains/ethConfig'
+import MoonPayModal from '../../views/Topup/MoonpayModal'
 
 const Menu = (props) => {
   const { account, chainId } = useActiveWeb3React()
@@ -24,7 +24,7 @@ const Menu = (props) => {
   const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const { profile } = useProfile()
   const { t, setLanguage, currentLanguage } = useTranslation()
-  const { onTopup } = useTopup()
+  const [onPresentModal] = useModal(<MoonPayModal />)
   const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC) {
       return bscConfig(translate)
@@ -59,7 +59,7 @@ const Menu = (props) => {
         noProfileLink: '/nft',
         profileLink: '',
       }}
-      runFiat={onTopup}
+      runFiat={onPresentModal}
       track={track}
       liveResult={liveIfos}
       {...props}
