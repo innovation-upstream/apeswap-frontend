@@ -63,7 +63,7 @@ export const useFarmUser = (pid) => {
 
 export const useFarmTags = (chainId: number) => {
   const { Tags }: StatsState = useSelector((state: State) => state.stats)
-  const farmTags = Tags?.[`${chainId}`].farms
+  const farmTags = Tags?.[`${chainId}`]?.farms
 
   return { farmTags }
 }
