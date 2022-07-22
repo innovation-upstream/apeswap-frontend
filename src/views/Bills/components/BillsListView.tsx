@@ -51,7 +51,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
         <>
           <ListViewContent
             title={t('Price')}
-            value={`$${bill?.priceUsd}`}
+            value={disabled ? 'N/A' : `$${bill?.priceUsd}`}
             width={isMobile ? 90 : 120}
             ml={20}
             height={52.5}
