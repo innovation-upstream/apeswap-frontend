@@ -98,17 +98,21 @@ const Pools: React.FC = () => {
           'desc',
         )
       case 'hot':
-        return orderBy(
-          poolsToSort,
-          (pool: Pool) => poolTags?.find((tag) => tag.pid === pool.sousId && tag.text.toLowerCase() === 'hot'),
-          'asc',
-        )
+        return poolTags
+          ? orderBy(
+              poolsToSort,
+              (pool: Pool) => poolTags?.find((tag) => tag.pid === pool.sousId && tag.text.toLowerCase() === 'hot'),
+              'asc',
+            )
+          : poolsToSort
       case 'new':
-        return orderBy(
-          poolsToSort,
-          (pool: Pool) => poolTags?.find((tag) => tag.pid === pool.sousId && tag.text.toLowerCase() === 'new'),
-          'asc',
-        )
+        return poolTags
+          ? orderBy(
+              poolsToSort,
+              (pool: Pool) => poolTags?.find((tag) => tag.pid === pool.sousId && tag.text.toLowerCase() === 'new'),
+              'asc',
+            )
+          : poolsToSort
       default:
         return poolOrderings
           ? orderBy(

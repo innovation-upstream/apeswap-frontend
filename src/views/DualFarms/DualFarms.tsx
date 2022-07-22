@@ -137,17 +137,21 @@ const DualFarms: React.FC = () => {
       case 'apr':
         return orderBy(farms, (farm) => parseFloat(farm.apy), 'desc').slice(0, numberOfFarmsVisible)
       case 'hot':
-        return orderBy(
-          farms,
-          (farm: DualFarm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'hot'),
-          'asc',
-        ).slice(0, numberOfFarmsVisible)
+        return farmTags
+          ? orderBy(
+              farms,
+              (farm: DualFarm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'hot'),
+              'asc',
+            ).slice(0, numberOfFarmsVisible)
+          : farms.slice(0, numberOfFarmsVisible)
       case 'new':
-        return orderBy(
-          farms,
-          (farm: DualFarm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'new'),
-          'asc',
-        ).slice(0, numberOfFarmsVisible)
+        return farmTags
+          ? orderBy(
+              farms,
+              (farm: DualFarm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'new'),
+              'asc',
+            ).slice(0, numberOfFarmsVisible)
+          : farms.slice(0, numberOfFarmsVisible)
       case 'blueChips':
         return farms
           .filter(

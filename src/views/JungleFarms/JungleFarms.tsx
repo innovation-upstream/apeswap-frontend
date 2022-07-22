@@ -103,19 +103,23 @@ const JungleFarms: React.FC = () => {
           'desc',
         )
       case 'hot':
-        return orderBy(
-          farmsToSort,
-          (farm: JungleFarm) =>
-            jungleFarmTags?.find((tag) => tag.pid === farm.jungleId && tag.text.toLowerCase() === 'hot'),
-          'asc',
-        )
+        return jungleFarmTags
+          ? orderBy(
+              farmsToSort,
+              (farm: JungleFarm) =>
+                jungleFarmTags?.find((tag) => tag.pid === farm.jungleId && tag.text.toLowerCase() === 'hot'),
+              'asc',
+            )
+          : farmsToSort
       case 'new':
-        return orderBy(
-          farmsToSort,
-          (farm: JungleFarm) =>
-            jungleFarmTags?.find((tag) => tag.pid === farm.jungleId && tag.text.toLowerCase() === 'new'),
-          'asc',
-        )
+        return jungleFarmTags
+          ? orderBy(
+              farmsToSort,
+              (farm: JungleFarm) =>
+                jungleFarmTags?.find((tag) => tag.pid === farm.jungleId && tag.text.toLowerCase() === 'new'),
+              'asc',
+            )
+          : farmsToSort
       default:
         return jungleFarmOrderings
           ? orderBy(

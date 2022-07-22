@@ -128,17 +128,21 @@ const Farms: React.FC = () => {
       case 'liquidity':
         return orderBy(farms, (farm: Farm) => parseFloat(farm.totalLpStakedUsd), 'desc').slice(0, numberOfFarmsVisible)
       case 'hot':
-        return orderBy(
-          farms,
-          (farm: Farm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'hot'),
-          'asc',
-        ).slice(0, numberOfFarmsVisible)
+        return farmTags
+          ? orderBy(
+              farms,
+              (farm: Farm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'hot'),
+              'asc',
+            ).slice(0, numberOfFarmsVisible)
+          : farms.slice(0, numberOfFarmsVisible)
       case 'new':
-        return orderBy(
-          farms,
-          (farm: Farm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'new'),
-          'asc',
-        ).slice(0, numberOfFarmsVisible)
+        return farmTags
+          ? orderBy(
+              farms,
+              (farm: Farm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'new'),
+              'asc',
+            ).slice(0, numberOfFarmsVisible)
+          : farms.slice(0, numberOfFarmsVisible)
       default:
         return farmOrderings
           ? orderBy(
