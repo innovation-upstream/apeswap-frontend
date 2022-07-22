@@ -65,7 +65,16 @@ const useFarmsWithBalance = () => {
         fetchMiniChefBalances()
       }
     }
-  }, [account, fastRefresh, multicallContract, masterChefAddress, miniChefAddress, chainId])
+  }, [
+    account,
+    fastRefresh,
+    multicallContract,
+    masterChefAddress,
+    miniChefAddress,
+    farmsConfig,
+    dualFarmsConfig,
+    chainId,
+  ])
 
   return farmsWithBalances
 }

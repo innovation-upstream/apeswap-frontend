@@ -60,7 +60,7 @@ const useAllEarnings = () => {
         fetchAllMiniChefBalances()
       }
     }
-  }, [account, fastRefresh, masterChefAddress, chainId, miniChefAddress])
+  }, [account, fastRefresh, masterChefAddress, chainId, miniChefAddress, dualFarmsConfig, farmsConfig])
 
   return balances
 }
