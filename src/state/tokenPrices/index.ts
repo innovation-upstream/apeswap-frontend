@@ -1,11 +1,15 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Token } from 'config/constants/types'
 import fetchPrices from './fetchPrices'
 import { TokenPricesState, TokenPrices, AppThunk } from '../types'
+import fetchTokenPriceConfig from './api'
 
 const initialState: TokenPricesState = {
+  isTokensInitialized: false,
   isInitialized: false,
   isLoading: true,
+  tokens: [],
   data: null,
 }
 
@@ -16,10 +20,14 @@ export const tokenPricesSlice = createSlice({
     tokenPricesFetchStart: (state) => {
       state.isLoading = true
     },
-    tokenPricesFetchSucceeded: (state, action: PayloadAction<TokenPrices[]>) => {
+    setIntialTokens: (state, action) => {
+      state.tokens = action.payload
       state.isInitialized = true
-      state.isLoading = false
+    },
+    tokenPricesFetchSucceeded: (state, action: PayloadAction<TokenPrices[]>) => {
       state.data = action.payload
+      state.isLoading = false
+      state.isInitialized = true
     },
     tokenPricesFetchFailed: (state) => {
       state.isLoading = false
@@ -29,14 +37,24 @@ export const tokenPricesSlice = createSlice({
 })
 
 // Actions
-export const { tokenPricesFetchStart, tokenPricesFetchSucceeded, tokenPricesFetchFailed } = tokenPricesSlice.actions
+export const { setIntialTokens, tokenPricesFetchStart, tokenPricesFetchSucceeded, tokenPricesFetchFailed } =
+  tokenPricesSlice.actions
+
+export const setInitialTokensDataAsync = () => async (dispatch) => {
+  try {
+    const initialTokensState: Token[] = await fetchTokenPriceConfig()
+    dispatch(setIntialTokens(initialTokensState || []))
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 export const fetchTokenPrices =
-  (chainId): AppThunk =>
+  (chainId, tokens): AppThunk =>
   async (dispatch) => {
     try {
       dispatch(tokenPricesFetchStart())
-      const tokenPrices = await fetchPrices(chainId)
+      const tokenPrices = await fetchPrices(chainId, tokens)
       dispatch(tokenPricesFetchSucceeded(tokenPrices))
     } catch (error) {
       dispatch(tokenPricesFetchFailed())

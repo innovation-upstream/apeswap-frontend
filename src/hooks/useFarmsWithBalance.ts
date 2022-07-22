@@ -3,12 +3,14 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import masterChefABI from 'config/abi/masterchef.json'
 import miniChefABI from 'config/abi/miniApeV2.json'
-import { dualFarmsConfig, farmsConfig } from 'config/constants'
 import { CHAIN_ID } from 'config/constants/chains'
 import multicall from 'utils/multicall'
+import { useFarms } from 'state/farms/hooks'
+import { useDualFarms } from 'state/dualFarms/hooks'
 import useRefresh from './useRefresh'
 import { useMasterChefAddress, useMiniChefAddress } from './useAddress'
 import { useMulticallContract } from './useContract'
+
 
 const useFarmsWithBalance = () => {
   const [farmsWithBalances, setFarmsWithBalances] = useState([])
@@ -17,6 +19,8 @@ const useFarmsWithBalance = () => {
   const multicallContract = useMulticallContract()
   const masterChefAddress = useMasterChefAddress()
   const miniChefAddress = useMiniChefAddress()
+  const farmsConfig = useFarms(null)
+  const dualFarmsConfig = useDualFarms(null)
 
   useEffect(() => {
     const fetchBSCBalances = async () => {

@@ -3,9 +3,14 @@ import useRefresh from 'hooks/useRefresh'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useTokenPrices } from 'state/hooks'
+import { useTokenPrices } from 'state/tokenPrices/hooks'
 import { Bills, State } from 'state/types'
-import { fetchBillsPublicDataAsync, fetchBillsUserDataAsync, fetchUserOwnedBillsDataAsync } from '.'
+import {
+  fetchBillsPublicDataAsync,
+  fetchBillsUserDataAsync,
+  fetchUserOwnedBillsDataAsync,
+  setInitialBillsDataAsync,
+} from '.'
 
 export const usePollBills = () => {
   const { chainId } = useActiveWeb3React()
@@ -33,4 +38,12 @@ export const usePollUserBills = (): Bills[] => {
 export const useBills = (): Bills[] => {
   const bills = useSelector((state: State) => state.bills.data)
   return bills
+}
+
+export const useSetBills = () => {
+  const dispatch = useAppDispatch()
+  const bills = useBills()
+  if (bills.length === 0) {
+    dispatch(setInitialBillsDataAsync())
+  }
 }

@@ -5,15 +5,11 @@ import useEagerConnect from 'hooks/useEagerConnect'
 import { ResetCSS, ApeSwapTheme } from '@apeswapfinance/uikit'
 import { ScrollToTop } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
+import { useSetFarms } from 'state/farms/hooks'
 import MarketingModalCheck from 'components/MarketingModalCheck'
 import { CHAIN_ID } from 'config/constants/chains'
-import {
-  useFetchTokenPrices,
-  useFetchProfile,
-  useUpdateNetwork,
-  useFetchLiveIfoStatus,
-  useFetchLiveTags,
-} from 'state/hooks'
+import { useFetchTokenPrices } from 'state/tokenPrices/hooks'
+import { useFetchProfile, useUpdateNetwork, useFetchLiveIfoStatus, useFetchLiveTags } from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
@@ -102,6 +98,7 @@ const App: React.FC = () => {
   useFetchProfile()
   useFetchLiveIfoStatus()
   useFetchLiveTags()
+  useSetFarms()
 
   const { account, chainId } = useActiveWeb3React()
   const [showScrollIcon, setShowScrollIcon] = useState(false)

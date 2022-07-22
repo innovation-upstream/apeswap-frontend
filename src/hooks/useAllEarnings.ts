@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import masterChefABI from 'config/abi/masterchef.json'
 import miniChefABI from 'config/abi/miniApeV2.json'
-import { dualFarmsConfig, farmsConfig } from 'config/constants'
 import { CHAIN_ID } from 'config/constants/chains'
+import { useFarms } from 'state/farms/hooks'
+import { useDualFarms } from 'state/dualFarms/hooks'
 import multicall from 'utils/multicall'
 import { getMasterChefAddress, getMiniChefAddress } from 'utils/addressHelper'
 import useRefresh from './useRefresh'
+
 
 const useAllEarnings = () => {
   const [balances, setBalance] = useState([])
@@ -14,6 +16,8 @@ const useAllEarnings = () => {
   const { fastRefresh } = useRefresh()
   const masterChefAddress = getMasterChefAddress(chainId)
   const miniChefAddress = getMiniChefAddress(chainId)
+  const farmsConfig = useFarms(null)
+  const dualFarmsConfig = useDualFarms(null)
 
   useEffect(() => {
     const fetchAllBSCBalances = async () => {

@@ -2,13 +2,13 @@ import BigNumber from 'bignumber.js'
 import erc20ABI from 'config/abi/erc20.json'
 import miniChefABI from 'config/abi/miniApeV2.json'
 import rewarderABI from 'config/abi/miniComplexRewarder.json'
+import { DualFarm } from 'state/types'
 import { getMiniChefAddress } from 'utils/addressHelper'
 import multicall from 'utils/multicall'
-import { dualFarmsConfig } from 'config/constants'
 
-export const fetchDualFarmUserAllowances = async (chainId: number, account: string) => {
+export const fetchDualFarmUserAllowances = async (chainId: number, account: string, dualFarms: DualFarm[]) => {
   const miniChefAddress = getMiniChefAddress(chainId)
-  const calls = dualFarmsConfig.map((farm) => {
+  const calls = dualFarms.map((farm) => {
     const lpContractAddress = farm.stakeTokenAddress
     return { address: lpContractAddress, name: 'allowance', params: [account, miniChefAddress] }
   })
@@ -20,8 +20,8 @@ export const fetchDualFarmUserAllowances = async (chainId: number, account: stri
   return parsedLpAllowances
 }
 
-export const fetchDualFarmUserTokenBalances = async (chainId: number, account: string) => {
-  const calls = dualFarmsConfig.map((farm) => {
+export const fetchDualFarmUserTokenBalances = async (chainId: number, account: string, dualFarms: DualFarm[]) => {
+  const calls = dualFarms.map((farm) => {
     const lpContractAddress = farm.stakeTokenAddress
     return {
       address: lpContractAddress,
@@ -39,11 +39,11 @@ export const fetchDualFarmUserTokenBalances = async (chainId: number, account: s
 
 export const fetchDualFarmUserStakedBalances = async (
   chainId: number,
-
   account: string,
+  dualFarms: DualFarm[]
 ) => {
   const miniChefAddress = getMiniChefAddress(chainId)
-  const calls = dualFarmsConfig.map((farm) => {
+  const calls = dualFarms.map((farm) => {
     return {
       address: miniChefAddress,
       name: 'userInfo',
@@ -60,11 +60,11 @@ export const fetchDualFarmUserStakedBalances = async (
 
 export const fetchDualMiniChefEarnings = async (
   chainId: number,
-
   account: string,
+  dualFarms: DualFarm[]
 ) => {
   const miniChefAddress = getMiniChefAddress(chainId)
-  const calls = dualFarmsConfig.map((farm) => {
+  const calls = dualFarms.map((farm) => {
     return {
       address: miniChefAddress,
       name: 'pendingBanana',
@@ -79,8 +79,8 @@ export const fetchDualMiniChefEarnings = async (
   return parsedEarnings
 }
 
-export const fetchDualFarmRewarderEarnings = async (chainId: number, account: string) => {
-  const calls = dualFarmsConfig.map((farm) => {
+export const fetchDualFarmRewarderEarnings = async (chainId: number, account: string, dualFarms: DualFarm[]) => {
+  const calls = dualFarms.map((farm) => {
     return {
       address: farm.rewarderAddress,
       name: 'pendingToken',

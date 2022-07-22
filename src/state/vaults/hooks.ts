@@ -1,12 +1,13 @@
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useFarmLpAprs, useTokenPrices } from 'state/hooks'
+import { useFarmLpAprs } from 'state/hooks'
+import { useTokenPrices } from 'state/tokenPrices/hooks'
 import { VaultsState, State, Vault } from 'state/types'
-import { fetchVaultsPublicDataAsync, fetchVaultUserDataAsync, setFilteredVaults } from '.'
+import { fetchVaultsPublicDataAsync, fetchVaultUserDataAsync, setInitialVaultDataAsync } from '.'
 
 // Vault data
 export const usePollVaultsData = (includeArchive = false) => {
@@ -16,7 +17,6 @@ export const usePollVaultsData = (includeArchive = false) => {
   const { tokenPrices } = useTokenPrices()
   const farmLpAprs = useFarmLpAprs()
   useEffect(() => {
-    dispatch(setFilteredVaults(chainId))
     dispatch(fetchVaultsPublicDataAsync(chainId, tokenPrices, farmLpAprs))
     if (account) {
       dispatch(fetchVaultUserDataAsync(account, chainId))
@@ -45,4 +45,18 @@ export const useVaultUser = (pid) => {
     stakedBalance: vault.userData ? new BigNumber(vault.userData.stakedBalance) : new BigNumber(0),
     stakedWantBalance: vault.userData ? new BigNumber(vault.userData.stakedWantBalance) : new BigNumber(0),
   }
+}
+
+export const useSetVaults = () => {
+  const dispatch = useAppDispatch()
+  const { vaults } = useVaults()
+  const { chainId } = useActiveWeb3React()
+  // Using ref to check previous chainId vs current
+  const ref = useRef<number>()
+  useEffect(() => {
+    if (vaults.length === 0 || chainId !== ref.current) {
+      dispatch(setInitialVaultDataAsync(chainId))
+      ref.current = chainId
+    }
+  }, [chainId, vaults, dispatch])
 }

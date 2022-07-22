@@ -3,13 +3,13 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { userBuyBill } from 'utils/callHelpers'
 import { useBillContract } from 'hooks/useContract'
 import track from 'utils/track'
-import { getBillType } from './getBillType'
+import { useBillType } from './useBillType'
 
 // Buy a Bill
 const useBuyBill = (billAddress: string, amount: string, lpPrice: number) => {
   const { chainId, account } = useActiveWeb3React()
   const billContract = useBillContract(billAddress)
-  const billType: string = getBillType(billAddress, chainId)
+  const billType: string = useBillType(billAddress)
   const usdAmount: number = parseFloat(amount) * lpPrice
   const handleBuyBill = useCallback(async () => {
     const tx = await userBuyBill(billContract, account, amount, '108377')

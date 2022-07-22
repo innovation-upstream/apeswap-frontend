@@ -8,7 +8,7 @@ import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import { useBlock } from 'state/block/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePollJungleFarms, useJungleFarms } from 'state/jungleFarms/hooks'
+import { usePollJungleFarms, useJungleFarms, useSetJungleFarms } from 'state/jungleFarms/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { JungleFarm } from 'state/types'
@@ -19,6 +19,7 @@ import HarvestAll from './components/Actions/HarvestAll'
 const NUMBER_OF_FARMS_VISIBLE = 10
 
 const JungleFarms: React.FC = () => {
+  useSetJungleFarms()
   usePollJungleFarms()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [observerIsSet, setObserverIsSet] = useState(false)

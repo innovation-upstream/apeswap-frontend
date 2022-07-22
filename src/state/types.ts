@@ -15,6 +15,7 @@ import {
   JungleFarmConfig,
   LiveIfo,
   BillsConfig,
+  Token,
 } from 'config/constants/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
@@ -579,8 +580,10 @@ export interface AuctionsState {
 }
 
 export interface TokenPricesState {
+  isTokensInitialized: boolean
   isInitialized: boolean
   isLoading: boolean
+  tokens: Token[]
   data: TokenPrices[]
 }
 export interface LpTokenPricesState {

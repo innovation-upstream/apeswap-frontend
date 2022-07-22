@@ -4,9 +4,10 @@ import useRefresh from 'hooks/useRefresh'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useNetworkChainId, useTokenPrices } from 'state/hooks'
+import { useNetworkChainId } from 'state/hooks'
+import { useTokenPrices } from 'state/tokenPrices/hooks'
 import { JungleFarm, State } from 'state/types'
-import { fetchJungleFarmsPublicDataAsync, fetchJungleFarmsUserDataAsync } from '.'
+import { fetchJungleFarmsPublicDataAsync, fetchJungleFarmsUserDataAsync, setInitialJungleFarmDataAsync } from '.'
 
 export const usePollJungleFarms = () => {
   const chainId = useNetworkChainId()
@@ -32,4 +33,12 @@ export const useJungleFarms = (account): JungleFarm[] => {
 
   const farms = useSelector((state: State) => state.jungleFarms.data)
   return farms
+}
+
+export const useSetJungleFarms = () => {
+  const dispatch = useAppDispatch()
+  const jungleFarms = useJungleFarms(null)
+  if (jungleFarms.length === 0) {
+    dispatch(setInitialJungleFarmDataAsync())
+  }
 }

@@ -1,13 +1,14 @@
+import { ChainId } from '@apeswapfinance/sdk'
 import BigNumber from 'bignumber.js'
-import { CHAIN_ID } from 'config/constants/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useFarmLpAprs, useLpTokenPrices, usePriceBananaBusd } from 'state/hooks'
-import { Farm, State } from 'state/types'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
+import { useFarmLpAprs, useLpTokenPrices } from 'state/hooks'
+import { usePriceBananaBusd } from 'state/tokenPrices/hooks'
+import { Farm, State, StatsState } from 'state/types'
+import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, setInitialFarmDataAsync } from '.'
 
 export const usePollFarms = () => {
   const { chainId } = useActiveWeb3React()
@@ -19,20 +20,19 @@ export const usePollFarms = () => {
 
   useEffect(() => {
     const fetchFarms = () => {
-      if (chainId === CHAIN_ID.BSC) {
+      if (chainId === ChainId.BSC) {
         dispatch(fetchFarmsPublicDataAsync(chainId, lpTokenPrices, new BigNumber(bananaPrice), farmLpAprs))
       }
     }
     fetchFarms()
   }, [dispatch, chainId, lpTokenPrices, bananaPrice, farmLpAprs])
 }
-
 export const useFarms = (account): Farm[] => {
   const { slowRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
   useEffect(() => {
-    if (account && (chainId === CHAIN_ID.BSC || chainId === CHAIN_ID.BSC_TESTNET)) {
+    if (account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET)) {
       dispatch(fetchFarmUserDataAsync(chainId, account))
     }
   }, [account, dispatch, slowRefresh, chainId])
@@ -58,5 +58,20 @@ export const useFarmUser = (pid) => {
     tokenBalance: farm?.userData ? new BigNumber(farm.userData.tokenBalance) : new BigNumber(0),
     stakedBalance: farm?.userData ? new BigNumber(farm.userData.stakedBalance) : new BigNumber(0),
     earnings: farm?.userData ? new BigNumber(farm.userData.earnings) : new BigNumber(0),
+  }
+}
+
+export const useFarmTags = (chainId: number) => {
+  const { Tags }: StatsState = useSelector((state: State) => state.stats)
+  const farmTags = Tags?.[`${chainId}`].farms
+
+  return { farmTags }
+}
+
+export const useSetFarms = () => {
+  const dispatch = useAppDispatch()
+  const farms = useFarms(null)
+  if (farms.length === 0) {
+    dispatch(setInitialFarmDataAsync())
   }
 }

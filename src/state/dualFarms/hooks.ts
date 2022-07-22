@@ -5,9 +5,10 @@ import useRefresh from 'hooks/useRefresh'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useFarmLpAprs, usePriceBananaBusd, useTokenPrices } from 'state/hooks'
+import { useFarmLpAprs } from 'state/hooks'
+import { usePriceBananaBusd, useTokenPrices } from 'state/tokenPrices/hooks'
 import { DualFarm, State } from 'state/types'
-import { fetchDualFarmsPublicDataAsync, fetchDualFarmUserDataAsync } from '.'
+import { fetchDualFarmsPublicDataAsync, fetchDualFarmUserDataAsync, setInitialDualFarmDataAsync } from '.'
 
 export const usePollDualFarms = () => {
   const { chainId } = useActiveWeb3React()
@@ -62,5 +63,13 @@ export const useFarmUser = (pid) => {
     tokenBalance: farm?.userData ? new BigNumber(farm.userData.tokenBalance) : new BigNumber(0),
     stakedBalance: farm?.userData ? new BigNumber(farm.userData.stakedBalance) : new BigNumber(0),
     earnings: farm?.userData ? new BigNumber(farm.userData.rewarderEarnings) : new BigNumber(0),
+  }
+}
+
+export const useSetDualFarms = () => {
+  const dispatch = useAppDispatch()
+  const farms = useDualFarms(null)
+  if (farms.length === 0) {
+    dispatch(setInitialDualFarmDataAsync())
   }
 }
