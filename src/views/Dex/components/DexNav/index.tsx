@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Link, useHistory } from 'react-router-dom'
-import { CogIcon, Flex, Text, useModal, CardIcon } from '@ape.swap/uikit'
+import { CogIcon, Flex, Text, useModal, RunFiatButton } from '@ape.swap/uikit'
+import track from 'utils/track'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { CHAIN_ID } from 'config/constants/chains'
@@ -69,7 +70,15 @@ const DexNav = () => {
         </Text>
       </Flex>
       <Flex sx={{ ...styles.navIconContainer }}>
-        <CardIcon sx={{ cursor: 'pointer', marginRight: '5px' }} width="20px" onClick={onPresentModal} />
+        <RunFiatButton
+          sx={{ marginRight: '2px', width: '20px' }}
+          mini
+          t={t}
+          runFiat={onPresentModal}
+          // track={track}
+          position="DEX"
+          chainId={chainId}
+        />
         <CogIcon sx={{ cursor: 'pointer' }} onClick={onPresentSettingsModal} />
       </Flex>
     </Flex>
