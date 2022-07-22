@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFarmLpAprs } from 'state/hooks'
@@ -51,12 +51,7 @@ export const useSetVaults = () => {
   const dispatch = useAppDispatch()
   const { vaults } = useVaults()
   const { chainId } = useActiveWeb3React()
-  // Using ref to check previous chainId vs current
-  const ref = useRef<number>()
-  useEffect(() => {
-    if (vaults.length === 0 || chainId !== ref.current) {
-      dispatch(setInitialVaultDataAsync(chainId))
-      ref.current = chainId
-    }
-  }, [chainId, vaults, dispatch])
+  if (vaults.length === 0) {
+    dispatch(setInitialVaultDataAsync(chainId))
+  }
 }
