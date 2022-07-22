@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navbar as UikitMenu, useModal } from '@ape.swap/uikit'
+import { uauth } from 'utils/web3React'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useRefresh from 'hooks/useRefresh'
 import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
 import useTheme from 'hooks/useTheme'
@@ -23,9 +25,13 @@ const Menu = (props) => {
   const { switchNetwork } = useSelectNetwork()
   const { isDark, toggleTheme } = useTheme()
   const { tokenPrices } = useTokenPrices()
-  const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const { profile } = useProfile()
   const { t, setLanguage, currentLanguage } = useTranslation()
+  const { liveIfos } = useLiveIfoStatus()
+  const { fastRefresh } = useRefresh()
+  const [uDName, setUDName] = useState(null)
+
+  const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const [onPresentModal] = useModal(<MoonPayModal />)
   const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC && isIframe !== true) {
@@ -43,10 +49,17 @@ const Menu = (props) => {
     }
     return bscConfig(translate)
   }
-  const { liveIfos } = useLiveIfoStatus()
+
+  useEffect(() => {
+    uauth.uauth
+      .user()
+      .then((user) => setUDName(user.sub))
+      .catch((err) => console.info(err.message))
+  }, [fastRefresh])
 
   return (
     <UikitMenu
+      uDName={uDName}
       account={account}
       login={login}
       logout={logout}
