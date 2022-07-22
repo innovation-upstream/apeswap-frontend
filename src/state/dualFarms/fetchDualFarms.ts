@@ -12,7 +12,7 @@ const fetchDualFarms = async (
   tokenPrices: TokenPrices[],
   bananaPrice: BigNumber,
   farmLpAprs: FarmLpAprsType,
-  dualFarms: DualFarm[]
+  dualFarms: DualFarm[],
 ) => {
   const farmIds = []
   const farmCalls = dualFarms.flatMap((farm) => {

@@ -9,7 +9,7 @@ const cleanFarmData = (
   lpPrices: LpTokenPrices[],
   bananaPrice: BigNumber,
   farmLpAprs: FarmLpAprsType,
-  farmsConfig: Farm[]
+  farmsConfig: Farm[],
 ) => {
   const data = chunkedFarms.map((chunk, index) => {
     const farmConfig = farmsConfig?.find((farm) => farm.pid === farmIds[index])

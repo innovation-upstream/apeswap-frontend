@@ -9,7 +9,6 @@ import multicall from 'utils/multicall'
 import { getMasterChefAddress, getMiniChefAddress } from 'utils/addressHelper'
 import useRefresh from './useRefresh'
 
-
 const useAllEarnings = () => {
   const [balances, setBalance] = useState([])
   const { account, chainId } = useWeb3React()

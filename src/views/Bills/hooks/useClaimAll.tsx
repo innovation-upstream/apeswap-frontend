@@ -10,7 +10,9 @@ import { useBillTypes } from './useBillType'
 // Claim a Bill
 const useClaimBill = (billMap: { billAddress: string; billIds: string[] }[]) => {
   const { account, library, chainId } = useActiveWeb3React()
-  const billAddresses = billMap.map((b) => {return b.billAddress})
+  const billAddresses = billMap.map((b) => {
+    return b.billAddress
+  })
   const billTypes: string[] = useBillTypes(billAddresses)
   const handleClaimBill = useCallback(async () => {
     const billTrxs = billMap.map(async (bm, i) => {

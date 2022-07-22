@@ -11,7 +11,7 @@ const cleanDualFarmData = (
   bananaPrice: BigNumber,
   farmLpAprs: FarmLpAprsType,
   chainId: number,
-  dualFarms: DualFarm[]
+  dualFarms: DualFarm[],
 ) => {
   const data = chunkedFarms.map((chunk, index) => {
     const dualFarmConfig = dualFarms?.find((farm) => farm.pid === farmIds[index])

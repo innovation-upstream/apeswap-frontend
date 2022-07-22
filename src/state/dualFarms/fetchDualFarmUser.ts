@@ -37,11 +37,7 @@ export const fetchDualFarmUserTokenBalances = async (chainId: number, account: s
   return parsedTokenBalances
 }
 
-export const fetchDualFarmUserStakedBalances = async (
-  chainId: number,
-  account: string,
-  dualFarms: DualFarm[]
-) => {
+export const fetchDualFarmUserStakedBalances = async (chainId: number, account: string, dualFarms: DualFarm[]) => {
   const miniChefAddress = getMiniChefAddress(chainId)
   const calls = dualFarms.map((farm) => {
     return {
@@ -58,11 +54,7 @@ export const fetchDualFarmUserStakedBalances = async (
   return parsedStakedBalances
 }
 
-export const fetchDualMiniChefEarnings = async (
-  chainId: number,
-  account: string,
-  dualFarms: DualFarm[]
-) => {
+export const fetchDualMiniChefEarnings = async (chainId: number, account: string, dualFarms: DualFarm[]) => {
   const miniChefAddress = getMiniChefAddress(chainId)
   const calls = dualFarms.map((farm) => {
     return {

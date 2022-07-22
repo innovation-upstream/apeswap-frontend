@@ -11,7 +11,6 @@ import useRefresh from './useRefresh'
 import { useMasterChefAddress, useMiniChefAddress } from './useAddress'
 import { useMulticallContract } from './useContract'
 
-
 const useFarmsWithBalance = () => {
   const [farmsWithBalances, setFarmsWithBalances] = useState([])
   const { account, chainId } = useWeb3React()
