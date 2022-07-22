@@ -160,6 +160,8 @@ const Swap: React.FC = () => {
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
   )
 
+  const { routerType } = bestRoute
+
   const handleSwap = useCallback(() => {
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
       return
@@ -176,6 +178,7 @@ const Swap: React.FC = () => {
           value: tradeValueUsd,
           chain: chainId,
           data: {
+            router: routerType,
             token1: trade?.inputAmount?.currency?.getSymbol(chainId),
             token2: trade?.outputAmount?.currency?.getSymbol(chainId),
             token1Amount: Number(trade?.inputAmount.toSignificant(6)),
@@ -191,7 +194,7 @@ const Swap: React.FC = () => {
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, trade, tradeValueUsd, chainId, t])
+  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, trade, tradeValueUsd, chainId, t, routerType])
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
