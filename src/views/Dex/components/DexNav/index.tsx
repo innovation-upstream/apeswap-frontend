@@ -75,7 +75,7 @@ const DexNav = () => {
           mini
           t={t}
           runFiat={onPresentModal}
-          // track={track}
+          track={track}
           position="DEX"
           chainId={chainId}
         />
