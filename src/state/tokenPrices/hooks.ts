@@ -11,12 +11,12 @@ const ZERO = new BigNumber(0)
 
 export const useFetchTokenPrices = () => {
   const dispatch = useAppDispatch()
-  const { slowRefresh, fastRefresh } = useRefresh()
+  const { slowRefresh } = useRefresh()
   const { chainId } = useActiveWeb3React()
   const { tokens }: TokenPricesState = useSelector((state: State) => state.tokenPrices)
-  useEffect(() => {
+  if (tokens.length === 0) {
     dispatch(setInitialTokensDataAsync())
-  }, [dispatch, fastRefresh])
+  }
   useEffect(() => {
     dispatch(fetchTokenPrices(chainId, tokens))
   }, [dispatch, slowRefresh, tokens, chainId])
