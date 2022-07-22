@@ -6,7 +6,6 @@ import { Button } from '@ape.swap/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { CHAIN_ID } from 'config/constants/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useTopup from 'hooks/useTopup'
 import { useLocation, useHistory } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 
@@ -25,10 +24,6 @@ const CurrencyInputContainer = styled(Flex)`
   width: 100%;
   background: ${({ theme }) => theme.colors.navbar};
   margin-bottom: 20px;
-
-  /* ${({ theme }) => theme.mediaQueries.xs} {
-    flex-direction: column-reverse !important;
-  } */
 `
 
 export const StyledDiv = styled.div`
@@ -46,7 +41,6 @@ const CurrencyInputHeader: React.FC<Props> = () => {
   const isMobile = isMd || isSm || isXs
   const path = useLocation()
   const { t } = useTranslation()
-  const { onTopup } = useTopup()
   const getActiveTab = () => {
     const { pathname } = path
     if (pathname.includes('swap')) return 0
