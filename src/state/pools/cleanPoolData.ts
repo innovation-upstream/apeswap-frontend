@@ -24,10 +24,10 @@ const cleanPoolData = (
     return {
       sousId: poolIds[index],
       startBlock: new BigNumber(startBlock).toJSON(),
-      endBlock: poolConfig.bonusEndBlock || new BigNumber(endBlock).toJSON(),
+      endBlock: poolConfig?.bonusEndBlock || new BigNumber(endBlock).toJSON(),
       totalStaked: totalStakedFormatted,
-      stakingToken: { ...poolConfig.stakingToken, ...stakingToken },
-      rewardToken: { ...poolConfig.rewardToken, ...rewardToken },
+      stakingToken: { ...poolConfig?.stakingToken, ...stakingToken },
+      rewardToken: { ...poolConfig?.rewardToken, ...rewardToken },
       apr,
     }
   })
@@ -43,11 +43,13 @@ const fetchPoolTokenStatsAndApr = (
   // Get values needed to calculate apr
   const curPool = pool
   const rewardToken = tokenPrices
-    ? tokenPrices.find((token) => pool?.rewardToken && token?.address[chainId] === pool?.rewardToken.address[chainId])
-    : pool.rewardToken
+    ? tokenPrices.find(
+        (token) => pool?.rewardToken && token?.address?.[chainId] === pool?.rewardToken?.address?.[chainId],
+      )
+    : pool?.rewardToken
   const stakingToken = tokenPrices
-    ? tokenPrices.find((token) => token?.address[chainId] === pool?.stakingToken.address[chainId])
-    : pool.stakingToken
+    ? tokenPrices.find((token) => token?.address?.[chainId] === pool?.stakingToken?.address?.[chainId])
+    : pool?.stakingToken
   // Calculate apr
   const apr = getPoolApr(stakingToken?.price, rewardToken?.price, getBalanceNumber(totalStaked), curPool?.tokenPerBlock)
   return [stakingToken, rewardToken, apr]
