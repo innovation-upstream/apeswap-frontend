@@ -18,6 +18,62 @@ const bills: BillsConfig[] = [
     twitter: 'https://twitter.com/ape_swap',
   },
   {
+    index: 14,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0xf297F71f4664cF7F1Cd5d90720967998A1163cC3',
+    },
+    billType: 'BANANA Bill',
+    token: tokens.busd,
+    quoteToken: tokens.wbnb,
+    lpToken: tokens.bnbBusd,
+    earnToken: tokens.banana,
+    projectLink: 'https://apeswap.finance/',
+    twitter: 'https://twitter.com/ape_swap',
+  },
+  {
+    index: 15,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0x937A30Fd88f48B23DeABf4fD43c42cc9d3f3F9Dd',
+    },
+    billType: 'BANANA Bill',
+    token: tokens.busd,
+    quoteToken: tokens.usdc,
+    lpToken: tokens.usdcBusd,
+    earnToken: tokens.banana,
+    projectLink: 'https://apeswap.finance/',
+    twitter: 'https://twitter.com/ape_swap',
+  },
+  {
+    index: 16,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0x2D375a67366eDFB92F520aE428E8E08451D638d2',
+    },
+    billType: 'BANANA Bill',
+    token: tokens.eth,
+    quoteToken: tokens.wbnb,
+    lpToken: tokens.bnbEth,
+    earnToken: tokens.banana,
+    projectLink: 'https://apeswap.finance/',
+    twitter: 'https://twitter.com/ape_swap',
+  },
+  {
+    index: 17,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0x44921f493887ab8a8b9db54db335f65c1ef8d51a',
+    },
+    billType: 'BANANA Bill',
+    token: tokens.btc,
+    quoteToken: tokens.wbnb,
+    lpToken: tokens.bnbBtc,
+    earnToken: tokens.banana,
+    projectLink: 'https://apeswap.finance/',
+    twitter: 'https://twitter.com/ape_swap',
+  },
+  {
     index: 12,
     contractAddress: {
       [CHAIN_ID.BSC_TESTNET]: '',
@@ -143,6 +199,7 @@ const bills: BillsConfig[] = [
     earnToken: tokens.banana,
     projectLink: 'https://apeswap.finance/',
     twitter: 'https://twitter.com/ape_swap',
+    inactive: true,
   },
   {
     index: 1,
@@ -157,6 +214,7 @@ const bills: BillsConfig[] = [
     earnToken: tokens.banana,
     projectLink: 'https://apeswap.finance/',
     twitter: 'https://twitter.com/ape_swap',
+    inactive: true,
   },
   {
     index: 2,
@@ -171,6 +229,7 @@ const bills: BillsConfig[] = [
     earnToken: tokens.banana,
     projectLink: 'https://apeswap.finance/',
     twitter: 'https://twitter.com/ape_swap',
+    inactive: true,
   },
   {
     index: 3,
@@ -185,6 +244,7 @@ const bills: BillsConfig[] = [
     earnToken: tokens.banana,
     projectLink: 'https://apeswap.finance/',
     twitter: 'https://twitter.com/ape_swap',
+    inactive: true,
   },
   {
     index: 4,
@@ -199,6 +259,7 @@ const bills: BillsConfig[] = [
     earnToken: tokens.banana,
     projectLink: 'https://apeswap.finance/',
     twitter: 'https://twitter.com/ape_swap',
+    inactive: true,
   },
 ]
 
