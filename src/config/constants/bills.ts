@@ -4,6 +4,20 @@ import { BillsConfig } from './types'
 
 const bills: BillsConfig[] = [
   {
+    index: 13,
+    contractAddress: {
+      [CHAIN_ID.BSC_TESTNET]: '',
+      [CHAIN_ID.BSC]: '0xE325439439D692DC858Ba887601999D57d35688F',
+    },
+    billType: 'BANANA Bill',
+    token: tokens.banana,
+    quoteToken: tokens.wbnb,
+    lpToken: tokens.bananaBnb,
+    earnToken: tokens.banana,
+    projectLink: 'https://apeswap.finance/',
+    twitter: 'https://twitter.com/ape_swap',
+  },
+  {
     index: 12,
     contractAddress: {
       [CHAIN_ID.BSC_TESTNET]: '',
