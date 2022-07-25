@@ -559,6 +559,10 @@ export interface TagsType {
   [key: string]: any
 }
 
+export interface OrderingType {
+  [key: string]: any
+}
+
 export interface StatsState {
   isInitialized: boolean
   isLoading: boolean
@@ -569,6 +573,7 @@ export interface StatsState {
   HomepageServiceStats: ServiceData[]
   FarmLpAprs: FarmLpAprsType
   Tags: TagsType
+  Ordering: OrderingType
   LiveIfo: LiveIfo[]
   data: Stats
 }

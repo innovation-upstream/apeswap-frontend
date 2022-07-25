@@ -3421,27 +3421,27 @@
     "@typescript-eslint/types" "4.33.0"
     eslint-visitor-keys "^2.0.0"
 
-"@uauth/common@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@uauth/common/-/common-2.2.0.tgz#b4ee1cee0c2a5b9239f3564d455dfb0166312b3b"
-  integrity sha512-A4z808W1eCpVuW9tbiSkSO3oy/g3rLUBtVCUq3gnsp2CX/8ea13Y++mWxzpGby2OZX76HVKuZD14Etpj5wProg==
+"@uauth/common@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@uauth/common/-/common-2.0.0.tgz#1eefb4da394212ad6440a8d53886335db544e035"
+  integrity sha512-wSK9MKa0db2BzhpHT4JFlLB90d4Fal4hHr78tW+1Tww0DZbZkqc9cV8zFOEA0aieoNU8W1kbWCAxTm4eJoM72w==
 
-"@uauth/js@2.2.0", "@uauth/js@^2.0.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@uauth/js/-/js-2.2.0.tgz#f8ec6abd18001a57ac576f8741501fc19ef6c2e8"
-  integrity sha512-j31tF5QxRhj3bF2HfzlfH0dgaEOjxBFoCqZPe2M1i9DPgHgZEm6xS4D66rdYGQNuCsjqPfWo6aUG2xSbM0mQRg==
+"@uauth/js@2.0.0", "@uauth/js@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@uauth/js/-/js-2.0.0.tgz#e7a99f255f544affa229068247e0a272c9d31e14"
+  integrity sha512-aOyFj9xfhvVfyollo9SaDlncEvrGatJka951onM7aCQyEuhwa41R27K1JJ5QqQSEbQThz/jW2GkGa9QyxzRpwA==
   dependencies:
-    "@uauth/common" "2.2.0"
+    "@uauth/common" "2.0.0"
     "@unstoppabledomains/resolution" "^7.0"
     global "^4.4.0"
     jose "^4.5.0"
 
 "@uauth/web3-react@^2.0.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@uauth/web3-react/-/web3-react-2.2.0.tgz#4b53dd8c770d5134297a35760a18abc8061d5e90"
-  integrity sha512-8WNVPx8mWIqhqYH0alfrbDzCMwWsiNH/q+pUqT3p7a88knrPo7mfEYmlCHlnEE4HItvWS2PqcZ9+Ev2ak5xDyA==
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@uauth/web3-react/-/web3-react-2.0.0.tgz#84d8de346eb934f136dfeef03cb0136cf7b231f4"
+  integrity sha512-DUu/LG7ADWi/7xpSunkFsxk1VzqtW2TFxOplggicfeM+hujwjQ5wweRbjKxSDAqw8nc49jgJUbOlNqABu5HDiw==
   dependencies:
-    "@uauth/js" "2.2.0"
+    "@uauth/js" "2.0.0"
     "@web3-react/abstract-connector" "^6.0.7"
     "@web3-react/types" "^6.0.7"
 

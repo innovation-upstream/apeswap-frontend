@@ -71,3 +71,10 @@ export const useSetFarms = () => {
     dispatch(setInitialFarmDataAsync())
   }
 }
+
+export const useFarmOrderings = (chainId: number) => {
+  const { Ordering }: StatsState = useSelector((state: State) => state.stats)
+  const farmOrderings = Ordering?.[`${chainId}`]?.farms
+
+  return { farmOrderings }
+}

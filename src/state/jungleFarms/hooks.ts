@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useNetworkChainId } from 'state/hooks'
 import { useTokenPrices } from 'state/tokenPrices/hooks'
-import { JungleFarm, State } from 'state/types'
+import { JungleFarm, State, StatsState } from 'state/types'
 import { fetchJungleFarmsPublicDataAsync, fetchJungleFarmsUserDataAsync, setInitialJungleFarmDataAsync } from '.'
 
 export const usePollJungleFarms = () => {
@@ -41,4 +41,18 @@ export const useSetJungleFarms = () => {
   if (jungleFarms.length === 0) {
     dispatch(setInitialJungleFarmDataAsync())
   }
+}
+
+export const useJungleFarmTags = (chainId: number) => {
+  const { Tags }: StatsState = useSelector((state: State) => state.stats)
+  const jungleFarmTags = Tags?.[`${chainId}`]?.jungleFarms
+
+  return { jungleFarmTags }
+}
+
+export const useJungleFarmOrderings = (chainId: number) => {
+  const { Ordering }: StatsState = useSelector((state: State) => state.stats)
+  const jungleFarmOrderings = Ordering?.[`${chainId}`]?.jungleFarms
+
+  return { jungleFarmOrderings }
 }

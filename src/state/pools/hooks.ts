@@ -63,3 +63,11 @@ export const useSetPools = () => {
     dispatch(setInitialPoolDataAsync())
   }
 }
+
+// ORDERING
+export const usePoolOrderings = (chainId: number) => {
+  const { Ordering }: StatsState = useSelector((state: State) => state.stats)
+  const poolOrderings = Ordering?.[`${chainId}`]?.pools
+
+  return { poolOrderings }
+}

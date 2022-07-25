@@ -10,7 +10,7 @@ import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import { useBlock } from 'state/block/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePollPools, usePools, usePoolTags, useSetPools } from 'state/pools/hooks'
+import { usePollPools, usePoolOrderings, usePools, usePoolTags, useSetPools } from 'state/pools/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { Pool } from 'state/types'
@@ -27,12 +27,13 @@ const Pools: React.FC = () => {
   const [tokenOption, setTokenOption] = useState('allTokens')
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
-  const [sortOption, setSortOption] = useState('hot')
+  const [sortOption, setSortOption] = useState('all')
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { account } = useWeb3React()
   const { pathname } = useLocation()
   const allPools = usePools(account)
   const { poolTags } = usePoolTags(chainId)
+  const { poolOrderings } = usePoolOrderings(chainId)
   const { t } = useTranslation()
   const { currentBlock } = useBlock()
   const { search } = window.location
@@ -97,8 +98,30 @@ const Pools: React.FC = () => {
           (pool: Pool) => getBalanceNumber(pool.totalStaked) * pool.stakingToken?.price,
           'desc',
         )
+      case 'hot':
+        return poolTags
+          ? orderBy(
+              poolsToSort,
+              (pool: Pool) => poolTags?.find((tag) => tag.pid === pool.sousId && tag.text.toLowerCase() === 'hot'),
+              'asc',
+            )
+          : poolsToSort
+      case 'new':
+        return poolTags
+          ? orderBy(
+              poolsToSort,
+              (pool: Pool) => poolTags?.find((tag) => tag.pid === pool.sousId && tag.text.toLowerCase() === 'new'),
+              'asc',
+            )
+          : poolsToSort
       default:
-        return orderBy(poolsToSort, (pool: Pool) => pool.sortOrder, 'asc')
+        return poolOrderings
+          ? orderBy(
+              poolsToSort,
+              (pool: Pool) => poolOrderings?.find((ordering) => ordering.pid === pool.sousId)?.order,
+              'asc',
+            )
+          : poolsToSort
     }
   }
 
