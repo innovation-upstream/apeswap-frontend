@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useNetworkChainId } from 'state/hooks'
-import { useTokenPrices } from 'state/tokenPrices/hooks'
+import { useFetchTokenPrices, useTokenPrices } from 'state/tokenPrices/hooks'
 import { Pool, State, StatsState } from 'state/types'
 import { fetchPoolsPublicDataAsync, fetchPoolsUserDataAsync, setInitialPoolDataAsync } from '.'
 
@@ -57,6 +57,7 @@ export const usePoolTags = (chainId: number) => {
 }
 
 export const useSetPools = () => {
+  useFetchTokenPrices()
   const dispatch = useAppDispatch()
   const pools = useAllPools()
   if (pools.length === 0) {

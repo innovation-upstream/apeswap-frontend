@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useNetworkChainId } from 'state/hooks'
-import { useTokenPrices } from 'state/tokenPrices/hooks'
+import { useFetchTokenPrices, useTokenPrices } from 'state/tokenPrices/hooks'
 import { JungleFarm, State, StatsState } from 'state/types'
 import { fetchJungleFarmsPublicDataAsync, fetchJungleFarmsUserDataAsync, setInitialJungleFarmDataAsync } from '.'
 
@@ -36,6 +36,7 @@ export const useJungleFarms = (account): JungleFarm[] => {
 }
 
 export const useSetJungleFarms = () => {
+  useFetchTokenPrices()
   const dispatch = useAppDispatch()
   const jungleFarms = useJungleFarms(null)
   if (jungleFarms.length === 0) {

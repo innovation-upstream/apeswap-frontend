@@ -33,11 +33,10 @@ export const { lpTokenPricesFetchStart, lpTokenPricesFetchSucceeded, lpTokenPric
   lpTokenPricesSlice.actions
 
 export const fetchLpTokenPrices =
-  (chainId): AppThunk =>
-  async (dispatch, getState) => {
+  (chainId, farms): AppThunk =>
+  async (dispatch) => {
     try {
       dispatch(lpTokenPricesFetchStart())
-      const farms = getState().farms.data
       const tokenPrices = await fetchLpPrices(chainId, farms)
       dispatch(lpTokenPricesFetchSucceeded(tokenPrices))
     } catch (error) {

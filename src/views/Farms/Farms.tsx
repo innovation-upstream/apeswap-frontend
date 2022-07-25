@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Flex } from '@apeswapfinance/uikit'
-import { useFetchFarmLpAprs, useFetchLpTokenPrices } from 'state/hooks'
+import { useFetchFarmLpAprs } from 'state/hooks'
 import ListViewMenu from 'components/ListViewMenu'
 import { orderBy } from 'lodash'
 import ListViewLayout from 'components/layout/ListViewLayout'
@@ -17,7 +17,6 @@ import HarvestAllAction from './components/CardActions/HarvestAllAction'
 
 const Farms: React.FC = () => {
   useSetFarms()
-  useFetchLpTokenPrices()
   usePollFarms()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)

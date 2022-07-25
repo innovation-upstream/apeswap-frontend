@@ -6,7 +6,8 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFarmLpAprs, useLpTokenPrices } from 'state/hooks'
-import { usePriceBananaBusd } from 'state/tokenPrices/hooks'
+import { useFetchLpTokenPrices } from 'state/lpPrices/hooks'
+import { useBananaPrice } from 'state/tokenPrices/hooks'
 import { Farm, State, StatsState } from 'state/types'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, setInitialFarmDataAsync } from '.'
 
@@ -15,7 +16,7 @@ export const usePollFarms = () => {
   const dispatch = useAppDispatch()
   const { lpTokenPrices } = useLpTokenPrices()
   // Made a string because hooks will refresh bignumbers
-  const bananaPrice = usePriceBananaBusd().toString()
+  const bananaPrice = useBananaPrice()
   const farmLpAprs = useFarmLpAprs()
 
   useEffect(() => {
@@ -65,6 +66,7 @@ export const useFarmTags = (chainId: number) => {
 }
 
 export const useSetFarms = () => {
+  useFetchLpTokenPrices()
   const dispatch = useAppDispatch()
   const farms = useFarms(null)
   if (farms.length === 0) {

@@ -7,7 +7,7 @@ import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
 import useTheme from 'hooks/useTheme'
 import { ContextApi } from 'contexts/Localization/types'
-import { useTokenPrices } from 'state/tokenPrices/hooks'
+import { useBananaPrice } from 'state/tokenPrices/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { useProfile, useLiveIfoStatus } from 'state/hooks'
 import useSelectNetwork from 'hooks/useSelectNetwork'
@@ -23,14 +23,13 @@ const Menu = (props) => {
   const { login, logout } = useAuth()
   const { switchNetwork } = useSelectNetwork()
   const { isDark, toggleTheme } = useTheme()
-  const { tokenPrices } = useTokenPrices()
   const { profile } = useProfile()
   const { t, setLanguage, currentLanguage } = useTranslation()
   const { liveIfos } = useLiveIfoStatus()
   const { fastRefresh } = useRefresh()
   const [uDName, setUDName] = useState(null)
 
-  const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
+  const bananaPriceUsd = useBananaPrice()
   const [onPresentModal] = useModal(<MoonPayModal />)
   const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC) {

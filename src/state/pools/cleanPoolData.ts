@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { PoolConfig } from 'config/constants/types'
+import { PoolConfig, Token } from 'config/constants/types'
 import { Pool, TokenPrices } from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -12,7 +12,7 @@ const cleanPoolData = (
   poolsConfig: Pool[],
 ) => {
   const data = chunkedPools.map((chunk, index) => {
-    const poolConfig = poolsConfig.find((pool) => pool.sousId === poolIds[index])
+    const poolConfig: PoolConfig = poolsConfig.find((pool) => pool.sousId === poolIds[index])
     const [startBlock, endBlock, totalStaked] = chunk
     const totalStakedFormatted = new BigNumber(totalStaked).toJSON()
     const [stakingToken, rewardToken, apr] = fetchPoolTokenStatsAndApr(
@@ -26,15 +26,20 @@ const cleanPoolData = (
       startBlock: new BigNumber(startBlock).toJSON(),
       endBlock: poolConfig.bonusEndBlock || new BigNumber(endBlock).toJSON(),
       totalStaked: totalStakedFormatted,
-      stakingToken,
-      rewardToken,
+      stakingToken: { ...poolConfig.stakingToken, ...stakingToken },
+      rewardToken: { ...poolConfig.rewardToken, ...rewardToken },
       apr,
     }
   })
   return data
 }
 
-const fetchPoolTokenStatsAndApr = (pool: PoolConfig, tokenPrices: TokenPrices[], totalStaked, chainId: number) => {
+const fetchPoolTokenStatsAndApr = (
+  pool: PoolConfig,
+  tokenPrices: TokenPrices[],
+  totalStaked,
+  chainId: number,
+): [Token, Token, number] => {
   // Get values needed to calculate apr
   const curPool = pool
   const rewardToken = tokenPrices

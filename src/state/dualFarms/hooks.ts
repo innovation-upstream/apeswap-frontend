@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFarmLpAprs } from 'state/hooks'
+import { useFetchLpTokenPrices } from 'state/lpPrices/hooks'
 import { usePriceBananaBusd, useTokenPrices } from 'state/tokenPrices/hooks'
 import { DualFarm, State } from 'state/types'
 import { fetchDualFarmsPublicDataAsync, fetchDualFarmUserDataAsync, setInitialDualFarmDataAsync } from '.'
@@ -67,6 +68,7 @@ export const useFarmUser = (pid) => {
 }
 
 export const useSetDualFarms = () => {
+  useFetchLpTokenPrices()
   const dispatch = useAppDispatch()
   const farms = useDualFarms(null)
   if (farms.length === 0) {

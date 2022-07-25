@@ -5,13 +5,13 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { State, TokenPricesState } from 'state/types'
-import { fetchTokenPrices, setInitialTokensDataAsync } from '.'
+import { fetchBananaPrice, fetchTokenPrices, setInitialTokensDataAsync } from '.'
 
 const ZERO = new BigNumber(0)
 
 export const useFetchTokenPrices = () => {
   const dispatch = useAppDispatch()
-  const { slowRefresh } = useRefresh()
+  const { fastRefresh } = useRefresh()
   const { chainId } = useActiveWeb3React()
   const { tokens }: TokenPricesState = useSelector((state: State) => state.tokenPrices)
   if (tokens.length === 0) {
@@ -19,12 +19,26 @@ export const useFetchTokenPrices = () => {
   }
   useEffect(() => {
     dispatch(fetchTokenPrices(chainId, tokens))
-  }, [dispatch, slowRefresh, tokens, chainId])
+  }, [dispatch, fastRefresh, tokens, chainId])
 }
 
 export const useTokenPrices = () => {
   const { isInitialized, isLoading, data }: TokenPricesState = useSelector((state: State) => state.tokenPrices)
   return { tokenPrices: data, isInitialized, isLoading }
+}
+
+export const useFetchBananaPrice = () => {
+  const { fastRefresh } = useRefresh()
+  const { chainId } = useActiveWeb3React()
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(fetchBananaPrice(chainId))
+  }, [fastRefresh, chainId, dispatch])
+}
+
+export const useBananaPrice = () => {
+  const { bananaPrice }: TokenPricesState = useSelector((state: State) => state.tokenPrices)
+  return bananaPrice
 }
 
 // Prices

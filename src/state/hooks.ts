@@ -41,7 +41,6 @@ import { fetchAuctions } from './auction'
 import { setVaultsLoad } from './vaults'
 import { fetchIazo, fetchIazos, fetchSettings } from './iazos'
 import { fetchUserNetwork } from './network'
-import { fetchLpTokenPrices } from './lpPrices'
 import { fetchAllNfas } from './nfas'
 
 // Network
@@ -316,15 +315,6 @@ export const useFetchNfas = (nafFlag = true) => {
 export const useNfas = () => {
   const { isInitialized, isLoading, data }: NfaState = useSelector((state: State) => state.nfas)
   return { nfas: data, isInitialized, isLoading }
-}
-
-export const useFetchLpTokenPrices = () => {
-  const dispatch = useAppDispatch()
-  const { slowRefresh } = useRefresh()
-  const { chainId } = useActiveWeb3React()
-  useEffect(() => {
-    dispatch(fetchLpTokenPrices(chainId))
-  }, [dispatch, slowRefresh, chainId])
 }
 
 export const useLpTokenPrices = () => {

@@ -7,7 +7,7 @@ import { ScrollToTop } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import MarketingModalCheck from 'components/MarketingModalCheck'
 import { CHAIN_ID } from 'config/constants/chains'
-import { useFetchTokenPrices } from 'state/tokenPrices/hooks'
+import { useFetchBananaPrice } from 'state/tokenPrices/hooks'
 import { useFetchProfile, useUpdateNetwork, useFetchLiveIfoStatus, useFetchLiveTagsAndOrdering } from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
 import GlobalStyle from './style/Global'
@@ -49,7 +49,6 @@ const Vaults = lazy(() => import('./views/Vaults'))
 const NfaStaking = lazy(() => import('./views/NfaStaking'))
 const Bills = lazy(() => import('./views/Bills'))
 const Orders = lazy(() => import('./views/Dex/Orders'))
-// const Topup = lazy(() => import('./views/Topup'))
 const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/LegacyRemoveLiquidity/redirects'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
@@ -92,7 +91,7 @@ BigNumber.config({
 const App: React.FC = () => {
   useUpdateNetwork()
   useEagerConnect()
-  useFetchTokenPrices()
+  useFetchBananaPrice()
   usePollBlockNumber()
   useFetchProfile()
   useFetchLiveIfoStatus()

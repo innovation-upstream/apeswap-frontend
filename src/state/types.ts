@@ -589,6 +589,7 @@ export interface TokenPricesState {
   isInitialized: boolean
   isLoading: boolean
   tokens: Token[]
+  bananaPrice: string
   data: TokenPrices[]
 }
 export interface LpTokenPricesState {

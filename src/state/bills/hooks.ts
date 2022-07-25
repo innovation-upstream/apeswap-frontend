@@ -3,7 +3,7 @@ import useRefresh from 'hooks/useRefresh'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useTokenPrices } from 'state/tokenPrices/hooks'
+import { useFetchTokenPrices, useTokenPrices } from 'state/tokenPrices/hooks'
 import { Bills, State } from 'state/types'
 import {
   fetchBillsPublicDataAsync,
@@ -41,6 +41,7 @@ export const useBills = (): Bills[] => {
 }
 
 export const useSetBills = () => {
+  useFetchTokenPrices()
   const dispatch = useAppDispatch()
   const bills = useBills()
   if (bills.length === 0) {

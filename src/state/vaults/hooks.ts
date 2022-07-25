@@ -5,7 +5,8 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFarmLpAprs } from 'state/hooks'
-import { useTokenPrices } from 'state/tokenPrices/hooks'
+import { useFetchLpTokenPrices } from 'state/lpPrices/hooks'
+import { useFetchTokenPrices, useTokenPrices } from 'state/tokenPrices/hooks'
 import { VaultsState, State, Vault } from 'state/types'
 import { fetchVaultsPublicDataAsync, fetchVaultUserDataAsync, setInitialVaultDataAsync } from '.'
 
@@ -48,6 +49,8 @@ export const useVaultUser = (pid) => {
 }
 
 export const useSetVaults = () => {
+  useFetchTokenPrices()
+  useFetchLpTokenPrices()
   const dispatch = useAppDispatch()
   const { vaults } = useVaults()
   const { chainId } = useActiveWeb3React()
