@@ -7,7 +7,6 @@ import fetchPrices from './fetchPrices'
 import { TokenPricesState, TokenPrices, AppThunk } from '../types'
 import fetchTokenPriceConfig from './api'
 
-
 const initialState: TokenPricesState = {
   isTokensInitialized: false,
   isInitialized: false,
