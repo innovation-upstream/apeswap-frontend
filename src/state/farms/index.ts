@@ -83,7 +83,7 @@ export const fetchFarmUserDataAsync =
     }
   }
 
-export const setInitialFarmDataAsync = () => async (dispatch) => {
+export const setInitialFarmDataAsync = (): AppThunk => async (dispatch) => {
   try {
     const initialFarmState: Farm[] = await fetchFarmConfig()
     dispatch(setInitialFarmData(initialFarmState || []))

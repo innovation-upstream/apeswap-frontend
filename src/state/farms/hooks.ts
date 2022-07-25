@@ -19,12 +19,9 @@ export const usePollFarms = () => {
   const farmLpAprs = useFarmLpAprs()
 
   useEffect(() => {
-    const fetchFarms = () => {
-      if (chainId === ChainId.BSC) {
-        dispatch(fetchFarmsPublicDataAsync(chainId, lpTokenPrices, new BigNumber(bananaPrice), farmLpAprs))
-      }
+    if (chainId === ChainId.BSC) {
+      dispatch(fetchFarmsPublicDataAsync(chainId, lpTokenPrices, new BigNumber(bananaPrice), farmLpAprs))
     }
-    fetchFarms()
   }, [dispatch, chainId, lpTokenPrices, bananaPrice, farmLpAprs])
 }
 export const useFarms = (account): Farm[] => {
@@ -64,7 +61,6 @@ export const useFarmUser = (pid) => {
 export const useFarmTags = (chainId: number) => {
   const { Tags }: StatsState = useSelector((state: State) => state.stats)
   const farmTags = Tags?.[`${chainId}`].farms
-
   return { farmTags }
 }
 
