@@ -19,7 +19,12 @@ import iframeConfig from './chains/iframeConfig'
 import MoonPayModal from '../../views/Topup/MoonpayModal'
 
 const Menu = (props) => {
-  const isIframe = window.self !== window.top
+  let isIframe = false;
+  try {
+    isIframe = window.self !== window.top;
+  } catch (e) {
+    console.error(e)
+  }
   const { account, chainId } = useActiveWeb3React()
   const { login, logout } = useAuth()
   const { switchNetwork } = useSelectNetwork()
