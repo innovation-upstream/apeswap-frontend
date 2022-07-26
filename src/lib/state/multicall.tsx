@@ -11,7 +11,6 @@ export const store = createStore(reducer)
 
 export default multicall
 
-
 export function MulticallUpdater() {
   const { chainId } = useActiveWeb3React()
   const { currentBlock } = useBlock()
