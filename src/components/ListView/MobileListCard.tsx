@@ -36,7 +36,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
               <div style={{ display: 'inline-block', ...toolTipStyle }}>
                 <TooltipBubble
                   body={infoContent}
-                  transformTip={infoContentPosition || 'translate(-82%, 50%)'}
+                  transformTip={infoContentPosition || 'translate(0%, 0%)'}
                   width={ttWidth || '200px'}
                 >
                   <InfoIcon width={toolTipIconWidth || '25px'} />
