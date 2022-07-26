@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import masterChefABI from 'config/abi/masterchef.json'
 import miniChefABI from 'config/abi/miniApeV2.json'
+import { ChainId } from '@apeswapfinance/sdk'
 import { dualFarmsConfig, farmsConfig } from 'config/constants'
-import { CHAIN_ID } from 'config/constants/chains'
 import multicall from 'utils/multicall'
 import useRefresh from './useRefresh'
 import { useMasterChefAddress, useMiniChefAddress } from './useAddress'
@@ -55,10 +55,10 @@ const useFarmsWithBalance = () => {
     }
 
     if (account) {
-      if (chainId === CHAIN_ID.BSC) {
+      if (chainId === ChainId.BSC) {
         fetchBSCBalances()
       }
-      if (chainId === CHAIN_ID.MATIC) {
+      if (chainId === ChainId.MATIC) {
         fetchMiniChefBalances()
       }
     }

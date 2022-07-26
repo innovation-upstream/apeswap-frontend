@@ -1,4 +1,4 @@
-import { CHAIN_ID } from 'config/constants/chains'
+import { ChainId } from '@apeswapfinance/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
 import { useEffect } from 'react'
@@ -14,7 +14,7 @@ export const usePollJungleFarms = () => {
 
   const dispatch = useAppDispatch()
   useEffect(() => {
-    if (chainId === CHAIN_ID.BSC) {
+    if (chainId === ChainId.BSC) {
       dispatch(fetchJungleFarmsPublicDataAsync(chainId, tokenPrices))
     }
   }, [dispatch, tokenPrices, chainId])
@@ -25,7 +25,7 @@ export const useJungleFarms = (account): JungleFarm[] => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
   useEffect(() => {
-    if (account && (chainId === CHAIN_ID.BSC || chainId === CHAIN_ID.BSC_TESTNET)) {
+    if (account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET)) {
       dispatch(fetchJungleFarmsUserDataAsync(chainId, account))
     }
   }, [account, dispatch, slowRefresh, chainId])

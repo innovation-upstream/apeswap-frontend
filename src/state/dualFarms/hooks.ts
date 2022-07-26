@@ -1,5 +1,5 @@
+import { ChainId } from '@apeswapfinance/sdk'
 import BigNumber from 'bignumber.js'
-import { CHAIN_ID } from 'config/constants/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
 import { useEffect } from 'react'
@@ -19,7 +19,7 @@ export const usePollDualFarms = () => {
 
   useEffect(() => {
     const fetchFarms = () => {
-      if (chainId === CHAIN_ID.MATIC) {
+      if (chainId === ChainId.MATIC) {
         dispatch(fetchDualFarmsPublicDataAsync(chainId, tokenPrices, new BigNumber(bananaPrice), farmLpAprs))
       }
     }
@@ -32,7 +32,7 @@ export const useDualFarms = (account): DualFarm[] => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
   useEffect(() => {
-    if (account && (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET)) {
+    if (account && (chainId === ChainId.MATIC || chainId === ChainId.MATIC_TESTNET)) {
       dispatch(fetchDualFarmUserDataAsync(chainId, account))
     }
   }, [account, dispatch, slowRefresh, chainId])

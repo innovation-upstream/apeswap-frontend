@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
+import { ChainId } from '@apeswapfinance/sdk'
 import { Contract } from '@ethersproject/contracts'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { jungleFarmsConfig, poolsConfig } from 'config/constants'
 import nfaStakingPools from 'config/constants/nfaStakingPools'
-import { CHAIN_ID } from 'config/constants/chains'
 import ifo from 'config/abi/ifo.json'
 import billAbi from 'config/abi/bill.json'
+import multicallV3 from 'config/abi/multicallv3.json'
 import billNftAbi from 'config/abi/billNft.json'
 import ifoLinear from 'config/abi/ifoLinear.json'
 import erc20 from 'config/abi/erc20.json'
@@ -31,8 +32,6 @@ import iazoExposerAbi from 'config/abi/iazoExposer.json'
 import iazoSettingsAbi from 'config/abi/iazoSettings.json'
 import iazoFactoryAbi from 'config/abi/iazoFactory.json'
 import iazoAbi from 'config/abi/iazo.json'
-import { useSelector } from 'react-redux'
-import { State } from 'state/types'
 import {
   Treasury,
   IazoExposer,
@@ -60,6 +59,7 @@ import {
   VaultApeV1,
   VaultApeV2,
   JungleChef,
+  Multicallv3,
 } from 'config/abi/types'
 import {
   useApePriceGetterAddress,
@@ -73,6 +73,7 @@ import {
   useMasterChefAddress,
   useMiniChefAddress,
   useMulticallAddress,
+  useMulticallV3Address,
   useNativeWrapCurrencyAddress,
   useNonFungibleApesAddress,
   useTreasuryAddress,
@@ -137,14 +138,14 @@ export const useMasterchef = () => {
 
 export const useSousChef = (id) => {
   // Using selector to avoid circular dependecies
-  const chainId = useSelector((state: State) => state.network.data.chainId)
+  const { chainId } = useActiveWeb3React()
   const config = poolsConfig.find((pool) => pool.sousId === id)
 
   return useContract(sousChef, config.contractAddress[chainId]) as SousChef
 }
 
 export const useJungleChef = (id) => {
-  const chainId = useSelector((state: State) => state.network.data.chainId)
+  const { chainId } = useActiveWeb3React()
   const config = jungleFarmsConfig.find((pool) => pool.jungleId === id)
 
   return useContract(jungleChef, config.contractAddress[chainId]) as JungleChef
@@ -204,7 +205,7 @@ export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contrac
   if (chainId) {
     // eslint-disable-next-line default-case
     switch (chainId) {
-      case CHAIN_ID.ETH:
+      case ChainId.MAINNET:
         address = '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'
         break
     }
@@ -230,6 +231,10 @@ export function useWETHContract(withSignerIfPossible?: boolean): Contract | null
 
 export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(IUniswapV2PairABI, pairAddress, withSignerIfPossible)
+}
+
+export function useInterfaceMulticall() {
+  return useContract(multicallV3, useMulticallV3Address(), false) as Multicallv3
 }
 
 export default useContract

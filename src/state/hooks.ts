@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react'
+import { ChainId } from '@apeswapfinance/sdk'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Toast, toastTypes } from '@apeswapfinance/uikit'
@@ -6,10 +7,9 @@ import { useSelector } from 'react-redux'
 import useRefresh from 'hooks/useRefresh'
 import { useLiquidityData } from 'hooks/api'
 import { useAccountTokenBalance } from 'hooks/useTokenBalance'
-import { CHAIN_ID } from 'config/constants/chains'
 import { useBananaAddress, useTreasuryAddress } from 'hooks/useAddress'
-import { useAppDispatch } from 'state'
 import useSwitchNetwork from 'hooks/useSelectNetwork'
+import { useAppDispatch } from 'state'
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -97,7 +97,7 @@ export const usePollPools = () => {
   const { tokenPrices } = useTokenPrices()
   const dispatch = useAppDispatch()
   useEffect(() => {
-    if (chainId === CHAIN_ID.BSC) {
+    if (chainId === ChainId.BSC) {
       dispatch(fetchPoolsPublicDataAsync(chainId, tokenPrices))
     }
   }, [dispatch, tokenPrices, chainId])
@@ -110,7 +110,7 @@ export const usePools = (account): Pool[] => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
   useEffect(() => {
-    if (account && (chainId === CHAIN_ID.BSC || chainId === CHAIN_ID.BSC_TESTNET)) {
+    if (account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET)) {
       dispatch(fetchPoolsUserDataAsync(chainId, account))
     }
   }, [account, dispatch, slowRefresh, chainId])
@@ -283,7 +283,7 @@ export const useFetchProfile = () => {
   const getNfas = !!account
   useFetchNfas(getNfas)
   const dispatch = useAppDispatch()
-  const chainId = CHAIN_ID.BSC
+  const chainId = ChainId.BSC
   const { slowRefresh } = useRefresh()
   const { nfas } = useNfas()
 
@@ -401,7 +401,7 @@ export const useFetchAuctions = () => {
   const { nfas } = useNfas()
 
   useEffect(() => {
-    if (chainId === CHAIN_ID.BSC || chainId === CHAIN_ID.BSC_TESTNET) {
+    if (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) {
       dispatch(fetchAuctions(nfas, chainId))
     }
   }, [dispatch, fastRefresh, nfas, chainId])

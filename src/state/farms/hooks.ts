@@ -1,5 +1,5 @@
+import { ChainId } from '@apeswapfinance/sdk'
 import BigNumber from 'bignumber.js'
-import { CHAIN_ID } from 'config/constants/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
 import { useEffect } from 'react'
@@ -19,7 +19,7 @@ export const usePollFarms = () => {
 
   useEffect(() => {
     const fetchFarms = () => {
-      if (chainId === CHAIN_ID.BSC) {
+      if (chainId === ChainId.BSC) {
         dispatch(fetchFarmsPublicDataAsync(chainId, lpTokenPrices, new BigNumber(bananaPrice), farmLpAprs))
       }
     }
@@ -32,7 +32,7 @@ export const useFarms = (account): Farm[] => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
   useEffect(() => {
-    if (account && (chainId === CHAIN_ID.BSC || chainId === CHAIN_ID.BSC_TESTNET)) {
+    if (account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET)) {
       dispatch(fetchFarmUserDataAsync(chainId, account))
     }
   }, [account, dispatch, slowRefresh, chainId])

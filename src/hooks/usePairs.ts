@@ -6,7 +6,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PRIORITY_SMART_ROUTERS } from 'config/constants/chains'
 import { chunk } from 'lodash'
 
-import { useMultipleContractSingleData } from '../state/multicall/hooks'
+import { useMultipleContractSingleData } from 'lib/hooks/multicall'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
 const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)

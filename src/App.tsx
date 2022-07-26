@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy, useCallback } from 'react'
+import { ChainId } from '@apeswapfinance/sdk'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useEagerConnect from 'hooks/useEagerConnect'
@@ -6,7 +7,6 @@ import { ResetCSS, ApeSwapTheme } from '@apeswapfinance/uikit'
 import { ScrollToTop } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import MarketingModalCheck from 'components/MarketingModalCheck'
-import { CHAIN_ID } from 'config/constants/chains'
 import {
   useFetchTokenPrices,
   useFetchProfile,
@@ -133,7 +133,7 @@ const App: React.FC = () => {
 
   const loadMenu = () => {
     // ETH routes
-    if (chainId === CHAIN_ID.ETH) {
+    if (chainId === ChainId.MAINNET) {
       return (
         <Menu>
           <Suspense fallback={<PageLoader />}>
@@ -219,7 +219,7 @@ const App: React.FC = () => {
     }
 
     // MATIC routes
-    if (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
+    if (chainId === ChainId.MATIC || chainId === ChainId.MATIC_TESTNET) {
       return (
         <Menu>
           <Suspense fallback={<PageLoader />}>

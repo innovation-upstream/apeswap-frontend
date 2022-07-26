@@ -4,7 +4,7 @@ import useInterval from 'hooks/useInterval'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Flex, Text, Skeleton } from '@apeswapfinance/uikit'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
-import { CHAIN_ID } from 'config/constants/chains'
+import { ChainId } from '@apeswapfinance/sdk'
 import { Link } from 'react-router-dom'
 import { useFetchHomepageTokenStats, useHomepageTokenStats } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
@@ -52,7 +52,7 @@ const TrendingTokens: React.FC = () => {
   }, [isIntersecting])
 
   useEffect(() => {
-    if (chainId === CHAIN_ID.MATIC) {
+    if (chainId === ChainId.MATIC) {
       setSelectedCat('polygon')
     } else {
       setSelectedCat(CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)])

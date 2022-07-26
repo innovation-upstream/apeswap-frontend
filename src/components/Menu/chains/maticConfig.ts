@@ -1,5 +1,6 @@
 import { MenuEntry } from '@ape.swap/uikit'
-import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
+import { ChainId } from '@apeswapfinance/sdk'
+import { NETWORK_INFO_LINK } from 'config/constants/chains'
 import { EXCHANGE } from '../constants'
 import { ContextApi } from '../../../contexts/Localization/types'
 
@@ -22,7 +23,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Charts'),
-        href: NETWORK_INFO_LINK[CHAIN_ID.MATIC],
+        href: NETWORK_INFO_LINK[ChainId.MATIC],
         isNew: false,
       },
       {

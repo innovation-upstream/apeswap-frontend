@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Navbar as UikitMenu, useModal } from '@ape.swap/uikit'
+import { ChainId } from '@apeswapfinance/sdk'
 import { uauth } from 'utils/web3React'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
 import useAuth from 'hooks/useAuth'
-import { CHAIN_ID } from 'config/constants/chains'
 import useTheme from 'hooks/useTheme'
 import { ContextApi } from 'contexts/Localization/types'
 import { useTranslation } from 'contexts/Localization'
@@ -32,13 +32,13 @@ const Menu = (props) => {
   const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const [onPresentModal] = useModal(<MoonPayModal />)
   const currentMenu = (translate: ContextApi['t']) => {
-    if (chainId === CHAIN_ID.BSC) {
+    if (chainId === ChainId.BSC) {
       return bscConfig(translate)
     }
-    if (chainId === CHAIN_ID.MATIC) {
+    if (chainId === ChainId.MATIC) {
       return maticConfig(translate)
     }
-    if (chainId === CHAIN_ID.ETH) {
+    if (chainId === ChainId.MAINNET) {
       return ethConfig(translate)
     }
     return bscConfig(translate)

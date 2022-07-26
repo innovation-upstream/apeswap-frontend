@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 import sousChef from 'config/abi/sousChef.json'
 import { useWeb3React } from '@web3-react/core'
+import { ChainId } from '@apeswapfinance/sdk'
 import { useDispatch } from 'react-redux'
 import { soushHarvest, harvest, nfaStakeHarvest, miniChefHarvest, jungleHarvest } from 'utils/callHelpers'
-import { CHAIN_ID } from 'config/constants/chains'
 import track from 'utils/track'
 import { useNetworkChainId } from 'state/hooks'
 import { getContract } from 'utils'
@@ -61,7 +61,7 @@ export const useAllHarvest = (farmPids: number[], chainId: number) => {
   const miniChefContract = useMiniChefContract()
 
   const handleHarvest = useCallback(async () => {
-    if (chainId === CHAIN_ID.MATIC) {
+    if (chainId === ChainId.MATIC) {
       const harvestPromises = farmPids.reduce((accum, pid) => {
         return [...accum, miniChefHarvest(miniChefContract, pid, account)]
       }, [])
