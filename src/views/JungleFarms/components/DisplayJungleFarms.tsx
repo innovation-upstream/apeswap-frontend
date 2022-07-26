@@ -102,7 +102,10 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
       title: <Text bold>{farm?.tokenName}</Text>,
       id: farm.jungleId,
       infoContent: <InfoContent farm={farm} />,
-      infoContentPosition: 'translate(-82%, 28%)',
+      infoContentPosition: 'translate(8%, 0%)',
+      ttWidth: '250px',
+      toolTipIconWidth: isMobile && '20px',
+      toolTipStyle: isMobile && { marginTop: '10px', marginRight: '10px' },
       open: openId === farm.jungleId,
       cardContent: (
         <>
@@ -131,7 +134,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
               'APRs are calculated in real time. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
             )}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 38%)"
+            toolTipTransform="translate(8%, 0%)"
             aprCalculator={
               <ApyButton
                 lpLabel={farm?.stakingToken?.symbol}
@@ -148,8 +151,8 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
             width={isMobile ? 160 : 110}
             height={50}
             toolTip={t('The total value of the LP tokens currently staked in this farm.')}
-            toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 75%)"
+            toolTipPlacement={(isMobile && 'bottomRight') || 'bottomLeft'}
+            toolTipTransform={(isMobile && 'translate(13%, 0%)') || 'translate(23%, 0%)'}
           />
           <ListViewContent title={t('Earned')} value={userEarningsUsd} height={50} width={isMobile ? 80 : 150} />
         </>
