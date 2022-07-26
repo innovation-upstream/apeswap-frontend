@@ -7,6 +7,7 @@ import { PoolsBodies } from 'components/MarketingModalContent/Pools/'
 import { BillsBodies } from 'components/MarketingModalContent/Bills/'
 import { useTranslation } from 'contexts/Localization'
 import SwiperProvider from 'contexts/SwiperProvider'
+import MoonPayModal from 'views/Topup/MoonpayModal'
 import QuestModal from '../MarketingModalContent/Quests/QuestModal'
 
 const MarketingModalCheck = () => {
@@ -19,6 +20,7 @@ const MarketingModalCheck = () => {
   const lendingRoute = location.search.includes('modal=3')
   const billsRoute = location.search.includes('modal=bills')
   const questRoute = location.search.includes('modal=tutorial')
+  const moonpayRoute = location.search.includes('modal=moonpay')
 
   const { LendingBody1, LendingBody2, LendingBody3, LendingBody4, LendingBody5 } = LendingBodies
   const { FarmsBody1, FarmsBody2, FarmsBody3, FarmsBody4 } = FarmsBodies
@@ -79,6 +81,8 @@ const MarketingModalCheck = () => {
     <SwiperProvider>
       <QuestModal onDismiss={onDismiss} />
     </SwiperProvider>
+  ) : moonpayRoute ? (
+    <MoonPayModal onDismiss={onDismiss} />
   ) : null
 }
 
