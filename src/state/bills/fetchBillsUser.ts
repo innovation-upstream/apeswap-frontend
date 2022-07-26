@@ -31,9 +31,9 @@ export const fetchUserBalances = async (chainId: number, account) => {
   return tokenBalances
 }
 
-export const fetchUserOwnedBillNftData = async (ids: string[]) => {
-  const billNftData = ids?.map(async (id) => {
-    return { id, data: await getBillNftData(id) }
+export const fetchUserOwnedBillNftData = async (ownedBillsData: { id: string; billNftAddress: string }[]) => {
+  const billNftData = ownedBillsData?.map(async ({ id, billNftAddress }) => {
+    return { id, data: await getBillNftData(id, billNftAddress) }
   })
   return Promise.all(billNftData)
 }
@@ -52,6 +52,7 @@ export const fetchUserOwnedBills = async (chainId: number, account: string): Pro
       (id: BigNumber) =>
         id.gt(0) &&
         (billDataCalls.push({ address: bills[index].contractAddress[chainId], name: 'billInfo', params: [id] }),
+        billDataCalls.push({ address: bills[index].contractAddress[chainId], name: 'billNft' }),
         billsPendingRewardCall.push({
           address: bills[index].contractAddress[chainId],
           name: 'pendingPayoutFor',
@@ -62,15 +63,22 @@ export const fetchUserOwnedBills = async (chainId: number, account: string): Pro
   const billData = await multicall(chainId, billAbi, billDataCalls)
   const pendingRewardsCall = await multicall(chainId, billAbi, billsPendingRewardCall)
 
-  return billDataCalls.map((b, index) => {
-    return {
-      address: b.address,
-      id: b.params[0].toString(),
-      payout: billData[index][0].toString(),
-      vesting: billData[index][1].toString(),
-      lastBlockTimestamp: billData[index][2].toString(),
-      truePricePaid: billData[index][3].toString(),
-      pendingRewards: pendingRewardsCall[index][0].toString(),
+  const result = []
+
+  for (let i = 0; i < billsPendingRewardCall.length; i++) {
+    const billDataPos = i === 0 ? 0 : i * 2
+    const data = {
+      address: billsPendingRewardCall[i].address,
+      id: billsPendingRewardCall[i].params[0].toString(),
+      payout: billData[billDataPos][0].toString(),
+      billNftAddress: billData[billDataPos + 1][0].toString(),
+      vesting: billData[billDataPos][1].toString(),
+      lastBlockTimestamp: billData[billDataPos][2].toString(),
+      truePricePaid: billData[billDataPos][3].toString(),
+      pendingRewards: pendingRewardsCall[i][0].toString(),
     }
-  })
+    result.push(data)
+  }
+
+  return result
 }
