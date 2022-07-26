@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { InfoIcon, TooltipBubble } from '@apeswapfinance/uikit'
-import { Flex } from '@ape.swap/uikit'
+import { Flex, TooltipBubble, InfoIcon } from '@ape.swap/uikit'
 import React, { useState } from 'react'
 import { ContentContainer, DropDownIcon, ListCardContainer, ListExpandedContainer, styles } from './styles'
 import { ListCardProps } from './types'
@@ -38,7 +37,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
                 <TooltipBubble
                   body={infoContent}
                   transformTip={infoContentPosition || 'translate(-82%, 50%)'}
-                  width={ttWidth && '200px'}
+                  width={ttWidth || '200px'}
                 >
                   <InfoIcon width={toolTipIconWidth || '25px'} />
                 </TooltipBubble>

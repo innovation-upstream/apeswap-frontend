@@ -17,7 +17,7 @@ export interface ListViewProps {
   alignServiceTokens?: boolean
   toolTipIconWidth?: string
   toolTipStyle?: CSSProperties
-  ttWidth?: string | number
+  ttWidth?: string
 }
 
 export interface ListCardProps extends ListViewProps {
