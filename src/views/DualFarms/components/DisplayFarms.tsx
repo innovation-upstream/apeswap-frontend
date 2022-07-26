@@ -102,6 +102,10 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
           </Flex>
         </>
       ),
+      ttWidth: '250px',
+      infoContentPosition: 'translate(8%, 0%)',
+      toolTipIconWidth: isMobile && '20px',
+      toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },
       cardContent: (
         <>
           <ListViewContent
@@ -113,7 +117,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
               'APY includes annualized BANANA rewards and rewards for providing liquidity (DEX swap fees), compounded daily.',
             )}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 38%)"
+            toolTipTransform="translate(8%, 0%)"
           />
           <ListViewContent
             title={t('APR')}
@@ -134,7 +138,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
               'BANANA reward APRs are calculated in real time. DEX swap fee APRs are calculated based on previous 24 hours of trading volume. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
             )}
             toolTipPlacement={i === farms.length - 1 && i !== 0 ? 'topLeft' : 'bottomLeft'}
-            toolTipTransform={i === farms.length - 1 && i !== 0 ? 'translate(0, -105%)' : 'translate(0, 38%)'}
+            toolTipTransform={i === farms.length - 1 && i !== 0 ? 'translate(-8%, 0%)' : 'translate(8%, 0%)'}
             aprCalculator={
               <ApyButton
                 lpLabel={`${farm?.stakeTokens?.token1?.symbol}-${farm?.stakeTokens?.token0?.symbol}`}
@@ -151,7 +155,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
             width={isMobile ? 100 : 180}
             toolTip={t('The total value of the LP tokens currently staked in this farm.')}
             toolTipPlacement={isMobile ? 'bottomRight' : 'bottomLeft'}
-            toolTipTransform={isMobile ? 'translate(-75%, 75%)' : 'translate(0%, 75%)'}
+            toolTipTransform={isMobile ? 'translate(13%, 0%)' : 'translate(23%, 0%)'}
           />
           <ListViewContent
             title={t('Earned')}
