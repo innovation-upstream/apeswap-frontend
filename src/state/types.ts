@@ -110,6 +110,7 @@ export interface UserBill {
   truePricePaid: string
   lastBlockTimestamp: string
   pendingRewards: string
+  billNftAddress: string
   nftData?: UserBillNft
 }
 
