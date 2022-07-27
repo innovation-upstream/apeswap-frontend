@@ -34,6 +34,7 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
                 placement={toolTipPlacement || 'topLeft'}
                 transformTip={toolTipTransform}
                 body={<Flex>{toolTip}</Flex>}
+                width="180px"
               >
                 <TitleText lineHeight={lineHeight}>
                   {title}
