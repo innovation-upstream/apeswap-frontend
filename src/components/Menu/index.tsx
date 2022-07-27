@@ -15,9 +15,16 @@ import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { languageList } from '../../config/localization/languages'
 import ethConfig from './chains/ethConfig'
+import iframeConfig from './chains/iframeConfig'
 import MoonPayModal from '../../views/Topup/MoonpayModal'
 
 const Menu = (props) => {
+  let isIframe = false;
+  try {
+    isIframe = window.self !== window.top;
+  } catch (e) {
+    console.error(e)
+  }
   const { account, chainId } = useActiveWeb3React()
   const { login, logout } = useAuth()
   const { switchNetwork } = useSelectNetwork()
@@ -32,14 +39,18 @@ const Menu = (props) => {
   const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
   const [onPresentModal] = useModal(<MoonPayModal />)
   const currentMenu = (translate: ContextApi['t']) => {
-    if (chainId === CHAIN_ID.BSC) {
+    if (chainId === CHAIN_ID.BSC && isIframe !== true) {
       return bscConfig(translate)
     }
-    if (chainId === CHAIN_ID.MATIC) {
+    if (chainId === CHAIN_ID.MATIC && isIframe !== true) {
       return maticConfig(translate)
     }
-    if (chainId === CHAIN_ID.ETH) {
+    if (chainId === CHAIN_ID.ETH && isIframe !== true) {
       return ethConfig(translate)
+    }
+    if (isIframe === true)
+    {
+      return iframeConfig(translate)
     }
     return bscConfig(translate)
   }
@@ -75,6 +86,7 @@ const Menu = (props) => {
       runFiat={onPresentModal}
       track={track}
       liveResult={liveIfos}
+      iframe={isIframe}
       {...props}
     />
   )
