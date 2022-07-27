@@ -132,12 +132,12 @@ export const fetchUserOwnedBillsDataAsync =
       dispatch(setUserOwnedBillsData(userOwnedBillsData))
 
       // Fetch owned bill NFT data
-      const ownedBillIds = mapUserOwnedBills.flatMap((bs) => {
+      const ownedBillsData = mapUserOwnedBills.flatMap((bs) => {
         return bs.map((b) => {
-          return b.id
+          return { id: b.id, billNftAddress: b.billNftAddress }
         })
       })
-      const userBillNftData = await fetchUserOwnedBillNftData(ownedBillIds)
+      const userBillNftData = await fetchUserOwnedBillNftData(ownedBillsData)
       const ownedBillsWithNftData = mapUserOwnedBills.map((bs, index) => {
         return {
           index: bills[index].index,
@@ -170,6 +170,9 @@ export const updateUserBalance =
     dispatch(updateBillsUserData({ index, field: 'stakingTokenBalance', value: tokenBalances[index] }))
   }
 
+/**
+ * @deprecated since multiple NFT contracts
+ */
 export const updateUserNftData =
   (index: number, billNftId: string, transactionHash: string): AppThunk =>
   async (dispatch) => {
