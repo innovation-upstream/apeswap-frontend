@@ -89,7 +89,10 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       titleContainerWidth: 400,
       id: vault.id,
       infoContent: <InfoContent vault={vault} />,
-      infoContentPosition: 'translate(-82%, 28%)',
+      infoContentPosition: 'translate(8%, 0%)',
+      ttWidth: '250px',
+      toolTipIconWidth: isMobile && '20px',
+      toolTipStyle: isMobile && { marginTop: '10px', marginRight: '10px' },
       expandedContentJustified: vault.version === 'V1' && 'center',
       open: openId === vault.id,
       cardContent: (
@@ -102,7 +105,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
               'Daily APY includes BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.',
             )}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 40%)"
+            toolTipTransform="translate(25%, 0%)"
             height={50}
           />
           <ListViewContent
@@ -113,7 +116,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
               'Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.',
             )}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 40%)"
+            toolTipTransform="translate(28%, 0%)"
             height={50}
           />
           <ListViewContent
@@ -121,8 +124,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
             width={isMobile ? 100 : 170}
             toolTip={t('The total value of the tokens currently staked in this vault.')}
-            toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0%, 75%)"
+            toolTipPlacement="bottomRight"
+            toolTipTransform="translate(13%, 0%)"
             height={50}
           />
           <ListViewContent

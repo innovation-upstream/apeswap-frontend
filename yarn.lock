@@ -55,7 +55,7 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
-
+    
 "@apeswapfinance/token-lists@1.0.301":
   version "1.0.301"
   resolved "https://npm.pkg.github.com/download/@apeswapfinance/token-lists/1.0.301/5d551835dc3575a675ee295dc65caab472be22542be55ddc969beadc06903d97#9642cd96810764fa9b4ad8206627cad0765fbae0"
