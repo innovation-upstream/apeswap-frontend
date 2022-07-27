@@ -22,16 +22,16 @@ export const usePollBills = () => {
 }
 
 export const usePollUserBills = (): Bills[] => {
-  const { slowRefresh } = useRefresh()
+  const { fastRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   const { chainId, account } = useActiveWeb3React()
+  const bills = useSelector((state: State) => state.bills.data)
   useEffect(() => {
     if (account) {
       dispatch(fetchBillsUserDataAsync(chainId, account))
       dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
     }
-  }, [account, dispatch, slowRefresh, chainId])
-  const bills = useSelector((state: State) => state.bills.data)
+  }, [account, dispatch, fastRefresh, bills, chainId])
   return bills
 }
 
