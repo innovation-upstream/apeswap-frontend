@@ -1,7 +1,5 @@
 import { JSBI, Percent, Token, ChainId, WETH } from '@apeswapfinance/sdk'
 
-import farms from './farms'
-
 export enum RouterTypes {
   APE = 'APE',
   SMART = 'SMART',
@@ -157,12 +155,4 @@ export const PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN: Percent = new Percent(JSBI.Bi
 // for non expert mode disable swaps above this
 export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(1500), BIPS_BASE) // 15%
 
-const communityFarms = farms.filter((farm) => farm.isCommunity).map((farm) => farm.tokenSymbol)
-const farmsConfig = farms
-
-export { farmsConfig, communityFarms }
-export { default as poolsConfig } from './pools'
-export { default as vaultsConfig } from './vaults'
 export { default as ifosConfig } from './ifo'
-export { default as dualFarmsConfig } from './dualFarms'
-export { default as jungleFarmsConfig } from './jungleFarms'

@@ -1,7 +1,6 @@
 import { SmartRouter } from '@apeswapfinance/sdk'
 import { SMART_PRICE_GETTERS } from 'config/constants/chains'
 import addresses from 'config/constants/contracts'
-import tokens from 'config/constants/tokens'
 
 export const getBananaAddress = (chainId: number) => {
   return addresses.banana[chainId]
@@ -74,9 +73,4 @@ export const getIazoSettingsAddress = (chainId: number) => {
 }
 export const getIazoFactoryAddress = (chainId: number) => {
   return addresses.iazoFactoryProxy[chainId]
-}
-export const getTokenSymbolFromAddress = (chainId: number, address: string) => {
-  return Object.keys(tokens).find((token) => {
-    return tokens[token].address[chainId] === address
-  })
 }

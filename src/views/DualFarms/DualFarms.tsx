@@ -3,9 +3,9 @@ import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { Flex } from '@apeswapfinance/uikit'
 import { useFetchFarmLpAprs } from 'state/hooks'
-import { useDualFarms, usePollDualFarms } from 'state/dualFarms/hooks'
+import { useDualFarms, usePollDualFarms, useSetDualFarms } from 'state/dualFarms/hooks'
 import { useFarmOrderings, useFarmTags } from 'state/farms/hooks'
-import { DualFarm, Farm } from 'state/types'
+import { DualFarm } from 'state/types'
 import { orderBy } from 'lodash'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
@@ -22,6 +22,7 @@ const params = new URLSearchParams(search)
 const urlSearchedFarm = parseInt(params.get('pid'))
 
 const DualFarms: React.FC = () => {
+  useSetDualFarms()
   usePollDualFarms()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)

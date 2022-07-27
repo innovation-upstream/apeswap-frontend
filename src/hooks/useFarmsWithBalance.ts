@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import { ChainId } from '@apeswapfinance/sdk'
 import masterChefABI from 'config/abi/masterchef.json'
 import miniChefABI from 'config/abi/miniApeV2.json'
-import { ChainId } from '@apeswapfinance/sdk'
-import { dualFarmsConfig, farmsConfig } from 'config/constants'
 import multicall from 'utils/multicall'
+import { useFarms } from 'state/farms/hooks'
+import { useDualFarms } from 'state/dualFarms/hooks'
 import useRefresh from './useRefresh'
 import { useMasterChefAddress, useMiniChefAddress } from './useAddress'
 import { useMulticallContract } from './useContract'
@@ -17,6 +18,8 @@ const useFarmsWithBalance = () => {
   const multicallContract = useMulticallContract()
   const masterChefAddress = useMasterChefAddress()
   const miniChefAddress = useMiniChefAddress()
+  const farmsConfig = useFarms(null)
+  const dualFarmsConfig = useDualFarms(null)
 
   useEffect(() => {
     const fetchBSCBalances = async () => {
@@ -62,7 +65,16 @@ const useFarmsWithBalance = () => {
         fetchMiniChefBalances()
       }
     }
-  }, [account, fastRefresh, multicallContract, masterChefAddress, miniChefAddress, chainId])
+  }, [
+    account,
+    fastRefresh,
+    multicallContract,
+    masterChefAddress,
+    miniChefAddress,
+    farmsConfig,
+    dualFarmsConfig,
+    chainId,
+  ])
 
   return farmsWithBalances
 }

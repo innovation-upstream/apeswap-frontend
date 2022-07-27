@@ -1,6 +1,4 @@
-/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
-import bills from 'config/constants/bills'
 import {
   fetchBillsAllowance,
   fetchUserBalances,
@@ -10,13 +8,17 @@ import {
 import { TokenPrices, AppThunk, BillsState, Bills } from '../types'
 import fetchBills from './fetchBills'
 import { getNewBillNftData } from './getBillNftData'
+import fetchBillsConfig from './api'
 
-const initialState: BillsState = { data: [...bills] }
+const initialState: BillsState = { data: [] }
 
 export const billsSlice = createSlice({
   name: 'Bills',
   initialState,
   reducers: {
+    setInitialBillsData: (state, action) => {
+      state.data = action.payload
+    },
     setBillsPublicData: (state, action) => {
       const liveBillsData: Bills[] = action.payload
       state.data = state.data.map((bill) => {
@@ -63,6 +65,7 @@ export const billsSlice = createSlice({
 
 // Actions
 export const {
+  setInitialBillsData,
   setBillsPublicData,
   setBillsUserData,
   setUserOwnedBillsData,
@@ -71,11 +74,22 @@ export const {
 } = billsSlice.actions
 
 // Thunks
+
+export const setInitialBillsDataAsync = () => async (dispatch) => {
+  try {
+    const initialBillState: Bills[] = await fetchBillsConfig()
+    dispatch(setInitialBillsData(initialBillState || []))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const fetchBillsPublicDataAsync =
   (chainId: number, tokenPrices: TokenPrices[]): AppThunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
-      const returnedBills = await fetchBills(chainId, tokenPrices)
+      const bills = getState().bills.data
+      const returnedBills = await fetchBills(chainId, tokenPrices, bills)
       dispatch(setBillsPublicData(returnedBills))
     } catch (error) {
       console.warn(error)
@@ -84,11 +98,12 @@ export const fetchBillsPublicDataAsync =
 
 export const fetchBillsUserDataAsync =
   (chainId: number, account): AppThunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
       // fetch and set user bill interaction data
-      const allowances = await fetchBillsAllowance(chainId, account)
-      const stakingTokenBalances = await fetchUserBalances(chainId, account)
+      const bills = getState().bills.data
+      const allowances = await fetchBillsAllowance(chainId, account, bills)
+      const stakingTokenBalances = await fetchUserBalances(chainId, account, bills)
       const userData = bills.map((bill) => ({
         index: bill.index,
         allowance: allowances[bill.index],
@@ -102,10 +117,11 @@ export const fetchBillsUserDataAsync =
 
 export const fetchUserOwnedBillsDataAsync =
   (chainId: number, account): AppThunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
       // Fetch and set user owned bill data without NFT Data
-      const userOwnedBills = await fetchUserOwnedBills(chainId, account)
+      const bills = getState().bills.data
+      const userOwnedBills = await fetchUserOwnedBills(chainId, account, bills)
       const mapUserOwnedBills = bills.map((bill) =>
         userOwnedBills.filter((b) => b.address === bill.contractAddress[chainId]),
       )
@@ -116,12 +132,12 @@ export const fetchUserOwnedBillsDataAsync =
       dispatch(setUserOwnedBillsData(userOwnedBillsData))
 
       // Fetch owned bill NFT data
-      const ownedBillIds = mapUserOwnedBills.flatMap((bs) => {
+      const ownedBillsData = mapUserOwnedBills.flatMap((bs) => {
         return bs.map((b) => {
-          return b.id
+          return { id: b.id, billNftAddress: b.billNftAddress }
         })
       })
-      const userBillNftData = await fetchUserOwnedBillNftData(ownedBillIds)
+      const userBillNftData = await fetchUserOwnedBillNftData(ownedBillsData)
       const ownedBillsWithNftData = mapUserOwnedBills.map((bs, index) => {
         return {
           index: bills[index].index,
@@ -140,18 +156,23 @@ export const fetchUserOwnedBillsDataAsync =
 
 export const updateUserAllowance =
   (chainId: number, index: number, account: string): AppThunk =>
-  async (dispatch) => {
-    const allowances = await fetchBillsAllowance(chainId, account)
+  async (dispatch, getState) => {
+    const bills = getState().bills.data
+    const allowances = await fetchBillsAllowance(chainId, account, bills)
     dispatch(updateBillsUserData({ index, field: 'allowance', value: allowances[index] }))
   }
 
 export const updateUserBalance =
   (chainId: number, index: string, account: string): AppThunk =>
-  async (dispatch) => {
-    const tokenBalances = await fetchUserBalances(chainId, account)
+  async (dispatch, getState) => {
+    const bills = getState().bills.data
+    const tokenBalances = await fetchUserBalances(chainId, account, bills)
     dispatch(updateBillsUserData({ index, field: 'stakingTokenBalance', value: tokenBalances[index] }))
   }
 
+/**
+ * @deprecated since multiple NFT contracts
+ */
 export const updateUserNftData =
   (index: number, billNftId: string, transactionHash: string): AppThunk =>
   async (dispatch) => {

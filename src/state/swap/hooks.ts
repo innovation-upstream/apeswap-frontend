@@ -14,11 +14,11 @@ import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import tokens from 'config/constants/tokens'
 import useENS from 'hooks/ENS/useENS'
 import { useCurrency } from 'hooks/Tokens'
 import { useAllCommonPairs } from 'hooks/Trades'
 import useParsedQueryString from 'hooks/useParsedQueryString'
+import contracts from 'config/constants/contracts'
 import useFindBestRoute from 'hooks/useFindBestRoute'
 import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
@@ -309,7 +309,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
 
-  const chainAddress = tokens.banana.address[chainId]
+  const chainAddress = contracts.banana[chainId]
 
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
@@ -354,7 +354,9 @@ export function useDefaultsFromURLSearch():
   useEffect(() => {
     if (!chainId) return
     const parsed = queryParametersToSwapState(parsedQs, chainId)
+    console.log(parsed)
 
+    console.log(chainId)
     dispatch(
       replaceSwapState({
         typedValue: parsed.typedValue,

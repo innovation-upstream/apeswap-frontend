@@ -32,9 +32,9 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
     const token2 = pool?.rewardToken?.symbol
     const totalDollarAmountStaked = Math.round(getBalanceNumber(pool?.totalStaked) * pool?.stakingToken?.price)
     const liquidityUrl = !pool?.lpStaking
-      ? pool.stakingToken.symbol === 'GNANA'
+      ? pool?.stakingToken?.symbol === 'GNANA'
         ? 'https://apeswap.finance/gnana'
-        : `https://apeswap.finance/swap?outputCurrency=${pool?.stakingToken.address[chainId]}`
+        : `https://apeswap.finance/swap?outputCurrency=${pool?.stakingToken?.address[chainId]}`
       : `${BASE_ADD_LIQUIDITY_URL}/${pool?.lpTokens?.token?.address[chainId]}/${pool?.lpTokens?.quoteToken?.address[chainId]}`
     const userAllowance = pool?.userData?.allowance
     const userEarnings = getBalanceNumber(
@@ -67,7 +67,10 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
       title: <Text bold>{pool?.rewardToken?.symbol || pool?.tokenName}</Text>,
       id: pool.sousId,
       infoContent: <InfoContent pool={pool} />,
-      infoContentPosition: 'translate(-82%, 28%)',
+      infoContentPosition: 'translate(8%, 0%)',
+      ttWidth: '250px',
+      toolTipIconWidth: isMobile && '20px',
+      toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },
       open: openId === pool.sousId,
       cardContent: (
         <>
@@ -90,7 +93,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
             height={50}
             toolTip={t('APRs are calculated based on current value of the token, reward rate, and share of pool.')}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 60%)"
+            toolTipTransform="translate(10%, 0%)"
             aprCalculator={
               <ApyButton
                 lpLabel={pool?.stakingToken?.symbol}
@@ -107,8 +110,8 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
             width={isMobile ? 160 : 110}
             height={50}
             toolTip={t('The total value of the tokens currently staked in this pool.')}
-            toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0%, 75%)"
+            toolTipPlacement="bottomRight"
+            toolTipTransform="translate(13%, 0%)"
           />
           <ListViewContent title={t('Earned')} value={userEarningsUsd} height={50} width={isMobile ? 80 : 150} />
         </>

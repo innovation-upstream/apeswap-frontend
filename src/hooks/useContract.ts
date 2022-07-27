@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 import { ChainId } from '@apeswapfinance/sdk'
 import { Contract } from '@ethersproject/contracts'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
-import { jungleFarmsConfig, poolsConfig } from 'config/constants'
-import nfaStakingPools from 'config/constants/nfaStakingPools'
+import { useSelector } from 'react-redux'
+import { State } from 'state/types'
 import ifo from 'config/abi/ifo.json'
 import billAbi from 'config/abi/bill.json'
 import multicallV3 from 'config/abi/multicallv3.json'
@@ -138,20 +138,23 @@ export const useMasterchef = () => {
 
 export const useSousChef = (id) => {
   // Using selector to avoid circular dependecies
-  const { chainId } = useActiveWeb3React()
+  const chainId = useSelector((state: State) => state.network.data.chainId)
+  const poolsConfig = useSelector((state: State) => state.pools.data)
   const config = poolsConfig.find((pool) => pool.sousId === id)
 
   return useContract(sousChef, config.contractAddress[chainId]) as SousChef
 }
 
 export const useJungleChef = (id) => {
-  const { chainId } = useActiveWeb3React()
+  const chainId = useSelector((state: State) => state.network.data.chainId)
+  const jungleFarmsConfig = useSelector((state: State) => state.jungleFarms.data)
   const config = jungleFarmsConfig.find((pool) => pool.jungleId === id)
 
   return useContract(jungleChef, config.contractAddress[chainId]) as JungleChef
 }
 
 export const useNfaStakingChef = (id) => {
+  const nfaStakingPools = useSelector((state: State) => state.nfaStakingPools.data)
   const config = nfaStakingPools.find((pool) => pool.sousId === id)
   const rawAbi = nfaStakingAbi
   return useContract(rawAbi, config.contractAddress[process.env.REACT_APP_CHAIN_ID]) as NfaStaking
