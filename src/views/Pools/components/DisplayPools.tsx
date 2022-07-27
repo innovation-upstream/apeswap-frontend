@@ -32,9 +32,9 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
     const token2 = pool?.rewardToken?.symbol
     const totalDollarAmountStaked = Math.round(getBalanceNumber(pool?.totalStaked) * pool?.stakingToken?.price)
     const liquidityUrl = !pool?.lpStaking
-      ? pool.stakingToken.symbol === 'GNANA'
+      ? pool?.stakingToken?.symbol === 'GNANA'
         ? 'https://apeswap.finance/gnana'
-        : `https://apeswap.finance/swap?outputCurrency=${pool?.stakingToken.address[chainId]}`
+        : `https://apeswap.finance/swap?outputCurrency=${pool?.stakingToken?.address[chainId]}`
       : `${BASE_ADD_LIQUIDITY_URL}/${pool?.lpTokens?.token?.address[chainId]}/${pool?.lpTokens?.quoteToken?.address[chainId]}`
     const userAllowance = pool?.userData?.allowance
     const userEarnings = getBalanceNumber(

@@ -1,7 +1,7 @@
 import { Flex } from '@apeswapfinance/uikit'
 import { useLocation } from 'react-router-dom'
 import React, { useState } from 'react'
-import { usePollBills, useBills, usePollUserBills } from 'state/bills/hooks'
+import { usePollBills, useBills, usePollUserBills, useSetBills } from 'state/bills/hooks'
 import { Bills as BillType } from 'state/types'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
@@ -11,6 +11,7 @@ import UserBillViews from './components/UserBillViews'
 import BillMenu from './components/Menu'
 
 const Bills: React.FC = () => {
+  useSetBills()
   usePollBills()
   usePollUserBills()
   const bills = useBills()

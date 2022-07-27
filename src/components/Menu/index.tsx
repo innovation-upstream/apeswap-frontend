@@ -7,8 +7,9 @@ import useAuth from 'hooks/useAuth'
 import { CHAIN_ID } from 'config/constants/chains'
 import useTheme from 'hooks/useTheme'
 import { ContextApi } from 'contexts/Localization/types'
+import { useBananaPrice } from 'state/tokenPrices/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { useProfile, useTokenPrices, useLiveIfoStatus } from 'state/hooks'
+import { useProfile, useLiveIfoStatus } from 'state/hooks'
 import useSelectNetwork from 'hooks/useSelectNetwork'
 import track from 'utils/track'
 import bscConfig from './chains/bscConfig'
@@ -19,9 +20,9 @@ import iframeConfig from './chains/iframeConfig'
 import MoonPayModal from '../../views/Topup/MoonpayModal'
 
 const Menu = (props) => {
-  let isIframe = false;
+  let isIframe = false
   try {
-    isIframe = window.self !== window.top;
+    isIframe = window.self !== window.top
   } catch (e) {
     console.error(e)
   }
@@ -29,14 +30,13 @@ const Menu = (props) => {
   const { login, logout } = useAuth()
   const { switchNetwork } = useSelectNetwork()
   const { isDark, toggleTheme } = useTheme()
-  const { tokenPrices } = useTokenPrices()
   const { profile } = useProfile()
   const { t, setLanguage, currentLanguage } = useTranslation()
   const { liveIfos } = useLiveIfoStatus()
   const { fastRefresh } = useRefresh()
   const [uDName, setUDName] = useState(null)
 
-  const bananaPriceUsd = tokenPrices?.find((token) => token.symbol === 'BANANA')?.price
+  const bananaPriceUsd = useBananaPrice()
   const [onPresentModal] = useModal(<MoonPayModal />)
   const currentMenu = (translate: ContextApi['t']) => {
     if (chainId === CHAIN_ID.BSC && isIframe !== true) {
@@ -48,8 +48,7 @@ const Menu = (props) => {
     if (chainId === CHAIN_ID.ETH && isIframe !== true) {
       return ethConfig(translate)
     }
-    if (isIframe === true)
-    {
+    if (isIframe === true) {
       return iframeConfig(translate)
     }
     return bscConfig(translate)

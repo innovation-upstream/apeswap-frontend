@@ -147,6 +147,7 @@ export interface Token {
   dontFetch?: boolean
   lpToken?: boolean
   price?: number
+  active?: boolean
 }
 
 export type Images = {

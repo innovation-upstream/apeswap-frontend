@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { AutoRenewIcon } from '@apeswapfinance/uikit'
 import { useHistory } from 'react-router-dom'
 import useCreateIazo from 'views/Iazos/hooks/useCreateIazo'
-import tokens from 'config/constants/tokens'
+import { useSelector } from 'react-redux'
+import { State } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import useCreateIazoApi from 'views/Iazos/hooks/useCreateIazoApi'
@@ -23,6 +24,7 @@ const CreatePresale: React.FC<CreatePresaleProps> = ({ presaleData, disabled, cr
   const { chainId, account } = useWeb3React()
   const history = useHistory()
   const { toastSuccess, toastError } = useToast()
+  const tokens = useSelector((state: State) => state.tokenPrices.tokens)
   const { datesSelected, pairCreation, postsaleDetails, presaleTokenDetails, information } = presaleData
   const { tokenAddress, quoteToken, tokenDecimals, tokenSymbol } = pairCreation
   const { burnRemains, pricePerToken, softcap, limitPerUser, tokensForSale } = presaleTokenDetails
