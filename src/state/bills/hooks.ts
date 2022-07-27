@@ -31,7 +31,7 @@ export const usePollUserBills = (): Bills[] => {
       dispatch(fetchBillsUserDataAsync(chainId, account))
       dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
     }
-  }, [account, dispatch, fastRefresh, bills, chainId])
+  }, [account, dispatch, fastRefresh, chainId])
   return bills
 }
 
