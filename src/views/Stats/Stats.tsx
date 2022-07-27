@@ -7,7 +7,7 @@ import { useFetchStats, useFetchStatsOverall, useStats } from 'state/statsOveral
 import BananaStats from 'views/Stats/components/BananaStats'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { usePollFarms } from 'state/farms/hooks'
-import { usePollPools } from 'state/hooks'
+import { usePollPools } from 'state/pools/hooks'
 import UnlockButton from 'components/UnlockButton'
 import CardStats from './components/CardStats'
 import PageLoader from '../../components/PageLoader'

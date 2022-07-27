@@ -1,8 +1,6 @@
 import { useMemo } from 'react'
 import { Contract } from '@ethersproject/contracts'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
-import { jungleFarmsConfig, poolsConfig } from 'config/constants'
-import nfaStakingPools from 'config/constants/nfaStakingPools'
 import { CHAIN_ID } from 'config/constants/chains'
 import ifo from 'config/abi/ifo.json'
 import billAbi from 'config/abi/bill.json'
@@ -138,6 +136,7 @@ export const useMasterchef = () => {
 export const useSousChef = (id) => {
   // Using selector to avoid circular dependecies
   const chainId = useSelector((state: State) => state.network.data.chainId)
+  const poolsConfig = useSelector((state: State) => state.pools.data)
   const config = poolsConfig.find((pool) => pool.sousId === id)
 
   return useContract(sousChef, config.contractAddress[chainId]) as SousChef
@@ -145,12 +144,14 @@ export const useSousChef = (id) => {
 
 export const useJungleChef = (id) => {
   const chainId = useSelector((state: State) => state.network.data.chainId)
+  const jungleFarmsConfig = useSelector((state: State) => state.jungleFarms.data)
   const config = jungleFarmsConfig.find((pool) => pool.jungleId === id)
 
   return useContract(jungleChef, config.contractAddress[chainId]) as JungleChef
 }
 
 export const useNfaStakingChef = (id) => {
+  const nfaStakingPools = useSelector((state: State) => state.nfaStakingPools.data)
   const config = nfaStakingPools.find((pool) => pool.sousId === id)
   const rawAbi = nfaStakingAbi
   return useContract(rawAbi, config.contractAddress[process.env.REACT_APP_CHAIN_ID]) as NfaStaking

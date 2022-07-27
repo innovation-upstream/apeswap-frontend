@@ -11,7 +11,7 @@ import MenuTabButtons from 'components/ListViewMenu/MenuTabButtons'
 import useWindowSize, { Size } from 'hooks/useDimensions'
 import { useBlock } from 'state/block/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePollPools, usePools } from 'state/hooks'
+import { usePollPools, usePools, useSetPools } from 'state/pools/hooks'
 import { Pool } from 'state/types'
 import Page from 'components/layout/Page'
 import ToggleView from './components/ToggleView/ToggleView'
@@ -489,6 +489,7 @@ const TableContainer = styled.div`
 const NUMBER_OF_POOLS_VISIBLE = 12
 
 const Pools: React.FC = () => {
+  useSetPools()
   usePollPools()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [gnanaOnly, setGnanaOnly] = useState(false)

@@ -4,7 +4,7 @@ import { userBuyBill } from 'utils/callHelpers'
 import { useBillContract } from 'hooks/useContract'
 import track from 'utils/track'
 import BigNumber from 'bignumber.js'
-import { getBillType } from './getBillType'
+import { useBillType } from './useBillType'
 
 const DEFAULT_SLIPPAGE = 102 // Maximum of 2% slippage when buying Bill
 // Buy a Bill
@@ -17,7 +17,7 @@ const useBuyBill = (
 ) => {
   const { chainId, account } = useActiveWeb3React()
   const billContract = useBillContract(billAddress)
-  const billType: string = getBillType(billAddress, chainId)
+  const billType: string = useBillType(billAddress)
   const usdAmount: number = parseFloat(amount) * lpPrice
   const maxPrice = new BigNumber(price).times(slippage).div(100)
   const handleBuyBill = useCallback(async () => {

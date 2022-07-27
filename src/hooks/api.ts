@@ -13,6 +13,8 @@ export const baseUrlStrapi = 'https://apeswap-strapi.herokuapp.com'
 const EXCHANGE_SUBGRAPH_URL = 'https://graph.apeswap.finance/subgraphs/name/ape-swap/apeswap-subgraph'
 const EXCHANGE_POLYGON_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/apeswapfinance/dex-polygon'
 
+export const apeswapListUrl =
+  process.env.REACT_APP_LISTS_CONFIG_URL || 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-lists/main/config'
 /* eslint-disable camelcase */
 
 export interface TradePair {
