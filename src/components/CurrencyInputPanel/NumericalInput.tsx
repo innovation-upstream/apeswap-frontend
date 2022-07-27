@@ -1,6 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Flex } from '@ape.swap/uikit'
+import styled from '@emotion/styled'
 import { useTranslation } from 'contexts/Localization'
 import { escapeRegExp } from '../../utils'
 
@@ -8,17 +8,19 @@ const StyledInput = styled.input<{
   error?: boolean
   fontSize?: string
   align?: string
-  width?: string
-  fontWeight?: number
-  marginRight: string
-  removeLiquidity: boolean
+  removeLiquidity?: boolean
+  disabledText?: boolean
 }>`
   color: ${({ error, theme }) => (error ? theme.colors.error : theme.colors.text)};
-  width: ${({ width }) => (width === 'full' ? 'initial' : 0)};
+  opacity: ${({ disabledText }) => disabledText && 0.4};
+  display: inline-block;
+  width: inherit;
   height: 100%;
   position: relative;
-  font-weight: 500;
-  outline: none;
+  font-weight: 700;
+  minwidth: auto;
+  width: auto;
+  maxwidth: auto;
   border: none;
   outline: none;
   flex: 1 1 auto;
@@ -29,11 +31,9 @@ const StyledInput = styled.input<{
   overflow: hidden;
   text-overflow: ellipsis;
   content: '%';
-  padding: 0px;
-  margin-left: ${({ align, width }) => (align === 'left' || width === 'full' ? '20px' : '0px')};
-  margin-right: ${({ marginRight }) => marginRight}
+  padding: 0 0 0 0px;
   -webkit-appearance: textfield;
-  
+
   ::-webkit-search-decoration {
     -webkit-appearance: none;
   }
@@ -53,9 +53,6 @@ const StyledInput = styled.input<{
   ::after {
     content: '%';
   }
-  :disabled {
-    opacity: 0.5;
-  }
 `
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
@@ -65,6 +62,7 @@ export const Input = React.memo(function InnerInput({
   onUserInput,
   placeholder,
   removeLiquidity,
+  disabledText,
   ...rest
 }: {
   value: string | number
@@ -72,9 +70,8 @@ export const Input = React.memo(function InnerInput({
   removeLiquidity?: boolean
   error?: boolean
   fontSize?: string
+  disabledText?: boolean
   align?: 'right' | 'left'
-  width?: 'default' | 'full'
-  fontWeight?: number
 } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'as'>) {
   const { t } = useTranslation()
   const enforcer = (nextUserInput: string) => {
@@ -105,9 +102,10 @@ export const Input = React.memo(function InnerInput({
         minLength={1}
         maxLength={79}
         spellCheck="false"
-        fontSize="20px"
+        fontSize="22px"
+        style={{ marginRight: removeLiquidity ? '0px' : '10px' }}
         removeLiquidity={removeLiquidity}
-        marginRight="0"
+        disabledText={disabledText}
       />
     </Flex>
   )

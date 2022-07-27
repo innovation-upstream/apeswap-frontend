@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useNetworkChainId, useTokenPrices } from 'state/hooks'
-import { JungleFarm, State } from 'state/types'
+import { JungleFarm, State, StatsState } from 'state/types'
 import { fetchJungleFarmsPublicDataAsync, fetchJungleFarmsUserDataAsync } from '.'
 
 export const usePollJungleFarms = () => {
@@ -32,4 +32,18 @@ export const useJungleFarms = (account): JungleFarm[] => {
 
   const farms = useSelector((state: State) => state.jungleFarms.data)
   return farms
+}
+
+export const useJungleFarmTags = (chainId: number) => {
+  const { Tags }: StatsState = useSelector((state: State) => state.stats)
+  const jungleFarmTags = Tags?.[`${chainId}`]?.jungleFarms
+
+  return { jungleFarmTags }
+}
+
+export const useJungleFarmOrderings = (chainId: number) => {
+  const { Ordering }: StatsState = useSelector((state: State) => state.stats)
+  const jungleFarmOrderings = Ordering?.[`${chainId}`]?.jungleFarms
+
+  return { jungleFarmOrderings }
 }

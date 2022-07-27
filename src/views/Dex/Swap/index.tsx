@@ -129,9 +129,12 @@ const Swap: React.FC = () => {
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
 
-  const fetchingBestRoute = swapDelay === SwapDelay.INPUT_DELAY || swapDelay === SwapDelay.LOADING_ROUTE
+  const fetchingBestRoute =
+    swapDelay === SwapDelay.USER_INPUT ||
+    swapDelay === SwapDelay.FETCHING_SWAP ||
+    swapDelay === SwapDelay.FETCHING_BONUS
 
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const { priceImpactWithoutFee } = computeTradePriceBreakdown(chainId, bestRoute.smartRouter, trade)
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState((prevState) => ({ ...prevState, tradeToConfirm: trade }))
@@ -157,6 +160,8 @@ const Swap: React.FC = () => {
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
   )
 
+  const { routerType } = bestRoute
+
   const handleSwap = useCallback(() => {
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
       return
@@ -173,6 +178,7 @@ const Swap: React.FC = () => {
           value: tradeValueUsd,
           chain: chainId,
           data: {
+            router: routerType,
             token1: trade?.inputAmount?.currency?.getSymbol(chainId),
             token2: trade?.outputAmount?.currency?.getSymbol(chainId),
             token1Amount: Number(trade?.inputAmount.toSignificant(6)),
@@ -188,7 +194,7 @@ const Swap: React.FC = () => {
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, trade, tradeValueUsd, chainId, t])
+  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, trade, tradeValueUsd, chainId, t, routerType])
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
@@ -225,6 +231,9 @@ const Swap: React.FC = () => {
             onCurrencySelect={onCurrencySelection}
             onUserInput={onUserInput}
             handleMaxInput={handleMaxInput}
+            smartRouter={bestRoute.smartRouter}
+            independentField={independentField}
+            disabled={fetchingBestRoute}
           />
           <SwapSwitchButton onClick={onSwitchTokens} />
           <DexPanel
@@ -235,7 +244,11 @@ const Swap: React.FC = () => {
             fieldType={Field.OUTPUT}
             onCurrencySelect={onCurrencySelection}
             onUserInput={onUserInput}
+            smartRouter={bestRoute.smartRouter}
+            independentField={independentField}
+            disabled={fetchingBestRoute}
           />
+
           <ExpertModeRecipient
             recipient={recipient}
             showWrap={showWrap}
@@ -262,6 +275,7 @@ const Swap: React.FC = () => {
             showWrap={showWrap}
             wrapType={wrapType}
             routerType={bestRoute.routerType}
+            smartRouter={bestRoute.smartRouter}
             swapCallbackError={swapCallbackError}
             priceImpactWithoutFee={priceImpactWithoutFee}
             userHasSpecifiedInputOutput={userHasSpecifiedInputOutput}

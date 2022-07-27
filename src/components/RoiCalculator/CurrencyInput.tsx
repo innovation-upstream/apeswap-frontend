@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Text } from '@ape.swap/uikit'
 import { Flex } from 'theme-ui'
-import NumericalInput from 'components/CurrencyInputPanel/NumericalInput'
+import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
 import { RowBetween } from '../layout/Row'
 import styles from './styles'
 
@@ -35,7 +35,7 @@ export default function CurrencyInputPanelRoi({
             value={tokenValue}
             align="right"
             width="full"
-            fontWeight={700}
+            // fontWeight={700}
             onUserInput={onUserInput}
             autoFocus
           />

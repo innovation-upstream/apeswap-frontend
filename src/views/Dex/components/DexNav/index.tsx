@@ -1,16 +1,18 @@
 /** @jsxImportSource theme-ui */
-import { Link, useLocation } from 'react-router-dom'
-import { CogIcon, Flex, Text, useModal } from '@ape.swap/uikit'
+import { Link, useHistory } from 'react-router-dom'
+import { CogIcon, Flex, Text, useModal, RunFiatButton } from '@ape.swap/uikit'
+import track from 'utils/track'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { CHAIN_ID } from 'config/constants/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import MoonPayModal from 'views/Topup/MoonpayModal'
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
 
-const DexNav: React.FC = () => {
+const DexNav = () => {
   const { t } = useTranslation()
-  const { pathname } = useLocation()
+  const { pathname } = useHistory().location
   const { chainId } = useActiveWeb3React()
 
   const onLiquidity =
@@ -20,6 +22,7 @@ const DexNav: React.FC = () => {
     pathname?.includes('find')
 
   const [onPresentSettingsModal] = useModal(<SettingsModal />)
+  const [onPresentModal] = useModal(<MoonPayModal />)
 
   return (
     <Flex sx={styles.dexNavContainer}>
@@ -67,7 +70,15 @@ const DexNav: React.FC = () => {
         </Text>
       </Flex>
       <Flex sx={{ ...styles.navIconContainer }}>
-        {/* <CardIcon sx={{cursor: 'pointer'}}/> */}
+        <RunFiatButton
+          sx={{ marginRight: '2px', width: '20px' }}
+          mini
+          t={t}
+          runFiat={onPresentModal}
+          track={track}
+          position="DEX"
+          chainId={chainId}
+        />
         <CogIcon sx={{ cursor: 'pointer' }} onClick={onPresentSettingsModal} />
       </Flex>
     </Flex>

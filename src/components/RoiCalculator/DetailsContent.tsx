@@ -48,7 +48,13 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const [onPresentAddLiquidityWidgetModal] = useModal(<LiquidityModal />, true, true, 'liquidityWidgetModal')
+  const [, closeModal] = useModal(<></>)
+  const [onPresentAddLiquidityWidgetModal] = useModal(
+    <LiquidityModal handleClose={closeModal} />,
+    true,
+    true,
+    'liquidityWidgetModal',
+  )
 
   useEffect(() => {
     if (!isLp) {
@@ -141,6 +147,7 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
           {!isLp && (
             <Link
               href={link}
+              target="_blank"
               sx={{
                 '&:hover': {
                   textDecoration: 'none',

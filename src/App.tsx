@@ -12,7 +12,7 @@ import {
   useFetchProfile,
   useUpdateNetwork,
   useFetchLiveIfoStatus,
-  useFetchLiveTags,
+  useFetchLiveTagsAndOrdering,
 } from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
 import GlobalStyle from './style/Global'
@@ -54,7 +54,7 @@ const Vaults = lazy(() => import('./views/Vaults'))
 const NfaStaking = lazy(() => import('./views/NfaStaking'))
 const Bills = lazy(() => import('./views/Bills'))
 const Orders = lazy(() => import('./views/Dex/Orders'))
-const Topup = lazy(() => import('./views/Topup'))
+// const Topup = lazy(() => import('./views/Topup'))
 const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/LegacyRemoveLiquidity/redirects'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
@@ -101,7 +101,7 @@ const App: React.FC = () => {
   usePollBlockNumber()
   useFetchProfile()
   useFetchLiveIfoStatus()
-  useFetchLiveTags()
+  useFetchLiveTagsAndOrdering()
 
   const { account, chainId } = useActiveWeb3React()
   const [showScrollIcon, setShowScrollIcon] = useState(false)

@@ -159,6 +159,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                 apy={parseFloat(farm?.apy)}
                 lpAddress={farm.lpAddresses[chainId]}
                 isLp
+                tokenAddress={farm.tokenAddresses[chainId]}
                 quoteTokenAddress={farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId]}
               />
             }

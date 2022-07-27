@@ -49,6 +49,7 @@ import {
   fetchHomepageTokenData,
   fetchLiveIfoStatus,
   fetchLiveTags,
+  fetchLiveOrdering,
 } from './stats'
 import { fetchAuctions } from './auction'
 import { setVaultsLoad } from './vaults'
@@ -545,25 +546,27 @@ export const useLiveIfoStatus = () => {
   return { liveIfos: LiveIfo }
 }
 
-// TAGS
-export const useFetchLiveTags = () => {
+export const useFetchLiveTagsAndOrdering = () => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   useEffect(() => {
+    dispatch(fetchLiveOrdering())
     dispatch(fetchLiveTags())
   }, [dispatch, slowRefresh])
 }
 
-export const useFarmTags = (chainId: number) => {
-  const { Tags }: StatsState = useSelector((state: State) => state.stats)
-  const farmTags = Tags?.[`${chainId}`].farms
-
-  return { farmTags }
-}
-
+// TAGS
 export const usePoolTags = (chainId: number) => {
   const { Tags }: StatsState = useSelector((state: State) => state.stats)
   const poolTags = Tags?.[`${chainId}`]?.pools
 
   return { poolTags }
+}
+
+// ORDERING
+export const usePoolOrderings = (chainId: number) => {
+  const { Ordering }: StatsState = useSelector((state: State) => state.stats)
+  const poolOrderings = Ordering?.[`${chainId}`]?.pools
+
+  return { poolOrderings }
 }
