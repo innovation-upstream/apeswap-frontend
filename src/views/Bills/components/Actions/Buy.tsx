@@ -24,11 +24,12 @@ const Buy: React.FC<BuyProps> = ({
   onBillId,
   onTransactionSubmited,
   value,
+  price,
   lpPrice,
 }) => {
   const formatUserLpValue = getFullDisplayBalance(new BigNumber(userLpValue))
   const { chainId, account } = useActiveWeb3React()
-  const { onBuyBill } = useBuyBill(billAddress, value, lpPrice)
+  const { onBuyBill } = useBuyBill(billAddress, value, lpPrice, price)
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
   const { toastSuccess, toastError } = useToast()

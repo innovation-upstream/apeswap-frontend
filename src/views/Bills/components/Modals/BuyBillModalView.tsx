@@ -129,6 +129,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
             <Flex flexDirection="column">
               <ActionButtonsContainer>
                 <Actions
+                  price={price}
                   token={token}
                   quoteToken={quoteToken}
                   lpToken={lpToken}

@@ -11,6 +11,7 @@ export interface BuyProps {
   onTransactionSubmited: (trxSent: boolean) => void
   value: string
   lpPrice: number
+  price: string
 }
 
 export interface ApproveProps {

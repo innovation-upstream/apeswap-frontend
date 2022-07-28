@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, LinkExternal, Svg, useModal } from '@apeswapfinance/uikit'
+import { Text, Svg, useModal } from '@apeswapfinance/uikit'
 import { TagVariants } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import ListView from 'components/ListView'
@@ -19,6 +19,7 @@ import CardActions from './CardActions'
 import { Container, FarmButton, NextArrow } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
 import { ActionContainer, StyledTag } from './CardActions/styles'
+import InfoContent from '../InfoContent'
 
 const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] }> = ({ farms, openPid, farmTags }) => {
   const { chainId } = useActiveWeb3React()
@@ -55,8 +56,6 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
 
   const farmsListView = farms.map((farm) => {
     const [token1, token2] = farm.lpSymbol.split('-')
-    const bscScanUrl = `https://bscscan.com/address/${farm.lpAddresses[chainId]}`
-    const { projectLink } = farm
     const userAllowance = farm?.userData?.allowance
     const userEarnings = getBalanceNumber(farm?.userData?.earnings || new BigNumber(0))?.toFixed(2)
     const userEarningsUsd = `$${(
@@ -68,6 +67,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
     ).toFixed(2)}`
     const fTag = farmTags?.find((tag) => tag.pid === farm.pid)
     const tagColor = fTag?.color as TagVariants
+
     return {
       tag: (
         <>
@@ -85,37 +85,10 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
       title: <Text bold>{farm.lpSymbol}</Text>,
       open: farm.pid === openPid,
       id: farm.pid,
-      infoContent: (
-        <>
-          <Flex flexDirection="column">
-            <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
-              <Text style={{ fontSize: '12px' }}>{t('Multiplier')}</Text>
-              <Text bold style={{ fontSize: '12px' }}>
-                {Math.round(parseFloat(farm.multiplier) * 1000) / 100}X
-              </Text>
-            </Flex>
-            <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
-              <Text style={{ fontSize: '12px' }}>{t('Stake')}</Text>
-              <Text bold style={{ fontSize: '12px' }}>
-                {farm.lpSymbol} {t('LP')}
-              </Text>
-            </Flex>
-            <Flex alignItems="center" justifyContent="center" mt="15px">
-              <LinkExternal href={bscScanUrl} style={{ fontSize: '14px' }}>
-                {t('View on BscScan')}
-              </LinkExternal>
-            </Flex>
-            {projectLink && (
-              <Flex alignItems="center" justifyContent="center" mt="15px">
-                <LinkExternal href={projectLink} style={{ fontSize: '14px' }}>
-                  {t('Learn More')}
-                </LinkExternal>
-              </Flex>
-            )}
-          </Flex>
-        </>
-      ),
-      infoContentPosition: 'translate(-81.5%, 32%)',
+      infoContent: <InfoContent farm={farm} />,
+      infoContentPosition: 'translate(8%, 0%)',
+      toolTipIconWidth: isMobile && '20px',
+      toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },
       cardContent: (
         <>
           <ListViewContent
@@ -127,7 +100,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
               'APY includes annualized BANANA rewards and rewards for providing liquidity (DEX swap fees), compounded daily.',
             )}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 50%)"
+            toolTipTransform="translate(8%, 0%)"
           />
           <ListViewContent
             title={t('APR')}
@@ -148,7 +121,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
               'BANANA reward APRs are calculated in real time. DEX swap fee APRs are calculated based on previous 24 hours of trading volume. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
             )}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 38%)"
+            toolTipTransform="translate(8%, 0%)"
             aprCalculator={
               <CalcButton
                 label={farm.lpSymbol}
@@ -170,7 +143,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
             width={isMobile ? 100 : 180}
             toolTip={t('The total value of the LP tokens currently staked in this farm.')}
             toolTipPlacement={isMobile ? 'bottomRight' : 'bottomLeft'}
-            toolTipTransform={isMobile ? 'translate(-75%, 75%)' : 'translate(0%, 75%)'}
+            toolTipTransform={isMobile ? 'translate(13%, 0%)' : 'translate(23%, 0%)'}
           />
           <ListViewContent title={t('Earned')} value={userEarnings} width={isMobile ? 65 : 120} />
         </>

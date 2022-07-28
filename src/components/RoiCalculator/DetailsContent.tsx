@@ -5,10 +5,10 @@ import { Button } from '@ape.swap/uikit'
 import { DropDownIcon } from 'components/ListView/styles'
 import { useTranslation } from 'contexts/Localization'
 import { useModal } from '@apeswapfinance/uikit'
+import { useBananaAddress, useGoldenBananaAddress } from 'hooks/useAddress'
 import { LiquidityModal } from 'components/LiquidityWidget'
 import { Field, selectCurrency } from 'state/swap/actions'
 import { useAppDispatch } from 'state'
-import tokens from 'config/constants/tokens'
 import { FarmButton } from 'views/Farms/components/styles'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Farm } from 'state/types'
@@ -47,6 +47,8 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const banana = useBananaAddress()
+  const gnana = useGoldenBananaAddress()
 
   const [, closeModal] = useModal(<></>)
   const [onPresentAddLiquidityWidgetModal] = useModal(
@@ -58,14 +60,14 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
 
   useEffect(() => {
     if (!isLp) {
-      if (tokenAddress?.toLowerCase() === tokens.banana.address[chainId].toLowerCase()) {
+      if (tokenAddress?.toLowerCase() === banana.toLowerCase()) {
         setLink('swap')
       }
-      if (tokenAddress?.toLowerCase() === tokens.gnana.address[chainId].toLowerCase()) {
+      if (tokenAddress?.toLowerCase() === gnana.toLowerCase()) {
         setLink('gnana')
       }
     }
-  }, [chainId, tokenAddress, isLp])
+  }, [chainId, tokenAddress, isLp, banana, gnana])
 
   const showLiquidity = (token?, quoteToken?) => {
     if (isLp) {

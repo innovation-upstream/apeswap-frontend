@@ -1,4 +1,4 @@
-import { OrderStatus, Order } from '@autonomylabs/limit-stop-orders'
+import { Order } from '@autonomylabs/limit-stop-orders'
 import { getAddress } from '@ethersproject/address'
 import React, { useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'

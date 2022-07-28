@@ -11,11 +11,12 @@ import { Farm } from 'state/types'
 import useIsMobile from 'hooks/useIsMobile'
 import { useTranslation } from 'contexts/Localization'
 import maxAmountSpend from 'utils/maxAmountSpend'
-import { useLpTokenPrices, useTokenPrices } from 'state/hooks'
+import { useLpTokenPrices } from 'state/hooks'
 import CurrencyInputPanel from './CurrencyInput'
 import DetailsContent from './DetailsContent'
 import styles from './styles'
 import ServiceTokenDisplay from '../ServiceTokenDisplay'
+import { useTokenPrices } from '../../state/tokenPrices/hooks'
 
 interface RoiCalculatorModalProps {
   onDismiss?: () => void
