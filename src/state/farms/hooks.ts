@@ -29,12 +29,13 @@ export const useFarms = (account): Farm[] => {
   const { slowRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
+  const farms = useSelector((state: State) => state.farms.data)
+  const farmsLoaded = farms.length > 0
   useEffect(() => {
     if (account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET)) {
       dispatch(fetchFarmUserDataAsync(chainId, account))
     }
-  }, [account, dispatch, slowRefresh, chainId])
-  const farms = useSelector((state: State) => state.farms.data)
+  }, [account, dispatch, slowRefresh, chainId, farmsLoaded])
   return farms
 }
 
