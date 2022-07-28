@@ -4,7 +4,6 @@ import { useInterfaceMulticall } from 'hooks/useContract'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import React, { useMemo } from 'react'
 import { combineReducers, createStore } from 'redux'
-import { useBlock } from 'state/block/hooks'
 
 const multicall = createMulticall()
 const reducer = combineReducers({ [multicall.reducerPath]: multicall.reducer })
@@ -23,9 +22,6 @@ export function MulticallUpdater() {
     }),
     [],
   )
-
-  console.log(currentBlock)
-  console.log(chainId)
 
   return (
     <multicall.Updater

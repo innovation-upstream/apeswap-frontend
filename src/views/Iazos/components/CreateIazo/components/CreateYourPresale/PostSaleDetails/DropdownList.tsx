@@ -28,7 +28,7 @@ const DropdownList: React.FC<DropdownListProps> = ({ dropdownList, title, defaul
                 setSelectedItem(item)
                 onChange(item)
               }}
-              key={`${i}-dd`}
+              key={i}
             >
               <StyledText>{item}</StyledText>
             </DropdownItem>

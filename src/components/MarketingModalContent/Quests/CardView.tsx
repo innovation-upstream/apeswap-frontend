@@ -56,7 +56,7 @@ const CardView: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
                   isActive={i === activeSlide}
                   onClick={() => slideNav(i)}
                   style={{ marginRight: '10px' }}
-                  key={QuestSlides[activeSlide]?.key}
+                  key={i}
                 />
               )
             })}
