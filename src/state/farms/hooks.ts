@@ -23,18 +23,20 @@ export const usePollFarms = () => {
     if (chainId === ChainId.BSC) {
       dispatch(fetchFarmsPublicDataAsync(chainId, lpTokenPrices, new BigNumber(bananaPrice), farmLpAprs))
     }
-  }, [dispatch, chainId, lpTokenPrices, bananaPrice, farmLpAprs])
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [dispatch, chainId, lpTokenPrices?.length, bananaPrice, farmLpAprs?.lpAprs?.length])
 }
 export const useFarms = (account): Farm[] => {
   const { slowRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
+  const farms = useSelector((state: State) => state.farms.data)
+  const farmsLoaded = farms.length > 0
   useEffect(() => {
     if (account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET)) {
       dispatch(fetchFarmUserDataAsync(chainId, account))
     }
-  }, [account, dispatch, slowRefresh, chainId])
-  const farms = useSelector((state: State) => state.farms.data)
+  }, [account, dispatch, slowRefresh, chainId, farmsLoaded])
   return farms
 }
 

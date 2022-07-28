@@ -24,13 +24,14 @@ export const usePools = (account): Pool[] => {
   const { slowRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
+  const pools = useSelector((state: State) => state.pools.data)
+  const poolsLoaded = pools.length > 0
   useEffect(() => {
     if (account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET)) {
       dispatch(fetchPoolsUserDataAsync(chainId, account))
     }
-  }, [account, dispatch, slowRefresh, chainId])
+  }, [account, dispatch, slowRefresh, chainId, poolsLoaded])
 
-  const pools = useSelector((state: State) => state.pools.data)
   return pools
 }
 
