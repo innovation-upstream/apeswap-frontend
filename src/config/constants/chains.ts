@@ -116,6 +116,7 @@ export const PRIORITY_SMART_ROUTERS = {
   [ChainId.MAINNET]: [SmartRouter.APE, SmartRouter.SUSHISWAP, SmartRouter.UNISWAP],
   [ChainId.BSC]: [SmartRouter.APE, SmartRouter.PANCAKE, SmartRouter.BISWAP],
   [ChainId.MATIC]: [SmartRouter.APE, SmartRouter.QUICKSWAP],
+  [ChainId.BSC_TESTNET]: [SmartRouter.APE],
 }
 
 // Wallchain Configs
