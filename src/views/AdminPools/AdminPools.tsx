@@ -7,7 +7,7 @@ import { Heading, Text, Card, Checkbox, ArrowDropDownIcon } from '@apeswapfinanc
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 
-import { useBlock } from 'state/block/hooks'
+import useBlockNumber from 'lib/hooks/useBlockNumber'
 import useWindowSize, { Size } from 'hooks/useDimensions'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { usePools } from 'state/pools/hooks'
@@ -467,7 +467,7 @@ const AdminPools: React.FC = () => {
   const size: Size = useWindowSize()
   const allPools = usePools(account)
   const { t } = useTranslation()
-  const { currentBlock } = useBlock()
+  const currentBlock = useBlockNumber()
   const isActive = !pathname.includes('history')
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
   const loadMoreRef = useRef<HTMLDivElement>(null)
