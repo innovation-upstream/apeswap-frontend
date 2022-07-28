@@ -7,7 +7,7 @@ import { ThemeContext } from 'contexts/ThemeContext'
 import { Bubble, showApe, styles, subtitle } from './styles'
 import { QuestSlides } from './slides'
 
-const CardView = ({ onDismiss }) => {
+const CardView: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const { isDark } = useContext(ThemeContext)
   const [activeSlide, setActiveSlide] = useState(0)
@@ -51,7 +51,14 @@ const CardView = ({ onDismiss }) => {
           {QuestSlides[activeSlide]}
           <Flex sx={styles.bubbleWrapper}>
             {[...Array(QuestSlides.length)].map((_, i) => {
-              return <Bubble isActive={i === activeSlide} onClick={() => slideNav(i)} style={{ marginRight: '10px' }} />
+              return (
+                <Bubble
+                  isActive={i === activeSlide}
+                  onClick={() => slideNav(i)}
+                  style={{ marginRight: '10px' }}
+                  key={QuestSlides[activeSlide]?.key}
+                />
+              )
             })}
           </Flex>
           <Flex sx={{ width: '240px' }}>

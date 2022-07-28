@@ -1,6 +1,7 @@
 import { createMulticall, ListenerOptions } from '@uniswap/redux-multicall'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useInterfaceMulticall } from 'hooks/useContract'
+import useBlockNumber from 'lib/hooks/useBlockNumber'
 import React, { useMemo } from 'react'
 import { combineReducers, createStore } from 'redux'
 import { useBlock } from 'state/block/hooks'
@@ -13,7 +14,7 @@ export default multicall
 
 export function MulticallUpdater() {
   const { chainId } = useActiveWeb3React()
-  const { currentBlock } = useBlock()
+  const currentBlock = useBlockNumber()
   const contract = useInterfaceMulticall()
   // TODO: Update this with block times for specific chains
   const listenerOptions: ListenerOptions = useMemo(
@@ -22,6 +23,9 @@ export function MulticallUpdater() {
     }),
     [],
   )
+
+  console.log(currentBlock)
+  console.log(chainId)
 
   return (
     <multicall.Updater

@@ -11,7 +11,7 @@ import {
   SmartRouter,
 } from '@apeswapfinance/sdk'
 import { ParsedQs } from 'qs'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useENS from 'hooks/ENS/useENS'
@@ -345,33 +345,29 @@ export function useDefaultsFromURLSearch():
   const { chainId } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
+  const parsed = useMemo(() => {
+    return queryParametersToSwapState(parsedQs, chainId)
+  }, [parsedQs, chainId])
   const swapDelay = SwapDelay.INIT
   const bestRoute = { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE }
-  const [result, setResult] = useState<
-    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
-  >()
-
   useEffect(() => {
     if (!chainId) return
-    const parsed = queryParametersToSwapState(parsedQs, chainId)
-    console.log(parsed)
+    const inputCurrencyId = parsed[Field.INPUT].currencyId ?? undefined
+    const outputCurrencyId = parsed[Field.OUTPUT].currencyId ?? undefined
 
-    console.log(chainId)
     dispatch(
       replaceSwapState({
         typedValue: parsed.typedValue,
         field: parsed.independentField,
-        inputCurrencyId: parsed[Field.INPUT].currencyId,
-        outputCurrencyId: parsed[Field.OUTPUT].currencyId,
+        inputCurrencyId,
+        outputCurrencyId,
         recipient: parsed.recipient,
         swapDelay,
         bestRoute,
       }),
     )
-
-    setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, chainId])
 
-  return result
+  return { inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId }
 }

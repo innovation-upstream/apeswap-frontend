@@ -11,7 +11,8 @@ const useActiveWeb3React = (): Web3ReactContextInterface<Web3Provider> => {
   const { account, library, chainId, ...web3React } = useWeb3React()
   const appChainId = useSelector((state: State) => state.network.data.chainId)
   const appProvider = getProvider(appChainId)
-
+  const currChainId = chainId || appChainId
+  const refChainId = useRef(currChainId)
   const refEth = useRef(library || appProvider)
   const [provider, setProvider] = useState(library || appProvider)
 
@@ -19,11 +20,16 @@ const useActiveWeb3React = (): Web3ReactContextInterface<Web3Provider> => {
     if (library !== refEth.current || appProvider !== refEth.current) {
       setProvider(library || appProvider)
       refEth.current = library || appProvider
+      refChainId.current = currChainId
     }
-    /* eslint-disable react-hooks/exhaustive-deps */
-  }, [library, appProvider, chainId, appChainId])
+  }, [library, appProvider, currChainId])
 
-  return { library: provider, chainId: chainId || appChainId, account, ...web3React }
+  // To allow the app to update before passing a chainId !== provider
+  if (currChainId !== refChainId.current) {
+    return { library: refEth.current, chainId: refChainId.current, account, ...web3React }
+  }
+
+  return { library: provider, chainId: currChainId, account, ...web3React }
 }
 
 export default useActiveWeb3React
