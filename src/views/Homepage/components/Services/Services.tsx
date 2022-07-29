@@ -50,13 +50,13 @@ const Services: React.FC = () => {
         id === 'farmDetails'
           ? service.stakeToken.name.split('-')
           : id === 'billDetails'
-          ? service.lpTokenName.split('-')
+          ? service?.lpTokenName.split('-')
           : [service.stakeToken.name, service.rewardToken.name]
       const name =
         id === 'farmDetails'
           ? service.stakeToken.name
           : id === 'billDetails'
-          ? service.lpTokenName
+          ? service?.lpTokenName
           : service.rewardToken.name
       return { name, tokenImage }
     }
@@ -77,7 +77,7 @@ const Services: React.FC = () => {
           {stats?.map((stat) => {
             const { name, tokenImage } = handleEachService(id, stat)
             return (
-              <a href={stat.link} rel="noopener noreferrer" key={stat?.apr}>
+              <a href={stat?.link} rel="noopener noreferrer" key={stat?.apr}>
                 <Flex
                   mt="5px"
                   mb="5px"

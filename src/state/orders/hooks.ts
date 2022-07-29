@@ -2,9 +2,9 @@ import { parseUnits } from '@ethersproject/units'
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade, ChainId } from '@apeswapfinance/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
+import contracts from 'config/constants/contracts'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import tokens from 'config/constants/tokens'
 import useENS from 'hooks/ENS/useENS'
 import { useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Orders/Trades'
@@ -234,7 +234,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
 
-  const chainAddress = tokens.banana.address[chainId]
+  const chainAddress = contracts.banana[chainId]
 
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {

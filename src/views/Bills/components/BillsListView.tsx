@@ -47,6 +47,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
       ttWidth: isMobile && '200px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '12px', marginRight: '10px' },
+      infoContentPosition: 'translate(10%, 0%)',
       cardContent: (
         <>
           <ListViewContent
@@ -57,7 +58,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
             height={52.5}
             toolTip={t('This is the current discounted price of the tokens.')}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 80%)"
+            toolTipTransform="translate(13%, 0%)"
           />
           <ListViewContent
             title={t('Discount')}
@@ -71,7 +72,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
                 : t("This is the percentage discount relative to the token's current market price.")
             }
             toolTipPlacement="bottomLeft"
-            toolTipTransform={parseFloat(bill?.discount) < 0 ? 'translate(0, 30%)' : 'translate(0, 65%)'}
+            toolTipTransform={parseFloat(bill?.discount) < 0 ? 'translate(25, 0%)' : 'translate(23%, 0%)'}
           />
           <ListViewContent
             title={t('Vesting Term')}
@@ -80,7 +81,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
             height={52.5}
             toolTip={t('This is how long it will take for all tokens in the Bill to fully vest.')}
             toolTipPlacement={isMobile ? 'bottomRight' : 'bottomLeft'}
-            toolTipTransform={isMobile ? 'translate(-75%, 75%)' : 'translate(0%, 80%)'}
+            toolTipTransform={isMobile ? 'translate(13%, 0%)' : 'translate(39%, 0%)'}
           />
           {!isMobile && (
             <>

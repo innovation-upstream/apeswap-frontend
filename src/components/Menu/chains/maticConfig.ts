@@ -1,10 +1,30 @@
 import { MenuEntry } from '@ape.swap/uikit'
 import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
-import { EXCHANGE } from '../constants'
 import { ContextApi } from '../../../contexts/Localization/types'
 
 const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
-  EXCHANGE(t),
+  {
+    label: t('Exchange'),
+    lightIcon: 'ExchangeLightImage',
+    darkIcon: 'ExchangeDarkImage',
+    items: [
+      {
+        label: t('Swap'),
+        href: '/swap',
+        isNew: false,
+      },
+      {
+        label: t('Liquidity'),
+        href: '/add',
+        isNew: false,
+      },
+      {
+        label: t('Pro Trading'),
+        href: 'https://pro.apeswap.finance',
+        isNew: true,
+      },
+    ],
+  },
   {
     label: t('Farms'),
     href: '/farms',

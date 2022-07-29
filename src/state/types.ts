@@ -15,6 +15,7 @@ import {
   JungleFarmConfig,
   LiveIfo,
   BillsConfig,
+  Token,
 } from 'config/constants/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
@@ -110,6 +111,7 @@ export interface UserBill {
   truePricePaid: string
   lastBlockTimestamp: string
   pendingRewards: string
+  billNftAddress: string
   nftData?: UserBillNft
 }
 
@@ -584,8 +586,11 @@ export interface AuctionsState {
 }
 
 export interface TokenPricesState {
+  isTokensInitialized: boolean
   isInitialized: boolean
   isLoading: boolean
+  tokens: Token[]
+  bananaPrice: string
   data: TokenPrices[]
 }
 export interface LpTokenPricesState {

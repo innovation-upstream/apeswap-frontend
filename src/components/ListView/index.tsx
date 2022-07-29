@@ -66,6 +66,9 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
             key={view.id}
             open={view?.open}
             alignServiceTokens={view?.alignServiceTokens}
+            toolTipIconWidth={view?.toolTipIconWidth}
+            toolTipStyle={view?.toolTipStyle}
+            ttWidth={view?.ttWidth}
           />
         )
       })}

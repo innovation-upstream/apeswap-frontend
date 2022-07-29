@@ -8,7 +8,13 @@ import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import { useBlock } from 'state/block/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePollJungleFarms, useJungleFarms, useJungleFarmOrderings, useJungleFarmTags } from 'state/jungleFarms/hooks'
+import {
+  usePollJungleFarms,
+  useJungleFarms,
+  useSetJungleFarms,
+  useJungleFarmTags,
+  useJungleFarmOrderings,
+} from 'state/jungleFarms/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { JungleFarm } from 'state/types'
@@ -20,6 +26,7 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 const NUMBER_OF_FARMS_VISIBLE = 10
 
 const JungleFarms: React.FC = () => {
+  useSetJungleFarms()
   usePollJungleFarms()
   const { chainId } = useActiveWeb3React()
   const [stakedOnly, setStakedOnly] = useState(false)
