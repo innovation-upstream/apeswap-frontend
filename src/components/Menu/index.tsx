@@ -58,7 +58,7 @@ const Menu = (props) => {
     uauth.uauth
       .user()
       .then((user) => setUDName(user.sub))
-      .catch((err) => console.info(err.message))
+      .catch(() => null)
   }, [fastRefresh])
 
   return (
