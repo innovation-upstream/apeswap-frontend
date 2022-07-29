@@ -134,6 +134,7 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
           {isLp && liquidityUrl && (
             <Link
               href={liquidityUrl}
+              target="_blank"
               sx={{
                 '&:hover': {
                   textDecoration: 'none',
