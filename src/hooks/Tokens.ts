@@ -4,6 +4,7 @@ import { Currency, ETHER, Token, currencyEquals } from '@apeswapfinance/sdk'
 import { useMemo } from 'react'
 import { arrayify } from 'ethers/lib/utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { NEVER_RELOAD, useSingleCallResult } from 'lib/hooks/multicall'
 import {
   TokenAddressMap,
   useDefaultTokenList,
@@ -12,7 +13,6 @@ import {
   useCombinedInactiveList,
 } from '../state/lists/hooks'
 
-import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
 import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { isAddress } from '../utils'
 

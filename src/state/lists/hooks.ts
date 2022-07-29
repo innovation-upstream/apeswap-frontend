@@ -2,8 +2,6 @@ import { ChainId, Token } from '@apeswapfinance/sdk'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { CHAIN_ID } from 'config/constants/chains'
-
 import { createSelector } from '@reduxjs/toolkit'
 import { fromPairs, groupBy, uniqBy } from 'lodash'
 import DEFAULT_TOKEN_LIST from '@apeswapfinance/token-lists/lists/apeswap.json'
@@ -188,7 +186,7 @@ function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddress
     [ChainId.MAINNET]: { ...map1[ChainId.MAINNET], ...map2[ChainId.MAINNET] }, // mainnet
     [ChainId.MATIC]: { ...map1[ChainId.MATIC], ...map2[ChainId.MATIC] }, // matic
     [ChainId.MATIC_TESTNET]: { ...map1[ChainId.MATIC_TESTNET], ...map2[ChainId.MATIC_TESTNET] }, // matic testnet
-    [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2[CHAIN_ID.BSC] }, // bsc
+    [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2[ChainId.BSC] }, // bsc
     [ChainId.BSC_TESTNET]: { ...map1[ChainId.BSC_TESTNET], ...map2[ChainId.BSC_TESTNET] }, // bsc testnet
   }
 }

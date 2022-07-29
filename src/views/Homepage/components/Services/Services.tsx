@@ -218,9 +218,9 @@ const Services: React.FC = () => {
               })
             )
           ) : (
-            [...Array(4)].map(() => {
+            [...Array(4)].map((i) => {
               return (
-                <YieldCard>
+                <YieldCard key={i}>
                   <Skeleton height="100%" width="100%" />
                 </YieldCard>
               )
@@ -232,7 +232,7 @@ const Services: React.FC = () => {
             style={{ position: 'absolute', bottom: '35px', left: '0', width: '100%' }}
           >
             {[...Array(displayData?.length)].map((_, i) => {
-              return <Bubble isActive={i === activeSlide} onClick={() => slideNewsNav(i)} />
+              return <Bubble isActive={i === activeSlide} onClick={() => slideNewsNav(i)} key={i} />
             })}
           </Flex>
         </ServiceWrapper>

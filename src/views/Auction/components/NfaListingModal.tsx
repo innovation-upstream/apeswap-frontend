@@ -149,7 +149,7 @@ const NfaListingModal: React.FC<NfaListingModalProps> = ({ onConfirm, onDismiss,
             <OwnedNfaWrapper>
               {ownedNfas?.map((nfa) => {
                 return (
-                  <Nfa onClick={() => setNfaIndex(nfa.index)} active={nfaIndex === nfa.index}>
+                  <Nfa onClick={() => setNfaIndex(nfa.index)} active={nfaIndex === nfa.index} key={nfa.index}>
                     <Image
                       src={nfa.image}
                       alt={nfa.name}

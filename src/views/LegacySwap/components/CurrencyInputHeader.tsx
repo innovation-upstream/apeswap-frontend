@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import { Flex, useMatchBreakpoints, Tabs, Tab } from '@apeswapfinance/uikit'
 import { Button } from '@ape.swap/uikit'
 import GlobalSettings from 'components/Menu/GlobalSettings'
-import { CHAIN_ID } from 'config/constants/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useLocation, useHistory } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
+import { ChainId } from '@apeswapfinance/sdk'
 
 interface Props {
   title?: string
@@ -60,7 +60,7 @@ const CurrencyInputHeader: React.FC<Props> = () => {
             variant="centered"
             activeTab={getActiveTab()}
           />
-          {chainId === CHAIN_ID.BSC ? (
+          {chainId === ChainId.BSC ? (
             <Tab
               index={1}
               label={t('ORDERS')}

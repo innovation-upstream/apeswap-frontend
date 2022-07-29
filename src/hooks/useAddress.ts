@@ -43,6 +43,9 @@ export const useMasterChefAddress = () => {
 export const useMulticallAddress = () => {
   return useAddress(addresses.mulltiCall)
 }
+export const useMulticallV3Address = () => {
+  return useAddress(addresses.mulltiCallV3)
+}
 export const useNativeWrapCurrencyAddress = () => {
   return useAddress(addresses.nativeWrapped)
 }

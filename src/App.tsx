@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy, useCallback } from 'react'
+import { ChainId } from '@apeswapfinance/sdk'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useEagerConnect from 'hooks/useEagerConnect'
@@ -6,7 +7,6 @@ import { ResetCSS, ApeSwapTheme } from '@apeswapfinance/uikit'
 import { ScrollToTop } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import MarketingModalCheck from 'components/MarketingModalCheck'
-import { CHAIN_ID } from 'config/constants/chains'
 import { useFetchBananaPrice } from 'state/tokenPrices/hooks'
 import { useFetchProfile, useUpdateNetwork, useFetchLiveIfoStatus, useFetchLiveTagsAndOrdering } from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
@@ -26,8 +26,6 @@ declare module '@emotion/react' {
 }
 
 // Route-based code splitting
-// Only pool is included in the main bundle because of it's the most visited page'
-// const Home = lazy(() => import('./views/Home'))
 const Home = lazy(() => import('./views/Homepage'))
 const Farms = lazy(() => import('./views/Farms'))
 const Pools = lazy(() => import('./views/Pools'))
@@ -127,7 +125,7 @@ const App: React.FC = () => {
 
   const loadMenu = () => {
     // ETH routes
-    if (chainId === CHAIN_ID.ETH) {
+    if (chainId === ChainId.MAINNET) {
       return (
         <Menu>
           <Suspense fallback={<PageLoader />}>
@@ -213,7 +211,7 @@ const App: React.FC = () => {
     }
 
     // MATIC routes
-    if (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET) {
+    if (chainId === ChainId.MATIC || chainId === ChainId.MATIC_TESTNET) {
       return (
         <Menu>
           <Suspense fallback={<PageLoader />}>

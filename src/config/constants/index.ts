@@ -6,8 +6,6 @@ export enum RouterTypes {
   BONUS = 'BONUS',
 }
 
-export const CHAIN_ID = parseInt(process.env.REACT_APP_CHAIN_ID)
-
 export const NetworkContextName = 'NETWORK'
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)

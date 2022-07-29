@@ -1,4 +1,5 @@
 /** @jsxImportSource theme-ui */
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { Button, useWalletModal } from '@ape.swap/uikit'
 import useAuth from 'hooks/useAuth'

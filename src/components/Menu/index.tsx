@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Navbar as UikitMenu, useModal } from '@ape.swap/uikit'
+import { ChainId } from '@apeswapfinance/sdk'
 import { uauth } from 'utils/web3React'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
 import useAuth from 'hooks/useAuth'
-import { CHAIN_ID } from 'config/constants/chains'
 import useTheme from 'hooks/useTheme'
 import { ContextApi } from 'contexts/Localization/types'
 import { useBananaPrice } from 'state/tokenPrices/hooks'
@@ -39,13 +39,13 @@ const Menu = (props) => {
   const bananaPriceUsd = useBananaPrice()
   const [onPresentModal] = useModal(<MoonPayModal />)
   const currentMenu = (translate: ContextApi['t']) => {
-    if (chainId === CHAIN_ID.BSC && isIframe !== true) {
+    if (chainId === ChainId.BSC && isIframe !== true) {
       return bscConfig(translate)
     }
-    if (chainId === CHAIN_ID.MATIC && isIframe !== true) {
+    if (chainId === ChainId.MATIC && isIframe !== true) {
       return maticConfig(translate)
     }
-    if (chainId === CHAIN_ID.ETH && isIframe !== true) {
+    if (chainId === ChainId.MAINNET && isIframe !== true) {
       return ethConfig(translate)
     }
     if (isIframe === true) {
@@ -58,7 +58,7 @@ const Menu = (props) => {
     uauth.uauth
       .user()
       .then((user) => setUDName(user.sub))
-      .catch((err) => console.info(err.message))
+      .catch(() => null)
   }, [fastRefresh])
 
   return (

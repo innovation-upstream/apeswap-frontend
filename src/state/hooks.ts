@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react'
+import { ChainId } from '@apeswapfinance/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Toast, toastTypes } from '@apeswapfinance/uikit'
 import { useSelector } from 'react-redux'
 import useRefresh from 'hooks/useRefresh'
-import { CHAIN_ID } from 'config/constants/chains'
 import { useAppDispatch } from 'state'
 import useSwitchNetwork from 'hooks/useSelectNetwork'
 import { push as pushToast, remove as removeToast, clear as clearToast } from './actions'
@@ -131,7 +131,7 @@ export const useFetchProfile = () => {
   const getNfas = !!account
   useFetchNfas(getNfas)
   const dispatch = useAppDispatch()
-  const chainId = CHAIN_ID.BSC
+  const chainId = ChainId.BSC
   const { slowRefresh } = useRefresh()
   const { nfas } = useNfas()
 
@@ -249,7 +249,7 @@ export const useFetchAuctions = () => {
   const { nfas } = useNfas()
 
   useEffect(() => {
-    if (chainId === CHAIN_ID.BSC || chainId === CHAIN_ID.BSC_TESTNET) {
+    if (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) {
       dispatch(fetchAuctions(nfas, chainId))
     }
   }, [dispatch, fastRefresh, nfas, chainId])

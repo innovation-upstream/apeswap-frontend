@@ -19,7 +19,6 @@ import {
 } from '@apeswapfinance/sdk'
 import { parseAddress, parseSmartAddress } from 'hooks/useAddress'
 import { RouterTypes } from 'config/constants'
-import { TokenAddressMap } from '../state/lists/hooks'
 
 export { default as formatAddress } from './formatAddress'
 
@@ -125,7 +124,7 @@ export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
 }
 
-export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
+export function isTokenOnList(defaultTokens, currency?: Currency): boolean {
   if (currency === ETHER) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }

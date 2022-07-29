@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Svg, Text, useModal } from '@ape.swap/uikit'
 import { Currency } from '@apeswapfinance/sdk'
+import { Skeleton } from '@apeswapfinance/uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -50,7 +51,11 @@ const TokenSelector: React.FC<{
     </Flex>
   ) : (
     <Flex sx={{ ...styles.primaryFlex }} onClick={onPresentCurrencyModal}>
-      <CurrencyLogo currency={currency} size="30px" />
+      {currency ? (
+        <CurrencyLogo currency={currency} size="30px" />
+      ) : (
+        <Skeleton width="30px" height="30px" animation="waves" variant="circle" />
+      )}
       <Text sx={{ ...styles.tokenText }}>{currency?.getSymbol(chainId)}</Text>
       <Svg icon="caret" />
     </Flex>

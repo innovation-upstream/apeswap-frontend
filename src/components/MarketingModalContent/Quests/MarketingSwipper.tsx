@@ -11,7 +11,7 @@ import { ThemeContext } from 'contexts/ThemeContext'
 import { Bubble, showApe, styles, subtitle } from './styles'
 import { QuestSlides } from './slides'
 
-const MarketingSwipper = ({ onDismiss }) => {
+const MarketingSwipper: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const { isDark } = useContext(ThemeContext)
   const { swiper, setSwiper } = useSwiper()
@@ -66,12 +66,19 @@ const MarketingSwipper = ({ onDismiss }) => {
             onSlideChange={handleSlide}
           >
             {QuestSlides.map((slide) => {
-              return <SwiperSlide>{slide}</SwiperSlide>
+              return <SwiperSlide key={QuestSlides[activeSlide]?.key}>{slide}</SwiperSlide>
             })}
           </Swiper>
           <Flex sx={styles.bubbleWrapper}>
             {[...Array(QuestSlides.length)].map((_, i) => {
-              return <Bubble isActive={i === activeSlide} onClick={() => slideNav(i)} style={{ marginRight: '10px' }} />
+              return (
+                <Bubble
+                  isActive={i === activeSlide}
+                  onClick={() => slideNav(i)}
+                  style={{ marginRight: '10px' }}
+                  key={QuestSlides[activeSlide]?.key}
+                />
+              )
             })}
           </Flex>
           <Flex sx={{ width: '222px' }}>
