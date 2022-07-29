@@ -12,6 +12,7 @@ import { getCurrencyUsdPrice } from 'utils/getTokenUsdPrice'
 import TokenSelector from '../TokenSelector'
 import { styles } from './styles'
 import { DexPanelProps } from './types'
+import Dots from 'components/Loader/Dots'
 
 const DexPanel: React.FC<DexPanelProps> = ({
   value,
@@ -103,6 +104,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
           <Flex sx={{ alignItems: 'center' }}>
             <Text size="12px" sx={styles.panelBottomText}>
               {t('Balance: %balance%', { balance: currencyBalance || 'loading' })}
+              {!currencyBalance && <Dots />}
             </Text>
             {(fieldType === Field.INPUT ||
               fieldType === MintField.CURRENCY_A ||

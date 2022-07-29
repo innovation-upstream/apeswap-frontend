@@ -20,7 +20,7 @@ const Banner: React.FC<{
 }> = ({ banner, children, title, listViewBreak, margin, titleColor, link, maxWidth = 1200 }) => {
   const { isDark } = useTheme()
   const { t } = useTranslation()
-  const loaded = useProgressiveImage(`images/new-banners/${banner}-${isDark ? 'night' : 'day'}.svg`)
+  const loaded = useProgressiveImage(`../images/new-banners/${banner}-${isDark ? 'night' : 'day'}.svg`)
 
   // Media breaks are used until tablet mode on list view is designed
   return (

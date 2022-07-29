@@ -111,8 +111,8 @@ const News: React.FC = () => {
               </Swiper>
             ) : (
               <SkeletonWrapper>
-                {[...Array(5)].map(() => {
-                  return <Skeleton width="266px" height="332.5px" />
+                {[...Array(5)].map((i) => {
+                  return <Skeleton width="266px" height="332.5px" key={i} />
                 })}
               </SkeletonWrapper>
             )}
@@ -121,7 +121,7 @@ const News: React.FC = () => {
         {loadImages && (
           <Flex justifyContent="center" alignContent="center" style={{ position: 'absolute', bottom: '50px' }}>
             {[...Array(newsLength)].map((_, i) => {
-              return <Bubble isActive={i === activeSlide} onClick={() => slideNewsNav(i)} />
+              return <Bubble isActive={i === activeSlide} onClick={() => slideNewsNav(i)} key={i} />
             })}
           </Flex>
         )}

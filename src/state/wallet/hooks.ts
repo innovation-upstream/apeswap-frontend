@@ -3,10 +3,10 @@ import { useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import ERC20_INTERFACE from 'config/abi/erc20'
 import { useAllTokens } from 'hooks/Tokens'
-import { useMulticallContract } from 'hooks/useContract'
+import { useInterfaceMulticall } from 'hooks/useContract'
 import { isAddress } from 'utils'
 import orderBy from 'lodash/orderBy'
-import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
+import { useSingleContractMultipleData, useMultipleContractSingleData } from 'lib/hooks/multicall'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -14,7 +14,7 @@ import { useSingleContractMultipleData, useMultipleContractSingleData } from '..
 export function useETHBalances(uncheckedAddresses?: (string | undefined)[]): {
   [address: string]: CurrencyAmount | undefined
 } {
-  const multicallContract = useMulticallContract()
+  const multicallContract = useInterfaceMulticall()
 
   const addresses: string[] = useMemo(
     () =>

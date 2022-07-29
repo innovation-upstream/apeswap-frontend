@@ -8,7 +8,7 @@ import { Flex } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
-import { useBlock } from 'state/block/hooks'
+import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { usePollPools, usePoolOrderings, usePools, usePoolTags, useSetPools } from 'state/pools/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
@@ -35,7 +35,7 @@ const Pools: React.FC = () => {
   const { poolTags } = usePoolTags(chainId)
   const { poolOrderings } = usePoolOrderings(chainId)
   const { t } = useTranslation()
-  const { currentBlock } = useBlock()
+  const currentBlock = useBlockNumber()
   const { search } = window.location
   const params = new URLSearchParams(search)
   const urlSearchedPool = parseInt(params.get('id'))
