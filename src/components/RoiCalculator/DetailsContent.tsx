@@ -1,10 +1,9 @@
 /** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
 import { Flex, Text, Box, Link } from 'theme-ui'
-import { Button } from '@ape.swap/uikit'
+import { Button, useModal } from '@ape.swap/uikit'
 import { DropDownIcon } from 'components/ListView/styles'
 import { useTranslation } from 'contexts/Localization'
-import { useModal } from '@apeswapfinance/uikit'
 import { useBananaAddress, useGoldenBananaAddress } from 'hooks/useAddress'
 import { LiquidityModal } from 'components/LiquidityWidget'
 import { Field, selectCurrency } from 'state/swap/actions'

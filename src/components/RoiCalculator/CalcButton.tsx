@@ -1,8 +1,8 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Farm } from 'state/types'
-import { CalculateIcon, useModal } from '@apeswapfinance/uikit'
-import { IconButton } from '@ape.swap/uikit'
+import { CalculateIcon } from '@apeswapfinance/uikit'
+import { IconButton, useModal } from '@ape.swap/uikit'
 import RoiCalculatorModal from './RoiCalculatorModal'
 import styles from './styles'
 

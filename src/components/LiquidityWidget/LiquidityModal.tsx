@@ -23,6 +23,7 @@ const LiquidityModal: React.FC<LiquidityModalProps> = ({ widgetProps, modalProps
       maxHeight: 'calc(100% - 30px)',
     },
   }
+
   return (
     <ModalProvider>
       <Modal open {...merge(modalProps, newModalProps)}>

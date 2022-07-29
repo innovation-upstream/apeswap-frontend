@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import { Button, Text } from '@ape.swap/uikit'
 import { Flex } from 'theme-ui'
@@ -13,13 +14,13 @@ interface CurrencyInputPanelProps {
   removeLiquidity?: boolean
 }
 
-export default function CurrencyInputPanelRoi({
+const CurrencyInputPanelRoi = ({
   dollarValue,
   tokenValue,
   onUserInput,
   onMax,
   removeLiquidity,
-}: CurrencyInputPanelProps) {
+}: CurrencyInputPanelProps) => {
   return (
     <Flex sx={styles.container}>
       <Flex sx={{ position: 'relative' }}>
@@ -35,7 +36,6 @@ export default function CurrencyInputPanelRoi({
             value={tokenValue}
             align="right"
             width="full"
-            // fontWeight={700}
             onUserInput={onUserInput}
             autoFocus
           />
@@ -47,3 +47,5 @@ export default function CurrencyInputPanelRoi({
     </Flex>
   )
 }
+
+export default React.memo(CurrencyInputPanelRoi)
