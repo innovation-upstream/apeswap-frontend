@@ -50,6 +50,7 @@ const Orders = lazy(() => import('./views/Dex/Orders'))
 const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/LegacyRemoveLiquidity/redirects'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
+const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -311,6 +312,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/pools">
               <Pools />
+            </Route>
+            <Route path="/protocol-dashboard">
+              <ProtocolDashboard />
             </Route>
             <Route path="/jungle-farms">
               <JungleFarms />
