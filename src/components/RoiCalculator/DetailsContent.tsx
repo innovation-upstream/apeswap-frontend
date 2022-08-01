@@ -92,7 +92,17 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
         sx={{ justifyContent: 'center', alignItems: 'center', columnGap: '10px', marginBottom: '15px' }}
         onClick={() => setExpanded((prev) => !prev)}
       >
-        <Text sx={{ fontWeight: 600, fontSize: '14px' }}>{t('Details')}</Text>
+        <Text
+          sx={{
+            fontWeight: 600,
+            fontSize: '14px',
+            '&:hover': {
+              cursor: 'pointer',
+            },
+          }}
+        >
+          {t('Details')}
+        </Text>
         <DropDownIcon width="10px" open={expanded} />
       </Flex>
       <Box sx={styles.detailContainer(!expanded)}>

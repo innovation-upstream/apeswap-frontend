@@ -179,7 +179,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
                 onClick={onIntervalClick('staked')}
                 size="sm"
                 variant="fullWidth"
-                style={{ padding: '4px' }}
+                style={{ borderRadius: '0px', padding: '4px' }}
               />
             ))}
           </Tabs>
@@ -198,7 +198,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
                 size="sm"
                 variant="fullWidth"
                 disabled={interval > numberOfDays}
-                style={{ padding: '4px' }}
+                style={{ borderRadius: '0px', padding: '4px' }}
               />
             ))}
           </Tabs>

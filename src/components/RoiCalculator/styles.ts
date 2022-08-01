@@ -28,7 +28,7 @@ const styles = {
     rowGap: '10px',
   },
   tabContainer: {
-    marginBottom: '25px',
+    marginBottom: '30px',
     '&&& span': {
       fontWeight: 700,
       fontSize: '16px',
@@ -98,6 +98,7 @@ const styles = {
     paddingBottom: '5px',
   },
   detailContainer: (hide) => ({
+    marginTop: hide ? 0 : '15px',
     backgroundColor: 'white3',
     padding: hide ? 0 : '25px 20px',
     borderRadius: '10px',

@@ -17,6 +17,6 @@ export const tokenListInfo = {
   ],
   notLpPair: [
     'Calculated based on current rates.',
-    'Returns are calculated based on current rates. Estimated returns are not guaranteed and are provided for convenience only.',
+    'Estimated returns are not guaranteed and are provided for convenience only.',
   ],
 }
