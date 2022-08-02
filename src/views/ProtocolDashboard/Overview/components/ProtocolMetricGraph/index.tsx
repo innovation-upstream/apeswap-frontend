@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui */
 import 'chart.js/auto'
 import { Flex, Tab, Tabs, Text } from '@ape.swap/uikit'
+import { Select, SelectItem } from '@apeswapfinance/uikit'
 import React, { useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import useTheme from 'hooks/useTheme'
@@ -9,7 +10,7 @@ import { useTranslation } from 'contexts/Localization'
 
 const ProtocolMetricsGraph: React.FC = () => {
   const [activeCatTab, setActiveCatTab] = useState(0)
-  const [activeTimeTab, setActiveTimeTab] = useState(0)
+  const [activeTime, onSetTime] = useState('total')
   const { t } = useTranslation()
   const { theme } = useTheme()
   const data = {
@@ -27,17 +28,15 @@ const ProtocolMetricsGraph: React.FC = () => {
   const switchCatTab = (index) => {
     setActiveCatTab(index)
   }
-  const switchTimeTab = (index) => {
-    setActiveTimeTab(index)
-  }
+
   return (
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ marginBottom: '10px', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         <Flex sx={{ width: 'fit-content' }}>
-          <Tabs activeTab={activeCatTab} size="md" variant="centered">
+          <Tabs activeTab={activeCatTab} size="sm" variant="centered">
             <Tab
               index={0}
-              size="md"
+              size="sm"
               label={t('Holders')}
               activeTab={activeCatTab}
               variant="centered"
@@ -45,7 +44,7 @@ const ProtocolMetricsGraph: React.FC = () => {
             />
             <Tab
               index={1}
-              size="md"
+              size="sm"
               label={t('Market Cap')}
               variant="fullWidth"
               activeTab={activeCatTab}
@@ -53,7 +52,7 @@ const ProtocolMetricsGraph: React.FC = () => {
             />
             <Tab
               index={2}
-              size="md"
+              size="sm"
               label={t('Burned')}
               variant="centered"
               activeTab={activeCatTab}
@@ -61,7 +60,7 @@ const ProtocolMetricsGraph: React.FC = () => {
             />
             <Tab
               index={3}
-              size="md"
+              size="sm"
               label={t('POL')}
               variant="centered"
               activeTab={activeCatTab}
@@ -69,41 +68,21 @@ const ProtocolMetricsGraph: React.FC = () => {
             />
           </Tabs>
         </Flex>
-        <Flex>
-          <Tabs activeTab={activeTimeTab} size="md" variant="centered">
-            <Tab
-              index={0}
-              size="sm"
-              label={t('24h')}
-              activeTab={activeTimeTab}
-              variant="centered"
-              onClick={switchTimeTab}
-            />
-            <Tab
-              index={1}
-              size="sm"
-              label={t('7d')}
-              variant="centered"
-              activeTab={activeTimeTab}
-              onClick={switchTimeTab}
-            />
-            <Tab
-              index={2}
-              size="sm"
-              label={t('30d')}
-              variant="centered"
-              activeTab={activeTimeTab}
-              onClick={switchTimeTab}
-            />
-            <Tab
-              index={3}
-              size="sm"
-              label={t('Total')}
-              variant="centered"
-              activeTab={activeTimeTab}
-              onClick={switchTimeTab}
-            />
-          </Tabs>
+        <Flex sx={{ height: '40px' }}>
+          <Select size="sm" width="126px" onChange={(e) => onSetTime(e.target.value)} active={activeTime}>
+            <SelectItem size="sm" value="24h" key="24h">
+              <Text>{t('24h')}</Text>
+            </SelectItem>
+            <SelectItem size="sm" value="7d" key="7d">
+              <Text>{t('7d')}</Text>
+            </SelectItem>
+            <SelectItem size="sm" value="30d" key="30d">
+              <Text>{t('30d')}</Text>
+            </SelectItem>
+            <SelectItem size="sm" value="total" key="total">
+              <Text>{t('Total')}</Text>
+            </SelectItem>
+          </Select>
         </Flex>
       </Flex>
       <Flex sx={{ maxWidth: '100%', width: '99%', height: '200px' }}>
