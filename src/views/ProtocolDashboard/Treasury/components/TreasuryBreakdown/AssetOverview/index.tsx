@@ -4,7 +4,6 @@ import { Tvl } from 'components/Icons'
 import { Flex, Text } from '@ape.swap/uikit'
 import React from 'react'
 import { Doughnut } from 'react-chartjs-2'
-import useTheme from 'hooks/useTheme'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
 import stubData from './stubData'
@@ -21,26 +20,27 @@ const data = {
   ],
 }
 
-const TotalValueLocked: React.FC = () => {
+const AssetOverview: React.FC = () => {
   const { t } = useTranslation()
-  const { theme } = useTheme()
   const total = stubData.reduce((a, b) => a + b.amount, 0)
   return (
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', mb: '5px' }}>
         <Text size="22px" weight={700} mb="10px">
-          {t('Total Value Locked')}
-        </Text>
-        <Text size="12px" weight={500}>
-          Amount Staked
-        </Text>
-        <Text size="22px" weight={700}>
-          $<CountUp end={444584.28} decimals={2} duration={1} separator="," />
+          {t('Assets Overview')}
         </Text>
       </Flex>
-      <Flex sx={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap' }}>
-        <Flex sx={{ position: 'relative', margin: '10px 0px' }}>
-          <Flex sx={{ width: '200px' }}>
+      <Flex
+        sx={{
+          width: '100%',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          flexDirection: 'column',
+        }}
+      >
+        <Flex sx={{ margin: '10px 0px' }}>
+          <Flex sx={{ width: '300px' }}>
             <Doughnut
               data={data}
               options={{
@@ -54,20 +54,9 @@ const TotalValueLocked: React.FC = () => {
                     display: false,
                   },
                 },
-                cutout: 60,
+                cutout: 90,
               }}
             />
-          </Flex>
-          <Flex
-            sx={{
-              position: 'absolute',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100%',
-              height: '100%',
-            }}
-          >
-            <Tvl fill={theme.colors.text} color={theme.colors.background} width="50px" height="70px" />
           </Flex>
         </Flex>
         <Flex sx={{ flexDirection: 'column', maxWidth: '300px', width: '100%', margin: '10px 0px' }}>
@@ -104,4 +93,4 @@ const TotalValueLocked: React.FC = () => {
   )
 }
 
-export default TotalValueLocked
+export default AssetOverview

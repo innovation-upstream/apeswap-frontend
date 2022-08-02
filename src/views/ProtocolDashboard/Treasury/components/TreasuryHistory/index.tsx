@@ -9,11 +9,11 @@ import useTheme from 'hooks/useTheme'
 import CountUp from 'react-countup'
 import { useTranslation } from 'contexts/Localization'
 
-const TotalTradeVolume: React.FC = () => {
+const TreasuryHistory: React.FC = () => {
   const { theme } = useTheme()
   const data = {
     labels: stubData.map((data) => data.date),
-    legend: { position: 'bottom' },
+    legend: { position: 'top', align: 'left' },
     color: 'red',
     drawBorder: false,
     datasets: [
@@ -51,7 +51,7 @@ const TotalTradeVolume: React.FC = () => {
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', marginBottom: '10px' }}>
         <Text size="22px" weight={700} mb="10px">
-          {t('Total Trade Volume')}
+          {t('Treasury')}
         </Text>
         <Text size="16px" weight={500}>
           $<CountUp end={57783576553} decimals={2} duration={1} separator="," />
@@ -65,16 +65,17 @@ const TotalTradeVolume: React.FC = () => {
             color: theme.colors.text,
             scales: {
               y: {
-                grid: { color: theme.colors.white4, drawBorder: false },
-                ticks: { color: theme.colors.text, font: { family: 'poppins', weight: '500' } },
+                grid: { display: false, drawBorder: false },
+                ticks: { display: false },
               },
               x: {
                 grid: { display: false, drawBorder: false },
-                ticks: { color: theme.colors.text, font: { family: 'poppins', weight: '500' } },
+                ticks: { display: false },
               },
             },
             plugins: {
               legend: {
+                display: false,
                 position: 'bottom',
                 fullSize: true,
                 labels: {
@@ -92,4 +93,4 @@ const TotalTradeVolume: React.FC = () => {
   )
 }
 
-export default TotalTradeVolume
+export default TreasuryHistory

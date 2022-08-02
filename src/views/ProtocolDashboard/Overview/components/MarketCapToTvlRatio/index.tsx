@@ -33,18 +33,18 @@ const MarketCapToTvlRatio: React.FC = () => {
           <CountUp end={52} decimals={2} duration={1} separator="," />
         </Text>
       </Flex>
-      <Flex sx={{ width: '100%', height: '200px' }}>
+      <Flex sx={{ maxWidth: '100%', width: '99%', height: '200px' }}>
         <Line
           data={data}
           options={{
             scales: {
               y: {
                 position: 'right',
-                grid: { color: theme.colors.white4 },
+                grid: { color: theme.colors.white4, drawBorder: false },
                 ticks: { stepSize: 20, color: theme.colors.text, font: { family: 'poppins', weight: '500' } },
               },
               x: {
-                grid: { display: false },
+                grid: { display: false, drawBorder: false },
                 ticks: { color: theme.colors.text, font: { family: 'poppins', weight: '500' } },
               },
             },

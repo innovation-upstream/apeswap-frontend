@@ -6,7 +6,6 @@ import { Line } from 'react-chartjs-2'
 import useTheme from 'hooks/useTheme'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
-import CountUp from 'react-countup'
 
 const ProtocolMetricsGraph: React.FC = () => {
   const [activeCatTab, setActiveCatTab] = useState(0)
@@ -33,7 +32,7 @@ const ProtocolMetricsGraph: React.FC = () => {
   }
   return (
     <Flex sx={styles.cardContainer}>
-      <Flex sx={{ marginBottom: '10px', justifyContent: 'space-between' }}>
+      <Flex sx={{ marginBottom: '10px', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         <Flex sx={{ width: 'fit-content' }}>
           <Tabs activeTab={activeCatTab} size="md" variant="centered">
             <Tab
@@ -107,18 +106,18 @@ const ProtocolMetricsGraph: React.FC = () => {
           </Tabs>
         </Flex>
       </Flex>
-      <Flex sx={{ width: '100%', height: '200px' }}>
+      <Flex sx={{ maxWidth: '100%', width: '99%', height: '200px' }}>
         <Line
           data={data}
           options={{
             scales: {
               y: {
                 position: 'right',
-                grid: { color: theme.colors.white4 },
+                grid: { color: theme.colors.white4, drawBorder: false },
                 ticks: { stepSize: 20, color: theme.colors.text, font: { family: 'poppins', weight: '500' } },
               },
               x: {
-                grid: { display: false },
+                grid: { display: false, drawBorder: false },
                 ticks: { color: theme.colors.text, font: { family: 'poppins', weight: '500' } },
               },
             },

@@ -2,9 +2,8 @@ import { ThemeUIStyleObject } from 'theme-ui'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   cardContainer: {
-    maxWidth: '590px',
+    maxWidth: '400px',
     width: '100%',
-    background: 'white2',
     minHeight: '350px',
     height: 'auto',
     borderRadius: '10px',
