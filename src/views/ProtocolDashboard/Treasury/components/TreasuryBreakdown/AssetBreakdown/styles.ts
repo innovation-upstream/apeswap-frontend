@@ -13,7 +13,8 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
   assetBreakdownContainer: {
     width: '580px',
-    height: '500px',
+    height: 'auto',
+    maxHeight: '500px',
     background: 'white3',
     overflowY: 'scroll',
     overflowX: 'hidden',
@@ -27,7 +28,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     minHeight: '60px',
     height: 'fit-content',
     width: '100%',
-    alignItems: 'space-between',
     justifyContent: 'center',
     padding: '0px 20px 0px 10px',
     flexDirection: 'column',

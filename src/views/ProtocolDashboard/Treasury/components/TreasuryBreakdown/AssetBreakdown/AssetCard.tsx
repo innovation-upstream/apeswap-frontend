@@ -12,9 +12,14 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
   const [expanded, setExpanded] = useState(false)
   const { t } = useTranslation()
   return (
-    <Flex key={token?.address} sx={{ ...styles.assetContainer, background: expanded ? 'white4' : 'white3' }}>
+    <Flex sx={{ ...styles.assetContainer, background: expanded ? 'white4' : 'white3' }}>
       <Flex
-        sx={{ justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          cursor: 'pointer',
+          minHeight: '60px',
+        }}
         onClick={() => setExpanded((prev) => !prev)}
       >
         <Flex sx={{ alignItems: 'center' }}>
@@ -39,7 +44,7 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
             exit={{ opacity: 0, height: 0 }}
             sx={{ position: 'relative' }}
           >
-            <Flex sx={{ width: '100%', flexDirection: 'column' }}>
+            <Flex sx={{ width: '100%', flexDirection: 'column', pb: '15px' }}>
               <Flex
                 sx={{
                   justifyContent: 'space-between',

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import fetchTreasuryBreakdown from 'state/protocolDashboard/api'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import AssetCard from './AssetCard'
+import { orderBy } from 'lodash'
 
 const AssetBreakdown: React.FC = () => {
   const { t } = useTranslation()
@@ -16,7 +17,13 @@ const AssetBreakdown: React.FC = () => {
     }
     getTreasury()
   }, [])
-  console.log(treasury)
+
+  const sortedTreasury = orderBy(
+    [...(treasury?.operationalFundsTokens || []), ...(treasury?.lpTokens || [])],
+    (token) => token?.value,
+    'desc',
+  )
+
   return (
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', mb: '5px' }}>
@@ -24,11 +31,11 @@ const AssetBreakdown: React.FC = () => {
           {t('Asset Breakdown')}
         </Text>
       </Flex>
-      <Flex sx={styles.assetBreakdownContainer}>
-        {treasury?.operationalFundsTokens?.map((token) => (
+      <div sx={styles.assetBreakdownContainer}>
+        {sortedTreasury?.map((token) => (
           <AssetCard token={token} key={token?.address} />
         ))}
-      </Flex>
+      </div>
     </Flex>
   )
 }

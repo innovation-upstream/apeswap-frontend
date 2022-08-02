@@ -14,7 +14,7 @@ const TreasuryBreakdown: React.FC = () => {
           {t('Treasury Breakdown')}
         </Text>
       </Flex>
-      <Flex sx={{ border: '1px solid red', justifyContent: 'space-between' }}>
+      <Flex sx={{ justifyContent: 'space-between' }}>
         <AssetOverview />
         <AssetBreakdown />
       </Flex>
