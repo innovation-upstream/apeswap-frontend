@@ -7,8 +7,11 @@ import { Line } from 'react-chartjs-2'
 import useTheme from 'hooks/useTheme'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
+import { useFetchOverviewProtocolMetrics } from 'state/protocolDashboard/hooks'
 
 const ProtocolMetricsGraph: React.FC = () => {
+  const metrics = useFetchOverviewProtocolMetrics()
+  console.log(metrics)
   const [activeCatTab, setActiveCatTab] = useState(0)
   const [activeTime, onSetTime] = useState('total')
   const { t } = useTranslation()

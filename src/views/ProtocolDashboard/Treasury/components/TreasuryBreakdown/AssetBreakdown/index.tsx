@@ -3,20 +3,16 @@ import { Flex, Text } from '@ape.swap/uikit'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
 import React, { useEffect, useState } from 'react'
+import { orderBy } from 'lodash'
+import { useFetchTreasuryBreakdown } from 'state/protocolDashboard/hooks'
 import fetchTreasuryBreakdown from 'state/protocolDashboard/api'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import AssetCard from './AssetCard'
-import { orderBy } from 'lodash'
 
 const AssetBreakdown: React.FC = () => {
   const { t } = useTranslation()
-  const [treasury, setTreasuryBreakdown] = useState(null)
-  useEffect(() => {
-    const getTreasury = async () => {
-      setTreasuryBreakdown(await fetchTreasuryBreakdown())
-    }
-    getTreasury()
-  }, [])
+  const treasury = useFetchTreasuryBreakdown()
+  console.log(treasury)
 
   const sortedTreasury = orderBy(
     [...(treasury?.operationalFundsTokens || []), ...(treasury?.lpTokens || [])],

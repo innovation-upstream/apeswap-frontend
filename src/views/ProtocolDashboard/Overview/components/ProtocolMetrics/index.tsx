@@ -2,11 +2,14 @@
 import 'chart.js/auto'
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import React from 'react'
-import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
 import CountUp from 'react-countup'
+import { useFetchOverviewProtocolMetrics } from 'state/protocolDashboard/hooks'
+import { styles } from './styles'
 
 const ProtocolMetrics: React.FC = () => {
+  const protocolMetrics = useFetchOverviewProtocolMetrics()
+  console.log(protocolMetrics)
   const { t } = useTranslation()
   return (
     <Flex sx={styles.cardContainer}>

@@ -10,7 +10,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     margin: '10px 0px',
     flexDirection: 'column',
     padding: '20px',
-    '@media screen and (max-width: 1080px)': {
+    '@media screen and (max-width: 1100px)': {
       height: '537px',
     },
   },

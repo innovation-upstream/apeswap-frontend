@@ -10,10 +10,13 @@ import CountUp from 'react-countup'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { BananaIcon } from 'components/Icons'
+import { useFetchOverviewBananaDistribution } from 'state/protocolDashboard/hooks'
 
 ChartJS.register(LineElement, PointElement, LinearScale, Title)
 
 const BananaSupplyDistribution: React.FC = () => {
+  const bananaSupply = useFetchOverviewBananaDistribution()
+  console.log(bananaSupply)
   const { t } = useTranslation()
   const { theme } = useTheme()
   const data = {
