@@ -8,5 +8,8 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     height: '260px',
     borderRadius: '10px',
     margin: '10px 0px',
+    flexDirection: 'column',
+    padding: '20px 10px',
+    alignItems: 'center',
   },
 }

@@ -2,8 +2,6 @@
 import 'chart.js/auto'
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import React from 'react'
-import { Line } from 'react-chartjs-2'
-import useTheme from 'hooks/useTheme'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
 import CountUp from 'react-countup'
@@ -17,7 +15,7 @@ const ProtocolMetrics: React.FC = () => {
           {t('Protocol Metrics')}
         </Text>
       </Flex>
-      <Flex sx={{ justifyContent: 'space-between', margin: '7.5px 0px' }}>
+      <Flex sx={{ justifyContent: 'space-between', margin: '8.5px 0px' }}>
         <Flex sx={{ alignItems: 'center' }}>
           <Text weight={500} mr="5px">
             {t('BANANA Holders')}
@@ -30,7 +28,7 @@ const ProtocolMetrics: React.FC = () => {
           <CountUp end={75534} decimals={2} duration={1} separator="," />
         </Text>
       </Flex>
-      <Flex sx={{ justifyContent: 'space-between', margin: '7.5px 0px' }}>
+      <Flex sx={{ justifyContent: 'space-between', margin: '8.5px 0px' }}>
         <Flex sx={{ alignItems: 'center' }}>
           <Text weight={500} mr="5px">
             {t('Market Cap')}
@@ -43,7 +41,7 @@ const ProtocolMetrics: React.FC = () => {
           $<CountUp end={66456.22} decimals={2} duration={1} separator="," />
         </Text>
       </Flex>
-      <Flex sx={{ justifyContent: 'space-between', margin: '7.5px 0px' }}>
+      <Flex sx={{ justifyContent: 'space-between', margin: '8.5px 0px' }}>
         <Flex sx={{ alignItems: 'center' }}>
           <Text weight={500} mr="5px">
             {t('BANANA Burned')}
@@ -56,7 +54,7 @@ const ProtocolMetrics: React.FC = () => {
           $<CountUp end={345456982} decimals={2} duration={1} separator="," />
         </Text>
       </Flex>
-      <Flex sx={{ justifyContent: 'space-between', margin: '7.5px 0px' }}>
+      <Flex sx={{ justifyContent: 'space-between', margin: '8.5px 0px' }}>
         <Flex sx={{ alignItems: 'center' }}>
           <Text weight={500} mr="5px">
             {t('POL')}

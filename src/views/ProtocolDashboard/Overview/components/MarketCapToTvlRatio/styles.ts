@@ -10,5 +10,8 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     margin: '10px 0px',
     flexDirection: 'column',
     padding: '20px 20px',
+    '@media screen and (min-width: 726px)': {
+      mr: '10px',
+    },
   },
 }

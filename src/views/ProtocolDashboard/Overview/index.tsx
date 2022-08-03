@@ -25,18 +25,44 @@ const Overview: React.FC = () => {
           justifyContent: 'space-between',
           width: '100%',
           flexWrap: 'no-wrap',
-          '@media screen and (max-width: 1075px)': {
+          '@media screen and (max-width: 725px)': {
             flexWrap: 'wrap',
+            justifyContent: 'center',
           },
         }}
       >
         <TotalValueLocked />
         <TotalTradeVolume />
       </Flex>
-      <MarketCapToTvlRatio />
-      <BananaSupplyDistribution />
-      <ProtocolMetrics />
-      <ProtocolMetricsGraph />
+      <Flex
+        sx={{
+          justifyContent: 'space-between',
+          width: '100%',
+          flexWrap: 'no-wrap',
+          '@media screen and (max-width: 725px)': {
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          },
+        }}
+      >
+        <MarketCapToTvlRatio />
+        <BananaSupplyDistribution />
+      </Flex>
+      <Flex
+        sx={{
+          position: 'relative',
+          justifyContent: 'space-between',
+          width: '100%',
+          flexWrap: 'no-wrap',
+          '@media screen and (max-width: 725px)': {
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          },
+        }}
+      >
+        <ProtocolMetrics />
+        <ProtocolMetricsGraph />
+      </Flex>
     </Flex>
   )
 }

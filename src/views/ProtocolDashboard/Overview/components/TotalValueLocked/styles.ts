@@ -13,5 +13,8 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     alignItems: 'space-between',
     justifyContent: 'space-between',
     padding: '20px 10px',
+    '@media screen and (min-width: 726px)': {
+      mr: '10px',
+    },
   },
 }
