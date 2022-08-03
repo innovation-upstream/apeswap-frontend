@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 // @ts-nocheck
 // ChartJS has borderRadius in vs 3^, but react-chartjs does not have the type for it
-import { Flex, Text } from '@ape.swap/uikit'
+import { Flex, Svg, Text } from '@ape.swap/uikit'
 import React from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import { Chart as ChartJS, LineElement, PointElement, LinearScale, Title } from 'chart.js'
@@ -9,6 +9,7 @@ import { styles } from './styles'
 import CountUp from 'react-countup'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
+import { BananaIcon } from 'components/Icons'
 
 ChartJS.register(LineElement, PointElement, LinearScale, Title)
 
@@ -37,20 +38,34 @@ const BananaSupplyDistribution: React.FC = () => {
           $<CountUp end={444584.28} decimals={2} duration={1} separator="," />
         </Text>
       </Flex>
-      <Flex sx={{ width: '160px' }}>
-        <Doughnut
-          data={data}
-          options={{
-            elements: {
-              arc: {
-                borderWidth: 3,
-                borderColor: theme.colors.white2,
+      <Flex sx={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap' }}>
+        <Flex sx={{ width: '160px' }}>
+          <Doughnut
+            data={data}
+            options={{
+              elements: {
+                arc: {
+                  borderWidth: 3,
+                  borderColor: theme.colors.white2,
+                },
               },
-            },
-            plugins: { legend: { display: false } },
-            borderRadius: 8,
+              plugins: { legend: { display: false } },
+              borderRadius: 8,
+            }}
+          />
+        </Flex>
+        <Flex
+          sx={{
+            position: 'absolute',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mr: '5px',
+            width: '100%',
+            height: '100%',
           }}
-        />
+        >
+          <BananaIcon />
+        </Flex>
       </Flex>
     </Flex>
   )

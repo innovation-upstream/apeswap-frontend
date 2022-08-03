@@ -64,10 +64,10 @@ const TotalValueLocked: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
-              height: '100%',
+              height: '85%',
             }}
           >
-            <Tvl fill={theme.colors.text} color={theme.colors.background} width="50px" height="70px" />
+            <Tvl fill={theme.colors.text} color={theme.colors.background} width="90px" />
           </Flex>
         </Flex>
         <Flex sx={{ flexDirection: 'column', maxWidth: '300px', width: '100%', margin: '10px 0px' }}>
