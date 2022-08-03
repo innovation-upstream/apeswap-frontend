@@ -10,4 +10,9 @@ export const modalProps = {
   },
 }
 
-export const gnanaStyles: Record<string, ThemeUIStyleObject> = {}
+export const gnanaStyles: Record<string, ThemeUIStyleObject> = {
+  warningHeader: {
+    fontSize: '22px',
+    fontWeight: 700,
+  },
+}
