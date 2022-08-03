@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { IconButton, Text, Flex, TagVariants } from '@ape.swap/uikit'
+import { IconButton, Text, Flex, TagVariants, useModal, Button } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
@@ -18,13 +18,15 @@ import { useTranslation } from 'contexts/Localization'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
-import { Container, StyledButton, ActionContainer, StyledTag } from './styles'
+import { StyledTag, poolStyles } from './styles'
+import GnanaModal from 'views/Gnana'
 
 const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
   const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
   const { t } = useTranslation()
+  const [onPresentModal] = useModal(<GnanaModal />)
   const isActive = !pathname.includes('history')
 
   const poolsListView = pools.map((pool) => {
@@ -118,7 +120,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
       ),
       expandedContent: (
         <>
-          <ActionContainer>
+          <Flex sx={poolStyles.actionContainer}>
             {isMobile && (
               <ListViewContent
                 title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
@@ -131,11 +133,18 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                 ml={10}
               />
             )}
-            <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
-              <StyledButton sx={{ width: '150px' }}>
+            {/* If pool?.stakingToken?.symbol is GNANA open GNANA Modal instead */}
+            {pool?.stakingToken?.symbol === 'GNANA' ? (
+              <Button sx={poolStyles.styledBtn} onClick={onPresentModal}>
                 {t('GET')} {pool?.stakingToken?.symbol}
-              </StyledButton>
-            </a>
+              </Button>
+            ) : (
+              <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
+                <Button sx={poolStyles.styledBtn}>
+                  {t('GET')} {pool?.stakingToken?.symbol}
+                </Button>
+              </a>
+            )}
             {!isMobile && (
               <ListViewContent
                 title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
@@ -148,7 +157,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                 ml={10}
               />
             )}
-          </ActionContainer>
+          </Flex>
           {!isMobile && <NextArrow />}
           <Actions
             allowance={userAllowance?.toString()}
@@ -171,9 +180,9 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
     } as ExtendedListViewProps
   })
   return (
-    <Container>
+    <Flex sx={poolStyles.container}>
       <ListView listViews={poolsListView} />
-    </Container>
+    </Flex>
   )
 }
 
