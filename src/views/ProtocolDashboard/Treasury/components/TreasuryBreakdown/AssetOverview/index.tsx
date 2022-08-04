@@ -1,27 +1,63 @@
 /** @jsxImportSource theme-ui */
 import { Tvl } from 'components/Icons'
 import { Flex, Text } from '@ape.swap/uikit'
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
 import stubData from './stubData'
 import CountUp from 'react-countup'
+import { useFetchTreasuryAssetOverview } from 'state/protocolDashboard/hooks'
+import { add, defaultTo, merge, mergeWith, orderBy } from 'lodash'
+import { TreasuryAssetOverviewInterface } from 'state/protocolDashboard/types'
 
-const data = {
-  labels: stubData.map((data) => data.type),
-  datasets: [
-    {
-      data: stubData.map((data) => data.amount),
-      backgroundColor: stubData.map((data) => data.color),
-      hoverOffset: 4,
-    },
-  ],
+const COLORS = [
+  'rgba(244, 190, 55, 1)',
+  'rgba(84, 141, 225, 1)',
+  'rgba(231, 79, 79, 1)',
+  'rgba(144, 51, 246, 1)',
+  'rgba(105, 165, 136, 1)',
+  '#7FDBFF',
+  '#FF851B',
+]
+
+const setData = (assets: (TreasuryAssetOverviewInterface | { symbol: string; value: number })[]) => {
+  return {
+    labels: assets?.map((data) => data.symbol),
+    datasets: [
+      {
+        data: assets?.map((data) => data.value),
+        backgroundColor: assets?.map((_, i) => COLORS[i]),
+        hoverOffset: 4,
+      },
+    ],
+  }
 }
 
-const AssetOverview: React.FC = () => {
+const sortAndAddAssets = (assets: TreasuryAssetOverviewInterface[]) => {
+  const sortedAssets = orderBy(assets, (asset) => asset.value, 'desc')
+  const topSix = sortedAssets.length > 6 ? sortedAssets.slice(0, 6) : sortedAssets
+  const otherAssets = sortedAssets.length > 6 ? sortedAssets.slice(6) : []
+  const otherAssetsSum = otherAssets.reduce((a, b) => a + b.value, 0)
+  if (sortedAssets.length === 0) return null
+  return [...topSix, { symbol: 'Other', value: otherAssetsSum }]
+}
+
+const AssetOverview: React.FC<{ activeView: number }> = ({ activeView }) => {
+  const assets = useFetchTreasuryAssetOverview()
+  const treasuryAssets = assets?.filter((asset) => asset.location === 'Operational Funds')
+  const polAssets = assets?.filter((asset) => asset.location === 'POL')
+  const mergedAssets = treasuryAssets?.map((treasAsset) => {
+    const matchAsset = polAssets?.filter((asset) => asset.symbol === treasAsset.symbol)
+    return {
+      ...treasAsset,
+      value: (matchAsset.length > 0 ? matchAsset[0].value : 0) + treasAsset.value,
+    }
+  })
+  const cleanedAssets = sortAndAddAssets([mergedAssets, treasuryAssets, polAssets][activeView])
+  const data = useMemo(() => setData(cleanedAssets), [cleanedAssets])
   const { t } = useTranslation()
-  const total = stubData.reduce((a, b) => a + b.amount, 0)
+  const total = cleanedAssets?.reduce((a, b) => a + b.value, 0)
   return (
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', mb: '5px' }}>
@@ -59,33 +95,37 @@ const AssetOverview: React.FC = () => {
           </Flex>
         </Flex>
         <Flex sx={{ flexDirection: 'column', maxWidth: '300px', width: '100%', margin: '10px 0px' }}>
-          {stubData.map((data) => {
-            return (
-              <Flex key={data.type} sx={{ alignItems: 'center', justifyContent: 'space-between', margin: '5px 0px' }}>
-                <Flex sx={{ alignItems: 'center' }}>
-                  <Flex sx={{ background: data.color, width: '8px', height: '8px', borderRadius: '4px' }} />
-                  <Text ml="10px" weight={500}>
-                    {data.type}
-                  </Text>
-                </Flex>
+          {cleanedAssets &&
+            cleanedAssets.map((asset, i) => {
+              return (
                 <Flex
-                  sx={{
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    maxWidth: '150px',
-                    width: '100%',
-                  }}
+                  key={asset.symbol}
+                  sx={{ alignItems: 'center', justifyContent: 'space-between', margin: '5px 0px' }}
                 >
-                  <Text weight={700} mr="10px">
-                    $<CountUp end={data.amount} decimals={0} duration={1} separator="," />
-                  </Text>
-                  <Text weight={500} sx={{ opacity: 0.5 }}>
-                    <CountUp end={(data.amount / total) * 100} decimals={2} duration={1} separator="," />%
-                  </Text>
+                  <Flex sx={{ alignItems: 'center' }}>
+                    <Flex sx={{ background: COLORS[i], width: '8px', height: '8px', borderRadius: '4px' }} />
+                    <Text ml="10px" weight={500}>
+                      {asset.symbol}
+                    </Text>
+                  </Flex>
+                  <Flex
+                    sx={{
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      maxWidth: '150px',
+                      width: '100%',
+                    }}
+                  >
+                    <Text weight={700} mr="10px">
+                      $<CountUp end={asset.value} decimals={0} duration={1} separator="," />
+                    </Text>
+                    <Text weight={500} sx={{ opacity: 0.5 }}>
+                      <CountUp end={(asset.value / total) * 100} decimals={2} duration={1} separator="," />%
+                    </Text>
+                  </Flex>
                 </Flex>
-              </Flex>
-            )
-          })}
+              )
+            })}
         </Flex>
       </Flex>
     </Flex>

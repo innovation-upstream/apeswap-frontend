@@ -16,7 +16,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     maxWidth: '580px',
     width: '100%',
     height: 'auto',
-    maxHeight: '500px',
+    maxHeight: '545px',
     background: 'white3',
     overflowY: 'scroll',
     overflowX: 'hidden',

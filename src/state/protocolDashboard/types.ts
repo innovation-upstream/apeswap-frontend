@@ -22,7 +22,13 @@ export interface OverviewBananaDistributionInterface {
   distribution: { description: string; amount: number }[]
 }
 
-interface TreasuryAssetOverviewInterface {}
+export interface TreasuryAssetOverviewInterface {
+  amount: number
+  location: 'Operational Funds' | 'POL'
+  price: number
+  symbol: string
+  value: number
+}
 
 export interface TreasuryHistoryInterface {
   timestamp: number
@@ -37,7 +43,7 @@ export interface ProtocolDashboardState {
   overviewVolume: OverviewVolumeInterface[]
   overviewProtocolMetrics: OverviewProtocolMetricsInterface[]
   overviewBananaDistribution: OverviewBananaDistributionInterface[]
-  treasuryAssetOverview: any
+  treasuryAssetOverview: TreasuryAssetOverviewInterface[]
   treasuryHistory: TreasuryHistoryInterface[]
   treasuryBreakdown: any
 }

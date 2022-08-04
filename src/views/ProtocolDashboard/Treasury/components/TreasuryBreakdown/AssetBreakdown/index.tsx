@@ -9,7 +9,7 @@ import fetchTreasuryBreakdown from 'state/protocolDashboard/api'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import AssetCard from './AssetCard'
 
-const AssetBreakdown: React.FC = () => {
+const AssetBreakdown: React.FC<{ activeView: number }> = () => {
   const { t } = useTranslation()
   const treasury = useFetchTreasuryBreakdown()
   console.log(treasury)
