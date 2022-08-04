@@ -1,5 +1,4 @@
 /** @jsxImportSource theme-ui */
-import 'chart.js/auto'
 import { Tvl } from 'components/Icons'
 import { Flex, Text } from '@ape.swap/uikit'
 import React from 'react'

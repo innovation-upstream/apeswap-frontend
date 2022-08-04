@@ -1,10 +1,24 @@
 /** @jsxImportSource theme-ui */
+import 'chartjs-adapter-moment'
+import {
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  ArcElement,
+  TimeScale,
+  Filler,
+  Legend,
+} from 'chart.js'
 import { Flex } from '@ape.swap/uikit'
 import Banner from 'components/Banner'
 import { TabNav } from 'components/TabNav'
 import React, { useState } from 'react'
 import Overview from './Overview'
 import Treasury from './Treasury'
+
+ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, TimeScale, ArcElement, Legend, Filler)
 
 const ProtocolDashboard = () => {
   const [activeTab, setActiveTab] = useState('Overview')

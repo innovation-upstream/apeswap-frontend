@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
-import 'chart.js/auto'
 import { Flex, Text } from '@ape.swap/uikit'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Line } from 'react-chartjs-2'
 import useTheme from 'hooks/useTheme'
 import CountUp from 'react-countup'
@@ -10,58 +9,34 @@ import { useFetchOverviewVolume } from 'state/protocolDashboard/hooks'
 import stubData from './stubData'
 import { styles } from './styles'
 import { useFetchHomepageStats, useHomepageStats } from 'state/hooks'
-
-// {
-//   label: 'BNB Chain',
-//   data: tradeVolume?.map((data) => data.history.map((hist) => hist.amount)),
-//   backgroundColor: 'rgba(243, 186, 47, .5)',
-//   borderColor: 'rgba(243, 186, 47, 1)',
-//   fill: true,
-//   drawTicks: false,
-//   lineTension: 0.5,
-// },
-// {
-//   data: tradeVolume?.map((data) => data.history.map((hist) => hist.amount)),
-//   label: 'Polygon',
-//   backgroundColor: 'rgba(130, 71, 229, .5)',
-//   borderColor: 'rgba(130, 71, 229, 1)',
-//   fill: true,
-//   lineTension: 0.8,
-// },
-// {
-//   label: 'Ethereum',
-//   data: tradeVolume?.map((data) => data.history.map((hist) => hist.amount)),
-//   backgroundColor: 'rgba(98, 126, 234, .5)',
-//   borderColor: 'rgba(98, 126, 234, 1)',
-//   fill: true,
-//   lineTension: 0.8,
-// },
+import { OverviewVolumeInterface } from 'state/protocolDashboard/types'
 
 const BACKGROUND_COLORS = ['rgba(243, 186, 47, .5)', 'rgba(130, 71, 229, .5)', 'rgba(98, 126, 234, .5)']
 const BORDER_COLORS = ['rgba(243, 186, 47, 1)', 'rgba(130, 71, 229, 1)', 'rgba(98, 126, 234, 1)']
 
-const TotalTradeVolume: React.FC = () => {
-  const tradeVolume = useFetchOverviewVolume()
-  const totalVolume = useHomepageStats()?.totalVolume
-  const { theme } = useTheme()
-  console.log(totalVolume)
-  const data = {
-    labels: tradeVolume?.[0]?.history.map((hist) => hist.time),
-    legend: { position: 'bottom' },
-    color: 'red',
-    drawBorder: true,
+const setData = (tradeVolume: OverviewVolumeInterface[]) => {
+  return {
+    labels: tradeVolume?.[0]?.history.map((hist) => hist.time * 1000),
     datasets: tradeVolume?.map((data, i) => {
       return {
         label: data.description,
         data: data.history?.map((hist) => hist.amount),
         backgroundColor: BACKGROUND_COLORS[i],
         borderColor: BORDER_COLORS[i],
+        lineTension: 0.3,
         fill: true,
-        drawTicks: false,
-        lineTension: 0.5,
       }
     }),
   }
+}
+
+const TotalTradeVolume: React.FC = () => {
+  const tradeVolume = useFetchOverviewVolume()
+  const totalVolume = useHomepageStats()?.totalVolume
+  const { theme } = useTheme()
+  const data = useMemo(() => setData(tradeVolume), [tradeVolume])
+  console.log('This is the data')
+  console.log(data)
 
   const { t } = useTranslation()
 
@@ -79,31 +54,34 @@ const TotalTradeVolume: React.FC = () => {
           )}
         </Text>
       </Flex>
-      <Flex sx={{ position: 'relative', maxWidth: '100%', width: '99%', height: '100%' }}>
+      <Flex sx={{ maxWidth: '100%', width: '99%', height: '100%', maxHeight: '100%' }}>
         {data && (
           <Line
-            datasetIdKey="totalTradeVolume"
             data={data}
             options={{
+              elements: {
+                point: {
+                  radius: 0,
+                },
+              },
               color: theme.colors.text,
               scales: {
                 y: {
                   grid: { color: theme.colors.white4, drawBorder: false },
-                  ticks: { color: theme.colors.text, font: { family: 'poppins', weight: '500' } },
+                  ticks: { stepSize: 20000, color: theme.colors.text, font: { family: 'poppins', weight: '500' } },
                 },
                 x: {
                   grid: { display: false, drawBorder: false },
                   ticks: { color: theme.colors.text, font: { family: 'poppins', weight: '500' } },
+                  type: 'time',
+                  time: {
+                    unit: 'month',
+                  },
                 },
               },
               plugins: {
                 legend: {
-                  position: 'bottom',
-                  fullSize: true,
-                  labels: {
-                    color: theme.colors.text,
-                    font: { family: 'poppins', weight: '600' },
-                  },
+                  display: false,
                 },
               },
               responsive: true,
@@ -111,6 +89,34 @@ const TotalTradeVolume: React.FC = () => {
             }}
           />
         )}
+      </Flex>
+      <Flex
+        sx={{
+          margin: '5px 0px',
+          height: '50px',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          flexWrap: 'wrap',
+        }}
+      >
+        {tradeVolume?.map((data, i) => {
+          const totalVolume = data.history.reduce((a, b) => a + b.amount, 0)
+          return (
+            <Flex key={data.description} sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '5px 0px' }}>
+              <Flex
+                sx={{ background: BORDER_COLORS[i], width: '25px', height: '10px', borderRadius: '10px', mr: '5px' }}
+              />
+              <Flex sx={{ alignItems: 'center', justifyContnet: 'center' }}>
+                <Text size="12px" weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
+                  {data.description}
+                </Text>
+                <Text size="12px" sx={{ lineHeight: '10px' }}>
+                  $<CountUp end={totalVolume} decimals={2} duration={1} separator="," />
+                </Text>
+              </Flex>
+            </Flex>
+          )
+        })}
       </Flex>
     </Flex>
   )

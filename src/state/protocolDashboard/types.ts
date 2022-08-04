@@ -24,7 +24,11 @@ export interface OverviewBananaDistributionInterface {
 
 interface TreasuryAssetOverviewInterface {}
 
-interface TreasuryHistoryInterface {}
+export interface TreasuryHistoryInterface {
+  timestamp: number
+  polValue: number
+  oppFundValue: number
+}
 
 interface TreasuryBreakdownInterface {}
 
@@ -34,6 +38,6 @@ export interface ProtocolDashboardState {
   overviewProtocolMetrics: OverviewProtocolMetricsInterface[]
   overviewBananaDistribution: OverviewBananaDistributionInterface[]
   treasuryAssetOverview: any
-  treasuryHistory: any
+  treasuryHistory: TreasuryHistoryInterface[]
   treasuryBreakdown: any
 }

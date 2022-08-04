@@ -1,5 +1,4 @@
 /** @jsxImportSource theme-ui */
-import 'chart.js/auto'
 import { Flex, Text } from '@ape.swap/uikit'
 import React from 'react'
 import { Line } from 'react-chartjs-2'
@@ -19,7 +18,7 @@ const MarketCapToTvlRatio: React.FC = () => {
         fill: false,
         borderColor: theme.colors.text,
         backgroundColor: theme.colors.text,
-        tension: 0.1,
+        tension: 0.3,
       },
     ],
   }
@@ -37,6 +36,11 @@ const MarketCapToTvlRatio: React.FC = () => {
         <Line
           data={data}
           options={{
+            elements: {
+              point: {
+                radius: 0,
+              },
+            },
             scales: {
               y: {
                 position: 'right',

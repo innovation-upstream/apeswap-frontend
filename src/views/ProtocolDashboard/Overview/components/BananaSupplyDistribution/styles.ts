@@ -5,7 +5,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     maxWidth: '387px',
     width: '100%',
     background: 'white2',
-    height: '260px',
+    height: '320px',
     borderRadius: '10px',
     margin: '10px 0px',
     flexDirection: 'column',

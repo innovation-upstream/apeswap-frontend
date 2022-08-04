@@ -1,5 +1,4 @@
 /** @jsxImportSource theme-ui */
-import 'chart.js/auto'
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
@@ -18,58 +17,23 @@ const ProtocolMetrics: React.FC = () => {
           {t('Protocol Metrics')}
         </Text>
       </Flex>
-      <Flex sx={{ justifyContent: 'space-between', margin: '8.5px 0px' }}>
-        <Flex sx={{ alignItems: 'center' }}>
-          <Text weight={500} mr="5px">
-            {t('BANANA Holders')}
-          </Text>
-          <TooltipBubble body="10">
-            <Svg icon="info" width="15px" color="gray" />
-          </TooltipBubble>
-        </Flex>
-        <Text weight={700}>
-          <CountUp end={75534} decimals={2} duration={1} separator="," />
-        </Text>
-      </Flex>
-      <Flex sx={{ justifyContent: 'space-between', margin: '8.5px 0px' }}>
-        <Flex sx={{ alignItems: 'center' }}>
-          <Text weight={500} mr="5px">
-            {t('Market Cap')}
-          </Text>
-          <TooltipBubble body="10">
-            <Svg icon="info" width="15px" color="gray" />
-          </TooltipBubble>
-        </Flex>
-        <Text weight={700}>
-          $<CountUp end={66456.22} decimals={2} duration={1} separator="," />
-        </Text>
-      </Flex>
-      <Flex sx={{ justifyContent: 'space-between', margin: '8.5px 0px' }}>
-        <Flex sx={{ alignItems: 'center' }}>
-          <Text weight={500} mr="5px">
-            {t('BANANA Burned')}
-          </Text>
-          <TooltipBubble body="10">
-            <Svg icon="info" width="15px" color="gray" />
-          </TooltipBubble>
-        </Flex>
-        <Text weight={700}>
-          $<CountUp end={345456982} decimals={2} duration={1} separator="," />
-        </Text>
-      </Flex>
-      <Flex sx={{ justifyContent: 'space-between', margin: '8.5px 0px' }}>
-        <Flex sx={{ alignItems: 'center' }}>
-          <Text weight={500} mr="5px">
-            {t('POL')}
-          </Text>
-          <TooltipBubble body="10">
-            <Svg icon="info" width="15px" color="gray" />
-          </TooltipBubble>
-        </Flex>
-        <Text weight={700}>
-          <CountUp end={123456} decimals={2} duration={1} separator="," />
-        </Text>
-      </Flex>
+      {protocolMetrics?.map((data) => {
+        return (
+          <Flex sx={{ justifyContent: 'space-between', margin: '8.5px 0px' }} key={data.description}>
+            <Flex sx={{ alignItems: 'center' }}>
+              <Text weight={500} mr="5px">
+                {t(data.description)}
+              </Text>
+              <TooltipBubble body="10">
+                <Svg icon="info" width="15px" color="gray" />
+              </TooltipBubble>
+            </Flex>
+            <Text weight={700}>
+              <CountUp end={data.amount} decimals={2} duration={1} separator="," />
+            </Text>
+          </Flex>
+        )
+      })}
     </Flex>
   )
 }

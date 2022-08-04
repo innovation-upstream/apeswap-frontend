@@ -1,8 +1,7 @@
 /** @jsxImportSource theme-ui */
-import 'chart.js/auto'
 import { Tvl } from 'components/Icons'
 import { Flex, Text } from '@ape.swap/uikit'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import useTheme from 'hooks/useTheme'
 import { useFetchOverviewTvl } from 'state/protocolDashboard/hooks'
@@ -38,7 +37,7 @@ const setData = (tvl: OverviewTvlInterface | string[]) => {
 const TotalValueLocked: React.FC = () => {
   useFetchHomepageStats(true)
   const tvl = useFetchOverviewTvl()
-  const data = setData(tvl)
+  const data = useMemo(() => setData(tvl), [tvl])
   const { t } = useTranslation()
   const { theme } = useTheme()
   const total = tvl && Object.entries(tvl)?.reduce((a, b) => a + b[1], 0)

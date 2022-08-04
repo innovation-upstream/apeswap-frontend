@@ -1,49 +1,44 @@
 /** @jsxImportSource theme-ui */
-import 'chart.js/auto'
 import { Flex, Text } from '@ape.swap/uikit'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Line } from 'react-chartjs-2'
 import stubData from './stubData'
 import { styles } from './styles'
 import useTheme from 'hooks/useTheme'
 import CountUp from 'react-countup'
 import { useTranslation } from 'contexts/Localization'
+import { useFetchTreasuryHistory } from 'state/protocolDashboard/hooks'
+import { TreasuryHistoryInterface } from 'state/protocolDashboard/types'
 
-const TreasuryHistory: React.FC = () => {
-  const { theme } = useTheme()
-  const data = {
-    labels: stubData.map((data) => data.date),
-    legend: { position: 'top', align: 'left' },
-    color: 'red',
-    drawBorder: false,
+const setData = (treasuryHistory: TreasuryHistoryInterface[]) => {
+  return {
+    labels: treasuryHistory?.map((data) => data.timestamp),
     datasets: [
       {
-        label: 'BNB Chain',
-        data: stubData.map((data) => data.bnb),
+        label: 'treasury',
+        data: treasuryHistory?.map((data) => data.oppFundValue),
         backgroundColor: 'rgba(243, 186, 47, .5)',
-        borderColor: 'rgba(243, 186, 47, 1)',
         fill: true,
-        drawTicks: false,
-        lineTension: 0.5,
+        lineTension: 0.3,
       },
       {
-        data: stubData.map((data) => data.polygon),
-        label: 'Polygon',
-        backgroundColor: 'rgba(130, 71, 229, .5)',
-        borderColor: 'rgba(130, 71, 229, 1)',
+        label: 'polValue',
+        data: treasuryHistory?.map((data) => data.polValue),
+        backgroundColor: 'rgba(77, 64, 64, 0.5)',
+        borderColor: 'white',
         fill: true,
-        lineTension: 0.8,
-      },
-      {
-        label: 'Ethereum',
-        data: stubData.map((data) => data.ethereum),
-        backgroundColor: 'rgba(98, 126, 234, .5)',
-        borderColor: 'rgba(98, 126, 234, 1)',
-        fill: true,
-        lineTension: 0.8,
+        lineTension: 0.3,
       },
     ],
   }
+}
+
+const TreasuryHistory: React.FC = () => {
+  const treasuryHistory = useFetchTreasuryHistory()
+  const { theme } = useTheme()
+  const data = useMemo(() => setData(treasuryHistory), [treasuryHistory])
+  const totalPol = treasuryHistory?.reduce((a, b) => a + b.polValue, 0)
+  const totalTreasury = treasuryHistory?.reduce((a, b) => a + b.oppFundValue, 0)
 
   const { t } = useTranslation()
 
@@ -51,18 +46,52 @@ const TreasuryHistory: React.FC = () => {
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', marginBottom: '10px' }}>
         <Text size="22px" weight={700} mb="10px">
-          {t('Treasury')}
+          {t('Treasury & Protcol Owned Liquidity')}
         </Text>
         <Text size="16px" weight={500}>
-          $<CountUp end={57783576553} decimals={2} duration={1} separator="," />
+          $<CountUp end={totalPol + totalTreasury} decimals={2} duration={1} separator="," />
         </Text>
       </Flex>
-      <Flex sx={{ position: 'relative', maxWidth: '100%', width: '99%', height: '100%' }}>
+
+      <Flex sx={{ position: 'absolute', flexWrap: 'wrap', flexDirection: 'column', top: '90px', left: '50px' }}>
+        <Flex sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '10px 0px' }}>
+          <Flex
+            sx={{ background: 'rgba(243, 186, 47, 1)', width: '25px', height: '10px', borderRadius: '10px', mr: '5px' }}
+          />
+          <Flex sx={{ alignItems: 'center', justifyContnet: 'center' }}>
+            <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
+              Treasury
+            </Text>
+            <Text sx={{ lineHeight: '10px' }}>
+              $<CountUp end={totalTreasury} decimals={2} duration={1} separator="," />
+            </Text>
+          </Flex>
+        </Flex>
+        <Flex sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '10px 0px' }}>
+          <Flex
+            sx={{ background: 'rgba(77, 64, 64, 1)', width: '25px', height: '10px', borderRadius: '10px', mr: '5px' }}
+          />
+          <Flex sx={{ alignItems: 'center', justifyContnet: 'center' }}>
+            <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
+              Protcol Owned Liquidity
+            </Text>
+            <Text sx={{ lineHeight: '10px' }}>
+              $<CountUp end={totalPol} decimals={2} duration={1} separator="," />
+            </Text>
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex sx={{ maxWidth: '100%', width: '99%', height: '100%' }}>
         <Line
-          datasetIdKey="totalTradeVolume"
           data={data}
           options={{
             color: theme.colors.text,
+            elements: {
+              point: {
+                radius: 0,
+              },
+            },
             scales: {
               y: {
                 grid: { display: false, drawBorder: false },
