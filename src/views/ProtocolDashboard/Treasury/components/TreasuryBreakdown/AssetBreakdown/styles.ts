@@ -2,7 +2,8 @@ import { ThemeUIStyleObject } from 'theme-ui'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   cardContainer: {
-    width: 'fit-content',
+    width: '100%',
+    maxWidth: '580px',
     minHeight: '350px',
     height: 'fit-content',
     borderRadius: '10px',
@@ -12,7 +13,8 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     padding: '20px 10px',
   },
   assetBreakdownContainer: {
-    width: '580px',
+    maxWidth: '580px',
+    width: '100%',
     height: 'auto',
     maxHeight: '500px',
     background: 'white3',
@@ -28,11 +30,21 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     minHeight: '60px',
     height: 'fit-content',
     width: '100%',
+    maxWidth: '580px',
     justifyContent: 'center',
     padding: '0px 20px 0px 10px',
     flexDirection: 'column',
     overflow: 'hidden',
     borderRadius: '10px',
     margin: '5px 10px',
+  },
+  assetRow: {
+    maxWidth: '250px',
+    width: '100%',
+    justifyContent: 'space-between',
+    margin: '2.5px 0px',
+    '@media screen and (max-width: 578px)': {
+      margin: '10px 0px',
+    },
   },
 }

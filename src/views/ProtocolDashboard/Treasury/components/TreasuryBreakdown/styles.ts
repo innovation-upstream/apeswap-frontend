@@ -9,8 +9,8 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     borderRadius: '10px',
     margin: '10px 0px',
     flexDirection: 'column',
-    alignItems: 'space-between',
-    justifyContent: 'space-between',
-    padding: '20px 50px',
+    alignItems: 'space-around',
+    justifyContent: 'center',
+    padding: '20px 0px',
   },
 }

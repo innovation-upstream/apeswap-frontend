@@ -44,37 +44,43 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
             exit={{ opacity: 0, height: 0 }}
             sx={{ position: 'relative' }}
           >
-            <Flex sx={{ width: '100%', flexDirection: 'column', pb: '15px' }}>
-              <Flex
-                sx={{
-                  justifyContent: 'space-between',
-                  margin: '10px 0px',
-                }}
-              >
-                <Flex sx={{ width: '250px', justifyContent: 'space-between' }}>
-                  <Text weight={500}>{t('Value')}:</Text>
-                  <Text weight={700}>
+            <Flex sx={{ width: '100%', flexDirection: 'column', flexWrap: 'wrap', mt: '5px', height: 'fit-content' }}>
+              <Flex sx={{ justifyContent: 'space-around', flexWrap: 'wrap' }}>
+                <Flex sx={styles.assetRow}>
+                  <Text weight={500} sx={{ lineHeight: '10px' }}>
+                    {t('Value')}:
+                  </Text>
+                  <Text weight={700} sx={{ lineHeight: '10px' }}>
                     $<CountUp end={token?.value} decimals={2} duration={1} separator="," />
                   </Text>
                 </Flex>
-                <Flex sx={{ width: '250px', justifyContent: 'space-between' }}>
-                  <Text weight={500}>{t('Chain')}:</Text>
-                  <Text weight={700}>{NETWORK_LABEL[token?.chainId]}</Text>
+                <Flex sx={styles.assetRow}>
+                  <Text weight={500} sx={{ lineHeight: '10px' }}>
+                    {t('Chain')}:
+                  </Text>
+                  <Text weight={700} sx={{ lineHeight: '10px' }}>
+                    {NETWORK_LABEL[token?.chainId]}
+                  </Text>
                 </Flex>
               </Flex>
-              <Flex sx={{ justifyContent: 'space-between' }}>
-                <Flex sx={{ width: '250px', justifyContent: 'space-between' }}>
-                  <Text weight={500}>{t('Location')}:</Text>
-                  <Text weight={700}>{token?.location}</Text>
+              <Flex sx={{ justifyContent: 'space-around', flexWrap: 'wrap' }}>
+                <Flex sx={styles.assetRow}>
+                  <Text weight={500} sx={{ lineHeight: '10px' }}>
+                    {t('Location')}:
+                  </Text>
+                  <Text weight={700} sx={{ lineHeight: '10px' }}>
+                    {token?.location}
+                  </Text>
                 </Flex>
-                <Flex sx={{ width: '250px', justifyContent: 'space-between' }}>
-                  <Text weight={500}>{t('Amount')}:</Text>
-                  <Text weight={700}>
+                <Flex sx={styles.assetRow}>
+                  <Text weight={500} sx={{ lineHeight: '10px' }}>
+                    {t('Amount')}:
+                  </Text>
+                  <Text weight={700} sx={{ lineHeight: '10px' }}>
                     <CountUp end={token?.amount} decimals={2} duration={1} separator="," />
                   </Text>
                 </Flex>
               </Flex>
-              <Flex></Flex>
             </Flex>
           </motion.div>
         )}
