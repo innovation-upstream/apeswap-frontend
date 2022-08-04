@@ -13,4 +13,20 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'space-between',
     padding: '20px 10px',
   },
+  legendContainer: {
+    position: 'absolute',
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    top: '90px',
+    left: '50px',
+    '@media screen and (max-width: 950px)': {
+      left: '30px',
+      fontSize: '14px',
+    },
+    '@media screen and (max-width: 450px)': {
+      left: '10px',
+      top: '100px',
+      fontSize: '12px',
+    },
+  },
 }

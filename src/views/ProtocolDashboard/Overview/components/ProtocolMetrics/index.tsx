@@ -24,7 +24,7 @@ const ProtocolMetrics: React.FC = () => {
               <Text weight={500} mr="5px">
                 {t(data.description)}
               </Text>
-              <TooltipBubble body="10">
+              <TooltipBubble body={<Text>Some tooltip</Text>} transformTip="translate(20px, 0px)" width="120px">
                 <Svg icon="info" width="15px" color="gray" />
               </TooltipBubble>
             </Flex>

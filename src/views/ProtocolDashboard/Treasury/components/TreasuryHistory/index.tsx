@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Text } from '@ape.swap/uikit'
+import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import React, { useMemo } from 'react'
 import { Line } from 'react-chartjs-2'
 import stubData from './stubData'
@@ -46,17 +46,27 @@ const TreasuryHistory: React.FC = () => {
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', marginBottom: '10px' }}>
         <Text size="22px" weight={700} mb="10px">
-          {t('Treasury & Protcol Owned Liquidity')}
+          {t('Treasury & POL')}
+          {'  '}
+          <TooltipBubble body={<Text>Protcol Owned Liquidity</Text>} width="200px" transformTip="translate(20px, 0px)">
+            <Svg icon="info" width="16px" />
+          </TooltipBubble>
         </Text>
         <Text size="16px" weight={500}>
           $<CountUp end={totalPol + totalTreasury} decimals={2} duration={1} separator="," />
         </Text>
       </Flex>
 
-      <Flex sx={{ position: 'absolute', flexWrap: 'wrap', flexDirection: 'column', top: '90px', left: '50px' }}>
+      <Flex sx={styles.legendContainer}>
         <Flex sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '10px 0px' }}>
           <Flex
-            sx={{ background: 'rgba(243, 186, 47, 1)', width: '25px', height: '10px', borderRadius: '10px', mr: '5px' }}
+            sx={{
+              background: 'rgba(243, 186, 47, .5)',
+              width: '25px',
+              height: '10px',
+              borderRadius: '10px',
+              mr: '5px',
+            }}
           />
           <Flex sx={{ alignItems: 'center', justifyContnet: 'center' }}>
             <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
@@ -73,7 +83,7 @@ const TreasuryHistory: React.FC = () => {
           />
           <Flex sx={{ alignItems: 'center', justifyContnet: 'center' }}>
             <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
-              Protcol Owned Liquidity
+              POL
             </Text>
             <Text sx={{ lineHeight: '10px' }}>
               $<CountUp end={totalPol} decimals={2} duration={1} separator="," />
