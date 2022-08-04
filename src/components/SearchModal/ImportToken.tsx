@@ -43,7 +43,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           <br />
           <br />
           <a
-            href="https://apeswap.click/partners"
+            href="https://forms.clickup.com/3080492/f/2y09c-6585/O175DYTK4PMR6P4CZA"
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: 'underline' }}
