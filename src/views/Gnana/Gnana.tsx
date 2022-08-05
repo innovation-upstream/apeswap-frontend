@@ -16,8 +16,11 @@ import { useBuyGoldenBanana } from 'hooks/useGoldenBanana'
 import { useToast } from 'state/hooks'
 import useApproveTransaction from 'hooks/useApproveTransaction'
 import { ethers } from 'ethers'
+import UnlockButton from 'components/UnlockButton'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const Gnana = () => {
+  const { account } = useActiveWeb3React()
   const MAX_BUY = 5000
   const bananaToken = useCurrency('0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95')
   const gnanaToken = useCurrency('0xdDb3Bd8645775F59496c821E4F55A7eA6A6dc299')
@@ -45,7 +48,6 @@ const Gnana = () => {
   }, [fullBananaBalance, unlimited, setVal])
   const handleChange = useCallback(
     (val) => {
-      // if (!unlimited && parseInt(val) > MAX_BUY) return
       setVal(val)
     },
     [setVal],
@@ -92,6 +94,33 @@ const Gnana = () => {
     setUnlimited(!unlimited)
     if (unlimited) setVal('0')
   }, [unlimited, setUnlimited])
+
+  const disabled =
+    processing ||
+    val === '' ||
+    parseInt(val) === 0 ||
+    parseInt(val) > parseInt(fullBananaBalance) ||
+    (parseInt(val) > MAX_BUY && !unlimited)
+
+  const renderActions = () => {
+    if (!account) {
+      return <UnlockButton fullWidth />
+    }
+    if (isApprovedBanana) {
+      return (
+        <Button variant="primary" onClick={buyGnana} disabled={disabled} fullWidth>
+          {t('CONVERT')}
+        </Button>
+      )
+    }
+    if (isApprovingBanana) {
+      return (
+        <Button variant="primary" onClick={handleApproveBanana} disabled={isApprovingBanana} fullWidth>
+          {t('APPROVE CONTRACT')}
+        </Button>
+      )
+    }
+  }
 
   return (
     <Flex
@@ -226,6 +255,15 @@ const Gnana = () => {
           >
             {t('I understand how GNANA works and I want to enable unlimited buy')}
           </Text>
+        </Flex>
+        <Flex
+          sx={{
+            position: 'relative',
+            width: '100%',
+            marginTop: '10px',
+          }}
+        >
+          {renderActions()}
         </Flex>
       </Flex>
     </Flex>
