@@ -1,13 +1,13 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { IconButton, Text, Flex, TagVariants, useModal, Button } from '@ape.swap/uikit'
+import { IconButton, Text, Flex, TagVariants, Button } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import CalcButton from 'components/RoiCalculator/CalcButton'
 import useIsMobile from 'hooks/useIsMobile'
@@ -19,15 +19,14 @@ import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
 import { StyledTag, poolStyles } from './styles'
-import GnanaModal from 'views/Gnana'
 
 const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
   const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
   const { t } = useTranslation()
-  const [onPresentModal] = useModal(<GnanaModal />)
   const isActive = !pathname.includes('history')
+  const history = useHistory()
 
   const poolsListView = pools.map((pool) => {
     const token1 = pool?.stakingToken?.symbol
@@ -51,6 +50,11 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
 
     const pTag = poolTags?.find((tag) => tag.pid === pool.sousId)
     const tagColor = pTag?.color as TagVariants
+
+    const openLiquidityUrl = () =>
+      pool?.stakingToken?.symbol === 'GNANA'
+        ? history.push({ search: '?modal=getGnana' })
+        : window.open(liquidityUrl, '_blank')
 
     // Token symbol logic is here temporarily for nfty
     return {
@@ -133,18 +137,9 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                 ml={10}
               />
             )}
-            {/* If pool?.stakingToken?.symbol is GNANA open GNANA Modal instead */}
-            {pool?.stakingToken?.symbol === 'GNANA' ? (
-              <Button variant="primary" sx={poolStyles.styledBtn} onClick={onPresentModal}>
-                {t('GET')} {pool?.stakingToken?.symbol}
-              </Button>
-            ) : (
-              <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
-                <Button variant="primary" sx={poolStyles.styledBtn}>
-                  {t('GET')} {pool?.stakingToken?.symbol}
-                </Button>
-              </a>
-            )}
+            <Button variant="primary" sx={poolStyles.styledBtn} onClick={openLiquidityUrl}>
+              {t('GET')} {pool?.stakingToken?.symbol}
+            </Button>
             {!isMobile && (
               <ListViewContent
                 title={`${t('Available')} ${pool?.stakingToken?.symbol}`}

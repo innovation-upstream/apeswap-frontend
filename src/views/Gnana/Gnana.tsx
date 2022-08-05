@@ -238,7 +238,7 @@ const Gnana = () => {
           fieldType={Field.OUTPUT}
           handleMaxInput={handleSelectMax}
           fullBalance={fullGnanaBalance}
-          disabled={false}
+          disabled={true}
         />
 
         <Flex sx={{ marginTop: '20px', alignItems: 'center' }}>
