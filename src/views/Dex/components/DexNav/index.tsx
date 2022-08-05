@@ -2,9 +2,9 @@
 import { Link, useHistory } from 'react-router-dom'
 import { CogIcon, Flex, Text, useModal, RunFiatButton } from '@ape.swap/uikit'
 import track from 'utils/track'
+import { ChainId } from '@apeswapfinance/sdk'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
-import { CHAIN_ID } from 'config/constants/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import MoonPayModal from 'views/Topup/MoonpayModal'
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
@@ -27,14 +27,14 @@ const DexNav = () => {
   return (
     <Flex sx={styles.dexNavContainer}>
       <Flex
-        sx={{ ...styles.navLinkContainer, justifyContent: chainId === CHAIN_ID.BSC ? 'space-between' : 'flex-start' }}
+        sx={{ ...styles.navLinkContainer, justifyContent: chainId === ChainId.BSC ? 'space-between' : 'flex-start' }}
       >
         <Text
           size="14px"
           sx={{
             ...styles.navLink,
             color: !pathname?.includes('swap') && 'textDisabled',
-            mr: chainId === CHAIN_ID.BSC ? '0px' : '30px',
+            mr: chainId === ChainId.BSC ? '0px' : '30px',
           }}
           as={Link}
           to="/swap"
@@ -43,7 +43,7 @@ const DexNav = () => {
         >
           {t('Swap')}
         </Text>
-        {chainId === CHAIN_ID.BSC && (
+        {chainId === ChainId.BSC && (
           <Text
             size="14px"
             sx={{

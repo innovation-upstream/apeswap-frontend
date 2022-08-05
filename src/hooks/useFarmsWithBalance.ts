@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
+import { ChainId } from '@apeswapfinance/sdk'
 import masterChefABI from 'config/abi/masterchef.json'
 import miniChefABI from 'config/abi/miniApeV2.json'
-import { CHAIN_ID } from 'config/constants/chains'
 import multicall from 'utils/multicall'
 import { useFarms } from 'state/farms/hooks'
 import { useDualFarms } from 'state/dualFarms/hooks'
@@ -58,10 +58,10 @@ const useFarmsWithBalance = () => {
     }
 
     if (account) {
-      if (chainId === CHAIN_ID.BSC) {
+      if (chainId === ChainId.BSC) {
         fetchBSCBalances()
       }
-      if (chainId === CHAIN_ID.MATIC) {
+      if (chainId === ChainId.MATIC) {
         fetchMiniChefBalances()
       }
     }

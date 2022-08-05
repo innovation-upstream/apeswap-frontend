@@ -4,7 +4,7 @@ import useIsMobile from 'hooks/useIsMobile'
 import MarketingSwipper from './MarketingSwipper'
 import CardView from './CardView'
 
-const QuestModal = ({ onDismiss }) => {
+const QuestModal: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
   const isMobile = useIsMobile()
 
   return isMobile ? <MarketingSwipper onDismiss={onDismiss} /> : <CardView onDismiss={onDismiss} />

@@ -8,7 +8,7 @@ import { Flex } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
-import { useBlock } from 'state/block/hooks'
+import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { usePollPools, usePoolOrderings, usePools, usePoolTags, useSetPools } from 'state/pools/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
@@ -35,7 +35,7 @@ const Pools: React.FC = () => {
   const { poolTags } = usePoolTags(chainId)
   const { poolOrderings } = usePoolOrderings(chainId)
   const { t } = useTranslation()
-  const { currentBlock } = useBlock()
+  const currentBlock = useBlockNumber()
   const { search } = window.location
   const params = new URLSearchParams(search)
   const urlSearchedPool = parseInt(params.get('id'))
@@ -167,13 +167,7 @@ const Pools: React.FC = () => {
         style={{ position: 'relative', top: '30px', width: '100%' }}
       >
         <ListViewLayout>
-          <Banner
-            banner="pools"
-            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/pools"
-            title={t('Staking Pools')}
-            listViewBreak
-            maxWidth={1130}
-          />
+          <Banner banner="pools" link="?modal=2" title={t('Staking Pools')} listViewBreak maxWidth={1130} />
           <Flex flexDirection="column" alignSelf="center" style={{ maxWidth: '1130px', width: '100%' }}>
             <PoolMenu
               onHandleQueryChange={handleChangeQuery}

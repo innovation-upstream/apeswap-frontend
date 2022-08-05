@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import useReward from 'hooks/useReward'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'

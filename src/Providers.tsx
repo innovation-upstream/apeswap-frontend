@@ -9,6 +9,7 @@ import { getLibrary } from 'utils/web3React'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
+import { BlockNumberProvider } from 'lib/hooks/useBlockNumber'
 import NftProvider from 'views/Nft/contexts/NftProvider'
 import { NetworkContextName } from 'config/constants'
 import { LanguageProvider } from './contexts/Localization'
@@ -22,21 +23,23 @@ const Providers: React.FC = ({ children }) => {
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
         <Provider store={store}>
-          <HelmetProvider>
-            <ThemeContextProvider>
-              <NftProvider>
-                <LanguageProvider>
-                  <RefreshContextProvider>
-                    <ModalProvider>
-                      <OldModalProvider>
-                        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-                      </OldModalProvider>
-                    </ModalProvider>
-                  </RefreshContextProvider>
-                </LanguageProvider>
-              </NftProvider>
-            </ThemeContextProvider>
-          </HelmetProvider>
+          <BlockNumberProvider>
+            <HelmetProvider>
+              <ThemeContextProvider>
+                <NftProvider>
+                  <LanguageProvider>
+                    <RefreshContextProvider>
+                      <ModalProvider>
+                        <OldModalProvider>
+                          <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+                        </OldModalProvider>
+                      </ModalProvider>
+                    </RefreshContextProvider>
+                  </LanguageProvider>
+                </NftProvider>
+              </ThemeContextProvider>
+            </HelmetProvider>
+          </BlockNumberProvider>
         </Provider>
       </Web3ProviderNetwork>
     </Web3ReactProvider>

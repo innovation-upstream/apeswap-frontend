@@ -8,6 +8,9 @@ import { hexStripZeros } from '@autonomylabs/limit-stop-orders/node_modules/@eth
 import { BigNumber } from 'ethers'
 import { useToast } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
+import { replaceSwapState, SwapDelay } from 'state/swap/actions'
+import { RouterTypes } from 'config/constants'
+import { SmartRouter } from '@apeswapfinance/sdk'
 
 const useSwitchNetwork = () => {
   const { chainId, account, library, connector } = useWeb3React()
@@ -30,6 +33,17 @@ const useSwitchNetwork = () => {
             params: [{ chainId: formattedChainId }],
           })
           dispatch(fetchChainIdFromUrl(false))
+          dispatch(
+            replaceSwapState({
+              typedValue: null,
+              field: null,
+              inputCurrencyId: null,
+              outputCurrencyId: null,
+              recipient: null,
+              swapDelay: SwapDelay.INIT,
+              bestRoute: { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE },
+            }),
+          )
         } catch {
           // If the user doesn't have the chain add it
           await provider.request({
@@ -51,6 +65,18 @@ const useSwitchNetwork = () => {
       } else {
         dispatch(fetchUserNetwork(chainId, account, userChainId))
       }
+      // TODO: Better implementation. This is a hotfix to reset the swap state on network change to not send previous addresses to the wrong multicall state
+      dispatch(
+        replaceSwapState({
+          typedValue: null,
+          field: null,
+          inputCurrencyId: null,
+          outputCurrencyId: null,
+          recipient: null,
+          swapDelay: SwapDelay.INIT,
+          bestRoute: { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE },
+        }),
+      )
     },
     [chainId, account, provider, dispatch, connector, t, toastError],
   )

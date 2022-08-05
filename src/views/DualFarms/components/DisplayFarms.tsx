@@ -9,8 +9,8 @@ import { DualFarm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ApyButton from 'components/ApyCalculator/ApyButton'
 import { useTranslation } from 'contexts/Localization'
+import CalcButton from 'components/RoiCalculator/CalcButton'
 import CardActions from './CardActions'
 import { Container, FarmButton, NextArrow, ServiceTokenDisplayContainer, StyledTag } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
@@ -140,12 +140,17 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
             toolTipPlacement={i === farms.length - 1 && i !== 0 ? 'topLeft' : 'bottomLeft'}
             toolTipTransform={i === farms.length - 1 && i !== 0 ? 'translate(-8%, 0%)' : 'translate(8%, 0%)'}
             aprCalculator={
-              <ApyButton
-                lpLabel={`${farm?.stakeTokens?.token1?.symbol}-${farm?.stakeTokens?.token0?.symbol}`}
+              <CalcButton
+                label={`${farm?.stakeTokens?.token1?.symbol}-${farm?.stakeTokens?.token0?.symbol}`}
                 rewardTokenName="BANANA"
                 rewardTokenPrice={farm.rewardToken0Price}
-                apy={farm?.apr / 100 + parseFloat(farm?.lpApr) / 100}
-                addLiquidityUrl={liquidityUrl}
+                apr={farm?.apr}
+                lpApr={parseFloat(farm?.lpApr)}
+                apy={parseFloat(farm?.apy)}
+                lpAddress={farm.stakeTokenAddress}
+                isLp
+                liquidityUrl={liquidityUrl}
+                lpPrice={farm.stakeTokenPrice}
               />
             }
           />

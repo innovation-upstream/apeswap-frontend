@@ -148,12 +148,12 @@ const Stats: React.FC = () => {
                   {[...stats.incentivizedPools]
                     .sort((poolA, poolB) => poolB.stakedTvl - poolA.stakedTvl)
                     .map((pool) => {
-                      return <CardStats data={pool} type="pool" />
+                      return <CardStats data={pool} type="pool" key={pool.id} />
                     })}
                   {[...stats.farms]
                     .sort((poolA, poolB) => poolB.stakedTvl - poolA.stakedTvl)
                     .map((farm) => {
-                      return <CardStats data={farm} type="farm" />
+                      return <CardStats data={farm} type="farm" key={farm.id} />
                     })}
                 </Cards>
               </div>

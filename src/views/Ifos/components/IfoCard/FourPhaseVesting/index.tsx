@@ -7,7 +7,7 @@ import { BSC_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import UnlockButton from 'components/UnlockButton'
-import { useBlock } from 'state/block/hooks'
+import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { usePriceBnbBusd, usePriceGnanaBusd } from 'state/tokenPrices/hooks'
 import { useSafeIfoContract } from 'hooks/useContract'
 import getTimePeriods from 'utils/getTimePeriods'
@@ -85,7 +85,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
   })
   const { account, chainId } = useActiveWeb3React()
   const contract = useSafeIfoContract(address, false)
-  const { currentBlock } = useBlock()
+  const currentBlock = useBlockNumber()
   const bnbPrice = usePriceBnbBusd()
   const gnanaPrice = usePriceGnanaBusd()
   const { t } = useTranslation()
