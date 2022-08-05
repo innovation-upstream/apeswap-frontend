@@ -3,14 +3,11 @@ import { Field } from 'state/swap/actions'
 
 export interface InputPanelProps {
   value: string
-  fromToken?: Currency
-  toToken?: Currency
+  currency: Currency
   panelText: string
   disabled?: boolean
   onUserInput: (value: string) => void
   handleMaxInput?: (field: any) => void
-  setTradeValueUsd?: (val: number) => void
   fieldType?: Field
-  independentField?: Field
   fullBalance?: string
 }

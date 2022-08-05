@@ -6,7 +6,7 @@ import { modalProps } from './styles'
 
 const GnanaModal: React.FC<ModalProps> = ({ onDismiss }) => {
   return (
-    <Modal title="Get GNANA" onDismiss={onDismiss} {...modalProps}>
+    <Modal zIndex={10} title="Get GNANA" onDismiss={onDismiss} {...modalProps}>
       <Gnana />
     </Modal>
   )

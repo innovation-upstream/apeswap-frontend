@@ -1,26 +1,29 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import { Box } from 'theme-ui'
 import { Flex, Heading, Button, Text, ChevronRightIcon, Svg, Checkbox } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { gnanaStyles } from './styles'
 import { useCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import useTheme from 'hooks/useTheme'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { useBananaAddress, useGoldenBananaAddress } from 'hooks/useAddress'
-import InputPanel from './components/InputPanel'
 import { useBanana, useTreasury } from 'hooks/useContract'
 import { useBuyGoldenBanana } from 'hooks/useGoldenBanana'
 import { useToast } from 'state/hooks'
 import useApproveTransaction from 'hooks/useApproveTransaction'
-import { ethers } from 'ethers'
-import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import InputPanel from './components/InputPanel'
+import UnlockButton from 'components/UnlockButton'
+import Dots from 'components/Loader/Dots'
+import { gnanaStyles } from './styles'
 
 const Gnana = () => {
   const { account } = useActiveWeb3React()
+  const { isDark } = useTheme()
   const MAX_BUY = 5000
   const bananaToken = useCurrency('0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95')
   const gnanaToken = useCurrency('0xdDb3Bd8645775F59496c821E4F55A7eA6A6dc299')
@@ -40,7 +43,7 @@ const Gnana = () => {
 
   // BUY GNANA THINGS
   const fullBananaBalance = useMemo(() => {
-    return Number(getFullDisplayBalance(bananaBalance)).toFixed(4)
+    return Number(getFullDisplayBalance(bananaBalance)).toFixed(2)
   }, [bananaBalance])
   const handleSelectMax = useCallback(() => {
     const max = parseInt(fullBananaBalance) < MAX_BUY || unlimited ? fullBananaBalance : MAX_BUY
@@ -66,18 +69,18 @@ const Gnana = () => {
         return false
       }
     },
-    onApprove: () => {
-      return bananaContract.approve(treasuryContract.address, ethers.constants.MaxUint256).then((trx) => trx.wait())
+    onApprove: async () => {
+      const trx = await bananaContract.approve(treasuryContract.address, ethers.constants.MaxUint256)
+      return await trx.wait()
     },
-    onSuccess: async () => {
-      toastSuccess(t('Approved!'))
-    },
+    onSuccess: async () => toastSuccess(t('Approved!')),
   })
   const buyGnana = useCallback(async () => {
     try {
       setProcessing(true)
       await handleBuy(val)
       setProcessing(false)
+      setVal('0')
     } catch (e) {
       setProcessing(false)
       console.warn(e)
@@ -87,7 +90,7 @@ const Gnana = () => {
 
   // SELL GNANA THINGS
   const fullGnanaBalance = useMemo(() => {
-    return getFullDisplayBalance(goldenBananaBalance)
+    return Number(getFullDisplayBalance(goldenBananaBalance)).toFixed(2)
   }, [goldenBananaBalance])
 
   const handleCheckBox = useCallback(() => {
@@ -109,7 +112,13 @@ const Gnana = () => {
     if (isApprovedBanana) {
       return (
         <Button variant="primary" onClick={buyGnana} disabled={disabled} fullWidth>
-          {t('CONVERT')}
+          {(processing && (
+            <>
+              {t('LOADING')}
+              <Dots />
+            </>
+          )) ||
+            t('CONVERT')}
         </Button>
       )
     }
@@ -132,15 +141,15 @@ const Gnana = () => {
         sx={{
           width: '100%',
           alignItems: 'center',
-          backgroundColor: 'yellow',
+          backgroundColor: (isDark && '#FFB30026') || 'yellow',
           padding: '10px',
           borderRadius: '10px',
           marginTop: '10px',
-          opacity: 0.7,
+          opacity: (isDark && 1) || 0.7,
         }}
       >
         <Flex sx={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-          <Heading as="h1" sx={{ ...gnanaStyles.warningHeader, color: 'primaryBright' }}>
+          <Heading as="h1" sx={{ ...gnanaStyles.warningHeader, color: (isDark && 'yellow') || 'primaryBright' }}>
             {t('HEADS UP, APES!')}
           </Heading>
 
@@ -178,6 +187,9 @@ const Gnana = () => {
                 color: 'primaryBright',
               },
             }}
+            onClick={() =>
+              window.open('https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/gnana', '_blank')
+            }
           >
             {t('Learn More')} <ChevronRightIcon color="primaryBright" />
           </Button>
@@ -188,8 +200,7 @@ const Gnana = () => {
         {/* FromTokenInput */}
         <InputPanel
           panelText="From"
-          fromToken={bananaToken}
-          toToken={gnanaToken}
+          currency={bananaToken}
           value={val}
           onUserInput={handleChange}
           fieldType={Field.INPUT}
@@ -231,9 +242,8 @@ const Gnana = () => {
         {/* ToTokenInput */}
         <InputPanel
           panelText="To"
-          fromToken={gnanaToken}
-          toToken={bananaToken}
-          value={gnanaVal.toString()}
+          currency={gnanaToken}
+          value={Number(gnanaVal.toString()).toFixed(4)}
           onUserInput={handleChange}
           fieldType={Field.OUTPUT}
           handleMaxInput={handleSelectMax}

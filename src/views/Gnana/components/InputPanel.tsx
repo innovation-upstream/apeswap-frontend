@@ -13,13 +13,11 @@ import { Spinner } from 'theme-ui'
 import { getCurrencyUsdPrice } from 'utils/getTokenUsdPrice'
 
 const InputPanel: React.FC<InputPanelProps> = ({
-  fromToken,
-  toToken,
+  currency,
   panelText,
   value,
   onUserInput,
   disabled,
-  independentField,
   fieldType,
   handleMaxInput,
   fullBalance,
@@ -30,8 +28,8 @@ const InputPanel: React.FC<InputPanelProps> = ({
 
   useMemo(async () => {
     setUsdVal(null)
-    setUsdVal(await getCurrencyUsdPrice(chainId, fromToken))
-  }, [chainId, fromToken])
+    setUsdVal(await getCurrencyUsdPrice(chainId, currency))
+  }, [chainId, currency])
 
   return (
     <Flex sx={styles.gnanaPanelContainer}>
@@ -43,10 +41,10 @@ const InputPanel: React.FC<InputPanelProps> = ({
           onUserInput={(value) => onUserInput(value)}
           align="left"
           id="token-amount-input"
-          disabled={independentField && independentField !== fieldType && disabled}
-          disabledText={independentField && independentField !== fieldType && disabled}
+          disabled={disabled}
+          disabledText={disabled}
         />
-        <TokenSelector currency={fromToken} />
+        <TokenSelector currency={currency} />
       </Flex>
 
       {/* Panel Bottom */}
