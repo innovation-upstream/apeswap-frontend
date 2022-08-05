@@ -135,12 +135,12 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
             )}
             {/* If pool?.stakingToken?.symbol is GNANA open GNANA Modal instead */}
             {pool?.stakingToken?.symbol === 'GNANA' ? (
-              <Button sx={poolStyles.styledBtn} onClick={onPresentModal}>
+              <Button variant="primary" sx={poolStyles.styledBtn} onClick={onPresentModal}>
                 {t('GET')} {pool?.stakingToken?.symbol}
               </Button>
             ) : (
               <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
-                <Button sx={poolStyles.styledBtn}>
+                <Button variant="primary" sx={poolStyles.styledBtn}>
                   {t('GET')} {pool?.stakingToken?.symbol}
                 </Button>
               </a>
