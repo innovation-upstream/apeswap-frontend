@@ -2,50 +2,96 @@
 import React, { useCallback, useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { Box } from 'theme-ui'
-import { Flex, Heading, Button, Text, ChevronRightIcon, Svg } from '@ape.swap/uikit'
+import { Flex, Heading, Button, Text, ChevronRightIcon, Svg, Checkbox } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { gnanaStyles } from './styles'
 import { useCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import useTokenBalance from 'hooks/useTokenBalance'
-import { useBananaAddress } from 'hooks/useAddress'
+import { useBananaAddress, useGoldenBananaAddress } from 'hooks/useAddress'
 import InputPanel from './components/InputPanel'
+import { useBanana, useTreasury } from 'hooks/useContract'
+import { useBuyGoldenBanana } from 'hooks/useGoldenBanana'
+import { useToast } from 'state/hooks'
+import useApproveTransaction from 'hooks/useApproveTransaction'
+import { ethers } from 'ethers'
 
 const Gnana = () => {
-  const MAX_BUY = 500
-  const { t } = useTranslation()
-  const [tradeValueUsd, setTradeValueUsd] = useState(0)
-  const [unlimited, setUnlimited] = useState(false)
-  const [val, setVal] = useState('0')
-  const [processing, setProcessing] = useState(false)
-  const bananaBalance = useTokenBalance(useBananaAddress())
-
-  // 0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95 - BANANA
-  // 0xdDb3Bd8645775F59496c821E4F55A7eA6A6dc299 - GNANA
+  const MAX_BUY = 5000
   const bananaToken = useCurrency('0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95')
   const gnanaToken = useCurrency('0xdDb3Bd8645775F59496c821E4F55A7eA6A6dc299')
+  const { t } = useTranslation()
+  const [unlimited, setUnlimited] = useState(false)
+  const treasuryContract = useTreasury()
+  const [processing, setProcessing] = useState(false)
+  // BUY GNANA
+  const [val, setVal] = useState('0')
+  const { handleBuy } = useBuyGoldenBanana()
+  const gnanaVal = parseFloat(val) > 0 ? parseFloat(val) * 0.7 : '0'
+  const bananaBalance = useTokenBalance(useBananaAddress())
+  const { toastSuccess } = useToast()
+  const bananaContract = useBanana()
+  // SELL GNANA
+  const goldenBananaBalance = useTokenBalance(useGoldenBananaAddress())
 
-  // MAIN GNANA THINGS
-  const fullBalance = useMemo(() => {
+  // BUY GNANA THINGS
+  const fullBananaBalance = useMemo(() => {
     return Number(getFullDisplayBalance(bananaBalance)).toFixed(4)
   }, [bananaBalance])
-  console.log('fullBalance', fullBalance)
-
   const handleSelectMax = useCallback(() => {
-    const max = parseInt(fullBalance) < MAX_BUY || unlimited ? fullBalance : MAX_BUY
+    const max = parseInt(fullBananaBalance) < MAX_BUY || unlimited ? fullBananaBalance : MAX_BUY
     setVal(max.toString())
-  }, [fullBalance, unlimited, setVal])
-
+  }, [fullBananaBalance, unlimited, setVal])
   const handleChange = useCallback(
     (val) => {
-      if (!unlimited && parseInt(val) > MAX_BUY) return
+      // if (!unlimited && parseInt(val) > MAX_BUY) return
       setVal(val)
     },
-    [setVal, unlimited],
+    [setVal],
   )
+  const {
+    isApproving: isApprovingBanana,
+    isApproved: isApprovedBanana,
+    handleApprove: handleApproveBanana,
+  } = useApproveTransaction({
+    onRequiresApproval: async (loadedAccount) => {
+      try {
+        const response = await bananaContract.allowance(loadedAccount, treasuryContract.address)
+        const currentAllowance = new BigNumber(response.toString())
+        return currentAllowance.gt(0)
+      } catch (error) {
+        return false
+      }
+    },
+    onApprove: () => {
+      return bananaContract.approve(treasuryContract.address, ethers.constants.MaxUint256).then((trx) => trx.wait())
+    },
+    onSuccess: async () => {
+      toastSuccess(t('Approved!'))
+    },
+  })
+  const buyGnana = useCallback(async () => {
+    try {
+      setProcessing(true)
+      await handleBuy(val)
+      setProcessing(false)
+    } catch (e) {
+      setProcessing(false)
+      console.warn(e)
+    }
+  }, [handleBuy, val])
+  const displayMax = unlimited ? 'unlimited' : MAX_BUY
 
-  const disabled = processing || parseInt(val) === 0 || parseInt(val) > parseInt(fullBalance)
+  // SELL GNANA THINGS
+  const fullGnanaBalance = useMemo(() => {
+    return getFullDisplayBalance(goldenBananaBalance)
+  }, [goldenBananaBalance])
+
+  const handleCheckBox = useCallback(() => {
+    setUnlimited(!unlimited)
+    if (unlimited) setVal('0')
+  }, [unlimited, setUnlimited])
 
   return (
     <Flex
@@ -117,12 +163,20 @@ const Gnana = () => {
           toToken={gnanaToken}
           value={val}
           onUserInput={handleChange}
-          setTradeValueUsd={setTradeValueUsd}
           fieldType={Field.INPUT}
           handleMaxInput={handleSelectMax}
-          fullBalance={fullBalance}
+          fullBalance={fullBananaBalance}
           disabled={false}
         />
+        <Text
+          sx={{
+            fontSize: '12px',
+            fontWeight: 500,
+            color: !unlimited && parseInt(val) > MAX_BUY ? 'error' : 'text',
+          }}
+        >
+          {t('*Current max conversion is %displayMax% BANANA', { displayMax })}
+        </Text>
         {/* DownArrow */}
         <Flex
           sx={{
@@ -150,14 +204,29 @@ const Gnana = () => {
           panelText="To"
           fromToken={gnanaToken}
           toToken={bananaToken}
-          value={val}
+          value={gnanaVal.toString()}
           onUserInput={handleChange}
-          setTradeValueUsd={setTradeValueUsd}
           fieldType={Field.OUTPUT}
           handleMaxInput={handleSelectMax}
-          fullBalance={fullBalance}
+          fullBalance={fullGnanaBalance}
           disabled={false}
         />
+
+        <Flex sx={{ marginTop: '20px', alignItems: 'center' }}>
+          <Flex sx={{ alignItems: 'center', width: '21px', height: '21px' }}>
+            <Checkbox id="checkbox" checked={unlimited} sx={{ backgroundColor: 'white2' }} onChange={handleCheckBox} />
+          </Flex>
+          <Text
+            sx={{
+              fontSize: '12px',
+              fontWeight: 500,
+              marginLeft: '10px',
+              color: !unlimited && parseInt(val) > MAX_BUY ? 'error' : 'text',
+            }}
+          >
+            {t('I understand how GNANA works and I want to enable unlimited buy')}
+          </Text>
+        </Flex>
       </Flex>
     </Flex>
   )
