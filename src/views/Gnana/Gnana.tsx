@@ -79,7 +79,6 @@ const Gnana = () => {
       setProcessing(true)
       await handleBuy(val)
       setProcessing(false)
-      setVal('0')
     } catch (e) {
       setProcessing(false)
       console.warn(e)
@@ -131,43 +130,21 @@ const Gnana = () => {
   }
 
   return (
-    <Flex
-      sx={{
-        flexDirection: 'column',
-      }}
-    >
+    <Flex sx={gnanaStyles.gnanaContainer}>
       <Flex
         sx={{
-          width: '100%',
-          alignItems: 'center',
+          ...gnanaStyles.headsUp,
           backgroundColor: (isDark && '#FFB30026') || 'yellow',
-          padding: '10px',
-          borderRadius: '10px',
-          marginTop: '10px',
           opacity: (isDark && 1) || 0.7,
         }}
       >
-        <Flex sx={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+        <Flex sx={gnanaStyles.headsUpHeader}>
           <Heading as="h1" sx={{ ...gnanaStyles.warningHeader, color: (isDark && 'yellow') || 'primaryBright' }}>
             {t('HEADS UP, APES!')}
           </Heading>
 
-          <Flex
-            sx={{
-              padding: '0px',
-              fontSize: ['14px'],
-            }}
-          >
-            <Text
-              sx={{
-                fontSize: ['12px'],
-                letterSpacing: '5%',
-                fontWeight: 500,
-                color: 'primaryBright',
-                textAlign: 'center',
-                lineHeight: '14px',
-              }}
-            >
+          <Flex sx={{ padding: '2px', fontSize: ['14px'] }}>
+            <Text sx={gnanaStyles.headsUpDescription}>
               {t(
                 'Buying GNANA involves paying a 28% burn fee and a 2% reflect fee for a total cost of 30%. This means that for every 1 BANANA you trade in, you will receive 0.7 GNANA.',
               )}
@@ -176,24 +153,14 @@ const Gnana = () => {
 
           <Button
             variant="text"
-            sx={{
-              textDecorationLine: 'underline',
-              fontSize: '12px',
-              fontWeight: 500,
-              color: 'primaryBright',
-
-              '&&:hover': {
-                color: 'primaryBright',
-              },
-            }}
+            sx={gnanaStyles.learnMoreBtn}
             onClick={() => window.open('https://apeswap.finance/gnana', '_blank')}
           >
             {t('Learn More')} <ChevronRightIcon color="primaryBright" />
           </Button>
         </Flex>
       </Flex>
-
-      <Flex sx={{ margin: '50px 0 0 0', maxWidth: '100%', width: '400px', flexDirection: 'column' }}>
+      <Flex sx={gnanaStyles.transactions}>
         {/* FromTokenInput */}
         <InputPanel
           panelText="From"
@@ -207,32 +174,15 @@ const Gnana = () => {
         />
         <Text
           sx={{
-            fontSize: '12px',
-            fontWeight: 500,
+            ...gnanaStyles.displayMax,
             color: !unlimited && parseInt(val) > MAX_BUY ? 'error' : 'text',
           }}
         >
           {t('*Current max conversion is %displayMax% BANANA', { displayMax })}
         </Text>
         {/* DownArrow */}
-        <Flex
-          sx={{
-            width: '100%',
-            height: '50px',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Flex
-            sx={{
-              background: 'yellow',
-              height: '30px',
-              width: '30px',
-              borderRadius: '30px',
-              justifyContent: 'center',
-              paddingRight: '1px',
-            }}
-          >
+        <Flex sx={gnanaStyles.arrowDownContainer}>
+          <Flex sx={gnanaStyles.arrowDown}>
             <Svg icon="arrow" width="8px" color="primaryBright" />
           </Flex>
         </Flex>
@@ -249,30 +199,19 @@ const Gnana = () => {
         />
 
         <Flex sx={{ marginTop: '20px', alignItems: 'center' }}>
-          <Flex sx={{ alignItems: 'center', width: '21px', height: '21px' }}>
+          <Flex sx={gnanaStyles.checkboxContainer}>
             <Checkbox id="checkbox" checked={unlimited} sx={{ backgroundColor: 'white2' }} onChange={handleCheckBox} />
           </Flex>
           <Text
             sx={{
-              fontSize: '12px',
-              fontWeight: 500,
-              lineHeight: '14px',
-              marginLeft: '10px',
+              ...gnanaStyles.checkboxText,
               color: !unlimited && parseInt(val) > MAX_BUY ? 'error' : 'text',
             }}
           >
             {t('I understand how GNANA works and I want to enable unlimited buy')}
           </Text>
         </Flex>
-        <Flex
-          sx={{
-            position: 'relative',
-            width: '100%',
-            marginTop: '10px',
-          }}
-        >
-          {renderActions()}
-        </Flex>
+        <Flex sx={gnanaStyles.renderActions}>{renderActions()}</Flex>
       </Flex>
     </Flex>
   )
