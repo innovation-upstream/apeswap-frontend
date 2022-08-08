@@ -79,6 +79,7 @@ const Gnana = () => {
       setProcessing(true)
       await handleBuy(val)
       setProcessing(false)
+      setVal('0')
     } catch (e) {
       setProcessing(false)
       console.warn(e)
@@ -93,7 +94,6 @@ const Gnana = () => {
 
   const handleCheckBox = useCallback(() => {
     setUnlimited(!unlimited)
-    if (unlimited) setVal('0')
   }, [unlimited, setUnlimited])
 
   const disabled =

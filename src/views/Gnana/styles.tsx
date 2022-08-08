@@ -2,9 +2,9 @@ import { ThemeUIStyleObject } from 'theme-ui'
 
 export const modalProps = {
   sx: {
-    minWidth: ['90%', '420px'],
+    minWidth: ['90%', '425px'],
     width: ['200px'],
-    maxWidth: '420px',
+    maxWidth: '425px',
     height: ['calc(100vh - 15%)', 'auto'],
   },
 }
@@ -13,7 +13,6 @@ export const gnanaStyles: Record<string, ThemeUIStyleObject> = {
   gnanaContainer: {
     flexDirection: 'column',
     height: ['90%', 'auto'],
-    overflow: 'hidden',
     overflowY: 'auto',
   },
   headsUp: {
@@ -71,7 +70,13 @@ export const gnanaStyles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'center',
     paddingRight: '1px',
   },
-  checkboxContainer: { alignItems: 'center', width: '21px', height: '21px', marginRight: ['10px', '0'] },
+  checkboxContainer: {
+    alignItems: 'center',
+    width: '21px',
+    height: '21px',
+    marginRight: ['10px'],
+    paddingLeft: '4px',
+  },
   checkboxText: {
     fontSize: '12px',
     fontWeight: 500,
