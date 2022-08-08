@@ -161,56 +161,64 @@ const Gnana = () => {
         </Flex>
       </Flex>
       <Flex sx={gnanaStyles.transactions}>
-        {/* FromTokenInput */}
-        <InputPanel
-          panelText="From"
-          currency={bananaToken}
-          value={val}
-          onUserInput={handleChange}
-          fieldType={Field.INPUT}
-          handleMaxInput={handleSelectMax}
-          fullBalance={fullBananaBalance}
-          disabled={false}
-        />
-        <Text
-          sx={{
-            ...gnanaStyles.displayMax,
-            color: !unlimited && parseInt(val) > MAX_BUY ? 'error' : 'text',
-          }}
-        >
-          {t('*Current max conversion is %displayMax% BANANA', { displayMax })}
-        </Text>
-        {/* DownArrow */}
-        <Flex sx={gnanaStyles.arrowDownContainer}>
-          <Flex sx={gnanaStyles.arrowDown}>
-            <Svg icon="arrow" width="8px" color="primaryBright" />
-          </Flex>
-        </Flex>
-        {/* ToTokenInput */}
-        <InputPanel
-          panelText="To"
-          currency={gnanaToken}
-          value={Number(gnanaVal.toString()).toFixed(4)}
-          onUserInput={handleChange}
-          fieldType={Field.OUTPUT}
-          handleMaxInput={handleSelectMax}
-          fullBalance={fullGnanaBalance}
-          disabled={true}
-        />
-
-        <Flex sx={{ marginTop: '20px', alignItems: 'center' }}>
-          <Flex sx={gnanaStyles.checkboxContainer}>
-            <Checkbox id="checkbox" checked={unlimited} sx={{ backgroundColor: 'white2' }} onChange={handleCheckBox} />
-          </Flex>
+        <Flex sx={{ flexDirection: 'column' }}>
+          {/* FromTokenInput */}
+          <InputPanel
+            panelText="From"
+            currency={bananaToken}
+            value={val}
+            onUserInput={handleChange}
+            fieldType={Field.INPUT}
+            handleMaxInput={handleSelectMax}
+            fullBalance={fullBananaBalance}
+            disabled={false}
+          />
           <Text
             sx={{
-              ...gnanaStyles.checkboxText,
+              ...gnanaStyles.displayMax,
               color: !unlimited && parseInt(val) > MAX_BUY ? 'error' : 'text',
             }}
           >
-            {t('I understand how GNANA works and I want to enable unlimited buy')}
+            {t('*Current max conversion is %displayMax% BANANA', { displayMax })}
           </Text>
+          {/* DownArrow */}
+          <Flex sx={gnanaStyles.arrowDownContainer}>
+            <Flex sx={gnanaStyles.arrowDown}>
+              <Svg icon="arrow" width="8px" color="primaryBright" />
+            </Flex>
+          </Flex>
+          {/* ToTokenInput */}
+          <InputPanel
+            panelText="To"
+            currency={gnanaToken}
+            value={Number(gnanaVal.toString()).toFixed(4)}
+            onUserInput={handleChange}
+            fieldType={Field.OUTPUT}
+            handleMaxInput={handleSelectMax}
+            fullBalance={fullGnanaBalance}
+            disabled={true}
+          />
+
+          <Flex sx={{ marginTop: '20px', alignItems: 'center' }}>
+            <Flex sx={gnanaStyles.checkboxContainer}>
+              <Checkbox
+                id="checkbox"
+                checked={unlimited}
+                sx={{ backgroundColor: 'white2' }}
+                onChange={handleCheckBox}
+              />
+            </Flex>
+            <Text
+              sx={{
+                ...gnanaStyles.checkboxText,
+                color: !unlimited && parseInt(val) > MAX_BUY ? 'error' : 'text',
+              }}
+            >
+              {t('I understand how GNANA works and I want to enable unlimited buy')}
+            </Text>
+          </Flex>
         </Flex>
+
         <Flex sx={gnanaStyles.renderActions}>{renderActions()}</Flex>
       </Flex>
     </Flex>

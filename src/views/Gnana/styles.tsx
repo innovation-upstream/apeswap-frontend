@@ -5,20 +5,16 @@ export const modalProps = {
     minWidth: ['90%', '420px'],
     width: ['200px'],
     maxWidth: '420px',
-    height: ['fit-content', 'auto'],
+    height: ['calc(100vh - 15%)', 'auto'],
   },
 }
 
 export const gnanaStyles: Record<string, ThemeUIStyleObject> = {
-  warningHeader: {
-    fontSize: '22px',
-    fontWeight: 700,
-  },
   gnanaContainer: {
     flexDirection: 'column',
-    height: ['500px', 'auto'],
-    paddingBottom: ['10px', '0'],
-    overflow: 'auto',
+    height: ['90%', 'auto'],
+    overflow: 'hidden',
+    overflowY: 'auto',
   },
   headsUp: {
     width: '100%',
@@ -26,6 +22,10 @@ export const gnanaStyles: Record<string, ThemeUIStyleObject> = {
     padding: '10px',
     borderRadius: '10px',
     marginTop: '10px',
+  },
+  warningHeader: {
+    fontSize: ['18px', '22px'],
+    fontWeight: 700,
   },
   headsUpHeader: { flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: '100%' },
   headsUpDescription: {
@@ -45,7 +45,14 @@ export const gnanaStyles: Record<string, ThemeUIStyleObject> = {
       color: 'primaryBright',
     },
   },
-  transactions: { margin: '50px 0 0 0', maxWidth: '100%', width: '400px', flexDirection: 'column' },
+  transactions: {
+    margin: '50px 0 0 0',
+    maxWidth: '100%',
+    width: '400px',
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
   displayMax: {
     fontSize: '12px',
     fontWeight: 500,
