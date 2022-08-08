@@ -2,7 +2,6 @@
 import React, { useCallback, useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { Box } from 'theme-ui'
 import { Flex, Heading, Button, Text, ChevronRightIcon, Svg, Checkbox } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useCurrency } from 'hooks/Tokens'
@@ -187,9 +186,7 @@ const Gnana = () => {
                 color: 'primaryBright',
               },
             }}
-            onClick={() =>
-              window.open('https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/gnana', '_blank')
-            }
+            onClick={() => window.open('https://apeswap.finance/gnana', '_blank')}
           >
             {t('Learn More')} <ChevronRightIcon color="primaryBright" />
           </Button>
@@ -259,6 +256,7 @@ const Gnana = () => {
             sx={{
               fontSize: '12px',
               fontWeight: 500,
+              lineHeight: '14px',
               marginLeft: '10px',
               color: !unlimited && parseInt(val) > MAX_BUY ? 'error' : 'text',
             }}

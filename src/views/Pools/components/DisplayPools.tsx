@@ -53,7 +53,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
 
     const openLiquidityUrl = () =>
       pool?.stakingToken?.symbol === 'GNANA'
-        ? history.push({ search: '?modal=getGnana' })
+        ? history.push({ search: '?modal=gnana' })
         : window.open(liquidityUrl, '_blank')
 
     // Token symbol logic is here temporarily for nfty
