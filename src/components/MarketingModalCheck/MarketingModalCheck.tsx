@@ -9,7 +9,7 @@ import { useTranslation } from 'contexts/Localization'
 import SwiperProvider from 'contexts/SwiperProvider'
 import MoonPayModal from 'views/Topup/MoonpayModal'
 import QuestModal from '../MarketingModalContent/Quests/QuestModal'
-import GnanaModal from 'views/Gnana'
+import GnanaModal from 'components/GnanaModal'
 
 const MarketingModalCheck = () => {
   const location = useLocation()
