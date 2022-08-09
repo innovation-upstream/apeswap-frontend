@@ -1,9 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useState } from 'react'
 import { Currency, Token } from '@apeswapfinance/sdk'
-import styled from '@emotion/styled'
-import { Flex, Text } from '@ape.swap/uikit'
-import { ModalProps, ModalFooter, Modal } from '@apeswapfinance/uikit'
+import { Flex, Text, ModalProps, ModalFooter, Modal } from '@ape.swap/uikit'
 import { TokenList } from '@uniswap/token-lists'
 import { useTranslation } from 'contexts/Localization'
 import CurrencySearch from './CurrencySearch'
@@ -19,15 +17,14 @@ interface CurrencySearchModalProps extends ModalProps {
   showCommonBases?: boolean
 }
 
-const ScrollableContainer = styled(Flex)`
-  flex-direction: column;
-  max-height: 400px;
-  overflow-y: scroll;
-  ${({ theme }) => theme.mediaQueries.xs} {
-    max-height: none;
-    overflow-y: auto;
-  }
-`
+export const modalProps = {
+  sx: {
+    minWidth: ['90%', '425px'],
+    width: ['250px'],
+    maxWidth: '425px',
+    height: ['calc(100vh - 10%)', 'auto'],
+  },
+}
 
 export default function CurrencySearchModal({
   onDismiss = () => null,
@@ -54,8 +51,17 @@ export default function CurrencySearchModal({
   const { t } = useTranslation()
 
   return (
-    <Modal onDismiss={onDismiss} title={t('Tokens')}>
-      <ScrollableContainer>
+    <Modal {...modalProps} onDismiss={onDismiss} title={t('Tokens')}>
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          maxHeight: 'none',
+          height: modalView === CurrencyModalView.importToken && importToken && ['90%', 'auto'],
+          width: ['auto'],
+          overflowY: 'auto',
+        }}
+        className="YOU"
+      >
         <Flex sx={{ flexDirection: 'column', width: '380px', maxWidth: '100%' }}>
           {modalView === CurrencyModalView.search ? (
             <CurrencySearch
@@ -92,7 +98,7 @@ export default function CurrencySearchModal({
             </ModalFooter>
           )}
         </Flex>
-      </ScrollableContainer>
+      </Flex>
     </Modal>
   )
 }
