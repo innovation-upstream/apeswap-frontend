@@ -71,7 +71,7 @@ const HowItWorks = () => {
         </FeatureBox>
       </Frame>
       <ButtonBox>
-        <Button external href="https://forms.clickup.com/3080492/f/2y09c-6585/O175DYTK4PMR6P4CZA" as="a">
+        <Button external href="https://apeswap.click/partnership" as="a">
           {t('BECOME A PARTNER')}
         </Button>
         <Button onClick={handleDoOwnClick}>{t('LAUNCH YOUR OWN')}</Button>
