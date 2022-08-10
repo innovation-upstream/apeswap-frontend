@@ -12,6 +12,7 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import { useBananaAddress, useGoldenBananaAddress } from 'hooks/useAddress'
 import { useBanana, useTreasury } from 'hooks/useContract'
 import { useBuyGoldenBanana } from 'hooks/useGoldenBanana'
+import DexPanel from 'views/Dex/components/DexPanel'
 import { useToast } from 'state/hooks'
 import useApproveTransaction from 'hooks/useApproveTransaction'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -24,8 +25,8 @@ const Gnana = () => {
   const { account } = useActiveWeb3React()
   const { isDark } = useTheme()
   const MAX_BUY = 5000
-  const bananaToken = useCurrency('0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95')
-  const gnanaToken = useCurrency('0xdDb3Bd8645775F59496c821E4F55A7eA6A6dc299')
+  const bananaToken = useCurrency(useBananaAddress())
+  const gnanaToken = useCurrency(useGoldenBananaAddress())
   const { t } = useTranslation()
   const [unlimited, setUnlimited] = useState(false)
   const treasuryContract = useTreasury()
@@ -160,9 +161,11 @@ const Gnana = () => {
           </Button>
         </Flex>
       </Flex>
+
       <Flex sx={gnanaStyles.transactions}>
         <Flex sx={{ flexDirection: 'column' }}>
           {/* FromTokenInput */}
+          {/* <DexPanel value={val} panelText="From" /> */}
           <InputPanel
             panelText="From"
             currency={bananaToken}
