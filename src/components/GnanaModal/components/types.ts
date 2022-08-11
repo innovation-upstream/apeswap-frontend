@@ -1,4 +1,4 @@
-import { Currency } from '@apeswapfinance/sdk'
+import { Currency } from '@ape.swap/sdk'
 import { Field } from 'state/swap/actions'
 
 export interface InputPanelProps {

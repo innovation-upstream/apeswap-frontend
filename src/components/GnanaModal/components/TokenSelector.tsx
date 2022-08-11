@@ -2,7 +2,7 @@
 import React from 'react'
 import { Skeleton } from '@apeswapfinance/uikit'
 import { Text, Flex } from '@ape.swap/uikit'
-import { Currency } from '@apeswapfinance/sdk'
+import { Currency } from '@ape.swap/sdk'
 import { CurrencyLogo } from 'components/Logo'
 import { styles } from './styles'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
