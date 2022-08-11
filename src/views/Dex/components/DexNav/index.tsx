@@ -2,7 +2,7 @@
 import { Link, useHistory } from 'react-router-dom'
 import { CogIcon, Flex, Text, useModal, RunFiatButton } from '@ape.swap/uikit'
 import track from 'utils/track'
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

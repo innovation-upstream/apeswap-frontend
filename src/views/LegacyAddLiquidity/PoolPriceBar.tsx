@@ -1,5 +1,5 @@
 import React from 'react'
-import { Currency, Percent, Price } from '@apeswapfinance/sdk'
+import { Currency, Percent, Price } from '@ape.swap/sdk'
 import styled from '@emotion/styled'
 import { Text, Card, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import { useTranslation } from 'contexts/Localization'

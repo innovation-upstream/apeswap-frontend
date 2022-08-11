@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy, useCallback } from 'react'
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useEagerConnect from 'hooks/useEagerConnect'
@@ -50,7 +50,8 @@ const Orders = lazy(() => import('./views/Dex/Orders'))
 const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/LegacyRemoveLiquidity/redirects'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
-const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
+// Test zap state
+const Zap = lazy(() => import('./views/ZapTest'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -306,15 +307,15 @@ const App: React.FC = () => {
             <Route exact path="/nft">
               <Nft />
             </Route>
+            <Route exact path="/zap">
+              <Zap />
+            </Route>
             <Route path="/" exact component={Home} />
             <Route path="/farms">
               <Farms />
             </Route>
             <Route path="/pools">
               <Pools />
-            </Route>
-            <Route path="/protocol-dashboard">
-              <ProtocolDashboard />
             </Route>
             <Route path="/jungle-farms">
               <JungleFarms />

@@ -18,6 +18,7 @@ import blockReducer from './block'
 import billsReducer from './bills'
 import swap from './swap/reducer'
 import orders from './orders/reducer'
+import zap from './zap/reducer'
 import user from './user/reducer'
 import lists from './lists/reducer'
 import transactions from './transactions/reducer'
@@ -53,6 +54,7 @@ const reducer = combineReducers({
   burn,
   mint,
   orders,
+  zap,
 })
 
 export default reducer

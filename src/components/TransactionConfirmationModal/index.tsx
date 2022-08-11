@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback } from 'react'
-import { ChainId, Currency, Token } from '@apeswapfinance/sdk'
+import { ChainId, Currency, Token } from '@ape.swap/sdk'
 import styled from 'styled-components'
 import { Button, Text, ErrorIcon, Flex, Link, MetamaskIcon, Spinner } from '@ape.swap/uikit'
 import { Modal, ModalProps } from '@apeswapfinance/uikit'

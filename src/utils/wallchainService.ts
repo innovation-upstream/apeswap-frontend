@@ -1,4 +1,4 @@
-import { SmartRouter } from '@apeswapfinance/sdk'
+import { SmartRouter } from '@ape.swap/sdk'
 import { RouterTypes } from 'config/constants'
 import { WALLCHAIN_PARAMS } from 'config/constants/chains'
 import { Contract } from 'ethers'

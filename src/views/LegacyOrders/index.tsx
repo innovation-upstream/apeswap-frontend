@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { CurrencyAmount, JSBI, Token, Trade } from '@apeswapfinance/sdk'
+import { CurrencyAmount, JSBI, Token, Trade } from '@ape.swap/sdk'
 import { Button, Text, ArrowDownIcon, useModal, Flex, Card, Link } from '@apeswapfinance/uikit'
 import Page from 'components/layout/Page'
 import SwapBanner from 'components/SwapBanner'

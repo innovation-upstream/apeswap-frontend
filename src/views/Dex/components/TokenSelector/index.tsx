@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Svg, Text, useModal } from '@ape.swap/uikit'
-import { Currency } from '@apeswapfinance/sdk'
+import { Currency } from '@ape.swap/sdk'
 import { Skeleton } from '@apeswapfinance/uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'

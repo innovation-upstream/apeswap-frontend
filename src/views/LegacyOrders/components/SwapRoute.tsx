@@ -1,5 +1,5 @@
 import React, { Fragment, memo } from 'react'
-import { Trade } from '@apeswapfinance/sdk'
+import { Trade } from '@ape.swap/sdk'
 import { Text, Flex, ChevronRightIcon } from '@apeswapfinance/uikit'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 

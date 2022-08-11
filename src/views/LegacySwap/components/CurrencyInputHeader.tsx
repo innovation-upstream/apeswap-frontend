@@ -7,7 +7,7 @@ import GlobalSettings from 'components/Menu/GlobalSettings'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useLocation, useHistory } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 
 interface Props {
   title?: string

@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useMemo } from 'react'
-import { Pair } from '@apeswapfinance/sdk'
+import { Pair } from '@ape.swap/sdk'
 import { Text, Flex, AddIcon, Button, Spinner } from '@ape.swap/uikit'
 import { Link } from 'react-router-dom'
 import UnlockButton from 'components/UnlockButton'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Token, Currency } from '@apeswapfinance/sdk'
+import { Token, Currency } from '@ape.swap/sdk'
 import { Button, Text, ErrorIcon, Flex, Checkbox, Link, Tag } from '@apeswapfinance/uikit'
 import { AutoColumn } from 'components/layout/Column'
 import { useAddUserToken } from 'state/user/hooks'
@@ -35,7 +35,8 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           <h1 style={{ fontSize: '26px', color: 'red' }}>{t('Trade at your own risk!')}</h1>
           <br />
           {t(
-            'The ApeSwap DEX is decentralized, meaning that anyone can create or add liquidity for a token. Unlisted tokens have not been reviewed by ApeSwap or passed our due diligence process. Unlisted tokens may present scam risks, including the loss of funds.',
+            // 'The ApeSwap DEX is decentralized, meaning that anyone can create or add liquidity for a token. Unlisted tokens have not been reviewed by ApeSwap or passed our due diligence process. Unlisted tokens may present scam risks, including the loss of funds.',
+            'ApeSwap is decentralized. Anyone can add liquidity for a token. Unlisted tokens have not been reviewed by ApeSwap & may present risks.',
           )}
           <br />
           <br />
@@ -43,7 +44,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           <br />
           <br />
           <a
-            href="https://apeswap.click/partners"
+            href="https://forms.clickup.com/3080492/f/2y09c-6585/O175DYTK4PMR6P4CZA"
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: 'underline' }}

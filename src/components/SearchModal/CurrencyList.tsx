@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
-import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from '@apeswapfinance/sdk'
+import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from '@ape.swap/sdk'
 import { Text, Flex, MetamaskIcon } from '@ape.swap/uikit'
 import styled from 'styled-components'
 import { Spinner } from 'theme-ui'

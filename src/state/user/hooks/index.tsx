@@ -1,4 +1,4 @@
-import { Pair, SmartRouter, Token } from '@apeswapfinance/sdk'
+import { Pair, SmartRouter, Token } from '@ape.swap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
