@@ -97,7 +97,7 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
           onDismiss={onDismiss}
           message={
             swapErrorMessage.includes('INSUFFICIENT_OUTPUT_AMOUNT')
-              ? 'Slippage Error: Please check your slippage & try again!'
+              ? t('Slippage Error: Please check your slippage & try again!')
               : swapErrorMessage
           }
         />
