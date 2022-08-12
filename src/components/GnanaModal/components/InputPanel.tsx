@@ -11,6 +11,8 @@ import { Field } from 'state/swap/actions'
 import Dots from 'components/Loader/Dots'
 import { Spinner } from 'theme-ui'
 import { getCurrencyUsdPrice } from 'utils/getTokenUsdPrice'
+import { useCurrency } from 'hooks/Tokens'
+import { useBananaAddress } from 'hooks/useAddress'
 
 const InputPanel: React.FC<InputPanelProps> = ({
   currency,
@@ -25,11 +27,16 @@ const InputPanel: React.FC<InputPanelProps> = ({
   const { t } = useTranslation()
   const { chainId, account } = useActiveWeb3React()
   const [usdVal, setUsdVal] = useState(null)
+  const bananaToken = useCurrency(useBananaAddress())
 
   useMemo(async () => {
     setUsdVal(null)
-    setUsdVal(await getCurrencyUsdPrice(chainId, currency))
-  }, [chainId, currency])
+    if (currency.symbol === 'GNANA') {
+      setUsdVal((await getCurrencyUsdPrice(chainId, bananaToken)) * 1.389)
+    } else {
+      setUsdVal(await getCurrencyUsdPrice(chainId, currency))
+    }
+  }, [chainId, currency, bananaToken])
 
   return (
     <Flex sx={styles.gnanaPanelContainer}>
