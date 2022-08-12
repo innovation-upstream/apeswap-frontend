@@ -93,7 +93,7 @@ export default function CurrencySearchModal({
             ''
           )}
           {modalView === CurrencyModalView.search && (
-            <Box sx={{ marginBottom: ['30px'] }}>
+            <Box sx={{ marginBottom: ['30px', '0px'] }}>
               <ModalFooter onDismiss={onDismiss}>
                 <Text
                   onClick={() => setModalView(CurrencyModalView.manage)}
