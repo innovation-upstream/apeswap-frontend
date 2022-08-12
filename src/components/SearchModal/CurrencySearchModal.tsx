@@ -62,7 +62,7 @@ export default function CurrencySearchModal({
         }}
         className="YOU"
       >
-        <Flex sx={{ flexDirection: 'column', width: '380px', maxWidth: '100%' }}>
+        <Flex sx={{ flexDirection: 'column', width: '380px', maxWidth: '100%', alignSelf: 'center' }}>
           {modalView === CurrencyModalView.search ? (
             <CurrencySearch
               onCurrencySelect={handleCurrencySelect}
