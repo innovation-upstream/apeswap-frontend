@@ -101,7 +101,7 @@ function ImportList({ listURL, list, onImport }: ImportProps) {
               {t('Want to see your crypto project listed? ')}
               <br />
               <a
-                href="https://forms.clickup.com/3080492/f/2y09c-6585/O175DYTK4PMR6P4CZA"
+                href="https://apeswap.click/partnership"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ textDecoration: 'underline' }}
@@ -125,7 +125,7 @@ function ImportList({ listURL, list, onImport }: ImportProps) {
               <br />
               <br />
               <a
-                href="https://forms.clickup.com/3080492/f/2y09c-6585/O175DYTK4PMR6P4CZA"
+                href="https://apeswap.click/partnership"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ textDecoration: 'underline' }}
