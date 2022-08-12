@@ -9,6 +9,7 @@ import ImportToken from './ImportToken'
 import Manage from './Manage'
 import ImportList from './ImportList'
 import { CurrencyModalView } from './types'
+import { Box } from 'theme-ui'
 
 interface CurrencySearchModalProps extends ModalProps {
   selectedCurrency?: Currency | null
@@ -56,7 +57,12 @@ export default function CurrencySearchModal({
         sx={{
           flexDirection: 'column',
           maxHeight: 'none',
-          height: modalView === CurrencyModalView.importToken && importToken && ['90%', 'auto'],
+          height: [
+            (((modalView === CurrencyModalView.importToken || modalView === CurrencyModalView.importList) && '90%') ||
+              (modalView === CurrencyModalView.search && '95%')) ??
+              'auto',
+            'auto',
+          ],
           width: ['auto'],
           overflowY: 'auto',
         }}
@@ -87,15 +93,17 @@ export default function CurrencySearchModal({
             ''
           )}
           {modalView === CurrencyModalView.search && (
-            <ModalFooter onDismiss={onDismiss}>
-              <Text
-                onClick={() => setModalView(CurrencyModalView.manage)}
-                className="list-token-manage-button"
-                sx={{ cursor: 'pointer', textDecoration: 'underline' }}
-              >
-                {t('Manage Tokens')}
-              </Text>
-            </ModalFooter>
+            <Box sx={{ marginBottom: ['30px'] }}>
+              <ModalFooter onDismiss={onDismiss}>
+                <Text
+                  onClick={() => setModalView(CurrencyModalView.manage)}
+                  className="list-token-manage-button"
+                  sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  {t('Manage Tokens')}
+                </Text>
+              </ModalFooter>
+            </Box>
           )}
         </Flex>
       </Flex>
