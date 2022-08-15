@@ -5,7 +5,7 @@ import SwiperCore from 'swiper'
 import 'swiper/swiper.min.css'
 import { Box, Flex } from 'theme-ui'
 import useSwiper from 'hooks/useSwiper'
-import { Button, Heading, IconButton, Modal, Text } from '@ape.swap/uikit'
+import { Button, Checkbox, Heading, IconButton, Modal, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { ThemeContext } from 'contexts/ThemeContext'
 import { Bubble, showApe, styles, subtitle } from './styles'
@@ -47,6 +47,26 @@ const MarketingSwipper: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) =>
         <Box sx={{ position: 'absolute', top: '20px', right: '20px' }}>
           <IconButton width="15px" icon="close" color="text" variant="transparent" onClick={onDismiss} />
         </Box>
+
+        <Flex
+          sx={{
+            justifySelf: 'flex-end',
+            alignSelf: 'center',
+            alignItems: 'center',
+            marginTop: '40px',
+          }}
+        >
+          <Flex sx={styles.checkboxCon}>
+            <Checkbox
+              id="checkbox"
+              checked={true}
+              sx={{ backgroundColor: 'white2', width: '18px', height: '18px' }}
+              // onChange={handleCheckBox}
+            />
+          </Flex>
+          <Text sx={styles.checkboxText}>{t('Please don’t show this modal again')}</Text>
+        </Flex>
+
         <Flex sx={styles.imagesWrapper}>
           <Box sx={showApe(activeSlide, isDark)} />
         </Flex>

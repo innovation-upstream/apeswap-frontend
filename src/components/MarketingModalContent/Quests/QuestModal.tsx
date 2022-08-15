@@ -1,9 +1,8 @@
 /** @jsxImportSource theme-ui */
-import React, { useState } from 'react'
+import React from 'react'
 import useIsMobile from 'hooks/useIsMobile'
 import MarketingSwipper from './MarketingSwipper'
 import CardView from './CardView'
-import { Checkbox } from '@ape.swap/uikit'
 
 // HOW TO IMPLEMENT GENKI MODAL
 // - Create a custom hook that pushes “?modal=tutorial” to history.search if localStorage item “displayModal” is true.

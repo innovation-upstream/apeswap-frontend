@@ -46,6 +46,7 @@ export const subtitle = (isDark): ThemeUIStyleObject => ({
 export const styles: Record<string, ThemeUIStyleObject> = {
   container: {
     alignItems: 'flex-start',
+    justifyContent: 'center',
     overflow: 'hidden',
     overflowY: 'auto',
     height: '508px',
@@ -168,5 +169,17 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     },
     paddingTop: '5px',
     paddingBottom: '5px',
+  },
+  checkboxCon: {
+    alignItems: 'center',
+    width: '21px',
+    height: '21px',
+    paddingLeft: '4px',
+  },
+  checkboxText: {
+    fontSize: '11px',
+    fontWeight: 500,
+    lineHeight: '14px',
+    marginLeft: '10px',
   },
 }
