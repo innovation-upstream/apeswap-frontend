@@ -174,7 +174,8 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifySelf: 'flex-end',
     alignSelf: 'center',
     alignItems: 'center',
-    marginTop: '40px',
+    marginTop: ['40px', '0px'],
+    marginBottom: ['0px', '20px'],
   },
   checkboxCon: {
     alignItems: 'center',
@@ -183,9 +184,9 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     paddingLeft: '4px',
   },
   checkboxText: {
-    fontSize: '12px',
+    fontSize: ['12px', '14px'],
     fontWeight: 500,
     lineHeight: '14px',
-    marginLeft: '10px',
+    marginLeft: ['10px', '20px'],
   },
 }

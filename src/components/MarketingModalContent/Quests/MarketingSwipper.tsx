@@ -10,12 +10,9 @@ import { useTranslation } from 'contexts/Localization'
 import { ThemeContext } from 'contexts/ThemeContext'
 import { Bubble, showApe, styles, subtitle } from './styles'
 import { QuestSlides } from './slides'
+import { SwiperProps } from './types'
 
-const MarketingSwipper: React.FC<{
-  onDismiss: () => void
-  setDefaultNoShow: () => void
-  defaultShow: boolean
-}> = ({ onDismiss, setDefaultNoShow, defaultShow }) => {
+const MarketingSwipper: React.FC<SwiperProps> = ({ onDismiss, setDefaultNoShow, hideDefault, alreadySet }) => {
   const { t } = useTranslation()
   const { isDark } = useContext(ThemeContext)
   const { swiper, setSwiper } = useSwiper()
@@ -51,19 +48,17 @@ const MarketingSwipper: React.FC<{
         <Box sx={{ position: 'absolute', top: '20px', right: '20px' }}>
           <IconButton width="15px" icon="close" color="text" variant="transparent" onClick={onDismiss} />
         </Box>
-
         <Flex sx={styles.defaultNoShow}>
           <Flex sx={styles.checkboxCon}>
             <Checkbox
               id="checkbox"
-              checked={defaultShow}
+              checked={alreadySet || hideDefault}
               sx={{ backgroundColor: 'white2' }}
               onChange={setDefaultNoShow}
             />
           </Flex>
           <Text sx={styles.checkboxText}>{t('Please don’t show this modal again')}</Text>
         </Flex>
-
         <Flex sx={styles.imagesWrapper}>
           <Box sx={showApe(activeSlide, isDark)} />
         </Flex>
