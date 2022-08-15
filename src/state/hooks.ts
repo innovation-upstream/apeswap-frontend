@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
 import { ChainId } from '@apeswapfinance/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Toast, toastTypes } from '@apeswapfinance/uikit'
@@ -387,23 +386,4 @@ export const usePoolTags = (chainId: number) => {
   const poolTags = Tags?.[`${chainId}`]?.pools
 
   return { poolTags }
-}
-
-// SHOW DEFAULT MODAL
-const SHOW_DEFAULT_MODAL_KEY = 'SHOW_DEFAULT_MODAL'
-
-export const useShowDefaultModal = () => {
-  const history = useHistory()
-  // const location = useLocation()
-  const isShowDefaultModal = localStorage.getItem(SHOW_DEFAULT_MODAL_KEY)
-  console.log('isShowDefaultModal', isShowDefaultModal)
-
-  if (isShowDefaultModal) {
-    history.push({ search: '?modal=tutorial' })
-  }
-  // else {
-  //   history.push({
-  //     pathname: location.pathname,
-  //   })
-  // }
 }

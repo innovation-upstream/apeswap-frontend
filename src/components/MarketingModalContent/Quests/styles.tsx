@@ -49,7 +49,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'center',
     overflow: 'hidden',
     overflowY: 'auto',
-    height: '508px',
+    height: '90%',
     '@media screen and (min-width: 853px)': {
       width: '100%',
       minWidth: '800px',
@@ -170,6 +170,12 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     paddingTop: '5px',
     paddingBottom: '5px',
   },
+  defaultNoShow: {
+    justifySelf: 'flex-end',
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginTop: '40px',
+  },
   checkboxCon: {
     alignItems: 'center',
     width: '21px',
@@ -177,7 +183,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     paddingLeft: '4px',
   },
   checkboxText: {
-    fontSize: '11px',
+    fontSize: '12px',
     fontWeight: 500,
     lineHeight: '14px',
     marginLeft: '10px',
