@@ -1,8 +1,8 @@
 import { Percent } from '@apeswapfinance/sdk'
 import React from 'react'
 import { warningSeverity } from 'utils/prices'
-import { ONE_BIPS } from '../../../../config/constants'
-import { ErrorText } from './styles'
+import { ONE_BIPS } from '../../../config/constants'
+import { ErrorText } from '../Orders/components/styles'
 
 /**
  * Formatted version of price impact text with warning colors

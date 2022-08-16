@@ -16,12 +16,12 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Orders'),
-        href: '/orders',
+        href: '/limit-orders',
         isNew: false,
       },
       {
         label: t('Liquidity'),
-        href: '/add',
+        href: '/add-liquidity',
         isNew: false,
       },
       {
@@ -48,12 +48,12 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('BANANA Maximizers'),
-        href: '/vaults',
+        href: '/maximizers',
         isNew: false,
       },
       {
         label: t('BANANA Farms'),
-        href: '/farms',
+        href: '/banana-farms',
         isNew: false,
       },
       {
@@ -128,7 +128,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     isNew: false,
   },
   {
-    label: t('More'),
+    label: t('Explore'),
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',
     items: [
@@ -154,34 +154,6 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
     ],
   },
-
-  // {
-  //   label: 'Burn',
-  //   icon: 'GameBurnIcon',
-  //   href: '/burn',
-  // },
-  // {
-  //   label: 'Info',
-  //   icon: 'InfoIcon',
-  //   items: [
-  //     {
-  //       label: 'Overview',
-  //       href: NETWORK_INFO_LINK[CHAIN_ID.BSC],
-  //     },
-  //     {
-  //       label: 'Tokens',
-  //       href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/tokens`,
-  //     },
-  //     {
-  //       label: 'Pairs',
-  //       href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/pairs`,
-  //     },
-  //     {
-  //       label: 'Accounts',
-  //       href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/accounts`,
-  //     },
-  //   ],
-  // },
 ]
 
 export default bscConfig
