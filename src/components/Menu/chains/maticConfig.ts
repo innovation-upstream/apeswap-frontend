@@ -16,7 +16,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Liquidity'),
-        href: '/add',
+        href: '/add-liquidity',
         isNew: false,
       },
       {
@@ -28,11 +28,11 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   },
   {
     label: t('Farms'),
-    href: '/farms',
+    href: '/banana-farms',
     isNew: false,
   },
   {
-    label: t('More'),
+    label: t('Explore'),
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',
     items: [
@@ -57,21 +57,6 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
     ],
   },
-  //   {
-  //     label: t('Pools'),
-  //     icon: 'PoolIcon',
-  //     href: '/pools',
-  //   },
-  //   {
-  //     label: t('IAO'),
-  //     icon: 'IfoIcon',
-  //     href: '/iao',
-  //   },
-  //   {
-  //     label: t('GNANA'),
-  //     icon: 'ApeZone',
-  //     href: '/gnana',
-  //   },
 ]
 
 export default maticConfig
