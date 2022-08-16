@@ -25,8 +25,8 @@ const doughnutLabelsLine = {
         const { x, y } = datapoint.tooltipPosition()
         const halfWidth = width / 2
         const halfHeight = height / 2
-        const xLine = x >= halfWidth ? x + 20 : x - 25
-        const yLine = y >= halfHeight ? y + 20 : y - 25
+        const xLine = x >= halfWidth ? x + 25 : x - 25
+        const yLine = y >= halfHeight ? y + 25 : y - 25
         const extraLine = x >= halfWidth ? 25 : -25
         // Line
         ctx.beginPath()
@@ -92,7 +92,7 @@ const BananaSupplyDistribution: React.FC = () => {
                 options={{
                   maintainAspectRatio: false,
                   layout: {
-                    padding: 10,
+                    padding: 20,
                   },
                   elements: {
                     arc: {
@@ -113,8 +113,6 @@ const BananaSupplyDistribution: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 mr: '5px',
-                width: '100%',
-                height: '100%',
               }}
             >
               <BananaIcon />

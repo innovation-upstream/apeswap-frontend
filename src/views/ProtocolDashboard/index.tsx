@@ -10,6 +10,7 @@ import {
   TimeScale,
   Filler,
   Legend,
+  Tooltip,
 } from 'chart.js'
 import { Flex } from '@ape.swap/uikit'
 import Banner from 'components/Banner'
@@ -18,7 +19,7 @@ import React, { useState } from 'react'
 import Overview from './Overview'
 import Treasury from './Treasury'
 
-ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, TimeScale, ArcElement, Legend, Filler)
+ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, TimeScale, ArcElement, Tooltip, Legend, Filler)
 
 const ProtocolDashboard = () => {
   const [activeTab, setActiveTab] = useState('Overview')

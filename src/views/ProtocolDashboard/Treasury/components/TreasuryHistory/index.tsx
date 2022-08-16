@@ -15,17 +15,18 @@ const setData = (treasuryHistory: TreasuryHistoryInterface[]) => {
     labels: treasuryHistory?.map((data) => data.timestamp),
     datasets: [
       {
-        label: 'treasury',
-        data: treasuryHistory?.map((data) => data.oppFundValue),
-        backgroundColor: 'rgba(243, 186, 47, .5)',
+        label: 'polValue',
+        data: treasuryHistory?.map((data) => data.polValue),
+        backgroundColor: 'rgba(77, 64, 64, 1)',
+        borderColor: 'rgba(255,255,255, .5)',
         fill: true,
         lineTension: 0.3,
       },
       {
-        label: 'polValue',
-        data: treasuryHistory?.map((data) => data.polValue),
-        backgroundColor: 'rgba(77, 64, 64, 0.5)',
-        borderColor: 'white',
+        label: 'treasury',
+        data: treasuryHistory?.map((data) => data.oppFundValue),
+        backgroundColor: 'rgba(243, 186, 47, .6)',
+        borderColor: 'rgba(255,255,255, .5)',
         fill: true,
         lineTension: 0.3,
       },
@@ -37,14 +38,14 @@ const TreasuryHistory: React.FC = () => {
   const treasuryHistory = useFetchTreasuryHistory()
   const { theme } = useTheme()
   const data = useMemo(() => setData(treasuryHistory), [treasuryHistory])
-  const totalPol = treasuryHistory?.reduce((a, b) => a + b.polValue, 0)
-  const totalTreasury = treasuryHistory?.reduce((a, b) => a + b.oppFundValue, 0)
+  const totalPol = treasuryHistory?.[treasuryHistory?.length - 1]?.polValue
+  const totalTreasury = treasuryHistory?.[treasuryHistory?.length - 1]?.oppFundValue
 
   const { t } = useTranslation()
 
   return (
     <Flex sx={styles.cardContainer}>
-      <Flex sx={{ flexDirection: 'column', textAlign: 'center', marginBottom: '10px' }}>
+      <Flex sx={{ flexDirection: 'column', textAlign: 'center', marginBottom: '20px' }}>
         <Text size="22px" weight={700} mb="10px">
           {t('Treasury & POL')}
           {'  '}
@@ -52,45 +53,57 @@ const TreasuryHistory: React.FC = () => {
             <Svg icon="info" width="16px" />
           </TooltipBubble>
         </Text>
-        <Text size="16px" weight={500}>
-          $<CountUp end={totalPol + totalTreasury} decimals={2} duration={1} separator="," />
-        </Text>
+        {totalPol && totalTreasury && (
+          <Text size="16px" weight={500}>
+            $<CountUp end={totalPol + totalTreasury} decimals={0} duration={1} separator="," />
+          </Text>
+        )}
       </Flex>
 
-      <Flex sx={styles.legendContainer}>
-        <Flex sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '10px 0px' }}>
-          <Flex
-            sx={{
-              background: 'rgba(243, 186, 47, .5)',
-              width: '25px',
-              height: '10px',
-              borderRadius: '10px',
-              mr: '5px',
-            }}
-          />
-          <Flex sx={{ alignItems: 'center', justifyContnet: 'center' }}>
-            <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
-              Treasury
-            </Text>
-            <Text sx={{ lineHeight: '10px' }}>
-              $<CountUp end={totalTreasury} decimals={2} duration={1} separator="," />
-            </Text>
+      {totalPol && totalTreasury && (
+        <>
+          <Flex sx={styles.legendContainer}>
+            <Flex sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '7.5px 0px' }}>
+              <Flex
+                sx={{
+                  background: 'rgba(243, 186, 47, .5)',
+                  width: '25px',
+                  height: '10px',
+                  borderRadius: '10px',
+                  mr: '5px',
+                }}
+              />
+              <Flex sx={{ alignItems: 'center', justifyContnet: 'center' }}>
+                <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
+                  Treasury
+                </Text>
+                <Text sx={{ lineHeight: '10px' }}>
+                  $<CountUp end={totalTreasury} decimals={0} duration={1} separator="," />
+                </Text>
+              </Flex>
+            </Flex>
+            <Flex sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '10px 0px' }}>
+              <Flex
+                sx={{
+                  background: 'rgba(77, 64, 64, 1)',
+                  width: '25px',
+                  height: '10px',
+                  borderRadius: '10px',
+                  mr: '5px',
+                }}
+              />
+              <Flex sx={{ alignItems: 'center', justifyContnet: 'center' }}>
+                <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
+                  POL
+                </Text>
+                <Text sx={{ lineHeight: '10px' }}>
+                  $<CountUp end={totalPol} decimals={0} duration={1} separator="," />
+                </Text>
+              </Flex>
+            </Flex>
           </Flex>
-        </Flex>
-        <Flex sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '10px 0px' }}>
-          <Flex
-            sx={{ background: 'rgba(77, 64, 64, 1)', width: '25px', height: '10px', borderRadius: '10px', mr: '5px' }}
-          />
-          <Flex sx={{ alignItems: 'center', justifyContnet: 'center' }}>
-            <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
-              POL
-            </Text>
-            <Text sx={{ lineHeight: '10px' }}>
-              $<CountUp end={totalPol} decimals={2} duration={1} separator="," />
-            </Text>
-          </Flex>
-        </Flex>
-      </Flex>
+        </>
+      )}
 
       <Flex sx={{ maxWidth: '100%', width: '99%', height: '100%' }}>
         <Line

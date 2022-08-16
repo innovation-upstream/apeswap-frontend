@@ -18,6 +18,7 @@ const COLORS = [
   'rgba(231, 79, 79, 1)',
   'rgba(144, 51, 246, 1)',
   'rgba(105, 165, 136, 1)',
+  '#FF851B',
 ]
 
 const setData = (tvl: OverviewTvlInterface | string[]) => {
@@ -54,13 +55,30 @@ const TotalValueLocked: React.FC = () => {
           $<CountUp end={total} decimals={2} duration={1} separator="," />
         </Text>
       </Flex>
-      <Flex sx={{ width: '100%', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap' }}>
+      <Flex
+        sx={{
+          width: '100%',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+        }}
+      >
         {data && (
-          <Flex sx={{ position: 'relative', margin: '10px 0px' }}>
+          <Flex
+            sx={{
+              position: 'relative',
+              margin: '10px 0px',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <Flex sx={{ width: '200px' }}>
               <Doughnut
                 data={data}
                 options={{
+                  layout: {
+                    padding: 5,
+                  },
                   elements: {
                     arc: {
                       borderWidth: 0,
@@ -77,11 +95,12 @@ const TotalValueLocked: React.FC = () => {
             </Flex>
             <Flex
               sx={{
+                height: '10px',
+                mb: '25px',
+                alignSelf: 'center',
                 position: 'absolute',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '100%',
-                height: '85%',
               }}
             >
               <Tvl fill={theme.colors.text} color={theme.colors.background} width="90px" />
