@@ -58,7 +58,7 @@ const ListViewMenu: React.FC<ListViewProps> = ({ onHandleQueryChange, onSetSortO
       >
         <Button style={{ width: '100%', height: '42px' }}>
           <Text bold fontSize="22px" color="primaryBright">
-            Market place
+            {t('Marketplace')}
           </Text>
         </Button>
       </Link>
