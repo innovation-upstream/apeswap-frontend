@@ -177,8 +177,8 @@ const App: React.FC = () => {
               <Route path="/gnana">
                 <Redirect to="/" />
               </Route>
-              <Route path="/apestats">
-                <Redirect to="/" />
+              <Route path="/stats">
+                <Redirect to="/apestats" />
               </Route>
               <Route exact path="/ss-iao">
                 <Redirect to="/" />
@@ -226,6 +226,9 @@ const App: React.FC = () => {
               <Route path="/banana-farms">
                 <DualFarms />
               </Route>
+              <Route path="/stats">
+                <Stats />
+              </Route>
               <Route path="/terms">
                 <TermsOfUse />
               </Route>
@@ -264,9 +267,6 @@ const App: React.FC = () => {
                 <Redirect to="/" />
               </Route>
               <Route path="/gnana">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/apestats">
                 <Redirect to="/" />
               </Route>
               <Route exact path="/ss-iao">
