@@ -34,7 +34,9 @@ export const BannerStats = () => {
   }
 
   const calculateTotalPortfolio = () => {
-    return portfolioData.reduce((acc, curr) => acc + curr.totalValue, 0)
+    return portfolioData.reduce((acc, curr) => {
+      return ['bills', 'iaos'].includes(curr.type) ? acc + curr.totalValue : acc + curr.totalEarnings
+    }, 0)
   }
 
   const calculateTotalHoldings = () => {
