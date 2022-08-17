@@ -34,16 +34,12 @@ export const BannerStats = () => {
   }
 
   const calculateTotalPortfolio = () => {
-    return portfolioData.reduce((acc, curr) => acc + curr.totalValue, 0)
+    const filteredPortfolio = portfolioData.filter((val) => val.type !== 'bills' && val.type !== 'iaos')
+    return filteredPortfolio.reduce((acc, curr) => acc + curr.totalValue, 0)
   }
 
   const calculateTotalHoldings = () => {
-    return (
-      +stats.userHoldings.banana * stats.bananaPrice +
-      calculateTotalPortfolio() +
-      calculateTotalEarnings() +
-      stats.analytics.assets.totalWalletHoldings
-    )
+    return calculateTotalPortfolio() + calculateTotalEarnings() + stats.analytics.assets.totalWalletHoldings
   }
 
   return (
@@ -53,7 +49,7 @@ export const BannerStats = () => {
           {isMobile ? <TransparentGradient /> : null}
           <StyledHeading>
             <Text fontSize={isMobile ? '18px' : '22px'} fontWeight={500} marginTop="32px" marginBottom="-4px">
-              Total Holdings
+              {t('Total Holdings')}
             </Text>
             {!account ? (
               <CardValue fontSize={isMobile ? '44px' : '54px'} fontWeight={700} value={0} decimals={2} prefix="$" />
