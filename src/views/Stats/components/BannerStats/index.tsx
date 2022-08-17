@@ -34,18 +34,12 @@ export const BannerStats = () => {
   }
 
   const calculateTotalPortfolio = () => {
-    return portfolioData.reduce((acc, curr) => {
-      return ['bills', 'iaos'].includes(curr.type) ? acc + curr.totalValue : acc + curr.totalEarnings
-    }, 0)
+    const filteredPortfolio = portfolioData.filter((val) => val.type !== 'bills' && val.type !== 'iaos')
+    return filteredPortfolio.reduce((acc, curr) => acc + curr.totalValue, 0)
   }
 
   const calculateTotalHoldings = () => {
-    return (
-      +stats.userHoldings.banana * stats.bananaPrice +
-      calculateTotalPortfolio() +
-      calculateTotalEarnings() +
-      stats.analytics.assets.totalWalletHoldings
-    )
+    return calculateTotalPortfolio() + calculateTotalEarnings() + stats.analytics.assets.totalWalletHoldings
   }
 
   return (
