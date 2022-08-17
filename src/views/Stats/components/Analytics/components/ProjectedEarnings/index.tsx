@@ -87,7 +87,7 @@ export const ProjectedEarnings: React.FC = () => {
         <TableHeading>
           <Text>{t('Timeframe')}</Text>
           <Text>{t('Return')}</Text>
-          <Text>{t('Earnings')}</Text>
+          <Text>{t('Estimated Earnings')}</Text>
         </TableHeading>
 
         <StyledTable>

@@ -226,7 +226,7 @@ const App: React.FC = () => {
               <Route path="/banana-farms">
                 <DualFarms />
               </Route>
-              <Route path="/stats">
+              <Route path="/apestats">
                 <Stats />
               </Route>
               <Route path="/terms">
