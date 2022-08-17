@@ -76,7 +76,11 @@ export const ProductCardHeader: React.FC<ProductCardHeaderProps> = ({
           </Text>
         </LinkExternal>
         <Flex alignItems="center">
-          <CardValue fontSize={isMobile ? '14px' : '22px'} fontWeight={700} value={totalValue} prefix="$" />
+          {!['bills', 'iaos'].includes(type) ? (
+            <CardValue fontSize={isMobile ? '14px' : '22px'} fontWeight={700} value={totalValue} prefix="$" />
+          ) : (
+            <CardValue fontSize={isMobile ? '14px' : '22px'} fontWeight={700} value={totalEarnings} prefix="$" />
+          )}
           <AnimatedArrow height={isMobile ? 8 : 12} marginLeft={isMobile ? 15 : 20} isOpen={isOpen} onClick={onClick} />
         </Flex>
       </Flex>

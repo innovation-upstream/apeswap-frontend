@@ -27,7 +27,7 @@ export const ShareButton: React.FC = () => {
 
   return (
     <Link
-      href="https://twitter.com/compose/tweet?text=Some%20text%20about%20the%20new%20Stats%20Page%0Ahttps%3A%2F%2Fapeswap.finance%2Fstats%20on%20%40ape_swap"
+      href="https://twitter.com/intent/tweet?url=&text=I'm%20using%20the%20new%20%23ApeStats%20page!%20Click%20here%20to%20keep%20track%20of%20your%20%23DeFi%20portfolio%20on%20%40ape_swap%2C%20all%20in%20one%20place%3A%20ApeSwap.finance%2FApeStats"
       target="_blank"
       style={{ textDecoration: 'none', width: '100%', maxWidth: '107px', marginLeft: '10px' }}
     >
