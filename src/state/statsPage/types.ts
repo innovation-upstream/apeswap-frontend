@@ -7,7 +7,10 @@ export interface ApiResponse {
   bananaPrice: number
   analytics: {
     tvl: IReducedTVLInfo
-    assets: IAssetBreakdown[]
+    assets: {
+      breakdown: IAssetBreakdown[]
+      totalWalletHoldings: number
+    }
   }
 }
 

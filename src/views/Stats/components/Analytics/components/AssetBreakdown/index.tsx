@@ -67,8 +67,8 @@ const AssetBreakdown = () => {
 
   return (
     <>
-      {assets?.length ? (
-        assets
+      {assets?.breakdown.length ? (
+        assets.breakdown
           .sort((a, b) => +b.balance - +a.balance)
           .map(({ address, amount, symbol, price, balance, chain }) => (
             <Asset
