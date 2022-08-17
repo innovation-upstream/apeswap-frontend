@@ -5,7 +5,6 @@ import { Modal, ModalHeader, Heading, Link, ModalProvider, HelpIcon } from '@ape
 import { Flex } from 'theme-ui'
 import { merge } from 'lodash'
 import { useTranslation } from 'contexts/Localization'
-import Zap from '../LiquidityWidget2/RegularLiquidity'
 
 interface LiquidityModalProps {
   widgetProps?: Record<string, any>
@@ -50,7 +49,7 @@ const LiquidityModal: React.FC<LiquidityModalProps> = ({ widgetProps, modalProps
             </Heading>
           </Flex>
         </ModalHeader>
-        <Zap />
+        <LiquidityWidget {...widgetProps} onCancel={handleClose} />
       </Modal>
     </ModalProvider>
   )
