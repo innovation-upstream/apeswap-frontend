@@ -62,6 +62,7 @@ export const ProductCardHeader: React.FC<ProductCardHeaderProps> = ({
     maximizers: 'maximizers',
     jungleFarms: 'jungle-farms',
     bills: 'treasury-bills',
+    iaos: 'iao',
   }
 
   return (

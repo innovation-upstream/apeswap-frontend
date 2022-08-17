@@ -49,7 +49,11 @@ const Analytics: React.FC = () => {
         <Heading>
           <Flex alignItems="center" marginBottom="24px" style={{ gap: '8px' }}>
             {t('Vested Earnings')}
-            <Tooltip content="The amounts you see here are vested in predefinied timeframes based on your commitments to various ApeSwap products.">
+            <Tooltip
+              content={t(
+                'Earnings are vested over predefined timeframes based on your commitments to various ApeSwap products.',
+              )}
+            >
               <Svg icon="question" color="text" width={16} />
             </Tooltip>
           </Flex>
