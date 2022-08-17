@@ -4,7 +4,6 @@ import { TagVariants } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
-import { LiquidityModal } from 'components/LiquidityWidget'
 import ListViewContent from 'components/ListViewContent'
 import { Farm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -20,6 +19,9 @@ import { Container, FarmButton, NextArrow } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
 import { ActionContainer, StyledTag } from './CardActions/styles'
 import InfoContent from '../InfoContent'
+import DualLiquidityModal from 'components/DualLiquidityModal/DualLiquidityModal'
+import { selectLP } from 'state/zap/actions'
+import ZapIcon from 'components/DualLiquidityModal/components/Svg/ZapIcon'
 
 const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] }> = ({ farms, openPid, farmTags }) => {
   const { chainId } = useActiveWeb3React()
@@ -32,13 +34,13 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
   // Need to export ModalContext from uikit to clean up the code
   const [, closeModal] = useModal(<></>)
   const [onPresentAddLiquidityWidgetModal] = useModal(
-    <LiquidityModal handleClose={closeModal} />,
+    <DualLiquidityModal handleClose={closeModal} />,
     true,
     true,
     'liquidityWidgetModal',
   )
 
-  const showLiquidity = (token, quoteToken) => {
+  const showLiquidity = (token, quoteToken, farm) => {
     dispatch(
       selectCurrency({
         field: Field.INPUT,
@@ -51,6 +53,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
         currencyId: quoteToken,
       }),
     )
+    dispatch(selectLP({ zapInto: farm }))
     onPresentAddLiquidityWidgetModal()
   }
 
@@ -162,16 +165,16 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                 ml={10}
               />
             )}
-
             <FarmButton
               onClick={() =>
                 showLiquidity(
                   farm.tokenAddresses[chainId],
                   farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId],
+                  farm,
                 )
               }
             >
-              {t('GET LP')}
+              {t('GET LP')} <ZapIcon fill="white" style={{ marginLeft: '5px' }} />
             </FarmButton>
             {!isMobile && (
               <ListViewContent

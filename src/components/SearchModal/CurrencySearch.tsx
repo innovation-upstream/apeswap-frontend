@@ -17,6 +17,7 @@ import CurrencyList from './CurrencyList'
 import { createFilterToken, useSortedTokensByQuery } from './filtering'
 import useTokenComparator from './sorting'
 import ImportRow from './ImportRow'
+import { useZapInputList } from '../../state/zap/hooks'
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
@@ -25,6 +26,7 @@ interface CurrencySearchProps {
   showCommonBases?: boolean
   showImportView: () => void
   setImportToken: (token: Token) => void
+  useZapList?: boolean
 }
 
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
@@ -81,6 +83,7 @@ function CurrencySearch({
   showCommonBases,
   showImportView,
   setImportToken,
+  useZapList,
 }: CurrencySearchProps) {
   const { chainId } = useActiveWeb3React()
 
@@ -94,6 +97,23 @@ function CurrencySearch({
 
   const allTokens = useAllTokens()
 
+  const rawZapInputList = useZapInputList()
+
+  const zapInputList = useMemo(() => {
+    const addresses = []
+    if (rawZapInputList) {
+      for (const res of Object.values(rawZapInputList)) {
+        if (res.address[56]) {
+          addresses.push(res.address[56].toLowerCase())
+        }
+      }
+    }
+    const filteredZapInputTokens = Object.entries(allTokens).filter((token) =>
+      addresses.includes(token[0].toLowerCase()),
+    )
+    return Object.fromEntries(filteredZapInputTokens)
+  }, [allTokens, rawZapInputList])
+
   // if they input an address, use it
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
@@ -106,8 +126,9 @@ function CurrencySearch({
 
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery)
+    if (useZapList) return Object.values(zapInputList).filter(filterToken)
     return Object.values(allTokens).filter(filterToken)
-  }, [allTokens, debouncedQuery])
+  }, [allTokens, debouncedQuery, useZapList, zapInputList])
 
   const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
 

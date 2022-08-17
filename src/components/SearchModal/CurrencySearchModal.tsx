@@ -17,6 +17,7 @@ interface CurrencySearchModalProps extends ModalProps {
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
+  useZapList?: boolean
 }
 
 const ScrollableContainer = styled(Flex)`
@@ -35,6 +36,7 @@ export default function CurrencySearchModal({
   selectedCurrency,
   otherSelectedCurrency,
   showCommonBases = false,
+  useZapList,
 }: CurrencySearchModalProps) {
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.search)
 
@@ -65,6 +67,7 @@ export default function CurrencySearchModal({
               showCommonBases={showCommonBases}
               showImportView={() => setModalView(CurrencyModalView.importToken)}
               setImportToken={setImportToken}
+              useZapList={useZapList}
             />
           ) : modalView === CurrencyModalView.importToken && importToken ? (
             <ImportToken tokens={[importToken]} handleCurrencySelect={handleCurrencySelect} />
@@ -80,7 +83,7 @@ export default function CurrencySearchModal({
           ) : (
             ''
           )}
-          {modalView === CurrencyModalView.search && (
+          {modalView === CurrencyModalView.search && !useZapList && (
             <ModalFooter onDismiss={onDismiss}>
               <Text
                 onClick={() => setModalView(CurrencyModalView.manage)}

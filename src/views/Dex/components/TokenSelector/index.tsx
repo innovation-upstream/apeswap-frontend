@@ -16,7 +16,17 @@ const TokenSelector: React.FC<{
   typedValue?: string
   showCommonBases?: boolean
   isRemoveLiquidity?: boolean
-}> = ({ currency, onCurrencySelect, otherCurrency, isRemoveLiquidity, typedValue, field, showCommonBases = false }) => {
+  useZapList?: boolean
+}> = ({
+  currency,
+  onCurrencySelect,
+  otherCurrency,
+  isRemoveLiquidity,
+  typedValue,
+  field,
+  showCommonBases = false,
+  useZapList,
+}) => {
   const { chainId } = useActiveWeb3React()
 
   const handleDynamicCurrencySelect = useCallback(
@@ -32,6 +42,7 @@ const TokenSelector: React.FC<{
       selectedCurrency={currency}
       otherSelectedCurrency={otherCurrency}
       showCommonBases={showCommonBases}
+      useZapList={useZapList}
     />,
   )
 

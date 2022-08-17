@@ -30,7 +30,6 @@ export function ConfirmationPendingContent({ pendingText }: { pendingText: strin
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%',
-        background: 'white3',
         margin: '15px 0px',
         borderRadius: '10px',
       }}
@@ -42,7 +41,7 @@ export function ConfirmationPendingContent({ pendingText }: { pendingText: strin
         sx={{
           flexDirection: 'column',
           alignItems: 'center',
-          background: 'white4',
+          background: 'white3',
           padding: '10px 20px',
           margin: '10px',
           borderRadius: '10px',
