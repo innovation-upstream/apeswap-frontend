@@ -5,6 +5,7 @@ import { useStats } from 'state/statsPage/hooks'
 import { wrappedToNative } from 'state/statsPage/mappings'
 
 import useIsMobile from 'hooks/useIsMobile'
+import { useTranslation } from 'contexts/Localization'
 
 import CardValue from '../../../CardValue'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
@@ -22,6 +23,7 @@ interface AssetProps {
 
 const Asset = React.memo(function Asset({ amount, price, symbol, balance, chain }: AssetProps) {
   const isMobile = useIsMobile()
+  const { t } = useTranslation()
 
   return (
     <Container>
@@ -39,7 +41,13 @@ const Asset = React.memo(function Asset({ amount, price, symbol, balance, chain 
           <Text fontSize={isMobile ? '14px' : '16px'} fontWeight={700}>
             {symbol}
           </Text>
-          <CardValue fontSize={isMobile ? '10px' : '12px'} fontWeight={300} value={price} decimals={2} prefix="$" />
+          <CardValue
+            fontSize={isMobile ? '10px' : '12px'}
+            fontWeight={300}
+            value={price}
+            decimals={2}
+            prefix={`${t('Asset Price')}: $`}
+          />
         </div>
       </Flex>
       <Flex flexDirection="column" style={{ textAlign: 'end' }}>

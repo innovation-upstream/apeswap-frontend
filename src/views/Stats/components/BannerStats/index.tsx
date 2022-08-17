@@ -81,7 +81,7 @@ export const BannerStats = () => {
         ) : (
           <GridCardsContainer>
             <TranslucidCard>
-              <CardLabel>{t('Wallet Balance')}</CardLabel>
+              <CardLabel>{`BANANA ${t('Balance')}`}</CardLabel>
               <Flex alignItems="center" style={{ gap: '4px' }}>
                 {!account ? (
                   <CardValue fontSize="22px" fontWeight={700} value={0} color="primaryBright" decimals={2} />
@@ -104,7 +104,7 @@ export const BannerStats = () => {
             <TranslucidCard>
               <Flex alignItems="center" marginBottom="2px" style={{ gap: '6px' }}>
                 <CardLabel>{t('Total Staked')}</CardLabel>
-                <Tooltip content="The total amount you have staked across all ApeSwap offerings.">
+                <Tooltip content="The total USD value of tokens staked across all ApeSwap products from the connected wallet.">
                   <Svg icon="question" width={12} color="primaryBright" />
                 </Tooltip>
               </Flex>
@@ -147,7 +147,7 @@ export const BannerStats = () => {
       {isMobile ? (
         <MobileCard>
           <div>
-            <Text>Wallet Balance</Text>
+            <Text>{`BANANA ${t('Balance')}`}</Text>
             {!account ? (
               <CardValue fontSize="16px" fontWeight={700} value={0} decimals={2} />
             ) : loading ? (
@@ -165,7 +165,7 @@ export const BannerStats = () => {
             )}
           </div>
           <div>
-            <Text>Total Staked</Text>
+            <Text>{t('Total Staked')}</Text>
             {!account ? (
               <CardValue fontSize="16px" fontWeight={700} value={0} decimals={2} prefix="$" />
             ) : loading ? (
@@ -175,7 +175,7 @@ export const BannerStats = () => {
             )}
           </div>
           <div>
-            <Text>Pending Rewards</Text>
+            <Text>{t('Pending Rewards')}</Text>
             {!account ? (
               <CardValue fontSize="16px" fontWeight={700} value={0} decimals={2} prefix="$" />
             ) : loading ? (

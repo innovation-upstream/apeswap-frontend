@@ -51,7 +51,8 @@ const CardValue: React.FC<CardValueProps> = ({
       color={color}
       style={{ width: `${width}`, maxWidth: `${maxWidth}` }}
     >
-      {prefix} {countUp} {suffix}
+      {prefix}
+      {countUp} {suffix}
     </Text>
   )
 }

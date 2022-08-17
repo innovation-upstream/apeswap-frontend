@@ -24,7 +24,11 @@ const Analytics: React.FC = () => {
         <Heading>
           <Flex alignItems="center" style={{ gap: '8px' }}>
             {t('Projected Earnings')}
-            <Tooltip content="The amounts you see here are projected based off of real-time current rates, which are not guaranteed.">
+            <Tooltip
+              content={t(
+                'Earnings are calculated at current, real-time market rates, are not guaranteed, and are intended for illustrative purposes only.',
+              )}
+            >
               <Svg icon="question" color="text" width={16} />
             </Tooltip>
           </Flex>
@@ -34,7 +38,7 @@ const Analytics: React.FC = () => {
       </CardInfo>
 
       <CardInfo style={{ overflow: 'hidden' }}>
-        <Heading>Asset Breakdown</Heading>
+        <Heading>{t('Asset Breakdown')}</Heading>
 
         <AssetsContainer>
           <AssetBreakdown />

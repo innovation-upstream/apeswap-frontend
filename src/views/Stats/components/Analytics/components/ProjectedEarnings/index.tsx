@@ -10,7 +10,7 @@ import CardValue from '../../../CardValue'
 import { StyledTable, TableHeading } from '../../styles'
 import { FlexScroll, Indicator, ScrollMenu, Tab } from './styles'
 
-const tabOptions = ['Total', 'Farms', 'Pools', 'Jungle Farms', 'Lending', 'Maximizers']
+const tabOptions = ['Total', 'BANANA Farms', 'Pools', 'Jungle Farms', 'Lending', 'Maximizers']
 
 export const ProjectedEarnings: React.FC = () => {
   const { t } = useTranslation()

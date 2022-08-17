@@ -57,9 +57,9 @@ export const ProductCardHeader: React.FC<ProductCardHeaderProps> = ({
 
   // Should use this directly in Portfolio Data?
   const productLink = {
-    farms: 'farms',
+    farms: 'banana-farms',
     pools: 'pools',
-    maximizers: 'vaults',
+    maximizers: 'maximizers',
     jungleFarms: 'jungle-farms',
     bills: 'treasury-bills',
   }
@@ -81,7 +81,7 @@ export const ProductCardHeader: React.FC<ProductCardHeaderProps> = ({
       </Flex>
       <StyledText>
         <Text fontWeight={500} fontSize="12px" marginRight="4px">
-          {t('To be claimed: ')}
+          {`${t('Pending Rewards')}: `}
         </Text>
         <CardValue fontSize="12px" fontWeight={500} value={totalEarnings} prefix="$" />
       </StyledText>

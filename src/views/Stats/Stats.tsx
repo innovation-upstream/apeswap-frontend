@@ -27,7 +27,7 @@ const displayChainOptions = [
     value: 'all',
   },
   {
-    label: 'BNB',
+    label: 'BNB Chain',
     value: 'bnb',
   },
   {

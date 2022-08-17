@@ -3,6 +3,7 @@ import { Text } from '@apeswapfinance/uikit'
 import { Doughnut } from 'react-chartjs-2'
 
 import { useStats } from 'state/statsPage/hooks'
+import { useTranslation } from 'contexts/Localization'
 
 import CardValue from '../../../CardValue'
 import { NoContentPlaceholder } from 'views/Stats/components/NoContentPlaceholder'
@@ -15,6 +16,7 @@ export const TVLBreakdown = () => {
       analytics: { tvl },
     },
   } = useStats()
+  const { t } = useTranslation()
 
   const tvlList = [tvl.farms, tvl.pools, tvl.jungleFarms, tvl.lending, tvl.maximizers]
 
@@ -56,7 +58,7 @@ export const TVLBreakdown = () => {
               <TableRow
                 key={product.id}
                 id={product.id}
-                name={product.name}
+                name={product.name === 'Farms' ? t('BANANA Farms') : t(product.name)}
                 value={product.value}
                 percentage={getPercentage(product.value)}
               />

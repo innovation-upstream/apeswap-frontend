@@ -33,7 +33,7 @@ export const VestedEarnings: React.FC = () => {
         <Text>{t('Product')}</Text>
         <Flex alignItems="center" justifyContent="center" style={{ gap: '8px' }}>
           {t('Vesting Time')}
-          <Tooltip content="Explanation of 2 dates">
+          <Tooltip content={t('Time remaining until an asset is fully vested.')}>
             <Svg icon="question" color="text" width={12} />
           </Tooltip>
         </Flex>
