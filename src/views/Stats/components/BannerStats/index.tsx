@@ -38,7 +38,12 @@ export const BannerStats = () => {
   }
 
   const calculateTotalHoldings = () => {
-    return +stats.userHoldings.banana * stats.bananaPrice + calculateTotalPortfolio() + calculateTotalEarnings()
+    return (
+      +stats.userHoldings.banana * stats.bananaPrice +
+      calculateTotalPortfolio() +
+      calculateTotalEarnings() +
+      stats.analytics.assets.totalWalletHoldings
+    )
   }
 
   return (
