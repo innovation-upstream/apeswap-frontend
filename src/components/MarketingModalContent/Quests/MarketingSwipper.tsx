@@ -67,7 +67,7 @@ const MarketingSwipper: React.FC<SwiperProps> = ({ onDismiss, setDefaultNoShow, 
             onSlideChange={handleSlide}
           >
             {QuestSlides.map((slide) => {
-              return <SwiperSlide key={QuestSlides[activeSlide]?.key}>{slide}</SwiperSlide>
+              return <SwiperSlide key={slide.key}>{slide}</SwiperSlide>
             })}
           </Swiper>
           <Flex sx={styles.bubbleWrapper}>
