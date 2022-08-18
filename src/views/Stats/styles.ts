@@ -1,3 +1,4 @@
+import { Link } from '@ape.swap/uikit'
 import { BaseLayout, Card, Flex } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 
@@ -80,12 +81,16 @@ export const Pacoca = styled.div<PacocaProps>`
   width: ${(props) => (props.width ? props.width : '62px')};
 `
 
-export const PacocaCard = styled(Card)`
+export const PacocaCard = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+
   padding: 16px 32px;
-  max-width: 260px;
   margin: 0 auto !important;
+  max-width: 260px;
+
+  background: ${({ theme }) => theme.colors.white2};
+  border-radius: 10px;
 `
