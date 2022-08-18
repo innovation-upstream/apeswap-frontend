@@ -18,14 +18,20 @@ axiosRetry(statsApi, {
   },
 })
 
+const cachedStats = {}
+
 export const fetchStatsData = async (params: string) => {
   try {
+    if (cachedStats[params]) return cachedStats[params]
+
     const response = await statsApi.get(`/${params}`)
     const statsResponse = response.data
 
     if (statsResponse.statusCode === 500) {
       return initialStatsData
     }
+
+    cachedStats[params] = statsResponse
 
     return statsResponse
   } catch (error) {
