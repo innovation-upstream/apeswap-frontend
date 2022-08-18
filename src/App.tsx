@@ -180,6 +180,9 @@ const App: React.FC = () => {
               <Route path="/stats">
                 <Redirect to="/apestats" />
               </Route>
+              <Route path="/apestats">
+                <Stats />
+              </Route>
               <Route exact path="/ss-iao">
                 <Redirect to="/" />
               </Route>

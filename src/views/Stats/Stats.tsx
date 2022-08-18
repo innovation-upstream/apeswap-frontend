@@ -127,7 +127,7 @@ const Stats: React.FC = () => {
             tabMenuMap[activeTab]
           )}
         </StatsContent>
-        <PacocaCard>
+        <PacocaCard href="https://pacoca.io/" target="_blank">
           <Text fontSize="12px">Stats powered by</Text>
           <Pacoca width="83px" height="24px" />
         </PacocaCard>
