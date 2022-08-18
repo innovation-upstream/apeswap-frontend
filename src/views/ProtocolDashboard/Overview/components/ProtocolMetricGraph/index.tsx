@@ -4,7 +4,6 @@ import { Select, SelectItem } from '@apeswapfinance/uikit'
 import React, { useMemo, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import useTheme from 'hooks/useTheme'
-import { de } from 'date-fns/locale'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
 import { useFetchOverviewProtocolMetrics } from 'state/protocolDashboard/hooks'
@@ -28,7 +27,6 @@ const ProtocolMetricsGraph: React.FC = () => {
   const currentDate = new Date()
   const minDateMap = {
     total: '',
-    '24h': new Date(currentDate.getTime() - 1 * 24 * 60 * 60 * 1000).getTime(),
     '7d': new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000).getTime(),
     '30d': new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000).getTime(),
   }
@@ -37,7 +35,10 @@ const ProtocolMetricsGraph: React.FC = () => {
   const marketCap = metrics?.filter((data) => data.description === 'Market Cap')[0]
   const bananaBurned = metrics?.filter((data) => data.description === 'Banana Burned')[0]
   const pol = metrics?.filter((data) => data.description === 'POL')[0]
-  const listOfMetrics = [bananaHolders, marketCap, bananaBurned, pol]
+  const listOfMetrics = useMemo(
+    () => [bananaHolders, marketCap, bananaBurned, pol],
+    [bananaHolders, marketCap, bananaBurned, pol],
+  )
   const [activeCatTab, setActiveCatTab] = useState(0)
   const [activeTime, onSetTime] = useState('total')
   const { t } = useTranslation()
@@ -89,9 +90,6 @@ const ProtocolMetricsGraph: React.FC = () => {
         </Flex>
         <Flex sx={{ height: '40px' }}>
           <Select size="sm" width="126px" onChange={(e) => onSetTime(e.target.value)} active={activeTime}>
-            <SelectItem size="sm" value="24h" key="24h">
-              <Text>{t('24h')}</Text>
-            </SelectItem>
             <SelectItem size="sm" value="7d" key="7d">
               <Text>{t('7d')}</Text>
             </SelectItem>

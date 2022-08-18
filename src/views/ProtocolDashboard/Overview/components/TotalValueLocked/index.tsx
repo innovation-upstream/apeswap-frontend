@@ -81,7 +81,7 @@ const TotalValueLocked: React.FC = () => {
                   },
                   elements: {
                     arc: {
-                      borderWidth: 0,
+                      borderWidth: 1.5,
                     },
                   },
                   plugins: {

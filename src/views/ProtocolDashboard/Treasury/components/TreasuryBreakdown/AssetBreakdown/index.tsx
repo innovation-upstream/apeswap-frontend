@@ -2,24 +2,23 @@
 import { Flex, Text } from '@ape.swap/uikit'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { orderBy } from 'lodash'
 import { useFetchTreasuryBreakdown } from 'state/protocolDashboard/hooks'
-import fetchTreasuryBreakdown from 'state/protocolDashboard/api'
-import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import AssetCard from './AssetCard'
 
-const AssetBreakdown: React.FC<{ activeView: number }> = () => {
+const AssetBreakdown: React.FC<{ activeView: number }> = ({ activeView }) => {
   const { t } = useTranslation()
   const treasury = useFetchTreasuryBreakdown()
-  console.log(treasury)
 
   const sortedTreasury = orderBy(
-    [...(treasury?.operationalFundsTokens || []), ...(treasury?.lpTokens || [])],
+    [...(treasury?.tokens || []), ...(treasury?.lpTokens || [])],
     (token) => token?.value,
     'desc',
   )
-
+  const sortedOpFunds = sortedTreasury // ?.filter((token) => token.)
+  const sortedPolFunds = orderBy(treasury?.lpTokens || [], (token) => token?.value, 'desc')
+  const activeAssets = [sortedTreasury, sortedOpFunds, sortedPolFunds][activeView]
   return (
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', mb: '5px' }}>
@@ -28,7 +27,7 @@ const AssetBreakdown: React.FC<{ activeView: number }> = () => {
         </Text>
       </Flex>
       <div sx={styles.assetBreakdownContainer}>
-        {sortedTreasury?.map((token) => (
+        {activeAssets?.map((token) => (
           <AssetCard token={token} key={token?.address} />
         ))}
       </div>
@@ -36,4 +35,4 @@ const AssetBreakdown: React.FC<{ activeView: number }> = () => {
   )
 }
 
-export default AssetBreakdown
+export default React.memo(AssetBreakdown)

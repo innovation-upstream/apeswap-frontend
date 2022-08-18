@@ -1,14 +1,12 @@
 /** @jsxImportSource theme-ui */
-import { Tvl } from 'components/Icons'
 import { Flex, Text } from '@ape.swap/uikit'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
-import stubData from './stubData'
 import CountUp from 'react-countup'
 import { useFetchTreasuryAssetOverview } from 'state/protocolDashboard/hooks'
-import { add, defaultTo, merge, mergeWith, orderBy } from 'lodash'
+import { orderBy } from 'lodash'
 import { TreasuryAssetOverviewInterface } from 'state/protocolDashboard/types'
 
 const COLORS = [
@@ -79,9 +77,12 @@ const AssetOverview: React.FC<{ activeView: number }> = ({ activeView }) => {
             <Doughnut
               data={data}
               options={{
+                layout: {
+                  padding: 15,
+                },
                 elements: {
                   arc: {
-                    borderWidth: 0,
+                    borderWidth: 1.5,
                   },
                 },
                 plugins: {
@@ -89,7 +90,7 @@ const AssetOverview: React.FC<{ activeView: number }> = ({ activeView }) => {
                     display: false,
                   },
                 },
-                cutout: 90,
+                cutout: 85,
               }}
             />
           </Flex>
