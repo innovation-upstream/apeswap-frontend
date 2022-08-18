@@ -7,28 +7,30 @@ const baseUrl = {
   prod: 'https://apeswap.api.pacoca.io/stats',
 }
 
-let tries = 0
-let cacheStats = []
+const statsApi = axios.create({ baseURL: baseUrl.prod })
+
+axiosRetry(statsApi, {
+  retries: 5,
+  retryCondition: () => true,
+  retryDelay: (retryCount) => {
+    console.warn(`Unable to fetch, retrying request... retry attempt: ${retryCount}`)
+    return retryCount * 1000
+  },
+})
 
 export const fetchStatsData = async (params: string) => {
   try {
-    if (tries === 0) {
-      axiosRetry(axios, {
-        retries: 5,
-        retryCondition: () => true,
-      })
-      tries++
-      const response = await axios.get(`${baseUrl.prod}/${params}`)
-      const statsResponse = await response.data
-      if (statsResponse.statusCode === 500) {
-        return initialStatsData
-      }
-      cacheStats = statsResponse
-      return statsResponse
+    const response = await statsApi.get(`/${params}`)
+    const statsResponse = response.data
+
+    if (statsResponse.statusCode === 500) {
+      return initialStatsData
     }
-    return cacheStats
+
+    return statsResponse
   } catch (error) {
-    tries = 0
+    console.error('Unable to fetch data from API. Are you sure the URL is correct?')
+
     return initialStatsData
   }
 }
