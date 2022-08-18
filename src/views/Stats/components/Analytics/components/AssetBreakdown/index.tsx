@@ -29,8 +29,8 @@ const Asset = React.memo(function Asset({ amount, price, symbol, balance, chain 
     <Container>
       <Flex alignItems="center">
         <ServiceTokenDisplay
-          token1={symbol.includes('-') ? symbol.split('-')[0] : symbol}
-          token2={symbol.includes('-') ? symbol.split('-')[1] : null}
+          token1={symbol.includes('-') ? wrappedToNative(symbol.split('-')[0]) : wrappedToNative(symbol)}
+          token2={symbol.includes('-') ? wrappedToNative(symbol.split('-')[1]) : null}
           stakeLp={symbol.includes('-') ? true : null}
           noEarnToken={symbol.includes('-') ? true : null}
         />
@@ -75,7 +75,7 @@ const AssetBreakdown = () => {
               key={`${chain}:${address}`}
               chain={chain}
               amount={Number(amount)}
-              symbol={wrappedToNative(symbol)}
+              symbol={symbol}
               price={price}
               balance={Number(balance)}
             />
