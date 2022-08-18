@@ -77,7 +77,7 @@ const MarketingSwipper: React.FC<SwiperProps> = ({ onDismiss, setDefaultNoShow, 
                   isActive={i === activeSlide}
                   onClick={() => slideNav(i)}
                   style={{ marginRight: '10px' }}
-                  key={QuestSlides[activeSlide]?.key}
+                  key={i}
                 />
               )
             })}
