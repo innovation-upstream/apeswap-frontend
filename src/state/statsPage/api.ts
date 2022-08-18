@@ -4,7 +4,7 @@ import { initialStatsData } from './mappings'
 
 const baseUrl = {
   local: 'http://localhost:3333/stats',
-  prod: 'https://jellyfish-app-vtrfw.ondigitalocean.app/stats',
+  prod: 'https://apeswap.api.pacoca.io/stats',
 }
 
 let tries = 0
