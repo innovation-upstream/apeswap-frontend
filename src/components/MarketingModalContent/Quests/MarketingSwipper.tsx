@@ -48,17 +48,6 @@ const MarketingSwipper: React.FC<SwiperProps> = ({ onDismiss, setDefaultNoShow, 
         <Box sx={{ position: 'absolute', top: '20px', right: '20px' }}>
           <IconButton width="15px" icon="close" color="text" variant="transparent" onClick={onDismiss} />
         </Box>
-        <Flex sx={styles.defaultNoShow}>
-          <Flex sx={styles.checkboxCon}>
-            <Checkbox
-              id="checkbox"
-              checked={alreadySet || hideDefault}
-              sx={{ backgroundColor: 'white2' }}
-              onChange={setDefaultNoShow}
-            />
-          </Flex>
-          <Text sx={styles.checkboxText}>{t('Please don’t show this modal again')}</Text>
-        </Flex>
         <Flex sx={styles.imagesWrapper}>
           <Box sx={showApe(activeSlide, isDark)} />
         </Flex>
@@ -93,10 +82,25 @@ const MarketingSwipper: React.FC<SwiperProps> = ({ onDismiss, setDefaultNoShow, 
               )
             })}
           </Flex>
-          <Flex sx={{ width: '222px' }}>
+          <Flex
+            sx={{
+              width: '222px',
+            }}
+          >
             <Button fullWidth onClick={handleNext} sx={styles.button}>
               {activeSlide + 1 === QuestSlides.length ? t("I'm ready") : t('Next')}
             </Button>
+          </Flex>
+          <Flex sx={styles.defaultNoShow}>
+            <Flex sx={styles.checkboxCon}>
+              <Checkbox
+                id="checkbox"
+                checked={alreadySet || hideDefault}
+                sx={{ backgroundColor: 'white2' }}
+                onChange={setDefaultNoShow}
+              />
+            </Flex>
+            <Text sx={styles.checkboxText}>{t('Don’t show this again')}</Text>
           </Flex>
         </Flex>
       </Flex>

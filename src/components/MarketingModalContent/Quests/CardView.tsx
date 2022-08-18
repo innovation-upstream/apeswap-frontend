@@ -43,17 +43,6 @@ const CardView: React.FC<SwiperProps> = ({ onDismiss, setDefaultNoShow, hideDefa
           <Box sx={showApe(activeSlide, isDark)} />
         </Flex>
         <Flex sx={styles.textWrapper}>
-          <Flex sx={styles.defaultNoShow}>
-            <Flex sx={styles.checkboxCon}>
-              <Checkbox
-                id="checkbox"
-                checked={alreadySet || hideDefault}
-                sx={{ backgroundColor: 'white2' }}
-                onChange={setDefaultNoShow}
-              />
-            </Flex>
-            <Text sx={styles.checkboxText}>{t('Please don’t show this modal again')}</Text>
-          </Flex>
           <Box sx={{ width: '100%' }}>
             <Heading sx={styles.title}>{t('Welcome to ApeSwap').toUpperCase()}</Heading>
           </Box>
@@ -77,6 +66,17 @@ const CardView: React.FC<SwiperProps> = ({ onDismiss, setDefaultNoShow, hideDefa
             <Button fullWidth onClick={handleNext} sx={styles.button}>
               {activeSlide + 1 === QuestSlides.length ? t("I'm ready") : t('Next')}
             </Button>
+          </Flex>
+          <Flex sx={styles.defaultNoShow}>
+            <Flex sx={styles.checkboxCon}>
+              <Checkbox
+                id="checkbox"
+                checked={alreadySet || hideDefault}
+                sx={{ backgroundColor: 'white2' }}
+                onChange={setDefaultNoShow}
+              />
+            </Flex>
+            <Text sx={styles.checkboxText}>{t('Don’t show this again')}</Text>
           </Flex>
         </Flex>
       </Flex>
