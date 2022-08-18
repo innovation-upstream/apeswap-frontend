@@ -1,5 +1,4 @@
-import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Token, TokenAmount } from '@ape.swap/sdk'
-import { ZapType } from '@ape.swap/sdk/dist/constants'
+import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Token, TokenAmount, ZapType } from '@ape.swap/sdk'
 import { createAction } from '@reduxjs/toolkit'
 import { PairState } from 'hooks/usePairs'
 
@@ -31,11 +30,11 @@ export type MergedZap = {
     liquidityMinted: TokenAmount
   }
   chainId: ChainId
-  zapType: ZapType
 }
 
 export const selectInputCurrency = createAction<{ currencyId: string }>('zap/selectInputCurrency')
 export const selectOutputCurrency = createAction<{ currency1: string; currency2: string }>('zap/selectOutputCurrency')
+export const setZapType = createAction<{ zapType: ZapType }>('zap/setZapType')
 export const typeInput = createAction<{ field: Field; typedValue: string }>('zap/typeInput')
 export const replaceZapState = createAction<{
   field: string
@@ -43,5 +42,6 @@ export const replaceZapState = createAction<{
   inputCurrencyId?: string
   outputCurrencyId?: { currency1: string; currency2: string }
   recipient: string | null
+  zapType: ZapType
 }>('zap/replaceSwapState')
 export const setRecipient = createAction<{ recipient: string | null }>('zap/setRecipient')

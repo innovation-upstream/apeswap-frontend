@@ -258,6 +258,5 @@ export function mergeBestZaps(
         : { token1: minSwapOutOne?.raw.toString(), token2: minPairInAmount },
     },
     chainId,
-    zapType: 0,
   }
 }

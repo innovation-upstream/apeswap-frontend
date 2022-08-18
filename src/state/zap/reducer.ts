@@ -1,9 +1,19 @@
+import { ZapType } from '@ape.swap/sdk'
 import { createReducer } from '@reduxjs/toolkit'
-import { Field, replaceZapState, selectInputCurrency, selectOutputCurrency, setRecipient, typeInput } from './actions'
+import {
+  Field,
+  replaceZapState,
+  selectInputCurrency,
+  selectOutputCurrency,
+  setRecipient,
+  setZapType,
+  typeInput,
+} from './actions'
 
 export interface ZapState {
   readonly independentField: Field
   readonly typedValue: string
+  readonly zapType: ZapType
   readonly [Field.INPUT]: {
     readonly currencyId: string | undefined
   }
@@ -16,6 +26,7 @@ export interface ZapState {
 
 const initialState: ZapState = {
   independentField: Field.INPUT,
+  zapType: ZapType.ZAP,
   typedValue: '',
   [Field.INPUT]: {
     currencyId: '',
@@ -29,17 +40,21 @@ const initialState: ZapState = {
 
 export default createReducer<ZapState>(initialState, (builder) =>
   builder
-    .addCase(replaceZapState, (state, { payload: { typedValue, recipient, inputCurrencyId, outputCurrencyId } }) => {
-      return {
-        [Field.INPUT]: {
-          currencyId: inputCurrencyId,
-        },
-        [Field.OUTPUT]: outputCurrencyId,
-        independentField: Field.INPUT,
-        typedValue,
-        recipient,
-      }
-    })
+    .addCase(
+      replaceZapState,
+      (state, { payload: { typedValue, recipient, inputCurrencyId, outputCurrencyId, zapType } }) => {
+        return {
+          [Field.INPUT]: {
+            currencyId: inputCurrencyId,
+          },
+          [Field.OUTPUT]: outputCurrencyId,
+          independentField: Field.INPUT,
+          zapType,
+          typedValue,
+          recipient,
+        }
+      },
+    )
     .addCase(selectInputCurrency, (state, { payload: { currencyId } }) => {
       return {
         ...state,
@@ -61,5 +76,8 @@ export default createReducer<ZapState>(initialState, (builder) =>
     })
     .addCase(setRecipient, (state, { payload: { recipient } }) => {
       state.recipient = recipient
+    })
+    .addCase(setZapType, (state, { payload: { zapType } }) => {
+      state.zapType = zapType
     }),
 )

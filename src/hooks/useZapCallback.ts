@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, ZapV1 } from '@ape.swap/sdk'
+import { JSBI, Percent, ZapType, ZapV1 } from '@ape.swap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import truncateHash from 'utils/truncateHash'
@@ -44,8 +44,11 @@ interface FailedCall {
 
 function useZapCallArguments(
   zap: MergedZap,
+  zapType: ZapType,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
+  poolAddress?: string,
+  billAddress?: string,
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
 
@@ -72,13 +75,25 @@ function useZapCallArguments(
 
     const swapMethods = []
 
+    console.log(zap, {
+      feeOnTransfer: false,
+      allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
+      zapType: zapType,
+      poolAddress: poolAddress,
+      billAddress: billAddress,
+      recipient,
+      deadline: deadline.toNumber(),
+    })
+
     swapMethods.push(
       ZapV1.zapCallParameters(zap, {
         feeOnTransfer: false,
         allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
+        zapType: zapType,
+        poolAddress: poolAddress,
+        billAddress: billAddress,
         recipient,
         deadline: deadline.toNumber(),
-        zapType: 0,
       }),
     )
 
@@ -90,12 +105,15 @@ function useZapCallArguments(
 // and the user has approved the slippage adjusted input amount for the trade
 export function useZapCallback(
   zap: MergedZap,
+  zapType: ZapType,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
+  poolAddress?: string,
+  billAddress?: string,
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const swapCalls = useZapCallArguments(zap, allowedSlippage, recipientAddressOrName)
+  const swapCalls = useZapCallArguments(zap, zapType, allowedSlippage, recipientAddressOrName, poolAddress, billAddress)
 
   const addTransaction = useTransactionAdder()
 

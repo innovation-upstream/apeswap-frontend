@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/sdk@4.0.1-alpha.9":
-  version "4.0.1-alpha.9"
-  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.0.1-alpha.9.tgz#8f11bdb6ac44ac961b39a5359f0bd7ee0e38341f"
-  integrity sha512-Vvlz6Kp4UXwB+a19/TI4Dwo2whann7tb4P6HNzJd+bsneZ+h2v6aDc7rVfkrLmVjkQbITpj1y4opKsXySrRPNg==
+"@ape.swap/sdk@4.0.1-alpha.10":
+  version "4.0.1-alpha.10"
+  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.0.1-alpha.10.tgz#2e0520ede51610160261c7aa83ee24307cce0662"
+  integrity sha512-/YhXmDarb8AGt6Jwgo86mZosRc8I9Pn/PbGKSee8+hknHOu6lmJPpiZzRRfPHn4LXW2jBwVqFcAebINas30rEQ==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"

@@ -1,5 +1,5 @@
 import { parseUnits } from '@ethersproject/units'
-import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, ChainId, Zap } from '@ape.swap/sdk'
+import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, ChainId, Zap, ZapType } from '@ape.swap/sdk'
 import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import contracts from 'config/constants/contracts'
@@ -19,6 +19,7 @@ import {
   selectInputCurrency,
   selectOutputCurrency,
   setRecipient,
+  setZapType,
   typeInput,
 } from './actions'
 import { ZapState } from './reducer'
@@ -35,6 +36,7 @@ export function useZapActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Currency[]) => void
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
+  onSetZapType: (zapType: ZapType) => void
 } {
   const dispatch = useAppDispatch()
 
@@ -74,10 +76,18 @@ export function useZapActionHandlers(): {
     [dispatch],
   )
 
+  const onSetZapType = useCallback(
+    (zapType: ZapType) => {
+      dispatch(setZapType({ zapType }))
+    },
+    [dispatch],
+  )
+
   return {
     onCurrencySelection,
     onUserInput,
     onChangeRecipient,
+    onSetZapType,
   }
 }
 
@@ -272,6 +282,7 @@ export function queryParametersToZapState(parsedQs: ParsedQs, chainId: ChainId):
     },
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     independentField: parseIndependentFieldURLParameter(parsedQs.exactField),
+    zapType: ZapType.ZAP,
     recipient,
   }
 }
@@ -305,6 +316,7 @@ export function useDefaultsFromURLSearch():
         inputCurrencyId: parsed[Field.INPUT].currencyId,
         outputCurrencyId: parsed[Field.OUTPUT],
         recipient: parsed.recipient,
+        zapType: parsed.zapType,
       }),
     )
 
