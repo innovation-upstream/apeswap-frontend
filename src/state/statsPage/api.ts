@@ -18,7 +18,7 @@ export const fetchStatsData = async (params: string) => {
         retryCondition: () => true,
       })
       tries++
-      const response = await axios.get(`${baseUrl.local}/${params}`)
+      const response = await axios.get(`${baseUrl.prod}/${params}`)
       const statsResponse = await response.data
       if (statsResponse.statusCode === 500) {
         return initialStatsData
