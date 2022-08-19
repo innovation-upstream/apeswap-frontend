@@ -17,7 +17,7 @@ const initialState: ProtocolDashboardState = {
   overviewBananaDistribution: [],
   treasuryAssetOverview: [],
   treasuryHistory: [],
-  treasuryBreakdown: [],
+  treasuryBreakdown: null,
 }
 
 export const statsSlice = createSlice({

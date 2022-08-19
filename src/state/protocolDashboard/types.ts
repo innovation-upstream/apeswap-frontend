@@ -36,7 +36,30 @@ export interface TreasuryHistoryInterface {
   oppFundValue: number
 }
 
-interface TreasuryBreakdownInterface {}
+export interface ProtocolToken {
+  symbol: string
+  address: string
+  amount: number
+  chainId: number
+  location: 'Operational Funds' | 'POL'
+  value: number
+}
+
+export interface TreasuryBreakdownInterface {
+  lpTokens: {
+    address: string
+    amount: number
+    chainId: number
+    location: 'Operational Funds' | 'POL'
+    token0: ProtocolToken
+    token1: ProtocolToken
+    value: number
+  }[]
+  tokens: ProtocolToken[]
+  value: number
+  valueOperational: number
+  valuePol: number
+}
 
 export interface ProtocolDashboardState {
   overviewTvl: OverviewTvlInterface
@@ -45,5 +68,5 @@ export interface ProtocolDashboardState {
   overviewBananaDistribution: OverviewBananaDistributionInterface[]
   treasuryAssetOverview: TreasuryAssetOverviewInterface[]
   treasuryHistory: TreasuryHistoryInterface[]
-  treasuryBreakdown: any
+  treasuryBreakdown: TreasuryBreakdownInterface
 }

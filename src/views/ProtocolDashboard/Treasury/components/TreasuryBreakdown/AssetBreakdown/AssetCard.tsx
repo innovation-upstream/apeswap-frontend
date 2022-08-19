@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import CountUp from 'react-countup'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTranslation } from 'contexts/Localization'
-import { NETWORK_LABEL } from 'config/constants/chains'
+import { CHAIN_PARAMS, NETWORK_LABEL } from 'config/constants/chains'
 
 const AssetCard: React.FC<{ token: any }> = ({ token }) => {
   const [expanded, setExpanded] = useState(false)
@@ -23,14 +23,28 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
         onClick={() => setExpanded((prev) => !prev)}
       >
         <Flex sx={{ alignItems: 'center' }}>
-          <ServiceTokenDisplay token1={token?.symbol} size={40} />
-          <Text weight={700} ml="10px">
-            {token?.symbol}
+          <Flex>
+            {token?.isLp ? (
+              <ServiceTokenDisplay
+                token1={token?.token0?.symbol}
+                token2={token?.token1?.symbol}
+                size={40}
+                noEarnToken
+              />
+            ) : (
+              <ServiceTokenDisplay token1={token?.symbol} size={40} />
+            )}
+            <Flex sx={{ alignItems: 'flex-start', transform: 'translate(-10px, 0px)' }}>
+              <ServiceTokenDisplay token1={CHAIN_PARAMS?.[token?.chainId]?.nativeCurrency?.symbol} size={13.5} />
+            </Flex>
+          </Flex>
+          <Text weight={700} ml="5px">
+            {token?.isLp ? `${token?.token0?.symbol} - ${token?.token1?.symbol}` : token?.symbol}
           </Text>
         </Flex>
         <Flex>
           <Text weight={700} mr="10px">
-            $<CountUp end={token?.value} decimals={2} duration={1} separator="," />
+            $<CountUp end={token?.value} decimals={0} duration={1} separator="," />
           </Text>
           <Svg icon="caret" direction={expanded ? 'up' : 'down'} />
         </Flex>

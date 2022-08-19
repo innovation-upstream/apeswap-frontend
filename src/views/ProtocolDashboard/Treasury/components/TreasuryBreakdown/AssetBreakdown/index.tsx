@@ -11,13 +11,19 @@ const AssetBreakdown: React.FC<{ activeView: number }> = ({ activeView }) => {
   const { t } = useTranslation()
   const treasury = useFetchTreasuryBreakdown()
 
+  // To make image display easier adding a isLp field to lpTokens
   const sortedTreasury = orderBy(
-    [...(treasury?.tokens || []), ...(treasury?.lpTokens || [])],
+    [
+      ...(treasury?.tokens || []),
+      ...(treasury?.lpTokens?.map((lp) => {
+        return { ...lp, isLp: true }
+      }) || []),
+    ],
     (token) => token?.value,
     'desc',
   )
-  const sortedOpFunds = sortedTreasury // ?.filter((token) => token.)
-  const sortedPolFunds = orderBy(treasury?.lpTokens || [], (token) => token?.value, 'desc')
+  const sortedOpFunds = sortedTreasury?.filter((token) => token.location === 'Operational Funds')
+  const sortedPolFunds = sortedTreasury?.filter((token) => token.location === 'POL')
   const activeAssets = [sortedTreasury, sortedOpFunds, sortedPolFunds][activeView]
   return (
     <Flex sx={styles.cardContainer}>
