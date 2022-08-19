@@ -255,7 +255,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ productData }) => {
           <Text fontSize="12px" style={{ opacity: 0.5 }}>
             {isBillsOrIAOs ? 'Claimable' : 'Reward'}
           </Text>
-          {position.title.includes('AUTO') ? (
+          {position.isAuto ? (
             <Text fontSize="14px" fontWeight={700}>
               AUTO
             </Text>
@@ -267,6 +267,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ productData }) => {
               suffix={position.rewardToken ? position.rewardToken.symbol : 'BANANA'}
             />
           )}
+          {position.secondaryRewardBalance ? (
+            <CardValue
+              fontSize="14px"
+              fontWeight={700}
+              value={position.secondaryRewardBalance}
+              suffix={position.tokens.token4}
+              prefix="+"
+            />
+          ) : null}
         </div>
       )
 
