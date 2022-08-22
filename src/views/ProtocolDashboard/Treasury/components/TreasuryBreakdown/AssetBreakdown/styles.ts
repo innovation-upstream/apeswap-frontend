@@ -10,7 +10,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     margin: '10px 0px',
     flexDirection: 'column',
     alignItems: 'space-between',
-    padding: '20px 10px',
+    padding: '20px 0px',
   },
   assetBreakdownContainer: {
     maxWidth: '580px',
@@ -32,7 +32,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     width: '100%',
     maxWidth: '580px',
     justifyContent: 'center',
-    padding: '0px 20px 0px 10px',
+    pr: '20px',
     flexDirection: 'column',
     overflow: 'hidden',
     borderRadius: '10px',
