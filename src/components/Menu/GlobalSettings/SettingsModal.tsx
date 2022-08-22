@@ -27,10 +27,10 @@ const ScrollableContainer = styled(Flex)`
 `
 
 interface Props extends ModalProps {
-  simplified?: boolean
+  zapSettings?: boolean
 }
 
-const SettingsModal: React.FC<Props> = ({ onDismiss, simplified }) => {
+const SettingsModal: React.FC<Props> = ({ onDismiss, zapSettings }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgementShow()
   const [expertMode, toggleExpertMode] = useExpertModeManager()
@@ -64,8 +64,8 @@ const SettingsModal: React.FC<Props> = ({ onDismiss, simplified }) => {
 
   return (
     <Modal title={t('Settings')} onDismiss={onDismiss} maxWidth="420px">
-      {simplified ? (
-        <TransactionSettings />
+      {zapSettings ? (
+        <TransactionSettings zapSettings={zapSettings} />
       ) : (
         <ScrollableContainer>
           <Flex sx={{ justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>

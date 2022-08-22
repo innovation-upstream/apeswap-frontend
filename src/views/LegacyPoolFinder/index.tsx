@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Currency, ETHER, JSBI, TokenAmount } from '@apeswapfinance/sdk'
+import { Currency, ETHER, JSBI, TokenAmount } from '@ape.swap/sdk'
 import { Button, ChevronDownIcon, Text, AddIcon, useModal, Flex } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 import Page from 'components/layout/Page'

@@ -1,80 +1,121 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { Flex, Link, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
-import { Field } from 'state/mint/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAppDispatch } from 'state'
 import { useCurrency } from 'hooks/Tokens'
 import { useDerivedMintForZap, useMintActionHandlers, useMintState } from 'state/mint/hooks'
-import { Currency, TokenAmount } from '@apeswapfinance/sdk'
+import { Currency, ETHER, Token, TokenAmount, Trade } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from './components/ZapPanel'
-import { selectLP, selectToken } from 'state/zap/actions'
-import { useZapState } from 'state/zap/hooks'
+import { Field, selectInputCurrency, selectLP, selectToken } from 'state/zap/actions'
+import { useDerivedZapInfo, useZapActionHandlers, useZapState } from 'state/zap/hooks'
 import ZapArrow from './components/Svg/ZapArrow'
 import { getCurrencyUsdPrice } from 'utils/getTokenUsdPrice'
 import DistributionPanel from './components/DistributionPanel'
 import ZapLiquidityActions from './components/ZapLiquidityActions'
-import { ParsedFarm } from './types'
 import { styles } from './styles'
+import { ParsedFarm } from '../../state/zap/reducer'
+import { useUserSlippageTolerance } from '../../state/user/hooks'
+import { useZapCallback } from '../../hooks/useZapCallback'
 
 const ZapLiquidity = () => {
-  const { chainId } = useActiveWeb3React()
+  const [zapState, setZapState] = useState<{
+    tradeToConfirm: Trade | undefined
+    attemptingTxn: boolean
+    zapErrorMessage: string | undefined
+    txHash: string | undefined
+  }>({
+    tradeToConfirm: undefined,
+    attemptingTxn: false,
+    zapErrorMessage: undefined,
+    txHash: undefined,
+  })
+  const { tradeToConfirm, zapErrorMessage, attemptingTxn, txHash } = zapState
+
   const dispatch = useAppDispatch()
-  const { zapInto } = useZapState()
-  const [prices, setPrices] = useState({ [Field.CURRENCY_A]: 0, [Field.CURRENCY_B]: 0 })
+  const { INPUT, OUTPUT, independentField, typedValue, recipient, zapType, zapSlippage } = useZapState()
+  const inputCurrency = useCurrency(INPUT?.currencyId)
 
-  // Set initial currencies. See for a better way to set initial currency BUSD
-  const [currencyA, setCurrencyA] = useState(useCurrency('0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56'))
-  const [currencyB, setCurrencyB] = useState(zapInto)
+  const { zap, parsedAmount, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
+  const { onUserInput } = useZapActionHandlers()
 
-  // Handle currency selection
-  const handleCurrencyASelect = useCallback(
+  const handleInputSelect = useCallback(
     (field: Field, currency: Currency) => {
-      setCurrencyA(currency)
-      dispatch(selectToken({ zapFrom: currency }))
+      dispatch(
+        selectInputCurrency({
+          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
+        }),
+      )
     },
     [dispatch],
   )
 
   const handleCurrencyBSelect = useCallback(
     (farm: ParsedFarm) => {
-      setCurrencyB(farm)
-      dispatch(selectLP({ zapInto: farm }))
+      dispatch(selectLP({ outPut: farm }))
     },
     [dispatch],
   )
 
+  const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
+    zap,
+    zapType,
+    zapSlippage,
+    recipient,
+    '',
+    null,
+  )
+  if (zapCallbackError) console.log(zapCallbackError)
+
+  const handleZap = useCallback(() => {
+    setZapState({
+      tradeToConfirm: undefined,
+      attemptingTxn: true,
+      zapErrorMessage: undefined,
+      txHash: undefined,
+    })
+    zapCallback()
+      .then((hash) => {
+        console.log('then')
+        console.log(hash)
+        setZapState({
+          tradeToConfirm: undefined,
+          attemptingTxn: false,
+          zapErrorMessage: undefined,
+          txHash: hash,
+        })
+      })
+      .catch((error) => {
+        console.log('catch')
+        console.log(error.message)
+        setZapState({
+          tradeToConfirm: undefined,
+          attemptingTxn: false,
+          zapErrorMessage: error.message,
+          txHash: undefined,
+        })
+      })
+  }, [zapCallback])
+
   // re evaluate tokens pricing after hooks and state are finilized
-  useMemo(async () => {
+  /* useMemo(async () => {
     console.log('calculating prices')
     const priceA = await getCurrencyUsdPrice(chainId, currencyA)
     const priceB = currencyB.lpValueUsd
     setPrices({ [Field.CURRENCY_A]: priceA, [Field.CURRENCY_B]: parseFloat(priceB) })
-  }, [chainId, currencyA, currencyB])
+  }, [chainId, currencyA, currencyB]) */
 
   // mint state
-  const { typedValue } = useMintState()
-  const { parsedAmounts, currencyBalances, zapInsight, error } = useDerivedMintForZap(currencyA, currencyB, prices)
-
-  const { onUserInput } = useMintActionHandlers(false)
-
-  // get formatted amounts
-  const formattedAmounts = {
-    [Field.CURRENCY_A]: typedValue,
-    [Field.CURRENCY_B]: parsedAmounts[Field.CURRENCY_B],
-  }
+  // const { parsedAmounts, currencyBalances, zapInsight, error } = useDerivedMintForZap(currencyA, currencyB, null)
 
   // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmountSpend(currencyBalances[field]),
-      }
-    },
-    {},
-  )
+  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.INPUT, Field.OUTPUT].reduce((accumulator, field) => {
+    return {
+      ...accumulator,
+      [field]: maxAmountSpend(currencyBalances[field]),
+    }
+  }, {})
 
   const handleMaxInput = useCallback(
     (field: Field) => {
@@ -84,50 +125,67 @@ const ZapLiquidity = () => {
     },
     [maxAmounts, onUserInput],
   )
+
   const currencies = {
-    [Field.CURRENCY_A]: currencyA,
-    [Field.CURRENCY_B]: currencyB,
+    [Field.INPUT]: inputCurrency,
+    [Field.OUTPUT]: OUTPUT,
   }
+
+  const handleDismissConfirmation = useCallback(() => {
+    // if there was a tx hash, we want to clear the input
+    setZapState({
+      tradeToConfirm: undefined,
+      attemptingTxn: false,
+      zapErrorMessage: undefined,
+      txHash: undefined,
+    })
+  }, [setZapState])
 
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
         <DexPanel
-          value={formattedAmounts[Field.CURRENCY_A]}
+          value={typedValue}
           panelText="From:"
-          currency={currencyA}
+          currency={inputCurrency}
           otherCurrency={null}
-          fieldType={Field.CURRENCY_A}
-          onCurrencySelect={handleCurrencyASelect}
+          fieldType={Field.INPUT}
+          onCurrencySelect={handleInputSelect}
           onUserInput={onUserInput}
           handleMaxInput={handleMaxInput}
           useZapList
         />
         <Flex sx={{ margin: '10px', justifyContent: 'center' }}>
           {
-            // replace this arrow
+            // move this arrow to the UI Kit
           }
           <ZapArrow />
         </Flex>
         <ZapPanel
-          value={formattedAmounts[Field.CURRENCY_B]}
+          value={zap?.pairOut?.liquidityMinted?.toSignificant(10)}
           panelText="To:"
-          selectedFarm={currencyB}
-          fieldType={Field.CURRENCY_B}
+          selectedFarm={OUTPUT}
+          fieldType={Field.OUTPUT}
           onLpSelect={handleCurrencyBSelect}
-          handleMaxInput={handleMaxInput}
+          handleMaxInput={null}
         />
-        {typedValue && (
+        {
+          /*
+        { typedValue && (
           <Flex sx={{ marginTop: '40px' }}>
             <DistributionPanel zapInsight={zapInsight} />
           </Flex>
-        )}
-        <ZapLiquidityActions
-          currencies={currencies}
-          error={error}
-          parsedAmounts={parsedAmounts}
-          zapInsight={zapInsight}
-        />
+        )} */
+          <ZapLiquidityActions
+            currencies={currencies}
+            zapInputError={zapInputError}
+            zap={zap}
+            handleZap={handleZap}
+            zapState={zapState}
+            setZapState={setZapState}
+            handleDismissConfirmation={handleDismissConfirmation}
+          />
+        }
         <Flex sx={{ marginTop: '10px', justifyContent: 'center' }}>
           <Link
             href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity"

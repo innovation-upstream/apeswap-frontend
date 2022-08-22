@@ -1,5 +1,3 @@
-import BigNumber from 'bignumber.js'
-
 export interface ZapInsight {
   zapFromSymbol: string
   zapFromAddress: string
@@ -15,20 +13,4 @@ export interface ZapInsight {
     tokenBAmount: string
   }
   shareOfPool: string
-}
-
-export interface ParsedFarm {
-  lpSymbol: string
-  lpAddress: string
-  lpValueUsd: string
-  tokenAddress: string
-  tokenSymbol: string
-  quoteTokenAddress: string
-  quoteTokenSymbol: string
-  userData: {
-    allowance: BigNumber
-    tokenBalance: BigNumber
-    stakedBalance: BigNumber
-    earnings: BigNumber
-  }
 }

@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { Flex, HelpIcon, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
-import { Trade } from '@apeswapfinance/sdk'
+import { Trade } from '@ape.swap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import React, { useMemo, useState } from 'react'
 import { Divider } from 'theme-ui'

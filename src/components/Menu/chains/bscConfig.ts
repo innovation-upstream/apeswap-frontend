@@ -1,5 +1,5 @@
 import { MenuEntry } from '@ape.swap/uikit'
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 import { ContextApi } from 'contexts/Localization/types'
 import { NETWORK_INFO_LINK } from 'config/constants/chains'
 
@@ -132,6 +132,11 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',
     items: [
+      {
+        label: t('Dashboard'),
+        href: 'protocol-dashboard',
+        isNew: true,
+      },
       {
         label: t('Documentation'),
         href: 'https://apeswap.gitbook.io/apeswap-finance/',

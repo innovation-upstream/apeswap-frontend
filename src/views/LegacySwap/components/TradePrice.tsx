@@ -1,5 +1,5 @@
 import React from 'react'
-import { Price } from '@apeswapfinance/sdk'
+import { Price } from '@ape.swap/sdk'
 import { Text, AutoRenewIcon } from '@apeswapfinance/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'

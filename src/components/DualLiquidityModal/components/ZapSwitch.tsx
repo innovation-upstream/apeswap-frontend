@@ -19,7 +19,7 @@ const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
   const { chainId } = useActiveWeb3React()
 
   const [onPresentModal] = useModal(<MoonPayModal />)
-  const [onPresentSettingsModal] = useModal(<SettingsModal simplified />)
+  const [onPresentSettingsModal] = useModal(<SettingsModal zapSettings />)
 
   return (
     <Flex sx={{ margin: '15px 0', justifyContent: 'space-between', alignItems: 'center' }}>

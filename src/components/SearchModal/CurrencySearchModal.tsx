@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useState } from 'react'
-import { Currency, Token } from '@apeswapfinance/sdk'
+import { Currency, Token } from '@ape.swap/sdk'
 import styled from '@emotion/styled'
 import { Flex, Text } from '@ape.swap/uikit'
 import { ModalProps, ModalFooter, Modal } from '@apeswapfinance/uikit'

@@ -1,4 +1,4 @@
-import { SmartRouter } from '@apeswapfinance/sdk'
+import { SmartRouter } from '@ape.swap/sdk'
 import { RouterTypes } from 'config/constants'
 import { SwapDelay, Field } from 'state/swap/actions'
 import { tryParseAmount, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'

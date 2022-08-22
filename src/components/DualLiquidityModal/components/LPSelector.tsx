@@ -4,7 +4,7 @@ import React from 'react'
 import { styles } from '../styles'
 import LPSearchModal from '../../LPSearchModal/LPSearchModal'
 import ServiceTokenDisplay from '../../ServiceTokenDisplay'
-import { ParsedFarm } from '../types'
+import { ParsedFarm } from 'state/zap/reducer'
 
 const LPSelector: React.FC<{
   selectedFarm: ParsedFarm
@@ -17,8 +17,8 @@ const LPSelector: React.FC<{
   return (
     <Flex sx={{ ...styles.primaryFlex }} onClick={onPresentCurrencyModal}>
       <ServiceTokenDisplay
-        token1={selectedFarm.tokenSymbol}
-        token2={selectedFarm.quoteTokenSymbol}
+        token1={selectedFarm.currency1Symbol}
+        token2={selectedFarm.currency2Symbol}
         noEarnToken
         size={30}
       />

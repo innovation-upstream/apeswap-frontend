@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback } from 'react'
-import { ChainId, Currency, Token } from '@apeswapfinance/sdk'
+import { ChainId, Currency, Token } from '@ape.swap/sdk'
 import styled from 'styled-components'
 import { Button, Text, ErrorIcon, Flex, Link, MetamaskIcon, Spinner } from '@ape.swap/uikit'
 import { Modal, ModalProps } from '@apeswapfinance/uikit'
@@ -13,6 +13,7 @@ import { useTranslation } from 'contexts/Localization'
 import { getEtherscanLink } from 'utils'
 import { RowFixed } from '../layout/Row'
 import { AutoColumn, ColumnCenter } from '../layout/Column'
+import { ParsedFarm } from '../../state/zap/reducer'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -68,11 +69,13 @@ export function TransactionSubmittedContent({
   chainId,
   hash,
   currencyToAdd,
+  LpToAdd,
 }: {
   onDismiss: () => void
   hash: string | undefined
   chainId: ChainId
   currencyToAdd?: Currency | undefined
+  LpToAdd?: ParsedFarm
 }) {
   const { library } = useActiveWeb3React()
 
@@ -99,6 +102,18 @@ export function TransactionSubmittedContent({
           >
             <RowFixed>
               <Text>{t(`Add %symbol% to Metamask`, { symbol: currencyToAdd.getSymbol(chainId) })}</Text>
+              <MetamaskIcon width="16px" ml="6px" />
+            </RowFixed>{' '}
+          </Button>
+        )}
+        {LpToAdd && library?.provider?.isMetaMask && (
+          <Button
+            variant="tertiary"
+            mt="12px"
+            onClick={() => registerToken(LpToAdd.lpAddress, LpToAdd.lpSymbol, 18, '')}
+          >
+            <RowFixed>
+              <Text>{t('Add Ape LP to Metamask')}</Text>
               <MetamaskIcon width="16px" ml="6px" />
             </RowFixed>{' '}
           </Button>
@@ -135,11 +150,10 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
         <Text color="error" style={{ textAlign: 'center', width: '85%' }}>
           {message}
         </Text>
+        <Flex justifyContent="center" pt="24px">
+          <Button onClick={onDismiss}>{t('Dismiss')}</Button>
+        </Flex>
       </AutoColumn>
-
-      <Flex justifyContent="center" pt="24px">
-        <Button onClick={onDismiss}>{t('Dismiss')}</Button>
-      </Flex>
     </Wrapper>
   )
 }

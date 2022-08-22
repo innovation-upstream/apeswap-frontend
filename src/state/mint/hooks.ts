@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, ETHER, JSBI, Pair, Percent, Price, Token, TokenAmount } from '@apeswapfinance/sdk'
+import { Currency, CurrencyAmount, ETHER, JSBI, Pair, Percent, Price, Token, TokenAmount } from '@ape.swap/sdk'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -11,7 +11,7 @@ import { AppState, useAppDispatch } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
-import { ParsedFarm } from '../../components/DualLiquidityModal/types'
+import { ParsedFarm } from '../zap/reducer'
 
 const ZERO = JSBI.BigInt(0)
 
@@ -247,11 +247,11 @@ export function useDerivedMintForZap(currencyA: Currency | undefined, currencyB:
     zapInto: {
       lpAddress: currencyB.lpAddress,
       liquidityMinted: isNaN(dependentAmount) ? '0.0' : dependentAmount.toString(),
-      tokenASymbol: currencyB.tokenSymbol,
-      tokenAAddress: currencyB.tokenAddress,
+      tokenASymbol: currencyB.currency1Symbol,
+      currency1: currencyB.currency1,
       tokenAAmount: '222.34',
-      tokenBSymbol: currencyB.quoteTokenSymbol,
-      tokenBAddress: currencyB.quoteTokenAddress,
+      tokenBSymbol: currencyB.currency2Symbol,
+      currency2: currencyB.currency2,
       tokenBAmount: '22.3',
     },
     shareOfPool: '0%',

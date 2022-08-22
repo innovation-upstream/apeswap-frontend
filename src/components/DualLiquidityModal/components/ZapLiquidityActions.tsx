@@ -1,35 +1,58 @@
 /** @jsxImportSource theme-ui */
 import { Button, Flex, useModal } from '@ape.swap/uikit'
-import { Currency, CurrencyAmount, ROUTER_ADDRESS } from '@apeswapfinance/sdk'
+import { Currency, CurrencyAmount, ROUTER_ADDRESS, Trade } from '@ape.swap/sdk'
 import UnlockButton from 'components/UnlockButton'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { parseAddress } from 'hooks/useAddress'
-import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback, useApproveCallbackFromZap } from 'hooks/useApproveCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import React, { useCallback, useState } from 'react'
-import { Field } from 'state/mint/actions'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useIsExpertMode, useUserSlippageTolerance } from 'state/user/hooks'
 import { styles } from '../styles'
 import ZapConfirmationModal from './ZapConfirmationModal'
-import { ParsedFarm, ZapInsight } from '../types'
+import { ParsedFarm } from 'state/zap/reducer'
+import { Field } from '../../../state/zap/actions'
 
 interface ZapLiquidityActionsProps {
-  currencies: { CURRENCY_A?: Currency; CURRENCY_B?: ParsedFarm }
-  parsedAmounts: { CURRENCY_A?: CurrencyAmount; CURRENCY_B?: string }
-  error: string
-  zapInsight: ZapInsight
+  currencies: { [Field.INPUT]?: Currency; [Field.OUTPUT]?: ParsedFarm }
+  handleZap: () => void
+  zapInputError: string
+  zap: any
+  zapState: {
+    tradeToConfirm: Trade | undefined
+    attemptingTxn: boolean
+    zapErrorMessage: string | undefined
+    txHash: string | undefined
+  }
+  setZapState: React.Dispatch<
+    React.SetStateAction<{
+      tradeToConfirm: Trade | undefined
+      attemptingTxn: boolean
+      zapErrorMessage: string | undefined
+      txHash: string | undefined
+    }>
+  >
+  handleDismissConfirmation: () => void
 }
 
-const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({ currencies, error, parsedAmounts, zapInsight }) => {
-  const [txHash, setTxHash] = useState<string>('')
+const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
+  currencies,
+  zapInputError,
+  zap,
+  handleZap,
+  zapState,
+  setZapState,
+  handleDismissConfirmation,
+}) => {
+  const { tradeToConfirm, zapErrorMessage, attemptingTxn, txHash } = zapState
   const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
 
   // Currencies
-  const currencyA = currencies?.CURRENCY_A
-  const currencyB = currencies?.CURRENCY_B
+  const currencyA = currencies?.INPUT
+  const currencyB = currencies?.OUTPUT
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -44,22 +67,16 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({ currencies, e
   const addTransaction = useTransactionAdder()
 
   // check whether the user has approved the router on the tokens
-  const [approvalA, approveACallback] = useApproveCallback(
-    parsedAmounts[Field.CURRENCY_A],
-    parseAddress(ROUTER_ADDRESS, chainId),
-  )
-
-  const handleDismissConfirmation = useCallback(() => {
-    // if there was a tx hash, we want to clear the input
-    setTxHash('')
-  }, [])
 
   const [onPresentAddLiquidityModal] = useModal(
     <ZapConfirmationModal
       title={t('Confirm ZAP')}
-      zapInsight={zapInsight}
+      zap={zap}
+      currencies={currencies}
       onDismiss={handleDismissConfirmation}
       txHash={txHash}
+      attemptingTxn={attemptingTxn}
+      zapErrorMessage={zapErrorMessage}
     />,
     true,
     true,
@@ -68,34 +85,38 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({ currencies, e
 
   const handleConfirmZap = () => {
     onPresentAddLiquidityModal()
+    handleZap()
   }
+
+  const [approval, approveCallback] = useApproveCallbackFromZap(zap)
+  const showApproveFlow =
+    !zapInputError && (approval === ApprovalState.NOT_APPROVED || approval === ApprovalState.PENDING)
 
   const renderAction = () => {
     if (!account) {
       return <UnlockButton fullWidth />
     }
-    if (error) {
+    if (zapInputError) {
       return (
         <Button fullWidth disabled>
-          {error}
+          {zapInputError}
         </Button>
       )
     }
-    if (approvalA === ApprovalState.NOT_APPROVED || (approvalA === ApprovalState.PENDING && !error)) {
+    if (showApproveFlow) {
       return (
         <Flex sx={{ width: '100%' }}>
           <>
             <Button
-              onClick={approveACallback}
-              disabled={approvalA === ApprovalState.PENDING}
-              load={approvalA === ApprovalState.PENDING}
+              onClick={approveCallback}
+              disabled={approval !== ApprovalState.NOT_APPROVED}
+              load={approval === ApprovalState.PENDING}
               fullWidth
-              mr={'7.5px'}
               sx={{ padding: '10px 2px' }}
             >
-              {approvalA === ApprovalState.PENDING
-                ? `${t('Enabling')} ${currencies[Field.CURRENCY_A]?.getSymbol(chainId)}`
-                : `${t('Enable')} ${currencies[Field.CURRENCY_A]?.getSymbol(chainId)}`}
+              {approval === ApprovalState.PENDING
+                ? `${t('Enabling')} ${currencies[Field.INPUT]?.getSymbol(chainId)}`
+                : `${t('Enable')} ${currencies[Field.INPUT]?.getSymbol(chainId)}`}
             </Button>
           </>
         </Flex>

@@ -10,7 +10,7 @@ import { useAppDispatch } from '../../state'
 import { useSwapState } from '../../state/swap/hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
-import { Currency, TokenAmount } from '@apeswapfinance/sdk'
+import { Currency, TokenAmount } from '@ape.swap/sdk'
 import maxAmountSpend from '../../utils/maxAmountSpend'
 import { styles } from './styles'
 

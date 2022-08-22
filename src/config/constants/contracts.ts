@@ -1,4 +1,4 @@
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 
 const contracts = {
   banana: {
@@ -128,6 +128,10 @@ const contracts = {
   iazoSettings: {
     [ChainId.BSC]: '0x624433b9C78dE84c8Dd3C9e906046017Bb03E3A6',
     [ChainId.BSC_TESTNET]: '0x22FaB17bF074f07Ee2708868282897E619103369',
+  },
+  zap: {
+    [ChainId.BSC]: '0xd9cB2e2953adF69099d38EDC9d40d0E75D484b1E',
+    [ChainId.BSC_TESTNET]: '',
   },
 }
 

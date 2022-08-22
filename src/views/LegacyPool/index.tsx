@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Pair } from '@apeswapfinance/sdk'
+import { Pair } from '@ape.swap/sdk'
 import { Text, Flex, AddIcon, Button, Card } from '@apeswapfinance/uikit'
 import { Wrapper } from 'views/LegacySwap/components/styled'
 import CurrencyInputHeader from 'views/LegacySwap/components/CurrencyInputHeader'

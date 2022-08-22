@@ -1,12 +1,12 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback } from 'react'
-import { Currency } from '@apeswapfinance/sdk'
+import { Currency } from '@ape.swap/sdk'
 import styled from '@emotion/styled'
 import { Flex, Modal } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import LPSearcher from './LPSearcher'
-import { ParsedFarm } from '../DualLiquidityModal/types'
 import useIsMobile from '../../hooks/useIsMobile'
+import { ParsedFarm } from 'state/zap/reducer'
 
 interface LPSearchModalProps {
   selectedFarm?: ParsedFarm | null

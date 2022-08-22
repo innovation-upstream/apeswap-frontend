@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Trade } from '@apeswapfinance/sdk'
+import { Trade } from '@ape.swap/sdk'
 import { ModalProps } from '@apeswapfinance/uikit'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,

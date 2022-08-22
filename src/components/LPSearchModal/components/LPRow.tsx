@@ -3,7 +3,7 @@ import React from 'react'
 import { Flex, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from '../../ServiceTokenDisplay'
 import Balance from '../Balance'
-import { ParsedFarm } from '../../DualLiquidityModal/types'
+import { ParsedFarm } from 'state/zap/reducer'
 
 interface LPRowProps {
   farm?: ParsedFarm
@@ -22,7 +22,7 @@ const LpRow: React.FC<LPRowProps> = ({ farm, onLpSelect }) => {
         onClick={() => onLpSelect(farm)}
       >
         <Flex sx={{ alignItems: 'center' }}>
-          <ServiceTokenDisplay token1={farm.tokenSymbol} token2={farm.quoteTokenSymbol} noEarnToken={true} />
+          <ServiceTokenDisplay token1={farm.currency1Symbol} token2={farm.currency2Symbol} noEarnToken={true} />
           <Flex sx={{ flexDirection: 'column', ml: '10px', alignItems: 'space-between' }}>
             <Flex sx={{ alignItems: 'center' }}>
               <Text title={farm.lpSymbol} weight={700} sx={{ lineHeight: '22px' }}>

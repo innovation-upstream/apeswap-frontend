@@ -1,6 +1,6 @@
 // Network chain ids
 
-import { ChainId, SmartRouter } from '@apeswapfinance/sdk'
+import { ChainId, SmartRouter } from '@ape.swap/sdk'
 
 export const CHAIN_ID = {
   BSC: 56,

@@ -1,4 +1,4 @@
-import { Pair, SmartRouter, Token } from '@apeswapfinance/sdk'
+import { Pair, SmartRouter, Token } from '@ape.swap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,6 +36,7 @@ import {
   updateUserAutonomyPrepay,
 } from '../actions'
 import { deserializeToken, serializeToken } from './helpers'
+import { setZapSlippage } from '../../zap/actions'
 
 export function useAudioModeManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
@@ -160,8 +161,20 @@ export function useUserRecentTransactions(): [boolean, (recentTransaction: boole
   return [recentTransactions, setRecentTransactions]
 }
 
-export function useUserSlippageTolerance(): [number, (slippage: number) => void] {
+export function useUserSlippageTolerance(isZap?): [number, (slippage: number) => void] {
   const dispatch = useDispatch<AppDispatch>()
+
+  const zapSlippageTolerance = useSelector<AppState, AppState['zap']['zapSlippage']>((state) => {
+    return state.zap.zapSlippage
+  })
+
+  const setZapSlippageTolerance = useCallback(
+    (slippage: number) => {
+      dispatch(setZapSlippage({ zapSlippage: slippage }))
+    },
+    [dispatch],
+  )
+
   const userSlippageTolerance = useSelector<AppState, AppState['user']['userSlippageTolerance']>((state) => {
     return state.user.userSlippageTolerance
   })
@@ -173,6 +186,7 @@ export function useUserSlippageTolerance(): [number, (slippage: number) => void]
     [dispatch],
   )
 
+  if (isZap) return [zapSlippageTolerance, setZapSlippageTolerance]
   return [userSlippageTolerance, setUserSlippageTolerance]
 }
 

@@ -56,5 +56,4 @@ const reducer = combineReducers({
   orders,
   zap,
 })
-
 export default reducer

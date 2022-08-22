@@ -10,7 +10,7 @@ import { useToast } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { replaceSwapState, SwapDelay } from 'state/swap/actions'
 import { RouterTypes } from 'config/constants'
-import { SmartRouter } from '@apeswapfinance/sdk'
+import { SmartRouter } from '@ape.swap/sdk'
 
 const useSwitchNetwork = () => {
   const { chainId, account, library, connector } = useWeb3React()
@@ -22,7 +22,7 @@ const useSwitchNetwork = () => {
   const switchNetwork = useCallback(
     async (userChainId: number) => {
       if (connector instanceof TorusConnector) {
-        toastError(t('Torus wallet is only available on BNB chain'))
+        toastError(t('Chain Select Error: Torus Wallet is only available on BNB Chain.'))
         return
       }
       if (account && userChainId !== chainId) {
