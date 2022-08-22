@@ -34,9 +34,15 @@ const ProtocolDashboard = () => {
         marginTop: '10px',
       }}
     >
-      <Flex sx={{ flexDirection: 'column', padding: '0px 10px', width: 'fit-contnet' }}>
+      <Flex sx={{ flexDirection: 'column', padding: '0px 10px', width: 'fit-contnet', maxWidth: '1150px' }}>
         <Flex sx={{ mt: '20px' }}>
-          <Banner banner="protocol-dashboard" title="Protocol Dashboard" titleColor="primaryBright" link="?modal=2" />
+          <Banner
+            banner="protocol-dashboard"
+            title="Protocol Dashboard"
+            titleColor="primaryBright"
+            link="?modal=2"
+            maxWidth={1130}
+          />
         </Flex>
         <Flex sx={{ margin: '30px 0px' }}>
           <TabNav

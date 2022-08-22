@@ -6,9 +6,8 @@ import { Doughnut } from 'react-chartjs-2'
 import useTheme from 'hooks/useTheme'
 import { useFetchOverviewTvl } from 'state/protocolDashboard/hooks'
 import { useTranslation } from 'contexts/Localization'
-import CountUp from 'react-countup'
+import CountUp, { useCountUp } from 'react-countup'
 import { styles } from './styles'
-import stubData from './stubData'
 import { OverviewTvlInterface } from 'state/protocolDashboard/types'
 import { useFetchHomepageStats } from 'state/hooks'
 
@@ -72,7 +71,7 @@ const TotalValueLocked: React.FC = () => {
               justifyContent: 'center',
             }}
           >
-            <Flex sx={{ width: '200px' }}>
+            <Flex sx={{ width: '200px', zIndex: 1 }}>
               <Doughnut
                 data={data}
                 options={{
@@ -88,6 +87,32 @@ const TotalValueLocked: React.FC = () => {
                     legend: {
                       display: false,
                     },
+                    tooltip: {
+                      enabled: true,
+                      mode: 'nearest',
+                      callbacks: {
+                        label: (context) => {
+                          return `${context.label}: ${context.parsed.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          })}`
+                        },
+                      },
+                      titleFont: { family: 'poppins', weight: '700', size: 16 },
+                      bodyFont: { family: 'poppins', weight: '500', size: 14 },
+                      titleColor: theme.colors.text,
+                      backgroundColor: theme.colors.white2,
+                      boxPadding: 5,
+                      bodyColor: theme.colors.text,
+                      borderColor: theme.colors.inputBorder,
+                      bodySpacing: 20,
+                      borderWidth: 1,
+                      cornerRadius: 10,
+                      padding: 10,
+                      boxWidth: 10,
+                    },
                   },
                   cutout: 60,
                 }}
@@ -101,6 +126,7 @@ const TotalValueLocked: React.FC = () => {
                 position: 'absolute',
                 alignItems: 'center',
                 justifyContent: 'center',
+                zIndex: 0,
               }}
             >
               <Tvl fill={theme.colors.text} color={theme.colors.background} width="90px" />

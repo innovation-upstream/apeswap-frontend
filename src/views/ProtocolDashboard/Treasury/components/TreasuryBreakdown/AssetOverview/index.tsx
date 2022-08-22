@@ -8,6 +8,7 @@ import CountUp from 'react-countup'
 import { useFetchTreasuryAssetOverview } from 'state/protocolDashboard/hooks'
 import { orderBy } from 'lodash'
 import { TreasuryAssetOverviewInterface } from 'state/protocolDashboard/types'
+import { useTheme } from 'styled-components'
 
 const COLORS = [
   'rgba(244, 190, 55, 1)',
@@ -56,6 +57,7 @@ const AssetOverview: React.FC<{ activeView: number }> = ({ activeView }) => {
   const data = useMemo(() => setData(cleanedAssets), [cleanedAssets])
   const { t } = useTranslation()
   const total = cleanedAssets?.reduce((a, b) => a + b.value, 0)
+  const theme = useTheme()
   return (
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', mb: '5px' }}>
@@ -88,6 +90,31 @@ const AssetOverview: React.FC<{ activeView: number }> = ({ activeView }) => {
                 plugins: {
                   legend: {
                     display: false,
+                  },
+                  tooltip: {
+                    enabled: true,
+                    mode: 'nearest',
+                    callbacks: {
+                      label: (context) => {
+                        return `${context.label}: ${context.parsed.toLocaleString('en-US', {
+                          style: 'currency',
+                          currency: 'USD',
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0,
+                        })}`
+                      },
+                    },
+                    titleFont: { family: 'poppins', weight: '700', size: 16 },
+                    bodyFont: { family: 'poppins', weight: '500', size: 14 },
+                    titleColor: theme.colors.text,
+                    backgroundColor: theme.colors.white2,
+                    boxPadding: 5,
+                    bodyColor: theme.colors.text,
+                    borderColor: theme.colors.inputBorder,
+                    bodySpacing: 20,
+                    borderWidth: 1,
+                    cornerRadius: 10,
+                    padding: 15,
                   },
                 },
                 cutout: 85,

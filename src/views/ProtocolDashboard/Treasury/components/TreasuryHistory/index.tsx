@@ -135,6 +135,9 @@ const TreasuryHistory: React.FC = () => {
                   font: { family: 'poppins', weight: '600' },
                 },
               },
+              tooltip: {
+                enabled: false,
+              },
             },
             responsive: true,
             maintainAspectRatio: false,

@@ -6,9 +6,8 @@ import useTheme from 'hooks/useTheme'
 import CountUp from 'react-countup'
 import { useTranslation } from 'contexts/Localization'
 import { useFetchOverviewVolume } from 'state/protocolDashboard/hooks'
-import stubData from './stubData'
 import { styles } from './styles'
-import { useFetchHomepageStats, useHomepageStats } from 'state/hooks'
+import { useHomepageStats } from 'state/hooks'
 import { OverviewVolumeInterface } from 'state/protocolDashboard/types'
 import { orderBy } from 'lodash'
 
@@ -110,6 +109,17 @@ const TotalTradeVolume: React.FC = () => {
                 tooltip: {
                   enabled: true,
                   mode: 'nearest',
+                  titleFont: { family: 'poppins', weight: '700', size: 16 },
+                  bodyFont: { family: 'poppins', weight: '500', size: 14 },
+                  titleColor: theme.colors.text,
+                  backgroundColor: theme.colors.white2,
+                  boxPadding: 5,
+                  bodyColor: theme.colors.text,
+                  borderColor: theme.colors.inputBorder,
+                  bodySpacing: 20,
+                  borderWidth: 1,
+                  cornerRadius: 10,
+                  padding: 15,
                 },
               },
               responsive: true,
