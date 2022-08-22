@@ -15,16 +15,13 @@ import { ParsedFarm } from '../../state/zap/reducer'
 import { useZapCallback } from '../../hooks/useZapCallback'
 
 const ZapLiquidity = () => {
-  const [zapState, setZapState] = useState<{
-    attemptingTxn: boolean
+  const [{ zapErrorMessage, txHash }, setZapState] = useState<{
     zapErrorMessage: string | undefined
     txHash: string | undefined
   }>({
-    attemptingTxn: false,
     zapErrorMessage: undefined,
     txHash: undefined,
   })
-
   const dispatch = useAppDispatch()
   const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
   const inputCurrency = useCurrency(INPUT?.currencyId)
@@ -58,25 +55,21 @@ const ZapLiquidity = () => {
     '',
     null,
   )
-  if (zapCallbackError) console.log(zapCallbackError)
 
   const handleZap = useCallback(() => {
     setZapState({
-      attemptingTxn: true,
       zapErrorMessage: undefined,
       txHash: undefined,
     })
     zapCallback()
       .then((hash) => {
         setZapState({
-          attemptingTxn: false,
           zapErrorMessage: undefined,
           txHash: hash,
         })
       })
       .catch((error) => {
         setZapState({
-          attemptingTxn: false,
           zapErrorMessage: error.message,
           txHash: undefined,
         })
@@ -119,7 +112,6 @@ const ZapLiquidity = () => {
   const handleDismissConfirmation = useCallback(() => {
     // if there was a tx hash, we want to clear the input
     setZapState({
-      attemptingTxn: false,
       zapErrorMessage: undefined,
       txHash: undefined,
     })
@@ -165,7 +157,8 @@ const ZapLiquidity = () => {
             zapInputError={zapInputError}
             zap={zap}
             handleZap={handleZap}
-            zapState={zapState}
+            zapErrorMessage={zapErrorMessage}
+            txHash={txHash}
             handleDismissConfirmation={handleDismissConfirmation}
           />
         }

@@ -16,11 +16,8 @@ interface ZapLiquidityActionsProps {
   handleZap: () => void
   zapInputError: string
   zap: any
-  zapState: {
-    attemptingTxn: boolean
-    zapErrorMessage: string | undefined
-    txHash: string | undefined
-  }
+  zapErrorMessage: string
+  txHash: string
   handleDismissConfirmation: () => void
 }
 
@@ -29,10 +26,10 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
   zapInputError,
   zap,
   handleZap,
-  zapState,
+  zapErrorMessage,
+  txHash,
   handleDismissConfirmation,
 }) => {
-  const { zapErrorMessage, attemptingTxn, txHash } = zapState
   const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
 
@@ -43,7 +40,6 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
       currencies={currencies}
       onDismiss={handleDismissConfirmation}
       txHash={txHash}
-      attemptingTxn={attemptingTxn}
       zapErrorMessage={zapErrorMessage}
     />,
     true,

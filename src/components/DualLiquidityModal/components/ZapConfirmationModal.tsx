@@ -19,7 +19,6 @@ export interface ZapConfirmationModalProps {
   txHash?: string
   currencies?: { [Field.INPUT]?: Currency; [Field.OUTPUT]?: ParsedFarm }
   zap: any
-  attemptingTxn: boolean
   zapErrorMessage?: string
 }
 
@@ -29,7 +28,6 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
   title,
   onDismiss,
   txHash,
-  attemptingTxn,
   zapErrorMessage,
 }) => {
   const { currencyIn, pairOut } = zap
