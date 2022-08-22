@@ -46,8 +46,6 @@ export const replaceZapState = createAction<{
   zapType: ZapType
 }>('zap/replaceSwapState')
 export const setRecipient = createAction<{ recipient: string | null }>('zap/setRecipient')
-export const setZap = createAction<{ zapInto: ParsedFarm; zapFrom: Currency }>('zap/setZap')
-export const selectToken = createAction<{ zapFrom: Currency }>('zap/selectToken')
 export const selectLP = createAction<{ outPut: ParsedFarm }>('zap/selectLP')
 export const setInputList = createAction<{ zapInputList: { [symbol: string]: Token } }>('zap/setInputList')
 export const setOutputList = createAction<{ zapOutputList: ParsedFarm[] }>('zap/setOutputList')

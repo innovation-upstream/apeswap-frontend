@@ -1,6 +1,6 @@
 import React from 'react'
-import { Text, Svg, useModal } from '@apeswapfinance/uikit'
-import { TagVariants } from '@ape.swap/uikit'
+import { Text, Svg } from '@apeswapfinance/uikit'
+import { TagVariants, useModal } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'

@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { JSBI, Percent, ZapType, ZapV1 } from '@ape.swap/sdk'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import truncateHash from 'utils/truncateHash'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
@@ -75,7 +75,7 @@ function useZapCallArguments(
 
     const swapMethods = []
 
-    /* console.log(zap, {
+    console.log(zap, {
       feeOnTransfer: false,
       allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
       zapType: zapType,
@@ -83,7 +83,7 @@ function useZapCallArguments(
       billAddress: billAddress,
       recipient,
       deadline: deadline.toNumber(),
-    }) */
+    })
 
     swapMethods.push(
       ZapV1.zapCallParameters(zap, {

@@ -1,15 +1,11 @@
 /** @jsxImportSource theme-ui */
+import React from 'react'
 import { Button, Flex, useModal } from '@ape.swap/uikit'
-import { Currency, CurrencyAmount, ROUTER_ADDRESS, Trade } from '@ape.swap/sdk'
+import { Currency } from '@ape.swap/sdk'
 import UnlockButton from 'components/UnlockButton'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { parseAddress } from 'hooks/useAddress'
-import { ApprovalState, useApproveCallback, useApproveCallbackFromZap } from 'hooks/useApproveCallback'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
-import React, { useCallback, useState } from 'react'
-import { useTransactionAdder } from 'state/transactions/hooks'
-import { useIsExpertMode, useUserSlippageTolerance } from 'state/user/hooks'
+import { ApprovalState, useApproveCallbackFromZap } from 'hooks/useApproveCallback'
 import { styles } from '../styles'
 import ZapConfirmationModal from './ZapConfirmationModal'
 import { ParsedFarm } from 'state/zap/reducer'
@@ -21,19 +17,10 @@ interface ZapLiquidityActionsProps {
   zapInputError: string
   zap: any
   zapState: {
-    tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
     zapErrorMessage: string | undefined
     txHash: string | undefined
   }
-  setZapState: React.Dispatch<
-    React.SetStateAction<{
-      tradeToConfirm: Trade | undefined
-      attemptingTxn: boolean
-      zapErrorMessage: string | undefined
-      txHash: string | undefined
-    }>
-  >
   handleDismissConfirmation: () => void
 }
 
@@ -43,30 +30,11 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
   zap,
   handleZap,
   zapState,
-  setZapState,
   handleDismissConfirmation,
 }) => {
-  const { tradeToConfirm, zapErrorMessage, attemptingTxn, txHash } = zapState
+  const { zapErrorMessage, attemptingTxn, txHash } = zapState
   const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
-
-  // Currencies
-  const currencyA = currencies?.INPUT
-  const currencyB = currencies?.OUTPUT
-
-  // get custom setting values for user
-  const [allowedSlippage] = useUserSlippageTolerance()
-
-  // Custom from users settings
-  const deadline = useTransactionDeadline()
-
-  // Check if user has expert mode set
-  const expertMode = useIsExpertMode()
-
-  // Add transaction
-  const addTransaction = useTransactionAdder()
-
-  // check whether the user has approved the router on the tokens
 
   const [onPresentAddLiquidityModal] = useModal(
     <ZapConfirmationModal

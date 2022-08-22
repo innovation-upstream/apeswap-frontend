@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, ETHER, JSBI, Pair, Percent, Price, Token, TokenAmount } from '@ape.swap/sdk'
+import { Currency, CurrencyAmount, ETHER, JSBI, Pair, Percent, Price, TokenAmount } from '@ape.swap/sdk'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -11,7 +11,6 @@ import { AppState, useAppDispatch } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
-import { ParsedFarm } from '../zap/reducer'
 
 const ZERO = JSBI.BigInt(0)
 
@@ -204,65 +203,5 @@ export function useDerivedMintInfo(
     liquidityMinted,
     poolTokenPercentage,
     error,
-  }
-}
-
-export function useDerivedMintForZap(currencyA: Currency | undefined, currencyB: ParsedFarm | undefined, prices) {
-  const { account } = useActiveWeb3React()
-  const { typedValue } = useMintState()
-
-  const dependentAmount = (parseFloat(typedValue) * prices[Field.CURRENCY_A]) / prices[Field.CURRENCY_B]
-
-  const independentAmount: CurrencyAmount | undefined = tryParseAmount(typedValue, currencyA)
-
-  const parsedAmounts = {
-    [Field.CURRENCY_A]: independentAmount,
-    [Field.CURRENCY_B]: isNaN(dependentAmount) ? '0.0' : dependentAmount.toString(),
-  }
-
-  // tokens
-  const currencies: { [field in Field]?: Currency } = useMemo(
-    () => ({
-      [Field.CURRENCY_A]: currencyA ?? undefined,
-      undefined,
-    }),
-    [currencyA],
-  )
-
-  // balances
-  const balances = useCurrencyBalances(account ?? undefined, [
-    currencies[Field.CURRENCY_A],
-    currencies[Field.CURRENCY_B],
-  ])
-  const currencyBalances: { [field in Field]?: CurrencyAmount } = {
-    [Field.CURRENCY_A]: balances[0],
-    [Field.CURRENCY_B]: balances[1],
-  }
-
-  const zapInsight = {
-    zapFromSymbol: currencyA.symbol,
-    zapFromAddress: currencyA instanceof Token ? currencyA.address : null,
-    // check if theres no need to change it after refactor
-    zapFromAmount: isNaN(parseFloat(typedValue)) ? '0' : typedValue,
-    zapInto: {
-      lpAddress: currencyB.lpAddress,
-      liquidityMinted: isNaN(dependentAmount) ? '0.0' : dependentAmount.toString(),
-      tokenASymbol: currencyB.currency1Symbol,
-      currency1: currencyB.currency1,
-      tokenAAmount: '222.34',
-      tokenBSymbol: currencyB.currency2Symbol,
-      currency2: currencyB.currency2,
-      tokenBAmount: '22.3',
-    },
-    shareOfPool: '0%',
-  }
-
-  return {
-    parsedAmounts,
-    currencyBalances,
-    zapInsight,
-    poolTokenPercentage: 'poolTokenPercentage',
-    liquidityMinted: 'liquidityMinted',
-    error: '',
   }
 }

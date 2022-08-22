@@ -1,4 +1,4 @@
-import { Currency, Token, ZapType } from '@ape.swap/sdk'
+import { Token, ZapType } from '@ape.swap/sdk'
 import { createReducer } from '@reduxjs/toolkit'
 import {
   Field,
@@ -6,11 +6,9 @@ import {
   selectInputCurrency,
   selectLP,
   selectOutputCurrency,
-  selectToken,
   setInputList,
   setOutputList,
   setRecipient,
-  setZap,
   setZapSlippage,
   setZapType,
   typeInput,
@@ -26,10 +24,10 @@ export interface ParsedFarm {
   currency2: string
   currency2Symbol: string
   userData: {
-    allowance: BigNumber
-    tokenBalance: BigNumber
-    stakedBalance: BigNumber
-    earnings: BigNumber
+    allowance: BigNumber | null
+    tokenBalance: BigNumber | null
+    stakedBalance: BigNumber | null
+    earnings: BigNumber | null
   }
 }
 
@@ -43,8 +41,8 @@ export interface ZapState {
   readonly [Field.OUTPUT]: ParsedFarm | undefined
   readonly shareOfPool: string | undefined
   readonly recipient: string | null
-  readonly zapInputList: { [symbol: string]: Token } | null
-  readonly zapOutputList: ParsedFarm[] | null
+  readonly zapInputList: { [symbol: string]: Token } | undefined
+  readonly zapOutputList: ParsedFarm[] | undefined
   readonly zapSlippage: number
 }
 
@@ -53,7 +51,7 @@ const initialState: ZapState = {
   zapType: ZapType.ZAP,
   typedValue: '',
   [Field.INPUT]: {
-    currencyId: '',
+    currencyId: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
   },
   [Field.OUTPUT]: {
     lpSymbol: '',
@@ -64,10 +62,10 @@ const initialState: ZapState = {
     currency2: '',
     currency2Symbol: '',
     userData: {
-      allowance: undefined,
-      tokenBalance: undefined,
-      stakedBalance: undefined,
-      earnings: undefined,
+      allowance: null,
+      tokenBalance: null,
+      stakedBalance: null,
+      earnings: null,
     },
   },
   shareOfPool: '',
@@ -123,19 +121,6 @@ export default createReducer<ZapState>(initialState, (builder) =>
     })
     .addCase(setZapType, (state, { payload: { zapType } }) => {
       state.zapType = zapType
-    })
-    .addCase(setZap, (state, { payload: { zapInto, zapFrom } }) => {
-      return {
-        ...state,
-        zapInto,
-        zapFrom,
-      }
-    })
-    .addCase(selectToken, (state, { payload: { zapFrom } }) => {
-      return {
-        ...state,
-        zapFrom,
-      }
     })
     .addCase(selectLP, (state, { payload: { outPut } }) => {
       return {

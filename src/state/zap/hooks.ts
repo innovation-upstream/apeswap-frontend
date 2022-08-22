@@ -18,7 +18,6 @@ import {
   replaceZapState,
   selectInputCurrency,
   selectOutputCurrency,
-  selectToken,
   setInputList,
   setOutputList,
   setRecipient,
@@ -26,7 +25,6 @@ import {
   typeInput,
 } from './actions'
 import { ParsedFarm, ZapState } from './reducer'
-
 import { useUserSlippageTolerance } from '../user/hooks'
 import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -361,12 +359,9 @@ export function useZapInputList(): { [address: string]: Token } {
 
 export const useSetZapData = () => {
   const dispatch = useAppDispatch()
-  const { zapInputList, zapOutputList, INPUT } = useZapState()
+  const { zapInputList, zapOutputList } = useZapState()
   if (!zapInputList) {
     dispatch(setInitialZapDataAsync())
-  }
-  if (!INPUT.currencyId) {
-    dispatch(selectInputCurrency({ currencyId: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56' }))
   }
   if (!zapOutputList) {
     dispatch(getZapOutPutList())
@@ -436,10 +431,10 @@ export const setInitialZapDataAsync = (): AppThunk => async (dispatch) => {
   }
 }
 
-//this function could be used to parse the zapList so it can be used for DexPanel component
+//this function could be used to parse the zapList, so it can be used for DexPanel component
 const parseZapInput = (chainId, zapInputList) => {
   const tokenMap = []
-  Object.values(zapInputList).map((token: any) => {
+  Object.values(zapInputList).forEach((token: any) => {
     const addressesEntries = Object.entries(token.address)
     const mapedTokensByAddresses = []
     addressesEntries.forEach((address) => {

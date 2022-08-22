@@ -36,7 +36,7 @@ const ZapPanel: React.FC<ZapPanelProps> = ({ value, selectedFarm, onLpSelect, fi
     <Flex sx={styles.dexPanelContainer}>
       <Flex sx={styles.panelTopContainer}>
         <Text sx={styles.swapDirectionText}>{panelText}</Text>
-        <NumericalInput value={value} onUserInput={null} align="left" id="token-amount-input" disabled />
+        <NumericalInput value={value} onUserInput={null} align="left" id="token-amount-input" readOnly />
         <LPSelector selectedFarm={selectedFarm} onLpSelect={onLpSelect} field={fieldType} />
       </Flex>
       <Flex sx={styles.panelBottomContainer}>

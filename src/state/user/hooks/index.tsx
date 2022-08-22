@@ -161,13 +161,12 @@ export function useUserRecentTransactions(): [boolean, (recentTransaction: boole
   return [recentTransactions, setRecentTransactions]
 }
 
-export function useUserSlippageTolerance(isZap?): [number, (slippage: number) => void] {
+export function useUserSlippageTolerance(isZap?: boolean): [number, (slippage: number) => void] {
   const dispatch = useDispatch<AppDispatch>()
 
   const zapSlippageTolerance = useSelector<AppState, AppState['zap']['zapSlippage']>((state) => {
     return state.zap.zapSlippage
   })
-
   const setZapSlippageTolerance = useCallback(
     (slippage: number) => {
       dispatch(setZapSlippage({ zapSlippage: slippage }))
@@ -178,7 +177,6 @@ export function useUserSlippageTolerance(isZap?): [number, (slippage: number) =>
   const userSlippageTolerance = useSelector<AppState, AppState['user']['userSlippageTolerance']>((state) => {
     return state.user.userSlippageTolerance
   })
-
   const setUserSlippageTolerance = useCallback(
     (slippage: number) => {
       dispatch(updateUserSlippageTolerance({ userSlippageTolerance: slippage }))

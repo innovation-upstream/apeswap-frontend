@@ -1,43 +1,35 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Flex, Link, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAppDispatch } from 'state'
 import { useCurrency } from 'hooks/Tokens'
-import { useDerivedMintForZap, useMintActionHandlers, useMintState } from 'state/mint/hooks'
-import { Currency, ETHER, Token, TokenAmount, Trade } from '@ape.swap/sdk'
+import { Currency, ETHER, Token, TokenAmount } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from './components/ZapPanel'
-import { Field, selectInputCurrency, selectLP, selectToken } from 'state/zap/actions'
+import { Field, selectInputCurrency, selectLP } from 'state/zap/actions'
 import { useDerivedZapInfo, useZapActionHandlers, useZapState } from 'state/zap/hooks'
 import ZapArrow from './components/Svg/ZapArrow'
-import { getCurrencyUsdPrice } from 'utils/getTokenUsdPrice'
-import DistributionPanel from './components/DistributionPanel'
 import ZapLiquidityActions from './components/ZapLiquidityActions'
 import { styles } from './styles'
 import { ParsedFarm } from '../../state/zap/reducer'
-import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { useZapCallback } from '../../hooks/useZapCallback'
 
 const ZapLiquidity = () => {
   const [zapState, setZapState] = useState<{
-    tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
     zapErrorMessage: string | undefined
     txHash: string | undefined
   }>({
-    tradeToConfirm: undefined,
     attemptingTxn: false,
     zapErrorMessage: undefined,
     txHash: undefined,
   })
-  const { tradeToConfirm, zapErrorMessage, attemptingTxn, txHash } = zapState
 
   const dispatch = useAppDispatch()
-  const { INPUT, OUTPUT, independentField, typedValue, recipient, zapType, zapSlippage } = useZapState()
+  const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
   const inputCurrency = useCurrency(INPUT?.currencyId)
 
-  const { zap, parsedAmount, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
+  const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
   const { onUserInput } = useZapActionHandlers()
 
   const handleInputSelect = useCallback(
@@ -70,27 +62,20 @@ const ZapLiquidity = () => {
 
   const handleZap = useCallback(() => {
     setZapState({
-      tradeToConfirm: undefined,
       attemptingTxn: true,
       zapErrorMessage: undefined,
       txHash: undefined,
     })
     zapCallback()
       .then((hash) => {
-        console.log('then')
-        console.log(hash)
         setZapState({
-          tradeToConfirm: undefined,
           attemptingTxn: false,
           zapErrorMessage: undefined,
           txHash: hash,
         })
       })
       .catch((error) => {
-        console.log('catch')
-        console.log(error.message)
         setZapState({
-          tradeToConfirm: undefined,
           attemptingTxn: false,
           zapErrorMessage: error.message,
           txHash: undefined,
@@ -134,7 +119,6 @@ const ZapLiquidity = () => {
   const handleDismissConfirmation = useCallback(() => {
     // if there was a tx hash, we want to clear the input
     setZapState({
-      tradeToConfirm: undefined,
       attemptingTxn: false,
       zapErrorMessage: undefined,
       txHash: undefined,
@@ -162,7 +146,7 @@ const ZapLiquidity = () => {
           <ZapArrow />
         </Flex>
         <ZapPanel
-          value={zap?.pairOut?.liquidityMinted?.toSignificant(10)}
+          value={zap?.pairOut?.liquidityMinted?.toSignificant(10) || '0'}
           panelText="To:"
           selectedFarm={OUTPUT}
           fieldType={Field.OUTPUT}
@@ -182,7 +166,6 @@ const ZapLiquidity = () => {
             zap={zap}
             handleZap={handleZap}
             zapState={zapState}
-            setZapState={setZapState}
             handleDismissConfirmation={handleDismissConfirmation}
           />
         }

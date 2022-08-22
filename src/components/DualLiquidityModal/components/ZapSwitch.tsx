@@ -32,8 +32,8 @@ const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
         </Text>
         <Box sx={{ width: '50px' }}>
           <Switch
-            onClick={handleZapSwitch}
             checked={goZap}
+            onChange={handleZapSwitch}
             sx={{
               display: 'flex',
               alignItems: 'center',
