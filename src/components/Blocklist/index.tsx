@@ -1,7 +1,10 @@
 import { Flex, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
+// import { apiBaseUrl } from 'hooks/api'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import React, { ReactNode, useMemo } from 'react'
+import React, { ReactNode, useEffect, useMemo, useState } from 'react'
+import axios from 'axios'
+const apiBaseUrl = 'https://apeswap-api-development.herokuapp.com'
 
 const BLOCKED_ADDRESSES: string[] = [
   '0x7Db418b5D567A4e0E8c59Ad71BE1FcE48f3E6107',
@@ -80,12 +83,46 @@ const BLOCKED_ADDRESSES: string[] = [
 
 export default function Blocklist({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
+  const localGeo: { isRestrictedRegion: boolean; countryCode: string } = JSON.parse(localStorage.getItem('check'))
+  const [geoLocation, setGeoLocation] = useState<{ isRestrictedRegion: boolean; countryCode: string }>({
+    isRestrictedRegion: localGeo?.isRestrictedRegion,
+    countryCode: localGeo?.countryCode,
+  })
   const { account } = useActiveWeb3React()
-  const blocked: boolean = useMemo(() => Boolean(account && BLOCKED_ADDRESSES.indexOf(account) !== -1), [account])
-  if (blocked) {
+
+  // Fetch country code to check if the region is allowed
+  useEffect(() => {
+    const fetchLocation = async () => {
+      const resp = await axios.get(`${apiBaseUrl}/check`)
+      const { isRestrictedRegion, countryCode } = resp?.data
+      setGeoLocation({ isRestrictedRegion, countryCode })
+      localStorage.setItem(
+        'check',
+        JSON.stringify({
+          isRestrictedRegion,
+          countryCode,
+        }),
+      )
+    }
+    !geoLocation.countryCode && fetchLocation()
+  }, [geoLocation.countryCode])
+
+  const blockedAddress: boolean = useMemo(
+    () => Boolean(account && BLOCKED_ADDRESSES.indexOf(account) !== -1),
+    [account],
+  )
+
+  if (blockedAddress) {
     return (
       <Flex>
         <Text>{t('Blocked address')}</Text>
+      </Flex>
+    )
+  }
+  if (geoLocation?.isRestrictedRegion) {
+    return (
+      <Flex>
+        <Text>{t(`${geoLocation.countryCode} is a blocked region`)}</Text>
       </Flex>
     )
   }
