@@ -109,6 +109,7 @@ const TotalTradeVolume: React.FC = () => {
                 tooltip: {
                   enabled: true,
                   mode: 'nearest',
+                  intersect: false,
                   titleFont: { family: 'poppins', weight: '700', size: 16 },
                   bodyFont: { family: 'poppins', weight: '500', size: 14 },
                   titleColor: theme.colors.text,
@@ -119,6 +120,7 @@ const TotalTradeVolume: React.FC = () => {
                   bodySpacing: 20,
                   borderWidth: 1,
                   cornerRadius: 10,
+                  caretSize: 8,
                   padding: 15,
                 },
               },

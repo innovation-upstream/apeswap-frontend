@@ -7,6 +7,7 @@ import useTheme from 'hooks/useTheme'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
 import { useFetchOverviewProtocolMetrics } from 'state/protocolDashboard/hooks'
+import useIsMobile from 'hooks/useIsMobile'
 
 const setData = (data: any, theme: any) => {
   return {
@@ -43,50 +44,74 @@ const ProtocolMetricsGraph: React.FC = () => {
   const [activeTime, onSetTime] = useState('total')
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const isMobile = useIsMobile()
   const data = useMemo(() => setData(listOfMetrics[activeCatTab], theme), [listOfMetrics, activeCatTab, theme])
+  const categories = ['Holders', 'Market Cap', 'Burned', 'POL']
 
   const switchCatTab = (index) => {
-    setActiveCatTab(index)
+    isMobile ? setActiveCatTab(categories.indexOf(index)) : setActiveCatTab(index)
   }
 
   return (
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ marginBottom: '10px', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         <Flex sx={{ width: 'fit-content' }}>
-          <Tabs activeTab={activeCatTab} size="sm" variant="centered">
-            <Tab
-              index={0}
+          {!isMobile ? (
+            <Tabs activeTab={activeCatTab} size="sm" variant="centered" sx={{ mb: '5px' }}>
+              <Tab
+                index={0}
+                size="sm"
+                label={t('Holders')}
+                activeTab={activeCatTab}
+                variant="centered"
+                onClick={switchCatTab}
+              />
+              <Tab
+                index={1}
+                size="sm"
+                label={t('Market Cap')}
+                variant="fullWidth"
+                activeTab={activeCatTab}
+                onClick={switchCatTab}
+              />
+              <Tab
+                index={2}
+                size="sm"
+                label={t('Burned')}
+                variant="centered"
+                activeTab={activeCatTab}
+                onClick={switchCatTab}
+              />
+              <Tab
+                index={3}
+                size="sm"
+                label={t('POL')}
+                variant="centered"
+                activeTab={activeCatTab}
+                onClick={switchCatTab}
+              />
+            </Tabs>
+          ) : (
+            <Select
               size="sm"
-              label={t('Holders')}
-              activeTab={activeCatTab}
-              variant="centered"
-              onClick={switchCatTab}
-            />
-            <Tab
-              index={1}
-              size="sm"
-              label={t('Market Cap')}
-              variant="fullWidth"
-              activeTab={activeCatTab}
-              onClick={switchCatTab}
-            />
-            <Tab
-              index={2}
-              size="sm"
-              label={t('Burned')}
-              variant="centered"
-              activeTab={activeCatTab}
-              onClick={switchCatTab}
-            />
-            <Tab
-              index={3}
-              size="sm"
-              label={t('POL')}
-              variant="centered"
-              activeTab={activeCatTab}
-              onClick={switchCatTab}
-            />
-          </Tabs>
+              width="140px"
+              onChange={(e) => switchCatTab(e.target.value)}
+              active={categories[activeCatTab]}
+            >
+              <SelectItem size="sm" value="Holders" key="holders">
+                <Text>{t('Holders')}</Text>
+              </SelectItem>
+              <SelectItem size="sm" value="Market Cap" key="marketCap">
+                <Text>{t('Market Cap')}</Text>
+              </SelectItem>
+              <SelectItem size="sm" value="Burned" key="burned">
+                <Text>{t('Burned')}</Text>
+              </SelectItem>
+              <SelectItem size="sm" value="POL" key="pol">
+                <Text>{t('POL')}</Text>
+              </SelectItem>
+            </Select>
+          )}
         </Flex>
         <Flex sx={{ height: '40px' }}>
           <Select size="sm" width="126px" onChange={(e) => onSetTime(e.target.value)} active={activeTime}>
@@ -135,10 +160,26 @@ const ProtocolMetricsGraph: React.FC = () => {
 
               responsive: true,
               maintainAspectRatio: false,
-              color: 'red',
               plugins: {
                 legend: {
                   display: false,
+                },
+                tooltip: {
+                  enabled: true,
+                  mode: 'nearest',
+                  intersect: false,
+                  titleFont: { family: 'poppins', weight: '700', size: 16 },
+                  bodyFont: { family: 'poppins', weight: '500', size: 14 },
+                  titleColor: theme.colors.text,
+                  backgroundColor: theme.colors.white2,
+                  boxPadding: 5,
+                  bodyColor: theme.colors.text,
+                  borderColor: theme.colors.inputBorder,
+                  bodySpacing: 20,
+                  borderWidth: 1,
+                  cornerRadius: 10,
+                  caretSize: 8,
+                  padding: 15,
                 },
               },
             }}

@@ -110,6 +110,7 @@ const TotalValueLocked: React.FC = () => {
                       bodySpacing: 20,
                       borderWidth: 1,
                       cornerRadius: 10,
+                      caretSize: 8,
                       padding: 10,
                       boxWidth: 10,
                     },

@@ -59,6 +59,23 @@ const MarketCapToTvlRatio: React.FC = () => {
               legend: {
                 display: false,
               },
+              tooltip: {
+                enabled: true,
+                mode: 'nearest',
+                intersect: false,
+                titleFont: { family: 'poppins', weight: '700', size: 16 },
+                bodyFont: { family: 'poppins', weight: '500', size: 14 },
+                titleColor: theme.colors.text,
+                backgroundColor: theme.colors.white2,
+                boxPadding: 5,
+                bodyColor: theme.colors.text,
+                borderColor: theme.colors.inputBorder,
+                bodySpacing: 20,
+                borderWidth: 1,
+                cornerRadius: 10,
+                caretSize: 8,
+                padding: 15,
+              },
             },
           }}
         />

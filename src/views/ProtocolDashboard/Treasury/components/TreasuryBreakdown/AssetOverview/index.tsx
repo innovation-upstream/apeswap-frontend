@@ -113,6 +113,7 @@ const AssetOverview: React.FC<{ activeView: number }> = ({ activeView }) => {
                     borderColor: theme.colors.inputBorder,
                     bodySpacing: 20,
                     borderWidth: 1,
+                    caretSize: 8,
                     cornerRadius: 10,
                     padding: 15,
                   },

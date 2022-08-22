@@ -138,6 +138,7 @@ const BananaSupplyDistribution: React.FC = () => {
                       borderColor: theme.colors.inputBorder,
                       bodySpacing: 10,
                       borderWidth: 1,
+                      caretSize: 8,
                       cornerRadius: 10,
                       padding: 15,
                     },
