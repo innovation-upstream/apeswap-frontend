@@ -133,7 +133,7 @@ const TotalTradeVolume: React.FC = () => {
       <Flex
         sx={{
           margin: '5px 0px 10px 0px',
-          height: '50px',
+          height: '70px',
           alignItems: 'center',
           justifyContent: 'space-around',
           flexWrap: 'wrap',
@@ -142,7 +142,7 @@ const TotalTradeVolume: React.FC = () => {
         {sortTradeVol?.reverse()?.map((data, i) => {
           const totalVolume = data.history[data.history.length - 1].amount
           return (
-            <Flex key={data.description} sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '5px 0px' }}>
+            <Flex key={data.description} sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '5px 5px' }}>
               <Flex
                 sx={{
                   background: BORDER_COLORS[data.description],
@@ -157,7 +157,7 @@ const TotalTradeVolume: React.FC = () => {
                   {data.description}
                 </Text>
                 <Text size="12px" sx={{ lineHeight: '10px' }}>
-                  $<CountUp end={totalVolume} decimals={2} duration={1} separator="," />
+                  $<CountUp end={totalVolume} decimals={0} duration={1} separator="," />
                 </Text>
               </Flex>
             </Flex>
