@@ -99,16 +99,16 @@ const ProtocolMetricsGraph: React.FC = () => {
               active={categories[activeCatTab]}
             >
               <SelectItem size="sm" value="Holders" key="holders">
-                <Text>{t('Holders')}</Text>
+                <Text sx={{ lineHeight: '20px' }}>{t('Holders')}</Text>
               </SelectItem>
               <SelectItem size="sm" value="Market Cap" key="marketCap">
-                <Text>{t('Market Cap')}</Text>
+                <Text sx={{ lineHeight: '20px' }}>{t('Market Cap')}</Text>
               </SelectItem>
               <SelectItem size="sm" value="Burned" key="burned">
-                <Text>{t('Burned')}</Text>
+                <Text sx={{ lineHeight: '20px' }}>{t('Burned')}</Text>
               </SelectItem>
               <SelectItem size="sm" value="POL" key="pol">
-                <Text>{t('POL')}</Text>
+                <Text sx={{ lineHeight: '20px' }}>{t('POL')}</Text>
               </SelectItem>
             </Select>
           )}
@@ -116,13 +116,13 @@ const ProtocolMetricsGraph: React.FC = () => {
         <Flex sx={{ height: '40px' }}>
           <Select size="sm" width="126px" onChange={(e) => onSetTime(e.target.value)} active={activeTime}>
             <SelectItem size="sm" value="7d" key="7d">
-              <Text>{t('7d')}</Text>
+              <Text sx={{ lineHeight: '20px' }}>{t('7d')}</Text>
             </SelectItem>
             <SelectItem size="sm" value="30d" key="30d">
-              <Text>{t('30d')}</Text>
+              <Text sx={{ lineHeight: '20px' }}>{t('30d')}</Text>
             </SelectItem>
             <SelectItem size="sm" value="total" key="total">
-              <Text>{t('Total')}</Text>
+              <Text sx={{ lineHeight: '20px' }}>{t('Total')}</Text>
             </SelectItem>
           </Select>
         </Flex>
