@@ -12,6 +12,7 @@ import { BananaIcon } from 'components/Icons'
 import { useFetchOverviewBananaDistribution } from 'state/protocolDashboard/hooks'
 import { OverviewBananaDistributionInterface } from 'state/protocolDashboard/types'
 import { usePriceGnanaBusd } from 'state/tokenPrices/hooks'
+import useIsMobile from 'hooks/useIsMobile'
 
 const doughnutLabelsLine = {
   id: 'doughnutLabelsLine',
@@ -67,6 +68,7 @@ const setData = (bananaSupply: OverviewBananaDistributionInterface, theme: ApeSw
 const BananaSupplyDistribution: React.FC = () => {
   const bananaSupply = useFetchOverviewBananaDistribution()
   const gnanaPrice = usePriceGnanaBusd()?.toNumber()
+  const isMobile = useIsMobile()
   const { t } = useTranslation()
   const { theme } = useTheme()
   const data = useMemo(() => setData(bananaSupply, theme), [bananaSupply, theme])
@@ -93,7 +95,7 @@ const BananaSupplyDistribution: React.FC = () => {
                 options={{
                   maintainAspectRatio: false,
                   layout: {
-                    padding: 20,
+                    padding: isMobile ? 22.5 : 20,
                   },
                   elements: {
                     arc: {
