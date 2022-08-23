@@ -1,10 +1,10 @@
-import { Flex, Text } from '@ape.swap/uikit'
+/** @jsxImportSource theme-ui */
+import { Flex, IconButton, Modal, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
-// import { apiBaseUrl } from 'hooks/api'
+import { apiBaseUrl } from 'hooks/api'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
-const apiBaseUrl = 'https://apeswap-api-development.herokuapp.com'
 
 const BLOCKED_ADDRESSES: string[] = [
   '0x7Db418b5D567A4e0E8c59Ad71BE1FcE48f3E6107',
@@ -83,11 +83,11 @@ const BLOCKED_ADDRESSES: string[] = [
 
 export default function Blocklist({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
-  const localGeo: { isRestrictedRegion: boolean; countryCode: string } = JSON.parse(localStorage.getItem('check'))
   const [geoLocation, setGeoLocation] = useState<{ isRestrictedRegion: boolean; countryCode: string }>({
-    isRestrictedRegion: localGeo?.isRestrictedRegion,
-    countryCode: localGeo?.countryCode,
+    isRestrictedRegion: false,
+    countryCode: '',
   })
+  const [displayGeoModal, setDisplayGeoModal] = useState<boolean>(false)
   const { account } = useActiveWeb3React()
 
   // Fetch country code to check if the region is allowed
@@ -96,16 +96,10 @@ export default function Blocklist({ children }: { children: ReactNode }) {
       const resp = await axios.get(`${apiBaseUrl}/check`)
       const { isRestrictedRegion, countryCode } = resp?.data
       setGeoLocation({ isRestrictedRegion, countryCode })
-      localStorage.setItem(
-        'check',
-        JSON.stringify({
-          isRestrictedRegion,
-          countryCode,
-        }),
-      )
+      setDisplayGeoModal(isRestrictedRegion)
     }
-    !geoLocation.countryCode && fetchLocation()
-  }, [geoLocation.countryCode])
+    fetchLocation()
+  }, [])
 
   const blockedAddress: boolean = useMemo(
     () => Boolean(account && BLOCKED_ADDRESSES.indexOf(account) !== -1),
@@ -119,11 +113,25 @@ export default function Blocklist({ children }: { children: ReactNode }) {
       </Flex>
     )
   }
-  if (geoLocation?.isRestrictedRegion) {
+  if (displayGeoModal) {
     return (
-      <Flex>
-        <Text>{t(`${geoLocation.countryCode} is a blocked region`)}</Text>
-      </Flex>
+      <>
+        <Modal minWidth="350px">
+          <Flex sx={{ width: '250px', height: '100px', justifyContent: 'center' }}>
+            <Flex sx={{ position: 'absolute', top: '20px', right: '20px' }}>
+              <IconButton
+                width="15px"
+                icon="close"
+                color="text"
+                variant="transparent"
+                onClick={() => setDisplayGeoModal(false)}
+              />
+            </Flex>
+            <Text>{t(`On September 6th ${geoLocation?.countryCode} will be a blocked region`)}</Text>
+          </Flex>
+        </Modal>
+        {children}
+      </>
     )
   }
   return <>{children}</>
