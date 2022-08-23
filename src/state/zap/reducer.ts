@@ -71,7 +71,7 @@ const initialState: ZapState = {
   shareOfPool: '',
   recipient: null,
   zapInputList: null,
-  zapOutputList: null,
+  zapOutputList: [],
   zapSlippage: 100,
 }
 

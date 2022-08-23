@@ -14,6 +14,7 @@ interface LPSearchModalProps {
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
   onDismiss?: () => void
+  zapOutputList: any
 }
 
 const ScrollableContainer = styled(Flex)`
@@ -26,7 +27,7 @@ const ScrollableContainer = styled(Flex)`
   }
 `
 
-const LPSearchModal = ({ onDismiss = () => null, onLpSelect }: LPSearchModalProps) => {
+const LPSearchModal = ({ onDismiss = () => null, onLpSelect, zapOutputList }: LPSearchModalProps) => {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
   const handleLPSelect = useCallback(
@@ -51,7 +52,7 @@ const LPSearchModal = ({ onDismiss = () => null, onLpSelect }: LPSearchModalProp
     <Modal onDismiss={onDismiss} title={t('LP Tokens')} open {...modalProps}>
       <ScrollableContainer>
         <Flex sx={{ flexDirection: 'column', width: '380px', maxWidth: '100%' }}>
-          <LPSearcher onLpSelect={handleLPSelect} />
+          <LPSearcher onLpSelect={handleLPSelect} zapOutputList={zapOutputList} />
         </Flex>
       </ScrollableContainer>
     </Modal>

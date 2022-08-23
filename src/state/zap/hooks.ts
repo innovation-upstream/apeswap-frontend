@@ -19,7 +19,6 @@ import {
   selectInputCurrency,
   selectOutputCurrency,
   setInputList,
-  setOutputList,
   setRecipient,
   setZapType,
   typeInput,
@@ -32,9 +31,6 @@ import { AppThunk } from '../types'
 import fetchZapInputTokens from './api'
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks'
 import { fromPairs, groupBy } from 'lodash'
-import { useJungleFarms, usePollJungleFarms, useSetJungleFarms } from '../jungleFarms/hooks'
-import { useFarms } from '../farms/hooks'
-import { useBlock } from '../block/hooks'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -138,7 +134,12 @@ function involvesAddress(trade: Zap, checksummedAddress: string): boolean {
 }
 
 // from the current swap inputs, compute the best trade and return it.
-export function useDerivedZapInfo(): {
+export function useDerivedZapInfo(
+  typedValue,
+  INPUT,
+  OUTPUT,
+  recipient,
+): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
@@ -146,26 +147,21 @@ export function useDerivedZapInfo(): {
   inputError?: string
 } {
   const { account, chainId } = useActiveWeb3React()
+  const { currency1: outputCurrencyId1, currency2: outputCurrencyId2 } = OUTPUT
 
-  const {
-    typedValue,
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-    [Field.OUTPUT]: { currency1: outputCurrencyId1, currency2: outputCurrencyId2 },
-    recipient,
-  } = useZapState()
+  const inputCurrency = useCurrency(INPUT.currencyId)
 
-  const inputCurrency = useCurrency(inputCurrencyId)
-
-  const outputCurrencys = [
-    useCurrency(useMemo(() => outputCurrencyId1, [outputCurrencyId1])),
-    useCurrency(useMemo(() => outputCurrencyId2, [outputCurrencyId2])),
-  ]
-  const outputPair = usePair(outputCurrencys[0], outputCurrencys[1])
+  const out1 = useCurrency(useMemo(() => outputCurrencyId1, [outputCurrencyId1]))
+  const out2 = useCurrency(useMemo(() => outputCurrencyId2, [outputCurrencyId2]))
+  const outputCurrencies = useMemo(() => {
+    return [out1, out2]
+  }, [out1, out2])
+  const outputPair = usePair(outputCurrencies[0], outputCurrencies[1])
   const totalSupply = useTotalSupply(outputPair?.[1]?.liquidityToken)
 
   const recipientLookup = useENS(recipient ?? undefined)
   const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippageTolerance(true)
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -175,11 +171,11 @@ export function useDerivedZapInfo(): {
   // Change to currency amount. Divide the typed input by 2 to get correct distributions
   const parsedAmount = tryParseAmount((parseFloat(typedValue) / 2).toString(), inputCurrency ?? undefined)
 
-  const bestZapOne = useTradeExactIn(parsedAmount, outputCurrencys[0] ?? undefined)
-  const bestZapTwo = useTradeExactIn(parsedAmount, outputCurrencys[1] ?? undefined)
+  const bestZapOne = useTradeExactIn(parsedAmount, outputCurrencies[0] ?? undefined)
+  const bestZapTwo = useTradeExactIn(parsedAmount, outputCurrencies[1] ?? undefined)
   const zap = useMemo(
-    () => mergeBestZaps(bestZapOne, bestZapTwo, outputCurrencys, outputPair, allowedSlippage, totalSupply, chainId),
-    [bestZapOne, bestZapTwo, outputCurrencys, outputPair, allowedSlippage, totalSupply, chainId],
+    () => mergeBestZaps(bestZapOne, bestZapTwo, outputCurrencies, outputPair, allowedSlippage, totalSupply, chainId),
+    [bestZapOne, bestZapTwo, outputCurrencies, outputPair, allowedSlippage, totalSupply, chainId],
   )
 
   const currencyBalances = {
@@ -357,27 +353,18 @@ export function useZapInputList(): { [address: string]: Token } {
   return zapInputList
 }
 
-export const useSetZapData = () => {
+export const useSetInitialZapData = () => {
   const dispatch = useAppDispatch()
-  const { zapInputList, zapOutputList } = useZapState()
+  const { zapInputList } = useZapState()
   if (!zapInputList) {
-    dispatch(setInitialZapDataAsync())
-  }
-  if (!zapOutputList) {
-    dispatch(getZapOutPutList())
+    dispatch(getZapInputList())
   }
 }
 
-const getZapOutPutList = (): AppThunk => (dispatch) => {
-  useSetJungleFarms()
-  usePollJungleFarms()
-  const { account, chainId } = useActiveWeb3React()
-  const farms = useFarms(account)
-  const jungleFarms = useJungleFarms(account)
-  const { currentBlock } = useBlock()
-  const activeFarms = farms.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+export const getZapOutputList = (farms, jungleFarms, currentBlock, chainId) => {
+  const activeFarms = farms?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
 
-  const parsedFarms: ParsedFarm[] = activeFarms.map((farm) => {
+  const parsedFarms: ParsedFarm[] = activeFarms?.map((farm) => {
     return {
       lpSymbol: farm.lpSymbol,
       lpAddress: farm.lpAddresses[chainId],
@@ -390,15 +377,15 @@ const getZapOutPutList = (): AppThunk => (dispatch) => {
     }
   })
 
-  const currJungleFarms = jungleFarms.map((farm) => {
+  const currJungleFarms = jungleFarms?.map((farm) => {
     return { ...farm, isFinished: farm.isFinished || currentBlock > farm.endBlock }
   })
 
-  const activeJungleFarms = currJungleFarms.filter((farm) => {
+  const activeJungleFarms = currJungleFarms?.filter((farm) => {
     return !farm.isFinished
   })
 
-  const parsedJungleFarms: ParsedFarm[] = activeJungleFarms.map((farm) => {
+  const parsedJungleFarms: ParsedFarm[] = activeJungleFarms?.map((farm) => {
     return {
       lpSymbol: farm.tokenName,
       lpAddress: farm.contractAddress[chainId],
@@ -415,14 +402,10 @@ const getZapOutPutList = (): AppThunk => (dispatch) => {
       },
     }
   })
-  dispatch(
-    setOutputList({
-      zapOutputList: [...parsedFarms, ...parsedJungleFarms],
-    }),
-  )
+  return [...parsedFarms, ...parsedJungleFarms]
 }
 
-export const setInitialZapDataAsync = (): AppThunk => async (dispatch) => {
+export const getZapInputList = (): AppThunk => async (dispatch) => {
   try {
     const resp: { [symbol: string]: Token } = await fetchZapInputTokens()
     if (resp) dispatch(setInputList({ zapInputList: resp }))

@@ -26,26 +26,8 @@ const ZapLiquidity = () => {
   const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
   const inputCurrency = useCurrency(INPUT?.currencyId)
 
-  const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
+  const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo(typedValue, INPUT, OUTPUT, recipient)
   const { onUserInput } = useZapActionHandlers()
-
-  const handleInputSelect = useCallback(
-    (field: Field, currency: Currency) => {
-      dispatch(
-        selectInputCurrency({
-          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
-        }),
-      )
-    },
-    [dispatch],
-  )
-
-  const handleCurrencyBSelect = useCallback(
-    (farm: ParsedFarm) => {
-      dispatch(selectLP({ outPut: farm }))
-    },
-    [dispatch],
-  )
 
   const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
     zap,
@@ -117,6 +99,31 @@ const ZapLiquidity = () => {
     })
   }, [setZapState])
 
+  const handleInputSelect = useCallback(
+    (field: Field, currency: Currency) => {
+      dispatch(
+        selectInputCurrency({
+          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
+        }),
+      )
+    },
+    [dispatch],
+  )
+
+  const handleOutputSelect = useCallback(
+    (farm: ParsedFarm) => {
+      dispatch(selectLP({ outPut: farm }))
+    },
+    [dispatch],
+  )
+
+  const onUserInputCallback = useCallback(
+    (field, typedValue) => {
+      onUserInput(field, typedValue)
+    },
+    [onUserInput],
+  )
+
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
@@ -127,7 +134,7 @@ const ZapLiquidity = () => {
           otherCurrency={null}
           fieldType={Field.INPUT}
           onCurrencySelect={handleInputSelect}
-          onUserInput={onUserInput}
+          onUserInput={onUserInputCallback}
           handleMaxInput={handleMaxInput}
           useZapList
         />
@@ -142,7 +149,7 @@ const ZapLiquidity = () => {
           panelText="To:"
           selectedFarm={OUTPUT}
           fieldType={Field.OUTPUT}
-          onLpSelect={handleCurrencyBSelect}
+          onLpSelect={handleOutputSelect}
           handleMaxInput={null}
         />
         {

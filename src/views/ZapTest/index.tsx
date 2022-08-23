@@ -22,7 +22,7 @@ const ZapTest: React.FC = () => {
 
   const { INPUT, OUTPUT, independentField, typedValue, recipient, zapType } = useZapState()
 
-  const { zap, parsedAmount, inputError: zapInputError } = useDerivedZapInfo()
+  const { zap, parsedAmount, inputError: zapInputError } = useDerivedZapInfo(typedValue, INPUT, OUTPUT, recipient)
 
   const { onCurrencySelection, onUserInput, onSetZapType } = useZapActionHandlers()
 
@@ -63,10 +63,12 @@ const ZapTest: React.FC = () => {
     billExists?.contractAddress[56] || 's',
   )
 
-  // This is a quick example on how to handle three selects, but there should be a better way
-  const handleZapCurrencySelection = useCallback((field: Field, currency: Currency[]) => {
-    onCurrencySelection(field, currency)
-  }, [])
+  const handleZapCurrencySelection = useCallback(
+    (field: Field, currency: Currency[]) => {
+      onCurrencySelection(field, currency)
+    },
+    [onCurrencySelection],
+  )
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromZap(zap)

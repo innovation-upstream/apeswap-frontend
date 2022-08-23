@@ -1,12 +1,11 @@
 /** @jsxImportSource theme-ui */
+import React from 'react'
 import { Flex, Text } from '@ape.swap/uikit'
 import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
 import { useTranslation } from 'contexts/Localization'
-import React, { useMemo, useState } from 'react'
 import LPSelector from './LPSelector'
 import { styles } from '../styles'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useZapState } from 'state/zap/hooks'
 import { ParsedFarm } from 'state/zap/reducer'
 import { Field } from '../../../state/zap/actions'
 
@@ -20,17 +19,9 @@ export interface ZapPanelProps {
 }
 
 const ZapPanel: React.FC<ZapPanelProps> = ({ value, selectedFarm, onLpSelect, fieldType, panelText }) => {
-  const { OUTPUT } = useZapState()
-  const [usdVal, setUsdVal] = useState(null)
   const currencyBalance = getBalanceNumber(selectedFarm?.userData?.tokenBalance)
   const balance = !isNaN(currencyBalance) ? currencyBalance : 0
   const { t } = useTranslation()
-
-  useMemo(async () => {
-    if (OUTPUT) {
-      setUsdVal(OUTPUT.lpValueUsd)
-    }
-  }, [OUTPUT])
 
   return (
     <Flex sx={styles.dexPanelContainer}>
@@ -42,7 +33,11 @@ const ZapPanel: React.FC<ZapPanelProps> = ({ value, selectedFarm, onLpSelect, fi
       <Flex sx={styles.panelBottomContainer}>
         <Flex sx={styles.centered}>
           <Text size="12px" sx={styles.panelBottomText}>
-            {usdVal && value !== '.' && usdVal !== 0 && value && `$${(usdVal * parseFloat(value)).toFixed(2)}`}
+            {selectedFarm?.lpValueUsd &&
+              value !== '.' &&
+              parseFloat(selectedFarm?.lpValueUsd) !== 0 &&
+              value &&
+              `$${(parseFloat(selectedFarm?.lpValueUsd) * parseFloat(value)).toFixed(2)}`}
           </Text>
         </Flex>
         <Flex sx={{ alignItems: 'center' }}>

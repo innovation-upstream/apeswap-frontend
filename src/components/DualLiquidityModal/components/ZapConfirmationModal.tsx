@@ -33,9 +33,9 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
   const { currencyIn, pairOut } = zap
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-  const pendingText = `Zapping ${getBalanceNumber(currencyIn.inputAmount.toString())} ${
-    currencyIn.currency.symbol
-  } for ${pairOut.liquidityMinted.toSignificant(4)} ${currencies.OUTPUT.lpSymbol} LP`
+  const pendingText = `Zapping ${getBalanceNumber(currencyIn?.inputAmount?.toString())} ${
+    currencyIn?.currency?.symbol
+  } for ${pairOut?.liquidityMinted?.toSignificant(4)} ${currencies?.OUTPUT?.lpSymbol} LP`
   return (
     <Modal title={title} maxWidth="420px" minWidth="420px" onDismiss={onDismiss}>
       {zapErrorMessage ? (

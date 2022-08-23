@@ -7,17 +7,16 @@ import { Box } from 'theme-ui'
 import { usePollJungleFarms, useSetJungleFarms } from '../../state/jungleFarms/hooks'
 import { ParsedFarm } from 'state/zap/reducer'
 import DisplayRows from './components/DisplayRows'
-import { useZapState } from '../../state/zap/hooks'
 
 interface LPSearcherProps {
   onLpSelect: (farm: ParsedFarm) => void
+  zapOutputList: any
 }
 
-function LPSearcher({ onLpSelect }: LPSearcherProps) {
+function LPSearcher({ onLpSelect, zapOutputList }: LPSearcherProps) {
   useSetJungleFarms()
   usePollJungleFarms()
   const { t } = useTranslation()
-  const { zapOutputList } = useZapState()
 
   const [query, setQuery] = useState('')
 

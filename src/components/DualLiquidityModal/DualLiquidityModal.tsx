@@ -2,21 +2,17 @@
 import React, { useCallback, useState } from 'react'
 import { Modal, ModalProvider } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
-import { merge } from 'lodash'
 import { useTranslation } from 'contexts/Localization'
 import RegularLiquidity from './RegularLiquidity'
 import ZapLiquidity from './ZapLiquidity'
 import ZapSwitch from './components/ZapSwitch'
 import useIsMobile from 'hooks/useIsMobile'
-import { useSetZapData } from '../../state/zap/hooks'
 
 interface DualLiquidityModalProps {
-  modalProps?: Record<string, any>
   handleClose?: () => void
 }
 
-const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ modalProps: newModalProps, handleClose }) => {
-  useSetZapData()
+const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ handleClose }) => {
   const { t } = useTranslation()
   const [goZap, setGoZap] = useState(true)
   const isMobile = useIsMobile()
@@ -37,7 +33,7 @@ const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ modalProps: new
 
   return (
     <ModalProvider>
-      <Modal open {...merge(modalProps, newModalProps)} title={t('Liquidity')} onDismiss={handleClose}>
+      <Modal open {...modalProps} title={t('Liquidity')} onDismiss={handleClose}>
         <Box>
           <ZapSwitch goZap={goZap} handleZapSwitch={handleZapSwitch} />
           {goZap ? <ZapLiquidity /> : <RegularLiquidity />}
