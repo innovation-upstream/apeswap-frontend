@@ -60,7 +60,7 @@ const TotalTradeVolume: React.FC = () => {
           )}
         </Text>
       </Flex>
-      <Flex sx={{ maxWidth: '100%', width: '99%', height: '100%', maxHeight: '100%' }}>
+      <Flex sx={styles.graphContainer}>
         {data && (
           <Line
             data={data}

@@ -14,4 +14,12 @@ export const styles: Record<string, ThemeUIStyleObject> = {
       height: '537px',
     },
   },
+  graphContainer: {
+    width: '99%',
+    maxWidth: '100%',
+    minHeight: '210px',
+    '@media screen and (max-width: 1100px)': {
+      minHeight: '350px',
+    },
+  },
 }
