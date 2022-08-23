@@ -116,8 +116,8 @@ export default function Blocklist({ children }: { children: ReactNode }) {
   if (displayGeoModal) {
     return (
       <>
-        <Modal minWidth="350px">
-          <Flex sx={{ width: '250px', height: '100px', justifyContent: 'center' }}>
+        <Modal minWidth="360px" maxWidth="600px">
+          <Flex sx={{ width: 'auto', height: 'auto', justifyContent: 'center', flexDirection: 'column' }}>
             <Flex sx={{ position: 'absolute', top: '20px', right: '20px' }}>
               <IconButton
                 width="15px"
@@ -127,7 +127,18 @@ export default function Blocklist({ children }: { children: ReactNode }) {
                 onClick={() => setDisplayGeoModal(false)}
               />
             </Flex>
-            <Text>{t(`On September 6th ${geoLocation?.countryCode} will be a blocked region`)}</Text>
+            <Text weight={700}>Notice:</Text>
+            <br />
+            <br />
+            <Text>{`Due to increased legal scrutiny on DeFi, ApeSwap has been given no choice but to restrict select regions from accessing our offerings, going into effect on September 6th, 2022. It appears you are visiting from one of those regions ${geoLocation.countryCode}.`}</Text>
+            <br />
+            <br />
+            <Text>
+              For more information about this change or to find out how it impacts you, please visit our Telegram:{' '}
+              <a href="https://t.me/ape_swap" rel="noopener noreferrer" sx={{ textDecoration: 'underline' }}>
+                https://t.me/ape_swap
+              </a>
+            </Text>
           </Flex>
         </Modal>
         {children}
