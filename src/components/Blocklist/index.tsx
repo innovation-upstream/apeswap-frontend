@@ -127,20 +127,28 @@ export default function Blocklist({ children }: { children: ReactNode }) {
                 onClick={() => setDisplayGeoModal(false)}
               />
             </Flex>
-            <Text weight={700} sx={{ fontFamily: 'poppins' }}>
-              Notice:
+            <Text weight={700} sx={{ fontFamily: 'poppins', fontSize: '32px' }}>
+              Notice
             </Text>
-            <br />
             <br />
             <Text
               sx={{ fontFamily: 'poppins' }}
-            >{`Due to increased legal scrutiny on DeFi, ApeSwap has been given no choice but to restrict select regions from accessing our offerings, going into effect on September 6th, 2022. It appears you are visiting from one of those regions ${geoLocation.countryCode}.`}</Text>
-            <br />
+            >{`Due to recent events causing increased legal scrutiny throughout the DeFi industry, ApeSwap has been given no choice but to restrict select regions from accessing our offerings. This will go into effect on September 6th, 2022. You are receiving this notice, because it appears you are visiting from a soon-to-be restricted region, ${geoLocation.countryCode}.`}</Text>
             <br />
             <Text sx={{ fontFamily: 'poppins' }}>
-              For more information about this change or to find out how it impacts you, please visit our Telegram:{' '}
-              <a href="https://t.me/ape_swap" rel="noopener noreferrer" sx={{ textDecoration: 'underline' }}>
-                https://t.me/ape_swap
+              We say this with heavy hearts, as censorship of any kind has been deeply against our ethos since day 1. We
+              do not make this move lightly, but it is necessary for the continuity of our protocol & the safety of
+              several core team contributors. We apologize in advance for inconveniences caused.
+            </Text>
+            <br />
+            <Text sx={{ fontFamily: 'poppins' }}>
+              For more information about this change or to find out how it impacts you, please visit{' '}
+              <a
+                href="https://t.me/ape_swap"
+                rel="noopener noreferrer"
+                sx={{ textDecoration: 'underline', color: 'grey' }}
+              >
+                our Telegram.
               </a>
             </Text>
           </Flex>
