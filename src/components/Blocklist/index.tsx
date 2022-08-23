@@ -127,13 +127,17 @@ export default function Blocklist({ children }: { children: ReactNode }) {
                 onClick={() => setDisplayGeoModal(false)}
               />
             </Flex>
-            <Text weight={700}>Notice:</Text>
+            <Text weight={700} sx={{ fontFamily: 'poppins' }}>
+              Notice:
+            </Text>
             <br />
             <br />
-            <Text>{`Due to increased legal scrutiny on DeFi, ApeSwap has been given no choice but to restrict select regions from accessing our offerings, going into effect on September 6th, 2022. It appears you are visiting from one of those regions ${geoLocation.countryCode}.`}</Text>
+            <Text
+              sx={{ fontFamily: 'poppins' }}
+            >{`Due to increased legal scrutiny on DeFi, ApeSwap has been given no choice but to restrict select regions from accessing our offerings, going into effect on September 6th, 2022. It appears you are visiting from one of those regions ${geoLocation.countryCode}.`}</Text>
             <br />
             <br />
-            <Text>
+            <Text sx={{ fontFamily: 'poppins' }}>
               For more information about this change or to find out how it impacts you, please visit our Telegram:{' '}
               <a href="https://t.me/ape_swap" rel="noopener noreferrer" sx={{ textDecoration: 'underline' }}>
                 https://t.me/ape_swap
@@ -141,7 +145,6 @@ export default function Blocklist({ children }: { children: ReactNode }) {
             </Text>
           </Flex>
         </Modal>
-        {children}
       </>
     )
   }
