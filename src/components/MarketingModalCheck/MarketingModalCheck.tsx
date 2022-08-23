@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { MarketingModal } from '@ape.swap/uikit'
 import { LendingBodies } from 'components/MarketingModalContent/Lending/'
@@ -10,11 +10,27 @@ import SwiperProvider from 'contexts/SwiperProvider'
 import MoonPayModal from 'views/Topup/MoonpayModal'
 import QuestModal from '../MarketingModalContent/Quests/QuestModal'
 import GnanaModal from 'components/GnanaModal'
+import { SET_DEFAULT_MODAL_KEY, SHOW_DEFAULT_MODAL_KEY } from 'config/constants'
 
 const MarketingModalCheck = () => {
   const location = useLocation()
   const history = useHistory()
   const { t } = useTranslation()
+  useMemo(() => {
+    const sdmk = localStorage.getItem(SET_DEFAULT_MODAL_KEY)
+    const isdm = localStorage.getItem(SHOW_DEFAULT_MODAL_KEY)
+
+    const isDefaultModalSet = JSON.parse(sdmk)
+    const isShowDefaultModal = JSON.parse(isdm)
+
+    if (!isDefaultModalSet) {
+      localStorage.setItem(SHOW_DEFAULT_MODAL_KEY, JSON.stringify('SHOW'))
+    }
+
+    if (isShowDefaultModal) {
+      history.push({ search: '?modal=tutorial' })
+    }
+  }, [history])
 
   const farmsRoute = location.search.includes('modal=1')
   const poolsRoute = location.search.includes('modal=2')
