@@ -18,10 +18,12 @@ import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
 import { Container, StyledButton, ActionContainer } from './styles'
-import { LiquidityModal } from '../../../components/LiquidityWidget'
 import { Field, selectCurrency } from '../../../state/swap/actions'
 import { useAppDispatch } from '../../../state'
 import { StyledTag } from '../../Pools/components/styles'
+import DualLiquidityModal from '../../../components/DualLiquidityModal/DualLiquidityModal'
+import ZapIcon from '../../../components/DualLiquidityModal/components/Svg/ZapIcon'
+import { selectLP } from '../../../state/zap/actions'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
   jungleFarms,
@@ -40,13 +42,13 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
   // Need to export ModalContext from uikit to clean up the code
   const [, closeModal] = useModal(<></>)
   const [onPresentAddLiquidityWidgetModal] = useModal(
-    <LiquidityModal handleClose={closeModal} />,
+    <DualLiquidityModal handleClose={closeModal} />,
     true,
     true,
     'liquidityWidgetModal',
   )
 
-  const showLiquidity = (token, quoteToken) => {
+  const showLiquidity = (token, quoteToken, farm) => {
     dispatch(
       selectCurrency({
         field: Field.INPUT,
@@ -57,6 +59,25 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
       selectCurrency({
         field: Field.OUTPUT,
         currencyId: quoteToken,
+      }),
+    )
+    dispatch(
+      selectLP({
+        outPut: {
+          lpSymbol: farm.tokenName,
+          lpAddress: farm.contractAddress[chainId],
+          lpValueUsd: '0',
+          currency1: farm.lpTokens.token.address[chainId],
+          currency1Symbol: farm.lpTokens.token.symbol,
+          currency2: farm.lpTokens.quoteToken.address[chainId],
+          currency2Symbol: farm.lpTokens.quoteToken.symbol,
+          userData: {
+            allowance: farm.userData?.allowance,
+            tokenBalance: farm.userData?.stakingTokenBalance,
+            stakedBalance: farm.userData?.stakedBalance,
+            earnings: farm.userData?.pendingReward,
+          },
+        },
       }),
     )
     onPresentAddLiquidityWidgetModal()
@@ -178,10 +199,11 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
                 showLiquidity(
                   farm?.lpTokens?.token?.address[chainId],
                   farm?.lpTokens?.quoteToken?.symbol === 'BNB' ? 'ETH' : farm?.lpTokens?.quoteToken?.address[chainId],
+                  farm,
                 )
               }
             >
-              {t('GET LP')}
+              {t('GET LP')} <ZapIcon fill="white" style={{ marginLeft: '5px' }} />
             </StyledButton>
 
             {!isMobile && (

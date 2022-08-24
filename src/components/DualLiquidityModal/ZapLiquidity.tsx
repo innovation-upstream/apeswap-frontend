@@ -13,6 +13,7 @@ import ZapLiquidityActions from './components/ZapLiquidityActions'
 import { styles } from './styles'
 import { ParsedFarm } from '../../state/zap/reducer'
 import { useZapCallback } from '../../hooks/useZapCallback'
+import DistributionPanel from './components/DistributionPanel'
 
 const ZapLiquidity = () => {
   const [{ zapErrorMessage, txHash }, setZapState] = useState<{
@@ -24,6 +25,7 @@ const ZapLiquidity = () => {
   })
   const dispatch = useAppDispatch()
   const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
+
   const inputCurrency = useCurrency(INPUT?.currencyId)
 
   const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo(typedValue, INPUT, OUTPUT, recipient)
@@ -77,15 +79,6 @@ const ZapLiquidity = () => {
     }
   }, {})
 
-  const handleMaxInput = useCallback(
-    (field: Field) => {
-      if (maxAmounts) {
-        onUserInput(field, maxAmounts[field]?.toExact() ?? '')
-      }
-    },
-    [maxAmounts, onUserInput],
-  )
-
   const currencies = {
     [Field.INPUT]: inputCurrency,
     [Field.OUTPUT]: OUTPUT,
@@ -124,6 +117,15 @@ const ZapLiquidity = () => {
     [onUserInput],
   )
 
+  const handleMaxInput = useCallback(
+    (field: Field) => {
+      if (maxAmounts) {
+        onUserInput(field, maxAmounts[field]?.toExact() ?? '')
+      }
+    },
+    [maxAmounts, onUserInput],
+  )
+
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
@@ -150,25 +152,22 @@ const ZapLiquidity = () => {
           selectedFarm={OUTPUT}
           fieldType={Field.OUTPUT}
           onLpSelect={handleOutputSelect}
-          handleMaxInput={null}
+          lpPair={zap.pairOut.pair}
         />
-        {
-          /*
-        { typedValue && (
+        {typedValue && (
           <Flex sx={{ marginTop: '40px' }}>
-            <DistributionPanel zapInsight={zapInsight} />
+            <DistributionPanel zap={zap} />
           </Flex>
-        )} */
-          <ZapLiquidityActions
-            currencies={currencies}
-            zapInputError={zapInputError}
-            zap={zap}
-            handleZap={handleZap}
-            zapErrorMessage={zapErrorMessage}
-            txHash={txHash}
-            handleDismissConfirmation={handleDismissConfirmation}
-          />
-        }
+        )}
+        <ZapLiquidityActions
+          currencies={currencies}
+          zapInputError={zapInputError}
+          zap={zap}
+          handleZap={handleZap}
+          zapErrorMessage={zapErrorMessage}
+          txHash={txHash}
+          handleDismissConfirmation={handleDismissConfirmation}
+        />
         <Flex sx={{ marginTop: '10px', justifyContent: 'center' }}>
           <Link
             href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity"

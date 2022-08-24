@@ -1,4 +1,4 @@
-import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Token, TokenAmount, ZapType } from '@ape.swap/sdk'
+import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Percent, Token, TokenAmount, ZapType } from '@ape.swap/sdk'
 import { createAction } from '@reduxjs/toolkit'
 import { PairState } from 'hooks/usePairs'
 import { ParsedFarm } from './reducer'
@@ -29,6 +29,7 @@ export type MergedZap = {
     minInAmount: { token1: string; token2: string }
     totalPairSupply: TokenAmount
     liquidityMinted: TokenAmount
+    poolTokenPercentage: Percent
   }
   chainId: ChainId
 }

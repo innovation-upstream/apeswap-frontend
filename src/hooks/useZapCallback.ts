@@ -75,7 +75,7 @@ function useZapCallArguments(
 
     const swapMethods = []
 
-    console.log(zap, {
+    /* console.log(zap, {
       feeOnTransfer: false,
       allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
       zapType: zapType,
@@ -83,7 +83,7 @@ function useZapCallArguments(
       billAddress: billAddress,
       recipient,
       deadline: deadline.toNumber(),
-    })
+    }) */
 
     swapMethods.push(
       ZapV1.zapCallParameters(zap, {

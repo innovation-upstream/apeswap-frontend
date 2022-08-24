@@ -228,6 +228,11 @@ export function mergeBestZaps(
   const liquidityMinted =
     wOutputOne && wOutputTwo && totalPairSupply && pair?.getLiquidityMinted(totalPairSupply, wOutputOne, wOutputTwo)
 
+  const poolTokenPercentage =
+    liquidityMinted && totalPairSupply
+      ? new Percent(liquidityMinted.raw, totalPairSupply.add(liquidityMinted).raw)
+      : null
+
   return {
     currencyIn: {
       currency: currencyIn,
@@ -256,6 +261,7 @@ export function mergeBestZaps(
       minInAmount: inAndOutAreTheSame1Flag
         ? { token1: minPairInAmount, token2: minSwapOutTwo?.raw.toString() }
         : { token1: minSwapOutOne?.raw.toString(), token2: minPairInAmount },
+      poolTokenPercentage,
     },
     chainId,
   }

@@ -169,6 +169,7 @@ export function useDerivedZapInfo(
   ])
 
   // Change to currency amount. Divide the typed input by 2 to get correct distributions
+  // I think the parseFloat might be generating rounding issues
   const parsedAmount = tryParseAmount((parseFloat(typedValue) / 2).toString(), inputCurrency ?? undefined)
 
   const bestZapOne = useTradeExactIn(parsedAmount, outputCurrencies[0] ?? undefined)

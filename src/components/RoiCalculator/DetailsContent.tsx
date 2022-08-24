@@ -13,6 +13,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Farm } from 'state/types'
 import { tokenInfo, tokenListInfo } from './tokenInfo'
 import styles from './styles'
+import DualLiquidityModal from '../DualLiquidityModal/DualLiquidityModal'
+import { selectLP } from '../../state/zap/actions'
 
 interface DetailsContentProps {
   onDismiss?: () => void
@@ -40,6 +42,7 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
   apy,
   liquidityUrl,
   rewardTokenName,
+  farm,
 }) => {
   const [expanded, setExpanded] = useState(false)
   const [link, setLink] = useState('')
@@ -51,7 +54,7 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
 
   const [, closeModal] = useModal(<></>)
   const [onPresentAddLiquidityWidgetModal] = useModal(
-    <LiquidityModal handleClose={closeModal} />,
+    <DualLiquidityModal handleClose={closeModal} />,
     true,
     true,
     'liquidityWidgetModal',
@@ -80,6 +83,20 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
         selectCurrency({
           field: Field.OUTPUT,
           currencyId: quoteToken,
+        }),
+      )
+      dispatch(
+        selectLP({
+          outPut: {
+            lpSymbol: farm.lpSymbol,
+            lpAddress: farm.lpAddresses[chainId],
+            lpValueUsd: farm.lpValueUsd?.toString(),
+            currency1: farm.tokenAddresses[chainId],
+            currency1Symbol: farm.tokenSymbol,
+            currency2: farm.quoteTokenAdresses[chainId],
+            currency2Symbol: farm.quoteTokenSymbol,
+            userData: farm.userData,
+          },
         }),
       )
       onPresentAddLiquidityWidgetModal()
