@@ -106,6 +106,23 @@ export const getOverviewProtocolMetrics = async () => {
   }
 }
 
+export const getOverviewMcapTvlRatio = async () => {
+  try {
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const response = await axios.get(`${apiBaseUrl}/dashboard/overview/mcap-tvl-ratio`)
+    const data = await response.data
+    if (data.statusCode === 500) {
+      return null
+    }
+    return data
+  } catch (error) {
+    return null
+  }
+}
+
 export const getOverviewBananaDistribution = async () => {
   try {
     axiosRetry(axios, {

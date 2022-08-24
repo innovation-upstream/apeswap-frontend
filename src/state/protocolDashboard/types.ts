@@ -61,11 +61,17 @@ export interface TreasuryBreakdownInterface {
   valuePol: number
 }
 
+export interface OverviewMcapTvlRatioInterface {
+  timestamp: number
+  ratio: number
+}
+
 export interface ProtocolDashboardState {
   overviewTvl: OverviewTvlInterface
   overviewVolume: OverviewVolumeInterface[]
   overviewProtocolMetrics: OverviewProtocolMetricsInterface[]
   overviewBananaDistribution: OverviewBananaDistributionInterface[]
+  overviewMcapTvlRatio: OverviewMcapTvlRatioInterface[]
   treasuryAssetOverview: TreasuryAssetOverviewInterface[]
   treasuryHistory: TreasuryHistoryInterface[]
   treasuryBreakdown: TreasuryBreakdownInterface

@@ -11,6 +11,7 @@ import {
   fetchTreasuryAssetOverview,
   fetchTreasuryBreakdown,
   fetchTreasuryHistory,
+  fetchOverviewMcapTvlRatio,
 } from '.'
 
 export const useFetchOverviewTvl = () => {
@@ -52,6 +53,16 @@ export const useFetchOverviewProtocolMetrics = () => {
     dispatch(fetchOverviewProtocolMetrics())
   }, [slowRefresh, dispatch])
   return useSelector((state: State) => state.protocolDashboard.overviewProtocolMetrics)
+}
+
+export const useFetchOverviewMcapTvlRatio = () => {
+  const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+
+  useEffect(() => {
+    dispatch(fetchOverviewMcapTvlRatio())
+  }, [slowRefresh, dispatch])
+  return useSelector((state: State) => state.protocolDashboard.overviewMcapTvlRatio)
 }
 
 export const useFetchTreasuryAssetOverview = () => {

@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProtocolDashboardState } from './types'
 import getTreasuryBreakdown, {
   getOverviewBananaDistribution,
+  getOverviewMcapTvlRatio,
   getOverviewProtocolMetrics,
   getOverviewTvl,
   getOverviewVolume,
@@ -15,6 +16,7 @@ const initialState: ProtocolDashboardState = {
   overviewVolume: [],
   overviewProtocolMetrics: [],
   overviewBananaDistribution: [],
+  overviewMcapTvlRatio: [],
   treasuryAssetOverview: [],
   treasuryHistory: [],
   treasuryBreakdown: null,
@@ -36,6 +38,9 @@ export const statsSlice = createSlice({
     setOverviewBananaDistribution: (state, action) => {
       state.overviewBananaDistribution = action.payload
     },
+    setOverviewMcapTvlRatio: (state, action) => {
+      state.overviewMcapTvlRatio = action.payload
+    },
     setTreasuryAssetOverview: (state, action) => {
       state.treasuryAssetOverview = action.payload
     },
@@ -54,6 +59,7 @@ export const {
   setOverviewVolume,
   setOverviewProtocolMetrics,
   setOverviewBananaDistribution,
+  setOverviewMcapTvlRatio,
   setTreasuryAssetOverview,
   setTreasuryHistory,
   setTreasuryBreakdown,
@@ -79,6 +85,11 @@ export const fetchOverviewProtocolMetrics = () => async (dispatch) => {
 export const fetchOverviewBananaDistribution = () => async (dispatch) => {
   const data = await getOverviewBananaDistribution()
   dispatch(setOverviewBananaDistribution(data))
+}
+
+export const fetchOverviewMcapTvlRatio = () => async (dispatch) => {
+  const data = await getOverviewMcapTvlRatio()
+  dispatch(setOverviewMcapTvlRatio(data))
 }
 
 export const fetchTreasuryAssetOverview = () => async (dispatch) => {
