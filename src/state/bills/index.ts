@@ -75,10 +75,11 @@ export const {
 
 // Thunks
 
-export const setInitialBillsDataAsync = () => async (dispatch) => {
+export const setInitialBillsDataAsync = (chainId: number) => async (dispatch) => {
   try {
     const initialBillState: Bills[] = await fetchBillsConfig()
-    dispatch(setInitialBillsData(initialBillState || []))
+    const filterBillsByChainId = initialBillState.filter((bill) => bill.contractAddress?.[chainId] !== '')
+    dispatch(setInitialBillsData(filterBillsByChainId || []))
   } catch (error) {
     console.error(error)
   }
