@@ -25,12 +25,8 @@ import PoolFinder from './views/Dex/PoolFinder'
 import ResetScroll from './utils/resetScroll'
 
 Sentry.init({
-  dsn: 'https://a0c8737fb04f43efbbc0c068495b6e96@o1376475.ingest.sentry.io/6685576',
+  dsn: process.env.REACT_APP_SENTRY_DSN,
   integrations: [new BrowserTracing()],
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
 })
 
