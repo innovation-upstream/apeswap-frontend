@@ -98,11 +98,6 @@ const App: React.FC = () => {
   const { account, chainId } = useActiveWeb3React()
   const [showScrollIcon, setShowScrollIcon] = useState(false)
 
-  // Set a state to show scroll to top
-  // on load of the page,
-  // if pathname matches the needed pathname
-  // set it to true and show
-
   const showScroll = useCallback(() => {
     if (window.location.pathname === '/') {
       setShowScrollIcon(false)
