@@ -1,7 +1,7 @@
 import { ApiResponse } from '../types'
 
 export interface ProjectedData {
-  type: 'farms' | 'jungle farms' | 'pools' | 'lending' | 'maximizers' | 'total'
+  type: 'banana farms' | 'jungle farms' | 'pools' | 'lending' | 'maximizers' | 'total'
   amountStaked: number
   projectedEarnings: {
     daily: number
@@ -31,7 +31,7 @@ export function rawToProjected({ userStats, bananaPrice, analytics }: ApiRespons
         const monthly = calculateUsdEarned({ numberOfDays: 30, farmApy, stakedValue, tokenPrice: bananaPrice })
         const yearly = calculateUsdEarned({ numberOfDays: 365, farmApy, stakedValue, tokenPrice: bananaPrice })
 
-        const projectedProduct = projectedProducts.find((product) => product.type === 'farms')
+        const projectedProduct = projectedProducts.find((product) => product.type === 'banana farms')
 
         if (projectedProduct) {
           projectedProduct.projectedEarnings.daily += daily
@@ -40,7 +40,7 @@ export function rawToProjected({ userStats, bananaPrice, analytics }: ApiRespons
           projectedProduct.projectedEarnings.yearly += yearly
         } else {
           projectedProducts.push({
-            type: 'farms',
+            type: 'banana farms',
             projectedEarnings: { daily, weekly, monthly, yearly },
             amountStaked: +analytics.tvl.farms.value,
           })
