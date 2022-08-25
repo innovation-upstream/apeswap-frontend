@@ -11,7 +11,6 @@ import useTheme from 'hooks/useTheme'
 import { useBananaAddress, useGoldenBananaAddress } from 'hooks/useAddress'
 import { useBanana, useTreasury } from 'hooks/useContract'
 import { useBuyGoldenBanana } from 'hooks/useGoldenBanana'
-import DexPanel from 'views/Dex/components/DexPanel'
 import { useToast } from 'state/hooks'
 import { useBananaPrice } from 'state/tokenPrices/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
@@ -19,13 +18,14 @@ import useApproveTransaction from 'hooks/useApproveTransaction'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import UnlockButton from 'components/UnlockButton'
 import Dots from 'components/Loader/Dots'
-import { gnanaStyles } from './styles'
+import DexPanel from 'views/Dex/components/DexPanel'
 import maxAmountSpend from 'utils/maxAmountSpend'
+import { gnanaStyles } from './styles'
 
 const Gnana = () => {
   const { account } = useActiveWeb3React()
   const { isDark } = useTheme()
-  const MAX_BUY = 1
+  const MAX_BUY = 500
   const bananaPrice = useBananaPrice()
   const bananaToken = useCurrency(useBananaAddress())
   const gnanaToken = useCurrency(useGoldenBananaAddress())
@@ -50,7 +50,7 @@ const Gnana = () => {
       const max =
         parseInt(maxAmountInput.toExact()) < maxAmountOfBanana || unlimited
           ? maxAmountInput.toExact()
-          : maxAmountOfBanana.toFixed(0).toString()
+          : maxAmountOfBanana?.toFixed(0).toString()
       setVal(max)
     },
     [maxAmountInput, setVal, maxAmountOfBanana, unlimited],
@@ -130,7 +130,7 @@ const Gnana = () => {
     }
   }
 
-  const displayMax = unlimited ? 'unlimited' : maxAmountOfBanana.toFixed(0)
+  const displayMax = unlimited ? 'unlimited' : maxAmountOfBanana?.toFixed(0)
 
   return (
     <Flex sx={gnanaStyles.gnanaContainer}>

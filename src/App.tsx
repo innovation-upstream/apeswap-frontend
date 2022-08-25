@@ -10,6 +10,9 @@ import MarketingModalCheck from 'components/MarketingModalCheck'
 import { useFetchBananaPrice } from 'state/tokenPrices/hooks'
 import { useFetchProfile, useUpdateNetwork, useFetchLiveIfoStatus, useFetchLiveTagsAndOrdering } from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
+import { PageMeta } from 'components/layout/Page'
+import * as Sentry from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -20,6 +23,12 @@ import AddLiquidity from './views/Dex/AddLiquidity'
 import RemoveLiquidity from './views/Dex/RemoveLiquidity'
 import PoolFinder from './views/Dex/PoolFinder'
 import ResetScroll from './utils/resetScroll'
+
+Sentry.init({
+  dsn: process.env.REACT_APP_SENTRY_DSN,
+  integrations: [new BrowserTracing()],
+  tracesSampleRate: 1.0,
+})
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -47,7 +56,6 @@ const Vaults = lazy(() => import('./views/Vaults'))
 const NfaStaking = lazy(() => import('./views/NfaStaking'))
 const Bills = lazy(() => import('./views/Bills'))
 const Orders = lazy(() => import('./views/Dex/Orders'))
-const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/LegacyRemoveLiquidity/redirects'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 
@@ -98,18 +106,13 @@ const App: React.FC = () => {
   const { account, chainId } = useActiveWeb3React()
   const [showScrollIcon, setShowScrollIcon] = useState(false)
 
-  // Set a state to show scroll to top
-  // on load of the page,
-  // if pathname matches the needed pathname
-  // set it to true and show
-
   const showScroll = useCallback(() => {
     if (window.location.pathname === '/') {
       setShowScrollIcon(false)
     } else if (
-      window.location.pathname === '/farms' ||
+      window.location.pathname === '/banana-farms' ||
       window.location.pathname === '/pools' ||
-      window.location.pathname === '/vaults' ||
+      window.location.pathname === '/maximizers' ||
       window.location.pathname === '/iazos'
     ) {
       setShowScrollIcon(true)
@@ -141,10 +144,10 @@ const App: React.FC = () => {
               <Route path="/admin-pools">
                 <Redirect to="/" />
               </Route>
-              <Route path="/farms">
+              <Route path="/banana-farms">
                 <Redirect to="/" />
               </Route>
-              <Route path="/vaults">
+              <Route path="/maximizers">
                 <Redirect to="/" />
               </Route>
               <Route path="/treasury-bills">
@@ -178,7 +181,10 @@ const App: React.FC = () => {
                 <Redirect to="/" />
               </Route>
               <Route path="/stats">
-                <Redirect to="/" />
+                <Redirect to="/apestats" />
+              </Route>
+              <Route path="/apestats">
+                <Stats />
               </Route>
               <Route exact path="/ss-iao">
                 <Redirect to="/" />
@@ -191,16 +197,17 @@ const App: React.FC = () => {
               </Route>
               {/* SWAP ROUTES */}
               <Route path="/swap" component={Swap} />
-              <Route exact strict path="/orders" component={RedirectPathToSwapOnly} />
+              <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/find" component={PoolFinder} />
-              <Route exact strict path="/pool" component={Pool} />
+              <Route exact strict path="/liquidity" component={Pool} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-              <Route exact path="/add" component={AddLiquidity} />
               <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
+              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />{' '}
+              <Route exact path="/add-liquidity" component={AddLiquidity} />
+              <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
@@ -222,8 +229,11 @@ const App: React.FC = () => {
               <Route path="/admin-pools">
                 <AdminPools />
               </Route>
-              <Route path="/farms">
+              <Route path="/banana-farms">
                 <DualFarms />
+              </Route>
+              <Route path="/apestats">
+                <Stats />
               </Route>
               <Route path="/terms">
                 <TermsOfUse />
@@ -265,9 +275,6 @@ const App: React.FC = () => {
               <Route path="/gnana">
                 <Redirect to="/" />
               </Route>
-              <Route path="/stats">
-                <Redirect to="/" />
-              </Route>
               <Route exact path="/ss-iao">
                 <Redirect to="/" />
               </Route>
@@ -279,16 +286,17 @@ const App: React.FC = () => {
               </Route>
               {/* SWAP ROUTES */}
               <Route path="/swap" component={Swap} />
-              <Route exact strict path="/orders" component={RedirectPathToSwapOnly} />
+              <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/find" component={PoolFinder} />
-              <Route exact strict path="/pool" component={Pool} />
+              <Route exact strict path="/liquidity" component={Pool} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-              <Route exact path="/add" component={AddLiquidity} />
               <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
+              <Route exact path="/add-liquidity" component={AddLiquidity} />
+              <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
@@ -306,7 +314,7 @@ const App: React.FC = () => {
               <Nft />
             </Route>
             <Route path="/" exact component={Home} />
-            <Route path="/farms">
+            <Route path="/banana-farms">
               <Farms />
             </Route>
             <Route path="/pools">
@@ -315,7 +323,7 @@ const App: React.FC = () => {
             <Route path="/jungle-farms">
               <JungleFarms />
             </Route>
-            <Route path="/vaults">
+            <Route path="/maximizers">
               <Vaults />
             </Route>
             <Route path="/treasury-bills">
@@ -351,7 +359,7 @@ const App: React.FC = () => {
             <Route path="/gnana">
               <ApeZone />
             </Route>
-            <Route path="/stats">
+            <Route path="/apestats">
               <Stats />
             </Route>
             <Route path="/burn">
@@ -375,16 +383,17 @@ const App: React.FC = () => {
             </Route>
             {/* SWAP ROUTES */}
             <Route path="/swap" component={Swap} />
-            <Route exact strict path="/orders" component={Orders} />
+            <Route exact strict path="/limit-orders" component={Orders} />
             <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
             <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
             <Route exact strict path="/find" component={PoolFinder} />
-            <Route exact strict path="/pool" component={Pool} />
+            <Route exact strict path="/liquidity" component={Pool} />
             <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-            <Route exact path="/add" component={AddLiquidity} />
             <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
             <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-            <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
+            <Route exact path="/add-liquidity" component={AddLiquidity} />
+            <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+            <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
             {/* SWAP ROUTES */}
             <Route component={NotFound} />
@@ -396,6 +405,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
+      <PageMeta />
       <ResetScroll />
       <ResetCSS />
       <GlobalStyle />
