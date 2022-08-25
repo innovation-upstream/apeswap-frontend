@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import React, { useCallback, useState, useMemo } from 'react'
+import React, { useCallback, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import { Flex, Heading, Button, Text, ChevronRightIcon, Svg, Checkbox } from '@ape.swap/uikit'
@@ -25,7 +25,7 @@ import maxAmountSpend from 'utils/maxAmountSpend'
 const Gnana = () => {
   const { account } = useActiveWeb3React()
   const { isDark } = useTheme()
-  const MAX_BUY = 500
+  const MAX_BUY = 1
   const bananaPrice = useBananaPrice()
   const bananaToken = useCurrency(useBananaAddress())
   const gnanaToken = useCurrency(useGoldenBananaAddress())
@@ -33,32 +33,27 @@ const Gnana = () => {
   const [unlimited, setUnlimited] = useState(false)
   const treasuryContract = useTreasury()
   const [processing, setProcessing] = useState(false)
-  // BUY GNANA
+
   const [val, setVal] = useState('0')
   const { handleBuy } = useBuyGoldenBanana()
   const gnanaVal = parseFloat(val) > 0 ? parseFloat(val) * 0.7 : 0
   const { toastSuccess } = useToast()
   const bananaContract = useBanana()
-  // SELL GNANA
   const accountBananaBalance = useCurrencyBalance(account, bananaToken)
-
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(accountBananaBalance)
 
-  // BUY GNANA THINGS
-  // const fullBananaBalance = useMemo(() => {
-  //   return Number(getFullDisplayBalance(accountBananaBalance)).toFixed(2)
-  // }, [accountBananaBalance])
-
   const fullBananaBalance = accountBananaBalance?.toSignificant(6)
-
   const maxAmountOfBanana = MAX_BUY / parseFloat(bananaPrice)
 
-  // SET MAX HERE
   const handleSelectMax = useCallback(
     (_) => {
-      setVal(maxAmountInput.toExact())
+      const max =
+        parseInt(maxAmountInput.toExact()) < maxAmountOfBanana || unlimited
+          ? maxAmountInput.toExact()
+          : maxAmountOfBanana.toFixed(0).toString()
+      setVal(max)
     },
-    [maxAmountInput, setVal],
+    [maxAmountInput, setVal, maxAmountOfBanana, unlimited],
   )
   const handleChange = useCallback(
     (_, val) => {
@@ -98,8 +93,6 @@ const Gnana = () => {
     }
   }, [handleBuy, val])
 
-  const displayMax = unlimited ? 'unlimited' : MAX_BUY
-
   const handleCheckBox = useCallback(() => {
     setUnlimited(!unlimited)
   }, [unlimited, setUnlimited])
@@ -136,6 +129,8 @@ const Gnana = () => {
       )
     }
   }
+
+  const displayMax = unlimited ? 'unlimited' : maxAmountOfBanana.toFixed(0)
 
   return (
     <Flex sx={gnanaStyles.gnanaContainer}>
@@ -189,8 +184,8 @@ const Gnana = () => {
               color: !unlimited && parseInt(val) > maxAmountOfBanana ? 'error' : 'text',
             }}
           >
-            {t('*Current max conversion is %maxAmountOfBanana% BANANA', {
-              maxAmountOfBanana: maxAmountOfBanana?.toFixed(0),
+            {t('*Current max conversion is %displayMax% BANANA', {
+              displayMax,
             })}
           </Text>
           {/* DownArrow */}
