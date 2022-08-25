@@ -62,6 +62,9 @@ export const getCurrencyUsdPrice = async (
         }
     const tokenPrice = await multicall(chainId, apePriceGetterABI, [call])
     const filterPrice = getBalanceNumber(tokenPrice[0], decimals)
+    if (currency?.symbol === 'GNANA') {
+      return filterPrice * 1.3889
+    }
     return filterPrice
   }
   return null
