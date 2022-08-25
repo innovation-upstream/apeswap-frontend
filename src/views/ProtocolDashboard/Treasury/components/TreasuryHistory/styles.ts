@@ -19,14 +19,14 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     flexDirection: 'column',
     top: '50px',
     left: '50px',
-    '@media screen and (max-width: 950px)': {
+    '@media screen and (max-width: 800px)': {
       left: '30px',
-      fontSize: '14px',
-    },
-    '@media screen and (max-width: 450px)': {
-      left: '10px',
-      top: '100px',
+      top: '60px',
       fontSize: '12px',
+    },
+    '@media screen and (max-width: 650px)': {
+      left: '10px',
+      top: '90px',
     },
   },
 }

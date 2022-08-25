@@ -27,7 +27,7 @@ const setData = (data: any, theme: any) => {
 const ProtocolMetricsGraph: React.FC = () => {
   const currentDate = new Date()
   const minDateMap = {
-    total: '',
+    '180d': new Date(currentDate.getTime() - 180 * 24 * 60 * 60 * 1000).getTime(),
     '7d': new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000).getTime(),
     '30d': new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000).getTime(),
   }
@@ -41,7 +41,7 @@ const ProtocolMetricsGraph: React.FC = () => {
     [bananaHolders, marketCap, bananaBurned, pol],
   )
   const [activeCatTab, setActiveCatTab] = useState(0)
-  const [activeTime, onSetTime] = useState('total')
+  const [activeTime, onSetTime] = useState('30d')
   const { t } = useTranslation()
   const { theme } = useTheme()
   const isMobile = useIsMobile()
@@ -121,8 +121,8 @@ const ProtocolMetricsGraph: React.FC = () => {
             <SelectItem size="sm" value="30d" key="30d">
               <Text sx={{ lineHeight: '20px' }}>{t('30d')}</Text>
             </SelectItem>
-            <SelectItem size="sm" value="total" key="total">
-              <Text sx={{ lineHeight: '20px' }}>{t('Total')}</Text>
+            <SelectItem size="sm" value="180d" key="total">
+              <Text sx={{ lineHeight: '20px' }}>{t('180d')}</Text>
             </SelectItem>
           </Select>
         </Flex>

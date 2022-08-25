@@ -10,6 +10,7 @@ import CountUp, { useCountUp } from 'react-countup'
 import { styles } from './styles'
 import { OverviewTvlInterface } from 'state/protocolDashboard/types'
 import { useFetchHomepageStats } from 'state/hooks'
+import { orderBy } from 'lodash'
 
 const COLORS = [
   'rgba(244, 190, 55, 1)',
@@ -17,10 +18,10 @@ const COLORS = [
   'rgba(231, 79, 79, 1)',
   'rgba(144, 51, 246, 1)',
   'rgba(105, 165, 136, 1)',
-  '#FF851B',
+  'grey',
 ]
 
-const setData = (tvl: OverviewTvlInterface | string[]) => {
+const setData = (tvl: any) => {
   if (!tvl) return
   return {
     labels: Object.entries(tvl)?.map((data) => data[0]),
@@ -37,18 +38,24 @@ const setData = (tvl: OverviewTvlInterface | string[]) => {
 const TotalValueLocked: React.FC = () => {
   useFetchHomepageStats(true)
   const tvl = useFetchOverviewTvl()
-  const data = useMemo(() => setData(tvl), [tvl])
+  const sortTvl = tvl && Object.fromEntries(Object.entries(tvl).sort(([, a], [, b]) => b - a))
+  const orderedTvl = useMemo(() => {
+    return (
+      sortTvl && {
+        ...Object.fromEntries(Object.entries(sortTvl).filter(([key, _]) => key !== 'other')),
+        other: sortTvl['other'],
+      }
+    )
+  }, [sortTvl])
+  const data = useMemo(() => setData(orderedTvl), [orderedTvl])
   const { t } = useTranslation()
   const { theme } = useTheme()
   const total = tvl && Object.entries(tvl)?.reduce((a, b) => a + b[1], 0)
   return (
     <Flex sx={styles.cardContainer}>
-      <Flex sx={{ flexDirection: 'column', textAlign: 'center', mb: '5px' }}>
+      <Flex sx={{ flexDirection: 'column', textAlign: 'center', mb: '0px' }}>
         <Text size="22px" weight={700} mb="10px">
           {t('Total Value Locked')}
-        </Text>
-        <Text size="12px" weight={500}>
-          Amount Staked
         </Text>
         <Text size="22px" weight={700}>
           $<CountUp end={total} decimals={2} duration={1} separator="," />
@@ -136,7 +143,7 @@ const TotalValueLocked: React.FC = () => {
         )}
         <Flex sx={{ flexDirection: 'column', maxWidth: '310px', width: '100%', margin: '10px 0px' }}>
           {tvl &&
-            Object.entries(tvl)?.map((data, i) => {
+            Object.entries(orderedTvl)?.map((data, i) => {
               return (
                 <Flex key={data[0]} sx={{ alignItems: 'center', justifyContent: 'space-between', margin: '5px 0px' }}>
                   <Flex sx={{ alignItems: 'center' }}>

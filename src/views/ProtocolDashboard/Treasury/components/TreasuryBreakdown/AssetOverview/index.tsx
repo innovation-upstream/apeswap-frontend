@@ -17,7 +17,7 @@ const COLORS = [
   'rgba(144, 51, 246, 1)',
   'rgba(105, 165, 136, 1)',
   '#7FDBFF',
-  '#FF851B',
+  'grey',
 ]
 
 const setData = (assets: (TreasuryAssetOverviewInterface | { symbol: string; value: number })[]) => {

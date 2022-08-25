@@ -47,7 +47,7 @@ const TreasuryHistory: React.FC = () => {
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', marginBottom: '20px' }}>
         <Text size="22px" weight={700} mb="10px">
-          {t('Treasury & POL')}
+          {t('Treasury')}
           {'  '}
           <TooltipBubble body={<Text>Protcol Owned Liquidity</Text>} width="200px" transformTip="translate(20px, 0px)">
             <Svg icon="info" width="16px" />
@@ -75,7 +75,7 @@ const TreasuryHistory: React.FC = () => {
               />
               <Flex sx={{ alignItems: 'center', justifyContnet: 'center' }}>
                 <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
-                  Treasury
+                  {t('Operational Funds')}
                 </Text>
                 <Text sx={{ lineHeight: '10px' }}>
                   $<CountUp end={totalTreasury} decimals={0} duration={1} separator="," />

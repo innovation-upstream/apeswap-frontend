@@ -1,16 +1,13 @@
 import { Flex, Tab, Tabs, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React, { useState } from 'react'
-import { useFetchTreasuryAssetOverview } from 'state/protocolDashboard/hooks'
 import AssetBreakdown from './AssetBreakdown'
 import AssetOverview from './AssetOverview'
 import { styles } from './styles'
 
 const TreasuryBreakdown: React.FC = () => {
   const { t } = useTranslation()
-  const treasury = useFetchTreasuryAssetOverview()
   const [activeTab, setActiveTab] = useState(0)
-  const activeView = ['total', 'operationalFunds', 'pol'][activeTab]
   return (
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', mb: '5px' }}>
@@ -31,7 +28,7 @@ const TreasuryBreakdown: React.FC = () => {
           <Tab
             index={1}
             size="sm"
-            label={t('Op Funds')}
+            label={t('Op. Funds')}
             variant="fullWidth"
             activeTab={activeTab}
             onClick={setActiveTab}
