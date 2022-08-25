@@ -15,8 +15,18 @@ const TokenSelector: React.FC<{
   field: any
   typedValue?: string
   showCommonBases?: boolean
+  disableTokenSelect?: boolean
   isRemoveLiquidity?: boolean
-}> = ({ currency, onCurrencySelect, otherCurrency, isRemoveLiquidity, typedValue, field, showCommonBases = false }) => {
+}> = ({
+  currency,
+  onCurrencySelect,
+  otherCurrency,
+  isRemoveLiquidity,
+  disableTokenSelect,
+  typedValue,
+  field,
+  showCommonBases = false,
+}) => {
   const { chainId } = useActiveWeb3React()
 
   const handleDynamicCurrencySelect = useCallback(
@@ -35,7 +45,23 @@ const TokenSelector: React.FC<{
     />,
   )
 
-  return isRemoveLiquidity ? (
+  return disableTokenSelect ? (
+    <Flex
+      sx={{
+        ...styles.primaryFlex,
+        cursor: 'default',
+        '&:active': { transform: 'none' },
+        ':hover': { background: 'white4' },
+      }}
+    >
+      {currency ? (
+        <CurrencyLogo currency={currency} size="30px" />
+      ) : (
+        <Skeleton width="30px" height="30px" animation="waves" variant="circle" />
+      )}
+      <Text sx={{ ...styles.tokenText }}>{currency?.getSymbol(chainId)}</Text>
+    </Flex>
+  ) : isRemoveLiquidity ? (
     <Flex
       sx={{
         ...styles.primaryFlex,
