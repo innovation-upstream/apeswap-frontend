@@ -45,7 +45,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
     <DualLiquidityModal handleClose={closeModal} />,
     true,
     true,
-    'liquidityWidgetModal',
+    'dualLiquidityModal',
   )
 
   const showLiquidity = (token, quoteToken, farm) => {
@@ -66,17 +66,11 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
         outPut: {
           lpSymbol: farm.tokenName,
           lpAddress: farm.contractAddress[chainId],
-          lpValueUsd: '0',
           currency1: farm.lpTokens.token.address[chainId],
           currency1Symbol: farm.lpTokens.token.symbol,
           currency2: farm.lpTokens.quoteToken.address[chainId],
           currency2Symbol: farm.lpTokens.quoteToken.symbol,
-          userData: {
-            allowance: farm.userData?.allowance,
-            tokenBalance: farm.userData?.stakingTokenBalance,
-            stakedBalance: farm.userData?.stakedBalance,
-            earnings: farm.userData?.pendingReward,
-          },
+          userBalance: farm.userData?.stakingTokenBalance,
         },
       }),
     )
@@ -158,11 +152,10 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
             toolTipTransform="translate(8%, 0%)"
             aprCalculator={
               <ApyButton
-                lpLabel={farm?.stakingToken?.symbol}
                 rewardTokenName={farm?.rewardToken?.symbol}
                 rewardTokenPrice={farm?.rewardToken?.price}
                 apy={farm?.apr / 100}
-                addLiquidityUrl={liquidityUrl}
+                jungleFarm={farm}
               />
             }
           />

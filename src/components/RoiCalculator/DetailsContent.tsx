@@ -53,8 +53,15 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
   const gnana = useGoldenBananaAddress()
 
   const [, closeModal] = useModal(<></>)
-  const [onPresentAddLiquidityWidgetModal] = useModal(
+  const [onPresentDualLiquidityModal] = useModal(
     <DualLiquidityModal handleClose={closeModal} />,
+    true,
+    true,
+    'liquidityWidgetModal',
+  )
+
+  const [onPresentAddLiquidityWidgetModal] = useModal(
+    <LiquidityModal handleClose={closeModal} />,
     true,
     true,
     'liquidityWidgetModal',
@@ -88,18 +95,21 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
       dispatch(
         selectLP({
           outPut: {
-            lpSymbol: farm.lpSymbol,
-            lpAddress: farm.lpAddresses[chainId],
-            lpValueUsd: farm.lpValueUsd?.toString(),
-            currency1: farm.tokenAddresses[chainId],
-            currency1Symbol: farm.tokenSymbol,
-            currency2: farm.quoteTokenAdresses[chainId],
-            currency2Symbol: farm.quoteTokenSymbol,
-            userData: farm.userData,
+            lpSymbol: farm?.lpSymbol,
+            lpAddress: farm?.lpAddresses[chainId],
+            currency1: farm?.tokenAddresses[chainId],
+            currency1Symbol: farm?.tokenSymbol,
+            currency2: farm?.quoteTokenAdresses[chainId],
+            currency2Symbol: farm?.quoteTokenSymbol,
+            userBalance: farm?.userData?.tokenBalance.toString(),
           },
         }),
       )
-      onPresentAddLiquidityWidgetModal()
+      if (chainId === 56) {
+        onPresentDualLiquidityModal()
+      } else {
+        onPresentAddLiquidityWidgetModal()
+      }
     }
   }
 

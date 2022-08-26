@@ -9,13 +9,13 @@ import { ApprovalState, useApproveCallbackFromZap } from 'hooks/useApproveCallba
 import { styles } from '../styles'
 import ZapConfirmationModal from './ZapConfirmationModal'
 import { ParsedFarm } from 'state/zap/reducer'
-import { Field } from '../../../state/zap/actions'
+import { Field, MergedZap } from 'state/zap/actions'
 
 interface ZapLiquidityActionsProps {
   currencies: { [Field.INPUT]?: Currency; [Field.OUTPUT]?: ParsedFarm }
   handleZap: () => void
   zapInputError: string
-  zap: any
+  zap: MergedZap
   zapErrorMessage: string
   txHash: string
   handleDismissConfirmation: () => void

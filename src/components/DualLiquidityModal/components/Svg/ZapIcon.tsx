@@ -1,7 +1,7 @@
 import React from 'react'
 import { LegacySvg, LegacySvgProps } from '@ape.swap/uikit'
 
-const Icon: React.FC<LegacySvgProps> = (props) => {
+const ZapIcon: React.FC<LegacySvgProps> = (props) => {
   const { fill } = props
   return (
     <LegacySvg width="11" height="18" viewBox="0 0 11 18" {...props}>
@@ -14,4 +14,4 @@ const Icon: React.FC<LegacySvgProps> = (props) => {
   )
 }
 
-export default Icon
+export default ZapIcon

@@ -3,17 +3,17 @@ import { Flex, Link, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { useAppDispatch } from 'state'
 import { useCurrency } from 'hooks/Tokens'
-import { Currency, ETHER, Token, TokenAmount } from '@ape.swap/sdk'
+import { Currency, ETHER, Token, TokenAmount, ZapType } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from './components/ZapPanel'
 import { Field, selectInputCurrency, selectLP } from 'state/zap/actions'
-import { useDerivedZapInfo, useZapActionHandlers, useZapState } from 'state/zap/hooks'
+import { useDerivedZapInfo, useSetInitialZapData, useZapActionHandlers, useZapState } from 'state/zap/hooks'
 import ZapArrow from './components/Svg/ZapArrow'
 import ZapLiquidityActions from './components/ZapLiquidityActions'
 import { styles } from './styles'
-import { ParsedFarm } from '../../state/zap/reducer'
-import { useZapCallback } from '../../hooks/useZapCallback'
-import DistributionPanel from './components/DistributionPanel'
+import { ParsedFarm } from 'state/zap/reducer'
+import { useZapCallback } from 'hooks/useZapCallback'
+import DistributionPanel from './components/DistributionPanel/DistributionPanel'
 
 const ZapLiquidity = () => {
   const [{ zapErrorMessage, txHash }, setZapState] = useState<{
@@ -23,13 +23,16 @@ const ZapLiquidity = () => {
     zapErrorMessage: undefined,
     txHash: undefined,
   })
+  useSetInitialZapData()
+
   const dispatch = useAppDispatch()
   const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
 
   const inputCurrency = useCurrency(INPUT?.currencyId)
 
   const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo(typedValue, INPUT, OUTPUT, recipient)
-  const { onUserInput } = useZapActionHandlers()
+  const { onUserInput, onSetZapType } = useZapActionHandlers()
+  onSetZapType(ZapType.ZAP)
 
   const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
     zap,
@@ -60,17 +63,6 @@ const ZapLiquidity = () => {
       })
   }, [zapCallback])
 
-  // re evaluate tokens pricing after hooks and state are finilized
-  /* useMemo(async () => {
-    console.log('calculating prices')
-    const priceA = await getCurrencyUsdPrice(chainId, currencyA)
-    const priceB = currencyB.lpValueUsd
-    setPrices({ [Field.CURRENCY_A]: priceA, [Field.CURRENCY_B]: parseFloat(priceB) })
-  }, [chainId, currencyA, currencyB]) */
-
-  // mint state
-  // const { parsedAmounts, currencyBalances, zapInsight, error } = useDerivedMintForZap(currencyA, currencyB, null)
-
   // get the max amounts user can add
   const maxAmounts: { [field in Field]?: TokenAmount } = [Field.INPUT, Field.OUTPUT].reduce((accumulator, field) => {
     return {
@@ -85,7 +77,7 @@ const ZapLiquidity = () => {
   }
 
   const handleDismissConfirmation = useCallback(() => {
-    // if there was a tx hash, we want to clear the input
+    // clear zapState if user close the error modal
     setZapState({
       zapErrorMessage: undefined,
       txHash: undefined,
@@ -126,6 +118,8 @@ const ZapLiquidity = () => {
     [maxAmounts, onUserInput],
   )
 
+  console.log('renderingg')
+
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
@@ -142,7 +136,7 @@ const ZapLiquidity = () => {
         />
         <Flex sx={{ margin: '10px', justifyContent: 'center' }}>
           {
-            // move this arrow to the UI Kit
+            // pending import arrow from UI kit once a new version is published
           }
           <ZapArrow />
         </Flex>

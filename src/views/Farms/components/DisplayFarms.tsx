@@ -58,12 +58,11 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
         outPut: {
           lpSymbol: farm.lpSymbol,
           lpAddress: farm.lpAddresses[chainId],
-          lpValueUsd: farm.lpValueUsd?.toString(),
           currency1: farm.tokenAddresses[chainId],
           currency1Symbol: farm.tokenSymbol,
           currency2: farm.quoteTokenAdresses[chainId],
           currency2Symbol: farm.quoteTokenSymbol,
-          userData: farm.userData,
+          userBalance: farm?.userData?.tokenBalance,
         },
       }),
     )

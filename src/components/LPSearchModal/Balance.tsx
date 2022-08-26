@@ -7,7 +7,7 @@ import { Spinner } from 'theme-ui'
 import styled from 'styled-components'
 
 interface BalanceProps {
-  balance?: BigNumber
+  balance?: string
 }
 
 const Balance: React.FC<BalanceProps> = ({ balance }) => {
@@ -16,7 +16,9 @@ const Balance: React.FC<BalanceProps> = ({ balance }) => {
   return (
     <Flex sx={{ alignItems: 'center' }}>
       {balance ? (
-        <StyledBalanceText>{getBalanceNumber(balance, 18).toFixed(6)}</StyledBalanceText>
+        <StyledBalanceText>
+          {balance === '0' ? '0' : getBalanceNumber(new BigNumber(balance), 18).toFixed(6)}
+        </StyledBalanceText>
       ) : account ? (
         <Spinner width="20px" height="20px" />
       ) : (

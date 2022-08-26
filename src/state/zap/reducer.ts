@@ -18,17 +18,11 @@ import BigNumber from 'bignumber.js'
 export interface ParsedFarm {
   lpSymbol: string
   lpAddress: string
-  lpValueUsd: string
   currency1: string
   currency1Symbol: string
   currency2: string
   currency2Symbol: string
-  userData: {
-    allowance: BigNumber | null
-    tokenBalance: BigNumber | null
-    stakedBalance: BigNumber | null
-    earnings: BigNumber | null
-  }
+  userBalance: string
 }
 
 export interface ZapState {
@@ -56,17 +50,11 @@ const initialState: ZapState = {
   [Field.OUTPUT]: {
     lpSymbol: '',
     lpAddress: '',
-    lpValueUsd: '',
     currency1: '',
     currency1Symbol: '',
     currency2: '',
     currency2Symbol: '',
-    userData: {
-      allowance: null,
-      tokenBalance: null,
-      stakedBalance: null,
-      earnings: null,
-    },
+    userBalance: null,
   },
   shareOfPool: '',
   recipient: null,

@@ -1,38 +1,25 @@
 /** @jsxImportSource theme-ui */
+import React from 'react'
 import { Flex, Svg, Text, useModal } from '@ape.swap/uikit'
-import React, { useMemo } from 'react'
 import { styles } from '../styles'
 import LPSearchModal from '../../LPSearchModal/LPSearchModal'
 import ServiceTokenDisplay from '../../ServiceTokenDisplay'
 import { ParsedFarm } from 'state/zap/reducer'
-import { getZapOutputList, useSetInitialZapData } from '../../../state/zap/hooks'
-import { useJungleFarms, usePollJungleFarms, useSetJungleFarms } from '../../../state/jungleFarms/hooks'
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
-import { useFarms } from '../../../state/farms/hooks'
-import { useBlock } from '../../../state/block/hooks'
+import { Field } from 'state/zap/actions'
+import { usePollJungleFarms, useSetJungleFarms } from '../../../state/jungleFarms/hooks'
+import { usePollFarms, useSetFarms } from '../../../state/farms/hooks'
 
 const LPSelector: React.FC<{
   selectedFarm: ParsedFarm
   onLpSelect: (farm: ParsedFarm) => void
-  field: any
+  field: Field
   typedValue?: string
 }> = ({ selectedFarm, onLpSelect }) => {
-  useSetInitialZapData()
   useSetJungleFarms()
   usePollJungleFarms()
-  const { account, chainId } = useActiveWeb3React()
-  const farms = useFarms(account)
-  const jungleFarms = useJungleFarms(account)
-  const { currentBlock } = useBlock()
-
-  const zapOutputList = useMemo(
-    () => getZapOutputList(farms, jungleFarms, currentBlock, chainId),
-    [chainId, currentBlock, farms, jungleFarms],
-  )
-
-  const [onPresentCurrencyModal] = useModal(
-    <LPSearchModal onLpSelect={onLpSelect} selectedFarm={selectedFarm} zapOutputList={zapOutputList} />,
-  )
+  useSetFarms()
+  usePollFarms()
+  const [onPresentCurrencyModal] = useModal(<LPSearchModal onLpSelect={onLpSelect} />)
 
   return (
     <Flex sx={{ ...styles.primaryFlex }} onClick={onPresentCurrencyModal}>

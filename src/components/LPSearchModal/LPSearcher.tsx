@@ -4,21 +4,32 @@ import { Flex, Input } from '@ape.swap/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from 'contexts/Localization'
 import { Box } from 'theme-ui'
-import { usePollJungleFarms, useSetJungleFarms } from '../../state/jungleFarms/hooks'
+import { useJungleFarms } from 'state/jungleFarms/hooks'
 import { ParsedFarm } from 'state/zap/reducer'
 import DisplayRows from './components/DisplayRows'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useFarms } from 'state/farms/hooks'
+import { useBlock } from 'state/block/hooks'
+import { getZapOutputList } from 'state/zap/hooks'
 
 interface LPSearcherProps {
   onLpSelect: (farm: ParsedFarm) => void
-  zapOutputList: any
+  zapOutputList?: any
 }
 
-function LPSearcher({ onLpSelect, zapOutputList }: LPSearcherProps) {
-  useSetJungleFarms()
-  usePollJungleFarms()
+function LPSearcher({ onLpSelect }: LPSearcherProps) {
   const { t } = useTranslation()
-
   const [query, setQuery] = useState('')
+  const { account, chainId } = useActiveWeb3React()
+  const farms = useFarms(account)
+  const jungleFarms = useJungleFarms(account)
+  const { currentBlock } = useBlock()
+
+  const zapOutputList = useMemo(
+    () => getZapOutputList(farms, jungleFarms, currentBlock, chainId),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [chainId, farms, jungleFarms],
+  )
 
   const queriedFarms = useMemo(() => {
     return zapOutputList?.filter((farm) => farm.lpSymbol.toUpperCase().includes(query.toUpperCase()))

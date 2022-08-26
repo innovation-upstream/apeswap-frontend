@@ -156,7 +156,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = (props) => {
                 key={`${amount}`}
                 size="sm"
                 onClick={() => onDollarAmountChange(amount)}
-                style={{ lineHeight: '0.7' }}
+                style={{ lineHeight: '0.7', minWidth: '72px' }}
               >
                 ${amount}
               </Button>

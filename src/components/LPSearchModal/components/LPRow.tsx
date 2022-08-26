@@ -23,15 +23,11 @@ const LpRow: React.FC<LPRowProps> = ({ farm, onLpSelect }) => {
       >
         <Flex sx={{ alignItems: 'center' }}>
           <ServiceTokenDisplay token1={farm.currency1Symbol} token2={farm.currency2Symbol} noEarnToken={true} />
-          <Flex sx={{ flexDirection: 'column', ml: '10px', alignItems: 'space-between' }}>
-            <Flex sx={{ alignItems: 'center' }}>
-              <Text title={farm.lpSymbol} weight={700} sx={{ lineHeight: '22px' }}>
-                {farm.lpSymbol}
-              </Text>
-            </Flex>
-          </Flex>
+          <Text title={farm.lpSymbol} weight={700} sx={{ lineHeight: '22px', marginLeft: '5px' }}>
+            {farm.lpSymbol}
+          </Text>
         </Flex>
-        <Balance balance={farm?.userData?.tokenBalance} />
+        <Balance balance={farm?.userBalance} />
       </Flex>
     </>
   )

@@ -1,18 +1,25 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Modal, Text, LinkExternal, Flex } from '@apeswapfinance/uikit'
+import { Modal, Text, Flex, useModal } from '@apeswapfinance/uikit'
+import { Text as StyledText } from '@ape.swap/uikit'
 
 import { calculateBananaEarnedPerThousandDollars, apyModalRoi } from 'utils/compoundApyHelpers'
 import { useTranslation } from 'contexts/Localization'
+import { JungleFarm } from '../../state/types'
+import { Field, selectCurrency } from '../../state/swap/actions'
+import { selectLP } from '../../state/zap/actions'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { useAppDispatch } from '../../state'
+import DualLiquidityModal from '../DualLiquidityModal/DualLiquidityModal'
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
-  lpLabel?: string
   rewardTokenName?: string
   rewardTokenPrice?: number
   apy?: number
-  addLiquidityUrl?: string
+  jungleFarm: JungleFarm
 }
 
 const Grid = styled.div`
@@ -33,12 +40,13 @@ const Description = styled(Text)`
 
 const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   onDismiss,
-  lpLabel,
   rewardTokenName,
   rewardTokenPrice,
   apy,
-  addLiquidityUrl,
+  jungleFarm,
 }) => {
+  const { chainId } = useActiveWeb3React()
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const farmApy = new BigNumber(apy).times(new BigNumber(100)).toNumber()
   const tokenPrice =
@@ -65,6 +73,46 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     farmApy,
     rewardTokenPrice,
   })
+
+  // TODO: clean up this code
+  // Hack to get the close modal function from the provider
+  // Need to export ModalContext from uikit to clean up the code
+  const [, closeModal] = useModal(<></>)
+  const [onPresentAddLiquidityWidgetModal] = useModal(
+    <DualLiquidityModal handleClose={closeModal} />,
+    true,
+    true,
+    'dualLiquidityModal',
+  )
+
+  const showLiquidity = (token, quoteToken, farm) => {
+    dispatch(
+      selectCurrency({
+        field: Field.INPUT,
+        currencyId: token,
+      }),
+    )
+    dispatch(
+      selectCurrency({
+        field: Field.OUTPUT,
+        currencyId: quoteToken,
+      }),
+    )
+    dispatch(
+      selectLP({
+        outPut: {
+          lpSymbol: farm.tokenName,
+          lpAddress: farm.contractAddress[chainId],
+          currency1: farm.lpTokens.token.address[chainId],
+          currency1Symbol: farm.lpTokens.token.symbol,
+          currency2: farm.lpTokens.quoteToken.address[chainId],
+          currency2Symbol: farm.lpTokens.quoteToken.symbol,
+          userBalance: farm.userData?.stakingTokenBalance,
+        },
+      }),
+    )
+    onPresentAddLiquidityWidgetModal()
+  }
 
   return (
     <Modal onDismiss={onDismiss} title={t('CURRENT RATES')}>
@@ -145,9 +193,18 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         )}
       </Description>
       <Flex justifyContent="center">
-        <LinkExternal href={addLiquidityUrl}>
-          {t('Get')} {lpLabel}
-        </LinkExternal>
+        <StyledText
+          onClick={() =>
+            showLiquidity(
+              jungleFarm.lpTokens.token.address[chainId],
+              jungleFarm.lpTokens.quoteToken.symbol === 'BNB' ? 'ETH' : jungleFarm.lpTokens.quoteToken.address[chainId],
+              jungleFarm,
+            )
+          }
+          sx={{ '&:hover': { textDecoration: 'underline' } }}
+        >
+          {t('GET LP')}
+        </StyledText>
       </Flex>
     </Modal>
   )

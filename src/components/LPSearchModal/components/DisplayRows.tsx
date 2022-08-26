@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import LPRow from './LPRow'
-import { ParsedFarm } from '../../../state/zap/reducer'
+import { ParsedFarm } from 'state/zap/reducer'
 
 interface DisplayRowsProps {
   queriedFarms?: ParsedFarm[]

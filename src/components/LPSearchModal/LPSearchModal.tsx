@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback } from 'react'
-import { Currency } from '@ape.swap/sdk'
 import styled from '@emotion/styled'
 import { Flex, Modal } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -9,12 +8,8 @@ import useIsMobile from '../../hooks/useIsMobile'
 import { ParsedFarm } from 'state/zap/reducer'
 
 interface LPSearchModalProps {
-  selectedFarm?: ParsedFarm | null
   onLpSelect: (farm: ParsedFarm) => void
-  otherSelectedCurrency?: Currency | null
-  showCommonBases?: boolean
   onDismiss?: () => void
-  zapOutputList: any
 }
 
 const ScrollableContainer = styled(Flex)`
@@ -27,7 +22,7 @@ const ScrollableContainer = styled(Flex)`
   }
 `
 
-const LPSearchModal = ({ onDismiss = () => null, onLpSelect, zapOutputList }: LPSearchModalProps) => {
+const LPSearchModal = ({ onDismiss = () => null, onLpSelect }: LPSearchModalProps) => {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
   const handleLPSelect = useCallback(
@@ -52,7 +47,7 @@ const LPSearchModal = ({ onDismiss = () => null, onLpSelect, zapOutputList }: LP
     <Modal onDismiss={onDismiss} title={t('LP Tokens')} open {...modalProps}>
       <ScrollableContainer>
         <Flex sx={{ flexDirection: 'column', width: '380px', maxWidth: '100%' }}>
-          <LPSearcher onLpSelect={handleLPSelect} zapOutputList={zapOutputList} />
+          <LPSearcher onLpSelect={handleLPSelect} />
         </Flex>
       </ScrollableContainer>
     </Modal>

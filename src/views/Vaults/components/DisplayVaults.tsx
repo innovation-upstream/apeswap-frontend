@@ -15,12 +15,14 @@ import { useTranslation } from 'contexts/Localization'
 import { Vault } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
-import { LiquidityModal } from 'components/LiquidityWidget'
 import { Container, StyledButton, ActionContainer, StyledTag } from './styles'
 import { vaultTokenDisplay } from '../helpers'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from './InfoContent'
+import DualLiquidityModal from 'components/DualLiquidityModal/DualLiquidityModal'
+import { selectLP } from 'state/zap/actions'
+import ZapIcon from '../../../components/DualLiquidityModal/components/Svg/ZapIcon'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -35,13 +37,13 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
   // Need to export ModalContext from uikit to clean up the code
   const [, closeModal] = useModal(<></>)
   const [onPresentAddLiquidityWidgetModal] = useModal(
-    <LiquidityModal handleClose={closeModal} />,
+    <DualLiquidityModal handleClose={closeModal} />,
     true,
     true,
-    'liquidityWidgetModal',
+    'dualLiquidityModal',
   )
 
-  const showLiquidity = (token, quoteToken) => {
+  const showLiquidity = (token, quoteToken, vault) => {
     dispatch(
       selectCurrency({
         field: Field.INPUT,
@@ -52,6 +54,19 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       selectCurrency({
         field: Field.OUTPUT,
         currencyId: quoteToken,
+      }),
+    )
+    dispatch(
+      selectLP({
+        outPut: {
+          lpSymbol: vault.stakeToken.symbol,
+          lpAddress: vault.stratAddress[chainId],
+          currency1: vault.token.address[chainId],
+          currency1Symbol: vault.token.symbol,
+          currency2: vault.quoteToken.address[chainId],
+          currency2Symbol: vault.quoteToken.symbol,
+          userBalance: vault.userData.tokenBalance,
+        },
       }),
     )
     onPresentAddLiquidityWidgetModal()
@@ -159,10 +174,11 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                   showLiquidity(
                     vault.token.symbol === 'BNB' ? 'ETH' : vault.token.address[chainId],
                     vault.quoteToken.symbol === 'BNB' ? 'ETH' : vault.quoteToken.address[chainId],
+                    vault,
                   )
                 }
               >
-                GET LP
+                {t('GET LP')} <ZapIcon fill="white" style={{ marginLeft: '5px' }} />
               </StyledButton>
             ) : (
               <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">

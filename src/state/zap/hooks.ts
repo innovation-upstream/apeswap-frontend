@@ -31,6 +31,7 @@ import { AppThunk } from '../types'
 import fetchZapInputTokens from './api'
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks'
 import { fromPairs, groupBy } from 'lodash'
+import BigNumber from 'bignumber.js'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -170,7 +171,8 @@ export function useDerivedZapInfo(
 
   // Change to currency amount. Divide the typed input by 2 to get correct distributions
   // I think the parseFloat might be generating rounding issues
-  const parsedAmount = tryParseAmount((parseFloat(typedValue) / 2).toString(), inputCurrency ?? undefined)
+  const halfTypedValue = new BigNumber(typedValue).div(2).toFixed(18, 5)
+  const parsedAmount = tryParseAmount(halfTypedValue === 'NaN' ? '0' : halfTypedValue, inputCurrency ?? undefined)
 
   const bestZapOne = useTradeExactIn(parsedAmount, outputCurrencies[0] ?? undefined)
   const bestZapTwo = useTradeExactIn(parsedAmount, outputCurrencies[1] ?? undefined)
@@ -285,17 +287,11 @@ export function queryParametersToZapState(parsedQs: ParsedQs, chainId: ChainId):
     [Field.OUTPUT]: {
       lpSymbol: '',
       lpAddress: '',
-      lpValueUsd: '',
       currency1: '',
       currency1Symbol: '',
       currency2: '',
       currency2Symbol: '',
-      userData: {
-        allowance: undefined,
-        tokenBalance: undefined,
-        stakedBalance: undefined,
-        earnings: undefined,
-      },
+      userBalance: undefined,
     },
     shareOfPool: '',
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
@@ -369,12 +365,11 @@ export const getZapOutputList = (farms, jungleFarms, currentBlock, chainId) => {
     return {
       lpSymbol: farm.lpSymbol,
       lpAddress: farm.lpAddresses[chainId],
-      lpValueUsd: farm.lpValueUsd?.toString(),
       currency1: farm.tokenAddresses[chainId],
       currency1Symbol: farm.tokenSymbol,
       currency2: farm.quoteTokenAdresses[chainId],
       currency2Symbol: farm.quoteTokenSymbol,
-      userData: farm.userData,
+      userBalance: farm.userData?.tokenBalance,
     }
   })
 
@@ -390,17 +385,11 @@ export const getZapOutputList = (farms, jungleFarms, currentBlock, chainId) => {
     return {
       lpSymbol: farm.tokenName,
       lpAddress: farm.contractAddress[chainId],
-      lpValueUsd: '0',
       currency1: farm.lpTokens.token.address[chainId],
       currency1Symbol: farm.lpTokens.token.symbol,
       currency2: farm.lpTokens.quoteToken.address[chainId],
       currency2Symbol: farm.lpTokens.quoteToken.symbol,
-      userData: {
-        allowance: farm.userData?.allowance,
-        tokenBalance: farm.userData?.stakingTokenBalance,
-        stakedBalance: farm.userData?.stakedBalance,
-        earnings: farm.userData?.pendingReward,
-      },
+      userBalance: farm.userData?.stakingTokenBalance,
     }
   })
   return [...parsedFarms, ...parsedJungleFarms]
