@@ -133,13 +133,13 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     darkIcon: 'MoreDarkImage',
     items: [
       {
-        label: t('Dashboard'),
-        href: 'protocol-dashboard',
+        label: t('ApeStats'),
+        href: '/apestats',
         isNew: true,
       },
       {
-        label: t('ApeStats'),
-        href: '/apestats',
+        label: t('Dashboard'),
+        href: 'protocol-dashboard',
         isNew: true,
       },
       {

@@ -138,6 +138,9 @@ const App: React.FC = () => {
               <Route path="/privacy">
                 <PrivacyPolicy />
               </Route>
+              <Route path="/protocol-dashboard">
+                <ProtocolDashboard />
+              </Route>
               {/* Redirects */}
               <Route path="/admin-pools">
                 <Redirect to="/" />
@@ -223,6 +226,9 @@ const App: React.FC = () => {
               </Route> */}
               <Route path="/admin-pools">
                 <AdminPools />
+              </Route>
+              <Route path="/protocol-dashboard">
+                <ProtocolDashboard />
               </Route>
               <Route path="/banana-farms">
                 <DualFarms />
