@@ -27,7 +27,7 @@ import ResetScroll from './utils/resetScroll'
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
   integrations: [new BrowserTracing()],
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 0.1,
 })
 
 declare module '@emotion/react' {
@@ -58,6 +58,7 @@ const Bills = lazy(() => import('./views/Bills'))
 const Orders = lazy(() => import('./views/Dex/Orders'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
+const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -139,6 +140,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/privacy">
                 <PrivacyPolicy />
+              </Route>
+              <Route path="/protocol-dashboard">
+                <ProtocolDashboard />
               </Route>
               {/* Redirects */}
               <Route path="/admin-pools">
@@ -228,6 +232,9 @@ const App: React.FC = () => {
               </Route> */}
               <Route path="/admin-pools">
                 <AdminPools />
+              </Route>
+              <Route path="/protocol-dashboard">
+                <ProtocolDashboard />
               </Route>
               <Route path="/banana-farms">
                 <DualFarms />
@@ -319,6 +326,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/pools">
               <Pools />
+            </Route>
+            <Route path="/protocol-dashboard">
+              <ProtocolDashboard />
             </Route>
             <Route path="/jungle-farms">
               <JungleFarms />
