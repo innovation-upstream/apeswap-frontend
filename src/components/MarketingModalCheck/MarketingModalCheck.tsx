@@ -21,14 +21,17 @@ const MarketingModalCheck = () => {
     const sdmk = localStorage.getItem(SET_DEFAULT_MODAL_KEY)
     const isdm = localStorage.getItem(SHOW_DEFAULT_MODAL_KEY)
 
+    // This needs to be fixed but I didnt want to reset users local storage keys
+    // Basically first land users wont get the modal until they refresh so I added a showDefaultModalFlag variable
     const isDefaultModalSet = JSON.parse(sdmk)
     const isShowDefaultModal = JSON.parse(isdm)
+    const showDefaultModalFlag = isShowDefaultModal || (!isShowDefaultModal && !isDefaultModalSet)
 
     if (!isDefaultModalSet) {
       localStorage.setItem(SHOW_DEFAULT_MODAL_KEY, JSON.stringify('SHOW'))
     }
 
-    if (isShowDefaultModal && onHomepage) {
+    if (showDefaultModalFlag && onHomepage) {
       history.push({ search: '?modal=tutorial' })
     }
   }, [history])
