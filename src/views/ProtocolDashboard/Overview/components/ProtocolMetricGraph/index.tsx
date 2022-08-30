@@ -6,7 +6,7 @@ import { Line } from 'react-chartjs-2'
 import useTheme from 'hooks/useTheme'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
-import { useFetchOverviewProtocolMetrics } from 'state/protocolDashboard/hooks'
+import { useFetchOverviewProtocolMetrics, useFetchTreasuryHistory } from 'state/protocolDashboard/hooks'
 import useIsMobile from 'hooks/useIsMobile'
 
 const setData = (data: any, theme: any) => {
@@ -32,10 +32,20 @@ const ProtocolMetricsGraph: React.FC = () => {
     '30d': new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000).getTime(),
   }
   const metrics = useFetchOverviewProtocolMetrics()
+  // Using this endpoint for pol until the original gets fixed
+  const polHistory = useFetchTreasuryHistory()
   const bananaHolders = metrics?.filter((data) => data.description === 'Banana Holders')[0]
   const marketCap = metrics?.filter((data) => data.description === 'Market Cap')[0]
   const bananaBurned = metrics?.filter((data) => data.description === 'Banana Burned')[0]
-  const pol = metrics?.filter((data) => data.description === 'POL')[0]
+  // Using this until POL endpoint gets fixed
+  // Replace with this:  metrics?.filter((data) => data.description === 'POL')[0]
+  const pol = useMemo(() => {
+    return {
+      history: polHistory.map((hist) => {
+        return { amount: hist.polValue, time: hist.timestamp }
+      }),
+    }
+  }, [polHistory])
   const listOfMetrics = useMemo(
     () => [bananaHolders, marketCap, bananaBurned, pol],
     [bananaHolders, marketCap, bananaBurned, pol],

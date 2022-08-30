@@ -40,7 +40,7 @@ const ProtocolDashboard = () => {
             banner="protocol-dashboard"
             title="Protocol Dashboard"
             titleColor="primaryBright"
-            link="?modal=2"
+            link="https://apeswap.gitbook.io/apeswap-finance/welcome/master"
             maxWidth={1130}
           />
         </Flex>

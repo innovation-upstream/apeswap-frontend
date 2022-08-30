@@ -2,12 +2,12 @@
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import React, { useMemo } from 'react'
 import { Line } from 'react-chartjs-2'
-import stubData from './stubData'
 import { styles } from './styles'
 import useTheme from 'hooks/useTheme'
 import CountUp from 'react-countup'
+import placeholderTreasuryGraphData from './placeholderTreasuryGraphData.json'
 import { useTranslation } from 'contexts/Localization'
-import { useFetchTreasuryHistory } from 'state/protocolDashboard/hooks'
+// import { useFetchTreasuryHistory } from 'state/protocolDashboard/hooks'
 import { TreasuryHistoryInterface } from 'state/protocolDashboard/types'
 
 const setData = (treasuryHistory: TreasuryHistoryInterface[]) => {
@@ -35,7 +35,8 @@ const setData = (treasuryHistory: TreasuryHistoryInterface[]) => {
 }
 
 const TreasuryHistory: React.FC = () => {
-  const treasuryHistory = useFetchTreasuryHistory()
+  // Placeholder until data gets sorted out
+  const treasuryHistory = placeholderTreasuryGraphData // useFetchTreasuryHistory()
   const { theme } = useTheme()
   const data = useMemo(() => setData(treasuryHistory), [treasuryHistory])
   const totalPol = treasuryHistory?.[treasuryHistory?.length - 1]?.polValue
@@ -48,14 +49,6 @@ const TreasuryHistory: React.FC = () => {
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', marginBottom: '20px' }}>
         <Text size="22px" weight={700} mb="10px">
           {t('Treasury')}
-          {'  '}
-          <TooltipBubble
-            body={<Text>{t('Total value of the liquidity that ApeSwap owns in the form of LP tokens.')}</Text>}
-            width="200px"
-            transformTip="translate(20px, 0px)"
-          >
-            <Svg icon="info" width="16px" />
-          </TooltipBubble>
         </Text>
         {totalPol && totalTreasury && (
           <Text size="16px" weight={500}>
@@ -81,12 +74,19 @@ const TreasuryHistory: React.FC = () => {
                 <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
                   {t('Operational Funds')}
                 </Text>
-                <Text sx={{ lineHeight: '10px' }}>
+                <Text sx={{ lineHeight: '10px', mr: '5px' }}>
                   $<CountUp end={totalTreasury} decimals={0} duration={1} separator="," />
                 </Text>
+                <TooltipBubble
+                  body={<Text>{t('Capital that ApeSwap has on hand to use for DAO expenses.')}</Text>}
+                  width="200px"
+                  transformTip="translate(25px, 0px)"
+                >
+                  <Svg icon="info" width="13px" />
+                </TooltipBubble>
               </Flex>
             </Flex>
-            <Flex sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '10px 0px' }}>
+            <Flex sx={{ alignItems: 'center', flexWrap: 'no-wrap', margin: '2px 0px' }}>
               <Flex
                 sx={{
                   background: 'rgba(77, 64, 64, 1)',
@@ -100,9 +100,16 @@ const TreasuryHistory: React.FC = () => {
                 <Text weight={700} mr="5px" sx={{ lineHeight: '10px' }}>
                   POL
                 </Text>
-                <Text sx={{ lineHeight: '10px' }}>
+                <Text sx={{ lineHeight: '10px', mr: '5px' }}>
                   $<CountUp end={totalPol} decimals={0} duration={1} separator="," />
                 </Text>
+                <TooltipBubble
+                  body={<Text>{t('Total value of the liquidity that ApeSwap owns in the form of LP tokens.')}</Text>}
+                  width="200px"
+                  transformTip="translate(25px, 0px)"
+                >
+                  <Svg icon="info" width="13px" />
+                </TooltipBubble>
               </Flex>
             </Flex>
           </Flex>
@@ -121,6 +128,7 @@ const TreasuryHistory: React.FC = () => {
             },
             scales: {
               y: {
+                stacked: true,
                 grid: { display: false, drawBorder: false },
                 ticks: { display: false },
               },
