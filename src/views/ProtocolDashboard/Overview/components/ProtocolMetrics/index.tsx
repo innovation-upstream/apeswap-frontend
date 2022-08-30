@@ -15,6 +15,7 @@ const TOOLTIPS = {
 
 const ProtocolMetrics: React.FC = () => {
   const protocolMetrics = useFetchOverviewProtocolMetrics()
+  const filterProtocolMetrics = protocolMetrics?.filter((metric) => metric.description !== 'Banana Holders')
   const { t } = useTranslation()
   return (
     <Flex sx={styles.cardContainer}>
@@ -23,7 +24,7 @@ const ProtocolMetrics: React.FC = () => {
           {t('Protocol Metrics')}
         </Text>
       </Flex>
-      {protocolMetrics?.map((data) => {
+      {filterProtocolMetrics?.map((data) => {
         return (
           <Flex sx={{ justifyContent: 'space-between', margin: '8.5px 0px' }} key={data.description}>
             <Flex sx={{ alignItems: 'center' }}>
@@ -39,6 +40,7 @@ const ProtocolMetrics: React.FC = () => {
               </TooltipBubble>
             </Flex>
             <Text weight={700}>
+              {(data.description === 'Market Cap' || data.description === 'POL') && '$'}
               <CountUp end={data.amount} decimals={2} duration={1} separator="," />
             </Text>
           </Flex>

@@ -40,13 +40,13 @@ const ProtocolMetricsGraph: React.FC = () => {
     () => [bananaHolders, marketCap, bananaBurned, pol],
     [bananaHolders, marketCap, bananaBurned, pol],
   )
-  const [activeCatTab, setActiveCatTab] = useState(0)
+  const [activeCatTab, setActiveCatTab] = useState(1)
   const [activeTime, onSetTime] = useState('30d')
   const { t } = useTranslation()
   const { theme } = useTheme()
   const isMobile = useIsMobile()
   const data = useMemo(() => setData(listOfMetrics[activeCatTab], theme), [listOfMetrics, activeCatTab, theme])
-  const categories = ['Holders', 'Market Cap', 'Burned', 'POL']
+  const categories = ['Market Cap', 'Burned', 'POL']
 
   const switchCatTab = (index) => {
     isMobile ? setActiveCatTab(categories.indexOf(index)) : setActiveCatTab(index)
@@ -58,14 +58,14 @@ const ProtocolMetricsGraph: React.FC = () => {
         <Flex sx={{ width: 'fit-content' }}>
           {!isMobile ? (
             <Tabs activeTab={activeCatTab} size="sm" variant="centered" sx={{ mb: '5px' }}>
-              <Tab
+              {/* <Tab
                 index={0}
                 size="sm"
                 label={t('Holders')}
                 activeTab={activeCatTab}
                 variant="centered"
                 onClick={switchCatTab}
-              />
+              /> */}
               <Tab
                 index={1}
                 size="sm"
@@ -168,6 +168,11 @@ const ProtocolMetricsGraph: React.FC = () => {
                   enabled: true,
                   mode: 'nearest',
                   intersect: false,
+                  callbacks: {
+                    label: (context) => {
+                      return `${activeCatTab === 1 || activeCatTab === 3 ? '$' : ''}${context.formattedValue}`
+                    },
+                  },
                   titleFont: { family: 'poppins', weight: '700', size: 16 },
                   bodyFont: { family: 'poppins', weight: '500', size: 14 },
                   titleColor: theme.colors.text,
