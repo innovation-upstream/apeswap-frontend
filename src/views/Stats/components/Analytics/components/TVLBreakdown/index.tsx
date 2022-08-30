@@ -45,12 +45,7 @@ export const TVLBreakdown = () => {
       {+tvl.total > 0 ? (
         <StyledFlex>
           <div>
-            <Doughnut
-              data={chartData}
-              height={208}
-              width={208}
-              options={{ maintainAspectRatio: false, cutoutPercentage: 60, tooltips: 'none' }}
-            />
+            <Doughnut data={chartData} height={208} width={208} options={{ maintainAspectRatio: false }} />
           </div>
 
           <TableInfo>
