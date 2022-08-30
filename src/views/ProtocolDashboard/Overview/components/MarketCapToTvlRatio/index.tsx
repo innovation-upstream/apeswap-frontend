@@ -35,13 +35,13 @@ const MarketCapToTvlRatio: React.FC = () => {
         <Text size="22px" weight={700} mb="10px">
           {t('Market Cap to TVL Ratio')}
         </Text>
-        {mcapTvlData.length > 0 && (
+        {mcapTvlData?.length > 0 && (
           <Text size="16px" weight={500}>
             <CountUp end={mcapTvlData[mcapTvlData.length - 1].ratio} decimals={2} duration={1} separator="," />
           </Text>
         )}
       </Flex>
-      {mcapTvlData.length > 0 && (
+      {mcapTvlData?.length > 0 && (
         <Flex sx={{ maxWidth: '100%', width: '99%', height: '200px' }}>
           <Line
             data={data}
@@ -114,4 +114,4 @@ const MarketCapToTvlRatio: React.FC = () => {
   )
 }
 
-export default MarketCapToTvlRatio
+export default React.memo(MarketCapToTvlRatio)

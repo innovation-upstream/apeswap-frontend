@@ -27,7 +27,7 @@ import ResetScroll from './utils/resetScroll'
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
   integrations: [new BrowserTracing()],
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 0.1,
 })
 
 declare module '@emotion/react' {

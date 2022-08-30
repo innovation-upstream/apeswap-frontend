@@ -6,11 +6,9 @@ import { Doughnut } from 'react-chartjs-2'
 import useTheme from 'hooks/useTheme'
 import { useFetchOverviewTvl } from 'state/protocolDashboard/hooks'
 import { useTranslation } from 'contexts/Localization'
-import CountUp, { useCountUp } from 'react-countup'
+import CountUp from 'react-countup'
 import { styles } from './styles'
-import { OverviewTvlInterface } from 'state/protocolDashboard/types'
 import { useFetchHomepageStats } from 'state/hooks'
-import { orderBy } from 'lodash'
 
 const COLORS = [
   'rgba(244, 190, 55, 1)',
@@ -176,4 +174,4 @@ const TotalValueLocked: React.FC = () => {
   )
 }
 
-export default TotalValueLocked
+export default React.memo(TotalValueLocked)

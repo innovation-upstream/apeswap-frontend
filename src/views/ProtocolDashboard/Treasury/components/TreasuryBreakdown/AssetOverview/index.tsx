@@ -161,4 +161,4 @@ const AssetOverview: React.FC<{ activeView: number }> = ({ activeView }) => {
   )
 }
 
-export default AssetOverview
+export default React.memo(AssetOverview)

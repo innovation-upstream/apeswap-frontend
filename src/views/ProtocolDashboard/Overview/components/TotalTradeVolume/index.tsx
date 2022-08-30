@@ -168,4 +168,4 @@ const TotalTradeVolume: React.FC = () => {
   )
 }
 
-export default TotalTradeVolume
+export default React.memo(TotalTradeVolume)

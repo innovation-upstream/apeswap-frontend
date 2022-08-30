@@ -160,4 +160,4 @@ const TreasuryHistory: React.FC = () => {
   )
 }
 
-export default TreasuryHistory
+export default React.memo(TreasuryHistory)

@@ -13,9 +13,7 @@ import { HeadingContainer } from './styles'
 const UserBillViews: React.FC<{ bills: Bills[] }> = ({ bills }) => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
-  console.log(bills)
   const userOwnedBills = bills?.filter((bill) => bill?.userOwnedBillsData?.length > 0)
-  console.log(userOwnedBills)
   const ownedBillsAmount = bills?.flatMap((bill) => (bill?.userOwnedBillsData ? bill?.userOwnedBillsData : [])).length
   const [showAll, setShowAll] = useState(false)
   const [showExpired, setShowExpired] = useState(true)

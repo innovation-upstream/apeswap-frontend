@@ -44,4 +44,4 @@ const TreasuryBreakdown: React.FC = () => {
   )
 }
 
-export default TreasuryBreakdown
+export default React.memo(TreasuryBreakdown)

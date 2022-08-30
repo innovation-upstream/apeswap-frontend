@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 // @ts-nocheck
 // ChartJS has borderRadius in vs 3^, but react-chartjs does not have the type for it
-import { ApeSwapTheme, Flex, Svg, Text } from '@ape.swap/uikit'
+import { ApeSwapTheme, Flex, Text } from '@ape.swap/uikit'
 import React, { useMemo } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import { styles } from './styles'
@@ -21,9 +21,9 @@ const doughnutLabelsLine = {
       ctx,
       chartArea: { width, height },
     } = chart
-    chart.data.datasets.map((dataset, i) => {
+    chart.data.datasets.forEach((dataset, i) => {
       const totalBanana = dataset.data.reduce((a, b) => a + b, 0)
-      chart.getDatasetMeta(i).data.map((datapoint, j) => {
+      chart.getDatasetMeta(i).data.forEach((datapoint, j) => {
         const { x, y } = datapoint.tooltipPosition()
         const halfWidth = width / 2
         const halfHeight = height / 2
@@ -168,4 +168,4 @@ const BananaSupplyDistribution: React.FC = () => {
   )
 }
 
-export default BananaSupplyDistribution
+export default React.memo(BananaSupplyDistribution)

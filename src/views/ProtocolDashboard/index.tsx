@@ -58,4 +58,4 @@ const ProtocolDashboard = () => {
   )
 }
 
-export default ProtocolDashboard
+export default React.memo(ProtocolDashboard)

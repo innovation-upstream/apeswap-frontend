@@ -21,4 +21,4 @@ const Treasury: React.FC = () => {
   )
 }
 
-export default Treasury
+export default React.memo(Treasury)

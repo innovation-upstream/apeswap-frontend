@@ -41,7 +41,7 @@ const ProtocolMetricsGraph: React.FC = () => {
   // Replace with this:  metrics?.filter((data) => data.description === 'POL')[0]
   const pol = useMemo(() => {
     return {
-      history: polHistory.map((hist) => {
+      history: polHistory?.map((hist) => {
         return { amount: hist.polValue, time: hist.timestamp }
       }),
     }
@@ -205,4 +205,4 @@ const ProtocolMetricsGraph: React.FC = () => {
   )
 }
 
-export default ProtocolMetricsGraph
+export default React.memo(ProtocolMetricsGraph)

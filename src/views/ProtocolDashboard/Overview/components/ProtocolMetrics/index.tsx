@@ -51,4 +51,4 @@ const ProtocolMetrics: React.FC = () => {
   )
 }
 
-export default ProtocolMetrics
+export default React.memo(ProtocolMetrics)
