@@ -17,6 +17,7 @@ const MarketingModalCheck = () => {
   const history = useHistory()
   const { t } = useTranslation()
   useMemo(() => {
+    const onHomepage = history.location.pathname === '/'
     const sdmk = localStorage.getItem(SET_DEFAULT_MODAL_KEY)
     const isdm = localStorage.getItem(SHOW_DEFAULT_MODAL_KEY)
 
@@ -27,7 +28,7 @@ const MarketingModalCheck = () => {
       localStorage.setItem(SHOW_DEFAULT_MODAL_KEY, JSON.stringify('SHOW'))
     }
 
-    if (isShowDefaultModal) {
+    if (isShowDefaultModal && onHomepage) {
       history.push({ search: '?modal=tutorial' })
     }
   }, [history])
