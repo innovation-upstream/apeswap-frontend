@@ -33,8 +33,9 @@ const ProtocolMetrics: React.FC = () => {
               </Text>
               <TooltipBubble
                 body={<Text>{t(TOOLTIPS[data.description])}</Text>}
-                transformTip="translate(20px, 0px)"
+                transformTip="translate(-15px, 0px)"
                 width="200px"
+                placement="topLeft"
               >
                 <Svg icon="info" width="15px" color="gray" />
               </TooltipBubble>

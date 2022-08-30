@@ -26,7 +26,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     },
     '@media screen and (max-width: 650px)': {
       left: '10px',
-      top: '90px',
+      top: '80px',
     },
   },
 }
