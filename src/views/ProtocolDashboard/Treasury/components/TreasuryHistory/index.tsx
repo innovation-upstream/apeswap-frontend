@@ -49,7 +49,11 @@ const TreasuryHistory: React.FC = () => {
         <Text size="22px" weight={700} mb="10px">
           {t('Treasury')}
           {'  '}
-          <TooltipBubble body={<Text>Protcol Owned Liquidity</Text>} width="200px" transformTip="translate(20px, 0px)">
+          <TooltipBubble
+            body={<Text>{t('Total value of the liquidity that ApeSwap owns in the form of LP tokens.')}</Text>}
+            width="200px"
+            transformTip="translate(20px, 0px)"
+          >
             <Svg icon="info" width="16px" />
           </TooltipBubble>
         </Text>

@@ -37,7 +37,7 @@ const MarketCapToTvlRatio: React.FC = () => {
         </Text>
         {mcapTvlData.length > 0 && (
           <Text size="16px" weight={500}>
-            <CountUp end={mcapTvlData[mcapTvlData.length - 1].ratio} decimals={2} duration={1} separator="," />%
+            <CountUp end={mcapTvlData[mcapTvlData.length - 1].ratio} decimals={2} duration={1} separator="," />
           </Text>
         )}
       </Flex>
@@ -65,6 +65,7 @@ const MarketCapToTvlRatio: React.FC = () => {
                 },
                 x: {
                   grid: { display: false, drawBorder: false },
+                  min: new Date(new Date().getTime() - 180 * 24 * 60 * 60 * 1000).getTime(),
                   ticks: {
                     color: theme.colors.text,
                     font: { family: 'poppins', weight: '500' },

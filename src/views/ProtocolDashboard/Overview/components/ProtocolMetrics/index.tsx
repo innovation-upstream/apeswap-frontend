@@ -6,9 +6,15 @@ import CountUp from 'react-countup'
 import { useFetchOverviewProtocolMetrics } from 'state/protocolDashboard/hooks'
 import { styles } from './styles'
 
+const TOOLTIPS = {
+  'Banana Holders': 'Includes the number of wallets that actively hold or stake BANANA or GNANA.',
+  'Market Cap': 'Total value of BANANA tokens in circulation, based on current BANANA price.',
+  'Banana Burned': 'Total number of BANANA tokens burned through manual and protocol burns.',
+  POL: 'Total value of the liquidity that ApeSwap owns in the form of LP tokens.',
+}
+
 const ProtocolMetrics: React.FC = () => {
   const protocolMetrics = useFetchOverviewProtocolMetrics()
-  console.log(protocolMetrics)
   const { t } = useTranslation()
   return (
     <Flex sx={styles.cardContainer}>
@@ -24,7 +30,11 @@ const ProtocolMetrics: React.FC = () => {
               <Text weight={500} mr="5px">
                 {t(data.description)}
               </Text>
-              <TooltipBubble body={<Text>Some tooltip</Text>} transformTip="translate(20px, 0px)" width="120px">
+              <TooltipBubble
+                body={<Text>{t(TOOLTIPS[data.description])}</Text>}
+                transformTip="translate(20px, 0px)"
+                width="200px"
+              >
                 <Svg icon="info" width="15px" color="gray" />
               </TooltipBubble>
             </Flex>
