@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Button, Text } from '@apeswapfinance/uikit'
 import BaseUnlockButton from 'components/UnlockButton'
+import { Toggle } from '@ape.swap/uikit'
 
 export const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.white3};
@@ -64,4 +65,9 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 100px;
+`
+export const StyledToggle = styled(Toggle)`
+  border: 1px solid;
+  border-color: ${({ theme }) => theme.colors.white2};
 `
