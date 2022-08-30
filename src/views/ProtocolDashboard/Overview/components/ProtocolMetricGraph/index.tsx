@@ -46,7 +46,7 @@ const ProtocolMetricsGraph: React.FC = () => {
   const { theme } = useTheme()
   const isMobile = useIsMobile()
   const data = useMemo(() => setData(listOfMetrics[activeCatTab], theme), [listOfMetrics, activeCatTab, theme])
-  const categories = ['Market Cap', 'Burned', 'POL']
+  const categories = ['Banana Holders', 'Market Cap', 'Burned', 'POL']
 
   const switchCatTab = (index) => {
     isMobile ? setActiveCatTab(categories.indexOf(index)) : setActiveCatTab(index)
@@ -98,9 +98,9 @@ const ProtocolMetricsGraph: React.FC = () => {
               onChange={(e) => switchCatTab(e.target.value)}
               active={categories[activeCatTab]}
             >
-              <SelectItem size="sm" value="Holders" key="holders">
+              {/* <SelectItem size="sm" value="Holders" key="holders">
                 <Text sx={{ lineHeight: '20px' }}>{t('Holders')}</Text>
-              </SelectItem>
+              </SelectItem> */}
               <SelectItem size="sm" value="Market Cap" key="marketCap">
                 <Text sx={{ lineHeight: '20px' }}>{t('Market Cap')}</Text>
               </SelectItem>
