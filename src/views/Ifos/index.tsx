@@ -9,6 +9,7 @@ import Ideology from './components/Ideology/Ideology'
 import IfoPastProjectSwiper from './components/PastProjectSwiper/IfoPastProjectSwiper'
 import { TabOption } from './types'
 import IfoProjectCard from './components/IfoCard/ProjectCard/IfoProjectCard'
+import { useFetchTokenPrices } from 'state/tokenPrices/hooks'
 
 const Ifos = () => {
   const { t } = useTranslation()
@@ -16,6 +17,7 @@ const Ifos = () => {
   const activeIfoId = ifos(t).find((ifo) => ifo.isActive).id
   const [tabOption, setTabOption] = React.useState<TabOption>('current')
   const [projectId, setProjectId] = React.useState<string | undefined>(activeIfoId)
+  useFetchTokenPrices()
 
   const handleTabSelectionChange = (option: TabOption) => {
     setTabOption(option)
@@ -38,7 +40,7 @@ const Ifos = () => {
         <Banner
           banner="iao"
           link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/initial-ape-offerings-iaos"
-          title={t('Official Initial Ape Offerings')}
+          title={t('Initial Ape Offerings')}
           maxWidth={992}
           margin="30px 0px 20px 0px"
         />
