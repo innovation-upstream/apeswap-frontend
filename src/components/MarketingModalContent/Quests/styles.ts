@@ -46,16 +46,14 @@ export const subtitle = (isDark): ThemeUIStyleObject => ({
 export const styles: Record<string, ThemeUIStyleObject> = {
   container: {
     alignItems: 'flex-start',
+    justifyContent: 'center',
     overflow: 'hidden',
     overflowY: 'auto',
-    height: '508px',
-    '@media screen and (min-width: 853px)': {
-      width: '100%',
-      minWidth: '800px',
-      maxWidth: '800px',
-      height: '500px',
-    },
+    height: ['90%', '90%', '500px'],
     flexWrap: 'wrap',
+    width: ['auto', 'auto', '100%'],
+    minWidth: ['auto', 'auto', '800px'],
+    maxWidth: ['auto', 'auto', '800px'],
   },
   imagesWrapper: {
     width: '100%',
@@ -65,23 +63,17 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'center',
   },
   textWrapper: {
-    width: '100%',
-    textAlign: 'center',
-    justifyContent: 'center',
-    '@media screen and (min-width: 853px)': {
-      padding: '110px 20px 0 30px',
-      width: '420px',
-      textAlign: 'start',
-      justifyContent: 'flex-start',
-    },
+    width: ['100%', '100%', '420px', '420px'],
+    textAlign: ['center', 'center', 'start'],
+    justifyContent: ['center', 'center', 'flex-start'],
+    padding: ['', '', '110px 20px 0 30px'],
     flexWrap: 'wrap',
   },
   bubbleWrapper: {
     width: '100%',
-    justifyContent: 'center',
+    justifyContent: ['center', 'center', 'flex-start'],
     margin: '20px 0 15px',
     '@media screen and (min-width: 853px)': {
-      justifyContent: 'flex-start',
       margin: '32px 0 20px 0',
     },
   },
@@ -164,9 +156,28 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     fontStyle: 'normal',
     '@media screen and (max-width: 853px)': {
       width: '222px',
-      marginBottom: '20px',
     },
     paddingTop: '5px',
     paddingBottom: '5px',
+  },
+  defaultNoShow: {
+    justifySelf: 'flex-end',
+    alignSelf: ['flex-start', 'flex-start', 'flex-start', 'center'],
+    alignItems: 'center',
+    marginTop: '20px',
+    marginBottom: ['25px', '25px', '30px', '0px'],
+    width: ['222px'],
+  },
+  checkboxCon: {
+    alignItems: 'center',
+    width: '21px',
+    height: '21px',
+    paddingLeft: '4px',
+  },
+  checkboxText: {
+    fontSize: ['12px', '12px', '14px'],
+    fontWeight: 500,
+    lineHeight: '14px',
+    marginLeft: ['15px', '15px', '20px'],
   },
 }

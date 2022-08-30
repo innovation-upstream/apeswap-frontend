@@ -51,7 +51,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Governance'),
-        href: 'https://vote.apeswap.finance',
+        href: 'https://discuss.apeswap.finance',
       },
       {
         label: t('Education'),

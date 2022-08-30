@@ -1,7 +1,10 @@
-import { Flex, Text } from '@ape.swap/uikit'
+/** @jsxImportSource theme-ui */
+import { Flex, IconButton, Modal, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { apiBaseUrl } from 'hooks/api'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import React, { ReactNode, useMemo } from 'react'
+import React, { ReactNode, useEffect, useMemo, useState } from 'react'
+import axios from 'axios'
 
 const BLOCKED_ADDRESSES: string[] = [
   '0x7Db418b5D567A4e0E8c59Ad71BE1FcE48f3E6107',
@@ -80,13 +83,77 @@ const BLOCKED_ADDRESSES: string[] = [
 
 export default function Blocklist({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
+  const [geoLocation, setGeoLocation] = useState<{ isRestrictedRegion: boolean; countryCode: string }>({
+    isRestrictedRegion: false,
+    countryCode: '',
+  })
+  const [displayGeoModal, setDisplayGeoModal] = useState<boolean>(false)
   const { account } = useActiveWeb3React()
-  const blocked: boolean = useMemo(() => Boolean(account && BLOCKED_ADDRESSES.indexOf(account) !== -1), [account])
-  if (blocked) {
+
+  // Fetch country code to check if the region is allowed
+  useEffect(() => {
+    const fetchLocation = async () => {
+      const resp = await axios.get(`${apiBaseUrl}/check`)
+      const { isRestrictedRegion, countryCode } = resp?.data
+      setGeoLocation({ isRestrictedRegion, countryCode })
+      setDisplayGeoModal(isRestrictedRegion)
+    }
+    fetchLocation()
+  }, [])
+
+  const blockedAddress: boolean = useMemo(
+    () => Boolean(account && BLOCKED_ADDRESSES.indexOf(account) !== -1),
+    [account],
+  )
+
+  if (blockedAddress) {
     return (
       <Flex>
         <Text>{t('Blocked address')}</Text>
       </Flex>
+    )
+  }
+  if (displayGeoModal) {
+    return (
+      <>
+        <Modal minWidth="360px" maxWidth="600px">
+          <Flex sx={{ width: 'auto', height: 'auto', justifyContent: 'center', flexDirection: 'column' }}>
+            <Flex sx={{ position: 'absolute', top: '20px', right: '20px' }}>
+              <IconButton
+                width="15px"
+                icon="close"
+                color="text"
+                variant="transparent"
+                onClick={() => setDisplayGeoModal(false)}
+              />
+            </Flex>
+            <Text weight={700} sx={{ fontFamily: 'poppins', fontSize: '32px' }}>
+              Notice
+            </Text>
+            <br />
+            <Text
+              sx={{ fontFamily: 'poppins' }}
+            >{`Due to recent events causing increased legal scrutiny throughout the DeFi industry, ApeSwap has been given no choice but to restrict select regions from accessing our offerings. This will go into effect on September 6th, 2022. You are receiving this notice, because it appears you are visiting from a soon-to-be restricted region, ${geoLocation.countryCode}.`}</Text>
+            <br />
+            <Text sx={{ fontFamily: 'poppins' }}>
+              We say this with heavy hearts, as censorship of any kind has been deeply against our ethos since day 1. We
+              do not make this move lightly, but it is necessary for the continuity of our protocol & the safety of
+              several core team contributors. We apologize in advance for inconveniences caused.
+            </Text>
+            <br />
+            <Text sx={{ fontFamily: 'poppins' }}>
+              For more information about this change or to find out how it impacts you, please visit{' '}
+              <a
+                href="https://t.me/ape_swap"
+                rel="noopener noreferrer"
+                sx={{ textDecoration: 'underline', color: 'grey' }}
+              >
+                our Telegram.
+              </a>
+            </Text>
+          </Flex>
+        </Modal>
+      </>
     )
   }
   return <>{children}</>

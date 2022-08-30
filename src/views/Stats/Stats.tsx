@@ -43,34 +43,6 @@ const Stats: React.FC = () => {
   const { selectedChain, handleChangeSelectedChain, loading } = useStats()
   const [activeTab, setActiveTab] = useState('Analytics')
 
-  // const yourStats = useStats()
-  // const stats = yourStats?.stats
-
-  /* <div>
-  {stats !== null ? (
-    <div>
-      <Cards>
-        <BananaStats stats={stats} />
-        {stats?.pools[0] && <CardStats data={stats.pools[0]} type="pool" forceDetails />}
-      </Cards>
-      <Cards>
-        {[...stats.incentivizedPools]
-          .sort((poolA, poolB) => poolB.stakedTvl - poolA.stakedTvl)
-          .map((pool) => {
-            return <CardStats data={pool} type="pool" />
-          })}
-        {[...stats.farms]
-          .sort((poolA, poolB) => poolB.stakedTvl - poolA.stakedTvl)
-          .map((farm) => {
-            return <CardStats data={farm} type="farm" />
-          })}
-      </Cards>
-    </div>
-  ) : (
-    <PageLoader />
-  )}
-</div> */
-
   const tabMenuMap = {
     Portfolio: <Portfolio />,
     Analytics: <Analytics />,

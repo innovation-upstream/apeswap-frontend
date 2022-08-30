@@ -10,6 +10,9 @@ import MarketingModalCheck from 'components/MarketingModalCheck'
 import { useFetchBananaPrice } from 'state/tokenPrices/hooks'
 import { useFetchProfile, useUpdateNetwork, useFetchLiveIfoStatus, useFetchLiveTagsAndOrdering } from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
+import { PageMeta } from 'components/layout/Page'
+import * as Sentry from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -20,7 +23,12 @@ import AddLiquidity from './views/Dex/AddLiquidity'
 import RemoveLiquidity from './views/Dex/RemoveLiquidity'
 import PoolFinder from './views/Dex/PoolFinder'
 import ResetScroll from './utils/resetScroll'
-import { PageMeta } from 'components/layout/Page'
+
+Sentry.init({
+  dsn: process.env.REACT_APP_SENTRY_DSN,
+  integrations: [new BrowserTracing()],
+  tracesSampleRate: 1.0,
+})
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -98,11 +106,6 @@ const App: React.FC = () => {
 
   const { account, chainId } = useActiveWeb3React()
   const [showScrollIcon, setShowScrollIcon] = useState(false)
-
-  // Set a state to show scroll to top
-  // on load of the page,
-  // if pathname matches the needed pathname
-  // set it to true and show
 
   const showScroll = useCallback(() => {
     if (window.location.pathname === '/') {
@@ -183,6 +186,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/stats">
                 <Redirect to="/apestats" />
+              </Route>
+              <Route path="/apestats">
+                <Stats />
               </Route>
               <Route exact path="/ss-iao">
                 <Redirect to="/" />

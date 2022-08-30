@@ -27,7 +27,7 @@ export const StyledFlex = styled(Flex)<{ loading: boolean }>`
     right: 0;
     top: 0;
     transform: translate(-20px, 20px);
-    max-width: 230px;
+    max-width: 240px;
   }
 `
 

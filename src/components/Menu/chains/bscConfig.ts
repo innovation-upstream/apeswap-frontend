@@ -154,7 +154,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Governance'),
-        href: 'https://vote.apeswap.finance',
+        href: 'https://discuss.apeswap.finance',
         isNew: false,
       },
       {
