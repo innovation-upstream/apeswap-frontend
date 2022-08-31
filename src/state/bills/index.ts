@@ -138,7 +138,7 @@ export const fetchUserOwnedBillsDataAsync =
           return { id: b.id, billNftAddress: b.billNftAddress }
         })
       })
-      const userBillNftData = await fetchUserOwnedBillNftData(ownedBillsData)
+      const userBillNftData = await fetchUserOwnedBillNftData(ownedBillsData, chainId)
       const ownedBillsWithNftData = mapUserOwnedBills.map((bs, index) => {
         return {
           index: bills[index].index,
@@ -175,9 +175,9 @@ export const updateUserBalance =
  * @deprecated since multiple NFT contracts
  */
 export const updateUserNftData =
-  (index: number, billNftId: string, transactionHash: string): AppThunk =>
+  (index: number, billNftId: string, transactionHash: string, chainId: number): AppThunk =>
   async (dispatch) => {
-    const fetchedBillNftData = await getNewBillNftData(billNftId, transactionHash)
+    const fetchedBillNftData = await getNewBillNftData(billNftId, transactionHash, chainId)
     dispatch(updateBillsUserData({ index, value: fetchedBillNftData }))
   }
 
