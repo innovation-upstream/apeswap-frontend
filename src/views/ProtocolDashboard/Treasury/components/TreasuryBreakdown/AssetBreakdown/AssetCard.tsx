@@ -7,8 +7,10 @@ import CountUp from 'react-countup'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTranslation } from 'contexts/Localization'
 import { CHAIN_PARAMS, NETWORK_LABEL } from 'config/constants/chains'
+import useIsMobile from 'hooks/useIsMobile'
 
 const AssetCard: React.FC<{ token: any }> = ({ token }) => {
+  const isMobile = useIsMobile()
   const [expanded, setExpanded] = useState(false)
   const { t } = useTranslation()
   return (
@@ -38,14 +40,18 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
               <ServiceTokenDisplay token1={CHAIN_PARAMS?.[token?.chainId]?.nativeCurrency?.symbol} size={13.5} />
             </Flex>
           </Flex>
-          <Text weight={700} ml="5px">
+          <Text weight={700} ml="5px" size={isMobile ? '12px' : '16px'}>
             {token?.isLp ? `${token?.token0?.symbol}-${token?.token1?.symbol}` : token?.symbol}
           </Text>
           {token?.type &&
             (token?.type === 'apeswap' ? (
-              <StyledTag variant={'#A16552' as TagVariants}>{t(token?.type.toUpperCase())}</StyledTag>
+              <StyledTag variant={'#A16552' as TagVariants}>
+                {isMobile ? t('APE') : t(token?.type.toUpperCase())}
+              </StyledTag>
             ) : (
-              <StyledTag variant={'#00983D' as TagVariants}>{t(token?.type.toUpperCase())}</StyledTag>
+              <StyledTag variant={'#00983D' as TagVariants}>
+                {isMobile ? t('PTNR') : t(token?.type.toUpperCase())}
+              </StyledTag>
             ))}
         </Flex>
         <Flex>
