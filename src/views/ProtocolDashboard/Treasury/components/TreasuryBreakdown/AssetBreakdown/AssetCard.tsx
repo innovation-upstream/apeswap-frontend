@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Svg, Text } from '@ape.swap/uikit'
-import { styles } from './styles'
+import { Flex, Svg, TagVariants, Text } from '@ape.swap/uikit'
+import { styles, StyledTag } from './styles'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import React, { useState } from 'react'
 import CountUp from 'react-countup'
@@ -39,8 +39,14 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
             </Flex>
           </Flex>
           <Text weight={700} ml="5px">
-            {token?.isLp ? `${token?.token0?.symbol} - ${token?.token1?.symbol}` : token?.symbol}
+            {token?.isLp ? `${token?.token0?.symbol}-${token?.token1?.symbol}` : token?.symbol}
           </Text>
+          {token?.type &&
+            (token?.type === 'apeswap' ? (
+              <StyledTag variant={'#A16552' as TagVariants}>{t(token?.type.toUpperCase())}</StyledTag>
+            ) : (
+              <StyledTag variant={'#00983D' as TagVariants}>{t(token?.type.toUpperCase())}</StyledTag>
+            ))}
         </Flex>
         <Flex>
           <Text weight={700} mr="10px">
@@ -83,7 +89,7 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
                     {t('Location')}:
                   </Text>
                   <Text weight={700} sx={{ lineHeight: '10px' }}>
-                    {token?.location}
+                    {token?.location === 'POL' ? `${token?.location} - ${token?.type.toUpperCase()}` : token?.location}
                   </Text>
                 </Flex>
                 <Flex sx={styles.assetRow}>

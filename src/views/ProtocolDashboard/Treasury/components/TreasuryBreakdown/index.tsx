@@ -12,19 +12,12 @@ const TreasuryBreakdown: React.FC = () => {
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', mb: '5px' }}>
         <Text size="22px" weight={700} mb="10px">
-          {t('Treasury Breakdown')}
+          {t('Funds Breakdown')}
         </Text>
       </Flex>
       <Flex sx={{ alignItems: 'center', justifyContent: 'center', margin: '10px 0px 5px 0px' }}>
         <Tabs activeTab={activeTab} size="sm" variant="centered">
-          <Tab
-            index={0}
-            size="sm"
-            label={t('Treasury')}
-            activeTab={activeTab}
-            variant="centered"
-            onClick={setActiveTab}
-          />
+          <Tab index={0} size="sm" label={t('All')} activeTab={activeTab} variant="centered" onClick={setActiveTab} />
           <Tab
             index={1}
             size="sm"

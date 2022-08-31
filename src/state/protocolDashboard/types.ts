@@ -48,6 +48,7 @@ export interface ProtocolToken {
 export interface TreasuryBreakdownInterface {
   lpTokens: {
     address: string
+    type: 'apeswap' | 'partner'
     amount: number
     chainId: number
     location: 'Operational Funds' | 'POL'
