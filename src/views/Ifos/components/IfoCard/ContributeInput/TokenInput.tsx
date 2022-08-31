@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Button } from '@apeswapfinance/uikit'
 import { useTranslation } from 'contexts/Localization'
-import Input, { InputProps } from '../Input'
+import Input, { InputProps } from 'components/Input'
 
 interface TokenInputProps extends InputProps {
   max: number | string
@@ -15,7 +15,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelect
   return (
     <StyledTokenInput>
       <StyledMaxText>
-        {max.toLocaleString()} {symbol} {t('Available')}
+        {t('Balance')}: {max.toLocaleString()} {symbol}
       </StyledMaxText>
       <Input
         endAdornment={
@@ -32,6 +32,7 @@ const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelect
         onChange={onChange}
         placeholder="0"
         value={value}
+        height={'50px'}
       />
     </StyledTokenInput>
   )

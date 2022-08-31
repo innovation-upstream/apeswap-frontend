@@ -265,8 +265,8 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
             amountContributed={amount}
             tokenDecimals={tokenDecimals}
             refunded={refunded}
-            isActive={isActive}
-            isFinished={isFinished}
+            isActive={true}
+            isFinished={false}
             userTokenStatus={userTokenStatus}
           />
         )

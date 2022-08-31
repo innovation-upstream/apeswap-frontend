@@ -106,7 +106,7 @@ const ReturnCard: React.FC<ReturnCardType> = ({ fromToken, toToken }) => {
           value={val}
           onSelectMax={handleSelectMax}
           onChange={handleChange}
-          max={fullBalance}
+          max={parseFloat(fullBalance).toFixed(2)}
           symbol={fromToken}
         />
         {isApproved ? (

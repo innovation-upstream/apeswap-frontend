@@ -115,7 +115,7 @@ const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
           value={val}
           onSelectMax={handleSelectMax}
           onChange={handleChange}
-          max={fullBalance}
+          max={parseFloat(fullBalance).toFixed(2)}
           symbol={fromToken}
         />
         {isApproved ? (
@@ -147,7 +147,7 @@ const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
               <StyledCheckbox id="checkbox" scale="md" checked={unlimited} onChange={handleCheckBox} />
             </CheckBoxCon>
             <StyledText fontSize="12px" fontWeight={500}>
-              {t('I understand what I am doing and want to enable unlimited conversion.')}
+              {t('I understand how GNANA works and I want to enable unlimited buy.')}
             </StyledText>
           </CBS>
         </FlexSection>
