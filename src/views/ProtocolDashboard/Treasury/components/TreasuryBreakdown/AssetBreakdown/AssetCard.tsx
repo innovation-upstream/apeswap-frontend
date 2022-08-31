@@ -1,14 +1,16 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Svg, Text } from '@ape.swap/uikit'
-import { styles } from './styles'
+import { Flex, Svg, TagVariants, Text } from '@ape.swap/uikit'
+import { styles, StyledTag } from './styles'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import React, { useState } from 'react'
 import CountUp from 'react-countup'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useTranslation } from 'contexts/Localization'
 import { CHAIN_PARAMS, NETWORK_LABEL } from 'config/constants/chains'
+import useIsMobile from 'hooks/useIsMobile'
 
 const AssetCard: React.FC<{ token: any }> = ({ token }) => {
+  const isMobile = useIsMobile()
   const [expanded, setExpanded] = useState(false)
   const { t } = useTranslation()
   return (
@@ -38,9 +40,19 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
               <ServiceTokenDisplay token1={CHAIN_PARAMS?.[token?.chainId]?.nativeCurrency?.symbol} size={13.5} />
             </Flex>
           </Flex>
-          <Text weight={700} ml="5px">
-            {token?.isLp ? `${token?.token0?.symbol} - ${token?.token1?.symbol}` : token?.symbol}
+          <Text weight={700} ml="5px" size={isMobile ? '12px' : '16px'}>
+            {token?.isLp ? `${token?.token0?.symbol}-${token?.token1?.symbol}` : token?.symbol}
           </Text>
+          {token?.type &&
+            (token?.type === 'apeswap' ? (
+              <StyledTag variant={'#A16552' as TagVariants}>
+                {isMobile ? t('APE') : t(token?.type.toUpperCase())}
+              </StyledTag>
+            ) : (
+              <StyledTag variant={'#00983D' as TagVariants}>
+                {isMobile ? t('PTNR') : t(token?.type.toUpperCase())}
+              </StyledTag>
+            ))}
         </Flex>
         <Flex>
           <Text weight={700} mr="10px">
@@ -83,7 +95,7 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
                     {t('Location')}:
                   </Text>
                   <Text weight={700} sx={{ lineHeight: '10px' }}>
-                    {token?.location}
+                    {token?.location === 'POL' ? `${token?.location} - ${token?.type.toUpperCase()}` : token?.location}
                   </Text>
                 </Flex>
                 <Flex sx={styles.assetRow}>
