@@ -29,7 +29,7 @@
     ]
   },
   "dependencies": {
-    "@ape.swap/sdk": "4.0.1-alpha.10",
+    "@ape.swap/sdk": "4.0.1-alpha.11",
     "@ape.swap/uikit": "^1.3.26",
     "@apeswapfinance/token-lists": "1.0.306",
     "@apeswapfinance/uikit": "0.11.3",
