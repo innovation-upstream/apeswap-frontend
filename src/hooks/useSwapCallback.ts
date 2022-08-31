@@ -9,7 +9,7 @@ import {
   Trade,
   TradeType,
   SMART_ROUTER_ADDRESS,
-} from '@apeswapfinance/sdk'
+} from '@ape.swap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import truncateHash from 'utils/truncateHash'

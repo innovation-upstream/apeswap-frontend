@@ -1,4 +1,4 @@
-import { CurrencyAmount, Fraction, JSBI, Percent, Price, SmartRouter, TokenAmount, Trade } from '@apeswapfinance/sdk'
+import { CurrencyAmount, Fraction, JSBI, Percent, Price, SmartRouter, TokenAmount, Trade } from '@ape.swap/sdk'
 import { SMART_LP_FEES } from 'config/constants/chains'
 import {
   BLOCKED_PRICE_IMPACT_NON_EXPERT,

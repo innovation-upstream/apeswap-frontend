@@ -8,7 +8,7 @@ import {
   BONUS_ROUTER_ADDRESS,
   SMART_ROUTER_ADDRESS,
   SmartRouter,
-} from '@apeswapfinance/sdk'
+} from '@ape.swap/sdk'
 import { AUTONOMY_MIDROUTER_ADDRESS } from '@autonomylabs/limit-stop-orders'
 import { useCallback, useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

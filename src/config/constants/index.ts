@@ -1,4 +1,4 @@
-import { JSBI, Percent, Token, ChainId, WETH } from '@apeswapfinance/sdk'
+import { JSBI, Percent, Token, ChainId, WETH } from '@ape.swap/sdk'
 
 export enum RouterTypes {
   APE = 'APE',

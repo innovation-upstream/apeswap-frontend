@@ -9,6 +9,18 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
+"@ape.swap/sdk@file:.yalc/@ape.swap/sdk":
+  version "4.0.1-alpha.11"
+  dependencies:
+    "@uniswap/v2-core" "^1.0.0"
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.1"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+    toformat "^2.0.0"
+    yalc "^1.0.0-pre.53"
+
 "@ape.swap/uikit@^1.3.27":
   version "1.3.27"
   resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.27.tgz#ad7e92f24ae807894dd92057fa12c9279d2cd772"
@@ -43,9 +55,9 @@
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
 
-"@apeswapfinance/sdk@^4.0.1":
+"@apeswapfinance/sdk@^4.0.1-alpha.11":
   version "4.0.1"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/sdk/4.0.1/6e9e1b801331456d023844dab9a1d7ddf5cded27777d277d2f54cefbbbae3a12#444d666ccfff1832fb27699392cc76a0e448d52d"
+  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/sdk/4.0.1/444d666ccfff1832fb27699392cc76a0e448d52d#444d666ccfff1832fb27699392cc76a0e448d52d"
   integrity sha512-U2Fd748x9MhggkxL5/gskJ5AFzFG5oRT3Uc2rtePC5kkkh40SDLc/ipDcpfTH3mvev6jELwaIBZ0VkvGmh2Kxg==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"

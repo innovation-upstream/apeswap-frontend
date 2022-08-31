@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy, useCallback } from 'react'
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useEagerConnect from 'hooks/useEagerConnect'
@@ -59,6 +59,8 @@ const Orders = lazy(() => import('./views/Dex/Orders'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
+const Migrate = lazy(() => import('./views/Dex/Migrate'))
+const MigrateLiquidity = lazy(() => import('./views/Dex/Migrate/MigrateLiquidity'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -399,6 +401,13 @@ const App: React.FC = () => {
             <Route exact strict path="/find" component={PoolFinder} />
             <Route exact strict path="/liquidity" component={Pool} />
             <Route exact strict path="/create" component={RedirectToAddLiquidity} />
+            <Route exact strict path="/add-liquidity/migrate" component={Migrate} />
+            <Route
+              exact
+              strict
+              path="/add-liquidity/migrate/:smartRouterId/:currencyIdA/:currencyIdB"
+              component={MigrateLiquidity}
+            />
             <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
             <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
             <Route exact path="/add-liquidity" component={AddLiquidity} />

@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 /* eslint-disable no-restricted-syntax */
 import React, { KeyboardEvent, useCallback, useMemo, useRef, useState } from 'react'
-import { Currency, ETHER, Token } from '@apeswapfinance/sdk'
+import { Currency, ETHER, Token } from '@ape.swap/sdk'
 import { Text, Flex, Input } from '@ape.swap/uikit'
 import { FixedSizeList } from 'react-window'
 import styled from '@emotion/styled'
