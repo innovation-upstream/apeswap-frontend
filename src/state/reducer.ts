@@ -18,6 +18,7 @@ import blockReducer from './block'
 import billsReducer from './bills'
 import swap from './swap/reducer'
 import orders from './orders/reducer'
+import zap from './zap/reducer'
 import user from './user/reducer'
 import lists from './lists/reducer'
 import transactions from './transactions/reducer'
@@ -26,6 +27,7 @@ import mint from './mint/reducer'
 import lpPricesReducer from './lpPrices'
 import nfasReducer from './nfas'
 import protocolDashboardReducer from './protocolDashboard'
+import zapMigrator from './zapMigrator/reducer'
 
 const reducer = combineReducers({
   farms: farmsReducer,
@@ -55,6 +57,8 @@ const reducer = combineReducers({
   burn,
   mint,
   orders,
+  zap,
+  zapMigrator,
 })
 
 export default reducer

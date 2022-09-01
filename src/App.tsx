@@ -61,6 +61,8 @@ const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
 const Migrate = lazy(() => import('./views/Dex/Migrate'))
 const MigrateLiquidity = lazy(() => import('./views/Dex/Migrate/MigrateLiquidity'))
+// Test zap state
+const Zap = lazy(() => import('./views/ZapTest'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -322,15 +324,15 @@ const App: React.FC = () => {
             <Route exact path="/nft">
               <Nft />
             </Route>
+            <Route exact path="/zap">
+              <Zap />
+            </Route>
             <Route path="/" exact component={Home} />
             <Route path="/banana-farms">
               <Farms />
             </Route>
             <Route path="/pools">
               <Pools />
-            </Route>
-            <Route path="/protocol-dashboard">
-              <ProtocolDashboard />
             </Route>
             <Route path="/jungle-farms">
               <JungleFarms />

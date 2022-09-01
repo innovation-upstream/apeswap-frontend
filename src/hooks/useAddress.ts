@@ -97,3 +97,7 @@ export const useIazoSettingsAddress = () => {
 export const useIazoFactoryAddress = () => {
   return useAddress(addresses.iazoFactoryProxy)
 }
+
+export const useZapAddress = () => {
+  return useAddress(addresses.zap)
+}

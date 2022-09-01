@@ -18,6 +18,7 @@ import Dots from 'components/Loader/Dots'
 import { styles } from './styles'
 import { Link } from 'react-router-dom'
 import { currencyId } from 'utils/currencyId'
+import { useZapMigratorActionHandlers } from 'state/zapMigrator/hooks'
 
 interface PositionCardProps extends CardProps {
   pair: Pair
@@ -28,6 +29,8 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
   const { account, chainId } = useActiveWeb3React()
 
   const [currencyPrice, setCurrencyPrice] = useState<number>(null)
+
+  const { onUserSetMigrator } = useZapMigratorActionHandlers()
 
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
@@ -93,6 +96,7 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
         <Flex sx={{ alignItems: 'center' }}>
           <Button
             as={Link}
+            onClick={() => onUserSetMigrator(pair.liquidityToken.address, smartRouter)}
             to={`migrate/${smartRouter.toLowerCase()}/${currencyId(currency0)}/${currencyId(currency1)}`}
             sx={{ height: '40px', mr: '10px' }}
           >

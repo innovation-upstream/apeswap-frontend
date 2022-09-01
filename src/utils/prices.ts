@@ -1,5 +1,6 @@
 import { CurrencyAmount, Fraction, JSBI, Percent, Price, SmartRouter, TokenAmount, Trade } from '@ape.swap/sdk'
 import { SMART_LP_FEES } from 'config/constants/chains'
+import { MergedZap } from 'state/zap/actions'
 import {
   BLOCKED_PRICE_IMPACT_NON_EXPERT,
   ALLOWED_PRICE_IMPACT_HIGH,
@@ -112,6 +113,16 @@ export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3
   if (!priceImpact?.lessThan(ALLOWED_PRICE_IMPACT_MEDIUM)) return 2
   if (!priceImpact?.lessThan(ALLOWED_PRICE_IMPACT_LOW)) return 1
   return 0
+}
+
+export function computeZapSlippageAdjustedAmounts(
+  zap: MergedZap,
+  allowedSlippage: number,
+): { [field in Field]?: string } {
+  return {
+    [Field.INPUT]: zap?.currencyIn.inputAmount.toString(),
+    [Field.OUTPUT]: zap?.currencyOut1.minOutputAmount || zap?.currencyOut2.minOutputAmount,
+  }
 }
 
 export function formatExecutionPrice(chainId: number, trade?: Trade, inverted?: boolean): string {

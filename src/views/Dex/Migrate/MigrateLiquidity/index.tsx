@@ -14,6 +14,9 @@ import DexNav from '../../components/DexNav'
 import PoolInfo from '../components/PoolInfo'
 import RecentTransactions from '../../components/RecentTransactions'
 import { usePair } from 'hooks/usePairs'
+import { useZapMigratorCallback } from 'hooks/useZapMigratorCallback'
+import { MigratorZap } from 'state/zap/actions'
+import { useDerivedZapMigratorInfo } from 'state/zapMigrator/hooks'
 
 function MigrateLiquidity({
   match: {
@@ -21,6 +24,7 @@ function MigrateLiquidity({
   },
 }: RouteComponentProps<{ smartRouterId: string; currencyIdA: string; currencyIdB: string }>) {
   const { chainId } = useActiveWeb3React()
+
   const { t } = useTranslation()
   const [recentTransactions] = useUserRecentTransactions()
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
@@ -34,7 +38,7 @@ function MigrateLiquidity({
 
   // burn state
   const { independentField, typedValue } = useBurnState()
-  const { parsedAmounts, error } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
+  const { parsedAmounts, error } = useDerivedZapMigratorInfo(currencyA ?? undefined, currencyB ?? undefined)
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
 
   // allowance handling
@@ -54,6 +58,13 @@ function MigrateLiquidity({
     [Field.CURRENCY_B]:
       independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
   }
+
+  // const zapMigratorState = useState<MigratorZap>({
+  //   chainId: chainId,
+  //   router: smartRouter
+  //   zapLp: pair,
+  //   amount: formattedAmounts.
+  // })
 
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
