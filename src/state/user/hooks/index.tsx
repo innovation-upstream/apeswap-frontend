@@ -34,6 +34,7 @@ import {
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
   updateUserAutonomyPrepay,
+  lastZapMigratorRouter,
 } from '../actions'
 import { deserializeToken, serializeToken } from './helpers'
 
@@ -107,6 +108,22 @@ export function useThemeManager(): [boolean, () => void] {
   }, [dispatch])
 
   return [isDark, toggleTheme]
+}
+
+export function useLastZapMigratorRouter(): [SmartRouter, (router: SmartRouter) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const zapMigratorRouter = useSelector<AppState, AppState['user']['zapMigratorRouter']>(
+    (state) => state.user.zapMigratorRouter,
+  )
+
+  const updateLastZapMigratorRouter = useCallback(
+    (router: SmartRouter) => {
+      dispatch(lastZapMigratorRouter({ router }))
+    },
+    [dispatch],
+  )
+
+  return [zapMigratorRouter, updateLastZapMigratorRouter]
 }
 
 export function useUserSingleHopOnly(): [boolean, (newSingleHopOnly: boolean) => void] {

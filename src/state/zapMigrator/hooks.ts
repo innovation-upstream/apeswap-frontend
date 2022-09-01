@@ -11,6 +11,7 @@ import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput, setMigrator } from './actions'
+import { useLastZapMigratorRouter } from 'state/user/hooks'
 
 export function useZapMigratorState(): AppState['zapMigrator'] {
   return useSelector<AppState, AppState['zapMigrator']>((state) => state.zapMigrator)
@@ -32,11 +33,10 @@ export function useDerivedZapMigratorInfo(
   const { account, chainId } = useActiveWeb3React()
 
   const { independentField, typedValue, smartRouter } = useZapMigratorState()
-
-  console.log(smartRouter)
+  const [zapMigratorRouter] = useLastZapMigratorRouter()
 
   // pair + totalsupply
-  const [, pair] = usePair(currencyA, currencyB)
+  const [, pair] = usePair(currencyA, currencyB, zapMigratorRouter || smartRouter)
   const { t } = useTranslation()
 
   // balances

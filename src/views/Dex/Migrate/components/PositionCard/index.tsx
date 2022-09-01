@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
-import React, { useEffect, useState } from 'react'
-import { JSBI, Pair, Percent } from '@ape.swap/sdk'
+import React, { useCallback, useEffect, useState } from 'react'
+import { JSBI, Pair, Percent, SmartRouter } from '@ape.swap/sdk'
 import { Text, Flex, CardProps, Button, Svg } from '@ape.swap/uikit'
 import { Divider } from 'theme-ui'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -19,6 +19,7 @@ import { styles } from './styles'
 import { Link } from 'react-router-dom'
 import { currencyId } from 'utils/currencyId'
 import { useZapMigratorActionHandlers } from 'state/zapMigrator/hooks'
+import { useLastZapMigratorRouter } from 'state/user/hooks'
 
 interface PositionCardProps extends CardProps {
   pair: Pair
@@ -42,6 +43,12 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
 
   const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
+  const [, updateLastZapMigratorRouter] = useLastZapMigratorRouter()
+
+  const onSetMigrator = () => {
+    onUserSetMigrator(pair.liquidityToken.address, smartRouter)
+    updateLastZapMigratorRouter(smartRouter)
+  }
 
   useEffect(() => {
     const fetchCurrencyTokenPrice = async () => {
@@ -96,8 +103,8 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
         <Flex sx={{ alignItems: 'center' }}>
           <Button
             as={Link}
-            onClick={() => onUserSetMigrator(pair.liquidityToken.address, smartRouter)}
-            to={`migrate/${smartRouter.toLowerCase()}/${currencyId(currency0)}/${currencyId(currency1)}`}
+            onClick={onSetMigrator}
+            to={`migrate/${currencyId(currency0)}/${currencyId(currency1)}`}
             sx={{ height: '40px', mr: '10px' }}
           >
             <Svg icon="trade" width="15px" />

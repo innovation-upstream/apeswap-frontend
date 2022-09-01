@@ -1,3 +1,4 @@
+import { SmartRouter } from '@ape.swap/sdk'
 import { createReducer } from '@reduxjs/toolkit'
 import { SerializedToken } from 'config/constants/types'
 import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
@@ -32,6 +33,7 @@ import {
   updateUserExpertModeAcknowledgementShow,
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
+  lastZapMigratorRouter,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -87,6 +89,7 @@ export interface UserState {
   watchlistTokens: string[]
   watchlistPools: string[]
   showPhishingWarningBanner: boolean
+  zapMigratorRouter: SmartRouter
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -118,6 +121,7 @@ export const initialState: UserState = {
   watchlistTokens: [],
   watchlistPools: [],
   showPhishingWarningBanner: true,
+  zapMigratorRouter: null,
 }
 
 export default createReducer(initialState, (builder) =>
@@ -253,6 +257,9 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(hidePhishingWarningBanner, (state) => {
       state.showPhishingWarningBanner = false
+    })
+    .addCase(lastZapMigratorRouter, (state, { payload: { router } }) => {
+      state.zapMigratorRouter = router
     })
     .addCase(setIsExchangeChartDisplayed, (state, { payload }) => {
       state.isExchangeChartDisplayed = payload

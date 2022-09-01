@@ -20,9 +20,9 @@ import { useDerivedZapMigratorInfo } from 'state/zapMigrator/hooks'
 
 function MigrateLiquidity({
   match: {
-    params: { smartRouterId, currencyIdA, currencyIdB },
+    params: { currencyIdA, currencyIdB },
   },
-}: RouteComponentProps<{ smartRouterId: string; currencyIdA: string; currencyIdB: string }>) {
+}: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const { chainId } = useActiveWeb3React()
 
   const { t } = useTranslation()
@@ -32,13 +32,10 @@ function MigrateLiquidity({
   // Set currencies
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
-  const smartRouter = smartRouterId.toUpperCase() as SmartRouter
-  const [, pair] = usePair(currencyA, currencyB, smartRouter)
-  console.log(pair)
 
   // burn state
   const { independentField, typedValue } = useBurnState()
-  const { parsedAmounts, error } = useDerivedZapMigratorInfo(currencyA ?? undefined, currencyB ?? undefined)
+  const { pair, parsedAmounts, error } = useDerivedZapMigratorInfo(currencyA ?? undefined, currencyB ?? undefined)
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
 
   // allowance handling
