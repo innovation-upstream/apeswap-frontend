@@ -17,8 +17,9 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     position: 'absolute',
     flexWrap: 'wrap',
     flexDirection: 'column',
-    top: '50px',
+    top: '40px',
     left: '50px',
+    fontSize: '14px',
     '@media screen and (max-width: 800px)': {
       left: '30px',
       top: '60px',
