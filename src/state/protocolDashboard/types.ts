@@ -33,6 +33,8 @@ export interface TreasuryAssetOverviewInterface {
 export interface TreasuryHistoryInterface {
   timestamp: number
   polValue: number
+  apePolValue: number
+  partnerPolValue: number
   oppFundValue: number
 }
 
