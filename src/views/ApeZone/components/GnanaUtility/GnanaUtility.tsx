@@ -23,7 +23,7 @@ export const GnanaUtility: React.FC = () => {
   const theme = useTheme()
   const { t } = useTranslation()
   const exploreGovernance = () => {
-    return window.open('https://vote.apeswap.finance/', '_blank')
+    return window.open('https://discuss.apeswap.finance/', '_blank')
   }
   const goToPools = () => {
     return window.open('https://apeswap.finance/pools', '_blank')

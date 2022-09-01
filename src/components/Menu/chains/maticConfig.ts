@@ -42,6 +42,11 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         isNew: true,
       },
       {
+        label: t('Dashboard'),
+        href: 'protocol-dashboard',
+        isNew: true,
+      },
+      {
         label: t('Documentation'),
         href: 'https://apeswap.gitbook.io/apeswap-finance/',
         isNew: false,
@@ -53,7 +58,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Governance'),
-        href: 'https://vote.apeswap.finance',
+        href: 'https://discuss.apeswap.finance',
         isNew: false,
       },
       {
