@@ -45,7 +45,7 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
           </Text>
           {token?.type &&
             (token?.type === 'apeswap' ? (
-              <StyledTag variant={'#A16552' as TagVariants}>
+              <StyledTag variant={'rgb(77, 64, 64)' as TagVariants}>
                 {isMobile ? t('APE') : t(token?.type.toUpperCase())}
               </StyledTag>
             ) : (
