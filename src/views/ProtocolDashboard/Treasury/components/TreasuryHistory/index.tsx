@@ -55,7 +55,7 @@ const TreasuryHistory: React.FC = () => {
     <Flex sx={styles.cardContainer}>
       <Flex sx={{ flexDirection: 'column', textAlign: 'center', marginBottom: '20px' }}>
         <Text size="22px" weight={700} mb="10px">
-          {t('Treasury')}
+          {t('Total Funds')}
         </Text>
         {totalApePol && totalTreasury && (
           <Text size="16px" weight={500}>
@@ -111,7 +111,13 @@ const TreasuryHistory: React.FC = () => {
                   $<CountUp end={totalApePol} decimals={0} duration={1} separator="," />
                 </Text>
                 <TooltipBubble
-                  body={<Text>{t('Total value of the liquidity that ApeSwap owns in the form of LP tokens.')}</Text>}
+                  body={
+                    <Text>
+                      {t(
+                        'Total value of the liquidity that ApeSwap has generated through Treasury Bills in the form of LP tokens.',
+                      )}
+                    </Text>
+                  }
                   width="180px"
                   transformTip="translate(25px, 0px)"
                 >
