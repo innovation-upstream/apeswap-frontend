@@ -10,6 +10,9 @@ import MarketingModalCheck from 'components/MarketingModalCheck'
 import { useFetchBananaPrice } from 'state/tokenPrices/hooks'
 import { useFetchProfile, useUpdateNetwork, useFetchLiveIfoStatus, useFetchLiveTagsAndOrdering } from 'state/hooks'
 import { usePollBlockNumber } from 'state/block/hooks'
+import { PageMeta } from 'components/layout/Page'
+import * as Sentry from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -20,7 +23,12 @@ import AddLiquidity from './views/Dex/AddLiquidity'
 import RemoveLiquidity from './views/Dex/RemoveLiquidity'
 import PoolFinder from './views/Dex/PoolFinder'
 import ResetScroll from './utils/resetScroll'
-import { PageMeta } from 'components/layout/Page'
+
+Sentry.init({
+  dsn: process.env.REACT_APP_SENTRY_DSN,
+  integrations: [new BrowserTracing()],
+  tracesSampleRate: 0.1,
+})
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -50,6 +58,7 @@ const Bills = lazy(() => import('./views/Bills'))
 const Orders = lazy(() => import('./views/Dex/Orders'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
+const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -131,6 +140,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/privacy">
                 <PrivacyPolicy />
+              </Route>
+              <Route path="/protocol-dashboard">
+                <ProtocolDashboard />
               </Route>
               {/* Redirects */}
               <Route path="/admin-pools">
@@ -220,6 +232,9 @@ const App: React.FC = () => {
               </Route> */}
               <Route path="/admin-pools">
                 <AdminPools />
+              </Route>
+              <Route path="/protocol-dashboard">
+                <ProtocolDashboard />
               </Route>
               <Route path="/banana-farms">
                 <DualFarms />
@@ -311,6 +326,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/pools">
               <Pools />
+            </Route>
+            <Route path="/protocol-dashboard">
+              <ProtocolDashboard />
             </Route>
             <Route path="/jungle-farms">
               <JungleFarms />

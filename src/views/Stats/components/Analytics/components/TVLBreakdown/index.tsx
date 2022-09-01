@@ -1,4 +1,5 @@
 import React from 'react'
+import { Chart, ArcElement } from 'chart.js'
 import { Text } from '@apeswapfinance/uikit'
 import { Doughnut } from 'react-chartjs-2'
 
@@ -11,6 +12,8 @@ import { NoContentPlaceholder } from 'views/Stats/components/NoContentPlaceholde
 import { circleColors, Circle, Left, Right, TableInfo, TableRowContent, StyledFlex } from './styles'
 
 export const TVLBreakdown = () => {
+  Chart.register(ArcElement)
+
   const {
     stats: {
       analytics: { tvl },
@@ -45,12 +48,7 @@ export const TVLBreakdown = () => {
       {+tvl.total > 0 ? (
         <StyledFlex>
           <div>
-            <Doughnut
-              data={chartData}
-              height={208}
-              width={208}
-              options={{ maintainAspectRatio: false, cutoutPercentage: 60, tooltips: 'none' }}
-            />
+            <Doughnut data={chartData} height={208} width={208} options={{ maintainAspectRatio: false }} />
           </div>
 
           <TableInfo>
