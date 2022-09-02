@@ -114,8 +114,10 @@ const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
   const handleCheckBox = useCallback(() => {
     setUnlimited(!unlimited)
     if (!unlimited) localStorage.setItem(UNLIMITED_GNANA, 'true')
-    if (unlimited) localStorage.setItem(UNLIMITED_GNANA, '')
-    if (unlimited) setVal('')
+    if (unlimited) {
+      localStorage.setItem(UNLIMITED_GNANA, '')
+      setVal('')
+    }
   }, [unlimited, setUnlimited])
 
   return (
