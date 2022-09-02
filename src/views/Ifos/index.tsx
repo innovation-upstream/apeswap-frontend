@@ -9,8 +9,10 @@ import Ideology from './components/Ideology/Ideology'
 import IfoPastProjectSwiper from './components/PastProjectSwiper/IfoPastProjectSwiper'
 import { TabOption } from './types'
 import IfoProjectCard from './components/IfoCard/ProjectCard/IfoProjectCard'
+import { useFetchTokenPrices } from '../../state/tokenPrices/hooks'
 
 const Ifos = () => {
+  useFetchTokenPrices()
   const { t } = useTranslation()
   const firstPastIfoId = pastIfos.length > 0 ? pastIfos(t)[0].id : undefined
   const activeIfoId = ifos(t).find((ifo) => ifo.isActive).id

@@ -4,6 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Flex, Text } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import { showIcon, styles } from './styles'
+import useTheme from 'hooks/useTheme'
 
 interface UtilitySlidesProps {
   action: string
@@ -15,10 +16,12 @@ interface UtilitySlidesProps {
 
 const UtilitySlide: React.FC<UtilitySlidesProps> = ({ action, icon, title, detail, href }) => {
   const { t } = useTranslation()
+  const { isDark } = useTheme()
+
   return (
-    <Flex sx={styles.mainContainer}>
+    <Flex sx={{ ...styles.mainContainer, background: isDark ? '#424242' : styles.bg1 }}>
       <a href={href ?? '#convert'} target={href ? '_blank' : null} rel="noreferrer">
-        <Flex sx={styles.subContainer}>
+        <Flex sx={{ ...styles.subContainer, background: isDark ? '#383838' : styles.bg2 }}>
           <Box sx={styles.box}>
             <Text sx={styles.action}>{t(`${action}`)}</Text>
           </Box>

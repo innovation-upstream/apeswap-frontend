@@ -15,13 +15,13 @@ export const GnanaUtility: React.FC = () => {
   return (
     <UtilityCon>
       <UtilityTitle>
-        <UtilityHeading>{t('GNANA UTILITY')}</UtilityHeading>
+        <UtilityHeading as="h2">{t('GNANA UTILITY')}</UtilityHeading>
       </UtilityTitle>
       <UtilityWrapper>
         {isMobile ? (
           <MobileCard />
         ) : (
-          <Flex justifyContent="center" alignContent="center" style={{ width: '100%', marginTop: '30px' }}>
+          <Flex justifyContent="center" alignContent="center" style={{ width: '100%', marginTop: '10px' }}>
             {utilitySlides.map((slide) => {
               return <>{slide}</>
             })}

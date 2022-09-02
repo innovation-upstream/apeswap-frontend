@@ -9,6 +9,7 @@ export const StyledCard = styled.div`
   margin-top: 20px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    width: 50%;
     margin-top: 0px;
     background: transparent;
     box-shadow: none;
@@ -65,14 +66,7 @@ export const StyledText = styled(Text)`
   z-index: 199;
   margin-left: 10px;
 `
-export const CheckBoxSection = styled.div`
-  display: none;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: unset;
-    visibility: hidden;
-  }
-`
 export const CheckBoxCon = styled.div`
   display: flex;
   align-items: center;

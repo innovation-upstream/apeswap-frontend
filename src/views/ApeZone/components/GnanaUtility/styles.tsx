@@ -8,7 +8,7 @@ export const UtilityCon = styled.div`
   background: transparent;
   border-radius: 10px;
   margin-bottom: 32px;
-  padding: 1em;
+  padding: 32px;
   background: ${({ theme }) => (theme.isDark ? '#212121' : theme.colors.navbar)};
 `
 export const UtilityTitle = styled.div`
@@ -20,7 +20,7 @@ export const UtilityTitle = styled.div`
 `
 export const UtilityHeading = styled(Heading)`
   text-transform: uppercase;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 700;
 `
 
@@ -49,13 +49,12 @@ export const styles = {
     maxWidth: '80vw',
     height: '100%',
     padding: '5px',
-    background:
-      'linear-gradient(180deg, #FFFFFF 0%, #EEDFC7 10%, #FFFFFF 40%, #FEFAE0 50%, #EEDFC7 100%), linear-gradient(180deg, #FEFCEC 27.58%, #EEDFC7 79.74%, #FEFAE0 131.91%, #F5ECDD 154.81%)',
     borderRadius: '10px',
   },
+  bg1: 'linear-gradient(180deg, #FFFFFF 0%, #EEDFC7 10%, #FFFFFF 40%, #FEFAE0 50%, #EEDFC7 100%), linear-gradient(180deg, #FEFCEC 27.58%, #EEDFC7 79.74%, #FEFAE0 131.91%, #F5ECDD 154.81%)',
+  bg2: 'linear-gradient(180deg, #FEFCEC 27.58%, #EEDFC7 79.74%, #FEFAE0 131.91%, #F5ECDD 154.81%)',
   subContainer: {
     width: '100%',
-    background: 'linear-gradient(180deg, #FEFCEC 27.58%, #EEDFC7 79.74%, #FEFAE0 131.91%, #F5ECDD 154.81%)',
     borderRadius: '10px',
     flexWrap: 'wrap',
     textAlign: 'center',

@@ -1,8 +1,9 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
-import styled from 'styled-components'
-import { Button } from '@apeswapfinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Input, { InputProps } from 'components/Input'
+import { Box } from 'theme-ui'
+import { StyledBalance, StyledButton, StyledSpacer, StyledTokenAdornmentWrapper, StyledTokenInput } from './styles'
 
 interface TokenInputProps extends InputProps {
   max: number | string
@@ -14,13 +15,15 @@ const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelect
   const { t } = useTranslation()
   return (
     <StyledTokenInput>
-      <StyledMaxText>
-        {t('Balance')}: {max.toLocaleString()} {symbol}
-      </StyledMaxText>
+      <StyledBalance>
+        <Box>{t('Balance')}:</Box>
+        <Box>
+          {max.toLocaleString()} {symbol}
+        </Box>
+      </StyledBalance>
       <Input
         endAdornment={
           <StyledTokenAdornmentWrapper>
-            <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
             <StyledSpacer />
             <div>
               <StyledButton size="sm" onClick={onSelectMax}>
@@ -32,50 +35,10 @@ const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelect
         onChange={onChange}
         placeholder="0"
         value={value}
-        height={'50px'}
+        height={'44px'}
       />
     </StyledTokenInput>
   )
 }
-
-const StyledTokenInput = styled.div``
-
-const StyledSpacer = styled.div`
-  width: ${(props) => props.theme.spacing[2]}px;
-`
-
-const StyledTokenAdornmentWrapper = styled.div`
-  align-items: center;
-  display: flex;
-`
-
-const StyledButton = styled(Button)`
-  align-items: center;
-  display: flex;
-  background-color: #ffb300;
-  box-shadow: none;
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: 12px;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 10px;
-`
-
-const StyledMaxText = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.colors.text};
-  display: flex;
-  font-size: 12px;
-  font-weight: 500;
-  height: 18px;
-  justify-content: flex-end;
-  margin-bottom: 5px;
-`
-
-const StyledTokenSymbol = styled.span`
-  color: ${({ theme }) => theme.colors.text};
-  font-weight: 500;
-`
 
 export default TokenInput

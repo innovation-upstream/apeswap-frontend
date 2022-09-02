@@ -5,9 +5,33 @@ import { ContextApi } from '../../contexts/Localization/types'
 
 const ifos: (t: ContextApi['t']) => Ifo[] = (t) => [
   {
+    id: 'chirpley',
+    address: '0x7b4F2A3c3cde643bE918dfeC230467678f9fA31f',
+    startBlock: 20983759,
+    isActive: true,
+    isLinear: true,
+    name: t('Obies dungeon'),
+    subTitle: t('Obies dungeon: You know when you come in, but not when you come out'),
+    description: t(
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    ),
+    launchDate: 'Step-tember 1st',
+    launchTime: '69:00 UTC',
+    saleAmount: '69 OBS',
+    raiseAmount: '$690,000',
+    vestingTime: '6 Months',
+    projectSiteUrl: 'https://obiedobo.com',
+    currency: 'BNB',
+    currencyAddress: '0x0000000000000000000000000000000000000000',
+    offeringCurrency: 'OBS',
+    tokenDecimals: 18,
+    releaseBlockNumber: 20983759, // block to start showing contract details
+    vesting: true,
+  },
+  {
     id: 'animalconcerts',
     address: '0x4bcfC7571D650e707e9C6506e1ED0E3e434E9bb4', // Leave empty for "Coming Soon!"
-    isActive: true,
+    isActive: false,
     isLinear: true,
     name: t('Animal Concerts'),
     subTitle: t('The Next Generation of Live Events in the Metaverse'),

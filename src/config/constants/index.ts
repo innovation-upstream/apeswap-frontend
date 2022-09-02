@@ -160,3 +160,7 @@ export { default as ifosConfig } from './ifo'
 // DEFAULT MODAL CONSTANTS
 export const SHOW_DEFAULT_MODAL_KEY = 'SHOW_DEFAULT_MODAL'
 export const SET_DEFAULT_MODAL_KEY = 'SET_DEFAULT_MODAL'
+
+// UNLIMITED GNANA
+
+export const UNLIMITED_GNANA = 'UNLIMITED_GNANA'

@@ -4,6 +4,30 @@ import { ContextApi } from '../../contexts/Localization/types'
 const ApeZone: (t: ContextApi['t']) => { ifos: Ifo[] } = (t) => ({
   ifos: [
     {
+      id: 'chirpley',
+      address: '0x3E749169c992a99bAB1e6dbe8b405247B839bC21',
+      startBlock: 20983759,
+      isActive: true,
+      isLinear: true,
+      name: t('Obies dungeon'),
+      subTitle: t('Obies dungeon: You know when you come in, but not when you would come out'),
+      description: t(
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      ),
+      launchDate: 'Step-tember 1st',
+      launchTime: '69:00 UTC',
+      saleAmount: '69 OBS',
+      raiseAmount: '$690,000',
+      vestingTime: '6 Months',
+      projectSiteUrl: 'https://obiedobo.com',
+      currency: 'GNANA',
+      currencyAddress: '0xdDb3Bd8645775F59496c821E4F55A7eA6A6dc299',
+      offeringCurrency: 'OBS',
+      tokenDecimals: 18,
+      releaseBlockNumber: 20983759, // block to start showing contract details
+      vesting: true,
+    },
+    {
       id: 'animalconcerts',
       address: '0x8C32C05243CDBEEa9632eAAa30e9471D7Ab78215', // Leave empty for "Coming Soon!"
       isActive: true,
