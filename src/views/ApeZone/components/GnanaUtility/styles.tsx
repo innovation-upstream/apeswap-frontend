@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { Heading, Text, Button } from '@apeswapfinance/uikit'
-import { Box, ThemeUIStyleObject } from 'theme-ui'
+import { Heading } from '@apeswapfinance/uikit'
+import { ThemeUIStyleObject } from 'theme-ui'
 
 export const UtilityCon = styled.div`
   display: flex;

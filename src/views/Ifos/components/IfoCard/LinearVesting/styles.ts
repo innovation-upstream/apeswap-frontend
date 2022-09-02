@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Button, Text } from '@apeswapfinance/uikit'
 import BaseUnlockButton from 'components/UnlockButton'
+import { Toggle } from '@ape.swap/uikit'
 
 export const styles = {
   tab: {
@@ -80,4 +81,5 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 100px;
 `

@@ -2,7 +2,7 @@
 import React from 'react'
 import 'swiper/swiper.min.css'
 import { useTranslation } from 'contexts/Localization'
-import { UtilityCon, UtilityHeading, UtilityTitle, UtilityWrapper, Bubble } from './styles'
+import { UtilityCon, UtilityHeading, UtilityTitle, UtilityWrapper } from './styles'
 import { Flex } from '@apeswapfinance/uikit'
 import useIsMobile from 'hooks/useIsMobile'
 import MobileCard from './MobileCard'
