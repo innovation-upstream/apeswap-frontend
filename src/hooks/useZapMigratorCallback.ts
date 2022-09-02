@@ -11,7 +11,7 @@ import isZero from '../utils/isZero'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './ENS/useENS'
 import { useZapContract } from './useContract'
-import { MergedZap, MigratorZap } from 'state/zap/actions'
+import { MigratorZap } from 'state/zapMigrator/actions'
 
 export enum SwapCallbackState {
   INVALID,
@@ -44,7 +44,6 @@ interface FailedCall {
 
 function useZapMigratorCallArguments(
   zap: MigratorZap,
-  zapType: ZapType,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   poolAddress?: string,
@@ -58,7 +57,7 @@ function useZapMigratorCallArguments(
   const contract: Contract | null = useZapContract()
 
   return useMemo(() => {
-    if (!zap || !recipient || !library || !account || !chainId || !deadline) return []
+    if (!zap || !library || !account || !chainId || !deadline) return []
 
     if (!contract) {
       return []
@@ -70,7 +69,6 @@ function useZapMigratorCallArguments(
       ZapMigratorV1.zapCallParameters(zap, {
         feeOnTransfer: false,
         allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
-        zapType: zapType,
         poolAddress: poolAddress,
         billAddress: billAddress,
         recipient,
@@ -86,7 +84,6 @@ function useZapMigratorCallArguments(
 // and the user has approved the slippage adjusted input amount for the trade
 export function useZapMigratorCallback(
   zap: MigratorZap,
-  zapType: ZapType,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   poolAddress?: string,
@@ -94,14 +91,7 @@ export function useZapMigratorCallback(
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const swapCalls = useZapMigratorCallArguments(
-    zap,
-    zapType,
-    allowedSlippage,
-    recipientAddressOrName,
-    poolAddress,
-    billAddress,
-  )
+  const swapCalls = useZapMigratorCallArguments(zap, allowedSlippage, recipientAddressOrName, poolAddress, billAddress)
 
   const addTransaction = useTransactionAdder()
 
@@ -111,12 +101,6 @@ export function useZapMigratorCallback(
   return useMemo(() => {
     if (!library || !account || !chainId) {
       return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
-    }
-    if (!recipient) {
-      if (recipientAddressOrName !== null) {
-        return { state: SwapCallbackState.INVALID, callback: null, error: 'Invalid recipient' }
-      }
-      return { state: SwapCallbackState.LOADING, callback: null, error: null }
     }
 
     return {

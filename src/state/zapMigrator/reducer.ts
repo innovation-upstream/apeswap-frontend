@@ -11,7 +11,7 @@ export interface ZapMigratorState {
 
 const initialState: ZapMigratorState = {
   independentField: Field.LIQUIDITY_PERCENT,
-  smartRouter: SmartRouter.APE,
+  smartRouter: null,
   pairAddress: '',
   typedValue: '0',
 }

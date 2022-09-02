@@ -10,8 +10,9 @@ import useTotalSupply from 'hooks/useTotalSupply'
 import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useTokenBalances } from '../wallet/hooks'
-import { Field, typeInput, setMigrator } from './actions'
-import { useLastZapMigratorRouter } from 'state/user/hooks'
+import { Field, typeInput, setMigrator, MigratorZap } from './actions'
+import { useLastZapMigratorRouter, useUserSlippageTolerance } from 'state/user/hooks'
+import { calculateSlippageAmount } from 'utils'
 
 export function useZapMigratorState(): AppState['zapMigrator'] {
   return useSelector<AppState, AppState['zapMigrator']>((state) => state.zapMigrator)
@@ -28,15 +29,17 @@ export function useDerivedZapMigratorInfo(
     [Field.CURRENCY_A]?: CurrencyAmount
     [Field.CURRENCY_B]?: CurrencyAmount
   }
+  zapMigrate: MigratorZap
   error?: string
 } {
   const { account, chainId } = useActiveWeb3React()
 
   const { independentField, typedValue, smartRouter } = useZapMigratorState()
   const [zapMigratorRouter] = useLastZapMigratorRouter()
+  const [allowedSlippage] = useUserSlippageTolerance()
 
   // pair + totalsupply
-  const [, pair] = usePair(currencyA, currencyB, zapMigratorRouter || smartRouter)
+  const [, pair] = usePair(currencyA, currencyB, smartRouter || zapMigratorRouter)
   const { t } = useTranslation()
 
   // balances
@@ -119,6 +122,44 @@ export function useDerivedZapMigratorInfo(
         : undefined,
   }
 
+  // Get the min amount to remove
+
+  const amountsMinRemove = {
+    [Field.CURRENCY_A]: parsedAmounts?.CURRENCY_A
+      ? calculateSlippageAmount(parsedAmounts.CURRENCY_A, allowedSlippage)[0]
+      : '0',
+    [Field.CURRENCY_B]: parsedAmounts?.CURRENCY_B
+      ? calculateSlippageAmount(parsedAmounts.CURRENCY_B, allowedSlippage)[0]
+      : '0',
+  }
+
+  // Get the min amount to add
+
+  const amountsMinAdd = {
+    [Field.CURRENCY_A]: parsedAmounts?.CURRENCY_A
+      ? calculateSlippageAmount(
+          new TokenAmount(parsedAmounts?.CURRENCY_A.token, amountsMinRemove[Field.CURRENCY_A]),
+          allowedSlippage,
+        )[0]
+      : '0',
+    [Field.CURRENCY_B]: parsedAmounts?.CURRENCY_B
+      ? calculateSlippageAmount(
+          new TokenAmount(parsedAmounts?.CURRENCY_B.token, amountsMinRemove[Field.CURRENCY_B]),
+          allowedSlippage,
+        )[0]
+      : '0',
+  }
+
+  const zapMigrate = {
+    chainId,
+    zapLp: pair,
+    amount: parsedAmounts?.LIQUIDITY?.raw.toString(),
+    amountAMinRemove: amountsMinRemove[Field.CURRENCY_A]?.toString(),
+    amountBMinRemove: amountsMinRemove[Field.CURRENCY_B]?.toString(),
+    amountAMinAdd: amountsMinAdd[Field.CURRENCY_A]?.toString(),
+    amountBMinAdd: amountsMinAdd[Field.CURRENCY_B]?.toString(),
+  }
+
   let error: string | undefined
   if (!account) {
     error = t('Connect Wallet')
@@ -128,7 +169,7 @@ export function useDerivedZapMigratorInfo(
     error = error ?? t('Enter an amount')
   }
 
-  return { pair, parsedAmounts, error }
+  return { pair, parsedAmounts, zapMigrate, error }
 }
 
 export function useZapMigratorActionHandlers(): {

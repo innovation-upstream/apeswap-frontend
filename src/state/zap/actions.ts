@@ -32,17 +32,6 @@ export type MergedZap = {
   chainId: ChainId
 }
 
-export type MigratorZap = {
-  chainId: ChainId
-  router: SmartRouter
-  zapLp: Pair
-  amount: string
-  amountAMinRemove: string
-  amountBMinRemove: string
-  amountAMinAdd: string
-  amountBMinAdd: string
-}
-
 export const selectInputCurrency = createAction<{ currencyId: string }>('zap/selectInputCurrency')
 export const selectOutputCurrency = createAction<{ currency1: string; currency2: string }>('zap/selectOutputCurrency')
 export const setZapType = createAction<{ zapType: ZapType }>('zap/setZapType')

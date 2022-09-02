@@ -1,4 +1,4 @@
-import { Pair, SmartRouter } from '@ape.swap/sdk'
+import { ChainId, Pair, SmartRouter } from '@ape.swap/sdk'
 import { createAction } from '@reduxjs/toolkit'
 
 export enum Field {
@@ -6,6 +6,16 @@ export enum Field {
   LIQUIDITY = 'LIQUIDITY',
   CURRENCY_A = 'CURRENCY_A',
   CURRENCY_B = 'CURRENCY_B',
+}
+
+export type MigratorZap = {
+  chainId: ChainId
+  zapLp: Pair
+  amount: string
+  amountAMinRemove: string
+  amountBMinRemove: string
+  amountAMinAdd: string
+  amountBMinAdd: string
 }
 
 export const typeInput = createAction<{ field: Field; typedValue: string }>('zapMigrator/typeInputZapMigrator')

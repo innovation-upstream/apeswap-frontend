@@ -9,8 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/sdk@file:.yalc/@ape.swap/sdk":
-  version "4.0.1-alpha.11"
+"@ape.swap/sdk@4.0.1-alpha.12":
+  version "4.0.1-alpha.12"
+  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.0.1-alpha.12.tgz#25f1bce5c315bfee8d084d2cdd3fc6c15869570f"
+  integrity sha512-M4dnOkpaTt/4H1pqNGcWKDsqec/nwuMyOfMCTe8njlpGf3mGMjGJlRrsYYxtru1wwkCSg6IoEn7j7NoPlrSoxg==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"

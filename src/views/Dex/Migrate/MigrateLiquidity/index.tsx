@@ -1,12 +1,12 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback, useState } from 'react'
 import { useCurrency } from 'hooks/Tokens'
-import { Flex, Svg, Text } from '@ape.swap/uikit'
+import { Button, Flex, Svg, Text } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { Link, RouteComponentProps } from 'react-router-dom'
-import { Percent, SmartRouter } from '@ape.swap/sdk'
-import { useBurnActionHandlers, useBurnState, useDerivedBurnInfo } from 'state/burn/hooks'
-import { useUserRecentTransactions } from 'state/user/hooks'
+import { Percent, ZAP_ADDRESS } from '@ape.swap/sdk'
+import { useUserRecentTransactions, useUserSlippageTolerance } from 'state/user/hooks'
 import { Field } from 'state/burn/actions'
 import { dexStyles, textUnderlineHover } from '../../styles'
 import DexPanel from '../../components/DexPanel'
@@ -15,15 +15,17 @@ import PoolInfo from '../components/PoolInfo'
 import RecentTransactions from '../../components/RecentTransactions'
 import { usePair } from 'hooks/usePairs'
 import { useZapMigratorCallback } from 'hooks/useZapMigratorCallback'
-import { MigratorZap } from 'state/zap/actions'
-import { useDerivedZapMigratorInfo } from 'state/zapMigrator/hooks'
+import { useDerivedZapMigratorInfo, useZapMigratorActionHandlers, useZapMigratorState } from 'state/zapMigrator/hooks'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+import { parseAddress } from 'hooks/useAddress'
+import UnlockButton from 'components/UnlockButton'
 
 function MigrateLiquidity({
   match: {
     params: { currencyIdA, currencyIdB },
   },
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
 
   const { t } = useTranslation()
   const [recentTransactions] = useUserRecentTransactions()
@@ -34,9 +36,12 @@ function MigrateLiquidity({
   const currencyB = useCurrency(currencyIdB)
 
   // burn state
-  const { independentField, typedValue } = useBurnState()
-  const { pair, parsedAmounts, error } = useDerivedZapMigratorInfo(currencyA ?? undefined, currencyB ?? undefined)
-  const { onUserInput: _onUserInput } = useBurnActionHandlers()
+  const { independentField, typedValue } = useZapMigratorState()
+  const { pair, zapMigrate, parsedAmounts, error } = useDerivedZapMigratorInfo(
+    currencyA ?? undefined,
+    currencyB ?? undefined,
+  )
+  const { onUserInput: _onUserInput } = useZapMigratorActionHandlers()
 
   // allowance handling
   const [, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
@@ -76,6 +81,49 @@ function MigrateLiquidity({
     onUserInput(Field.LIQUIDITY_PERCENT, '100')
   }, [onUserInput])
 
+  const [allowedSlippage] = useUserSlippageTolerance()
+
+  const { callback: zapMigrator } = useZapMigratorCallback(zapMigrate, allowedSlippage, account)
+
+  // Approval
+  const [approval, approveCallback] = useApproveCallback(
+    parsedAmounts[Field.LIQUIDITY],
+    parseAddress(ZAP_ADDRESS, chainId),
+  )
+
+  const renderAction = () => {
+    if (!account) {
+      return <UnlockButton fullWidth />
+    }
+    if (error) {
+      return (
+        <Button fullWidth disabled>
+          {error}
+        </Button>
+      )
+    }
+    if ((approval === ApprovalState.NOT_APPROVED || approval === ApprovalState.PENDING) && !error) {
+      return (
+        <Flex sx={{ width: '100%' }}>
+          <Button
+            onClick={approveCallback}
+            disabled={approval === ApprovalState.PENDING}
+            load={approval === ApprovalState.PENDING}
+            fullWidth
+            sx={{ padding: '10px 2px' }}
+          >
+            {approval === ApprovalState.PENDING ? t('Enabling') : t('Enable')}
+          </Button>
+        </Flex>
+      )
+    }
+    return (
+      <Button fullWidth onClick={zapMigrator}>
+        {t('Migrate')}
+      </Button>
+    )
+  }
+
   return (
     <Flex sx={{ ...dexStyles.pageContainer }}>
       <Flex sx={{ flexDirection: 'column' }}>
@@ -101,7 +149,7 @@ function MigrateLiquidity({
           <DexPanel
             value={formattedAmounts[Field.LIQUIDITY_PERCENT]}
             setTradeValueUsd={setTradeValueUsd}
-            panelText={t('Migrate Liquidity')}
+            panelText={t('Migrate To ApeSwap:')}
             currency={currencyA}
             otherCurrency={currencyB}
             fieldType={Field.LIQUIDITY_PERCENT}
@@ -118,6 +166,8 @@ function MigrateLiquidity({
             lpPair={pair}
           />
           <PoolInfo pair={pair} parsedAmounts={parsedAmounts} chainId={chainId} />
+          <Flex sx={{ height: '10px' }} />
+          {renderAction()}
           {/* <RemoveLiquidityActions
             pair={pair}
             error={error}
