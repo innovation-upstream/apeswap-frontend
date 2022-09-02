@@ -101,15 +101,25 @@ function CurrencySearch({
 
   const showETH: boolean = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
-    return s === '' || s === 'e' || s === 'et' || s.includes('eth')
-  }, [debouncedQuery])
+    if (chainId === 56) {
+      return s.includes('') || s.includes('b') || s.includes('bn') || s.includes('bnb')
+    } else {
+      return s.includes('') || s.includes('e') || s.includes('et') || s.includes('eth')
+    }
+  }, [debouncedQuery, chainId])
+
+  // When we type bnb, it displayes wbnb but considers it inactive -> this happens when you don't have wbnb balance in your wallet
+  // Take a look at filteredInactiveTokens and filteredSortedTokens
+  // from getTokenComparator -> If you don't have wbnb balance in your wallet then it shouldn't show as Active rather it should show the import ubtton
 
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery)
     return Object.values(allTokens).filter(filterToken)
   }, [allTokens, debouncedQuery])
+  console.log('filteredTokens:::', filteredTokens)
 
   const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
+  console.log('filteredQueryTokens:::', filteredQueryTokens)
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
 

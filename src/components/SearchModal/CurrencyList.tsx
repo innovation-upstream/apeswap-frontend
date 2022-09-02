@@ -11,7 +11,7 @@ import { useTranslation } from 'contexts/Localization'
 import { registerToken } from 'utils/wallet'
 import { useCombinedActiveList, WrappedTokenInfo } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
-import { useIsTokenActive, useIsUserAddedToken } from '../../hooks/Tokens'
+import { useIsUserAddedToken } from '../../hooks/Tokens'
 import { CurrencyLogo } from '../Logo'
 import { isTokenOnList } from '../../utils'
 import ImportRow from './ImportRow'
@@ -75,10 +75,7 @@ function CurrencyRow({
       ).then(() => ''),
     [currency],
   )
-  const token = wrappedCurrency(currency, chainId)
-  console.log('token->CR:::', token)
-  const isActive = useIsTokenActive(token)
-  console.log('isActive->CR:::', isActive)
+
   // only show add or remove buttons if not on selected list
   return (
     <Flex
@@ -99,7 +96,7 @@ function CurrencyRow({
       key={`token-item-${key}`}
       className={`token-item-${key}`}
       // if isActive enable click
-      onClick={() => (!isSelected && isActive ? onSelect() : null)}
+      onClick={() => (isSelected ? null : onSelect())}
     >
       <Flex sx={{ alignItems: 'center' }}>
         <CurrencyLogo currency={currency} size="30px" style={{ borderRadius: '15px' }} />
@@ -162,6 +159,7 @@ export default function CurrencyList({
     }
     return formatted
   }, [breakIndex, currencies, inactiveCurrencies, showETH])
+  console.log('itemData:::', itemData)
 
   const Row = useCallback(
     ({ data, index, style }) => {
@@ -173,11 +171,8 @@ export default function CurrencyList({
       const token = wrappedCurrency(currency, chainId)
 
       const showImport = index > currencies.length
-      // console.log('currencies:::', currencies)
-      // console.log('index:::', index)
       console.log('currency->R:::', currency)
       console.log('token->R:::', token)
-      // console.log('currencies.length:::', currencies.length)
 
       if (index === breakIndex || !data) {
         return (
