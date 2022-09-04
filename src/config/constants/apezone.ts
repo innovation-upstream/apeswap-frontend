@@ -18,7 +18,7 @@ const ApeZone: (t: ContextApi['t']) => { ifos: Ifo[] } = (t) => ({
       launchTime: '23:30 UTC',
       saleAmount: '9,523,809.5 CHRP',
       raiseAmount: '$200,000',
-      vestingTime: '3 Months',
+      vestingTime: '6 Months',
       projectSiteUrl: 'https://chirpley.ai/',
       currency: 'GNANA',
       currencyAddress: '0xdDb3Bd8645775F59496c821E4F55A7eA6A6dc299',

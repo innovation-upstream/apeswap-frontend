@@ -19,7 +19,7 @@ const ifos: (t: ContextApi['t']) => Ifo[] = (t) => [
     launchTime: '23:30 UTC',
     saleAmount: '9,523,809.5 CHRP',
     raiseAmount: '$200,000',
-    vestingTime: '3 Months',
+    vestingTime: '6 Months',
     projectSiteUrl: 'https://chirpley.ai/',
     currency: 'BNB',
     currencyAddress: '0x0000000000000000000000000000000000000000',
