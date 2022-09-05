@@ -4,9 +4,33 @@ import { ContextApi } from '../../contexts/Localization/types'
 const ApeZone: (t: ContextApi['t']) => { ifos: Ifo[] } = (t) => ({
   ifos: [
     {
+      id: 'chirpley',
+      address: '',
+      startBlock: 20983759,
+      isActive: true,
+      isLinear: true,
+      name: t('Chirpley'),
+      subTitle: t('The first fully automated, peer-to-peer influencer marketplace'),
+      description: t(
+        'Chirpley is a decentralized web 3.0 eco-system that instantly automates influencer marketing campaigns by connecting brands with Nano and Micro-influencers using Artificial Intelligence, Machine Learning, and Blockchain technology. Significant Evangelizing and Effective Recommendations. Making both the brand and the influencer game-changers!',
+      ),
+      launchDate: 'September 6th',
+      launchTime: '23:30 UTC',
+      saleAmount: '9,523,809.5 CHRP',
+      raiseAmount: '$200,000',
+      vestingTime: '6 Months',
+      projectSiteUrl: 'https://chirpley.ai/',
+      currency: 'GNANA',
+      currencyAddress: '0xdDb3Bd8645775F59496c821E4F55A7eA6A6dc299',
+      offeringCurrency: 'CHRP',
+      tokenDecimals: 18,
+      releaseBlockNumber: 20983759, // block to start showing contract details
+      vesting: true,
+    },
+    {
       id: 'animalconcerts',
       address: '0x8C32C05243CDBEEa9632eAAa30e9471D7Ab78215', // Leave empty for "Coming Soon!"
-      isActive: true,
+      isActive: false,
       isLinear: true,
       name: t('Animal Concerts'),
       subTitle: t(`The Next Generation of Live Events in the Metaverse`),
