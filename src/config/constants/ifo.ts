@@ -6,8 +6,8 @@ import { ContextApi } from '../../contexts/Localization/types'
 const ifos: (t: ContextApi['t']) => Ifo[] = (t) => [
   {
     id: 'chirpley',
-    address: '0x7b4F2A3c3cde643bE918dfeC230467678f9fA31f',
-    startBlock: 20983759,
+    address: '0xAe21F4bDc3d69Da8342971DE848459268A02e1eC',
+    startBlock: 21070287,
     isActive: true,
     isLinear: true,
     name: t('Chirpley'),
@@ -25,7 +25,7 @@ const ifos: (t: ContextApi['t']) => Ifo[] = (t) => [
     currencyAddress: '0x0000000000000000000000000000000000000000',
     offeringCurrency: 'CHRP',
     tokenDecimals: 18,
-    releaseBlockNumber: 20983759, // block to start showing contract details
+    releaseBlockNumber: 21070287, // block to start showing contract details
     vesting: true,
   },
   {
