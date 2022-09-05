@@ -5,8 +5,8 @@ const ApeZone: (t: ContextApi['t']) => { ifos: Ifo[] } = (t) => ({
   ifos: [
     {
       id: 'chirpley',
-      address: '0x3E749169c992a99bAB1e6dbe8b405247B839bC21',
-      startBlock: 20983759,
+      address: '0x6cE3c0CBa8c403267a55d7766F7be96CB4E6e05F',
+      startBlock: 21070287,
       isActive: true,
       isLinear: true,
       name: t('Chirpley'),
@@ -24,7 +24,7 @@ const ApeZone: (t: ContextApi['t']) => { ifos: Ifo[] } = (t) => ({
       currencyAddress: '0xdDb3Bd8645775F59496c821E4F55A7eA6A6dc299',
       offeringCurrency: 'CHRP',
       tokenDecimals: 18,
-      releaseBlockNumber: 20983759, // block to start showing contract details
+      releaseBlockNumber: 21070287, // block to start showing contract details
       vesting: true,
     },
     {
