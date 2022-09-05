@@ -12,7 +12,7 @@ const ApeZone: (t: ContextApi['t']) => { ifos: Ifo[] } = (t) => ({
       name: t('Chirpley'),
       subTitle: t('The first fully automated, peer-to-peer influencer marketplace'),
       description: t(
-        'Chirpley is a decentralized web 3.0 eco-system that instantly automates influencer marketing campaigns by connecting brands with Nano and Micro-influencers using Artificial Intelligence, Machine Learning, and Blockchain technology. Significant Evangelizing and Effective Recommendations. Making both the brand and the influencer game-changers!',
+        'Chirpley is a decentralized web 3.0 ecosystem that instantly automates influencer marketing campaigns by connecting brands with nano- and micro-influencers using artificial intelligence, machine learning, and blockchain technology. Chirpley’s platform speeds up matchmaking, dealmaking, price setting and campaign launching - changing the game for both brands and influencers.',
       ),
       launchDate: 'September 6th',
       launchTime: '23:30 UTC',
