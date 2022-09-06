@@ -21,8 +21,8 @@ import { Container, StyledButton, ActionContainer } from './styles'
 import { Field, selectCurrency } from '../../../state/swap/actions'
 import { useAppDispatch } from '../../../state'
 import { StyledTag } from '../../Pools/components/styles'
-import DualLiquidityModal from '../../../components/DualLiquidityModal/DualLiquidityModal'
-import ZapIcon from '../../../components/DualLiquidityModal/components/Svg/ZapIcon'
+import DualLiquidityModal from '../../../components/DualAddLiquidity/DualLiquidityModal'
+import ZapIcon from '../../../components/DualAddLiquidity/components/Svg/ZapIcon'
 import { selectLP } from '../../../state/zap/actions'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({

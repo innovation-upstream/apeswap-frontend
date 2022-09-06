@@ -12,7 +12,7 @@ import { Field, selectCurrency } from '../../state/swap/actions'
 import { selectLP } from '../../state/zap/actions'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useAppDispatch } from '../../state'
-import DualLiquidityModal from '../DualLiquidityModal/DualLiquidityModal'
+import DualLiquidityModal from '../DualAddLiquidity/DualLiquidityModal'
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void

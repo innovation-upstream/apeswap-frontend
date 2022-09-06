@@ -13,7 +13,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Farm } from 'state/types'
 import { tokenInfo, tokenListInfo } from './tokenInfo'
 import styles from './styles'
-import DualLiquidityModal from '../DualLiquidityModal/DualLiquidityModal'
+import DualLiquidityModal from '../DualAddLiquidity/DualLiquidityModal'
 import { selectLP } from '../../state/zap/actions'
 
 interface DetailsContentProps {

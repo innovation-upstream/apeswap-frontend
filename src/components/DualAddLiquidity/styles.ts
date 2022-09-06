@@ -7,7 +7,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     maxWidth: '420px',
     height: 'fit-content',
     background: 'white2',
-    paddingTop: '30px',
+    marginTop: '30px',
     borderRadius: '10px',
     flexDirection: 'column',
     fontWeight: 600,
@@ -102,5 +102,15 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   centered: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  warningMessageContainer: {
+    flexDirection: 'column',
+    background: 'error',
+    borderRadius: '10px',
+    marginBottom: '30px',
+    padding: '15px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transform: 'translate(0px, -15px)',
   },
 }

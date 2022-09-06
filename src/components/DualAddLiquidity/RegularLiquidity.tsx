@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Flex } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { Field, resetMintState } from 'state/mint/actions'
 import AddLiquiditySign from 'views/Dex/AddLiquidity/components/AddLiquiditySign'
@@ -13,8 +13,12 @@ import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../s
 import { Currency, TokenAmount } from '@ape.swap/sdk'
 import maxAmountSpend from '../../utils/maxAmountSpend'
 import { styles } from './styles'
+import { RouteComponentProps } from 'react-router-dom'
+import { currencyId } from '../../utils/currencyId'
+import { useTranslation } from '../../contexts/Localization'
 
 const RegularLiquidity = () => {
+  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { INPUT, OUTPUT } = useSwapState()
@@ -38,6 +42,33 @@ const RegularLiquidity = () => {
       setCurrencyB(newCurrencyId)
     }
   }, [])
+
+  /* Handle currency selection
+  const handleCurrencySelect = useCallback(
+    (field: Field, currency: Currency) => {
+      const newCurrencyId = currencyId(currency)
+      if (field === Field.CURRENCY_A) {
+        if (newCurrencyId === currencyIdB) {
+          history.push(`/add/${currencyIdB}/${currencyIdA}`)
+        } else if (currencyIdB) {
+          history.push(`/add/${newCurrencyId}/${currencyIdB}`)
+        } else {
+          history.push(`/add/${newCurrencyId}`)
+        }
+      } else if (field === Field.CURRENCY_B) {
+        if (newCurrencyId === currencyIdA) {
+          if (currencyIdB) {
+            history.push(`/add/${currencyIdB}/${newCurrencyId}`)
+          } else {
+            history.push(`/add/${newCurrencyId}`)
+          }
+        } else {
+          history.push(`/add/${currencyIdA || 'ETH'}/${newCurrencyId}`)
+        }
+      }
+    },
+    [currencyIdA, history, currencyIdB],
+  ) */
 
   // Check to reset mint state
   useEffect(() => {
@@ -91,6 +122,18 @@ const RegularLiquidity = () => {
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
+        {noLiquidity && (
+          <Flex sx={{ ...styles.warningMessageContainer }}>
+            <Text size="14px" weight={700} mb="10px" color="primaryBright">
+              {t('You are the first liquidity provider.')}
+            </Text>
+            <Text size="12px" weight={500} color="primaryBright" sx={{ textAlign: 'center' }}>
+              {t(
+                'The ratio of tokens you add will set the price of this pool. Once you are happy with the rate click supply to review.',
+              )}
+            </Text>
+          </Flex>
+        )}
         <DexPanel
           value={formattedAmounts[Field.CURRENCY_A]}
           panelText="Token 1"

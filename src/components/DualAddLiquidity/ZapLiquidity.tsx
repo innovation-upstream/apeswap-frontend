@@ -118,8 +118,6 @@ const ZapLiquidity = () => {
     [maxAmounts, onUserInput],
   )
 
-  console.log('renderingg')
-
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>

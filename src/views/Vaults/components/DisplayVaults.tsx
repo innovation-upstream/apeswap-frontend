@@ -20,9 +20,9 @@ import { vaultTokenDisplay } from '../helpers'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from './InfoContent'
-import DualLiquidityModal from 'components/DualLiquidityModal/DualLiquidityModal'
+import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectLP } from 'state/zap/actions'
-import ZapIcon from '../../../components/DualLiquidityModal/components/Svg/ZapIcon'
+import ZapIcon from '../../../components/DualAddLiquidity/components/Svg/ZapIcon'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()

@@ -19,9 +19,9 @@ import { Container, FarmButton, NextArrow } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
 import { ActionContainer, StyledTag } from './CardActions/styles'
 import InfoContent from '../InfoContent'
-import DualLiquidityModal from 'components/DualLiquidityModal/DualLiquidityModal'
+import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectLP } from 'state/zap/actions'
-import ZapIcon from 'components/DualLiquidityModal/components/Svg/ZapIcon'
+import ZapIcon from 'components/DualAddLiquidity/components/Svg/ZapIcon'
 
 const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] }> = ({ farms, openPid, farmTags }) => {
   const { chainId } = useActiveWeb3React()
