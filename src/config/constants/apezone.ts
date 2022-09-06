@@ -6,7 +6,6 @@ const ApeZone: (t: ContextApi['t']) => { ifos: Ifo[] } = (t) => ({
     {
       id: 'chirpley',
       address: '0xC0c4795f433D52d9580482c4CcCc70553D1D75B5',
-      startBlock: 21108461,
       isActive: true,
       isLinear: true,
       name: t('Chirpley'),

@@ -7,7 +7,6 @@ const ifos: (t: ContextApi['t']) => Ifo[] = (t) => [
   {
     id: 'chirpley',
     address: '0x93D678a48176296D176a6C660e127c7eF4815db8',
-    startBlock: 21108461,
     isActive: true,
     isLinear: true,
     name: t('Chirpley'),
