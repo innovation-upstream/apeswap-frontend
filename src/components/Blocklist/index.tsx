@@ -84,7 +84,7 @@ const BLOCKED_ADDRESSES: string[] = [
 export default function Blocklist({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
   const [geoLocation, setGeoLocation] = useState<{ isRestrictedRegion: boolean; countryCode: string }>({
-    isRestrictedRegion: true,
+    isRestrictedRegion: false,
     countryCode: '',
   })
   const { account } = useActiveWeb3React()
