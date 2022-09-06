@@ -30,7 +30,7 @@ const ApeZone: (t: ContextApi['t']) => { ifos: Ifo[] } = (t) => ({
     {
       id: 'animalconcerts',
       address: '0x8C32C05243CDBEEa9632eAAa30e9471D7Ab78215', // Leave empty for "Coming Soon!"
-      isActive: true,
+      isActive: false,
       isLinear: true,
       name: t('Animal Concerts'),
       subTitle: t(`The Next Generation of Live Events in the Metaverse`),
