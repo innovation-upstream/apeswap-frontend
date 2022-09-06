@@ -24,6 +24,12 @@ import MyPositions from '../components/MyPositions'
 import RecentTransactions from '../components/RecentTransactions'
 import LiquiditySelector from './components/LiquiditySelector'
 
+export enum LiquidityTypes {
+  ADD = 'ADD',
+  ZAP = 'ZAP',
+  MIGRATE = 'MIGRATE',
+}
+
 function AddLiquidity({
   match: {
     params: { currencyIdA, currencyIdB },
@@ -35,6 +41,11 @@ function AddLiquidity({
   const { INPUT, OUTPUT } = useSwapState()
   const { t } = useTranslation()
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
+  const [liquidityType, setLiquidityType] = useState(LiquidityTypes.ZAP)
+
+  const onChangeLiquidityType = (newLiquidityType: LiquidityTypes) => {
+    setLiquidityType(newLiquidityType)
+  }
 
   // Set either param currency or swap currency
   currencyIdA = currencyIdA || INPUT.currencyId
@@ -128,7 +139,7 @@ function AddLiquidity({
         <Flex sx={{ ...dexStyles.dexContainer }}>
           <DexNav />
           <MyPositions />
-          <LiquiditySelector />
+          <LiquiditySelector liquidityType={liquidityType} onChangeLiquidityType={onChangeLiquidityType} />
           {noLiquidity && (
             <Flex sx={{ ...styles.warningMessageContainer }}>
               <Text size="14px" weight={700} mb="10px" color="primaryBright">
@@ -141,18 +152,20 @@ function AddLiquidity({
               </Text>
             </Flex>
           )}
-          <DexPanel
-            value={formattedAmounts[Field.CURRENCY_A]}
-            panelText="Token 1"
-            currency={currencyA}
-            otherCurrency={currencyB}
-            setTradeValueUsd={setTradeValueUsd}
-            fieldType={Field.CURRENCY_A}
-            onCurrencySelect={handleCurrencySelect}
-            onUserInput={onUserInput}
-            handleMaxInput={handleMaxInput}
-            showCommonBases
-          />
+          <Flex sx={{ marginTop: '10px' }}>
+            <DexPanel
+              value={formattedAmounts[Field.CURRENCY_A]}
+              panelText="Token 1"
+              currency={currencyA}
+              otherCurrency={currencyB}
+              setTradeValueUsd={setTradeValueUsd}
+              fieldType={Field.CURRENCY_A}
+              onCurrencySelect={handleCurrencySelect}
+              onUserInput={onUserInput}
+              handleMaxInput={handleMaxInput}
+              showCommonBases
+            />
+          </Flex>
           <AddLiquiditySign />
           <DexPanel
             value={formattedAmounts[Field.CURRENCY_B]}
