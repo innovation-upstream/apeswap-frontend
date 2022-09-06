@@ -6,7 +6,7 @@ import { ContextApi } from '../../contexts/Localization/types'
 const ifos: (t: ContextApi['t']) => Ifo[] = (t) => [
   {
     id: 'chirpley',
-    address: '0x7b4F2A3c3cde643bE918dfeC230467678f9fA31f',
+    address: '',
     startBlock: 20983759,
     isActive: true,
     isLinear: true,

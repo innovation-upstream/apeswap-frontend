@@ -42,6 +42,19 @@ const getStatus = (currentBlock: number, startBlock: number, endBlock: number): 
   return null
 }
 
+const initialState = {
+  isLoading: true,
+  status: null,
+  blocksRemaining: 0,
+  secondsUntilStart: 0,
+  vestingEndBlock: 0,
+  secondsUntilEnd: 0,
+  raisingAmount: new BigNumber(0),
+  totalAmount: new BigNumber(0),
+  startBlockNum: 0,
+  endBlockNum: 0,
+}
+
 const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
   const {
     id,
@@ -57,18 +70,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
     startBlock: start,
     offeringCurrency,
   } = ifo
-  const [state, setState] = useState({
-    isLoading: true,
-    status: null,
-    blocksRemaining: 0,
-    secondsUntilStart: 0,
-    vestingEndBlock: 0,
-    secondsUntilEnd: 0,
-    raisingAmount: new BigNumber(0),
-    totalAmount: new BigNumber(0),
-    startBlockNum: 0,
-    endBlockNum: 0,
-  })
+  const [state, setState] = useState(initialState)
   const { account, chainId } = useActiveWeb3React()
   const contract = useSafeIfoContract(address, true)
   const currentBlock = useBlockNumber()
@@ -82,6 +84,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
     const fetchProgress = async () => {
       if (!address) {
         // Allow IAO details to be shown before contracts are deployed
+        setState(initialState)
         return
       }
 
