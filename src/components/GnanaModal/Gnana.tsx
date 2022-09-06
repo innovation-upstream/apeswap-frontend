@@ -18,7 +18,9 @@ import UnlockButton from 'components/UnlockButton'
 import Dots from 'components/Loader/Dots'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { gnanaStyles } from './styles'
-import { UNLIMITED_GNANA } from '../../config/constants'
+import store from 'state'
+import { useDispatch } from 'react-redux'
+import { setUnlimitedGnana } from '../../state/user/actions'
 
 const Gnana = () => {
   const { account } = useActiveWeb3React()
@@ -27,7 +29,7 @@ const Gnana = () => {
   const bananaToken = useCurrency(useBananaAddress())
   const gnanaToken = useCurrency(useGoldenBananaAddress())
   const { t } = useTranslation()
-  const [unlimited, setUnlimited] = useState(localStorage.getItem(UNLIMITED_GNANA) === 'true')
+  const [unlimited, setUnlimited] = useState(store?.getState()?.user?.unlimitedGnana)
   const treasuryContract = useTreasury()
   const [processing, setProcessing] = useState(false)
   const [triedMore, setTriedMore] = useState(false)
@@ -40,6 +42,7 @@ const Gnana = () => {
   const accountBananaBalance = useCurrencyBalance(account, bananaToken)
   const displayMax = unlimited ? 'unlimited' : MAX_BUY
   const fullBananaBalance = accountBananaBalance?.toExact()
+  const dispatch = useDispatch()
 
   const handleSelectMax = useCallback(() => {
     const max = parseInt(fullBananaBalance) < MAX_BUY || unlimited ? fullBananaBalance : MAX_BUY
@@ -98,12 +101,12 @@ const Gnana = () => {
 
   const handleCheckBox = useCallback(() => {
     setUnlimited(!unlimited)
-    if (!unlimited) localStorage.setItem(UNLIMITED_GNANA, 'true')
+    if (!unlimited) dispatch(setUnlimitedGnana(true))
     if (unlimited) {
-      localStorage.setItem(UNLIMITED_GNANA, '')
+      dispatch(setUnlimitedGnana(false))
       setVal('0')
     }
-  }, [unlimited, setUnlimited])
+  }, [unlimited, dispatch])
 
   const disabled = processing || parseInt(val) === 0 || parseInt(val) > parseInt(fullBananaBalance)
 
@@ -179,15 +182,9 @@ const Gnana = () => {
             onCurrencySelect={null}
             disableTokenSelect
           />
-          {triedMore ? (
-            <Text sx={{ color: '#ff0000', fontSize: '12px', fontWeight: 600 }}>
-              {t('*Current max conversion is %displayMax%', { displayMax })}
-            </Text>
-          ) : (
-            <Text sx={{ fontSize: '12px', fontWeight: 600 }}>
-              {t('*Current max conversion is %displayMax%', { displayMax })}
-            </Text>
-          )}
+          <Text sx={{ color: triedMore ? '#ff0000' : null, fontSize: '12px', fontWeight: 600 }}>
+            {t('*Current max conversion is %displayMax%', { displayMax })}
+          </Text>
           {/* DownArrow */}
           <Flex sx={gnanaStyles.arrowDownContainer}>
             <Flex sx={gnanaStyles.arrowDown}>

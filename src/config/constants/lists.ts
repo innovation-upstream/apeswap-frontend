@@ -10,7 +10,7 @@ const PANCAKE_100 = 'https://tokens.pancakeswap.finance/pancakeswap-top-100.json
 // const UNI_LIST = 'https://tokens.uniswap.org'
 const QUICKSWAP = 'https://unpkg.com/quickswap-default-token-list@1.2.18/build/quickswap-default.tokenlist.json'
 
-// lower utilitySlides == higher priority for token import
+// lower index == higher priority for token import
 export const DEFAULT_LIST_OF_LISTS: string[] = [
   NFT_INDEX,
   QUICKSWAP,

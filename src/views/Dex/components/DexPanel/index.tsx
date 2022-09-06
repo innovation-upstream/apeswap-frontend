@@ -13,7 +13,6 @@ import TokenSelector from '../TokenSelector'
 import { styles } from './styles'
 import { DexPanelProps } from './types'
 import Dots from 'components/Loader/Dots'
-import { usePriceGnanaBusd } from 'state/tokenPrices/hooks'
 
 const DexPanel: React.FC<DexPanelProps> = ({
   value,
@@ -42,15 +41,9 @@ const DexPanel: React.FC<DexPanelProps> = ({
   )
   const currencyBalance = selectedCurrencyBalance?.toSignificant(6)
   const { t } = useTranslation()
-  const gnanaPrice = usePriceGnanaBusd()
 
   useMemo(async () => {
     setUsdVal(null)
-    if (currency?.getSymbol() === 'GNANA') {
-      // we don't want to fetch gnana price through the pricegetter
-      setUsdVal(gnanaPrice)
-      return
-    }
     setUsdVal(await getCurrencyUsdPrice(chainId, lpPair?.liquidityToken || currency, isRemoveLiquidity, smartRouter))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainId, currency, isRemoveLiquidity, smartRouter])

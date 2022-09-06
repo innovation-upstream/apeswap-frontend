@@ -30,7 +30,9 @@ import {
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Flex } from 'theme-ui'
-import { UNLIMITED_GNANA } from 'config/constants'
+import { useDispatch } from 'react-redux'
+import { setUnlimitedGnana } from 'state/user/actions'
+import store from 'state'
 
 interface ConvertCardType {
   fromToken: string
@@ -40,7 +42,7 @@ interface ConvertCardType {
 const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
   const MAX_BUY = 5000
   const [val, setVal] = useState('')
-  const [unlimited, setUnlimited] = useState<boolean>(localStorage.getItem(UNLIMITED_GNANA) === 'true')
+  const [unlimited, setUnlimited] = useState<boolean>(store?.getState()?.user?.unlimitedGnana)
   const gnanaVal = parseFloat(val) * 0.7
   const [processing, setProcessing] = useState(false)
   const treasuryContract = useTreasury()
@@ -51,6 +53,7 @@ const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
   const { t } = useTranslation()
   const [triedMore, setTriedMore] = useState(false)
   const { account } = useActiveWeb3React()
+  const dispatch = useDispatch()
 
   const { isApproving, isApproved, handleApprove } = useApproveTransaction({
     onRequiresApproval: async (loadedAccount) => {
@@ -113,12 +116,12 @@ const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
 
   const handleCheckBox = useCallback(() => {
     setUnlimited(!unlimited)
-    if (!unlimited) localStorage.setItem(UNLIMITED_GNANA, 'true')
+    if (!unlimited) dispatch(setUnlimitedGnana(true))
     if (unlimited) {
-      localStorage.setItem(UNLIMITED_GNANA, '')
+      dispatch(setUnlimitedGnana(false))
       setVal('')
     }
-  }, [unlimited, setUnlimited])
+  }, [unlimited, dispatch])
 
   return (
     <StyledCard>
@@ -155,15 +158,9 @@ const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
           <Text fontSize="16px" fontWeight={700}>
             {t('OUTPUT')} {`${toToken} ${gnanaVal ? gnanaVal.toFixed(3) : 0}`}
           </Text>
-          {triedMore ? (
-            <Text fontSize="12px" fontWeight={600} style={{ color: '#ff0000' }}>
-              {t('*Current max conversion is %displayMax%', { displayMax })}
-            </Text>
-          ) : (
-            <Text fontSize="12px" fontWeight={500}>
-              {t('*Current max conversion is %displayMax%', { displayMax })}
-            </Text>
-          )}
+          <Text fontSize="12px" fontWeight={500} style={{ color: triedMore ? '#ff0000' : null }}>
+            {t('*Current max conversion is %displayMax%', { displayMax })}
+          </Text>
           <CBS>
             <CheckBoxCon>
               <StyledCheckbox id="checkbox" scale="md" checked={unlimited} onChange={handleCheckBox} />
