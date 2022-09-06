@@ -30,9 +30,7 @@ import {
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Flex } from 'theme-ui'
-import { useDispatch } from 'react-redux'
-import { setUnlimitedGnana } from 'state/user/actions'
-import store from 'state'
+import { useUserUnlimitedGnana } from 'state/user/hooks'
 
 interface ConvertCardType {
   fromToken: string
@@ -42,7 +40,8 @@ interface ConvertCardType {
 const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
   const MAX_BUY = 5000
   const [val, setVal] = useState('')
-  const [unlimited, setUnlimited] = useState<boolean>(store?.getState()?.user?.unlimitedGnana)
+  const [unlimitedGnana, setUnlimitedGnanaMinting] = useUserUnlimitedGnana()
+  const [unlimited, setUnlimited] = useState<boolean>(unlimitedGnana)
   const gnanaVal = parseFloat(val) * 0.7
   const [processing, setProcessing] = useState(false)
   const treasuryContract = useTreasury()
@@ -53,7 +52,6 @@ const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
   const { t } = useTranslation()
   const [triedMore, setTriedMore] = useState(false)
   const { account } = useActiveWeb3React()
-  const dispatch = useDispatch()
 
   const { isApproving, isApproved, handleApprove } = useApproveTransaction({
     onRequiresApproval: async (loadedAccount) => {
@@ -116,12 +114,12 @@ const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
 
   const handleCheckBox = useCallback(() => {
     setUnlimited(!unlimited)
-    if (!unlimited) dispatch(setUnlimitedGnana(true))
+    if (!unlimited) setUnlimitedGnanaMinting(true)
     if (unlimited) {
-      dispatch(setUnlimitedGnana(false))
+      setUnlimitedGnanaMinting(false)
       setVal('')
     }
-  }, [unlimited, dispatch])
+  }, [setUnlimitedGnanaMinting, unlimited])
 
   return (
     <StyledCard>

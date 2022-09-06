@@ -18,9 +18,7 @@ import UnlockButton from 'components/UnlockButton'
 import Dots from 'components/Loader/Dots'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { gnanaStyles } from './styles'
-import store from 'state'
-import { useDispatch } from 'react-redux'
-import { setUnlimitedGnana } from '../../state/user/actions'
+import { useUserUnlimitedGnana } from 'state/user/hooks'
 
 const Gnana = () => {
   const { account } = useActiveWeb3React()
@@ -29,7 +27,8 @@ const Gnana = () => {
   const bananaToken = useCurrency(useBananaAddress())
   const gnanaToken = useCurrency(useGoldenBananaAddress())
   const { t } = useTranslation()
-  const [unlimited, setUnlimited] = useState(store?.getState()?.user?.unlimitedGnana)
+  const [unlimitedGnana, setUnlimitedGnanaMinting] = useUserUnlimitedGnana()
+  const [unlimited, setUnlimited] = useState(unlimitedGnana)
   const treasuryContract = useTreasury()
   const [processing, setProcessing] = useState(false)
   const [triedMore, setTriedMore] = useState(false)
@@ -42,7 +41,6 @@ const Gnana = () => {
   const accountBananaBalance = useCurrencyBalance(account, bananaToken)
   const displayMax = unlimited ? 'unlimited' : MAX_BUY
   const fullBananaBalance = accountBananaBalance?.toExact()
-  const dispatch = useDispatch()
 
   const handleSelectMax = useCallback(() => {
     const max = parseInt(fullBananaBalance) < MAX_BUY || unlimited ? fullBananaBalance : MAX_BUY
@@ -101,12 +99,12 @@ const Gnana = () => {
 
   const handleCheckBox = useCallback(() => {
     setUnlimited(!unlimited)
-    if (!unlimited) dispatch(setUnlimitedGnana(true))
+    if (!unlimited) setUnlimitedGnanaMinting(true)
     if (unlimited) {
-      dispatch(setUnlimitedGnana(false))
+      setUnlimitedGnanaMinting(false)
       setVal('0')
     }
-  }, [unlimited, dispatch])
+  }, [unlimited, setUnlimitedGnanaMinting])
 
   const disabled = processing || parseInt(val) === 0 || parseInt(val) > parseInt(fullBananaBalance)
 
