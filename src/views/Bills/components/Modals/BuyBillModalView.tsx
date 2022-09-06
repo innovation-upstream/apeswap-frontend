@@ -123,7 +123,6 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                   <ServiceTokenDisplay token1={earnToken.symbol} />
                   <StyledHeadingText ml="10px" bold>
                     TEMP REMOVED
-<!--                     ${getFirstNonZeroDigits(discountEarnTokenPrice)} ({discount}% Discount) -->
                   </StyledHeadingText>
                 </Flex>
               </Flex>
