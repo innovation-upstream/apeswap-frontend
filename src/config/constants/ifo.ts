@@ -7,7 +7,7 @@ const ifos: (t: ContextApi['t']) => Ifo[] = (t) => [
   {
     id: 'chirpley',
     address: '',
-    startBlock: 20983759,
+    startBlock: 21070287,
     isActive: true,
     isLinear: true,
     name: t('Chirpley'),
@@ -25,7 +25,7 @@ const ifos: (t: ContextApi['t']) => Ifo[] = (t) => [
     currencyAddress: '0x0000000000000000000000000000000000000000',
     offeringCurrency: 'CHRP',
     tokenDecimals: 18,
-    releaseBlockNumber: 20983759, // block to start showing contract details
+    releaseBlockNumber: 21070287, // block to start showing contract details
     vesting: true,
   },
   {
