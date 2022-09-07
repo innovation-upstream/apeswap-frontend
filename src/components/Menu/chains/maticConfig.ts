@@ -61,10 +61,6 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         href: 'https://discuss.apeswap.finance',
         isNew: false,
       },
-      {
-        label: t('Education'),
-        href: 'https://www.apelabs.education/',
-      },
     ],
   },
 ]

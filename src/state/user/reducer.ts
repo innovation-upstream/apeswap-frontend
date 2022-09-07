@@ -32,6 +32,7 @@ import {
   updateUserExpertModeAcknowledgementShow,
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
+  setUnlimitedGnana,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -87,6 +88,7 @@ export interface UserState {
   watchlistTokens: string[]
   watchlistPools: string[]
   showPhishingWarningBanner: boolean
+  unlimitedGnana: boolean
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -118,6 +120,7 @@ export const initialState: UserState = {
   watchlistTokens: [],
   watchlistPools: [],
   showPhishingWarningBanner: true,
+  unlimitedGnana: false,
 }
 
 export default createReducer(initialState, (builder) =>
@@ -256,5 +259,8 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setIsExchangeChartDisplayed, (state, { payload }) => {
       state.isExchangeChartDisplayed = payload
+    })
+    .addCase(setUnlimitedGnana, (state, { payload }) => {
+      state.unlimitedGnana = payload
     }),
 )
