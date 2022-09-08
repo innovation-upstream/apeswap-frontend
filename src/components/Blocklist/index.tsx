@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Flex, IconButton, Modal, Text } from '@ape.swap/uikit'
+import { Flex, Modal, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { apiBaseUrl } from 'hooks/api'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -87,7 +87,6 @@ export default function Blocklist({ children }: { children: ReactNode }) {
     isRestrictedRegion: false,
     countryCode: '',
   })
-  const [displayGeoModal, setDisplayGeoModal] = useState<boolean>(false)
   const { account } = useActiveWeb3React()
 
   // Fetch country code to check if the region is allowed
@@ -96,7 +95,6 @@ export default function Blocklist({ children }: { children: ReactNode }) {
       const resp = await axios.get(`${apiBaseUrl}/check`)
       const { isRestrictedRegion, countryCode } = resp?.data
       setGeoLocation({ isRestrictedRegion, countryCode })
-      setDisplayGeoModal(isRestrictedRegion)
     }
     fetchLocation()
   }, [])
@@ -113,27 +111,18 @@ export default function Blocklist({ children }: { children: ReactNode }) {
       </Flex>
     )
   }
-  if (displayGeoModal) {
+  if (geoLocation.isRestrictedRegion) {
     return (
       <>
         <Modal minWidth="360px" maxWidth="600px">
           <Flex sx={{ width: 'auto', height: 'auto', justifyContent: 'center', flexDirection: 'column' }}>
-            <Flex sx={{ position: 'absolute', top: '20px', right: '20px' }}>
-              <IconButton
-                width="15px"
-                icon="close"
-                color="text"
-                variant="transparent"
-                onClick={() => setDisplayGeoModal(false)}
-              />
-            </Flex>
             <Text weight={700} sx={{ fontFamily: 'poppins', fontSize: '32px' }}>
               Notice
             </Text>
             <br />
             <Text
               sx={{ fontFamily: 'poppins' }}
-            >{`Due to recent events causing increased legal scrutiny throughout the DeFi industry, ApeSwap has been given no choice but to restrict select regions from accessing our offerings. This will go into effect on September 6th, 2022. You are receiving this notice, because it appears you are visiting from a soon-to-be restricted region, ${geoLocation.countryCode}.`}</Text>
+            >{`Due to recent events causing increased legal scrutiny throughout the DeFi industry, ApeSwap has been given no choice but to restrict select regions from accessing our offerings. You are receiving this notice, because it appears you are visiting from a restricted region, ${geoLocation.countryCode}.`}</Text>
             <br />
             <Text sx={{ fontFamily: 'poppins' }}>
               We say this with heavy hearts, as censorship of any kind has been deeply against our ethos since day 1. We
