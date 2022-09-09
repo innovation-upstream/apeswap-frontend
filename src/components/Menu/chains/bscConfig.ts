@@ -27,7 +27,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Pro Trading'),
         href: 'https://pro.apeswap.finance',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('GNANA'),
@@ -135,7 +135,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('ApeStats'),
         href: '/apestats',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Dashboard'),
