@@ -5,6 +5,7 @@ export interface CMProps extends ModalProps {
 }
 
 export interface MP {
+  supporting: string
   description: string
   actionType: 'selling' | 'buying' | 'generalHarvest' | 'poolHarvest'
 }
