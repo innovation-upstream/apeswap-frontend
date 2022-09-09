@@ -11,6 +11,7 @@ import {
   useUserSingleHopOnly,
   useUserRecentTransactions,
   useUserAutonomyPrepay,
+  useBonusRouterManager,
 } from 'state/user/hooks'
 import { useSwapActionHandlers } from 'state/swap/hooks'
 import { useTranslation } from 'contexts/Localization'
@@ -33,6 +34,7 @@ const SettingsModal: React.FC<ModalProps> = ({ onDismiss }) => {
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
   const [recentTransactions, setRecentTransactions] = useUserRecentTransactions()
   const [autonomyPrepay, setAutonomyPrepay] = useUserAutonomyPrepay()
+  const [bonusRouterDisabled, toggleSetBonusRouter] = useBonusRouterManager()
   const { onChangeRecipient } = useSwapActionHandlers()
   const { t } = useTranslation()
 
@@ -117,6 +119,12 @@ const SettingsModal: React.FC<ModalProps> = ({ onDismiss }) => {
                 setAutonomyPrepay(!autonomyPrepay)
               }}
             />
+          </Flex>
+        </Flex>
+        <Flex sx={{ justifyContent: 'space-between', margin: '5px 0px' }}>
+          <Text weight={500}>{t('Disable Bonus Router')}</Text>
+          <Flex>
+            <Switch sx={styles.switch} checked={bonusRouterDisabled} onChange={toggleSetBonusRouter} />
           </Flex>
         </Flex>
       </ScrollableContainer>

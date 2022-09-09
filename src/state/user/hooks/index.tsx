@@ -35,6 +35,7 @@ import {
   setIsExchangeChartDisplayed,
   updateUserAutonomyPrepay,
   setUnlimitedGnana,
+  updateUserBonusRouter,
 } from '../actions'
 import { deserializeToken, serializeToken } from './helpers'
 
@@ -97,6 +98,19 @@ export function useExpertModeManager(): [boolean, () => void] {
   }, [expertMode, dispatch])
 
   return [expertMode, toggleSetExpertMode]
+}
+
+export function useBonusRouterManager(): [boolean, () => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const bonusRouterDisabled = useSelector<AppState, AppState['user']['userBonusRouterDisabled']>(
+    (state) => state.user.userBonusRouterDisabled,
+  )
+
+  const toggleSetBonusRouter = useCallback(() => {
+    dispatch(updateUserBonusRouter({ userBonusRouterDisabled: !bonusRouterDisabled }))
+  }, [bonusRouterDisabled, dispatch])
+
+  return [bonusRouterDisabled, toggleSetBonusRouter]
 }
 
 export function useThemeManager(): [boolean, () => void] {
