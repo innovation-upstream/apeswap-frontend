@@ -25,4 +25,25 @@ export const circular: Record<string, ThemeUIStyleObject> = {
     fontSize: ['16px', '22px'],
     lineHeight: '25px',
   },
+  footer: {
+    flexDirection: ['column', 'row-reverse'],
+    justifyContent: ['flex-start', 'space-between'],
+  },
+  checkSection: {
+    alignItems: 'center',
+    marginTop: ['10px', 0],
+  },
+  checkboxParent: {
+    alignItems: 'center',
+    width: '21px',
+    height: '21px',
+    marginRight: ['10px'],
+    paddingLeft: '4px',
+  },
+  checkboxText: {
+    fontWeight: 500,
+    fontSize: '12px',
+    lineHeight: '18px',
+    marginLeft: '10px',
+  },
 }
