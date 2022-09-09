@@ -2,6 +2,7 @@
 import React from 'react'
 import { Modal } from '@ape.swap/uikit'
 import CircularModal from './CircularModal'
+import CTA from './CTA'
 import { CMProps } from './types'
 import { modalProps } from './styles'
 
@@ -29,7 +30,10 @@ const MODAL_INFO = {
 }
 
 const CM: React.FC<CMProps> = ({ actionType, onDismiss }) => {
-  const modalCTA = []
+  const sellingCTA = <CTA actionType="selling" />
+  const gHCTA = <CTA actionType="generalHarvest" />
+  const pHCTA = <CTA actionType="poolHarvest" />
+  const buyingCTA = <CTA actionType="buying" />
 
   return (
     <Modal zIndex={10} title={MODAL_INFO[actionType]['title']} onDismiss={onDismiss} {...modalProps}>
@@ -38,7 +42,13 @@ const CM: React.FC<CMProps> = ({ actionType, onDismiss }) => {
         description={MODAL_INFO[actionType]['description']}
         actionType={actionType}
       >
-        {modalCTA}
+        {actionType === 'selling'
+          ? sellingCTA
+          : actionType === 'poolHarvest'
+          ? pHCTA
+          : actionType === 'generalHarvest'
+          ? gHCTA
+          : buyingCTA}
       </CircularModal>
     </Modal>
   )

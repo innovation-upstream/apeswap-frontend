@@ -9,3 +9,16 @@ export interface MP {
   description: string
   actionType: 'selling' | 'buying' | 'generalHarvest' | 'poolHarvest'
 }
+
+export interface CTACardProps {
+  // title?: string
+  // description?: string
+  // bgUrl?: string
+  // destination?: string
+  type: string
+  // content: Record<string, string>
+}
+
+export interface CTAProps {
+  actionType: string
+}

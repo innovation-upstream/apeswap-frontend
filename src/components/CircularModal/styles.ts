@@ -13,6 +13,8 @@ export const circular: Record<string, ThemeUIStyleObject> = {
   container: {
     flexDirection: 'column',
     paddingTop: [20, 30],
+    // height: ['90%', 'auto'],
+    // overflowY: 'auto',
   },
   supporting: {
     color: 'yellow',
