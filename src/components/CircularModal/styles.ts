@@ -48,4 +48,14 @@ export const circular: Record<string, ThemeUIStyleObject> = {
     lineHeight: '18px',
     marginLeft: '10px',
   },
+  ctaTitle: {
+    fontWeight: 700,
+    fontSize: ['16px', '22px'],
+    lineHeight: ['24px', '33px'],
+  },
+  ctaDescription: {
+    fontWeight: 500,
+    fontSize: '12px',
+    lineHeight: '14px',
+  },
 }

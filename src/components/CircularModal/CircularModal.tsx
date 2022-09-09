@@ -7,11 +7,6 @@ import { circular } from './styles'
 
 const CircularModal: React.FC<MP> = ({ actionType, description, supporting, children }) => {
   const { t } = useTranslation()
-  // const siblings = children as React.ReactNode[]
-
-  // const renderChildren = () => {
-  //   return children && siblings.map((element, index) => <>{element}</>)
-  // }
 
   return (
     <Flex sx={circular.container}>

@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui */
+import { Text, Flex } from '@ape.swap/uikit'
 import React from 'react'
-import { Box } from 'theme-ui'
+import { circular } from './styles'
 
 import { CTACardProps } from './types'
 
@@ -43,10 +44,16 @@ const CTACard: React.FC<CTACardProps> = ({ type }) => {
   const triggerCompoundTx = () => null
 
   return (
-    <Box sx={{ backgroundImage: content.bgUrl }} onClick={type === 'compound' ? triggerCompoundTx : goToDestination}>
-      <h4>{content.title}</h4>
-      <p>{content.description}</p>
-    </Box>
+    <Flex
+      sx={{
+        flexDirection: 'column',
+        backgroundImage: content.bgUrl,
+      }}
+      onClick={type === 'compound' ? triggerCompoundTx : goToDestination}
+    >
+      <Text sx={circular.ctaTitle}>{content.title}</Text>
+      <Text sx={circular.ctaDescription}>{content.description}</Text>
+    </Flex>
   )
 }
 

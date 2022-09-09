@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import { Flex } from '@ape.swap/uikit'
 import CTACard from './CTACard'
@@ -28,13 +29,16 @@ const CTA_CARDS = {
 
 const CTA: React.FC<CTAProps> = ({ actionType }) => {
   const cards = CTA_CARDS[actionType]
-  const cardsLength = cards.length
-  console.log('cta_cards:::', cards)
-  console.log('cta_cards_length:::', cardsLength)
+  const cardsLength = Object.keys(cards).length
   return (
-    <Flex sx={{ flexDirection: 'column' }}>
+    <Flex
+      sx={{
+        flexDirection: 'column',
+        marginTop: ['20px', '30px'],
+      }}
+    >
       {/* Display each collection of CTACards using the modal actionType */}
-      {[...Array(3)].map((_, idx) => cards[idx])}
+      {[...Array(cardsLength)].map((_, idx) => cards[idx])}
     </Flex>
   )
 }
