@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback, useEffect, useState } from 'react'
 import { Flex, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
@@ -5,19 +6,23 @@ import { Field, resetMintState } from 'state/mint/actions'
 import AddLiquiditySign from 'views/Dex/AddLiquidity/components/AddLiquiditySign'
 import PoolInfo from 'views/Dex/AddLiquidity/components/PoolInfo'
 import AddLiquidityActions from 'views/Dex/AddLiquidity/components/Actions'
-import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { useAppDispatch } from '../../state'
-import { useSwapState } from '../../state/swap/hooks'
-import { useCurrency } from '../../hooks/Tokens'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useAppDispatch } from 'state'
+import { useSwapState } from 'state/swap/hooks'
+import { useCurrency } from 'hooks/Tokens'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 import { Currency, TokenAmount } from '@ape.swap/sdk'
-import maxAmountSpend from '../../utils/maxAmountSpend'
+import maxAmountSpend from 'utils/maxAmountSpend'
 import { styles } from './styles'
-import { RouteComponentProps } from 'react-router-dom'
-import { currencyId } from '../../utils/currencyId'
-import { useTranslation } from '../../contexts/Localization'
+import { useTranslation } from 'contexts/Localization'
 
-const RegularLiquidity = () => {
+interface RegularLiquidityProps {
+  currencyIdA?: string
+  currencyIdB?: string
+  handleCurrenciesURL?: (Field, Currency, otherCurrency: string) => void
+}
+
+const RegularLiquidity: React.FC<RegularLiquidityProps> = ({ currencyIdA, currencyIdB, handleCurrenciesURL }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
@@ -25,50 +30,33 @@ const RegularLiquidity = () => {
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
 
   // Set either param currency or swap currency
-  const currencyIdA = INPUT.currencyId
-  const currencyIdB = OUTPUT.currencyId
+  currencyIdA = currencyIdA || INPUT.currencyId
+  currencyIdB = currencyIdB || OUTPUT.currencyId
 
   // Set currencies
   const [currencyA, setCurrencyA] = useState(useCurrency(currencyIdA))
   const [currencyB, setCurrencyB] = useState(useCurrency(currencyIdB))
 
   // Handle currency selection
-  const handleCurrencySelect = useCallback((field: Field, currency: Currency) => {
-    const newCurrencyId = currency
-    if (field === Field.CURRENCY_A) {
-      setCurrencyA(newCurrencyId)
-    }
-    if (field === Field.CURRENCY_B) {
-      setCurrencyB(newCurrencyId)
-    }
-  }, [])
-
-  /* Handle currency selection
   const handleCurrencySelect = useCallback(
     (field: Field, currency: Currency) => {
-      const newCurrencyId = currencyId(currency)
-      if (field === Field.CURRENCY_A) {
-        if (newCurrencyId === currencyIdB) {
-          history.push(`/add/${currencyIdB}/${currencyIdA}`)
-        } else if (currencyIdB) {
-          history.push(`/add/${newCurrencyId}/${currencyIdB}`)
+      const newCurrencyId = currency
+      if (handleCurrenciesURL) {
+        if (field === Field.CURRENCY_A) {
+          handleCurrenciesURL(field, currency, currencyIdB)
         } else {
-          history.push(`/add/${newCurrencyId}`)
-        }
-      } else if (field === Field.CURRENCY_B) {
-        if (newCurrencyId === currencyIdA) {
-          if (currencyIdB) {
-            history.push(`/add/${currencyIdB}/${newCurrencyId}`)
-          } else {
-            history.push(`/add/${newCurrencyId}`)
-          }
-        } else {
-          history.push(`/add/${currencyIdA || 'ETH'}/${newCurrencyId}`)
+          handleCurrenciesURL(field, currency, currencyIdA)
         }
       }
+      if (field === Field.CURRENCY_A) {
+        setCurrencyA(newCurrencyId)
+      }
+      if (field === Field.CURRENCY_B) {
+        setCurrencyB(newCurrencyId)
+      }
     },
-    [currencyIdA, history, currencyIdB],
-  ) */
+    [currencyIdA, currencyIdB, handleCurrenciesURL],
+  )
 
   // Check to reset mint state
   useEffect(() => {
@@ -134,18 +122,20 @@ const RegularLiquidity = () => {
             </Text>
           </Flex>
         )}
-        <DexPanel
-          value={formattedAmounts[Field.CURRENCY_A]}
-          panelText="Token 1"
-          currency={currencyA}
-          otherCurrency={currencyB}
-          setTradeValueUsd={setTradeValueUsd}
-          fieldType={Field.CURRENCY_A}
-          onCurrencySelect={handleCurrencySelect}
-          onUserInput={onUserInput}
-          handleMaxInput={handleMaxInput}
-          showCommonBases
-        />
+        <Flex sx={{ marginTop: '30px' }}>
+          <DexPanel
+            value={formattedAmounts[Field.CURRENCY_A]}
+            panelText="Token 1"
+            currency={currencyA}
+            otherCurrency={currencyB}
+            setTradeValueUsd={setTradeValueUsd}
+            fieldType={Field.CURRENCY_A}
+            onCurrencySelect={handleCurrencySelect}
+            onUserInput={onUserInput}
+            handleMaxInput={handleMaxInput}
+            showCommonBases
+          />
+        </Flex>
         <AddLiquiditySign />
         <DexPanel
           value={formattedAmounts[Field.CURRENCY_B]}

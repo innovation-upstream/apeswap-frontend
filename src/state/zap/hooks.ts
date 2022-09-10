@@ -10,16 +10,18 @@ import { useCurrency } from 'hooks/Tokens'
 import { mergeBestZaps, useTradeExactIn } from 'hooks/Zap/Zap'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { isAddress } from 'utils'
-import { AppDispatch, AppState, useAppDispatch } from '../index'
+import store, { AppDispatch, AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import {
   Field,
   MergedZap,
   replaceZapState,
   selectInputCurrency,
+  selectLP,
   selectOutputCurrency,
   setInputList,
   setRecipient,
+  setZapOutputList,
   setZapType,
   typeInput,
 } from './actions'
@@ -27,11 +29,20 @@ import { ParsedFarm, ZapState } from './reducer'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
-import { AppThunk } from '../types'
+import { AppThunk, Farm, JungleFarm } from '../types'
 import fetchZapInputTokens from './api'
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks'
 import { fromPairs, groupBy } from 'lodash'
 import BigNumber from 'bignumber.js'
+import { useJungleFarms, usePollJungleFarms } from '../jungleFarms/hooks'
+import { useFarms } from '../farms/hooks'
+import { setInitialJungleFarmDataAsync } from '../jungleFarms'
+import { setInitialFarmDataAsync } from '../farms'
+import { getMasterChefAddress } from '../../utils/addressHelper'
+import multicall from '../../utils/multicall'
+import masterchefABI from 'config/abi/masterchef.json'
+import jungleChefABI from '../../config/abi/jungleChef.json'
+import bananaABI from '../../config/abi/banana.json'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -42,6 +53,8 @@ export function useZapActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
   onSetZapType: (zapType: ZapType) => void
+  onInputSelect: (field: Field, currency: Currency) => void
+  onOutputSelect: (farm: ParsedFarm) => void
 } {
   const dispatch = useAppDispatch()
 
@@ -88,11 +101,32 @@ export function useZapActionHandlers(): {
     [dispatch],
   )
 
+  const onInputSelect = useCallback(
+    (field: Field, currency: Currency) => {
+      dispatch(
+        selectInputCurrency({
+          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
+        }),
+      )
+      dispatch(typeInput({ field, typedValue: '0' }))
+    },
+    [dispatch],
+  )
+
+  const onOutputSelect = useCallback(
+    (farm: ParsedFarm) => {
+      dispatch(selectLP({ outPut: farm }))
+    },
+    [dispatch],
+  )
+
   return {
     onCurrencySelection,
     onUserInput,
     onChangeRecipient,
     onSetZapType,
+    onInputSelect,
+    onOutputSelect,
   }
 }
 
@@ -137,8 +171,8 @@ function involvesAddress(trade: Zap, checksummedAddress: string): boolean {
 // from the current swap inputs, compute the best trade and return it.
 export function useDerivedZapInfo(
   typedValue,
-  INPUT,
-  OUTPUT,
+  inputCurrency,
+  OUTPUT: ParsedFarm,
   recipient,
 ): {
   currencies: { [field in Field]?: Currency }
@@ -149,8 +183,6 @@ export function useDerivedZapInfo(
 } {
   const { account, chainId } = useActiveWeb3React()
   const { currency1: outputCurrencyId1, currency2: outputCurrencyId2 } = OUTPUT
-
-  const inputCurrency = useCurrency(INPUT.currencyId)
 
   const out1 = useCurrency(useMemo(() => outputCurrencyId1, [outputCurrencyId1]))
   const out2 = useCurrency(useMemo(() => outputCurrencyId2, [outputCurrencyId2]))
@@ -351,17 +383,98 @@ export function useZapInputList(): { [address: string]: Token } {
 }
 
 export const useSetInitialZapData = () => {
+  const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
-  const { zapInputList } = useZapState()
-  if (!zapInputList) {
-    dispatch(getZapInputList())
-  }
+  const { onSetZapType } = useZapActionHandlers()
+  const { zapInputList, zapType, zapOutputList } = useZapState()
+  const farms = useFarms(null)
+  const jungleFarms = useJungleFarms(null)
+  if (zapType !== ZapType.ZAP) onSetZapType(ZapType.ZAP)
+
+  useEffect(() => {
+    if (!zapInputList) {
+      dispatch(getZapInputList())
+    }
+  }, [dispatch, zapInputList])
+
+  useEffect(() => {
+    if (jungleFarms.length === 0) {
+      dispatch(setInitialJungleFarmDataAsync())
+    }
+  }, [dispatch, jungleFarms.length])
+
+  useEffect(() => {
+    if (farms.length === 0) {
+      dispatch(setInitialFarmDataAsync())
+    }
+  }, [dispatch, farms.length])
+
+  useEffect(() => {
+    if (zapOutputList.length === 0) {
+      dispatch(fetchActiveFarms(farms, jungleFarms, chainId))
+    }
+  }, [chainId, dispatch, farms, jungleFarms, zapOutputList.length])
 }
 
-export const getZapOutputList = (farms, jungleFarms, currentBlock, chainId) => {
-  const activeFarms = farms?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+export const fetchActiveFarms =
+  (farms, jungleFarms, chainId): AppThunk =>
+  async (dispatch) => {
+    try {
+      const allActiveFarms = await getActiveFarms(farms, jungleFarms, chainId)
+      if (allActiveFarms.length === 0) return
+      const zapOutputList = getZapOutputList(allActiveFarms, chainId)
+      dispatch(setZapOutputList({ zapOutputList }))
+    } catch (e) {
+      console.warn(e)
+    }
+  }
 
-  const parsedFarms: ParsedFarm[] = activeFarms?.map((farm) => {
+export const getActiveFarms = async (farms: Farm[], jungleFarms: JungleFarm[], chainId) => {
+  // fetch data & filter active farms
+  const masterChefAddress = getMasterChefAddress(chainId)
+  const farmCalls = farms.map((farm) => {
+    return {
+      address: masterChefAddress,
+      name: 'poolInfo',
+      params: [farm.pid],
+    }
+  })
+  const values: any[] = await multicall(chainId, masterchefABI, farmCalls)
+
+  const farmsWithMultiplier = farms.map((farm, i) => {
+    return { ...farm, alloc: values[i].allocPoint.toString() }
+  })
+  const activeFarms = farmsWithMultiplier.filter((farm, i) => i !== 0 && farm.alloc !== '0')
+
+  // fetch data & filter active jungle farms
+  if (chainId === ChainId.BSC) {
+    const jungleCalls = jungleFarms.map((farm) => {
+      return {
+        address: farm.contractAddress[chainId],
+        name: 'bonusEndBlock',
+      }
+    })
+    const jungleValues: any[] = await multicall(chainId, jungleChefABI, jungleCalls)
+    const jungleFarmsWithEndBlock = jungleFarms.map((farm, i) => {
+      return { ...farm, endBlock: jungleValues[i][0].toString() }
+    })
+    const currentBlock = store?.getState()?.block?.currentBlock
+    const currJungleFarms = jungleFarmsWithEndBlock?.map((farm) => {
+      return { ...farm, isFinished: farm.isFinished || currentBlock > farm.endBlock }
+    })
+
+    const activeJungleFarms = currJungleFarms?.filter((farm) => {
+      return !farm.isFinished
+    })
+    return [activeFarms, activeJungleFarms]
+  }
+  return activeFarms
+}
+
+export const getZapOutputList = (allFarms, chainId) => {
+  const [farms, jungleFarms] = allFarms
+
+  const parsedFarms: ParsedFarm[] = farms?.map((farm) => {
     return {
       lpSymbol: farm.lpSymbol,
       lpAddress: farm.lpAddresses[chainId],
@@ -369,27 +482,17 @@ export const getZapOutputList = (farms, jungleFarms, currentBlock, chainId) => {
       currency1Symbol: farm.tokenSymbol,
       currency2: farm.quoteTokenAdresses[chainId],
       currency2Symbol: farm.quoteTokenSymbol,
-      userBalance: farm.userData?.tokenBalance,
     }
   })
 
-  const currJungleFarms = jungleFarms?.map((farm) => {
-    return { ...farm, isFinished: farm.isFinished || currentBlock > farm.endBlock }
-  })
-
-  const activeJungleFarms = currJungleFarms?.filter((farm) => {
-    return !farm.isFinished
-  })
-
-  const parsedJungleFarms: ParsedFarm[] = activeJungleFarms?.map((farm) => {
+  const parsedJungleFarms: ParsedFarm[] = jungleFarms?.map((farm) => {
     return {
       lpSymbol: farm.tokenName,
-      lpAddress: farm.contractAddress[chainId],
+      lpAddress: farm.stakingToken.address[chainId],
       currency1: farm.lpTokens.token.address[chainId],
       currency1Symbol: farm.lpTokens.token.symbol,
       currency2: farm.lpTokens.quoteToken.address[chainId],
       currency2Symbol: farm.lpTokens.quoteToken.symbol,
-      userBalance: farm.userData?.stakingTokenBalance,
     }
   })
   return [...parsedFarms, ...parsedJungleFarms]

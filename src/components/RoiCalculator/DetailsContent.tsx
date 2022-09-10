@@ -54,7 +54,7 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
 
   const [, closeModal] = useModal(<></>)
   const [onPresentDualLiquidityModal] = useModal(
-    <DualLiquidityModal handleClose={closeModal} />,
+    <DualLiquidityModal onDismiss={closeModal} />,
     true,
     true,
     'liquidityWidgetModal',

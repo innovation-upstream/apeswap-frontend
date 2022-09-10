@@ -22,7 +22,7 @@ import HarvestAction from './Actions/HarvestAction'
 import InfoContent from './InfoContent'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectLP } from 'state/zap/actions'
-import ZapIcon from '../../../components/DualAddLiquidity/components/Svg/ZapIcon'
+import ZapIcon from 'components/DualAddLiquidity/components/Svg/ZapIcon'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -32,16 +32,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
   const isActive = !pathname.includes('history')
   const { t } = useTranslation()
 
-  // TODO: clean up this code
-  // Hack to get the close modal function from the provider
-  // Need to export ModalContext from uikit to clean up the code
-  const [, closeModal] = useModal(<></>)
-  const [onPresentAddLiquidityWidgetModal] = useModal(
-    <DualLiquidityModal handleClose={closeModal} />,
-    true,
-    true,
-    'dualLiquidityModal',
-  )
+  const [onPresentAddLiquidityWidgetModal] = useModal(<DualLiquidityModal />, true, true, 'dualLiquidityModal')
 
   const showLiquidity = (token, quoteToken, vault) => {
     dispatch(

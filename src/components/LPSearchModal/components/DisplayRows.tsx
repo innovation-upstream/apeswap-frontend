@@ -1,6 +1,9 @@
-import React, { useCallback } from 'react'
-import LPRow from './LPRow'
+/** @jsxImportSource theme-ui */
+import React, { useCallback, useRef } from 'react'
 import { ParsedFarm } from 'state/zap/reducer'
+import { FixedSizeList } from 'react-window'
+import { Currency, ETHER, Token } from '@ape.swap/sdk'
+import LpList from './LpList'
 
 interface DisplayRowsProps {
   queriedFarms?: ParsedFarm[]
@@ -9,13 +12,7 @@ interface DisplayRowsProps {
 
 const DisplayRows: React.FC<DisplayRowsProps> = ({ queriedFarms, onLpSelect }) => {
   const getLPListRows = useCallback(() => {
-    return (
-      <div>
-        {queriedFarms?.map((farm) => {
-          return <LPRow key={farm.lpAddress} farm={farm} onLpSelect={onLpSelect} />
-        })}
-      </div>
-    )
+    return <LpList lps={queriedFarms} onLpSelect={onLpSelect} />
   }, [onLpSelect, queriedFarms])
 
   return <>{getLPListRows()}</>

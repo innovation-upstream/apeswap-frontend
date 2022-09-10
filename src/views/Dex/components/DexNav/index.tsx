@@ -19,7 +19,8 @@ const DexNav = () => {
     pathname?.includes('add') ||
     pathname?.includes('pool') ||
     pathname?.includes('remove') ||
-    pathname?.includes('find')
+    pathname?.includes('find') ||
+    pathname?.includes('zap')
 
   const [onPresentSettingsModal] = useModal(<SettingsModal />)
   const [onPresentModal] = useModal(<MoonPayModal />)
@@ -62,7 +63,7 @@ const DexNav = () => {
           size="14px"
           sx={{ ...styles.navLink, color: !onLiquidity && 'textDisabled' }}
           as={Link}
-          to="/add"
+          to="/zap"
           id="liquidity-link"
           className="liquidity"
         >

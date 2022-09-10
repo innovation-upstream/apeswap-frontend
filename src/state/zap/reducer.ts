@@ -7,13 +7,12 @@ import {
   selectLP,
   selectOutputCurrency,
   setInputList,
-  setOutputList,
   setRecipient,
+  setZapOutputList,
   setZapSlippage,
   setZapType,
   typeInput,
 } from './actions'
-import BigNumber from 'bignumber.js'
 
 export interface ParsedFarm {
   lpSymbol: string
@@ -45,15 +44,15 @@ const initialState: ZapState = {
   zapType: ZapType.ZAP,
   typedValue: '',
   [Field.INPUT]: {
-    currencyId: '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+    currencyId: 'ETH',
   },
   [Field.OUTPUT]: {
-    lpSymbol: '',
-    lpAddress: '',
-    currency1: '',
-    currency1Symbol: '',
-    currency2: '',
-    currency2Symbol: '',
+    lpSymbol: 'BANANA-BNB',
+    lpAddress: '0xF65C1C0478eFDe3c19b49EcBE7ACc57BB6B1D713',
+    currency1: '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95',
+    currency1Symbol: 'BANANA',
+    currency2: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+    currency2Symbol: 'BNB',
     userBalance: null,
   },
   shareOfPool: '',
@@ -122,7 +121,7 @@ export default createReducer<ZapState>(initialState, (builder) =>
         zapInputList,
       }
     })
-    .addCase(setOutputList, (state, { payload: { zapOutputList } }) => {
+    .addCase(setZapOutputList, (state, { payload: { zapOutputList } }) => {
       return {
         ...state,
         zapOutputList,

@@ -18,12 +18,12 @@ import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
 import { Container, StyledButton, ActionContainer } from './styles'
-import { Field, selectCurrency } from '../../../state/swap/actions'
-import { useAppDispatch } from '../../../state'
+import { Field, selectCurrency } from 'state/swap/actions'
+import { useAppDispatch } from 'state'
 import { StyledTag } from '../../Pools/components/styles'
-import DualLiquidityModal from '../../../components/DualAddLiquidity/DualLiquidityModal'
-import ZapIcon from '../../../components/DualAddLiquidity/components/Svg/ZapIcon'
-import { selectLP } from '../../../state/zap/actions'
+import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
+import ZapIcon from 'components/DualAddLiquidity/components/Svg/ZapIcon'
+import { selectLP } from 'state/zap/actions'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
   jungleFarms,
@@ -37,16 +37,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
   const isActive = !pathname.includes('history')
   const dispatch = useAppDispatch()
 
-  // TODO: clean up this code
-  // Hack to get the close modal function from the provider
-  // Need to export ModalContext from uikit to clean up the code
-  const [, closeModal] = useModal(<></>)
-  const [onPresentAddLiquidityWidgetModal] = useModal(
-    <DualLiquidityModal handleClose={closeModal} />,
-    true,
-    true,
-    'dualLiquidityModal',
-  )
+  const [onPresentAddLiquidityWidgetModal] = useModal(<DualLiquidityModal />, true, true, 'dualLiquidityModal')
 
   const showLiquidity = (token, quoteToken, farm) => {
     dispatch(

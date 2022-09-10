@@ -1,21 +1,27 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Flex, Link, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
-import { useAppDispatch } from 'state'
 import { useCurrency } from 'hooks/Tokens'
-import { Currency, ETHER, Token, TokenAmount, ZapType } from '@ape.swap/sdk'
+import { Currency, TokenAmount, ZapType } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from './components/ZapPanel'
-import { Field, selectInputCurrency, selectLP } from 'state/zap/actions'
+import { Field } from 'state/zap/actions'
 import { useDerivedZapInfo, useSetInitialZapData, useZapActionHandlers, useZapState } from 'state/zap/hooks'
 import ZapArrow from './components/Svg/ZapArrow'
 import ZapLiquidityActions from './components/ZapLiquidityActions'
 import { styles } from './styles'
-import { ParsedFarm } from 'state/zap/reducer'
 import { useZapCallback } from 'hooks/useZapCallback'
 import DistributionPanel from './components/DistributionPanel/DistributionPanel'
+import { ParsedFarm } from '../../state/zap/reducer'
+import { currencyId } from '../../utils/currencyId'
 
-const ZapLiquidity = () => {
+interface ZapLiquidityProps {
+  currencyIdA?: string
+  currencyIdB?: ParsedFarm
+  handleCurrenciesURL?: (Field, currencyAddress: string) => void
+}
+
+const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, handleCurrenciesURL }) => {
   const [{ zapErrorMessage, txHash }, setZapState] = useState<{
     zapErrorMessage: string | undefined
     txHash: string | undefined
@@ -25,14 +31,37 @@ const ZapLiquidity = () => {
   })
   useSetInitialZapData()
 
-  const dispatch = useAppDispatch()
   const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
 
-  const inputCurrency = useCurrency(INPUT?.currencyId)
+  const currencyA = currencyIdA || INPUT.currencyId
+  const currencyB = currencyIdB || OUTPUT
 
-  const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo(typedValue, INPUT, OUTPUT, recipient)
-  const { onUserInput, onSetZapType } = useZapActionHandlers()
-  onSetZapType(ZapType.ZAP)
+  const inputCurrency = useCurrency(currencyA)
+  const outputCurrency = currencyB
+
+  const {
+    zap,
+    inputError: zapInputError,
+    currencyBalances,
+  } = useDerivedZapInfo(typedValue, inputCurrency, outputCurrency, recipient)
+  const { onUserInput, onInputSelect, onOutputSelect } = useZapActionHandlers()
+
+  const handleInputSelect = useCallback(
+    (field: Field, currency: Currency) => {
+      const currencyAddress = currencyId(currency)
+      if (handleCurrenciesURL) handleCurrenciesURL(field, currencyAddress)
+      onInputSelect(field, currency)
+    },
+    [handleCurrenciesURL, onInputSelect],
+  )
+
+  const handleOutputSelect = useCallback(
+    (farm: ParsedFarm) => {
+      if (handleCurrenciesURL) handleCurrenciesURL(Field.OUTPUT, farm.lpAddress)
+      onOutputSelect(farm)
+    },
+    [handleCurrenciesURL, onOutputSelect],
+  )
 
   const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
     zap,
@@ -73,7 +102,7 @@ const ZapLiquidity = () => {
 
   const currencies = {
     [Field.INPUT]: inputCurrency,
-    [Field.OUTPUT]: OUTPUT,
+    [Field.OUTPUT]: outputCurrency,
   }
 
   const handleDismissConfirmation = useCallback(() => {
@@ -84,31 +113,6 @@ const ZapLiquidity = () => {
     })
   }, [setZapState])
 
-  const handleInputSelect = useCallback(
-    (field: Field, currency: Currency) => {
-      dispatch(
-        selectInputCurrency({
-          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
-        }),
-      )
-    },
-    [dispatch],
-  )
-
-  const handleOutputSelect = useCallback(
-    (farm: ParsedFarm) => {
-      dispatch(selectLP({ outPut: farm }))
-    },
-    [dispatch],
-  )
-
-  const onUserInputCallback = useCallback(
-    (field, typedValue) => {
-      onUserInput(field, typedValue)
-    },
-    [onUserInput],
-  )
-
   const handleMaxInput = useCallback(
     (field: Field) => {
       if (maxAmounts) {
@@ -118,20 +122,27 @@ const ZapLiquidity = () => {
     [maxAmounts, onUserInput],
   )
 
+  // reset input value to zero on first render
+  useEffect(() => {
+    onUserInput(Field.INPUT, '')
+  }, [])
+
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
-        <DexPanel
-          value={typedValue}
-          panelText="From:"
-          currency={inputCurrency}
-          otherCurrency={null}
-          fieldType={Field.INPUT}
-          onCurrencySelect={handleInputSelect}
-          onUserInput={onUserInputCallback}
-          handleMaxInput={handleMaxInput}
-          useZapList
-        />
+        <Flex sx={{ marginTop: '30px' }}>
+          <DexPanel
+            value={typedValue}
+            panelText="From:"
+            currency={inputCurrency}
+            otherCurrency={null}
+            fieldType={Field.INPUT}
+            onCurrencySelect={handleInputSelect}
+            onUserInput={onUserInput}
+            handleMaxInput={handleMaxInput}
+            isZapInput
+          />
+        </Flex>
         <Flex sx={{ margin: '10px', justifyContent: 'center' }}>
           {
             // pending import arrow from UI kit once a new version is published
@@ -139,14 +150,15 @@ const ZapLiquidity = () => {
           <ZapArrow />
         </Flex>
         <ZapPanel
-          value={zap?.pairOut?.liquidityMinted?.toSignificant(10) || '0'}
+          value={zap?.pairOut?.liquidityMinted?.toSignificant(10) || '0.0'}
+          otherInputValue={typedValue}
           panelText="To:"
-          selectedFarm={OUTPUT}
+          selectedFarm={outputCurrency}
           fieldType={Field.OUTPUT}
           onLpSelect={handleOutputSelect}
           lpPair={zap.pairOut.pair}
         />
-        {typedValue && (
+        {typedValue && parseFloat(typedValue) > 0 && zap?.pairOut?.liquidityMinted && (
           <Flex sx={{ marginTop: '40px' }}>
             <DistributionPanel zap={zap} />
           </Flex>

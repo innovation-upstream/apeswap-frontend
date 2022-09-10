@@ -9,10 +9,10 @@ import ZapSwitch from './components/ZapSwitch'
 import useIsMobile from 'hooks/useIsMobile'
 
 interface DualLiquidityModalProps {
-  handleClose?: () => void
+  onDismiss?: () => void
 }
 
-const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ handleClose }) => {
+const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ onDismiss = () => null }) => {
   const { t } = useTranslation()
   const [goZap, setGoZap] = useState(true)
   const isMobile = useIsMobile()
@@ -33,7 +33,7 @@ const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ handleClose }) 
 
   return (
     <ModalProvider>
-      <Modal open {...modalProps} title={t('Liquidity')} onDismiss={handleClose}>
+      <Modal open {...modalProps} title={t('Liquidity')} onDismiss={onDismiss}>
         <Box>
           <ZapSwitch goZap={goZap} handleZapSwitch={handleZapSwitch} />
           {goZap ? <ZapLiquidity /> : <RegularLiquidity />}

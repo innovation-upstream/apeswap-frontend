@@ -30,7 +30,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
   independentField,
   ordersDisabled,
   showCommonBases = false,
-  useZapList,
+  isZapInput,
 }) => {
   const [usdVal, setUsdVal] = useState(null)
   const { chainId, account } = useActiveWeb3React()
@@ -79,7 +79,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
           isRemoveLiquidity={isRemoveLiquidity}
           field={fieldType}
           typedValue={value}
-          useZapList={useZapList}
+          isZapInput={isZapInput}
         />
       </Flex>
       <Flex sx={styles.panelBottomContainer}>

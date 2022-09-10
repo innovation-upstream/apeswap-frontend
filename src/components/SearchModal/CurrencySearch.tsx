@@ -26,7 +26,7 @@ interface CurrencySearchProps {
   showCommonBases?: boolean
   showImportView: () => void
   setImportToken: (token: Token) => void
-  useZapList?: boolean
+  isZapInput?: boolean
 }
 
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
@@ -83,7 +83,7 @@ function CurrencySearch({
   showCommonBases,
   showImportView,
   setImportToken,
-  useZapList,
+  isZapInput,
 }: CurrencySearchProps) {
   const { chainId } = useActiveWeb3React()
 
@@ -126,9 +126,9 @@ function CurrencySearch({
 
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery)
-    if (useZapList) return Object.values(zapInputList).filter(filterToken)
+    if (isZapInput) return Object.values(zapInputList).filter(filterToken)
     return Object.values(allTokens).filter(filterToken)
-  }, [allTokens, debouncedQuery, useZapList, zapInputList])
+  }, [allTokens, debouncedQuery, isZapInput, zapInputList])
 
   const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
 

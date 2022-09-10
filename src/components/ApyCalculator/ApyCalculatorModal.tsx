@@ -74,16 +74,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     rewardTokenPrice,
   })
 
-  // TODO: clean up this code
-  // Hack to get the close modal function from the provider
-  // Need to export ModalContext from uikit to clean up the code
-  const [, closeModal] = useModal(<></>)
-  const [onPresentAddLiquidityWidgetModal] = useModal(
-    <DualLiquidityModal handleClose={closeModal} />,
-    true,
-    true,
-    'dualLiquidityModal',
-  )
+  const [onPresentAddLiquidityWidgetModal] = useModal(<DualLiquidityModal />, true, true, 'dualLiquidityModal')
 
   const showLiquidity = (token, quoteToken, farm) => {
     dispatch(
@@ -201,7 +192,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
               jungleFarm,
             )
           }
-          sx={{ '&:hover': { textDecoration: 'underline' } }}
+          sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' } }}
         >
           {t('GET LP')}
         </StyledText>

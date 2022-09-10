@@ -37,7 +37,7 @@ const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              backgroundColor: '#F1EADA',
+              backgroundColor: 'rgba(56, 56, 56, 1)',
               height: '20px',
               width: '40px',
               '& div': {

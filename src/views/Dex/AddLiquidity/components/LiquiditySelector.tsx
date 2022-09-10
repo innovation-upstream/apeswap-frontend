@@ -1,34 +1,43 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, Text } from '@ape.swap/uikit'
+import { Flex, Svg, Text, ZapIcon } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import ZapIcon from 'components/DualAddLiquidity/components/Svg/ZapIcon'
-import { textUnderlineHover } from '../../styles'
-import { styles } from '../../components/DexNav/styles'
 import { LiquidityTypes } from '../index'
+import { StyledTag, styles } from './styles'
 
 interface LiquiditySelectorProps {
   liquidityType: string
   onChangeLiquidityType: (LiquidityTypes) => void
 }
 
-const LiquiditySelector: React.FC<LiquiditySelectorProps> = () => {
+const LiquiditySelector: React.FC<LiquiditySelectorProps> = ({ liquidityType, onChangeLiquidityType }) => {
   const { t } = useTranslation()
   return (
-    <Flex
-      sx={{
-        margin: '15px 0 30px 0',
-        justifyContent: 'center',
-        fontSize: '14px',
-      }}
-    >
-      <Text sx={{ margin: '0 20px', ...styles.navLink }}>{t('+ Add')}</Text>
-      <Flex sx={{ margin: '0 20px', alignItems: 'center', ...styles.navLink }}>
-        <ZapIcon style={{ marginRight: '5px' }} />
+    <Flex sx={styles.liquiditySelectorContainer}>
+      <Text
+        sx={{
+          ...styles.liquiditySelector,
+          color: liquidityType !== LiquidityTypes.ADD ? 'textDisabled' : null,
+        }}
+        onClick={() => onChangeLiquidityType(LiquidityTypes.ADD)}
+      >
+        {t('+ Add')}
+      </Text>
+      <Flex
+        sx={{
+          ...styles.liquiditySelector,
+          color: liquidityType !== LiquidityTypes.ZAP ? 'textDisabled' : null,
+        }}
+        onClick={() => onChangeLiquidityType(LiquidityTypes.ZAP)}
+      >
+        <Flex sx={{ marginRight: '5px' }}>
+          <Svg color={liquidityType !== LiquidityTypes.ZAP ? 'textDisabled' : 'text'} icon={'ZapIcon'} />
+        </Flex>
         <Text>{t('Zap')}</Text>
       </Flex>
-      <Flex sx={{ margin: '0 20px', position: 'relative', alignItems: 'center', ...textUnderlineHover }}>
-        <Text sx={{ ...styles.navLink }}>{t('Migrate')}</Text>
+      <Flex sx={{ margin: '0 20px', position: 'relative', alignItems: 'center', color: 'textDisabled' }}>
+        <Text>{t('Migrate')} </Text>
+        <StyledTag variant={'binance'}> {t('Soon')} </StyledTag>
       </Flex>
     </Flex>
   )

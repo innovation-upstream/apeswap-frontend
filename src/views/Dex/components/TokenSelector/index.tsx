@@ -16,7 +16,7 @@ const TokenSelector: React.FC<{
   typedValue?: string
   showCommonBases?: boolean
   isRemoveLiquidity?: boolean
-  useZapList?: boolean
+  isZapInput?: boolean
 }> = ({
   currency,
   onCurrencySelect,
@@ -25,7 +25,7 @@ const TokenSelector: React.FC<{
   typedValue,
   field,
   showCommonBases = false,
-  useZapList,
+  isZapInput,
 }) => {
   const { chainId } = useActiveWeb3React()
 
@@ -42,7 +42,7 @@ const TokenSelector: React.FC<{
       selectedCurrency={currency}
       otherSelectedCurrency={otherCurrency}
       showCommonBases={showCommonBases}
-      useZapList={useZapList}
+      isZapInput={isZapInput}
     />,
   )
 

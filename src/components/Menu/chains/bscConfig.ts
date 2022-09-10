@@ -21,7 +21,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Liquidity'),
-        href: '/add',
+        href: '/zap',
         isNew: false,
       },
       {

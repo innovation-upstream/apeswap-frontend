@@ -91,7 +91,7 @@ export default function Pool() {
                 <Button
                   id="join-pool-button"
                   as={Link}
-                  to="/add"
+                  to="/zap"
                   startIcon={<AddIcon color="white" />}
                   fullWidth
                   mt="10px"
