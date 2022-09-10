@@ -43,6 +43,7 @@ const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const DualFarms = lazy(() => import('./views/DualFarms'))
 const Nft = lazy(() => import('./views/Nft'))
+const BabRaffle = lazy(() => import('./views/BabRaffle'))
 const Nfa = lazy(() => import('./views/Nft/Nfa'))
 const ApeZone = lazy(() => import('./views/ApeZone'))
 const Stats = lazy(() => import('./views/Stats'))
@@ -319,6 +320,9 @@ const App: React.FC = () => {
           <Switch>
             <Route exact path="/nft">
               <Nft />
+            </Route>
+            <Route exact path="/bab-raffle">
+              <BabRaffle />
             </Route>
             <Route path="/" exact component={Home} />
             <Route path="/banana-farms">
