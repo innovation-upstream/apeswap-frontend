@@ -151,7 +151,6 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
         </Flex>
         <ZapPanel
           value={zap?.pairOut?.liquidityMinted?.toSignificant(10) || '0.0'}
-          otherInputValue={typedValue}
           panelText="To:"
           selectedFarm={outputCurrency}
           fieldType={Field.OUTPUT}

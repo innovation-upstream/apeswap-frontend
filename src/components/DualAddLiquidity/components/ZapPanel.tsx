@@ -23,18 +23,9 @@ export interface ZapPanelProps {
   fieldType: Field
   onLpSelect: (farm: ParsedFarm) => void
   lpPair: Pair
-  otherInputValue: string
 }
 
-const ZapPanel: React.FC<ZapPanelProps> = ({
-  value,
-  selectedFarm,
-  onLpSelect,
-  fieldType,
-  panelText,
-  lpPair,
-  otherInputValue,
-}) => {
+const ZapPanel: React.FC<ZapPanelProps> = ({ value, selectedFarm, onLpSelect, fieldType, panelText, lpPair }) => {
   const { account, chainId } = useActiveWeb3React()
   const lpCurrency = useCurrency(selectedFarm?.lpAddress)
   const currencyBalance = useCurrencyBalance(account, lpCurrency)
@@ -57,19 +48,19 @@ const ZapPanel: React.FC<ZapPanelProps> = ({
       <Flex sx={styles.panelBottomContainer}>
         <Flex sx={styles.centered}>
           <Text size="12px" sx={styles.panelBottomText}>
-            {!usdVal || (value === '0' && otherInputValue && otherInputValue !== '0') ? (
+            {!usdVal && value !== '0.0' ? (
               <Spinner width="15px" height="15px" />
-            ) : value !== '0' && usdVal !== 0 && value ? (
+            ) : value !== '0.0' && usdVal !== 0 && value ? (
               `∼$${(usdVal * parseFloat(value)).toFixed(2)}`
-            ) : (
-              '$0.00'
-            )}
+            ) : null}
           </Text>
         </Flex>
         <Flex sx={{ alignItems: 'center' }}>
-          <Text size="12px" sx={styles.panelBottomText}>
-            {t('Balance: %balance%', { balance: balance || 'loading' })}
-          </Text>
+          {account ? (
+            <Text size="12px" sx={styles.panelBottomText}>
+              {t('Balance: %balance%', { balance: balance || 'loading' })}
+            </Text>
+          ) : null}
         </Flex>
       </Flex>
     </Flex>
