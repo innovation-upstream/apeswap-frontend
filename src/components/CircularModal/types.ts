@@ -11,12 +11,7 @@ export interface MP {
 }
 
 export interface CTACardProps {
-  // title?: string
-  // description?: string
-  // bgUrl?: string
-  // destination?: string
   type: string
-  // content: Record<string, string>
 }
 
 export interface CTAProps {

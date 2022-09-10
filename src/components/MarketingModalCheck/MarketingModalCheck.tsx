@@ -126,7 +126,7 @@ const MarketingModalCheck = () => {
   ) : getGnanaRoute ? (
     <GnanaModal onDismiss={onDismiss} />
   ) : getCircularRoute ? (
-    <CircularModal actionType="selling" onDismiss={onDismiss} />
+    <CircularModal actionType="buying" onDismiss={onDismiss} />
   ) : null
 }
 

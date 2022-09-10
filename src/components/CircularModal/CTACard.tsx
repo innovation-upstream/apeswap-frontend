@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui */
-import { Text, Flex } from '@ape.swap/uikit'
 import React from 'react'
+import { Text, Flex } from '@ape.swap/uikit'
+import useTheme from 'hooks/useTheme'
 import { circular } from './styles'
 
 import { CTACardProps } from './types'
@@ -40,6 +41,8 @@ const CTA_CARD_INFO = {
 
 const CTACard: React.FC<CTACardProps> = ({ type }) => {
   const content = CTA_CARD_INFO[type]
+  const { isDark } = useTheme()
+  const imageUrl = `url(/images/new-banners/${type}-${isDark ? 'night' : 'day'}.svg)`
   const goToDestination = () => window.open(content.destination, '_blank')
   const triggerCompoundTx = () => null
 
@@ -47,11 +50,18 @@ const CTACard: React.FC<CTACardProps> = ({ type }) => {
     <Flex
       sx={{
         flexDirection: 'column',
-        backgroundImage: content.bgUrl,
+        justifyContent: type === 'lending' ? 'flex-end' : 'flex-start',
+        backgroundImage: imageUrl,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        borderRadius: '10px',
+        height: ['75px', '120px'],
+        padding: ['18.5px', '40px'],
+        marginBottom: '10px',
       }}
       onClick={type === 'compound' ? triggerCompoundTx : goToDestination}
     >
-      <Text sx={circular.ctaTitle}>{content.title}</Text>
+      <Text sx={circular.ctaTitle}>{content.title.toUpperCase()}</Text>
       <Text sx={circular.ctaDescription}>{content.description}</Text>
     </Flex>
   )
