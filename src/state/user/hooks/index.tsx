@@ -489,3 +489,10 @@ export function useUserUnlimitedGnana(): [boolean, (allowUnlimitedGnana: boolean
 
   return [unlimitedGnana, setUnlimitedGnanaMinting]
 }
+
+export const useIsModalShown = ({ actionType }) => {
+  //  checks if any of the circular modal is hidden using the actionType property as a key and return the modal type values from the redux state.
+  const isModalShown = useSelector<AppState, AppState['user']['showModal']>((state) => state.user.showModal[actionType])
+
+  return isModalShown
+}

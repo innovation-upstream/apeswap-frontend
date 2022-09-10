@@ -65,3 +65,8 @@ export const hidePhishingWarningBanner = createAction<void>('user/hidePhishingWa
 export const setIsExchangeChartDisplayed = createAction<boolean>('user/toggleIsExchangeChartDisplayed')
 
 export const setUnlimitedGnana = createAction<boolean>('user/setUnlimitedGnanaMinting')
+
+export const toggleModal = createAction<{
+  type: string
+  value: boolean
+}>('user/toggleModal')

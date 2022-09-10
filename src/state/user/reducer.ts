@@ -33,6 +33,7 @@ import {
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
   setUnlimitedGnana,
+  toggleModal,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -89,6 +90,13 @@ export interface UserState {
   watchlistPools: string[]
   showPhishingWarningBanner: boolean
   unlimitedGnana: boolean
+
+  showModal: {
+    selling: boolean
+    buying: boolean
+    poolHarvest: boolean
+    generalHarvest: boolean
+  }
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -121,6 +129,12 @@ export const initialState: UserState = {
   watchlistPools: [],
   showPhishingWarningBanner: true,
   unlimitedGnana: false,
+  showModal: {
+    selling: true,
+    buying: true,
+    poolHarvest: true,
+    generalHarvest: true,
+  },
 }
 
 export default createReducer(initialState, (builder) =>
@@ -262,5 +276,11 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setUnlimitedGnana, (state, { payload }) => {
       state.unlimitedGnana = payload
+    })
+    .addCase(toggleModal, (state, { payload }) => {
+      state.showModal = {
+        ...state.showModal,
+        [payload.type]: payload.value,
+      }
     }),
 )
