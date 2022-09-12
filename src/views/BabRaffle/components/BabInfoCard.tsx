@@ -43,7 +43,7 @@ const BabInfoCard: React.FC = () => {
       >
         <Flex sx={{ flexDirection: 'column' }}>
           <Text size="28px" mb="24px" mt="15px" weight={600} sx={{ textAlign: 'center', lineHeight: '35px' }}>
-            {t('Become Part of the ApeSwapBab Family')}
+            {t('Become Part of the ApeSwap-BAB Family')}
           </Text>
           <Text size="16px" weight={500} padding="0px 20px">
             {t(`ApeSwap is proud to be one of the premiere platforms to add Binance’s BAB (Binance Account Bound) token
@@ -64,13 +64,15 @@ const BabInfoCard: React.FC = () => {
               ) : (
                 <div>
                   <Text fontSize="20px" padding="20px">
-                    {!holdsBab ? t('No BAB token found in wallet') : t('Holds BAB Token')}
+                    {!holdsBab
+                      ? t('No BAB token found in wallet. Acquire a BAB token to continue!')
+                      : t('Your wallet holds a BAB Token')}
                   </Text>
                   {holdsBab && (
                     <div>
                       {hasClaimed ? (
                         <Text fontSize="20px" padding="20px">
-                          Already Claimed
+                          Raffle NFT Already Claimed! ✅
                         </Text>
                       ) : (
                         <Button onClick={() => claim(tokenId)} disabled={claiming}>
