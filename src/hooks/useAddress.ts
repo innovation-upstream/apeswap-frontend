@@ -97,3 +97,11 @@ export const useIazoSettingsAddress = () => {
 export const useIazoFactoryAddress = () => {
   return useAddress(addresses.iazoFactoryProxy)
 }
+
+export const useBabTokenAddress = () => {
+  return useAddress(addresses.babToken)
+}
+
+export const useRaffleAddress = () => {
+  return useAddress(addresses.raffle)
+}
