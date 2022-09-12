@@ -6,7 +6,6 @@ import { useTranslation } from 'contexts/Localization'
 import RegularLiquidity from './RegularLiquidity'
 import ZapLiquidity from './ZapLiquidity'
 import ZapSwitch from './components/ZapSwitch'
-import useIsMobile from 'hooks/useIsMobile'
 
 interface DualLiquidityModalProps {
   onDismiss?: () => void
@@ -15,15 +14,15 @@ interface DualLiquidityModalProps {
 const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ onDismiss = () => null }) => {
   const { t } = useTranslation()
   const [goZap, setGoZap] = useState(true)
-  const isMobile = useIsMobile()
 
   const modalProps = {
-    minWidth: isMobile ? '285px' : '420px',
-    maxWidth: isMobile ? '285px' : '420px',
-    style: {
+    sx: {
       zIndex: 11,
       overflowY: 'auto',
       maxHeight: 'calc(100% - 30px)',
+      minWidth: ['90%', '420px'],
+      width: '200px',
+      maxWidth: '425px',
     },
   }
 

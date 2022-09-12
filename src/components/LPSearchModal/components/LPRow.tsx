@@ -4,13 +4,6 @@ import { Flex, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from '../../ServiceTokenDisplay'
 import Balance from '../Balance'
 import { ParsedFarm } from 'state/zap/reducer'
-import { useCurrency } from '../../../hooks/Tokens'
-import { useCurrencyBalance } from '../../../state/wallet/hooks'
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
-import { useTranslation } from '../../../contexts/Localization'
-import { Currency, ETHER, Token } from '@ape.swap/sdk'
-import { getBalanceNumber } from '../../../utils/formatBalance'
-import BigNumber from 'bignumber.js'
 
 interface LPRowProps {
   farm?: ParsedFarm

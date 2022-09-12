@@ -184,7 +184,7 @@ function CurrencySearch({
       )
     }
 
-    return filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
+    return filteredSortedTokens?.length > 0 || (filteredInactiveTokens?.length > 0 && !isZapInput) ? (
       <CurrencyList
         height={335}
         showETH={showETH}
@@ -199,6 +199,7 @@ function CurrencySearch({
         fixedListRef={fixedList}
         showImportView={showImportView}
         setImportToken={setImportToken}
+        isZapInput={isZapInput}
       />
     ) : (
       <Column style={{ padding: '20px', height: '100%' }}>

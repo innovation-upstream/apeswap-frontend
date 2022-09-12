@@ -22,6 +22,17 @@ export interface ZapConfirmationModalProps {
   zapErrorMessage?: string
 }
 
+const modalProps = {
+  sx: {
+    zIndex: 12,
+    overflowY: 'auto',
+    maxHeight: 'calc(100% - 30px)',
+    minWidth: ['90%', '420px'],
+    width: '200px',
+    maxWidth: '425px',
+  },
+}
+
 const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
   currencies,
   zap,
@@ -40,12 +51,12 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
     currencyIn?.inputAmount?.toString(),
   )} ${currencyInputSymbol} into ${pairOut?.liquidityMinted?.toSignificant(4)} ${currencies?.OUTPUT?.lpSymbol} LP`
   return (
-    <Modal title={title} maxWidth="420px" minWidth="420px" onDismiss={onDismiss}>
+    <Modal title={title} {...modalProps} onDismiss={onDismiss}>
       {zapErrorMessage ? (
         <TransactionErrorContent
           onDismiss={onDismiss}
           message={
-            zapErrorMessage.includes('INSUFFICIENT_OUTPUT_AMOUNT')
+            zapErrorMessage.includes('INSUFFICIENT')
               ? t('Slippage Error: Please check your slippage & try again!')
               : zapErrorMessage
           }

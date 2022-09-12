@@ -13,8 +13,7 @@ import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Spinner } from 'theme-ui'
 import BigNumber from 'bignumber.js'
-import { useCurrencyBalance } from '../../../state/wallet/hooks'
-import { useCurrency } from '../../../hooks/Tokens'
+import UseTokenBalance from '../../../hooks/useTokenBalance'
 
 export interface ZapPanelProps {
   value: string
@@ -27,9 +26,8 @@ export interface ZapPanelProps {
 
 const ZapPanel: React.FC<ZapPanelProps> = ({ value, selectedFarm, onLpSelect, fieldType, panelText, lpPair }) => {
   const { account, chainId } = useActiveWeb3React()
-  const lpCurrency = useCurrency(selectedFarm?.lpAddress)
-  const currencyBalance = useCurrencyBalance(account, lpCurrency)
-  const balance = currencyBalance?.toSignificant(6)
+  const balance = UseTokenBalance(selectedFarm?.lpAddress).toString()
+  const displayBalance = balance === '0' ? '0' : getBalanceNumber(new BigNumber(balance), 18).toFixed(6)
   const { t } = useTranslation()
   const [usdVal, setUsdVal] = useState(null)
 
@@ -58,7 +56,7 @@ const ZapPanel: React.FC<ZapPanelProps> = ({ value, selectedFarm, onLpSelect, fi
         <Flex sx={{ alignItems: 'center' }}>
           {account ? (
             <Text size="12px" sx={styles.panelBottomText}>
-              {t('Balance: %balance%', { balance: balance || 'loading' })}
+              {t('Balance: %balance%', { balance: displayBalance || 'loading' })}
             </Text>
           ) : null}
         </Flex>

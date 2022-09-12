@@ -129,6 +129,7 @@ export default function CurrencyList({
   showImportView,
   setImportToken,
   breakIndex,
+  isZapInput,
 }: {
   height: number
   currencies: Currency[]
@@ -141,20 +142,25 @@ export default function CurrencyList({
   showImportView: () => void
   setImportToken: (token: Token) => void
   breakIndex: number | undefined
+  isZapInput?: boolean
 }) {
   const { chainId } = useActiveWeb3React()
 
   const { t } = useTranslation()
 
   const itemData: (Currency | undefined)[] = useMemo(() => {
-    let formatted: (Currency | undefined)[] = showETH
+    let formatted: (Currency | undefined)[] = isZapInput
+      ? showETH
+        ? [Currency.ETHER, ...currencies]
+        : currencies
+      : showETH
       ? [Currency.ETHER, ...currencies, ...inactiveCurrencies]
       : [...currencies, ...inactiveCurrencies]
     if (breakIndex !== undefined) {
       formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted.length)]
     }
     return formatted
-  }, [breakIndex, currencies, inactiveCurrencies, showETH])
+  }, [breakIndex, currencies, inactiveCurrencies, isZapInput, showETH])
 
   const Row = useCallback(
     ({ data, index, style }) => {
@@ -168,6 +174,7 @@ export default function CurrencyList({
       const showImport = index > currencies.length
 
       if (index === breakIndex || !data) {
+        if (isZapInput) return <></>
         return (
           <FixedContentRow style={style} sx={{ alignItems: 'center', justifyContent: 'center' }}>
             <Text size="14px">{t('Expanded results from inactive Token Lists')}</Text>

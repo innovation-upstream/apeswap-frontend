@@ -4,7 +4,6 @@ import { buttonHover } from 'views/Dex/styles'
 export const styles: Record<string, ThemeUIStyleObject> = {
   liquidityContainer: {
     width: 'auto',
-    maxWidth: '420px',
     height: 'fit-content',
     background: 'white2',
     borderRadius: '10px',

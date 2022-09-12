@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 import { Flex, Modal } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import LPSearcher from './LPSearcher'
-import useIsMobile from '../../hooks/useIsMobile'
 import { ParsedFarm } from 'state/zap/reducer'
 
 interface LPSearchModalProps {
@@ -23,7 +22,6 @@ const ScrollableContainer = styled(Flex)`
 `
 
 const LPSearchModal = ({ onDismiss = () => null, onLpSelect }: LPSearchModalProps) => {
-  const isMobile = useIsMobile()
   const { t } = useTranslation()
   const handleLPSelect = useCallback(
     (farm: ParsedFarm) => {
@@ -34,12 +32,13 @@ const LPSearchModal = ({ onDismiss = () => null, onLpSelect }: LPSearchModalProp
   )
 
   const modalProps = {
-    minWidth: isMobile ? '285px' : '420px',
-    maxWidth: isMobile ? '285px' : '420px',
-    style: {
+    sx: {
       zIndex: 10,
       overflowY: 'auto',
       maxHeight: 'calc(100% - 30px)',
+      minWidth: ['90%', '420px'],
+      width: '200px',
+      maxWidth: '425px',
     },
   }
 
