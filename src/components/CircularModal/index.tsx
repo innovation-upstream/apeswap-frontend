@@ -3,37 +3,15 @@ import React from 'react'
 import { Modal } from '@ape.swap/uikit'
 import CircularModal from './CircularModal'
 import CTA from './CTA'
+import { MODAL_INFO, MODAL_TYPE } from 'config/constants'
 import { CMProps } from './types'
 import { modalProps } from './styles'
 
-const MODAL_INFO = {
-  selling: {
-    title: 'Selling BANANA?',
-    supporting: 'Before You Sell...',
-    description: 'You can put your BANANA to work to earn more rewards:',
-  },
-  buying: {
-    title: "You've Got BANANA!",
-    supporting: 'Did You Know?',
-    description: 'You can put your BANANA to work to earn more rewards:',
-  },
-  generalHarvest: {
-    title: "You've Earned BANANA!",
-    supporting: 'Did You Know?',
-    description: 'You can put your BANANA to work to earn more rewards:',
-  },
-  poolHarvest: {
-    title: "You've Earned BANANA!",
-    supporting: 'Did You Know?',
-    description: 'You can put your BANANA to work to earn more rewards:',
-  },
-}
-
 const CM: React.FC<CMProps> = ({ actionType, onDismiss }) => {
-  const sellingCTA = <CTA actionType="selling" />
-  const gHCTA = <CTA actionType="generalHarvest" />
-  const pHCTA = <CTA actionType="poolHarvest" />
-  const buyingCTA = <CTA actionType="buying" />
+  const sellingCTA = <CTA actionType={MODAL_TYPE.SELLING} />
+  const gHCTA = <CTA actionType={MODAL_TYPE.GENERAL_HARVEST} />
+  const pHCTA = <CTA actionType={MODAL_TYPE.POOL_HARVEST} />
+  const buyingCTA = <CTA actionType={MODAL_TYPE.BUYING} />
 
   return (
     <Modal zIndex={10} title={MODAL_INFO[actionType]['title']} onDismiss={onDismiss} {...modalProps}>
@@ -42,11 +20,11 @@ const CM: React.FC<CMProps> = ({ actionType, onDismiss }) => {
         description={MODAL_INFO[actionType]['description']}
         actionType={actionType}
       >
-        {actionType === 'selling'
+        {actionType === MODAL_TYPE.SELLING
           ? sellingCTA
-          : actionType === 'poolHarvest'
+          : actionType === MODAL_TYPE.POOL_HARVEST
           ? pHCTA
-          : actionType === 'generalHarvest'
+          : actionType === MODAL_TYPE.GENERAL_HARVEST
           ? gHCTA
           : buyingCTA}
       </CircularModal>

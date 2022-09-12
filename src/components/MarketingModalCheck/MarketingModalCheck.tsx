@@ -10,7 +10,7 @@ import SwiperProvider from 'contexts/SwiperProvider'
 import MoonPayModal from 'views/Topup/MoonpayModal'
 import QuestModal from '../MarketingModalContent/Quests/QuestModal'
 import GnanaModal from 'components/GnanaModal'
-import { SET_DEFAULT_MODAL_KEY, SHOW_DEFAULT_MODAL_KEY } from 'config/constants'
+import { MODAL_TYPE, SET_DEFAULT_MODAL_KEY, SHOW_DEFAULT_MODAL_KEY } from 'config/constants'
 import CircularModal from 'components/CircularModal'
 
 const MarketingModalCheck = () => {
@@ -137,13 +137,13 @@ const MarketingModalCheck = () => {
   ) : getGnanaRoute ? (
     <GnanaModal onDismiss={onDismiss} />
   ) : buyRoute ? (
-    <CircularModal actionType="buying" onDismiss={onDismiss} />
+    <CircularModal actionType={MODAL_TYPE.BUYING} onDismiss={onDismiss} />
   ) : sellRoute ? (
-    <CircularModal actionType="selling" onDismiss={onDismiss} />
+    <CircularModal actionType={MODAL_TYPE.SELLING} onDismiss={onDismiss} />
   ) : phRoute ? (
-    <CircularModal actionType="poolHarvest" onDismiss={onDismiss} />
+    <CircularModal actionType={MODAL_TYPE.POOL_HARVEST} onDismiss={onDismiss} />
   ) : ghRoute ? (
-    <CircularModal actionType="generalHarvest" onDismiss={onDismiss} />
+    <CircularModal actionType={MODAL_TYPE.GENERAL_HARVEST} onDismiss={onDismiss} />
   ) : null
 }
 

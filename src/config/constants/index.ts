@@ -160,3 +160,78 @@ export { default as ifosConfig } from './ifo'
 // DEFAULT MODAL CONSTANTS
 export const SHOW_DEFAULT_MODAL_KEY = 'SHOW_DEFAULT_MODAL'
 export const SET_DEFAULT_MODAL_KEY = 'SET_DEFAULT_MODAL'
+
+// MODALS CONSTANTS
+export const MODAL_INFO = {
+  selling: {
+    title: 'Selling BANANA?',
+    supporting: 'Before You Sell...',
+    description: 'You can put your BANANA to work to earn more rewards:',
+  },
+  buying: {
+    title: "You've Got BANANA!",
+    supporting: 'Did You Know?',
+    description: 'You can put your BANANA to work to earn more rewards:',
+  },
+  generalHarvest: {
+    title: "You've Earned BANANA!",
+    supporting: 'Did You Know?',
+    description: 'You can put your BANANA to work to earn more rewards:',
+  },
+  poolHarvest: {
+    title: "You've Earned BANANA!",
+    supporting: 'Did You Know?',
+    description: 'You can put your BANANA to work to earn more rewards:',
+  },
+}
+
+// CTA CARDS INFO
+export const CTA_CARD_INFO = {
+  maximizers: {
+    title: 'Maximizers',
+    description: 'Earn up to {X%} APY',
+    bgUrl: '',
+    destination: 'https://apeswap.finance/maximizers',
+  },
+  pools: {
+    title: 'Pools',
+    description: 'Earn up to {X%} APR',
+    bgUrl: '',
+    destination: 'https://apeswap.finance/maximizers',
+  },
+  lending: {
+    title: 'Lending',
+    description: 'Supply, borrow, and earn',
+    bgUrl: '',
+    destination: 'https://lending.apeswap.finance',
+  },
+  gnana: {
+    title: 'Gnana',
+    description: 'Unlock exclusive utility',
+    bgUrl: '',
+    destination: 'https://apeswap.finance/gnana',
+  },
+  compound: {
+    title: 'Compound',
+    description: 'Earn up to {X%} APR',
+    bgUrl: '',
+    destination: 'https://sample.com',
+  },
+}
+
+// CTA TYPES ENUM
+export enum CTA_TYPE {
+  MAXIMIZERS = 'maximizers',
+  LENDING = 'lending',
+  POOLS = 'pools',
+  GNANA = 'gnana',
+  COMPOUND = 'compound',
+}
+
+// MODAL TYPES ENUM
+export enum MODAL_TYPE {
+  SELLING = 'selling',
+  BUYING = 'buying',
+  GENERAL_HARVEST = 'generalHarvest',
+  POOL_HARVEST = 'poolHarvest',
+}

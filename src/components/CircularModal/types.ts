@@ -12,6 +12,7 @@ export interface MP {
 
 export interface CTACardProps {
   type: string
+  action: string
 }
 
 export interface CTAProps {
