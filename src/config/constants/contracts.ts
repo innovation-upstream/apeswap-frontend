@@ -134,7 +134,7 @@ const contracts = {
     [ChainId.BSC_TESTNET]: '0x9e5235Fc9B7d55EaE71097491EAA149250b22746',
   },
   raffle: {
-    [ChainId.BSC]: '0x2b09d47d550061f995a3b5c6f0fd58005215d7c8',
+    [ChainId.BSC]: '0xE136585d860B53dc2fC7ef00c268c8A8351c69d3',
     [ChainId.BSC_TESTNET]: '0x954c20D203e46e1e947079D5c7a265aFc52F0Efc',
   },
 }
