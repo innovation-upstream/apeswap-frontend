@@ -280,7 +280,7 @@ export default createReducer(initialState, (builder) =>
     .addCase(toggleModal, (state, { payload }) => {
       state.showModal = {
         ...state.showModal,
-        [payload.type]: payload.value,
+        [payload.actionType]: payload.value,
       }
     }),
 )

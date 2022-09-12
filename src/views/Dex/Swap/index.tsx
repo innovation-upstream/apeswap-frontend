@@ -10,7 +10,12 @@ import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import track from 'utils/track'
 import { CurrencyAmount, JSBI, Token, Trade } from '@apeswapfinance/sdk'
-import { useExpertModeManager, useUserRecentTransactions, useUserSlippageTolerance } from 'state/user/hooks'
+import {
+  useExpertModeManager,
+  useIsModalShown,
+  useUserRecentTransactions,
+  useUserSlippageTolerance,
+} from 'state/user/hooks'
 import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import maxAmountSpend from 'utils/maxAmountSpend'
@@ -26,9 +31,11 @@ import LoadingBestRoute from './components/LoadingBestRoute'
 import ExpertModeRecipient from './components/ExpertModeRecipient'
 import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
 import RecentTransactions from '../components/RecentTransactions'
+import { useBananaAddress } from 'hooks/useAddress'
 
 const Swap: React.FC = () => {
   // modal and loading
+  const { buying: showBuyingModal, selling: showSellingModal } = useIsModalShown()
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
@@ -65,6 +72,7 @@ const Swap: React.FC = () => {
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
 
   const [inputCurrency, outputCurrency] = [useCurrency(INPUT?.currencyId), useCurrency(OUTPUT?.currencyId)]
+  const bananaToken = useCurrency(useBananaAddress())
 
   const {
     wrapType,
@@ -218,6 +226,19 @@ const Swap: React.FC = () => {
     true,
     'swapConfirmModal',
   )
+
+  // TO DO - Implement this statement (when the user selects BANANA as the input token (for the first time in 24 hours)) for when selling Banana
+
+  // TO DO - Test txHash to ensure modal shows after you successfully buy Banana
+  const buyingBanana = outputCurrency === bananaToken
+  const sellingBanana = inputCurrency === bananaToken
+  console.log('txHash->fixWithUserStateFix:::', txHash)
+  useEffect(() => {
+    const displayBuyCircular = () => showBuyingModal && txHash && history.push({ search: '?modal=circular-buy' })
+    const displaySellCircular = () => showSellingModal && history.push({ search: '?modal=circular-sell' })
+    buyingBanana && displayBuyCircular()
+    sellingBanana && displaySellCircular()
+  }, [history, buyingBanana, showBuyingModal, txHash, showSellingModal, sellingBanana])
 
   return (
     <Flex sx={dexStyles.pageContainer}>

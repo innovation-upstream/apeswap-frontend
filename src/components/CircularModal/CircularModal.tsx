@@ -4,9 +4,17 @@ import { useTranslation } from 'contexts/Localization'
 import { Text, Flex, Checkbox, Button } from '@ape.swap/uikit'
 import { MP } from './types'
 import { circular } from './styles'
+import { useIsModalShown, useToggleModal } from 'state/user/hooks'
 
 const CircularModal: React.FC<MP> = ({ actionType, description, supporting, children }) => {
   const { t } = useTranslation()
+  const { buying, selling, poolHarvest, generalHarvest } = useIsModalShown()
+  const values =
+    (actionType === 'buying' && buying) ||
+    (actionType === 'selling' && selling) ||
+    (actionType === 'poolHarvest' && poolHarvest) ||
+    (actionType === 'generalHarvest' && generalHarvest)
+  const [setToggleModal] = useToggleModal(actionType, values)
 
   return (
     <Flex sx={circular.container}>
@@ -21,7 +29,12 @@ const CircularModal: React.FC<MP> = ({ actionType, description, supporting, chil
         </Button>
         <Flex sx={circular.checkSection}>
           <Flex sx={circular.checkboxParent}>
-            <Checkbox id="checkbox" checked={false} sx={{ backgroundColor: 'white2' }} onChange={null} />
+            <Checkbox
+              id="checkbox"
+              checked={values ? false : true}
+              sx={{ backgroundColor: 'white2' }}
+              onChange={setToggleModal}
+            />
           </Flex>
           <Text sx={circular.checkboxText}>{t("Don't show this again")}</Text>
         </Flex>

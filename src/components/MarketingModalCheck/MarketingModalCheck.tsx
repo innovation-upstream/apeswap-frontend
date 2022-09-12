@@ -44,7 +44,10 @@ const MarketingModalCheck = () => {
   const questRoute = location.search.includes('modal=tutorial')
   const moonpayRoute = location.search.includes('modal=moonpay')
   const getGnanaRoute = location.search.includes('modal=gnana')
-  const getCircularRoute = location.search.includes('modal=circular')
+  const buyRoute = location.search.includes('modal=circular-buy')
+  const sellRoute = location.search.includes('modal=circular-sell')
+  const phRoute = location.search.includes('modal=circular-ph')
+  const ghRoute = location.search.includes('modal=circular-gh')
 
   const { LendingBody1, LendingBody2, LendingBody3, LendingBody4, LendingBody5 } = LendingBodies
   const { FarmsBody1, FarmsBody2, FarmsBody3, FarmsBody4 } = FarmsBodies
@@ -77,6 +80,14 @@ const MarketingModalCheck = () => {
     <PoolsBody4 key="pool4" />,
   ]
   const bills = [<BillsBody1 key="bill1" />]
+
+  // OPTION 1
+  // create different routes for each circular modal, circular-ph, circular-sell, circular-buy, circular-gh
+  // Display each individual circular modal here depending on which routes is found
+
+  // OPTION 2
+  // Use `useModal` and display the type of circular modal you want
+  // Use onPresentModal as the function to call it wherever it needs to be displayed
 
   return lendingRoute ? (
     <MarketingModal
@@ -125,8 +136,14 @@ const MarketingModalCheck = () => {
     <MoonPayModal onDismiss={onDismiss} />
   ) : getGnanaRoute ? (
     <GnanaModal onDismiss={onDismiss} />
-  ) : getCircularRoute ? (
+  ) : buyRoute ? (
     <CircularModal actionType="buying" onDismiss={onDismiss} />
+  ) : sellRoute ? (
+    <CircularModal actionType="selling" onDismiss={onDismiss} />
+  ) : phRoute ? (
+    <CircularModal actionType="poolHarvest" onDismiss={onDismiss} />
+  ) : ghRoute ? (
+    <CircularModal actionType="generalHarvest" onDismiss={onDismiss} />
   ) : null
 }
 

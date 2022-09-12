@@ -67,6 +67,6 @@ export const setIsExchangeChartDisplayed = createAction<boolean>('user/toggleIsE
 export const setUnlimitedGnana = createAction<boolean>('user/setUnlimitedGnanaMinting')
 
 export const toggleModal = createAction<{
-  type: string
+  actionType: string
   value: boolean
 }>('user/toggleModal')

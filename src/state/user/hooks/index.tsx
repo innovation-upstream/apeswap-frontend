@@ -35,6 +35,7 @@ import {
   setIsExchangeChartDisplayed,
   updateUserAutonomyPrepay,
   setUnlimitedGnana,
+  toggleModal,
 } from '../actions'
 import { deserializeToken, serializeToken } from './helpers'
 
@@ -490,9 +491,20 @@ export function useUserUnlimitedGnana(): [boolean, (allowUnlimitedGnana: boolean
   return [unlimitedGnana, setUnlimitedGnanaMinting]
 }
 
-export const useIsModalShown = ({ actionType }) => {
+export const useIsModalShown = () => {
   //  checks if any of the circular modal is hidden using the actionType property as a key and return the modal type values from the redux state.
-  const isModalShown = useSelector<AppState, AppState['user']['showModal']>((state) => state.user.showModal[actionType])
+  const isModalShown = useSelector<AppState, AppState['user']['showModal']>((state) => state.user.showModal)
 
-  return isModalShown
+  return { ...isModalShown }
+}
+
+export const useToggleModal = (actionType: string, value: boolean) => {
+  const dispatch = useDispatch<AppDispatch>()
+
+  const setToggleModal = useCallback(() => {
+    dispatch(toggleModal({ actionType, value: !value }))
+  }, [actionType, dispatch, value])
+
+  // and change the corresponding current redux state for the value of the modal type to the reverse. eg. false to true, true to false and return the function that does this so it can be read and used in the frontend in the component where we’ll display a CircularModal and toggle the checkbox.
+  return [setToggleModal]
 }
