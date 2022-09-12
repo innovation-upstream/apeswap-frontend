@@ -22,7 +22,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Pro Trading'),
         href: 'https://pro.apeswap.finance',
-        isNew: true,
+        isNew: false,
       },
     ],
   },
@@ -39,7 +39,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('ApeStats'),
         href: '/apestats',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Dashboard'),
