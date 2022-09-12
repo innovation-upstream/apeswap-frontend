@@ -152,6 +152,9 @@ const Services: React.FC = () => {
           padding: '30px 20px',
           mt: '25px',
           borderRadius: '10px',
+          '@media screen and (max-width: 725px)': {
+            padding: '30px 0px',
+          },
         }}
       >
         <V2Text mb="50px" mt="20px" weight={600} size="28px" style={{ textAlign: 'center', lineHeight: '30px' }}>
