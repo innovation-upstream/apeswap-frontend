@@ -65,7 +65,9 @@ const Nft = () => {
                     {holdsBab && (
                       <div>
                         {hasClaimed ? (
-                          <Text>Already Claimed</Text>
+                          <Text fontSize="20px" padding="20px">
+                            Already Claimed
+                          </Text>
                         ) : (
                           <Button onClick={() => claim(tokenId)} disabled={claiming}>
                             Claim Raffle
