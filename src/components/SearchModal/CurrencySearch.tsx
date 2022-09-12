@@ -102,9 +102,10 @@ function CurrencySearch({
   const zapInputList = useMemo(() => {
     const addresses = []
     if (rawZapInputList) {
-      for (const res of Object.values(rawZapInputList)) {
-        if (res.address[56]) {
-          addresses.push(res.address[56].toLowerCase())
+      const listByChain = rawZapInputList[chainId]
+      for (const res of Object.values(listByChain)) {
+        if (res.address[chainId]) {
+          addresses.push(res.address[chainId].toLowerCase())
         }
       }
     }
@@ -112,7 +113,7 @@ function CurrencySearch({
       addresses.includes(token[0].toLowerCase()),
     )
     return Object.fromEntries(filteredZapInputTokens)
-  }, [allTokens, rawZapInputList])
+  }, [allTokens, chainId, rawZapInputList])
 
   // if they input an address, use it
   const searchToken = useToken(debouncedQuery)
