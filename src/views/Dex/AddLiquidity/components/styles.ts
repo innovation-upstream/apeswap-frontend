@@ -2,7 +2,6 @@ import { ThemeUIStyleObject } from 'theme-ui'
 import { textUnderlineHover } from '../../styles'
 import styled from 'styled-components'
 import { Tag } from '@ape.swap/uikit'
-import { LiquidityTypes } from '../index'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   swapSwitchContainer: {
@@ -32,6 +31,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'center',
     fontSize: '14px',
   },
+  migrate: { margin: '0 20px', position: 'relative', alignItems: 'center', color: 'textDisabled' },
 }
 
 export const StyledTag = styled(Tag)`

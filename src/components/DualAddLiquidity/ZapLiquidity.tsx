@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Flex, Link, Text } from '@ape.swap/uikit'
+import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { useCurrency } from 'hooks/Tokens'
-import { Currency, TokenAmount, ZapType } from '@ape.swap/sdk'
+import { Currency, TokenAmount } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from './components/ZapPanel'
 import { Field } from 'state/zap/actions'
 import { useDerivedZapInfo, useSetInitialZapData, useZapActionHandlers, useZapState } from 'state/zap/hooks'
-import ZapArrow from './components/Svg/ZapArrow'
 import ZapLiquidityActions from './components/ZapLiquidityActions'
 import { styles } from './styles'
 import { useZapCallback } from 'hooks/useZapCallback'
@@ -144,10 +143,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
           />
         </Flex>
         <Flex sx={{ margin: '10px', justifyContent: 'center' }}>
-          {
-            // pending import arrow from UI kit once a new version is published
-          }
-          <ZapArrow />
+          <Svg icon="ZapArrow" />
         </Flex>
         <ZapPanel
           value={zap?.pairOut?.liquidityMinted?.toSignificant(10) || '0.0'}

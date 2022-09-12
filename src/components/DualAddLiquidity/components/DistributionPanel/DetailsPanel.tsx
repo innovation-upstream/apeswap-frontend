@@ -18,10 +18,16 @@ const DetailsPanel: React.FC<DetailsPanelProps> = ({ zap }) => {
     <Flex sx={{ flexDirection: 'column', marginTop: '15px' }}>
       <Row>
         <StyledText>{t('Price Impact')}</StyledText>
+        {
+          // pending set the price impact
+        }
         <FormattedPriceImpact priceImpact={new Percent(JSBI.BigInt(1), JSBI.BigInt(100000))} />
       </Row>
       <Row>
         <StyledText>{t('Liquidity Provider Fee')}</StyledText>
+        {
+          // pending set the LP fees
+        }
         <StyledText>{t('Liquidity Provider Fee')}</StyledText>
       </Row>
       <Row>

@@ -96,7 +96,6 @@ const Buy: React.FC<BuyProps> = ({
           currency1Symbol: token.symbol,
           currency2: quoteToken.address[chainId],
           currency2Symbol: quoteToken.symbol,
-          userBalance: userLpValue,
         },
       }),
     )

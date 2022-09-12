@@ -6,7 +6,6 @@ let tries = 0
 let cacheList = []
 
 const fetchZapInputTokens = async () => {
-  console.log('fetching zap tokens')
   try {
     if (tries === 0) {
       axiosRetry(axios, {

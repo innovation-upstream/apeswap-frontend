@@ -1,4 +1,4 @@
-import { IconButton, Text, Flex, TagVariants } from '@ape.swap/uikit'
+import { IconButton, Text, Flex, TagVariants, Svg } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
@@ -22,7 +22,6 @@ import { Field, selectCurrency } from 'state/swap/actions'
 import { useAppDispatch } from 'state'
 import { StyledTag } from '../../Pools/components/styles'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import ZapIcon from 'components/DualAddLiquidity/components/Svg/ZapIcon'
 import { selectLP } from 'state/zap/actions'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
@@ -61,7 +60,6 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
           currency1Symbol: farm.lpTokens.token.symbol,
           currency2: farm.lpTokens.quoteToken.address[chainId],
           currency2Symbol: farm.lpTokens.quoteToken.symbol,
-          userBalance: farm.userData?.stakingTokenBalance,
         },
       }),
     )
@@ -187,7 +185,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
                 )
               }
             >
-              {t('GET LP')} <ZapIcon fill="white" style={{ marginLeft: '5px' }} />
+              {t('GET LP')} <Svg icon="ZapIcon" />
             </StyledButton>
 
             {!isMobile && (

@@ -11,6 +11,7 @@ import RecentTransactions from '../components/RecentTransactions'
 import LiquiditySelector from './components/LiquiditySelector'
 import ZapLiquidity from 'components/DualAddLiquidity/ZapLiquidity'
 import { useZapState } from 'state/zap/hooks'
+import { ParsedFarm } from '../../../state/zap/reducer'
 
 export enum LiquidityTypes {
   ADD = 'ADD',
@@ -18,14 +19,13 @@ export enum LiquidityTypes {
   MIGRATE = 'MIGRATE',
 }
 
-const emptyOutput = {
+const emptyOutput: ParsedFarm = {
   lpSymbol: '',
   lpAddress: '',
   currency1: '',
   currency1Symbol: '',
   currency2: '',
   currency2Symbol: '',
-  userBalance: null,
 }
 
 function ZapLiquidityWrapper({

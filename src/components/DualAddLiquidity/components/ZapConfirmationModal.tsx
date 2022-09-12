@@ -7,11 +7,11 @@ import {
   TransactionErrorContent,
   TransactionSubmittedContent,
 } from 'components/TransactionConfirmationModal'
-import { Field } from '../../../state/zap/actions'
+import { Field } from 'state/zap/actions'
 import { ChainId, Currency } from '@ape.swap/sdk'
-import { ParsedFarm } from '../../../state/zap/reducer'
-import { getBalanceNumber } from '../../../utils/formatBalance'
-import { useTranslation } from '../../../contexts/Localization'
+import { ParsedFarm } from 'state/zap/reducer'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { useTranslation } from 'contexts/Localization'
 
 export interface ZapConfirmationModalProps {
   title?: string
@@ -47,9 +47,8 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
   const currencyInputSymbol =
     currencyIn?.currency?.symbol === 'ETH' ? (chainId === ChainId.BSC ? 'BNB' : 'MATIC') : currencyIn?.currency?.symbol
 
-  const pendingText = `Zapping ${getBalanceNumber(
-    currencyIn?.inputAmount?.toString(),
-  )} ${currencyInputSymbol} into ${pairOut?.liquidityMinted?.toSignificant(4)} ${currencies?.OUTPUT?.lpSymbol} LP`
+  const pendingText = `Zapping ${getBalanceNumber(currencyIn?.inputAmount?.toString())} ${currencyInputSymbol}
+   into ${pairOut?.liquidityMinted?.toSignificant(4)} ${currencies?.OUTPUT?.lpSymbol} LP`
   return (
     <Modal title={title} {...modalProps} onDismiss={onDismiss}>
       {zapErrorMessage ? (

@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback } from 'react'
-import { ParsedFarm } from '../../../state/zap/reducer'
+import { ParsedFarm } from 'state/zap/reducer'
 import styled from 'styled-components'
 import { FixedSizeList } from 'react-window'
 import LpRow from './LPRow'
-import UseTokenBalance from '../../../hooks/useTokenBalance'
+import UseTokenBalance from 'hooks/useTokenBalance'
 
 interface LpListProps {
   lps: ParsedFarm[]

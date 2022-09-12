@@ -1,13 +1,13 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Box, Switch } from 'theme-ui'
-import ZapIcon from './Svg/ZapIcon'
 import { CogIcon, Flex, Link, RunFiatButton, Svg, Text, useModal } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import track from 'utils/track'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import MoonPayModal from 'views/Topup/MoonpayModal'
 import SettingsModal from '../../Menu/GlobalSettings/SettingsModal'
+import { styles } from '../styles'
 
 interface ZapSwitchProps {
   handleZapSwitch?: () => void
@@ -25,31 +25,13 @@ const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
     <Flex sx={{ margin: '15px 0', justifyContent: 'space-between', alignItems: 'center' }}>
       <Flex>
         <Flex sx={{ marginRight: '5px', alignItems: 'center' }}>
-          <ZapIcon fill="primary" />
+          <Svg icon="ZapIcon" />
         </Flex>
         <Text weight={700} size="16px" sx={{ marginRight: '10px', lineHeight: '18px' }}>
           {t('ZAP')}
         </Text>
         <Box sx={{ width: '50px' }}>
-          <Switch
-            checked={goZap}
-            onChange={handleZapSwitch}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              backgroundColor: 'rgba(56, 56, 56, 1)',
-              height: '20px',
-              width: '40px',
-              '& div': {
-                width: '15px',
-                height: '15px',
-                marginLeft: '4px',
-              },
-              'input:checked ~ &': {
-                backgroundColor: 'yellow',
-              },
-            }}
-          />
+          <Switch checked={goZap} onChange={handleZapSwitch} sx={styles.switchStyles} />
         </Box>
         <Link
           href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity"
@@ -59,7 +41,6 @@ const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
           <Svg color={'grey' as any} icon="question" width="19px" />
         </Link>
       </Flex>
-
       <Flex>
         <RunFiatButton
           sx={{ marginRight: '2px', width: '24px' }}

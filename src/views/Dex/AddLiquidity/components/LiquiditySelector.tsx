@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, Svg, Text, ZapIcon } from '@ape.swap/uikit'
+import { Flex, Svg, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LiquidityTypes } from '../index'
 import { StyledTag, styles } from './styles'
@@ -14,15 +14,15 @@ const LiquiditySelector: React.FC<LiquiditySelectorProps> = ({ liquidityType, on
   const { t } = useTranslation()
   return (
     <Flex sx={styles.liquiditySelectorContainer}>
-      <Text
+      <Flex
         sx={{
           ...styles.liquiditySelector,
           color: liquidityType !== LiquidityTypes.ADD ? 'textDisabled' : null,
         }}
         onClick={() => onChangeLiquidityType(LiquidityTypes.ADD)}
       >
-        {t('+ Add')}
-      </Text>
+        <Text>{t('+ Add')}</Text>
+      </Flex>
       <Flex
         sx={{
           ...styles.liquiditySelector,
@@ -35,7 +35,7 @@ const LiquiditySelector: React.FC<LiquiditySelectorProps> = ({ liquidityType, on
         </Flex>
         <Text>{t('Zap')}</Text>
       </Flex>
-      <Flex sx={{ margin: '0 20px', position: 'relative', alignItems: 'center', color: 'textDisabled' }}>
+      <Flex sx={styles.migrate}>
         <Text>{t('Migrate')} </Text>
         <StyledTag variant={'binance'}> {t('Soon')} </StyledTag>
       </Flex>

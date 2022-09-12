@@ -21,7 +21,6 @@ export interface ParsedFarm {
   currency1Symbol: string
   currency2: string
   currency2Symbol: string
-  userBalance: string
 }
 
 export interface ZapState {
@@ -53,7 +52,6 @@ const initialState: ZapState = {
     currency1Symbol: 'BANANA',
     currency2: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
     currency2Symbol: 'BNB',
-    userBalance: null,
   },
   shareOfPool: '',
   recipient: null,

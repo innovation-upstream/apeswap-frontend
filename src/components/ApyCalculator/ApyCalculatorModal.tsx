@@ -98,7 +98,6 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           currency1Symbol: farm.lpTokens.token.symbol,
           currency2: farm.lpTokens.quoteToken.address[chainId],
           currency2Symbol: farm.lpTokens.quoteToken.symbol,
-          userBalance: farm.userData?.stakingTokenBalance,
         },
       }),
     )

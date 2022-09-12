@@ -4,6 +4,7 @@ import { Flex, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from '../../ServiceTokenDisplay'
 import Balance from '../Balance'
 import { ParsedFarm } from 'state/zap/reducer'
+import { styles } from '../styles'
 
 interface LPRowProps {
   farm?: ParsedFarm
@@ -14,15 +15,7 @@ interface LPRowProps {
 
 const LPRow: React.FC<LPRowProps> = ({ farm, onLpSelect, style, balance }) => {
   return (
-    <Flex
-      sx={{
-        justifyContent: 'space-between',
-        padding: '5px',
-        ':hover': { background: 'white4', cursor: 'pointer' },
-      }}
-      onClick={onLpSelect}
-      style={style}
-    >
+    <Flex sx={styles.LpRowContainer} onClick={onLpSelect} style={style}>
       <Flex sx={{ alignItems: 'center' }}>
         <ServiceTokenDisplay token1={farm.currency1Symbol} token2={farm.currency2Symbol} noEarnToken={true} />
         <Text title={farm.lpSymbol} weight={700} sx={{ lineHeight: '22px', marginLeft: '5px' }}>

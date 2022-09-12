@@ -111,4 +111,24 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'center',
     transform: 'translate(0px, -15px)',
   },
+  pooledText: {
+    fontSize: '12px',
+    lineHeight: '18px',
+    justifyContent: 'space-between',
+  },
+  switchStyles: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: 'rgba(56, 56, 56, 1)',
+    height: '20px',
+    width: '40px',
+    '& div': {
+      width: '15px',
+      height: '15px',
+      marginLeft: '4px',
+    },
+    'input:checked ~ &': {
+      backgroundColor: 'yellow',
+    },
+  },
 }

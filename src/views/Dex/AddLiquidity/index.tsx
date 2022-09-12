@@ -24,6 +24,8 @@ import MyPositions from '../components/MyPositions'
 import RecentTransactions from '../components/RecentTransactions'
 import LiquiditySelector from './components/LiquiditySelector'
 
+// deprecated component, pending remove
+
 export enum LiquidityTypes {
   ADD = 'ADD',
   ZAP = 'ZAP',

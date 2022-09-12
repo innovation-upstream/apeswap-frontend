@@ -21,7 +21,7 @@ import { ActionContainer, StyledTag } from './CardActions/styles'
 import InfoContent from '../InfoContent'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectLP } from 'state/zap/actions'
-import ZapIcon from 'components/DualAddLiquidity/components/Svg/ZapIcon'
+import { Svg as Icon } from '@ape.swap/uikit'
 
 const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] }> = ({ farms, openPid, farmTags }) => {
   const { chainId } = useActiveWeb3React()
@@ -53,7 +53,6 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
           currency1Symbol: farm.tokenSymbol,
           currency2: farm.quoteTokenAdresses[chainId],
           currency2Symbol: farm.quoteTokenSymbol,
-          userBalance: farm?.userData?.tokenBalance,
         },
       }),
     )
@@ -179,7 +178,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                 )
               }
             >
-              {t('GET LP')} <ZapIcon fill="white" style={{ marginLeft: '5px' }} />
+              {t('GET LP')} <Icon icon="ZapIcon" />
             </FarmButton>
             {!isMobile && (
               <ListViewContent

@@ -34,7 +34,7 @@ import fetchZapInputTokens from './api'
 import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks'
 import { fromPairs, groupBy } from 'lodash'
 import BigNumber from 'bignumber.js'
-import { useJungleFarms, usePollJungleFarms } from '../jungleFarms/hooks'
+import { useJungleFarms } from '../jungleFarms/hooks'
 import { useFarms } from '../farms/hooks'
 import { setInitialJungleFarmDataAsync } from '../jungleFarms'
 import { setInitialFarmDataAsync } from '../farms'
@@ -42,7 +42,6 @@ import { getMasterChefAddress } from '../../utils/addressHelper'
 import multicall from '../../utils/multicall'
 import masterchefABI from 'config/abi/masterchef.json'
 import jungleChefABI from '../../config/abi/jungleChef.json'
-import bananaABI from '../../config/abi/banana.json'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -323,7 +322,6 @@ export function queryParametersToZapState(parsedQs: ParsedQs, chainId: ChainId):
       currency1Symbol: '',
       currency2: '',
       currency2Symbol: '',
-      userBalance: undefined,
     },
     shareOfPool: '',
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),

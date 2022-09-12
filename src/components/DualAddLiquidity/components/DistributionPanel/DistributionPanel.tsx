@@ -21,14 +21,7 @@ const DistributionPanel: React.FC<DistributionPanelProps> = ({ zap }) => {
       <Flex sx={styles.panelTopContainer}>
         <Text sx={styles.swapDirectionText}>{t('Distribution')}:</Text>
       </Flex>
-      <Flex
-        sx={{
-          fontSize: '12px',
-          lineHeight: '18px',
-          justifyContent: 'space-between',
-        }}
-        onClick={() => setExpanded(!expanded)}
-      >
+      <Flex sx={styles.pooledText} onClick={() => setExpanded(!expanded)}>
         {currencyOut1?.outputAmount?.toSignificant(5)} {currencyOut1?.outputCurrency?.symbol} &{' '}
         {currencyOut2?.outputAmount?.toSignificant(5)} {currencyOut2?.outputCurrency?.symbol} Pooled
         <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="10px" />

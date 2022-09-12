@@ -4,12 +4,10 @@ import { Flex, Input } from '@ape.swap/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from 'contexts/Localization'
 import { Box } from 'theme-ui'
-import { useJungleFarms } from 'state/jungleFarms/hooks'
 import { ParsedFarm } from 'state/zap/reducer'
 import DisplayRows from './components/DisplayRows'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useFarms } from 'state/farms/hooks'
-import { getZapOutputList, useZapState } from 'state/zap/hooks'
+import { useZapState } from 'state/zap/hooks'
+import { styles } from './styles'
 
 interface LPSearcherProps {
   onLpSelect: (farm: ParsedFarm) => void
@@ -31,7 +29,7 @@ function LPSearcher({ onLpSelect }: LPSearcherProps) {
 
   return (
     <Flex sx={{ flexDirection: 'column' }}>
-      <Flex sx={{ position: 'relative', margin: '10px 0px 15px 0px' }}>
+      <Flex sx={styles.inputContainer}>
         <StyledInput
           id="token-search-input"
           placeholder={t('Name or Address')}
@@ -42,7 +40,7 @@ function LPSearcher({ onLpSelect }: LPSearcherProps) {
           autoFocus
         />
       </Flex>
-      <Box sx={{ height: '300px', overflow: 'auto', background: 'white3', borderRadius: '10px' }}>
+      <Box sx={styles.displayRowsContainer}>
         <DisplayRows queriedFarms={queriedFarms} onLpSelect={onLpSelect} />
       </Box>
     </Flex>

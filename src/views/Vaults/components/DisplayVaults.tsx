@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Text, useModal } from '@ape.swap/uikit'
+import { Svg, Text, useModal } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
@@ -22,7 +22,6 @@ import HarvestAction from './Actions/HarvestAction'
 import InfoContent from './InfoContent'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectLP } from 'state/zap/actions'
-import ZapIcon from 'components/DualAddLiquidity/components/Svg/ZapIcon'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -51,12 +50,11 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       selectLP({
         outPut: {
           lpSymbol: vault.stakeToken.symbol,
-          lpAddress: vault.stratAddress[chainId],
+          lpAddress: vault.stakeToken.address[chainId],
           currency1: vault.token.address[chainId],
           currency1Symbol: vault.token.symbol,
           currency2: vault.quoteToken.address[chainId],
           currency2Symbol: vault.quoteToken.symbol,
-          userBalance: vault.userData.tokenBalance,
         },
       }),
     )
@@ -169,7 +167,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                   )
                 }
               >
-                {t('GET LP')} <ZapIcon fill="white" style={{ marginLeft: '5px' }} />
+                {t('GET LP')} <Svg icon="ZapIcon" />
               </StyledButton>
             ) : (
               <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">

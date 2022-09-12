@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
 import { Flex, Text, Box, Link } from 'theme-ui'
-import { Button, useModal } from '@ape.swap/uikit'
+import { Button, Svg, useModal } from '@ape.swap/uikit'
 import { DropDownIcon } from 'components/ListView/styles'
 import { useTranslation } from 'contexts/Localization'
 import { useBananaAddress, useGoldenBananaAddress } from 'hooks/useAddress'
@@ -15,6 +15,7 @@ import { tokenInfo, tokenListInfo } from './tokenInfo'
 import styles from './styles'
 import DualLiquidityModal from '../DualAddLiquidity/DualLiquidityModal'
 import { selectLP } from '../../state/zap/actions'
+import { ChainId } from '@ape.swap/sdk'
 
 interface DetailsContentProps {
   onDismiss?: () => void
@@ -52,14 +53,9 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
   const banana = useBananaAddress()
   const gnana = useGoldenBananaAddress()
 
-  const [, closeModal] = useModal(<></>)
-  const [onPresentDualLiquidityModal] = useModal(
-    <DualLiquidityModal onDismiss={closeModal} />,
-    true,
-    true,
-    'liquidityWidgetModal',
-  )
+  const [onPresentDualLiquidityModal] = useModal(<DualLiquidityModal />, true, true, 'liquidityWidgetModal')
 
+  const [, closeModal] = useModal(<></>)
   const [onPresentAddLiquidityWidgetModal] = useModal(
     <LiquidityModal handleClose={closeModal} />,
     true,
@@ -101,11 +97,10 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
             currency1Symbol: farm?.tokenSymbol,
             currency2: farm?.quoteTokenAdresses[chainId],
             currency2Symbol: farm?.quoteTokenSymbol,
-            userBalance: farm?.userData?.tokenBalance.toString(),
           },
         }),
       )
-      if (chainId === 56) {
+      if (chainId === ChainId.BSC) {
         onPresentDualLiquidityModal()
       } else {
         onPresentAddLiquidityWidgetModal()
@@ -165,7 +160,7 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
         <Flex sx={{ marginTop: '25px', justifyContent: 'center' }}>
           {isLp && !liquidityUrl && (
             <FarmButton onClick={() => showLiquidity(tokenAddress, quoteTokenAddress)}>
-              {t('GET')} {label}
+              {t('GET')} {label} {chainId === ChainId.BSC && <Svg icon="ZapIcon" />}
             </FarmButton>
           )}
           {isLp && liquidityUrl && (

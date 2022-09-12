@@ -13,7 +13,7 @@ import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Spinner } from 'theme-ui'
 import BigNumber from 'bignumber.js'
-import UseTokenBalance from '../../../hooks/useTokenBalance'
+import UseTokenBalance from 'hooks/useTokenBalance'
 
 export interface ZapPanelProps {
   value: string

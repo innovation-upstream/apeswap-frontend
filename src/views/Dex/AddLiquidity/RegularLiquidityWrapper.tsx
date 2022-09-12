@@ -12,7 +12,7 @@ import MyPositions from '../components/MyPositions'
 import RecentTransactions from '../components/RecentTransactions'
 import LiquiditySelector from './components/LiquiditySelector'
 import RegularLiquidity from 'components/DualAddLiquidity/RegularLiquidity'
-import { useSwapState } from '../../../state/swap/hooks'
+import { useSwapState } from 'state/swap/hooks'
 
 export enum LiquidityTypes {
   ADD = 'ADD',
