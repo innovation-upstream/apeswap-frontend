@@ -344,6 +344,7 @@ export const useFetchBabToken = () => {
       }
     }
     if (account) fetchBabId()
+    else setIsLoading(false)
   }, [babContract, account])
   return { tokenId, loading, holdsBab }
 }
