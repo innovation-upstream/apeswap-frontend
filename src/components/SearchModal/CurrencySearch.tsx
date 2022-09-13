@@ -122,7 +122,7 @@ function CurrencySearch({
 
   const showETH: boolean = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
-    return s === '' || s === 'e' || s === 'et' || s === 'eth'
+    return s.includes('') || s.includes('e') || s.includes('et') || s.includes('eth')
   }, [debouncedQuery])
 
   const filteredTokens: Token[] = useMemo(() => {

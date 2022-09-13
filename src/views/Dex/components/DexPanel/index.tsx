@@ -29,6 +29,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
   smartRouter,
   independentField,
   ordersDisabled,
+  disableTokenSelect,
   showCommonBases = false,
   isZapInput,
 }) => {
@@ -76,6 +77,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
           otherCurrency={otherCurrency}
           onCurrencySelect={onCurrencySelect}
           showCommonBases={showCommonBases}
+          disableTokenSelect={disableTokenSelect}
           isRemoveLiquidity={isRemoveLiquidity}
           field={fieldType}
           typedValue={value}

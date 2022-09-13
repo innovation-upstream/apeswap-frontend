@@ -16,8 +16,8 @@ const DexNav = () => {
   const { chainId } = useActiveWeb3React()
 
   const onLiquidity =
-    pathname?.includes('add') ||
-    pathname?.includes('pool') ||
+    pathname?.includes('add-liquidity') ||
+    pathname?.includes('liquidity') ||
     pathname?.includes('remove') ||
     pathname?.includes('find') ||
     pathname?.includes('zap')
@@ -52,7 +52,7 @@ const DexNav = () => {
               color: !pathname?.includes('orders') && 'textDisabled',
             }}
             as={Link}
-            to="/orders"
+            to="/limit-orders"
             id="orders-link"
             className="orders"
           >

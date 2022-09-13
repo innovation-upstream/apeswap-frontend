@@ -5,7 +5,7 @@ import RegularLiquidityWrapper from './RegularLiquidityWrapper'
 import ZapLiquidityWrapper from './ZapLiquidityWrapper'
 
 export function RedirectToAddLiquidity() {
-  return <Redirect to="/add/" />
+  return <Redirect to="/add-liquidity/" />
 }
 
 const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40}|BNB)-(0x[a-fA-F0-9]{40}|BNB)$/

@@ -92,7 +92,7 @@ export default function Pool() {
                   <Button
                     id="join-pool-button"
                     as={Link}
-                    to="/add"
+                    to="/add-liquidity"
                     startIcon={<AddIcon color="white" />}
                     m="10px"
                     sx={{ width: '50%' }}

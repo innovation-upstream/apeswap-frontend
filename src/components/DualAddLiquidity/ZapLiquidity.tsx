@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { useCurrency } from 'hooks/Tokens'
-import { Currency, TokenAmount } from '@ape.swap/sdk'
+import { Currency, CurrencyAmount } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from './components/ZapPanel'
 import { Field } from 'state/zap/actions'
@@ -91,14 +91,6 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
       })
   }, [zapCallback])
 
-  // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.INPUT, Field.OUTPUT].reduce((accumulator, field) => {
-    return {
-      ...accumulator,
-      [field]: maxAmountSpend(currencyBalances[field]),
-    }
-  }, {})
-
   const currencies = {
     [Field.INPUT]: inputCurrency,
     [Field.OUTPUT]: outputCurrency,
@@ -114,11 +106,15 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
 
   const handleMaxInput = useCallback(
     (field: Field) => {
+      const maxAmounts: { [field in Field]?: CurrencyAmount } = {
+        [Field.INPUT]: maxAmountSpend(currencyBalances[Field.INPUT]),
+        [Field.OUTPUT]: maxAmountSpend(currencyBalances[Field.OUTPUT]),
+      }
       if (maxAmounts) {
         onUserInput(field, maxAmounts[field]?.toExact() ?? '')
       }
     },
-    [maxAmounts, onUserInput],
+    [currencyBalances, onUserInput],
   )
 
   // reset input value to zero on first render

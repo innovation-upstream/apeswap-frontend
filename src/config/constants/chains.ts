@@ -168,6 +168,14 @@ export const WALLCHAIN_PARAMS = {
   },
 }
 
+// Dont use bonus router if the bonus is lower than the cutoff
+export const BONUS_CUTOFF_AMOUNT = {
+  [ChainId.BSC]: 0.5,
+  [ChainId.BSC_TESTNET]: 0,
+  [ChainId.MATIC]: 0,
+  [ChainId.MAINNET]: 0,
+}
+
 // To display correct prices for each liquidity pool when need to swap the contract out
 // Routers in prioirty list must be in here
 export const SMART_PRICE_GETTERS = {

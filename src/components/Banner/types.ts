@@ -14,6 +14,7 @@ export enum banners {
   SSIAO = 'ssiao',
   GNANA = 'gnana',
   PROTOCOL_DASHBOARD = 'protocol-dashboard',
+  BABbanner = 'BABbanner',
 }
 
 export type BannerTypes = `${banners}`

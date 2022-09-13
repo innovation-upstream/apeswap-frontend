@@ -34,6 +34,8 @@ import {
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
   updateUserAutonomyPrepay,
+  setUnlimitedGnana,
+  updateUserBonusRouter,
 } from '../actions'
 import { deserializeToken, serializeToken } from './helpers'
 import { setZapSlippage } from '../../zap/actions'
@@ -97,6 +99,19 @@ export function useExpertModeManager(): [boolean, () => void] {
   }, [expertMode, dispatch])
 
   return [expertMode, toggleSetExpertMode]
+}
+
+export function useBonusRouterManager(): [boolean, () => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const bonusRouterDisabled = useSelector<AppState, AppState['user']['userBonusRouterDisabled']>(
+    (state) => state.user.userBonusRouterDisabled,
+  )
+
+  const toggleSetBonusRouter = useCallback(() => {
+    dispatch(updateUserBonusRouter({ userBonusRouterDisabled: !bonusRouterDisabled }))
+  }, [bonusRouterDisabled, dispatch])
+
+  return [bonusRouterDisabled, toggleSetBonusRouter]
 }
 
 export function useThemeManager(): [boolean, () => void] {
@@ -484,4 +499,19 @@ export const useWatchlistPools = (): [string[], (address: string) => void] => {
     [dispatch],
   )
   return [savedPools, updateSavedPools]
+}
+
+export function useUserUnlimitedGnana(): [boolean, (allowUnlimitedGnana: boolean) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+
+  const unlimitedGnana = useSelector<AppState, AppState['user']['unlimitedGnana']>((state) => state.user.unlimitedGnana)
+
+  const setUnlimitedGnanaMinting = useCallback(
+    (allowUnlimitedGnana: boolean) => {
+      dispatch(setUnlimitedGnana(allowUnlimitedGnana))
+    },
+    [dispatch],
+  )
+
+  return [unlimitedGnana, setUnlimitedGnanaMinting]
 }

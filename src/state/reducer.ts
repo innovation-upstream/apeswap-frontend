@@ -26,6 +26,7 @@ import mint from './mint/reducer'
 import lpPricesReducer from './lpPrices'
 import nfasReducer from './nfas'
 import zap from './zap/reducer'
+import protocolDashboardReducer from './protocolDashboard'
 
 const reducer = combineReducers({
   farms: farmsReducer,
@@ -46,6 +47,7 @@ const reducer = combineReducers({
   jungleFarms: jungleFarmsReducer,
   bills: billsReducer,
   nfas: nfasReducer,
+  protocolDashboard: protocolDashboardReducer,
   multicall: multicall.reducer,
   swap,
   user,
@@ -56,4 +58,5 @@ const reducer = combineReducers({
   orders,
   zap,
 })
+
 export default reducer

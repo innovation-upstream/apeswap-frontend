@@ -101,3 +101,11 @@ export const useIazoFactoryAddress = () => {
 export const useZapAddress = () => {
   return useAddress(ZAP_ADDRESS)
 }
+
+export const useBabTokenAddress = () => {
+  return useAddress(addresses.babToken)
+}
+
+export const useRaffleAddress = () => {
+  return useAddress(addresses.raffle)
+}

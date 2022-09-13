@@ -23,6 +23,8 @@ import vaultApeV1 from 'config/abi/vaultApeV1.json'
 import vaultApeV2 from 'config/abi/vaultApeV2.json'
 import apePriceGetter from 'config/abi/apePriceGetter.json'
 import miniChef from 'config/abi/miniApeV2.json'
+import babToken from 'config/abi/babToken.json'
+import raffle from 'config/abi/raffle.json'
 import multi from 'config/abi/Multicall.json'
 import ensPublicResolver from 'config/abi/ens-public-resolver.json'
 import ens from 'config/abi/ens-registrar.json'
@@ -65,6 +67,7 @@ import {
 import {
   useApePriceGetterAddress,
   useAuctionAddress,
+  useBabTokenAddress,
   useBananaAddress,
   useBananaProfileAddress,
   useGoldenBananaAddress,
@@ -77,6 +80,7 @@ import {
   useMulticallV3Address,
   useNativeWrapCurrencyAddress,
   useNonFungibleApesAddress,
+  useRaffleAddress,
   useTreasuryAddress,
   useVaultApeAddressV1,
   useVaultApeAddressV2,
@@ -203,6 +207,16 @@ export const useBillContract = (address: string) => {
 
 export const useBillNftContract = (address: string) => {
   return useContract(billNftAbi, address) as BillNft
+}
+
+export const useBabContract = () => {
+  // TODO: generate type
+  return useContract(babToken, useBabTokenAddress())
+}
+
+export const useRaffleContract = () => {
+  // TODO: generate type
+  return useContract(raffle, useRaffleAddress())
 }
 
 export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contract | null {

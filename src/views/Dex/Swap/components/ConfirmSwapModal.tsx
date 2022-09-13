@@ -107,7 +107,7 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
           {modalBottom()}
         </Flex>
       ),
-    [onDismiss, modalBottom, modalHeader, swapErrorMessage],
+    [onDismiss, modalBottom, modalHeader, swapErrorMessage, t],
   )
 
   return (

@@ -1,11 +1,11 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import FormattedPriceImpact from 'views/LegacyOrders/components/FormattedPriceImpact'
 import { JSBI, Percent } from '@ape.swap/sdk'
 import { ONE_BIPS } from 'config/constants'
 import { Flex, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { MergedZap } from 'state/zap/actions'
+import FormattedPriceImpact from './FormattedPriceImpact'
 
 interface DetailsPanelProps {
   zap: MergedZap

@@ -75,6 +75,7 @@ function CurrencyRow({
       ).then(() => ''),
     [currency],
   )
+
   // only show add or remove buttons if not on selected list
   return (
     <Flex
@@ -94,6 +95,7 @@ function CurrencyRow({
       }}
       key={`token-item-${key}`}
       className={`token-item-${key}`}
+      // if isActive enable click
       onClick={() => (isSelected ? null : onSelect())}
     >
       <Flex sx={{ alignItems: 'center' }}>
@@ -148,6 +150,8 @@ export default function CurrencyList({
 
   const { t } = useTranslation()
 
+  const resetBreakIndex = showETH ? (breakIndex && breakIndex + 1) ?? undefined : breakIndex
+
   const itemData: (Currency | undefined)[] = useMemo(() => {
     let formatted: (Currency | undefined)[] = isZapInput
       ? showETH
@@ -156,11 +160,15 @@ export default function CurrencyList({
       : showETH
       ? [Currency.ETHER, ...currencies, ...inactiveCurrencies]
       : [...currencies, ...inactiveCurrencies]
-    if (breakIndex !== undefined) {
-      formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted.length)]
+    if (resetBreakIndex !== undefined) {
+      formatted = [
+        ...formatted.slice(0, resetBreakIndex),
+        undefined,
+        ...formatted.slice(resetBreakIndex, formatted.length),
+      ]
     }
     return formatted
-  }, [breakIndex, currencies, inactiveCurrencies, isZapInput, showETH])
+  }, [resetBreakIndex, currencies, inactiveCurrencies, showETH, isZapInput])
 
   const Row = useCallback(
     ({ data, index, style }) => {
@@ -173,7 +181,7 @@ export default function CurrencyList({
 
       const showImport = index > currencies.length
 
-      if (index === breakIndex || !data) {
+      if (index === resetBreakIndex || !data) {
         if (isZapInput) return <></>
         return (
           <FixedContentRow style={style} sx={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -182,12 +190,15 @@ export default function CurrencyList({
         )
       }
 
+      // show when token is !isActive
       if (showImport && token) {
         return (
           <ImportRow style={style} token={token} showImportView={showImportView} setImportToken={setImportToken} dim />
         )
       }
       return (
+        // Show when token isActive
+        // show all tokens and tokens that are active
         <CurrencyRow
           style={style}
           currency={currency}
@@ -198,13 +209,13 @@ export default function CurrencyList({
       )
     },
     [
+      resetBreakIndex,
       chainId,
       onCurrencySelect,
       otherCurrency,
       selectedCurrency,
       setImportToken,
       showImportView,
-      breakIndex,
       currencies.length,
       t,
     ],

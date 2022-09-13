@@ -67,7 +67,7 @@ function ZapLiquidityWrapper({
 
   const onChangeLiquidityType = useCallback(
     (newLiquidityType: LiquidityTypes) => {
-      if (newLiquidityType === LiquidityTypes.ADD) history.push('/add')
+      if (newLiquidityType === LiquidityTypes.ADD) history.push('/add-liquidity')
     },
     [history],
   )
