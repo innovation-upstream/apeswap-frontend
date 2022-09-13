@@ -48,7 +48,6 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
                 text: t('View Transaction'),
                 url: getEtherscanLink(trxHash, 'transaction', chainId),
               })
-              console.log('trxHash->GH:::', trxHash)
               if (trxHash) displayGHCircular()
             })
             .catch((e) => {

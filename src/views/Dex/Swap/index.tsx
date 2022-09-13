@@ -233,7 +233,6 @@ const Swap: React.FC = () => {
   // TO DO - Test txHash to ensure modal shows after you successfully buy Banana
   const buyingBanana = outputCurrency === bananaToken
   const sellingBanana = inputCurrency === bananaToken
-  console.log('txHash->fixWithUserStateFix:::', txHash)
   useEffect(() => {
     const displayBuyCircular = () => showBuyingModal && txHash && history.push({ search: '?modal=circular-buy' })
     const displaySellCircular = () => showSellingModal && history.push({ search: '?modal=circular-sell' })
