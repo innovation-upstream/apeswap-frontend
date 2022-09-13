@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { Button } from '@ape.swap/uikit'
+import { useHistory } from 'react-router-dom'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
@@ -8,15 +9,15 @@ import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSousStake } from 'hooks/useStake'
 import { fetchPoolsUserDataAsync, updateUserPendingReward } from 'state/pools'
+import { useCurrency } from 'hooks/Tokens'
+import { useBananaAddress } from 'hooks/useAddress'
+import { useIsModalShown } from 'state/user/hooks'
+
 import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { ActionContainer } from './styles'
 import { poolStyles } from '../styles'
-import { useCurrency } from 'hooks/Tokens'
-import { useBananaAddress } from 'hooks/useAddress'
-import { useIsModalShown } from 'state/user/hooks'
-import { useHistory } from 'react-router-dom'
 
 interface HarvestActionsProps {
   sousId: number
@@ -39,6 +40,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
   const { toastSuccess } = useToast()
   const isMobile = useIsMobile()
   const { t } = useTranslation()
+
   const harvestBanana = earnTokenSymbol === bananaToken.symbol
   const displayPHCircular = () => isPHShown && harvestBanana && history.push({ search: '?modal=circular-ph' })
 

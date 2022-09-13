@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useHarvest } from 'hooks/useHarvest'
 import { AutoRenewIcon, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import { useToast } from 'state/hooks'
+import { useIsModalShown } from 'state/user/hooks'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { updateFarmUserEarnings } from 'state/farms'
@@ -26,6 +28,10 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
   const isMobile = !isLg && !isXl && !isXxl
   const { t } = useTranslation()
+  const history = useHistory()
+
+  const { generalHarvest: isGHShown } = useIsModalShown()
+  const displayGHCircular = () => isGHShown && history.push({ search: '?modal=circular-gh' })
 
   return (
     <ActionContainer>
@@ -42,6 +48,8 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
                 text: t('View Transaction'),
                 url: getEtherscanLink(trxHash, 'transaction', chainId),
               })
+              console.log('trxHash->GH:::', trxHash)
+              if (trxHash) displayGHCircular()
             })
             .catch((e) => {
               console.error(e)

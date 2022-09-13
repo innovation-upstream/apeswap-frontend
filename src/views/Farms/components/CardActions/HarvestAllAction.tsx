@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useAllHarvest } from 'hooks/useHarvest'
 import { AutoRenewIcon, Button } from '@apeswapfinance/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { updateFarmUserEarnings } from 'state/farms'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
+import { useIsModalShown } from 'state/user/hooks'
 import { ActionContainer } from './styles'
 
 interface HarvestActionsProps {
@@ -18,6 +20,10 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
   const [pendingTrx, setPendingTrx] = useState(false)
   const { onReward } = useAllHarvest(pids, chainId)
   const { t } = useTranslation()
+  const history = useHistory()
+
+  const { generalHarvest: isGHShown } = useIsModalShown()
+  const displayGHCircular = () => isGHShown && history.push({ search: '?modal=circular-gh' })
 
   return (
     <ActionContainer>
@@ -34,6 +40,7 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
           pids.map((pid) => {
             return dispatch(updateFarmUserEarnings(chainId, pid, account))
           })
+          displayGHCircular()
           setPendingTrx(false)
         }}
         endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
