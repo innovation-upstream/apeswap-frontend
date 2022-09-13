@@ -22,15 +22,6 @@ import PoolInfo from './components/PoolInfo'
 import AddLiquidityActions from './components/Actions'
 import MyPositions from '../components/MyPositions'
 import RecentTransactions from '../components/RecentTransactions'
-import LiquiditySelector from './components/LiquiditySelector'
-
-// deprecated component, pending remove
-
-export enum LiquidityTypes {
-  ADD = 'ADD',
-  ZAP = 'ZAP',
-  MIGRATE = 'MIGRATE',
-}
 
 function AddLiquidity({
   match: {
@@ -43,11 +34,6 @@ function AddLiquidity({
   const { INPUT, OUTPUT } = useSwapState()
   const { t } = useTranslation()
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
-  const [liquidityType, setLiquidityType] = useState(LiquidityTypes.ZAP)
-
-  const onChangeLiquidityType = (newLiquidityType: LiquidityTypes) => {
-    setLiquidityType(newLiquidityType)
-  }
 
   // Set either param currency or swap currency
   currencyIdA = currencyIdA || INPUT.currencyId
@@ -88,21 +74,21 @@ function AddLiquidity({
       const newCurrencyId = currencyId(currency)
       if (field === Field.CURRENCY_A) {
         if (newCurrencyId === currencyIdB) {
-          history.push(`/oldAdd/${currencyIdB}/${currencyIdA}`)
+          history.push(`/add-liquidity/${currencyIdB}/${currencyIdA}`)
         } else if (currencyIdB) {
-          history.push(`/oldAdd/${newCurrencyId}/${currencyIdB}`)
+          history.push(`/add-liquidity/${newCurrencyId}/${currencyIdB}`)
         } else {
-          history.push(`/oldAdd/${newCurrencyId}`)
+          history.push(`/add-liquidity/${newCurrencyId}`)
         }
       } else if (field === Field.CURRENCY_B) {
         if (newCurrencyId === currencyIdA) {
           if (currencyIdB) {
-            history.push(`/oldAdd/${currencyIdB}/${newCurrencyId}`)
+            history.push(`/add-liquidity/${currencyIdB}/${newCurrencyId}`)
           } else {
-            history.push(`/oldAdd/${newCurrencyId}`)
+            history.push(`/add-liquidity/${newCurrencyId}`)
           }
         } else {
-          history.push(`/oldAdd/${currencyIdA || 'ETH'}/${newCurrencyId}`)
+          history.push(`/add-liquidity/${currencyIdA || 'ETH'}/${newCurrencyId}`)
         }
       }
     },
@@ -141,7 +127,6 @@ function AddLiquidity({
         <Flex sx={{ ...dexStyles.dexContainer }}>
           <DexNav />
           <MyPositions />
-          <LiquiditySelector liquidityType={liquidityType} onChangeLiquidityType={onChangeLiquidityType} />
           {noLiquidity && (
             <Flex sx={{ ...styles.warningMessageContainer }}>
               <Text size="14px" weight={700} mb="10px" color="primaryBright">
@@ -154,7 +139,7 @@ function AddLiquidity({
               </Text>
             </Flex>
           )}
-          <Flex sx={{ marginTop: '10px' }}>
+          <Flex sx={{ marginTop: '30px' }}>
             <DexPanel
               value={formattedAmounts[Field.CURRENCY_A]}
               panelText="Token 1"

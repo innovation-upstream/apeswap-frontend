@@ -11,6 +11,7 @@ const MyPositions: React.FC = () => {
     <Flex
       sx={{
         marginTop: '10px',
+        marginBottom: '15px',
         width: 'fit-content',
         alignItems: 'center',
         position: 'relative',

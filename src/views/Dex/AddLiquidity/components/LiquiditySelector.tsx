@@ -2,8 +2,13 @@
 import React from 'react'
 import { Flex, Svg, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { LiquidityTypes } from '../index'
 import { StyledTag, styles } from './styles'
+
+export enum LiquidityTypes {
+  ADD = 'ADD',
+  ZAP = 'ZAP',
+  MIGRATE = 'MIGRATE',
+}
 
 interface LiquiditySelectorProps {
   liquidityType: string
