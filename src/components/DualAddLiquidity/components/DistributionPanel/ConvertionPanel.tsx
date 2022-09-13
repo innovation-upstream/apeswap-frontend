@@ -20,6 +20,9 @@ const ConvertionPanel: React.FC<ConvertionPanelProps> = ({ zap }) => {
       ? new TokenAmount(currencyIn?.currency as Token, currencyIn?.inputAmount).divide(JSBI.BigInt(2)).toSignificant(5)
       : null
 
+  // hotfix, as there's no icon for WMATIC
+  const curr2Output = currencyOut2?.outputCurrency?.symbol === 'WMATIC' ? 'MATIC' : currencyOut2?.outputCurrency?.symbol
+
   return (
     <>
       <Flex sx={{ width: '100%' }}>
@@ -52,7 +55,7 @@ const ConvertionPanel: React.FC<ConvertionPanelProps> = ({ zap }) => {
             <Svg color={'primary' as any} icon="arrow" />
           </Box>
           <Box sx={{ margin: '3px' }}>
-            <ServiceTokenDisplay token1={currencyOut2?.outputCurrency?.symbol} stakeLp={true} size={17} />
+            <ServiceTokenDisplay token1={curr2Output} stakeLp={true} size={17} />
           </Box>
           <Text size="12px">{currencyOut2?.outputAmount?.toSignificant(5)}</Text>
         </Flex>

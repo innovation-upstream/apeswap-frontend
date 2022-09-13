@@ -1,4 +1,4 @@
-import { Token, ZapType } from '@ape.swap/sdk'
+import { ChainId, Token, ZapType } from '@ape.swap/sdk'
 import { createReducer } from '@reduxjs/toolkit'
 import {
   Field,
@@ -34,7 +34,7 @@ export interface ZapState {
   readonly shareOfPool: string | undefined
   readonly recipient: string | null
   readonly zapInputList: { [symbol: string]: Token } | undefined
-  readonly zapOutputList: ParsedFarm[] | undefined
+  readonly zapOutputList: { [chain: string]: ParsedFarm[] } | undefined
   readonly zapSlippage: number
 }
 
@@ -56,7 +56,7 @@ const initialState: ZapState = {
   shareOfPool: '',
   recipient: null,
   zapInputList: null,
-  zapOutputList: [],
+  zapOutputList: { [ChainId.BSC]: [], [ChainId.MATIC]: [] },
   zapSlippage: 100,
 }
 
@@ -119,10 +119,10 @@ export default createReducer<ZapState>(initialState, (builder) =>
         zapInputList,
       }
     })
-    .addCase(setZapOutputList, (state, { payload: { zapOutputList } }) => {
+    .addCase(setZapOutputList, (state, { payload: { zapOutputList, chainId } }) => {
       return {
         ...state,
-        zapOutputList,
+        zapOutputList: { ...state.zapOutputList, [chainId]: zapOutputList },
       }
     })
     .addCase(setZapSlippage, (state, { payload: { zapSlippage } }) => {

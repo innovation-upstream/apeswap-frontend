@@ -8,6 +8,7 @@ import { ParsedFarm } from 'state/zap/reducer'
 import DisplayRows from './components/DisplayRows'
 import { useZapState } from 'state/zap/hooks'
 import { styles } from './styles'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
 interface LPSearcherProps {
   onLpSelect: (farm: ParsedFarm) => void
@@ -18,10 +19,11 @@ function LPSearcher({ onLpSelect }: LPSearcherProps) {
   const { t } = useTranslation()
   const [query, setQuery] = useState('')
   const { zapOutputList } = useZapState()
+  const { chainId } = useActiveWeb3React()
 
   const queriedFarms = useMemo(() => {
-    return zapOutputList?.filter((farm) => farm.lpSymbol.toUpperCase().includes(query.toUpperCase()))
-  }, [query, zapOutputList])
+    return zapOutputList[chainId]?.filter((farm) => farm.lpSymbol.toUpperCase().includes(query.toUpperCase()))
+  }, [chainId, query, zapOutputList])
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)

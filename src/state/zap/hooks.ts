@@ -38,10 +38,13 @@ import { useJungleFarms } from '../jungleFarms/hooks'
 import { useFarms } from '../farms/hooks'
 import { setInitialJungleFarmDataAsync } from '../jungleFarms'
 import { setInitialFarmDataAsync } from '../farms'
-import { getMasterChefAddress } from '../../utils/addressHelper'
+import { getMasterChefAddress, getMiniChefAddress } from '../../utils/addressHelper'
 import multicall from '../../utils/multicall'
 import masterchefABI from 'config/abi/masterchef.json'
 import jungleChefABI from '../../config/abi/jungleChef.json'
+import { setInitialDualFarmDataAsync } from '../dualFarms'
+import { useDualFarms } from '../dualFarms/hooks'
+import miniApeV2 from '../../config/abi/miniApeV2.json'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -231,7 +234,7 @@ export function useDerivedZapInfo(
     inputError = inputError ?? 'Enter an amount'
   }
 
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
+  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT] || !outputPair[1]) {
     inputError = inputError ?? 'Select a token'
   }
 
@@ -387,6 +390,7 @@ export const useSetInitialZapData = () => {
   const { zapInputList, zapType, zapOutputList } = useZapState()
   const farms = useFarms(null)
   const jungleFarms = useJungleFarms(null)
+  const dualFarms = useDualFarms(null)
   if (zapType !== ZapType.ZAP) onSetZapType(ZapType.ZAP)
 
   useEffect(() => {
@@ -396,38 +400,93 @@ export const useSetInitialZapData = () => {
   }, [dispatch, zapInputList])
 
   useEffect(() => {
-    if (jungleFarms.length === 0) {
+    if (jungleFarms.length === 0 && chainId === ChainId.BSC) {
       dispatch(setInitialJungleFarmDataAsync())
     }
-  }, [dispatch, jungleFarms.length])
+  }, [chainId, dispatch, jungleFarms.length])
 
   useEffect(() => {
-    if (farms.length === 0) {
+    if (farms.length === 0 && chainId === ChainId.BSC) {
       dispatch(setInitialFarmDataAsync())
     }
-  }, [dispatch, farms.length])
+  }, [chainId, dispatch, farms.length])
 
   useEffect(() => {
-    if (zapOutputList.length === 0) {
+    if (zapOutputList[chainId].length === 0 && chainId === ChainId.BSC) {
       dispatch(fetchActiveFarms(farms, jungleFarms, chainId))
     }
-  }, [chainId, dispatch, farms, jungleFarms, zapOutputList.length])
+  }, [chainId, dispatch, farms, jungleFarms, zapOutputList])
+
+  // fetch polygon data
+
+  useEffect(() => {
+    if (dualFarms.length === 0 && chainId === ChainId.MATIC) {
+      dispatch(setInitialDualFarmDataAsync())
+    }
+  }, [chainId, dispatch, dualFarms.length])
+
+  useEffect(() => {
+    if (zapOutputList[chainId].length === 0 && chainId === ChainId.MATIC) {
+      dispatch(fetchActivePolyFarms(dualFarms, chainId))
+    }
+  }, [chainId, dispatch, dualFarms, farms, jungleFarms, zapOutputList])
+}
+
+export const fetchActivePolyFarms =
+  (dualFarms, chainId): AppThunk =>
+  async (dispatch) => {
+    try {
+      const activeDualFarms: any[] = await getActivePolyFarms(dualFarms, chainId)
+      const zapOutputList: ParsedFarm[] = parsePolyFarms(activeDualFarms)
+      dispatch(setZapOutputList({ zapOutputList, chainId }))
+    } catch (e) {
+      console.warn(e)
+    }
+  }
+
+export const parsePolyFarms = (dualFarms) => {
+  return dualFarms.map((farm) => {
+    return {
+      lpSymbol: `${farm.stakeTokens.token1.symbol}-${farm.stakeTokens.token0.symbol}`,
+      lpAddress: farm.stakeTokenAddress,
+      currency1: farm.stakeTokens.token1.address[ChainId.MATIC],
+      currency1Symbol: farm.stakeTokens.token1.symbol,
+      currency2: farm.stakeTokens.token0.address[ChainId.MATIC],
+      currency2Symbol: farm.stakeTokens.token0.symbol,
+    }
+  })
+}
+
+export const getActivePolyFarms = async (dualFarms, chainId) => {
+  const miniChefAddress = getMiniChefAddress(chainId)
+  const farmCalls = dualFarms.map((farm) => {
+    return {
+      address: miniChefAddress,
+      name: 'poolInfo',
+      params: [farm.pid],
+    }
+  })
+  const vals = await multicall(chainId, miniApeV2, farmCalls)
+  const farmsWithMultiplier = dualFarms.map((farm, i) => {
+    return { ...farm, alloc: vals[i].allocPoint.toString() }
+  })
+  return farmsWithMultiplier.filter((farm) => farm.alloc !== '0')
 }
 
 export const fetchActiveFarms =
   (farms, jungleFarms, chainId): AppThunk =>
   async (dispatch) => {
     try {
-      const allActiveFarms = await getActiveFarms(farms, jungleFarms, chainId)
+      const allActiveFarms = await getActiveFarms(chainId, farms, jungleFarms)
       if (allActiveFarms.length === 0) return
       const zapOutputList = getZapOutputList(allActiveFarms, chainId)
-      dispatch(setZapOutputList({ zapOutputList }))
+      dispatch(setZapOutputList({ zapOutputList, chainId }))
     } catch (e) {
       console.warn(e)
     }
   }
 
-export const getActiveFarms = async (farms: Farm[], jungleFarms: JungleFarm[], chainId) => {
+export const getActiveFarms = async (chainId, farms: Farm[], jungleFarms?: JungleFarm[]) => {
   // fetch data & filter active farms
   const masterChefAddress = getMasterChefAddress(chainId)
   const farmCalls = farms.map((farm) => {
@@ -437,36 +496,32 @@ export const getActiveFarms = async (farms: Farm[], jungleFarms: JungleFarm[], c
       params: [farm.pid],
     }
   })
-  const values: any[] = await multicall(chainId, masterchefABI, farmCalls)
+  const vals: any[] = await multicall(chainId, masterchefABI, farmCalls)
 
   const farmsWithMultiplier = farms.map((farm, i) => {
-    return { ...farm, alloc: values[i].allocPoint.toString() }
+    return { ...farm, alloc: vals[i].allocPoint.toString() }
   })
   const activeFarms = farmsWithMultiplier.filter((farm, i) => i !== 0 && farm.alloc !== '0')
 
-  // fetch data & filter active jungle farms
-  if (chainId === ChainId.BSC) {
-    const jungleCalls = jungleFarms.map((farm) => {
-      return {
-        address: farm.contractAddress[chainId],
-        name: 'bonusEndBlock',
-      }
-    })
-    const jungleValues: any[] = await multicall(chainId, jungleChefABI, jungleCalls)
-    const jungleFarmsWithEndBlock = jungleFarms.map((farm, i) => {
-      return { ...farm, endBlock: jungleValues[i][0].toString() }
-    })
-    const currentBlock = store?.getState()?.block?.currentBlock
-    const currJungleFarms = jungleFarmsWithEndBlock?.map((farm) => {
-      return { ...farm, isFinished: farm.isFinished || currentBlock > farm.endBlock }
-    })
+  const jungleCalls = jungleFarms.map((farm) => {
+    return {
+      address: farm.contractAddress[chainId],
+      name: 'bonusEndBlock',
+    }
+  })
+  const jungleValues: any[] = await multicall(chainId, jungleChefABI, jungleCalls)
+  const jungleFarmsWithEndBlock = jungleFarms.map((farm, i) => {
+    return { ...farm, endBlock: jungleValues[i][0].toString() }
+  })
+  const currentBlock = store?.getState()?.block?.currentBlock
+  const currJungleFarms = jungleFarmsWithEndBlock?.map((farm) => {
+    return { ...farm, isFinished: farm.isFinished || currentBlock > farm.endBlock }
+  })
 
-    const activeJungleFarms = currJungleFarms?.filter((farm) => {
-      return !farm.isFinished
-    })
-    return [activeFarms, activeJungleFarms]
-  }
-  return activeFarms
+  const activeJungleFarms = currJungleFarms?.filter((farm) => {
+    return !farm.isFinished
+  })
+  return [activeFarms, activeJungleFarms]
 }
 
 export const getZapOutputList = (allFarms, chainId) => {

@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Flex } from '@ape.swap/uikit'
 import { RouteComponentProps } from 'react-router-dom'
 import { useUserRecentTransactions } from 'state/user/hooks'
@@ -10,8 +10,10 @@ import MyPositions from '../components/MyPositions'
 import RecentTransactions from '../components/RecentTransactions'
 import LiquiditySelector from './components/LiquiditySelector'
 import ZapLiquidity from 'components/DualAddLiquidity/ZapLiquidity'
-import { useZapState } from 'state/zap/hooks'
-import { ParsedFarm } from '../../../state/zap/reducer'
+import { useZapActionHandlers, useZapState } from 'state/zap/hooks'
+import { ParsedFarm } from 'state/zap/reducer'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { ChainId } from '@ape.swap/sdk'
 
 export enum LiquidityTypes {
   ADD = 'ADD',
@@ -34,6 +36,35 @@ function ZapLiquidityWrapper({
   },
   history,
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
+  const { chainId } = useActiveWeb3React()
+
+  const { onOutputSelect } = useZapActionHandlers()
+
+  useEffect(() => {
+    // set default values if there are no URL params
+    if (!currencyIdA || !currencyIdB) {
+      onOutputSelect(
+        chainId === ChainId.BSC
+          ? {
+              lpSymbol: 'BANANA-BNB',
+              lpAddress: '0xF65C1C0478eFDe3c19b49EcBE7ACc57BB6B1D713',
+              currency1: '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95',
+              currency1Symbol: 'BANANA',
+              currency2: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+              currency2Symbol: 'BNB',
+            }
+          : {
+              lpSymbol: 'BANANA-MATIC',
+              lpAddress: '0x034293F21F1cCE5908BC605CE5850dF2b1059aC0',
+              currency1: '0x5d47baba0d66083c52009271faf3f50dcc01023c',
+              currency1Symbol: 'BANANA',
+              currency2: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+              currency2Symbol: 'MATIC',
+            },
+      )
+    }
+  }, [chainId])
+
   const onChangeLiquidityType = useCallback(
     (newLiquidityType: LiquidityTypes) => {
       if (newLiquidityType === LiquidityTypes.ADD) history.push('/add')
@@ -46,10 +77,10 @@ function ZapLiquidityWrapper({
   const { INPUT, OUTPUT, zapOutputList } = useZapState()
 
   const currencyA = currencyIdA || INPUT.currencyId
-  const currencyB = currencyIdB || OUTPUT.lpAddress
+  const currencyB = currencyIdB || OUTPUT?.lpAddress
 
   const outputCurrency = currencyIdB
-    ? zapOutputList?.find((farm) => farm.lpAddress === currencyB) || emptyOutput
+    ? zapOutputList[chainId]?.find((farm) => farm.lpAddress === currencyB) || emptyOutput
     : OUTPUT
 
   const handleCurrenciesURL = useCallback(
