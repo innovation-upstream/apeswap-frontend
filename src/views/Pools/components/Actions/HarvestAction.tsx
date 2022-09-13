@@ -13,6 +13,10 @@ import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { ActionContainer } from './styles'
 import { poolStyles } from '../styles'
+import { useCurrency } from 'hooks/Tokens'
+import { useBananaAddress } from 'hooks/useAddress'
+import { useIsModalShown } from 'state/user/hooks'
+import { useHistory } from 'react-router-dom'
 
 interface HarvestActionsProps {
   sousId: number
@@ -28,10 +32,15 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
   const [pendingApeHarderTrx, setPendingApeHarderTrx] = useState(false)
   const { onHarvest } = useSousHarvest(sousId)
   const { onStake } = useSousStake(sousId)
+  const bananaToken = useCurrency(useBananaAddress())
+  const { poolHarvest: isPHShown } = useIsModalShown()
+  const history = useHistory()
 
   const { toastSuccess } = useToast()
   const isMobile = useIsMobile()
   const { t } = useTranslation()
+  const harvestBanana = earnTokenSymbol === bananaToken.symbol
+  const displayPHCircular = () => isPHShown && harvestBanana && history.push({ search: '?modal=circular-ph' })
 
   const handleHarvest = async () => {
     setPendingTrx(true)
@@ -42,6 +51,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
           text: t('View Transaction'),
           url: getEtherscanLink(trxHash, 'transaction', chainId),
         })
+        if (trxHash) displayPHCircular()
       })
       .catch((e) => {
         console.error(e)

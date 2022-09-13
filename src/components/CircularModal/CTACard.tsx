@@ -37,12 +37,15 @@ const CTACard: React.FC<CTACardProps> = ({ type, action }) => {
         backgroundImage: imageUrl,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
+        backgroundPosition: 'center',
         borderRadius: '10px',
         height: ['75px', '120px'],
         padding: ['18.5px', '40px'],
         marginBottom: '10px',
         backgroundColor: type === 'lending' && 'green',
         color: ((maximizer || lending || gnana) && 'primaryBright') || 'brown',
+        // '-webkit-transform': 'scaleX(-1)',
+        // transform: 'scaleX(-1)',
       }}
       onClick={compound ? triggerCompoundTx : goToDestination}
     >
