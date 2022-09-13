@@ -113,7 +113,7 @@ function ZapLiquidityWrapper({
     <Flex sx={dexStyles.pageContainer}>
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={dexStyles.dexContainer}>
-          <DexNav />
+          <DexNav zapSettings />
           <MyPositions />
           <LiquiditySelector liquidityType={LiquidityTypes.ZAP} onChangeLiquidityType={onChangeLiquidityType} />
           <ZapLiquidity
