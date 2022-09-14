@@ -172,7 +172,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                 )
               }
             >
-              {t('GET LP')} <Icon icon="ZapIcon" />
+              {t('GET LP')} <Icon icon="ZapIcon" color="primaryBright" />
             </FarmButton>
             {!isMobile && (
               <ListViewContent

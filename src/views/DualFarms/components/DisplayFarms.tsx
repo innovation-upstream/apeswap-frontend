@@ -240,7 +240,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 )
               }
             >
-              {t('GET LP')} <Icon icon="ZapIcon" />
+              {t('GET LP')} <Icon icon="ZapIcon" color="primaryBright" />
             </FarmButton>
             {!isMobile && (
               <ListViewContent

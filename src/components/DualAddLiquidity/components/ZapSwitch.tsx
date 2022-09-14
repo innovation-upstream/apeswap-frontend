@@ -1,13 +1,14 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Box, Switch } from 'theme-ui'
-import { CogIcon, Flex, Link, RunFiatButton, Svg, Text, useModal } from '@ape.swap/uikit'
+import { CogIcon, Flex, RunFiatButton, Svg, Text, TooltipBubble, useModal } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import track from 'utils/track'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import MoonPayModal from 'views/Topup/MoonpayModal'
 import SettingsModal from '../../Menu/GlobalSettings/SettingsModal'
 import { styles } from '../styles'
+import { TitleText } from '../../ListViewContent/styles'
 
 interface ZapSwitchProps {
   handleZapSwitch?: () => void
@@ -33,13 +34,22 @@ const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
         <Box sx={{ width: '50px' }}>
           <Switch checked={goZap} onChange={handleZapSwitch} sx={styles.switchStyles} />
         </Box>
-        <Link
-          href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity"
-          target="_blank"
-          textAlign="center"
+        <TooltipBubble
+          placement={'bottomLeft'}
+          transformTip="translate(-6%, 2%)"
+          body={
+            <Flex>
+              {t(
+                'Zap enables you to convert a single token into an LP token in one transaction. Disable Zap to add liquidity with two tokens.',
+              )}
+            </Flex>
+          }
+          width="180px"
         >
-          <Svg color={'grey' as any} icon="question" width="19px" />
-        </Link>
+          <TitleText lineHeight={0}>
+            <Svg color={'grey' as any} icon="question" width="19px" />
+          </TitleText>
+        </TooltipBubble>
       </Flex>
       <Flex>
         <RunFiatButton
