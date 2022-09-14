@@ -115,16 +115,6 @@ export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3
   return 0
 }
 
-export function computeZapSlippageAdjustedAmounts(
-  zap: MergedZap,
-  allowedSlippage: number,
-): { [field in Field]?: string } {
-  return {
-    [Field.INPUT]: zap?.currencyIn.inputAmount.toString(),
-    [Field.OUTPUT]: zap?.currencyOut1.minOutputAmount || zap?.currencyOut2.minOutputAmount,
-  }
-}
-
 export function formatExecutionPrice(chainId: number, trade?: Trade, inverted?: boolean): string {
   if (!trade) {
     return ''
