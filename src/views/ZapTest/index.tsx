@@ -33,8 +33,8 @@ const ZapTest: React.FC = () => {
   const parsedAmounts = {
     [Field.INPUT]: parsedAmount,
     [Field.OUTPUT]: {
-      currency1: currencyOut1?.outputAmount,
-      currency2: currencyOut2?.outputAmount,
+      currency1: pairOut?.inAmount.token1,
+      currency2: pairOut?.inAmount.token2,
     },
   }
 

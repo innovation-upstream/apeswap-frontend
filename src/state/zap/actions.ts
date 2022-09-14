@@ -25,12 +25,14 @@ export type MergedZap = {
   pairOut: {
     pair: Pair
     pairState: PairState
-    inAmount: { token1: string; token2: string }
+    inAmount: { token1: CurrencyAmount; token2: CurrencyAmount }
     minInAmount: { token1: string; token2: string }
     totalPairSupply: TokenAmount
     liquidityMinted: TokenAmount
     poolTokenPercentage: Percent
   }
+  liquidityProviderFee: CurrencyAmount
+  totalPriceImpact: Percent
   chainId: ChainId
 }
 
