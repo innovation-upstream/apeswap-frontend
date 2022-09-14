@@ -1,6 +1,5 @@
 import { CurrencyAmount, Fraction, JSBI, Percent, Price, SmartRouter, TokenAmount, Trade, Zap } from '@ape.swap/sdk'
 import { SMART_LP_FEES } from 'config/constants/chains'
-import { MergedZap } from 'state/zap/actions'
 import {
   BLOCKED_PRICE_IMPACT_NON_EXPERT,
   ALLOWED_PRICE_IMPACT_HIGH,
