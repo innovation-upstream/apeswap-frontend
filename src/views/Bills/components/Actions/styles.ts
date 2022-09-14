@@ -6,6 +6,7 @@ export const GetLPButton = styled(Button)`
   width: 100%;
   border: 3px solid ${({ theme }) => theme.colors.yellow};
   color: ${({ theme }) => theme.colors.yellow};
+  justify-content: space-between;
   :hover {
     border: 3px solid yellow;
   }

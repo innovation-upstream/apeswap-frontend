@@ -6,9 +6,9 @@ import LPSearchModal from '../../LPSearchModal/LPSearchModal'
 import ServiceTokenDisplay from '../../ServiceTokenDisplay'
 import { ParsedFarm } from 'state/zap/reducer'
 import { Spinner } from 'theme-ui'
-import { Pair } from '@ape.swap/sdk'
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
-import getCleanLpSymbol from '../../../utils/getCleanLpSymbol'
+import { ChainId, Pair } from '@ape.swap/sdk'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import getCleanLpSymbol from 'utils/getCleanLpSymbol'
 
 const LPSelector: React.FC<{
   lpPair: Pair
@@ -16,17 +16,14 @@ const LPSelector: React.FC<{
 }> = ({ lpPair, onLpSelect }) => {
   const [onPresentCurrencyModal] = useModal(<LPSearchModal onLpSelect={onLpSelect} />)
   const { chainId } = useActiveWeb3React()
+  const token1 = chainId === ChainId.BSC ? lpPair?.token0?.getSymbol(chainId) : lpPair?.token1?.getSymbol(chainId)
+  const token2 = chainId === ChainId.BSC ? lpPair?.token1?.getSymbol(chainId) : lpPair?.token0?.getSymbol(chainId)
 
   return (
     <Flex sx={{ ...styles.primaryFlex }} onClick={onPresentCurrencyModal}>
       {lpPair ? (
         <>
-          <ServiceTokenDisplay
-            token1={lpPair?.token1?.getSymbol(chainId)}
-            token2={lpPair?.token0?.getSymbol(chainId)}
-            noEarnToken
-            size={30}
-          />
+          <ServiceTokenDisplay token1={token1} token2={token2} noEarnToken size={30} />
           <Text sx={styles.tokenText}>{getCleanLpSymbol(lpPair, chainId)}</Text>
         </>
       ) : (

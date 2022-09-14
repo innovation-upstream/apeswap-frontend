@@ -44,8 +44,9 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
   const currencyInputSymbol =
     currencyIn?.currency?.symbol === 'ETH' ? (chainId === ChainId.BSC ? 'BNB' : 'MATIC') : currencyIn?.currency?.symbol
 
-  const pendingText = `Zapping ${getBalanceNumber(currencyIn?.inputAmount?.toString())} ${currencyInputSymbol}
-   into ${pairOut?.liquidityMinted?.toSignificant(4)} ${getCleanLpSymbol(pairOut?.pair, chainId)} LP`
+  const pendingText = `Zapping ${getBalanceNumber(currencyIn?.inputAmount?.toString()).toPrecision(4)}
+   ${currencyInputSymbol} into ${pairOut?.liquidityMinted?.toSignificant(4)}
+    ${getCleanLpSymbol(pairOut?.pair, chainId)} LP`
 
   return (
     <Modal title={title} {...modalProps} onDismiss={onDismiss}>

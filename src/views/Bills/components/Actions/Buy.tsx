@@ -14,8 +14,8 @@ import { useTranslation } from 'contexts/Localization'
 import { BuyProps } from './types'
 import { BuyButton, GetLPButton, MaxButton, StyledInput } from './styles'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { useModal } from '@ape.swap/uikit'
-import { selectOutputCurrency } from '../../../../state/zap/actions'
+import { Svg, useModal, Text as StyledText } from '@ape.swap/uikit'
+import { selectOutputCurrency } from 'state/zap/actions'
 
 const Buy: React.FC<BuyProps> = ({
   userLpValue,
@@ -99,7 +99,8 @@ const Buy: React.FC<BuyProps> = ({
   return (
     <>
       <GetLPButton variant="secondary" onClick={showLiquidity}>
-        {t('Get LP')}
+        <StyledText sx={{ marginRight: '5px' }}>{t('Get LP')}</StyledText>
+        <Svg icon="ZapIcon" color="yellow" />
       </GetLPButton>
       <Flex style={{ position: 'relative' }}>
         <Text fontSize="12px" style={{ position: 'absolute', top: 14, left: 10, zIndex: 1 }} bold>
