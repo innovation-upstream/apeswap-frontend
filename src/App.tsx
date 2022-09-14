@@ -60,6 +60,7 @@ const Orders = lazy(() => import('./views/Dex/Orders'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
+const Zap = lazy(() => import('./views/Dex/Zap'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -306,6 +307,9 @@ const App: React.FC = () => {
               <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+              <Route exact path="/zap" component={Zap} />
+              <Route exact path="/zap/:currencyIdA" component={Zap} />
+              <Route exact path="/zap/:currencyIdA/:currencyIdB" component={Zap} />
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
             </Switch>
@@ -409,6 +413,9 @@ const App: React.FC = () => {
             <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
             <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+            <Route exact path="/zap" component={Zap} />
+            <Route exact path="/zap/:currencyIdA" component={Zap} />
+            <Route exact path="/zap/:currencyIdA/:currencyIdB" component={Zap} />
             {/* SWAP ROUTES */}
             <Route component={NotFound} />
           </Switch>

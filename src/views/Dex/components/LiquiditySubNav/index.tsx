@@ -29,9 +29,9 @@ const LiquiditySelector: React.FC = () => {
       </Flex>
       <Flex sx={styles.liquiditySelector} as={Link} to="/zap" id="zap-link">
         <Flex sx={{ marginRight: '5px' }}>
-          <Svg color={pathname === 'zap' ? 'text' : 'textDisabled'} icon={'ZapIcon'} />
+          <Svg color={pathname.includes('zap') ? 'text' : 'textDisabled'} icon={'ZapIcon'} />
         </Flex>
-        <Text color={pathname === 'zap' ? 'text' : 'textDisabled'}>{t('Zap')}</Text>
+        <Text color={pathname.includes('zap') ? 'text' : 'textDisabled'}>{t('Zap')}</Text>
       </Flex>
       <Flex sx={styles.migrate}>
         <Text>{t('Migrate')} </Text>
