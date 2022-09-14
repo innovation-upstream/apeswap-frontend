@@ -13,7 +13,12 @@ interface ConvertionPanelProps {
 
 const ConvertionPanel: React.FC<ConvertionPanelProps> = ({ zap }) => {
   const { t } = useTranslation()
-  const { chainId, currencyIn, currencyOut1, currencyOut2 } = zap
+  const { chainId, currencyIn, currencyOut1, currencyOut2, pairOut } = zap
+
+  // This is the true value out as this is the estimated LP pair values
+
+  const currencyOneOut = pairOut?.inAmount.token1.toSignificant(6)
+  const currencyTwoOut = pairOut?.inAmount.token2.toSignificant(6)
 
   const halfInputAmount =
     currencyIn?.currency && currencyIn?.inputAmount
@@ -39,7 +44,7 @@ const ConvertionPanel: React.FC<ConvertionPanelProps> = ({ zap }) => {
           <Box sx={{ margin: '3px' }}>
             <ServiceTokenDisplay token1={currencyOut1?.outputCurrency?.symbol} stakeLp={true} size={17} />
           </Box>
-          <Text size="12px">{currencyOut1?.outputAmount?.toSignificant(5)}</Text>
+          <Text size="12px">{currencyOneOut}</Text>
         </Flex>
         <Flex sx={{ minWidth: '160px', justifyContent: 'center' }}>
           <Box sx={{ margin: '3px' }}>
@@ -54,7 +59,7 @@ const ConvertionPanel: React.FC<ConvertionPanelProps> = ({ zap }) => {
           <Box sx={{ margin: '3px' }}>
             <ServiceTokenDisplay token1={currencyOut2?.outputCurrency?.symbol} stakeLp={true} size={17} />
           </Box>
-          <Text size="12px">{currencyOut2?.outputAmount?.toSignificant(5)}</Text>
+          <Text size="12px">{currencyTwoOut}</Text>
         </Flex>
       </Flex>
     </>

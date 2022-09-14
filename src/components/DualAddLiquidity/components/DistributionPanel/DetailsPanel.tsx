@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { JSBI, Percent } from '@ape.swap/sdk'
 import { ONE_BIPS } from 'config/constants'
 import { Flex, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -13,22 +12,18 @@ interface DetailsPanelProps {
 
 const DetailsPanel: React.FC<DetailsPanelProps> = ({ zap }) => {
   const { t } = useTranslation()
-  const { pairOut, currencyOut1, currencyOut2 } = zap
+  const { pairOut, currencyOut1, currencyOut2, liquidityProviderFee, currencyIn, chainId, totalPriceImpact } = zap
   return (
     <Flex sx={{ flexDirection: 'column', marginTop: '15px' }}>
       <Row>
         <StyledText>{t('Price Impact')}</StyledText>
-        {
-          // pending set the price impact
-        }
-        <FormattedPriceImpact priceImpact={new Percent(JSBI.BigInt(1), JSBI.BigInt(100000))} />
+        <FormattedPriceImpact priceImpact={totalPriceImpact} />
       </Row>
       <Row>
         <StyledText>{t('Liquidity Provider Fee')}</StyledText>
-        {
-          // pending set the LP fees
-        }
-        <StyledText>{t('Liquidity Provider Fee')}</StyledText>
+        <StyledText>
+          {liquidityProviderFee.toSignificant(3)} {currencyIn.currency.getSymbol(chainId)}
+        </StyledText>
       </Row>
       <Row>
         <StyledText>{t('Share of Pool')}</StyledText>

@@ -75,16 +75,6 @@ function useZapCallArguments(
 
     const swapMethods = []
 
-    /* console.log(zap, {
-      feeOnTransfer: false,
-      allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
-      zapType: zapType,
-      poolAddress: poolAddress,
-      billAddress: billAddress,
-      recipient,
-      deadline: deadline.toNumber(),
-    }) */
-
     swapMethods.push(
       ZapV1.zapCallParameters(zap, {
         allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
@@ -97,7 +87,19 @@ function useZapCallArguments(
     )
 
     return swapMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, contract, zap])
+  }, [
+    account,
+    allowedSlippage,
+    chainId,
+    deadline,
+    library,
+    recipient,
+    contract,
+    zap,
+    billAddress,
+    poolAddress,
+    zapType,
+  ])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -140,7 +142,6 @@ export function useZapCallback(
               contract,
             } = call
             const options = !value || isZero(value) ? {} : { value }
-            console.log(call)
 
             return contract.estimateGas[methodName](...args, options)
               .then((gasEstimate) => {

@@ -14,7 +14,11 @@ interface DistributionPanelProps {
 const DistributionPanel: React.FC<DistributionPanelProps> = ({ zap }) => {
   const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
-  const { currencyOut1, currencyOut2 } = zap
+  const { currencyOut1, currencyOut2, pairOut } = zap
+
+  // This is the true value out as this is the estimated LP pair values
+  const currencyOneOut = pairOut?.inAmount.token1.toSignificant(6)
+  const currencyTwoOut = pairOut?.inAmount.token2.toSignificant(6)
 
   return (
     <Flex sx={styles.distributionPanelContainer}>
@@ -22,8 +26,8 @@ const DistributionPanel: React.FC<DistributionPanelProps> = ({ zap }) => {
         <Text sx={styles.swapDirectionText}>{t('Distribution')}:</Text>
       </Flex>
       <Flex sx={styles.pooledText} onClick={() => setExpanded(!expanded)}>
-        {currencyOut1?.outputAmount?.toSignificant(5)} {currencyOut1?.outputCurrency?.symbol} &{' '}
-        {currencyOut2?.outputAmount?.toSignificant(5)} {currencyOut2?.outputCurrency?.symbol} Pooled
+        {currencyOneOut} {currencyOut1?.outputCurrency?.symbol} & {currencyTwoOut}{' '}
+        {currencyOut2?.outputCurrency?.symbol} Pooled
         <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="10px" />
       </Flex>
       {expanded && (

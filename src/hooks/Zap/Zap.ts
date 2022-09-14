@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { Currency, CurrencyAmount, JSBI, Pair, Percent, Token, TokenAmount, Zap } from '@ape.swap/sdk'
+import { Currency, CurrencyAmount, JSBI, Pair, Percent, SmartRouter, Token, TokenAmount, Zap } from '@ape.swap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -17,6 +17,7 @@ import { wrappedCurrency, wrappedCurrencyAmount } from '../../utils/wrappedCurre
 import { useUnsupportedTokens } from '../Tokens'
 import isZapBetter from 'utils/zap'
 import { MergedZap } from 'state/zap/actions'
+import { computeTradePriceBreakdown } from 'utils/prices'
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const { chainId } = useActiveWeb3React()
@@ -192,8 +193,8 @@ export function mergeBestZaps(
   // output pairs
   const [pairState, pair] = outputPair
 
-  const swapOutOne = outputOne?.raw.toString()
-  const swapOutTwo = outputTwo?.raw.toString()
+  const swapOutOne = outputOne
+  const swapOutTwo = outputTwo
 
   const minSwapOutOne = inAndOutAreTheSame1Flag ? halfInput : bestZapOne?.minimumAmountOut(slippageTolerance)
   const minSwapOutTwo = inAndOutAreTheSame2Flag ? halfInput : bestZapTwo?.minimumAmountOut(slippageTolerance)
@@ -206,6 +207,30 @@ export function mergeBestZaps(
     wrappedCurrencyAmount(minSwapOutTwo, chainId),
   ]
 
+  const { priceImpactWithoutFee: priceImpactWithoutFeeOne, realizedLPFee: realizedLPFeeOne } =
+    computeTradePriceBreakdown(chainId, SmartRouter.APE, bestZapOne)
+
+  const { priceImpactWithoutFee: priceImpactWithoutFeeTwo, realizedLPFee: realizedLPFeeTwo } =
+    computeTradePriceBreakdown(chainId, SmartRouter.APE, bestZapTwo)
+
+  // Take the greater price impact as that will be used for the LP value
+  const totalPriceImpact =
+    priceImpactWithoutFeeOne && priceImpactWithoutFeeTwo
+      ? priceImpactWithoutFeeOne.greaterThan(priceImpactWithoutFeeTwo)
+        ? priceImpactWithoutFeeOne
+        : priceImpactWithoutFeeTwo
+      : priceImpactWithoutFeeOne
+      ? priceImpactWithoutFeeOne
+      : priceImpactWithoutFeeTwo
+
+  // Add fees if swap occurs otherwise use swap
+  const liquidityProviderFee =
+    realizedLPFeeOne && realizedLPFeeTwo
+      ? realizedLPFeeOne?.add(realizedLPFeeTwo)
+      : realizedLPFeeOne
+      ? realizedLPFeeOne
+      : realizedLPFeeTwo
+
   const pairInAmount =
     outputCurrencyOne &&
     wOutputOne &&
@@ -214,7 +239,7 @@ export function mergeBestZaps(
     pair
       ?.priceOf(inAndOutAreTheSame1Flag ? outputCurrencyTwo : outputCurrencyOne)
       .quote(inAndOutAreTheSame1Flag ? wOutputTwo : wOutputOne)
-      .raw.toString()
+
   const minPairInAmount =
     outputCurrencyOne &&
     wMinSwapOutOne &&
@@ -263,6 +288,8 @@ export function mergeBestZaps(
         : { token1: minSwapOutOne?.raw.toString(), token2: minPairInAmount },
       poolTokenPercentage,
     },
+    liquidityProviderFee,
+    totalPriceImpact,
     chainId,
   }
 }
