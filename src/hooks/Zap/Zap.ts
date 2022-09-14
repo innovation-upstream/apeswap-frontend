@@ -1,5 +1,18 @@
 /* eslint-disable no-param-reassign */
-import { Currency, CurrencyAmount, JSBI, Pair, Percent, SmartRouter, Token, TokenAmount, Zap } from '@ape.swap/sdk'
+import {
+  Currency,
+  CurrencyAmount,
+  currencyEquals,
+  ETHER,
+  JSBI,
+  Pair,
+  Percent,
+  SmartRouter,
+  Token,
+  TokenAmount,
+  WETH,
+  Zap,
+} from '@ape.swap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -99,12 +112,16 @@ const MAX_HOPS = 3
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
 export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Zap | null {
+  const { chainId } = useActiveWeb3React()
   const allowedPairs = useAllCommonPairs(currencyAmountIn?.currency, currencyOut)
 
   const [singleHopOnly] = useUserSingleHopOnly()
+  const wrapped =
+    (currencyAmountIn?.currency === ETHER && currencyEquals(WETH[chainId], currencyOut)) ||
+    (currencyEquals(WETH[chainId], currencyAmountIn?.currency) && currencyOut === ETHER)
 
   return useMemo(() => {
-    if (currencyAmountIn?.currency === currencyOut) {
+    if (currencyAmountIn?.currency === currencyOut || wrapped) {
       return null
     }
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
@@ -127,7 +144,7 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
     }
 
     return null
-  }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly])
+  }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly, wrapped])
 }
 
 export function useIsTransactionUnsupported(currencyIn?: Currency, currencyOut?: Currency): boolean {
@@ -163,9 +180,17 @@ export function mergeBestZaps(
   const currencyIn = bestZapOne?.inputAmount.currency || bestZapTwo?.inputAmount.currency
   const slippageTolerance = new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE)
 
+  // We need to check if a zap path will wrap to not estimate a route
+  const inAndOutWrappedOne =
+    (currencyIn === ETHER && currencyEquals(WETH[chainId], outputCurrencies[0])) ||
+    (currencyEquals(WETH[chainId], currencyIn) && outputCurrencies[0] === ETHER)
+  const inAndOutWrappedTwo =
+    (currencyIn === ETHER && currencyEquals(WETH[chainId], outputCurrencies[1])) ||
+    (currencyEquals(WETH[chainId], currencyIn) && outputCurrencies[1] === ETHER)
+
   // If the input token and output token are the same we need to handle values differently
-  const inAndOutAreTheSame1Flag = currencyIn === outputCurrencies[0]
-  const inAndOutAreTheSame2Flag = currencyIn === outputCurrencies[1]
+  const inAndOutAreTheSame1Flag = currencyIn === outputCurrencies[0] || inAndOutWrappedOne
+  const inAndOutAreTheSame2Flag = currencyIn === outputCurrencies[1] || inAndOutWrappedTwo
 
   // output currencies
   const outputCurrencyOne = wrappedCurrency(outputCurrencies[0], chainId)
