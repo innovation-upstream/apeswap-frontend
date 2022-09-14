@@ -22,6 +22,7 @@ import PoolInfo from './components/PoolInfo'
 import AddLiquidityActions from './components/Actions'
 import MyPositions from '../components/MyPositions'
 import RecentTransactions from '../components/RecentTransactions'
+import LiquiditySubNav from '../components/LiquiditySubNav'
 
 function AddLiquidity({
   match: {
@@ -127,6 +128,7 @@ function AddLiquidity({
         <Flex sx={{ ...dexStyles.dexContainer }}>
           <DexNav />
           <MyPositions />
+          <LiquiditySubNav />
           {noLiquidity && (
             <Flex sx={{ ...styles.warningMessageContainer }}>
               <Text size="14px" weight={700} mb="10px" color="primaryBright">
@@ -139,20 +141,18 @@ function AddLiquidity({
               </Text>
             </Flex>
           )}
-          <Flex sx={{ marginTop: '30px' }}>
-            <DexPanel
-              value={formattedAmounts[Field.CURRENCY_A]}
-              panelText="Token 1"
-              currency={currencyA}
-              otherCurrency={currencyB}
-              setTradeValueUsd={setTradeValueUsd}
-              fieldType={Field.CURRENCY_A}
-              onCurrencySelect={handleCurrencySelect}
-              onUserInput={onUserInput}
-              handleMaxInput={handleMaxInput}
-              showCommonBases
-            />
-          </Flex>
+          <DexPanel
+            value={formattedAmounts[Field.CURRENCY_A]}
+            panelText="Token 1"
+            currency={currencyA}
+            otherCurrency={currencyB}
+            setTradeValueUsd={setTradeValueUsd}
+            fieldType={Field.CURRENCY_A}
+            onCurrencySelect={handleCurrencySelect}
+            onUserInput={onUserInput}
+            handleMaxInput={handleMaxInput}
+            showCommonBases
+          />
           <AddLiquiditySign />
           <DexPanel
             value={formattedAmounts[Field.CURRENCY_B]}

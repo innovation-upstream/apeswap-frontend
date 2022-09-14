@@ -23,8 +23,6 @@ import AddLiquidity from './views/Dex/AddLiquidity'
 import RemoveLiquidity from './views/Dex/RemoveLiquidity'
 import PoolFinder from './views/Dex/PoolFinder'
 import ResetScroll from './utils/resetScroll'
-import RegularLiquidityWrapper from './views/Dex/AddLiquidity/RegularLiquidityWrapper'
-import ZapLiquidityWrapper from './views/Dex/AddLiquidity/ZapLiquidityWrapper'
 
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -59,11 +57,9 @@ const Vaults = lazy(() => import('./views/Vaults'))
 const NfaStaking = lazy(() => import('./views/NfaStaking'))
 const Bills = lazy(() => import('./views/Bills'))
 const Orders = lazy(() => import('./views/Dex/Orders'))
-const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
-// Test zap state
-const Zap = lazy(() => import('./views/ZapTest'))
+const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -83,37 +79,11 @@ const RedirectDuplicateTokenIds = lazy(async () =>
     default: r.RedirectDuplicateTokenIds,
   })),
 )
-
-const RedirectRegularDuplicateTokenIds = lazy(async () =>
-  redirectAddLiquidity().then((r) => ({
-    default: r.RedirectRegularDuplicateTokenIds,
-  })),
-)
-
-const RedirectZapDuplicateTokenIds = lazy(async () =>
-  redirectAddLiquidity().then((r) => ({
-    default: r.RedirectZapDuplicateTokenIds,
-  })),
-)
-
 const RedirectOldAddLiquidityPathStructure = lazy(async () =>
   redirectAddLiquidity().then((r) => ({
     default: r.RedirectOldAddLiquidityPathStructure,
   })),
 )
-
-const RedirectRegularLiquidityPathStructure = lazy(async () =>
-  redirectAddLiquidity().then((r) => ({
-    default: r.RedirectRegularLiquidityPathStructure,
-  })),
-)
-
-const RedirectZapLiquidityPathStructure = lazy(async () =>
-  redirectAddLiquidity().then((r) => ({
-    default: r.RedirectZapLiquidityPathStructure,
-  })),
-)
-
 const RedirectToAddLiquidity = lazy(async () =>
   redirectAddLiquidity().then((r) => ({
     default: r.RedirectToAddLiquidity,
@@ -330,23 +300,11 @@ const App: React.FC = () => {
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/liquidity" component={Pool} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-              {/* clean these three components before merging */}
-              <Route exact path="/oldAdd" component={AddLiquidity} />
-              <Route exact path="/oldAdd/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/oldAdd/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-
-              <Route exact path="/add/:currencyIdA" component={RedirectRegularLiquidityPathStructure} />
-              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectRegularDuplicateTokenIds} />
-              <Route exact path="/add-liquidity" component={RegularLiquidityWrapper} />
-              <Route exact path="/add-liquidity/:currencyIdA" component={RedirectRegularLiquidityPathStructure} />
-              <Route
-                exact
-                path="/add-liquidity/:currencyIdA/:currencyIdB"
-                component={RedirectRegularDuplicateTokenIds}
-              />
-              <Route exact path="/zap" component={ZapLiquidityWrapper} />
-              <Route exact path="/zap/:currencyIdA" component={RedirectZapLiquidityPathStructure} />
-              <Route exact path="/zap/:currencyIdA/:currencyIdB" component={RedirectZapDuplicateTokenIds} />
+              <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              <Route exact path="/add-liquidity" component={AddLiquidity} />
+              <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
@@ -365,9 +323,6 @@ const App: React.FC = () => {
             </Route>
             <Route exact path="/bab-raffle">
               <BabRaffle />
-            </Route>
-            <Route exact path="/zapTest">
-              <Zap />
             </Route>
             <Route path="/" exact component={Home} />
             <Route path="/banana-farms">
@@ -448,19 +403,11 @@ const App: React.FC = () => {
             <Route exact strict path="/find" component={PoolFinder} />
             <Route exact strict path="/liquidity" component={Pool} />
             <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-            {/* clean these three components before merging */}
-            <Route exact path="/oldAdd" component={AddLiquidity} />
-            <Route exact path="/oldAdd/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-            <Route exact path="/oldAdd/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-
-            <Route exact path="/add/:currencyIdA" component={RedirectRegularLiquidityPathStructure} />
-            <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectRegularDuplicateTokenIds} />
-            <Route exact path="/add-liquidity" component={RegularLiquidityWrapper} />
-            <Route exact path="/add-liquidity/:currencyIdA" component={RedirectRegularLiquidityPathStructure} />
-            <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectRegularDuplicateTokenIds} />
-            <Route exact path="/zap" component={ZapLiquidityWrapper} />
-            <Route exact path="/zap/:currencyIdA" component={RedirectZapLiquidityPathStructure} />
-            <Route exact path="/zap/:currencyIdA/:currencyIdB" component={RedirectZapDuplicateTokenIds} />
+            <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+            <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+            <Route exact path="/add-liquidity" component={AddLiquidity} />
+            <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+            <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
             {/* SWAP ROUTES */}
             <Route component={NotFound} />
