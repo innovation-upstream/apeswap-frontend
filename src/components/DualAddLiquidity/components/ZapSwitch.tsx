@@ -39,8 +39,9 @@ const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
           transformTip="translate(-6%, 2%)"
           body={
             <Flex>
-              Zap enables you to convert a single token into an LP token in one transaction. Disable Zap to add
-              liquidity with two tokens.
+              {t(
+                'Zap enables you to convert a single token into an LP token in one transaction. Disable Zap to add liquidity with two tokens.',
+              )}
             </Flex>
           }
           width="180px"
