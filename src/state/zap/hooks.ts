@@ -30,8 +30,6 @@ import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { AppThunk, Farm, JungleFarm } from '../types'
 import fetchZapInputTokens from './api'
-import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks'
-import { fromPairs, groupBy } from 'lodash'
 import BigNumber from 'bignumber.js'
 import { useJungleFarms } from '../jungleFarms/hooks'
 import { useFarms } from '../farms/hooks'
@@ -44,7 +42,6 @@ import jungleChefABI from '../../config/abi/jungleChef.json'
 import { setInitialDualFarmDataAsync } from '../dualFarms'
 import { useDualFarms } from '../dualFarms/hooks'
 import miniApeV2 from '../../config/abi/miniApeV2.json'
-import { useNativeWrapCurrencyAddress } from '../../hooks/useAddress'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -553,38 +550,4 @@ export const getZapInputList = (): AppThunk => async (dispatch) => {
   } catch (error) {
     console.error(error)
   }
-}
-
-//this function could be used to parse the zapList, so it can be used for DexPanel component
-const parseZapInput = (chainId, zapInputList) => {
-  const tokenMap = []
-  Object.values(zapInputList).forEach((token: any) => {
-    const addressesEntries = Object.entries(token.address)
-    const mapedTokensByAddresses = []
-    addressesEntries.forEach((address) => {
-      if (address[1] === '') return
-      mapedTokensByAddresses.push({
-        address: address[1],
-        chainId: address[0],
-        decimals: token.decimals,
-        symbol: token.symbol,
-      })
-    })
-    mapedTokensByAddresses.forEach((mappedToken) => {
-      tokenMap.push(new WrappedTokenInfo(mappedToken, []))
-    })
-  })
-
-  const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, (tokenInfo) => tokenInfo.chainId)
-  const tokenAddressMap = fromPairs(
-    Object.entries(groupedTokenMap).map(([chainId, tokenInfoList]) => [
-      chainId,
-      fromPairs(tokenInfoList.map((tokenInfo) => [tokenInfo.address, { token: tokenInfo }])),
-    ]),
-  ) as TokenAddressMap
-
-  return Object.keys(tokenAddressMap[chainId] ?? {}).reduce<{ [address: string]: Token }>((newMap, address) => {
-    newMap[address] = tokenAddressMap[chainId][address].token
-    return newMap
-  }, {})
 }

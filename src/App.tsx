@@ -23,8 +23,6 @@ import AddLiquidity from './views/Dex/AddLiquidity'
 import RemoveLiquidity from './views/Dex/RemoveLiquidity'
 import PoolFinder from './views/Dex/PoolFinder'
 import ResetScroll from './utils/resetScroll'
-import RegularLiquidityWrapper from './views/Dex/AddLiquidity/RegularLiquidityWrapper'
-import ZapLiquidityWrapper from './views/Dex/AddLiquidity/ZapLiquidityWrapper'
 
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -62,6 +60,8 @@ const Orders = lazy(() => import('./views/Dex/Orders'))
 const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
+const ZapLiquidityWrapper = lazy(() => import('./views/Dex/AddLiquidity/ZapLiquidityWrapper'))
+const RegularLiquidityWrapper = lazy(() => import('./views/Dex/AddLiquidity/RegularLiquidityWrapper'))
 // Test zap state
 const Zap = lazy(() => import('./views/ZapTest'))
 

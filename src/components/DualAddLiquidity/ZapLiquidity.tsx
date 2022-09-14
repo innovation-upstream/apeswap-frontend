@@ -62,14 +62,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
     [handleCurrenciesURL, onOutputSelect],
   )
 
-  const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
-    zap,
-    zapType,
-    zapSlippage,
-    recipient,
-    '',
-    null,
-  )
+  const { callback: zapCallback } = useZapCallback(zap, zapType, zapSlippage, recipient, '', null)
 
   const handleZap = useCallback(() => {
     setZapState({
