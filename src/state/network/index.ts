@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { NETWORK_LABEL } from 'config/constants/chains'
 import { Network, NetworkState } from 'state/types'

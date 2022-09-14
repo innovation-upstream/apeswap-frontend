@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { isTradeBetter } from 'utils/trades'
-import { Currency, CurrencyAmount, Token, Trade, Pair, SmartRouter } from '@apeswapfinance/sdk'
+import { Currency, CurrencyAmount, Token, Trade, Pair, SmartRouter } from '@ape.swap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Toast, toastTypes } from '@apeswapfinance/uikit'
 import { useSelector } from 'react-redux'
