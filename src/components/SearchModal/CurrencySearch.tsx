@@ -222,6 +222,7 @@ function CurrencySearch({
     showETH,
     showImportView,
     t,
+    isZapInput,
   ])
 
   return (

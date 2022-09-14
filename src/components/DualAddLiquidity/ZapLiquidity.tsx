@@ -115,6 +115,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
   // reset input value to zero on first render
   useEffect(() => {
     onUserInput(Field.INPUT, '')
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, [])
 
   return (

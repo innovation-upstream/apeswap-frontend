@@ -1,4 +1,4 @@
-import { Pair } from '@ape.swap/sdk'
+import { ChainId, Pair } from '@ape.swap/sdk'
 
 const getCleanLpSymbol = (pair: Pair, chainId) => {
   const symbol0 = pair?.token0?.getSymbol(chainId)
@@ -11,7 +11,9 @@ const getCleanLpSymbol = (pair: Pair, chainId) => {
     if (symbol === 'WBNB') return 'BNB'
     return symbol
   }
-  return `${removeW(symbol1)}-${removeW(symbol0)}`
+  // Pair's currencies are inverted in each chain
+  if (chainId === ChainId.MATIC) return `${removeW(symbol1)}-${removeW(symbol0)}`
+  if (chainId === ChainId.BSC) return `${removeW(symbol0)}-${removeW(symbol1)}`
 }
 
 export default getCleanLpSymbol

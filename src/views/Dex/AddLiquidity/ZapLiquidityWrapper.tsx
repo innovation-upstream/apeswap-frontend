@@ -46,23 +46,16 @@ function ZapLiquidityWrapper({
       onOutputSelect(
         chainId === ChainId.BSC
           ? {
-              lpSymbol: 'BANANA-BNB',
-              lpAddress: '0xF65C1C0478eFDe3c19b49EcBE7ACc57BB6B1D713',
               currency1: '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95',
-              currency1Symbol: 'BANANA',
               currency2: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
-              currency2Symbol: 'BNB',
             }
           : {
-              lpSymbol: 'BANANA-MATIC',
-              lpAddress: '0x034293F21F1cCE5908BC605CE5850dF2b1059aC0',
               currency1: '0x5d47baba0d66083c52009271faf3f50dcc01023c',
-              currency1Symbol: 'BANANA',
               currency2: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-              currency2Symbol: 'MATIC',
             },
       )
     }
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, [chainId])
 
   const onChangeLiquidityType = useCallback(

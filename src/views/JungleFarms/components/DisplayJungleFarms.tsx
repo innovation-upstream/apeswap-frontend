@@ -63,9 +63,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
   const jungleFarmsListView = jungleFarms.map((farm) => {
     const [token1, token2] = farm.tokenName.split('-')
     const totalDollarAmountStaked = Math.round(getBalanceNumber(farm?.totalStaked) * farm?.stakingToken?.price)
-    const liquidityUrl = `https://apeswap.finance/add/${farm?.lpTokens?.token?.address[chainId]}/${
-      farm?.lpTokens?.quoteToken?.symbol === 'BNB' ? 'ETH' : farm?.lpTokens?.quoteToken?.address[chainId]
-    }`
+
     const userAllowance = farm?.userData?.allowance
     const userEarnings = getBalanceNumber(
       farm?.userData?.pendingReward || new BigNumber(0),

@@ -218,6 +218,7 @@ export default function CurrencyList({
       showImportView,
       currencies.length,
       t,
+      isZapInput,
     ],
   )
 

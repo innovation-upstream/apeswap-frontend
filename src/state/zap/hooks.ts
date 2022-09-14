@@ -44,6 +44,7 @@ import jungleChefABI from '../../config/abi/jungleChef.json'
 import { setInitialDualFarmDataAsync } from '../dualFarms'
 import { useDualFarms } from '../dualFarms/hooks'
 import miniApeV2 from '../../config/abi/miniApeV2.json'
+import { useNativeWrapCurrencyAddress } from '../../hooks/useAddress'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -55,7 +56,7 @@ export function useZapActionHandlers(): {
   onChangeRecipient: (recipient: string | null) => void
   onSetZapType: (zapType: ZapType) => void
   onInputSelect: (field: Field, currency: Currency) => void
-  onOutputSelect: (farm: ParsedFarm) => void
+  onOutputSelect: (currencies: { currency1: string; currency2: string }) => void
 } {
   const dispatch = useAppDispatch()
 
@@ -203,7 +204,6 @@ export function useDerivedZapInfo(
   ])
 
   // Change to currency amount. Divide the typed input by 2 to get correct distributions
-  // I think the parseFloat might be generating rounding issues
   const halfTypedValue = new BigNumber(typedValue).div(2).toFixed(18, 5)
   const parsedAmount = tryParseAmount(halfTypedValue === 'NaN' ? '0' : halfTypedValue, inputCurrency ?? undefined)
 
