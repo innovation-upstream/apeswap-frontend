@@ -1,18 +1,15 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Button, Flex, useModal } from '@ape.swap/uikit'
-import { Currency } from '@ape.swap/sdk'
 import UnlockButton from 'components/UnlockButton'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ApprovalState, useApproveCallbackFromZap } from 'hooks/useApproveCallback'
 import { styles } from '../styles'
 import ZapConfirmationModal from './ZapConfirmationModal'
-import { ParsedFarm } from 'state/zap/reducer'
-import { Field, MergedZap } from 'state/zap/actions'
+import { MergedZap } from 'state/zap/actions'
 
 interface ZapLiquidityActionsProps {
-  currencies: { [Field.INPUT]?: Currency; [Field.OUTPUT]?: ParsedFarm }
   handleZap: () => void
   zapInputError: string
   zap: MergedZap
@@ -22,7 +19,6 @@ interface ZapLiquidityActionsProps {
 }
 
 const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
-  currencies,
   zapInputError,
   zap,
   handleZap,
@@ -31,13 +27,12 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
   handleDismissConfirmation,
 }) => {
   const { t } = useTranslation()
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
 
   const [onPresentAddLiquidityModal] = useModal(
     <ZapConfirmationModal
       title={t('Confirm ZAP')}
       zap={zap}
-      currencies={currencies}
       onDismiss={handleDismissConfirmation}
       txHash={txHash}
       zapErrorMessage={zapErrorMessage}
@@ -79,8 +74,8 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
               sx={{ padding: '10px 2px' }}
             >
               {approval === ApprovalState.PENDING
-                ? `${t('Enabling')} ${currencies[Field.INPUT]?.getSymbol(chainId)}`
-                : `${t('Enable')} ${currencies[Field.INPUT]?.getSymbol(chainId)}`}
+                ? `${t('Enabling')} ${zap?.currencyIn?.currency?.symbol}`
+                : `${t('Enable')} ${zap?.currencyIn?.currency?.symbol}`}
             </Button>
           </>
         </Flex>

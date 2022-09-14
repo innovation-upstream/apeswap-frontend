@@ -13,7 +13,7 @@ import { DualFarm, Farm } from 'state/types'
 import { tokenInfo, tokenListInfo } from './tokenInfo'
 import styles from './styles'
 import DualLiquidityModal from '../DualAddLiquidity/DualLiquidityModal'
-import { selectLP } from '../../state/zap/actions'
+import { selectOutputCurrency } from 'state/zap/actions'
 import { ChainId } from '@ape.swap/sdk'
 
 interface DetailsContentProps {
@@ -82,29 +82,17 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
     )
     if (chainId === ChainId.BSC) {
       dispatch(
-        selectLP({
-          outPut: {
-            lpSymbol: farm?.lpSymbol,
-            lpAddress: farm?.lpAddresses[chainId],
-            currency1: farm?.tokenAddresses[chainId],
-            currency1Symbol: farm?.tokenSymbol,
-            currency2: farm?.quoteTokenAdresses[chainId],
-            currency2Symbol: farm?.quoteTokenSymbol,
-          },
+        selectOutputCurrency({
+          currency1: farm?.tokenAddresses[chainId],
+          currency2: farm?.quoteTokenAdresses[chainId],
         }),
       )
     }
     if (chainId === ChainId.MATIC) {
       dispatch(
-        selectLP({
-          outPut: {
-            lpSymbol: `${dualFarm.stakeTokens.token1.symbol}-${dualFarm.stakeTokens.token0.symbol}`,
-            lpAddress: dualFarm.stakeTokenAddress,
-            currency1: dualFarm.stakeTokens.token1.address[ChainId.MATIC],
-            currency1Symbol: dualFarm.stakeTokens.token1.symbol,
-            currency2: dualFarm.stakeTokens.token0.address[ChainId.MATIC],
-            currency2Symbol: dualFarm.stakeTokens.token0.symbol,
-          },
+        selectOutputCurrency({
+          currency1: dualFarm.stakeTokens.token1.address[ChainId.MATIC],
+          currency2: dualFarm.stakeTokens.token0.address[ChainId.MATIC],
         }),
       )
     }

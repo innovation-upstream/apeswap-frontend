@@ -20,7 +20,7 @@ import HarvestAction from './CardActions/HarvestAction'
 import { ActionContainer, StyledTag } from './CardActions/styles'
 import InfoContent from '../InfoContent'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { selectLP } from 'state/zap/actions'
+import { selectOutputCurrency } from 'state/zap/actions'
 import { Svg as Icon } from '@ape.swap/uikit'
 
 const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] }> = ({ farms, openPid, farmTags }) => {
@@ -45,15 +45,9 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
       }),
     )
     dispatch(
-      selectLP({
-        outPut: {
-          lpSymbol: farm.lpSymbol,
-          lpAddress: farm.lpAddresses[chainId],
-          currency1: farm.tokenAddresses[chainId],
-          currency1Symbol: farm.tokenSymbol,
-          currency2: farm.quoteTokenAdresses[chainId],
-          currency2Symbol: farm.quoteTokenSymbol,
-        },
+      selectOutputCurrency({
+        currency1: farm.tokenAddresses[chainId],
+        currency2: farm.quoteTokenAdresses[chainId],
       }),
     )
     onPresentAddLiquidityModal()

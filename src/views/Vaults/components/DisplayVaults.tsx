@@ -21,7 +21,7 @@ import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from './InfoContent'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { selectLP } from 'state/zap/actions'
+import { selectOutputCurrency } from '../../../state/zap/actions'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -47,15 +47,9 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       }),
     )
     dispatch(
-      selectLP({
-        outPut: {
-          lpSymbol: vault.stakeToken.symbol,
-          lpAddress: vault.stakeToken.address[chainId],
-          currency1: vault.token.address[chainId],
-          currency1Symbol: vault.token.symbol,
-          currency2: vault.quoteToken.address[chainId],
-          currency2Symbol: vault.quoteToken.symbol,
-        },
+      selectOutputCurrency({
+        currency1: vault.token.address[chainId],
+        currency2: vault.quoteToken.address[chainId],
       }),
     )
     onPresentAddLiquidityWidgetModal()

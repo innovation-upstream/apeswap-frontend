@@ -7,7 +7,6 @@ import LPSelector from './LPSelector'
 import { styles } from '../styles'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ParsedFarm } from 'state/zap/reducer'
-import { Field } from 'state/zap/actions'
 import { Pair } from '@ape.swap/sdk'
 import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -17,16 +16,13 @@ import UseTokenBalance from 'hooks/useTokenBalance'
 
 export interface ZapPanelProps {
   value: string
-  panelText: string
-  selectedFarm: ParsedFarm
-  fieldType: Field
   onLpSelect: (farm: ParsedFarm) => void
   lpPair: Pair
 }
 
-const ZapPanel: React.FC<ZapPanelProps> = ({ value, selectedFarm, onLpSelect, fieldType, panelText, lpPair }) => {
+const ZapPanel: React.FC<ZapPanelProps> = ({ value, onLpSelect, lpPair }) => {
   const { account, chainId } = useActiveWeb3React()
-  const balance = UseTokenBalance(selectedFarm?.lpAddress).toString()
+  const balance = UseTokenBalance(lpPair?.liquidityToken?.address).toString()
   const displayBalance = balance === '0' ? '0' : getBalanceNumber(new BigNumber(balance), 18).toFixed(6)
   const { t } = useTranslation()
   const [usdVal, setUsdVal] = useState(null)
@@ -39,9 +35,9 @@ const ZapPanel: React.FC<ZapPanelProps> = ({ value, selectedFarm, onLpSelect, fi
   return (
     <Flex sx={styles.dexPanelContainer}>
       <Flex sx={styles.panelTopContainer}>
-        <Text sx={styles.swapDirectionText}>{panelText}</Text>
+        <Text sx={styles.swapDirectionText}>{t('To')}:</Text>
         <NumericalInput value={value} onUserInput={null} align="left" id="token-amount-input" readOnly />
-        <LPSelector selectedFarm={selectedFarm} onLpSelect={onLpSelect} field={fieldType} />
+        <LPSelector lpPair={lpPair} onLpSelect={onLpSelect} />
       </Flex>
       <Flex sx={styles.panelBottomContainer}>
         <Flex sx={styles.centered}>

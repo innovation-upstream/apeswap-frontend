@@ -16,7 +16,7 @@ import { currencyId } from '../../utils/currencyId'
 
 interface ZapLiquidityProps {
   currencyIdA?: string
-  currencyIdB?: ParsedFarm
+  currencyIdB?: { currency1: string; currency2: string }
   handleCurrenciesURL?: (Field, currencyAddress: string) => void
 }
 
@@ -91,11 +91,6 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
       })
   }, [zapCallback])
 
-  const currencies = {
-    [Field.INPUT]: inputCurrency,
-    [Field.OUTPUT]: outputCurrency,
-  }
-
   const handleDismissConfirmation = useCallback(() => {
     // clear zapState if user close the error modal
     setZapState({
@@ -143,9 +138,6 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
         </Flex>
         <ZapPanel
           value={zap?.pairOut?.liquidityMinted?.toSignificant(10) || '0.0'}
-          panelText="To:"
-          selectedFarm={outputCurrency}
-          fieldType={Field.OUTPUT}
           onLpSelect={handleOutputSelect}
           lpPair={zap.pairOut.pair}
         />
@@ -155,7 +147,6 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
           </Flex>
         )}
         <ZapLiquidityActions
-          currencies={currencies}
           zapInputError={zapInputError}
           zap={zap}
           handleZap={handleZap}

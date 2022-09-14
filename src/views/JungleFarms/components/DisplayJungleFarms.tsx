@@ -22,7 +22,7 @@ import { Field, selectCurrency } from 'state/swap/actions'
 import { useAppDispatch } from 'state'
 import { StyledTag } from '../../Pools/components/styles'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { selectLP } from 'state/zap/actions'
+import { selectOutputCurrency } from 'state/zap/actions'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
   jungleFarms,
@@ -52,15 +52,9 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
       }),
     )
     dispatch(
-      selectLP({
-        outPut: {
-          lpSymbol: farm.tokenName,
-          lpAddress: farm.contractAddress[chainId],
-          currency1: farm.lpTokens.token.address[chainId],
-          currency1Symbol: farm.lpTokens.token.symbol,
-          currency2: farm.lpTokens.quoteToken.address[chainId],
-          currency2Symbol: farm.lpTokens.quoteToken.symbol,
-        },
+      selectOutputCurrency({
+        currency1: farm.lpTokens.token.address[chainId],
+        currency2: farm.lpTokens.quoteToken.address[chainId],
       }),
     )
     onPresentAddLiquidityWidgetModal()

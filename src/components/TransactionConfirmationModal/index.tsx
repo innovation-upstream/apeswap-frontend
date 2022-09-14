@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback } from 'react'
-import { ChainId, Currency, Token } from '@ape.swap/sdk'
+import { ChainId, Currency, Pair, Token } from '@ape.swap/sdk'
 import styled from 'styled-components'
 import { Button, Text, ErrorIcon, Flex, Link, MetamaskIcon, Spinner } from '@ape.swap/uikit'
 import { Modal, ModalProps } from '@apeswapfinance/uikit'
@@ -13,7 +13,7 @@ import { useTranslation } from 'contexts/Localization'
 import { getEtherscanLink } from 'utils'
 import { RowFixed } from '../layout/Row'
 import { AutoColumn, ColumnCenter } from '../layout/Column'
-import { ParsedFarm } from '../../state/zap/reducer'
+import getCleanLpSymbol from '../../utils/getCleanLpSymbol'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -75,7 +75,7 @@ export function TransactionSubmittedContent({
   hash: string | undefined
   chainId: ChainId
   currencyToAdd?: Currency | undefined
-  LpToAdd?: ParsedFarm
+  LpToAdd?: Pair
 }) {
   const { library } = useActiveWeb3React()
 
@@ -110,7 +110,7 @@ export function TransactionSubmittedContent({
           <Button
             variant="tertiary"
             mt="12px"
-            onClick={() => registerToken(LpToAdd.lpAddress, LpToAdd.lpSymbol, 18, '')}
+            onClick={() => registerToken(LpToAdd?.liquidityToken?.address, getCleanLpSymbol(LpToAdd, chainId), 18, '')}
           >
             <RowFixed>
               <Text>{t('Add Ape LP to Metamask')}</Text>

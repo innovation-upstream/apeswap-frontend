@@ -77,7 +77,8 @@ function ZapLiquidityWrapper({
   const { INPUT, OUTPUT, zapOutputList } = useZapState()
 
   const currencyA = currencyIdA || INPUT.currencyId
-  const currencyB = currencyIdB || OUTPUT?.lpAddress
+  // pendingg check below
+  const currencyB = currencyIdB
 
   const outputCurrency = currencyIdB
     ? zapOutputList[chainId]?.find((farm) => farm.lpAddress === currencyB) || emptyOutput

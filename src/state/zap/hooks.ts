@@ -17,7 +17,6 @@ import {
   MergedZap,
   replaceZapState,
   selectInputCurrency,
-  selectLP,
   selectOutputCurrency,
   setInputList,
   setRecipient,
@@ -116,8 +115,8 @@ export function useZapActionHandlers(): {
   )
 
   const onOutputSelect = useCallback(
-    (farm: ParsedFarm) => {
-      dispatch(selectLP({ outPut: farm }))
+    (currencies: { currency1: string; currency2: string }) => {
+      dispatch(selectOutputCurrency(currencies))
     },
     [dispatch],
   )
@@ -174,7 +173,7 @@ function involvesAddress(trade: Zap, checksummedAddress: string): boolean {
 export function useDerivedZapInfo(
   typedValue,
   inputCurrency,
-  OUTPUT: ParsedFarm,
+  OUTPUT: { currency1: string; currency2: string },
   recipient,
 ): {
   currencies: { [field in Field]?: Currency }
@@ -319,12 +318,8 @@ export function queryParametersToZapState(parsedQs: ParsedQs, chainId: ChainId):
       currencyId: inputCurrency,
     },
     [Field.OUTPUT]: {
-      lpSymbol: '',
-      lpAddress: '',
       currency1: '',
-      currency1Symbol: '',
       currency2: '',
-      currency2Symbol: '',
     },
     shareOfPool: '',
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),

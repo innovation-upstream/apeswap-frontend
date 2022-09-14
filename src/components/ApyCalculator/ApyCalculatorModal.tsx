@@ -9,10 +9,10 @@ import { calculateBananaEarnedPerThousandDollars, apyModalRoi } from 'utils/comp
 import { useTranslation } from 'contexts/Localization'
 import { JungleFarm } from '../../state/types'
 import { Field, selectCurrency } from '../../state/swap/actions'
-import { selectLP } from '../../state/zap/actions'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useAppDispatch } from '../../state'
 import DualLiquidityModal from '../DualAddLiquidity/DualLiquidityModal'
+import { selectOutputCurrency } from '../../state/zap/actions'
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
@@ -90,15 +90,9 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
       }),
     )
     dispatch(
-      selectLP({
-        outPut: {
-          lpSymbol: farm.tokenName,
-          lpAddress: farm.contractAddress[chainId],
-          currency1: farm.lpTokens.token.address[chainId],
-          currency1Symbol: farm.lpTokens.token.symbol,
-          currency2: farm.lpTokens.quoteToken.address[chainId],
-          currency2Symbol: farm.lpTokens.quoteToken.symbol,
-        },
+      selectOutputCurrency({
+        currency1: farm.lpTokens.token.address[chainId],
+        currency2: farm.lpTokens.quoteToken.address[chainId],
       }),
     )
     onPresentAddLiquidityWidgetModal()

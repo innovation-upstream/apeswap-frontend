@@ -14,8 +14,8 @@ import { useTranslation } from 'contexts/Localization'
 import { BuyProps } from './types'
 import { BuyButton, GetLPButton, MaxButton, StyledInput } from './styles'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { selectLP } from 'state/zap/actions'
 import { useModal } from '@ape.swap/uikit'
+import { selectOutputCurrency } from '../../../../state/zap/actions'
 
 const Buy: React.FC<BuyProps> = ({
   userLpValue,
@@ -88,15 +88,9 @@ const Buy: React.FC<BuyProps> = ({
       }),
     )
     dispatch(
-      selectLP({
-        outPut: {
-          lpSymbol: lpToken.symbol,
-          lpAddress: lpToken.address[chainId],
-          currency1: token.address[chainId],
-          currency1Symbol: token.symbol,
-          currency2: quoteToken.address[chainId],
-          currency2Symbol: quoteToken.symbol,
-        },
+      selectOutputCurrency({
+        currency1: token.address[chainId],
+        currency2: quoteToken.address[chainId],
       }),
     )
     onPresentAddLiquidityModal()

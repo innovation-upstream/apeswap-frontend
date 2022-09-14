@@ -4,7 +4,6 @@ import {
   Field,
   replaceZapState,
   selectInputCurrency,
-  selectLP,
   selectOutputCurrency,
   setInputList,
   setRecipient,
@@ -30,7 +29,10 @@ export interface ZapState {
   readonly [Field.INPUT]: {
     readonly currencyId: string | undefined
   }
-  readonly [Field.OUTPUT]: ParsedFarm | undefined
+  readonly [Field.OUTPUT]: {
+    readonly currency1: string | undefined
+    readonly currency2: string | undefined
+  }
   readonly shareOfPool: string | undefined
   readonly recipient: string | null
   readonly zapInputList: { [symbol: string]: Token } | undefined
@@ -46,12 +48,8 @@ const initialState: ZapState = {
     currencyId: 'ETH',
   },
   [Field.OUTPUT]: {
-    lpSymbol: '',
-    lpAddress: '',
     currency1: '',
-    currency1Symbol: '',
     currency2: '',
-    currency2Symbol: '',
   },
   shareOfPool: '',
   recipient: null,
@@ -91,7 +89,7 @@ export default createReducer<ZapState>(initialState, (builder) =>
     .addCase(selectOutputCurrency, (state, { payload: { currency1, currency2 } }) => {
       return {
         ...state,
-        [Field.OUTPUT]: { ...state[Field.OUTPUT], currency1, currency2 },
+        [Field.OUTPUT]: { currency1, currency2 },
       }
     })
     .addCase(typeInput, (state, { payload: { typedValue } }) => {
@@ -106,12 +104,6 @@ export default createReducer<ZapState>(initialState, (builder) =>
     })
     .addCase(setZapType, (state, { payload: { zapType } }) => {
       state.zapType = zapType
-    })
-    .addCase(selectLP, (state, { payload: { outPut } }) => {
-      return {
-        ...state,
-        [Field.OUTPUT]: outPut,
-      }
     })
     .addCase(setInputList, (state, { payload: { zapInputList } }) => {
       return {

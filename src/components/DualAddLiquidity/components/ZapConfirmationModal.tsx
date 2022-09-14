@@ -7,17 +7,15 @@ import {
   TransactionErrorContent,
   TransactionSubmittedContent,
 } from 'components/TransactionConfirmationModal'
-import { Field } from 'state/zap/actions'
-import { ChainId, Currency } from '@ape.swap/sdk'
-import { ParsedFarm } from 'state/zap/reducer'
+import { ChainId } from '@ape.swap/sdk'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
+import getCleanLpSymbol from '../../../utils/getCleanLpSymbol'
 
 export interface ZapConfirmationModalProps {
   title?: string
   onDismiss?: () => void
   txHash?: string
-  currencies?: { [Field.INPUT]?: Currency; [Field.OUTPUT]?: ParsedFarm }
   zap: any
   zapErrorMessage?: string
 }
@@ -34,7 +32,6 @@ const modalProps = {
 }
 
 const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
-  currencies,
   zap,
   title,
   onDismiss,
@@ -48,7 +45,8 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
     currencyIn?.currency?.symbol === 'ETH' ? (chainId === ChainId.BSC ? 'BNB' : 'MATIC') : currencyIn?.currency?.symbol
 
   const pendingText = `Zapping ${getBalanceNumber(currencyIn?.inputAmount?.toString())} ${currencyInputSymbol}
-   into ${pairOut?.liquidityMinted?.toSignificant(4)} ${currencies?.OUTPUT?.lpSymbol} LP`
+   into ${pairOut?.liquidityMinted?.toSignificant(4)} ${getCleanLpSymbol(pairOut?.pair, chainId)} LP`
+
   return (
     <Modal title={title} {...modalProps} onDismiss={onDismiss}>
       {zapErrorMessage ? (
@@ -63,12 +61,7 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
       ) : !txHash ? (
         <ConfirmationPendingContent pendingText={pendingText} />
       ) : (
-        <TransactionSubmittedContent
-          chainId={chainId}
-          hash={txHash}
-          onDismiss={onDismiss}
-          LpToAdd={currencies[Field.OUTPUT]}
-        />
+        <TransactionSubmittedContent chainId={chainId} hash={txHash} onDismiss={onDismiss} LpToAdd={pairOut?.pair} />
       )}
     </Modal>
   )

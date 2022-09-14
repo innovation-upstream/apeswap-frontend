@@ -20,9 +20,9 @@ import ServiceTokenDisplay from '../../../components/ServiceTokenDisplay'
 import { Field, selectCurrency } from 'state/swap/actions'
 import { useAppDispatch } from 'state'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { selectLP } from '../../../state/zap/actions'
 import { ChainId } from '@ape.swap/sdk'
 import { Svg as Icon } from '@ape.swap/uikit'
+import { selectOutputCurrency } from 'state/zap/actions'
 
 const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags: Tag[] }> = ({
   farms,
@@ -50,15 +50,9 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
       }),
     )
     dispatch(
-      selectLP({
-        outPut: {
-          lpSymbol: `${farm.stakeTokens.token1.symbol}-${farm.stakeTokens.token0.symbol}`,
-          lpAddress: farm.stakeTokenAddress,
-          currency1: farm.stakeTokens.token1.address[ChainId.MATIC],
-          currency1Symbol: farm.stakeTokens.token1.symbol,
-          currency2: farm.stakeTokens.token0.address[ChainId.MATIC],
-          currency2Symbol: farm.stakeTokens.token0.symbol,
-        },
+      selectOutputCurrency({
+        currency1: farm.stakeTokens.token1.address[ChainId.MATIC],
+        currency2: farm.stakeTokens.token0.address[ChainId.MATIC],
       }),
     )
     onPresentAddLiquidityWidgetModal()
