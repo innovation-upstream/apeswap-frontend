@@ -190,32 +190,27 @@ export const CTA_CARD_INFO = {
   maximizers: {
     title: 'Maximizers',
     description: 'Earn up to {X%} APY',
-    bgUrl: '',
     destination: 'https://apeswap.finance/maximizers',
   },
   pools: {
     title: 'Pools',
     description: 'Earn up to {X%} APR',
-    bgUrl: '',
-    destination: 'https://apeswap.finance/maximizers',
+    destination: 'https://apeswap.finance/pools',
   },
   lending: {
     title: 'Lending',
     description: 'Supply, borrow, and earn',
-    bgUrl: '',
     destination: 'https://lending.apeswap.finance',
   },
   gnana: {
     title: 'Gnana',
     description: 'Unlock exclusive utility',
-    bgUrl: '',
     destination: 'https://apeswap.finance/gnana',
   },
   compound: {
     title: 'Compound',
     description: 'Earn up to {X%} APR',
-    bgUrl: '',
-    destination: 'https://sample.com',
+    destination: 'https://apeswap.finance/pools',
   },
 }
 

@@ -25,7 +25,13 @@ const CircularModal: React.FC<MP> = ({ actionType, description, supporting, chil
       {children}
 
       <Flex sx={circular.footer}>
-        <Button variant="secondary" sx={{ width: ['100%', '188px'] }} onClick={null}>
+        <Button
+          variant="secondary"
+          sx={{ width: ['100%', '188px'] }}
+          onClick={() =>
+            window.open('https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/banana', '_blank')
+          }
+        >
           Learn More
         </Button>
         <Flex sx={circular.checkSection}>

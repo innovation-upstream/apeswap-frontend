@@ -61,4 +61,24 @@ export const circular: Record<string, ThemeUIStyleObject> = {
     fontSize: '12px',
     lineHeight: '14px',
   },
+  ctaCard: {
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    borderRadius: '10px',
+    height: ['75px', '120px'],
+    marginBottom: '10px',
+  },
+  ctaContent: {
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: ['20px', '40px'],
+    paddingRight: ['20px', '40px'],
+  },
+  bannerIcon: {
+    width: ['60px', '100px'],
+    height: ['60px', '100px'],
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+  },
 }

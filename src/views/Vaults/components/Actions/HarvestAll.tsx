@@ -6,6 +6,8 @@ import useHarvestAllMaximizer from 'views/Vaults/hooks/useHarvestAllMaximizer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAppDispatch } from 'state'
 import { StyledButtonSquare } from './styles'
+import { useHistory } from 'react-router-dom'
+import { useIsModalShown } from 'state/user/hooks'
 
 interface HarvestActionsProps {
   pids: number[]
@@ -18,17 +20,23 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ pids, disabled }) => {
   const [pendingTrx, setPendingTrx] = useState(false)
   const { onHarvestAll } = useHarvestAllMaximizer(pids)
   const { toastSuccess } = useToast()
+  const history = useHistory()
+
+  const { generalHarvest: isGHShown } = useIsModalShown()
+  const displayGHCircular = () => isGHShown && history.push({ search: '?modal=circular-gh' })
 
   const handleHarvestAll = async () => {
     setPendingTrx(true)
     await onHarvestAll()
       .then((resp) => {
-        resp.map((trx) =>
-          toastSuccess('Harvest Successful', {
+        resp.map((trx) => {
+          console.log('trx:::', trx.transactionHash)
+          if (trx.transactionHash) displayGHCircular()
+          return toastSuccess('Harvest Successful', {
             text: 'View Transaction',
             url: getEtherscanLink(trx.transactionHash, 'transaction', chainId),
-          }),
-        )
+          })
+        })
       })
       .catch((e) => {
         console.error(e)
