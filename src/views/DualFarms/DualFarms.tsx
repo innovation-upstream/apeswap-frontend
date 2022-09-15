@@ -179,8 +179,8 @@ const DualFarms: React.FC = () => {
   useSetZapOutputList(
     activeFarms?.map((farm) => {
       return {
-        currencyIdA: farm?.stakeTokens.token1.address[chainId],
-        currencyIdB: farm?.stakeTokens.token0.address[chainId],
+        currencyIdA: farm?.stakeTokens.token0.address[chainId],
+        currencyIdB: farm?.stakeTokens.token1.address[chainId],
       }
     }),
   )

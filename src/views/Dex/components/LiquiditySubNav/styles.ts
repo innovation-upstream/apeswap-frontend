@@ -13,7 +13,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     ...textUnderlineHover,
   },
   liquiditySelectorContainer: {
-    marginBottom: '15px',
+    marginBottom: '40px',
     justifyContent: 'center',
     fontSize: '14px',
   },

@@ -10,6 +10,7 @@ import { Spinner } from 'theme-ui'
 import styled from '@emotion/styled'
 import { PairState, usePair } from 'hooks/usePairs'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
+import { wrappedToNative } from 'utils'
 
 const StyledBalanceText = styled(Text)`
   white-space: nowrap;
@@ -44,7 +45,7 @@ const LPRow: React.FC<LPRowProps> = ({ tokens, onLpSelect, style }) => {
       <Flex sx={{ alignItems: 'center' }}>
         <ServiceTokenDisplay token1={currencyA.getSymbol(chainId)} token2={currencyB.getSymbol(chainId)} noEarnToken />
         <Text weight={700} sx={{ lineHeight: '22px', marginLeft: '5px' }}>
-          {currencyA.getSymbol(chainId)}-{currencyB.getSymbol(chainId)}
+          {wrappedToNative(currencyA.getSymbol(chainId))}-{wrappedToNative(currencyB.getSymbol(chainId))}
         </Text>
       </Flex>
       {balance ? <Balance balance={balance} /> : account ? <Spinner width="20px" height="20px" /> : null}

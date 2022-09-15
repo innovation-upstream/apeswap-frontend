@@ -21,8 +21,8 @@ const LPSelector: React.FC<{
       {lpPair ? (
         <>
           <ServiceTokenDisplay
-            token1={lpPair?.token1?.getSymbol(chainId)}
-            token2={lpPair?.token0?.getSymbol(chainId)}
+            token1={lpPair?.token0?.getSymbol(chainId)}
+            token2={lpPair?.token1?.getSymbol(chainId)}
             noEarnToken
             size={30}
           />

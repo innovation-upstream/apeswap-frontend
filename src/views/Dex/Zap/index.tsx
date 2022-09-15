@@ -215,19 +215,17 @@ function ZapLiquidity({
           <MyPositions />
           <LiquiditySubNav />
           <Flex sx={styles.liquidityContainer}>
-            <Flex sx={{ marginTop: '30px' }}>
-              <DexPanel
-                value={typedValue}
-                panelText="From:"
-                currency={inputCurrency}
-                otherCurrency={null}
-                fieldType={Field.INPUT}
-                onCurrencySelect={handleInputSelect}
-                onUserInput={onUserInput}
-                handleMaxInput={handleMaxInput}
-                isZapInput
-              />
-            </Flex>
+            <DexPanel
+              value={typedValue}
+              panelText="From"
+              currency={inputCurrency}
+              otherCurrency={null}
+              fieldType={Field.INPUT}
+              onCurrencySelect={handleInputSelect}
+              onUserInput={onUserInput}
+              handleMaxInput={handleMaxInput}
+              isZapInput
+            />
             <Flex sx={{ margin: '10px', justifyContent: 'center' }}>
               <Svg icon="ZapArrow" />
             </Flex>
