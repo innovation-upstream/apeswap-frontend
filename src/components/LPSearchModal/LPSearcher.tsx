@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Flex, Input } from '@ape.swap/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from 'contexts/Localization'
@@ -8,6 +8,7 @@ import DisplayRows from './components/DisplayRows'
 import { useZapOutputList } from 'state/zap/hooks'
 import { styles } from './styles'
 import { Token } from '@ape.swap/sdk'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 interface LPSearcherProps {
   onSelect: (currencyA: Token, currencyB: Token) => void
@@ -16,8 +17,17 @@ interface LPSearcherProps {
 
 function LPSearcher({ onSelect }: LPSearcherProps) {
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
   const [query, setQuery] = useState('')
   const zapOutputList = useZapOutputList()
+
+  const queriedTokens = useMemo(() => {
+    return zapOutputList?.filter(({ currencyA, currencyB }) =>
+      `${currencyA.getSymbol(chainId).toUpperCase()}${currencyB.getSymbol(chainId).toUpperCase()}`.includes(
+        query.toUpperCase(),
+      ),
+    )
+  }, [chainId, query, zapOutputList])
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
@@ -37,7 +47,7 @@ function LPSearcher({ onSelect }: LPSearcherProps) {
         />
       </Flex>
       <Box sx={styles.displayRowsContainer}>
-        <DisplayRows tokens={zapOutputList} onSelect={onSelect} />
+        <DisplayRows tokens={queriedTokens} onSelect={onSelect} />
       </Box>
     </Flex>
   )
