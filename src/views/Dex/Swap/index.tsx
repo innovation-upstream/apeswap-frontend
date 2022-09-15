@@ -230,7 +230,6 @@ const Swap: React.FC = () => {
   // TO DO - Implement this statement (when the user selects BANANA as the input token (for the first time in 24 hours)) for when selling Banana (after 24 hours, reset the showModal setting 'selling' redux state to true)
   // Does this mean, after the user first sells Banana, they will see the modal but then the modal will automatically set itself to hide and reshow itself after 24 hours on the next sell of Banana?
 
-  // TO DO - Test txHash to ensure modal shows after you successfully buy Banana
   const buyingBanana = outputCurrency === bananaToken
   const sellingBanana = inputCurrency === bananaToken
   useEffect(() => {

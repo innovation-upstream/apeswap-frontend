@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useToast } from 'state/hooks'
 import { fetchVaultUserDataAsync } from 'state/vaults'
 import { getEtherscanLink } from 'utils'
 import useHarvestAllMaximizer from 'views/Vaults/hooks/useHarvestAllMaximizer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAppDispatch } from 'state'
-import { StyledButtonSquare } from './styles'
-import { useHistory } from 'react-router-dom'
 import { useIsModalShown } from 'state/user/hooks'
+import { StyledButtonSquare } from './styles'
 
 interface HarvestActionsProps {
   pids: number[]
@@ -30,11 +30,11 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ pids, disabled }) => {
     await onHarvestAll()
       .then((resp) => {
         resp.map((trx) => {
-          console.log('trx:::', trx.transactionHash)
-          if (trx.transactionHash) displayGHCircular()
+          const trxHash = trx.transactionHash
+          if (trxHash) displayGHCircular()
           return toastSuccess('Harvest Successful', {
             text: 'View Transaction',
-            url: getEtherscanLink(trx.transactionHash, 'transaction', chainId),
+            url: getEtherscanLink(trxHash, 'transaction', chainId),
           })
         })
       })
