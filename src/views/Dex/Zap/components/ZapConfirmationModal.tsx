@@ -10,13 +10,15 @@ import {
 import { ChainId } from '@ape.swap/sdk'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
-import getCleanLpSymbol from 'utils/getCleanLpSymbol'
+import { wrappedToNative } from 'utils'
+import { MergedZap } from 'state/zap/actions'
+import BigNumber from 'bignumber.js'
 
 export interface ZapConfirmationModalProps {
   title?: string
   onDismiss?: () => void
   txHash?: string
-  zap: any
+  zap: MergedZap
   zapErrorMessage?: string
 }
 
@@ -44,8 +46,12 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
   const currencyInputSymbol =
     currencyIn?.currency?.symbol === 'ETH' ? (chainId === ChainId.BSC ? 'BNB' : 'MATIC') : currencyIn?.currency?.symbol
 
-  const pendingText = `Zapping ${getBalanceNumber(currencyIn?.inputAmount?.toString())} ${currencyInputSymbol}
-   into ${pairOut?.liquidityMinted?.toSignificant(4)} ${getCleanLpSymbol(pairOut?.pair, chainId)} LP`
+  const pendingText = `Zapping ${getBalanceNumber(
+    new BigNumber(currencyIn.inputAmount.toString(), currencyIn.currency.decimals),
+  )} ${currencyInputSymbol}
+   into ${pairOut?.liquidityMinted?.toSignificant(4)} ${wrappedToNative(
+    pairOut?.pair.token0.getSymbol(chainId),
+  )}-${wrappedToNative(pairOut?.pair.token0.getSymbol(chainId))} LP`
 
   return (
     <Modal title={title} {...modalProps} onDismiss={onDismiss}>

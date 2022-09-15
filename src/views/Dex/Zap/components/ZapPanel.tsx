@@ -4,26 +4,24 @@ import { Flex, Text } from '@ape.swap/uikit'
 import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
 import { useTranslation } from 'contexts/Localization'
 import LPSelector from './LPSelector'
-import { styles } from '../styles'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { ParsedFarm } from 'state/zap/reducer'
-import { Pair } from '@ape.swap/sdk'
+import { styles } from '../../components/DexPanel/styles'
+import { Pair, Token } from '@ape.swap/sdk'
 import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Spinner } from 'theme-ui'
-import BigNumber from 'bignumber.js'
-import UseTokenBalance from 'hooks/useTokenBalance'
+import { useCurrencyBalance } from 'state/wallet/hooks'
+import Dots from 'components/Loader/Dots'
 
 export interface ZapPanelProps {
   value: string
-  onLpSelect: (farm: ParsedFarm) => void
+  onSelect: (currencyIdA: Token, currencyIdB: Token) => void
   lpPair: Pair
 }
 
-const ZapPanel: React.FC<ZapPanelProps> = ({ value, onLpSelect, lpPair }) => {
+const ZapPanel: React.FC<ZapPanelProps> = ({ value, onSelect, lpPair }) => {
   const { account, chainId } = useActiveWeb3React()
-  const balance = UseTokenBalance(lpPair?.liquidityToken?.address).toString()
-  const displayBalance = balance === '0' ? '0' : getBalanceNumber(new BigNumber(balance), 18).toFixed(6)
+  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, lpPair?.liquidityToken ?? undefined)
+  const currencyBalance = selectedCurrencyBalance?.toSignificant(6)
   const { t } = useTranslation()
   const [usdVal, setUsdVal] = useState(null)
 
@@ -37,7 +35,7 @@ const ZapPanel: React.FC<ZapPanelProps> = ({ value, onLpSelect, lpPair }) => {
       <Flex sx={styles.panelTopContainer}>
         <Text sx={styles.swapDirectionText}>{t('To')}:</Text>
         <NumericalInput value={value} onUserInput={null} align="left" id="token-amount-input" readOnly />
-        <LPSelector lpPair={lpPair} onLpSelect={onLpSelect} />
+        <LPSelector lpPair={lpPair} onSelect={onSelect} />
       </Flex>
       <Flex sx={styles.panelBottomContainer}>
         <Flex sx={styles.centered}>
@@ -45,14 +43,15 @@ const ZapPanel: React.FC<ZapPanelProps> = ({ value, onLpSelect, lpPair }) => {
             {!usdVal && value !== '0.0' ? (
               <Spinner width="15px" height="15px" />
             ) : value !== '0.0' && usdVal !== 0 && value ? (
-              `∼$${(usdVal * parseFloat(value)).toFixed(2)}`
+              `$${(usdVal * parseFloat(value)).toFixed(2)}`
             ) : null}
           </Text>
         </Flex>
         <Flex sx={{ alignItems: 'center' }}>
           {account ? (
             <Text size="12px" sx={styles.panelBottomText}>
-              {t('Balance: %balance%', { balance: displayBalance || 'loading' })}
+              {t('Balance: %balance%', { balance: currencyBalance || 'loading' })}
+              {!currencyBalance && <Dots />}
             </Text>
           ) : null}
         </Flex>

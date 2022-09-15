@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
@@ -12,7 +13,6 @@ import { styles } from './styles'
 import { dexStyles } from '../styles'
 import { useZapCallback } from 'hooks/useZapCallback'
 import DistributionPanel from './components/DistributionPanel/DistributionPanel'
-import { ParsedFarm } from 'state/zap/reducer'
 import { currencyId } from 'utils/currencyId'
 import { RouteComponentProps } from 'react-router-dom'
 import DexNav from '../components/DexNav'
@@ -80,7 +80,7 @@ function ZapLiquidity({
     inputError: zapInputError,
     currencyBalances,
   } = useDerivedZapInfo(typedValue, inputCurrency, outputCurrency, recipient)
-  const { onUserInput, onInputSelect, onOutputSelect } = useZapActionHandlers()
+  const { onUserInput, onInputSelect, onOutputSelect, onCurrencySelection } = useZapActionHandlers()
 
   // // Handle currency selection
   // const handleCurrencySelect = useCallback(
@@ -144,9 +144,9 @@ function ZapLiquidity({
   )
 
   const handleOutputSelect = useCallback(
-    (farm: ParsedFarm) => {
-      if (handleCurrenciesURL) handleCurrenciesURL(Field.OUTPUT, farm.lpAddress)
-      onOutputSelect({ currency1: farm.currency1, currency2: farm.currency2 })
+    (currencyA: Currency, currencyB: Currency) => {
+      // if (handleCurrenciesURL) handleCurrenciesURL(Field.OUTPUT, farm.lpAddress)
+      onCurrencySelection(Field.OUTPUT, [currencyA, currencyB])
     },
     [handleCurrenciesURL, onOutputSelect],
   )
@@ -233,7 +233,7 @@ function ZapLiquidity({
             </Flex>
             <ZapPanel
               value={zap?.pairOut?.liquidityMinted?.toSignificant(10) || '0.0'}
-              onLpSelect={handleOutputSelect}
+              onSelect={handleOutputSelect}
               lpPair={zap.pairOut.pair}
             />
             {typedValue && parseFloat(typedValue) > 0 && zap?.pairOut?.liquidityMinted && (

@@ -1,20 +1,20 @@
 /** @jsxImportSource theme-ui */
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Flex, Input } from '@ape.swap/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from 'contexts/Localization'
 import { Box } from 'theme-ui'
-import { ParsedFarm } from 'state/zap/reducer'
 import DisplayRows from './components/DisplayRows'
 import { useZapOutputList } from 'state/zap/hooks'
 import { styles } from './styles'
+import { Token } from '@ape.swap/sdk'
 
 interface LPSearcherProps {
-  onLpSelect: (farm: ParsedFarm) => void
+  onSelect: (currencyA: Token, currencyB: Token) => void
   zapOutputList?: any
 }
 
-function LPSearcher({ onLpSelect }: LPSearcherProps) {
+function LPSearcher({ onSelect }: LPSearcherProps) {
   const { t } = useTranslation()
   const [query, setQuery] = useState('')
   const zapOutputList = useZapOutputList()
@@ -37,7 +37,7 @@ function LPSearcher({ onLpSelect }: LPSearcherProps) {
         />
       </Flex>
       <Box sx={styles.displayRowsContainer}>
-        <DisplayRows tokens={zapOutputList} onLpSelect={onLpSelect} />
+        <DisplayRows tokens={zapOutputList} onSelect={onSelect} />
       </Box>
     </Flex>
   )

@@ -4,14 +4,13 @@ import DexPanel from 'views/Dex/components/DexPanel'
 import { useCurrency } from 'hooks/Tokens'
 import { Currency, CurrencyAmount } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
-import ZapPanel from './components/ZapPanel'
+import ZapPanel from 'views/Dex/Zap/components/ZapPanel'
 import { Field } from 'state/zap/actions'
 import { useDerivedZapInfo, useZapActionHandlers, useZapState } from 'state/zap/hooks'
-import ZapLiquidityActions from './components/ZapLiquidityActions'
+import ZapLiquidityActions from 'views/Dex/Zap/components/ZapLiquidityActions'
 import { styles } from './styles'
 import { useZapCallback } from 'hooks/useZapCallback'
-import DistributionPanel from './components/DistributionPanel/DistributionPanel'
-import { ParsedFarm } from '../../state/zap/reducer'
+import DistributionPanel from 'views/Dex/Zap/components/DistributionPanel/DistributionPanel'
 import { currencyId } from '../../utils/currencyId'
 
 interface ZapLiquidityProps {
@@ -42,7 +41,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
     inputError: zapInputError,
     currencyBalances,
   } = useDerivedZapInfo(typedValue, inputCurrency, outputCurrency, recipient)
-  const { onUserInput, onInputSelect, onOutputSelect } = useZapActionHandlers()
+  const { onUserInput, onInputSelect, onOutputSelect, onCurrencySelection } = useZapActionHandlers()
 
   const handleInputSelect = useCallback(
     (field: Field, currency: Currency) => {
@@ -54,9 +53,8 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
   )
 
   const handleOutputSelect = useCallback(
-    (farm: ParsedFarm) => {
-      if (handleCurrenciesURL) handleCurrenciesURL(Field.OUTPUT, farm.lpAddress)
-      onOutputSelect(farm)
+    (currencyIdA: Currency, currencyIdB: Currency) => {
+      onCurrencySelection(Field.OUTPUT, [currencyIdA, currencyIdB])
     },
     [handleCurrenciesURL, onOutputSelect],
   )
@@ -138,7 +136,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
         </Flex>
         <ZapPanel
           value={zap?.pairOut?.liquidityMinted?.toSignificant(10) || '0.0'}
-          onLpSelect={handleOutputSelect}
+          onSelect={handleOutputSelect}
           lpPair={zap.pairOut.pair}
         />
         {typedValue && parseFloat(typedValue) > 0 && zap?.pairOut?.liquidityMinted && (
