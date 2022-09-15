@@ -106,7 +106,7 @@ export default function Pool() {
                     to="/zap"
                     startIcon={
                       <Flex sx={{ marginRight: '10px' }}>
-                        <Svg icon="ZapIcon" />
+                        <Svg icon="ZapIcon" color="primaryBright" />
                       </Flex>
                     }
                     m="10px"
