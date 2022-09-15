@@ -6,11 +6,11 @@ import contracts from 'config/constants/contracts'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useENS from 'hooks/ENS/useENS'
-import { useCurrency } from 'hooks/Tokens'
+import { useCurrency, useDefaultTokens } from 'hooks/Tokens'
 import { mergeBestZaps, useTradeExactIn } from 'hooks/Zap/Zap'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { isAddress } from 'utils'
-import store, { AppDispatch, AppState, useAppDispatch } from '../index'
+import { AppDispatch, AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import {
   Field,
@@ -18,33 +18,17 @@ import {
   replaceZapState,
   selectInputCurrency,
   selectOutputCurrency,
-  setInputList,
   setRecipient,
-  setZapOutputList,
+  setZapNewOutputList,
   setZapType,
   typeInput,
 } from './actions'
-import { ParsedFarm, ZapState } from './reducer'
+import { ZapState } from './reducer'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
-import { AppThunk, Farm, JungleFarm } from '../types'
-import fetchZapInputTokens from './api'
-import { TokenAddressMap, WrappedTokenInfo } from '../lists/hooks'
-import { fromPairs, groupBy } from 'lodash'
+
 import BigNumber from 'bignumber.js'
-import { useJungleFarms } from '../jungleFarms/hooks'
-import { useFarms } from '../farms/hooks'
-import { setInitialJungleFarmDataAsync } from '../jungleFarms'
-import { setInitialFarmDataAsync } from '../farms'
-import { getMasterChefAddress, getMiniChefAddress } from '../../utils/addressHelper'
-import multicall from '../../utils/multicall'
-import masterchefABI from 'config/abi/masterchef.json'
-import jungleChefABI from '../../config/abi/jungleChef.json'
-import { setInitialDualFarmDataAsync } from '../dualFarms'
-import { useDualFarms } from '../dualFarms/hooks'
-import miniApeV2 from '../../config/abi/miniApeV2.json'
-import { useNativeWrapCurrencyAddress } from '../../hooks/useAddress'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -326,6 +310,7 @@ export function queryParametersToZapState(parsedQs: ParsedQs, chainId: ChainId):
     independentField: parseIndependentFieldURLParameter(parsedQs.exactField),
     zapType: ZapType.ZAP,
     recipient,
+    zapNewOutputList: null,
     zapOutputList: null,
     zapInputList: null,
     zapSlippage: null,
@@ -378,213 +363,25 @@ export function useZapInputList(): { [address: string]: Token } {
   return zapInputList
 }
 
-export const useSetInitialZapData = () => {
-  const { chainId } = useActiveWeb3React()
+// Set zap output list. Keep this pretty simple to allow multiple products to use it
+export function useSetZapOutputList(currencyIds: { currencyIdA: string; currencyIdB: string }[]) {
   const dispatch = useAppDispatch()
-  const { onSetZapType } = useZapActionHandlers()
-  const { zapInputList, zapType, zapOutputList } = useZapState()
-  const farms = useFarms(null)
-  const jungleFarms = useJungleFarms(null)
-  const dualFarms = useDualFarms(null)
-  if (zapType !== ZapType.ZAP) onSetZapType(ZapType.ZAP)
-
-  useEffect(() => {
-    if (!zapInputList) {
-      dispatch(getZapInputList())
-    }
-  }, [dispatch, zapInputList])
-
-  useEffect(() => {
-    if (jungleFarms.length === 0 && chainId === ChainId.BSC) {
-      dispatch(setInitialJungleFarmDataAsync())
-    }
-  }, [chainId, dispatch, jungleFarms.length])
-
-  useEffect(() => {
-    if (farms.length === 0 && chainId === ChainId.BSC) {
-      dispatch(setInitialFarmDataAsync())
-    }
-  }, [chainId, dispatch, farms.length])
-
-  useEffect(() => {
-    if (zapOutputList[chainId].length === 0 && chainId === ChainId.BSC) {
-      dispatch(fetchActiveFarms(farms, jungleFarms, chainId))
-    }
-  }, [chainId, dispatch, farms, jungleFarms, zapOutputList])
-
-  // fetch polygon data
-
-  useEffect(() => {
-    if (dualFarms.length === 0 && chainId === ChainId.MATIC) {
-      dispatch(setInitialDualFarmDataAsync())
-    }
-  }, [chainId, dispatch, dualFarms.length])
-
-  useEffect(() => {
-    if (zapOutputList[chainId].length === 0 && chainId === ChainId.MATIC) {
-      dispatch(fetchActivePolyFarms(dualFarms, chainId))
-    }
-  }, [chainId, dispatch, dualFarms, farms, jungleFarms, zapOutputList])
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useMemo(() => dispatch(setZapNewOutputList({ zapNewOutputList: currencyIds })), [currencyIds.length, dispatch])
 }
 
-export const fetchActivePolyFarms =
-  (dualFarms, chainId): AppThunk =>
-  async (dispatch) => {
-    try {
-      const activeDualFarms: any[] = await getActivePolyFarms(dualFarms, chainId)
-      const zapOutputList: ParsedFarm[] = parsePolyFarms(activeDualFarms)
-      dispatch(setZapOutputList({ zapOutputList, chainId }))
-    } catch (e) {
-      console.warn(e)
-    }
-  }
-
-export const parsePolyFarms = (dualFarms) => {
-  return dualFarms.map((farm) => {
-    return {
-      lpSymbol: `${farm.stakeTokens.token1.symbol}-${farm.stakeTokens.token0.symbol}`,
-      lpAddress: farm.stakeTokenAddress,
-      currency1: farm.stakeTokens.token1.address[ChainId.MATIC],
-      currency1Symbol: farm.stakeTokens.token1.symbol,
-      currency2: farm.stakeTokens.token0.address[ChainId.MATIC],
-      currency2Symbol: farm.stakeTokens.token0.symbol,
-    }
-  })
-}
-
-export const getActivePolyFarms = async (dualFarms, chainId) => {
-  const miniChefAddress = getMiniChefAddress(chainId)
-  const farmCalls = dualFarms.map((farm) => {
-    return {
-      address: miniChefAddress,
-      name: 'poolInfo',
-      params: [farm.pid],
-    }
-  })
-  const vals = await multicall(chainId, miniApeV2, farmCalls)
-  const farmsWithMultiplier = dualFarms.map((farm, i) => {
-    return { ...farm, alloc: vals[i].allocPoint.toString() }
-  })
-  return farmsWithMultiplier.filter((farm) => farm.alloc !== '0')
-}
-
-export const fetchActiveFarms =
-  (farms, jungleFarms, chainId): AppThunk =>
-  async (dispatch) => {
-    try {
-      const allActiveFarms = await getActiveFarms(chainId, farms, jungleFarms)
-      if (allActiveFarms.length === 0) return
-      const zapOutputList = getZapOutputList(allActiveFarms, chainId)
-      dispatch(setZapOutputList({ zapOutputList, chainId }))
-    } catch (e) {
-      console.warn(e)
-    }
-  }
-
-export const getActiveFarms = async (chainId, farms: Farm[], jungleFarms?: JungleFarm[]) => {
-  // fetch data & filter active farms
-  const masterChefAddress = getMasterChefAddress(chainId)
-  const farmCalls = farms.map((farm) => {
-    return {
-      address: masterChefAddress,
-      name: 'poolInfo',
-      params: [farm.pid],
-    }
-  })
-  const vals: any[] = await multicall(chainId, masterchefABI, farmCalls)
-
-  const farmsWithMultiplier = farms.map((farm, i) => {
-    return { ...farm, alloc: vals[i].allocPoint.toString() }
-  })
-  const activeFarms = farmsWithMultiplier.filter((farm, i) => i !== 0 && farm.alloc !== '0')
-
-  const jungleCalls = jungleFarms.map((farm) => {
-    return {
-      address: farm.contractAddress[chainId],
-      name: 'bonusEndBlock',
-    }
-  })
-  const jungleValues: any[] = await multicall(chainId, jungleChefABI, jungleCalls)
-  const jungleFarmsWithEndBlock = jungleFarms.map((farm, i) => {
-    return { ...farm, endBlock: jungleValues[i][0].toString() }
-  })
-  const currentBlock = store?.getState()?.block?.currentBlock
-  const currJungleFarms = jungleFarmsWithEndBlock?.map((farm) => {
-    return { ...farm, isFinished: farm.isFinished || currentBlock > farm.endBlock }
-  })
-
-  const activeJungleFarms = currJungleFarms?.filter((farm) => {
-    return !farm.isFinished
-  })
-  return [activeFarms, activeJungleFarms]
-}
-
-export const getZapOutputList = (allFarms, chainId) => {
-  const [farms, jungleFarms] = allFarms
-
-  const parsedFarms: ParsedFarm[] = farms?.map((farm) => {
-    return {
-      lpSymbol: farm.lpSymbol,
-      lpAddress: farm.lpAddresses[chainId],
-      currency1: farm.tokenAddresses[chainId],
-      currency1Symbol: farm.tokenSymbol,
-      currency2: farm.quoteTokenAdresses[chainId],
-      currency2Symbol: farm.quoteTokenSymbol,
-    }
-  })
-
-  const parsedJungleFarms: ParsedFarm[] = jungleFarms?.map((farm) => {
-    return {
-      lpSymbol: farm.tokenName,
-      lpAddress: farm.stakingToken.address[chainId],
-      currency1: farm.lpTokens.token.address[chainId],
-      currency1Symbol: farm.lpTokens.token.symbol,
-      currency2: farm.lpTokens.quoteToken.address[chainId],
-      currency2Symbol: farm.lpTokens.quoteToken.symbol,
-    }
-  })
-  return [...parsedFarms, ...parsedJungleFarms]
-}
-
-export const getZapInputList = (): AppThunk => async (dispatch) => {
-  try {
-    const resp: { [symbol: string]: Token } = await fetchZapInputTokens()
-    if (resp) dispatch(setInputList({ zapInputList: resp }))
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-//this function could be used to parse the zapList, so it can be used for DexPanel component
-const parseZapInput = (chainId, zapInputList) => {
-  const tokenMap = []
-  Object.values(zapInputList).forEach((token: any) => {
-    const addressesEntries = Object.entries(token.address)
-    const mapedTokensByAddresses = []
-    addressesEntries.forEach((address) => {
-      if (address[1] === '') return
-      mapedTokensByAddresses.push({
-        address: address[1],
-        chainId: address[0],
-        decimals: token.decimals,
-        symbol: token.symbol,
-      })
-    })
-    mapedTokensByAddresses.forEach((mappedToken) => {
-      tokenMap.push(new WrappedTokenInfo(mappedToken, []))
-    })
-  })
-
-  const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, (tokenInfo) => tokenInfo.chainId)
-  const tokenAddressMap = fromPairs(
-    Object.entries(groupedTokenMap).map(([chainId, tokenInfoList]) => [
-      chainId,
-      fromPairs(tokenInfoList.map((tokenInfo) => [tokenInfo.address, { token: tokenInfo }])),
-    ]),
-  ) as TokenAddressMap
-
-  return Object.keys(tokenAddressMap[chainId] ?? {}).reduce<{ [address: string]: Token }>((newMap, address) => {
-    newMap[address] = tokenAddressMap[chainId][address].token
-    return newMap
-  }, {})
+export const useZapOutputList = (): { currencyA: Token; currencyB: Token }[] => {
+  const { zapNewOutputList: currencyIds } = useZapState()
+  const tokens = useDefaultTokens()
+  const filteredTokens = useMemo(
+    () =>
+      currencyIds.map(({ currencyIdA, currencyIdB }) => {
+        const checkedCurrencyIdA = isAddress(currencyIdA)
+        const checkedCurrencyIdB = isAddress(currencyIdB)
+        if (!checkedCurrencyIdA || !checkedCurrencyIdB) return null
+        return { currencyA: tokens[checkedCurrencyIdA], currencyB: tokens[checkedCurrencyIdB] }
+      }),
+    [currencyIds, tokens],
+  )
+  return filteredTokens
 }

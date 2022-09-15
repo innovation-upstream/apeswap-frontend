@@ -9,12 +9,15 @@ import { useTranslation } from 'contexts/Localization'
 import BillsListView from './components/BillsListView'
 import UserBillViews from './components/UserBillViews'
 import BillMenu from './components/Menu'
+import { useSetZapOutputList } from 'state/zap/hooks'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const Bills: React.FC = () => {
   useSetBills()
   usePollBills()
   usePollUserBills()
   const bills = useBills()
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const [query, setQuery] = useState('')
   const [sortOption, setSortOption] = useState('all')
@@ -50,6 +53,15 @@ const Bills: React.FC = () => {
 
     return billsToReturn
   }
+  // Set zap output list to match dual farms
+  useSetZapOutputList(
+    renderBills(false)?.map((bill) => {
+      return {
+        currencyIdA: bill?.token.address[chainId],
+        currencyIdB: bill?.quoteToken.address[chainId],
+      }
+    }),
+  )
 
   return (
     <>

@@ -15,6 +15,7 @@ import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from '../Farms/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { useSetZapOutputList } from 'state/zap/hooks'
 
 const { search } = window.location
 const params = new URLSearchParams(search)
@@ -173,6 +174,16 @@ const DualFarms: React.FC = () => {
           : farms.slice(0, numberOfFarmsVisible)
     }
   }
+
+  // Set zap output list to match dual farms
+  useSetZapOutputList(
+    activeFarms?.map((farm) => {
+      return {
+        currencyIdA: farm?.stakeTokens.token1.address[chainId],
+        currencyIdB: farm?.stakeTokens.token0.address[chainId],
+      }
+    }),
+  )
 
   return (
     <>

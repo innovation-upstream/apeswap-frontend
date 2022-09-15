@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Flex, Svg, Text, useModal } from '@ape.swap/uikit'
 import { styles } from '../styles'
 import LPSearchModal from 'components/LPSearchModal/LPSearchModal'

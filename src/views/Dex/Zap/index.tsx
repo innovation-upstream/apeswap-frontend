@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { useCurrency } from 'hooks/Tokens'
@@ -6,7 +6,7 @@ import { ChainId, Currency, CurrencyAmount } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from './components/ZapPanel'
 import { Field } from 'state/zap/actions'
-import { useDerivedZapInfo, useSetInitialZapData, useZapActionHandlers, useZapState } from 'state/zap/hooks'
+import { useDerivedZapInfo, useSetZapOutputList, useZapActionHandlers, useZapState } from 'state/zap/hooks'
 import ZapLiquidityActions from './components/ZapLiquidityActions'
 import { styles } from './styles'
 import { dexStyles } from '../styles'
@@ -19,6 +19,7 @@ import DexNav from '../components/DexNav'
 import MyPositions from '../components/MyPositions'
 import LiquiditySubNav from '../components/LiquiditySubNav'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useValidTrackedTokenPairs } from 'state/user/hooks'
 
 function ZapLiquidity({
   match: {
@@ -53,7 +54,17 @@ function ZapLiquidity({
     zapErrorMessage: undefined,
     txHash: undefined,
   })
-  useSetInitialZapData()
+
+  // Set the zap default list
+  // Get default token list and pinned pair tokens and create valid pairs
+  const trackedTokenPairs = useValidTrackedTokenPairs()
+  useSetZapOutputList(
+    useMemo(() => {
+      return trackedTokenPairs?.map(([token1, token2]) => {
+        return { currencyIdA: token1.address, currencyIdB: token2.address }
+      })
+    }, [trackedTokenPairs]),
+  )
 
   const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
 
@@ -63,8 +74,6 @@ function ZapLiquidity({
 
   const inputCurrency = useCurrency(currencyA)
   const outputCurrency = { currency1: currencyB, currency2: currencyC } as { currency1: string; currency2: string }
-
-  console.log(outputCurrency, OUTPUT)
 
   const {
     zap,
@@ -137,7 +146,6 @@ function ZapLiquidity({
   const handleOutputSelect = useCallback(
     (farm: ParsedFarm) => {
       if (handleCurrenciesURL) handleCurrenciesURL(Field.OUTPUT, farm.lpAddress)
-      console.log({ currency1: farm.currency1, currency2: farm.currency2 })
       onOutputSelect({ currency1: farm.currency1, currency2: farm.currency2 })
     },
     [handleCurrenciesURL, onOutputSelect],

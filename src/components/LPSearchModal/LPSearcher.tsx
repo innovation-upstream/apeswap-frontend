@@ -6,9 +6,8 @@ import { useTranslation } from 'contexts/Localization'
 import { Box } from 'theme-ui'
 import { ParsedFarm } from 'state/zap/reducer'
 import DisplayRows from './components/DisplayRows'
-import { useZapState } from 'state/zap/hooks'
+import { useZapOutputList } from 'state/zap/hooks'
 import { styles } from './styles'
-import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
 interface LPSearcherProps {
   onLpSelect: (farm: ParsedFarm) => void
@@ -18,12 +17,7 @@ interface LPSearcherProps {
 function LPSearcher({ onLpSelect }: LPSearcherProps) {
   const { t } = useTranslation()
   const [query, setQuery] = useState('')
-  const { zapOutputList } = useZapState()
-  const { chainId } = useActiveWeb3React()
-
-  const queriedFarms = useMemo(() => {
-    return zapOutputList[chainId]?.filter((farm) => farm.lpSymbol.toUpperCase().includes(query.toUpperCase()))
-  }, [chainId, query, zapOutputList])
+  const zapOutputList = useZapOutputList()
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
@@ -43,7 +37,7 @@ function LPSearcher({ onLpSelect }: LPSearcherProps) {
         />
       </Flex>
       <Box sx={styles.displayRowsContainer}>
-        <DisplayRows queriedFarms={queriedFarms} onLpSelect={onLpSelect} />
+        <DisplayRows tokens={zapOutputList} onLpSelect={onLpSelect} />
       </Box>
     </Flex>
   )
