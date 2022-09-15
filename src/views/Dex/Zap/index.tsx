@@ -82,6 +82,7 @@ function ZapLiquidity({
   } = useDerivedZapInfo(typedValue, inputCurrency, outputCurrency, recipient)
   const { onUserInput, onInputSelect, onOutputSelect, onCurrencySelection } = useZapActionHandlers()
 
+  // TODO: handle url params on selection
   // // Handle currency selection
   // const handleCurrencySelect = useCallback(
   //     (field: Field, currency: Currency) => {
