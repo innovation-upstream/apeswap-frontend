@@ -159,6 +159,30 @@ const App: React.FC = () => {
   }, [account, showScroll])
 
   const loadMenu = () => {
+    if (chainId === ChainId.TLOS) {
+      return (
+        <Menu>
+          <Suspense fallback={<PageLoader />}>
+            <Route path="/" exact component={Home} />
+            {/* SWAP ROUTES */}
+            <Route path="/swap" component={Swap} />
+            <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
+            <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+            <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
+            <Route exact strict path="/find" component={PoolFinder} />
+            <Route exact strict path="/liquidity" component={Pool} />
+            <Route exact strict path="/create" component={RedirectToAddLiquidity} />
+            <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+            <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />{' '}
+            <Route exact path="/add-liquidity" component={AddLiquidity} />
+            <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+            <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+            <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+            {/* SWAP ROUTES */}
+          </Suspense>
+        </Menu>
+      )
+    }
     // ETH routes
     if (chainId === ChainId.MAINNET) {
       return (

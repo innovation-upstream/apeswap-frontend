@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/sdk@4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.1.0.tgz#4913ce8d02cf4293a17be07a2e2fe79f5ce49753"
-  integrity sha512-PO1v3/ttG5fEWbIqwk8dBzMjNjY5nDizBAA2WCBTwUnhRPPG6Sjj0gEHEWkPE0c1/G7u/GZkSRITVZwvbNJ+MA==
+"@ape.swap/sdk@4.1.1-alpha.0":
+  version "4.1.1-alpha.0"
+  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.1.1-alpha.0.tgz#1ee58b81b06a7d464227a0b69dcbc9a2980753e0"
+  integrity sha512-R+QuqZWFK9D6A68E8QUmnTjBPfPFi5rZ8nEJh1fNoGfrvOVmQjuL9QoNqu6YHoaFqj1BJ3YyjeTjQjRFwuwO/w==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"
@@ -23,10 +23,10 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/uikit@1.3.28":
-  version "1.3.28"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.28.tgz#56ed105f1f377fe27314f8da320bfd57a44b5d05"
-  integrity sha512-7Dd6u7Hc4RMO/YmxMiBs3Vc3aCd9WpmgzWG5cHtepW4XI58KVxOF2+fUPs/QTieuRNpemLFrpQui2vFPU6Eiow==
+"@ape.swap/uikit@1.3.29-alpha.2":
+  version "1.3.29-alpha.2"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.29-alpha.2.tgz#0c0d1fe72e718b3ff34f7acef1a82bfdeac28e07"
+  integrity sha512-l+FfUVqU/VyRrV9b1lNsISQyYxK+ux6sMS3/ROHbzTGVZKCCkVaRn5MdcDr/pQa+WPMEGzxlzONvn6PPMaGD2w==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
@@ -57,10 +57,10 @@
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
 
-"@apeswapfinance/token-lists@1.0.314":
-  version "1.0.314"
-  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.314/d303bb04f5323fa56d8495273b0973b110230261#d303bb04f5323fa56d8495273b0973b110230261"
-  integrity sha512-qED5iKLmQmI5O0tIOeCbTmpKqTFxrP0NMV4TZ4tu9YsmTpRvRbJq9QKx0IePE68hea4Qopt6XCnzxoqqFsv+iQ==
+"@apeswapfinance/token-lists@1.0.315-alpha.0":
+  version "1.0.315-alpha.0"
+  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.315-alpha.0/1037716d76dce6ab0f43787f73e793bb0061e539#1037716d76dce6ab0f43787f73e793bb0061e539"
+  integrity sha512-PHVQZfw8DHZJ+eNlVISx/35CLg0J1xLuqwBY8eTEFgpzPWe6eyb7L0nPAL09m+4RStFXeEpaMgR9U0g21OmiDw==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
