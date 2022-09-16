@@ -22,7 +22,7 @@
     { "source": "/pool", "destination": "/liquidity", "permanent": true },
     { "source": "/add", "destination": "/add-liquidity", "permanent": true },
     { "source": "/orders", "destination": "/limit-orders", "permanent": true },
-    { "source": "/treasurybills", "destination": "/treasury-bills", "permanent": true }
-    { "source": "/ss-iaos", "destination": "/", "permanent": true }
+    { "source": "/treasurybills", "destination": "/treasury-bills", "permanent": true },
+    { "source": "/ss-iao", "destination": "/", "permanent": true }
   ]
 }
