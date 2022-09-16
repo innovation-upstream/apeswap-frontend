@@ -218,15 +218,6 @@ const App: React.FC = () => {
               <Route path="/apestats">
                 <Stats />
               </Route>
-              <Route exact path="/ss-iao">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/create">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/:id">
-                <Redirect to="/" />
-              </Route>
               {/* SWAP ROUTES */}
               <Route path="/swap" component={Swap} />
               <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
@@ -310,15 +301,6 @@ const App: React.FC = () => {
               <Route path="/gnana">
                 <Redirect to="/" />
               </Route>
-              <Route exact path="/ss-iao">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/create">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/:id">
-                <Redirect to="/" />
-              </Route>
               {/* SWAP ROUTES */}
               <Route path="/swap" component={Swap} />
               <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
@@ -393,15 +375,6 @@ const App: React.FC = () => {
             </Route>
             <Route path="/auction">
               <Auction />
-            </Route>
-            <Route exact path="/ss-iao">
-              <Redirect to="/" />
-            </Route>
-            <Route path="/ss-iao/create">
-              <Redirect to="/" />
-            </Route>
-            <Route path="/ss-iao/:id">
-              <Redirect to="/" />
             </Route>
             <Route exact path="/nft">
               <Nft />
