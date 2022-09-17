@@ -43,11 +43,11 @@ const DexPanel: React.FC<DexPanelProps> = ({
   const currencyBalance = selectedCurrencyBalance?.toSignificant(6)
   const { t } = useTranslation()
   // TODO uncomment
-  // useMemo(async () => {
-  //   setUsdVal(null)
-  //   setUsdVal(await getCurrencyUsdPrice(chainId, lpPair?.liquidityToken || currency, isRemoveLiquidity, smartRouter))
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [chainId, currency, isRemoveLiquidity, smartRouter])
+  useMemo(async () => {
+    setUsdVal(null)
+    setUsdVal(await getCurrencyUsdPrice(chainId, lpPair?.liquidityToken || currency, isRemoveLiquidity, smartRouter))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId, currency, isRemoveLiquidity, smartRouter])
 
   useEffect(() => {
     if (setTradeValueUsd) {

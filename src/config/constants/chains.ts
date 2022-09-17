@@ -212,7 +212,7 @@ export const SMART_PRICE_GETTERS = {
     [SmartRouter.SUSHISWAP]: '0x51FA9ed2908C76f51fDDA7fa0F6a1d57557668b2',
   },
   [ChainId.TLOS]: {
-    [SmartRouter.APE]: '',
+    [SmartRouter.APE]: '0x29392efed565c13a0901aeb88e32bf58eeb8a067',
   },
 }
 

@@ -24,6 +24,7 @@ const contracts = {
     [ChainId.BSC]: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
     [ChainId.MATIC]: '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270',
     [ChainId.MAINNET]: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+    [ChainId.TLOS]: '0xd102ce6a4db07d247fcc28f366a623df0938ca9e',
   },
   lottery: {
     [ChainId.BSC_TESTNET]: '0xe42Ff4758C37ccC3A54004b176384477bbBe70D6',
