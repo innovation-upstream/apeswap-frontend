@@ -1,6 +1,8 @@
-import { apeswapListUrl } from 'hooks/api'
+//import { apeswapListUrl } from 'hooks/api'
 import axiosRetry from 'axios-retry'
 import axios from 'axios'
+
+const apeswapListUrl = 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-lists/feat/tlos/config'
 
 let tries = 0
 let cacheJungleFarms = []
