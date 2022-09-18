@@ -39,7 +39,7 @@ import { setFPT, setFPT24, setPrompted } from 'state/user/actions'
 const Swap: React.FC = () => {
   // modal and loading
   const { buying: showBuyingModal, selling: showSellingModal } = useIsModalShown()
-  const { fPT, fPT24, prompted } = useModalTimer()
+  const { fPT24, prompted } = useModalTimer()
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
@@ -232,34 +232,12 @@ const Swap: React.FC = () => {
     'swapConfirmModal',
   )
 
-  // TO DO - Implement this statement (when the user selects BANANA as the input token (for the first time in 24 hours)) for when selling Banana (after 24 hours, reset the showModal setting 'selling' redux state to true)
-
-  // The intent of this one is we want to prompt users BEFORE they sell banana, instead of prompting them after a swap, we'll prompt them when they select BANANA is the input token. The first time they select it as an input token in 24 hours, they will get the warning
-  // If they select it twice in a 24 hour timeframe as the input token, we will not show the prompt on the second time around so we don't annoy users
-
-  // Create a redux state (prompted)
-  // prompted is false -> Prompt a user with a sell modal for the first time
-  // get the `firstPromptedTime` and save it to state
-  // we set prompted to true
-
-  // Get the time 24 hrs after the firstPromptedTime
-  // save it to state to fPT24
-
-  // whenever you want to show the modal
-  // check current time ->
-  // if cT > fPT24 -> show modal
-  // else don't show modal
-
   const buyingBanana = outputCurrency === bananaToken
   const sellingBanana = inputCurrency === bananaToken
-  console.log('fPT:::', fPT)
-  console.log('fPT24:::', fPT24)
-  console.log('prompted:::', prompted)
   const showTimedModal = useCallback(() => {
     const displaySellCircular = () => showSellingModal && history.push({ search: '?modal=circular-sell' })
 
     if (prompted && sellingBanana) {
-      console.log('prompted is true and sellingBanana?')
       const cT = Date.now()
       if (cT > fPT24) {
         dispatch(setFPT(cT))
@@ -268,9 +246,7 @@ const Swap: React.FC = () => {
         dispatch(setFPT24(cT24))
       }
     } else if (sellingBanana) {
-      console.log('prompted is false && sellingBanana?')
       const fPT = Date.now()
-      console.log('firstFPT:::', fPT)
       dispatch(setFPT(fPT))
 
       displaySellCircular()
