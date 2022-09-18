@@ -10,7 +10,6 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'contexts/Localization'
 import track from 'utils/track'
-import { CurrencyAmount, JSBI, Token, Trade } from '@apeswapfinance/sdk'
 import {
   useExpertModeManager,
   useIsModalShown,
@@ -18,6 +17,7 @@ import {
   useUserRecentTransactions,
   useUserSlippageTolerance,
 } from 'state/user/hooks'
+import { CurrencyAmount, JSBI, Token, Trade } from '@ape.swap/sdk'
 import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import maxAmountSpend from 'utils/maxAmountSpend'

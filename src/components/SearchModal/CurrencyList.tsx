@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
-import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from '@apeswapfinance/sdk'
+import { Currency, CurrencyAmount, currencyEquals, ETHER, Token } from '@ape.swap/sdk'
 import { Text, Flex, MetamaskIcon } from '@ape.swap/uikit'
 import styled from 'styled-components'
 import { Spinner } from 'theme-ui'
@@ -131,6 +131,7 @@ export default function CurrencyList({
   showImportView,
   setImportToken,
   breakIndex,
+  isZapInput,
 }: {
   height: number
   currencies: Currency[]
@@ -143,6 +144,7 @@ export default function CurrencyList({
   showImportView: () => void
   setImportToken: (token: Token) => void
   breakIndex: number | undefined
+  isZapInput?: boolean
 }) {
   const { chainId } = useActiveWeb3React()
 
@@ -151,7 +153,11 @@ export default function CurrencyList({
   const resetBreakIndex = showETH ? (breakIndex && breakIndex + 1) ?? undefined : breakIndex
 
   const itemData: (Currency | undefined)[] = useMemo(() => {
-    let formatted: (Currency | undefined)[] = showETH
+    let formatted: (Currency | undefined)[] = isZapInput
+      ? showETH
+        ? [Currency.ETHER, ...currencies]
+        : currencies
+      : showETH
       ? [Currency.ETHER, ...currencies, ...inactiveCurrencies]
       : [...currencies, ...inactiveCurrencies]
     if (resetBreakIndex !== undefined) {
@@ -162,7 +168,7 @@ export default function CurrencyList({
       ]
     }
     return formatted
-  }, [resetBreakIndex, currencies, inactiveCurrencies, showETH])
+  }, [resetBreakIndex, currencies, inactiveCurrencies, showETH, isZapInput])
 
   const Row = useCallback(
     ({ data, index, style }) => {
@@ -176,6 +182,7 @@ export default function CurrencyList({
       const showImport = index > currencies.length
 
       if (index === resetBreakIndex || !data) {
+        if (isZapInput) return <></>
         return (
           <FixedContentRow style={style} sx={{ alignItems: 'center', justifyContent: 'center' }}>
             <Text size="14px">{t('Expanded results from inactive Token Lists')}</Text>
@@ -211,6 +218,7 @@ export default function CurrencyList({
       showImportView,
       currencies.length,
       t,
+      isZapInput,
     ],
   )
 

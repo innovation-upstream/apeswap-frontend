@@ -37,6 +37,7 @@ import {
   setFPT,
   setFPT24,
   setPrompted,
+  updateUserBonusRouter,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -105,6 +106,7 @@ export interface UserState {
     fPT24: number
     prompted: boolean
   }
+  userBonusRouterDisabled: boolean
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -148,6 +150,7 @@ export const initialState: UserState = {
     fPT24: null,
     prompted: false,
   },
+  userBonusRouterDisabled: false,
 }
 
 export default createReducer(initialState, (builder) =>
@@ -313,5 +316,9 @@ export default createReducer(initialState, (builder) =>
         ...state.showModalTimer,
         prompted: payload,
       }
+    })
+    .addCase(updateUserBonusRouter, (state, action) => {
+      state.userBonusRouterDisabled = action.payload.userBonusRouterDisabled
+      state.timestamp = currentTimestamp()
     }),
 )

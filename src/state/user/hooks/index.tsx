@@ -1,4 +1,4 @@
-import { Pair, SmartRouter, Token } from '@apeswapfinance/sdk'
+import { Pair, SmartRouter, Token } from '@ape.swap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,8 +36,10 @@ import {
   updateUserAutonomyPrepay,
   setUnlimitedGnana,
   toggleModal,
+  updateUserBonusRouter,
 } from '../actions'
 import { deserializeToken, serializeToken } from './helpers'
+import { setZapSlippage } from '../../zap/actions'
 
 export function useAudioModeManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
@@ -98,6 +100,19 @@ export function useExpertModeManager(): [boolean, () => void] {
   }, [expertMode, dispatch])
 
   return [expertMode, toggleSetExpertMode]
+}
+
+export function useBonusRouterManager(): [boolean, () => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const bonusRouterDisabled = useSelector<AppState, AppState['user']['userBonusRouterDisabled']>(
+    (state) => state.user.userBonusRouterDisabled,
+  )
+
+  const toggleSetBonusRouter = useCallback(() => {
+    dispatch(updateUserBonusRouter({ userBonusRouterDisabled: !bonusRouterDisabled }))
+  }, [bonusRouterDisabled, dispatch])
+
+  return [bonusRouterDisabled, toggleSetBonusRouter]
 }
 
 export function useThemeManager(): [boolean, () => void] {
@@ -162,12 +177,22 @@ export function useUserRecentTransactions(): [boolean, (recentTransaction: boole
   return [recentTransactions, setRecentTransactions]
 }
 
-export function useUserSlippageTolerance(): [number, (slippage: number) => void] {
+export function useUserSlippageTolerance(isZap?: boolean): [number, (slippage: number) => void] {
   const dispatch = useDispatch<AppDispatch>()
+
+  const zapSlippageTolerance = useSelector<AppState, AppState['zap']['zapSlippage']>((state) => {
+    return state.zap.zapSlippage
+  })
+  const setZapSlippageTolerance = useCallback(
+    (slippage: number) => {
+      dispatch(setZapSlippage({ zapSlippage: slippage }))
+    },
+    [dispatch],
+  )
+
   const userSlippageTolerance = useSelector<AppState, AppState['user']['userSlippageTolerance']>((state) => {
     return state.user.userSlippageTolerance
   })
-
   const setUserSlippageTolerance = useCallback(
     (slippage: number) => {
       dispatch(updateUserSlippageTolerance({ userSlippageTolerance: slippage }))
@@ -175,6 +200,7 @@ export function useUserSlippageTolerance(): [number, (slippage: number) => void]
     [dispatch],
   )
 
+  if (isZap) return [zapSlippageTolerance, setZapSlippageTolerance]
   return [userSlippageTolerance, setUserSlippageTolerance]
 }
 
@@ -507,8 +533,6 @@ export const useToggleModal = (actionType: string, value: boolean) => {
   return [setToggleModal]
 }
 
-// showModalTimer -> { fPT: null, fPT24: null, prompted: false }
-// useModalTimer -> fPT, fPT24, prompted
 export const useModalTimer = () => {
   const getModalTimer = useSelector<AppState, AppState['user']['showModalTimer']>((state) => state.user.showModalTimer)
 
