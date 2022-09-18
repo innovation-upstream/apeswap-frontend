@@ -5,7 +5,7 @@ export const modalProps = {
     minWidth: ['90%', '440px'],
     width: ['280px'],
     maxWidth: '440px',
-    height: ['550px', '700px'],
+    height: ['555px', '700px'],
     // height: ['calc(100vh - 18%)', 'auto'],
   },
 }
@@ -14,9 +14,10 @@ export const circular: Record<string, ThemeUIStyleObject> = {
   container: {
     flexDirection: 'column',
     paddingTop: [20, 30],
+    paddingBottom: [20, 30],
     // justifyContent: 'space-between',
     // height: ['90%', 'auto'],
-    // overflowY: 'auto',
+    overflowY: 'auto',
   },
   supporting: {
     color: 'yellow',

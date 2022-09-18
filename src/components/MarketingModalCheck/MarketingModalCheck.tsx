@@ -81,14 +81,6 @@ const MarketingModalCheck = () => {
   ]
   const bills = [<BillsBody1 key="bill1" />]
 
-  // OPTION 1
-  // create different routes for each circular modal, circular-ph, circular-sell, circular-buy, circular-gh
-  // Display each individual circular modal here depending on which routes is found
-
-  // OPTION 2
-  // Use `useModal` and display the type of circular modal you want
-  // Use onPresentModal as the function to call it wherever it needs to be displayed
-
   return lendingRoute ? (
     <MarketingModal
       title={t("Welcome to ApeSwap's Lending Network")}

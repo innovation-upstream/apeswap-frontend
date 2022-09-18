@@ -1,19 +1,19 @@
-<svg width="240" height="75" viewBox="0 0 240 75" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_1_134295)">
-<g clip-path="url(#clip1_1_134295)">
-<path d="M321.429 -7.5H-148.776V82.5H321.429V-7.5Z" fill="url(#paint0_radial_1_134295)"/>
+<svg width="420" height="120" viewBox="0 0 420 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1_150669)">
+<g clip-path="url(#clip1_1_150669)">
+<path d="M480 0H-68.5714V120H480V0Z" fill="url(#paint0_radial_1_150669)"/>
 </g>
 </g>
 <defs>
-<radialGradient id="paint0_radial_1_134295" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(111.86 4.14306) scale(395.418 113.885)">
+<radialGradient id="paint0_radial_1_150669" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(235.503 15.5241) scale(461.321 151.847)">
 <stop stop-color="#414042"/>
 <stop offset="1"/>
 </radialGradient>
-<clipPath id="clip0_1_134295">
-<rect width="240" height="75" rx="10" fill="white"/>
+<clipPath id="clip0_1_150669">
+<rect width="420" height="120" rx="10" fill="white"/>
 </clipPath>
-<clipPath id="clip1_1_134295">
-<rect width="360" height="90" fill="white" transform="translate(-90 -7.5)"/>
+<clipPath id="clip1_1_150669">
+<rect width="420" height="120" fill="white"/>
 </clipPath>
 </defs>
 </svg>

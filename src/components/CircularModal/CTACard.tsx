@@ -25,8 +25,6 @@ const CTACard: React.FC<CTACardProps> = ({ type, action }) => {
   // const triggerCompoundTx = () => null
   // compound ? triggerCompoundTx : goToDestination
 
-  // gh -> Treasury Bills (banana harvest), Farms (banana harvest - DONE)
-
   return (
     <Flex
       sx={{
