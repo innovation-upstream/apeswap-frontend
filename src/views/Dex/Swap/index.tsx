@@ -7,12 +7,14 @@ import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { computeTradePriceBreakdown } from 'utils/prices'
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'contexts/Localization'
 import track from 'utils/track'
 import { CurrencyAmount, JSBI, Token, Trade } from '@apeswapfinance/sdk'
 import {
   useExpertModeManager,
   useIsModalShown,
+  useModalTimer,
   useUserRecentTransactions,
   useUserSlippageTolerance,
 } from 'state/user/hooks'
@@ -32,10 +34,12 @@ import ExpertModeRecipient from './components/ExpertModeRecipient'
 import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
 import RecentTransactions from '../components/RecentTransactions'
 import { useBananaAddress } from 'hooks/useAddress'
+import { setFPT, setFPT24, setPrompted } from 'state/user/actions'
 
 const Swap: React.FC = () => {
   // modal and loading
   const { buying: showBuyingModal, selling: showSellingModal } = useIsModalShown()
+  const { fPT, fPT24, prompted } = useModalTimer()
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
@@ -51,6 +55,7 @@ const Swap: React.FC = () => {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
 
@@ -228,16 +233,59 @@ const Swap: React.FC = () => {
   )
 
   // TO DO - Implement this statement (when the user selects BANANA as the input token (for the first time in 24 hours)) for when selling Banana (after 24 hours, reset the showModal setting 'selling' redux state to true)
-  // Does this mean, after the user first sells Banana, they will see the modal but then the modal will automatically set itself to hide and reshow itself after 24 hours on the next sell of Banana?
+
+  // The intent of this one is we want to prompt users BEFORE they sell banana, instead of prompting them after a swap, we'll prompt them when they select BANANA is the input token. The first time they select it as an input token in 24 hours, they will get the warning
+  // If they select it twice in a 24 hour timeframe as the input token, we will not show the prompt on the second time around so we don't annoy users
+
+  // Create a redux state (prompted)
+  // prompted is false -> Prompt a user with a sell modal for the first time
+  // get the `firstPromptedTime` and save it to state
+  // we set prompted to true
+
+  // Get the time 24 hrs after the firstPromptedTime
+  // save it to state to fPT24
+
+  // whenever you want to show the modal
+  // check current time ->
+  // if cT > fPT24 -> show modal
+  // else don't show modal
 
   const buyingBanana = outputCurrency === bananaToken
   const sellingBanana = inputCurrency === bananaToken
+  console.log('fPT:::', fPT)
+  console.log('fPT24:::', fPT24)
+  console.log('prompted:::', prompted)
+  const showTimedModal = useCallback(() => {
+    const displaySellCircular = () => showSellingModal && history.push({ search: '?modal=circular-sell' })
+
+    if (prompted && sellingBanana) {
+      console.log('prompted is true and sellingBanana?')
+      const cT = Date.now()
+      if (cT > fPT24) {
+        dispatch(setFPT(cT))
+        sellingBanana && displaySellCircular()
+        const cT24 = cT + 3600000 * 24
+        dispatch(setFPT24(cT24))
+      }
+    } else if (sellingBanana) {
+      console.log('prompted is false && sellingBanana?')
+      const fPT = Date.now()
+      console.log('firstFPT:::', fPT)
+      dispatch(setFPT(fPT))
+
+      displaySellCircular()
+      dispatch(setPrompted(!prompted))
+
+      const fPT24 = fPT + 3600000 * 24
+      dispatch(setFPT24(fPT24))
+    }
+  }, [history, showSellingModal, sellingBanana, fPT24, prompted, dispatch])
+
   useEffect(() => {
     const displayBuyCircular = () => showBuyingModal && txHash && history.push({ search: '?modal=circular-buy' })
-    const displaySellCircular = () => showSellingModal && history.push({ search: '?modal=circular-sell' })
     buyingBanana && displayBuyCircular()
-    sellingBanana && displaySellCircular()
-  }, [history, buyingBanana, showBuyingModal, txHash, showSellingModal, sellingBanana])
+    showTimedModal()
+  }, [history, buyingBanana, showBuyingModal, txHash, showSellingModal, sellingBanana, showTimedModal])
 
   return (
     <Flex sx={dexStyles.pageContainer}>

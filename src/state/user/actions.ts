@@ -70,3 +70,9 @@ export const toggleModal = createAction<{
   actionType: string
   value: boolean
 }>('user/toggleModal')
+
+export const setFPT = createAction<number>('user/setFPT')
+
+export const setFPT24 = createAction<number>('user/setFPT24')
+
+export const setPrompted = createAction<boolean>('user/setPrompted')
