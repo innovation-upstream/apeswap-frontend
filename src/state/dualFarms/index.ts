@@ -81,11 +81,11 @@ export const fetchDualFarmUserDataAsync =
       const arrayOfUserDataObjects = dualFarms.map((dualFarm) => {
         return {
           pid: dualFarm.pid,
-          allowance: userFarmAllowances[dualFarm.pid],
-          tokenBalance: userFarmTokenBalances[dualFarm.pid],
-          stakedBalance: userStakedBalances[dualFarm.pid],
-          miniChefEarnings: miniChefEarnings[dualFarm.pid],
-          rewarderEarnings: rewarderEarnings[dualFarm.pid],
+          allowance: userFarmAllowances.find((item) => item.pid === dualFarm.pid).value,
+          tokenBalance: userFarmTokenBalances.find((item) => item.pid === dualFarm.pid).value,
+          stakedBalance: userStakedBalances.find((item) => item.pid === dualFarm.pid).value,
+          miniChefEarnings: miniChefEarnings.find((item) => item.pid === dualFarm.pid).value,
+          rewarderEarnings: rewarderEarnings.find((item) => item.pid === dualFarm.pid).value,
         }
       })
       dispatch(setDualFarmUserData(arrayOfUserDataObjects))
