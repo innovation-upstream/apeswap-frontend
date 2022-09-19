@@ -1,4 +1,4 @@
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 import { MenuEntry } from '@apeswapfinance/uikit'
 import { NETWORK_INFO_LINK } from 'config/constants/chains'
 import { ContextApi } from '../../../contexts/Localization/types'
@@ -22,7 +22,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Pro Trading'),
         href: 'https://pro.apeswap.finance',
-        isNew: true,
+        isNew: false,
       },
     ],
   },
@@ -34,7 +34,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('ApeStats'),
         href: '/apestats',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Dashboard'),
@@ -52,10 +52,6 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Governance'),
         href: 'https://discuss.apeswap.finance',
-      },
-      {
-        label: t('Education'),
-        href: 'https://www.apelabs.education/',
       },
     ],
   },

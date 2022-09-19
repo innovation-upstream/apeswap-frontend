@@ -1,5 +1,5 @@
 import { MenuEntry } from '@ape.swap/uikit'
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 import { ContextApi } from 'contexts/Localization/types'
 import { NETWORK_INFO_LINK } from 'config/constants/chains'
 
@@ -21,13 +21,13 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Liquidity'),
-        href: '/add-liquidity',
+        href: '/zap',
         isNew: false,
       },
       {
         label: t('Pro Trading'),
         href: 'https://pro.apeswap.finance',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('GNANA'),
@@ -76,11 +76,6 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Official IAO'),
         href: '/iao',
-        isNew: false,
-      },
-      {
-        label: t('Self-Serve IAO'),
-        href: '/ss-iao',
         isNew: false,
       },
     ],
@@ -135,7 +130,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('ApeStats'),
         href: '/apestats',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Dashboard'),
@@ -155,11 +150,6 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Governance'),
         href: 'https://discuss.apeswap.finance',
-        isNew: false,
-      },
-      {
-        label: t('Education'),
-        href: 'https://www.apelabs.education/',
         isNew: false,
       },
     ],

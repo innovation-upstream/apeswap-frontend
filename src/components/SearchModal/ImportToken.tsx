@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { Box } from 'theme-ui'
-import { Token, Currency } from '@apeswapfinance/sdk'
+import { Token, Currency } from '@ape.swap/sdk'
 import { Link, Tag } from '@apeswapfinance/uikit'
 import { Text, Flex, Button, Checkbox, ErrorIcon } from '@ape.swap/uikit'
 import { useAddUserToken } from 'state/user/hooks'
