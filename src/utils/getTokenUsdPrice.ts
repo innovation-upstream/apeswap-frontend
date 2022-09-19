@@ -2,7 +2,7 @@ import { getApePriceGetterAddress, getNativeWrappedAddress, getSmartPriceGetter 
 import apePriceGetterABI from 'config/abi/apePriceGetter.json'
 import { getBalanceNumber } from 'utils/formatBalance'
 import multicall from 'utils/multicall'
-import { Currency, SmartRouter, Token } from '@apeswapfinance/sdk'
+import { Currency, SmartRouter, Token } from '@ape.swap/sdk'
 import store from '../state'
 
 export const getTokenUsdPrice = async (

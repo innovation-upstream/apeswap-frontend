@@ -1,4 +1,4 @@
-import { Currency, Pair, SmartRouter } from '@apeswapfinance/sdk'
+import { Currency, Pair, SmartRouter } from '@ape.swap/sdk'
 import { Field } from 'state/swap/actions'
 import { Field as MintField } from 'state/mint/actions'
 import { Field as BurnField } from 'state/burn/actions'
@@ -21,4 +21,5 @@ export interface DexPanelProps {
   ordersDisabled?: boolean
   independentField?: Field
   disableTokenSelect?: boolean
+  isZapInput?: boolean
 }

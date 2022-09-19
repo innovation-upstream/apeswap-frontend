@@ -5,7 +5,7 @@ import { Flex, Text } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { RouteComponentProps } from 'react-router-dom'
-import { Currency, TokenAmount } from '@apeswapfinance/sdk'
+import { Currency, TokenAmount } from '@ape.swap/sdk'
 import { useSwapState } from 'state/swap/hooks'
 import { useUserRecentTransactions } from 'state/user/hooks'
 import maxAmountSpend from 'utils/maxAmountSpend'
@@ -126,9 +126,6 @@ function AddLiquidity({
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={{ ...dexStyles.dexContainer }}>
           <DexNav />
-          <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
-            <Text weight={700}>ADD LIQUIDITY</Text>
-          </Flex>
           <MyPositions />
           {noLiquidity && (
             <Flex sx={{ ...styles.warningMessageContainer }}>
@@ -142,18 +139,20 @@ function AddLiquidity({
               </Text>
             </Flex>
           )}
-          <DexPanel
-            value={formattedAmounts[Field.CURRENCY_A]}
-            panelText="Token 1"
-            currency={currencyA}
-            otherCurrency={currencyB}
-            setTradeValueUsd={setTradeValueUsd}
-            fieldType={Field.CURRENCY_A}
-            onCurrencySelect={handleCurrencySelect}
-            onUserInput={onUserInput}
-            handleMaxInput={handleMaxInput}
-            showCommonBases
-          />
+          <Flex sx={{ marginTop: '30px' }}>
+            <DexPanel
+              value={formattedAmounts[Field.CURRENCY_A]}
+              panelText="Token 1"
+              currency={currencyA}
+              otherCurrency={currencyB}
+              setTradeValueUsd={setTradeValueUsd}
+              fieldType={Field.CURRENCY_A}
+              onCurrencySelect={handleCurrencySelect}
+              onUserInput={onUserInput}
+              handleMaxInput={handleMaxInput}
+              showCommonBases
+            />
+          </Flex>
           <AddLiquiditySign />
           <DexPanel
             value={formattedAmounts[Field.CURRENCY_B]}
