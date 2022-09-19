@@ -1,7 +1,7 @@
 import { Flex } from '@apeswapfinance/uikit'
 import { BillsArrow } from 'components/Icons'
 import React from 'react'
-import { EarnIcon, TokenContainer } from './styles'
+import { EarnIcon, TokenContainer, TokenWrapper } from './styles'
 
 interface ServiceTokenDisplayProps {
   token1: string
@@ -46,25 +46,39 @@ const ServiceTokenDisplay: React.FC<ServiceTokenDisplayProps> = ({
 
   const LpToken = (
     <Flex alignItems="center">
-      <TokenContainer zIndex={1} srcs={token1Urls} size={size} />
-      <TokenContainer ml={-15} srcs={token2Urls} size={size} />
+      <TokenWrapper size={size} zIndex={5}>
+        <TokenContainer zIndex={1} srcs={token1Urls} size={size} />
+      </TokenWrapper>
+      <TokenWrapper ml={-15} size={size}>
+        <TokenContainer srcs={token2Urls} size={size} />
+      </TokenWrapper>
     </Flex>
   )
 
   const StakeTokenEarnToken = (
     <Flex alignItems="center">
-      <TokenContainer srcs={token1Urls} size={size} />
+      <TokenWrapper>
+        <TokenContainer srcs={token1Urls} size={size} />
+      </TokenWrapper>
       <EarnIcon color={iconFill} />
-      <TokenContainer srcs={token2Urls} size={size} />
+      <TokenWrapper>
+        <TokenContainer srcs={token2Urls} size={size} />
+      </TokenWrapper>
     </Flex>
   )
 
   const StakeLpEarnToken = (
     <Flex alignItems="center">
-      <TokenContainer zIndex={1} srcs={token1Urls} size={size} />
-      <TokenContainer ml={tokensMargin ? tokensMargin : -15} srcs={token2Urls} size={size} />
+      <TokenWrapper zIndex={5}>
+        <TokenContainer srcs={token1Urls} size={size} />
+      </TokenWrapper>
+      <TokenWrapper ml={tokensMargin ? tokensMargin : -15}>
+        <TokenContainer srcs={token2Urls} size={size} />
+      </TokenWrapper>
       {billArrow ? <BillsArrow /> : <EarnIcon color={iconFill} />}
-      <TokenContainer srcs={token3Urls} size={size} />
+      <TokenWrapper>
+        <TokenContainer srcs={token3Urls} size={size} />
+      </TokenWrapper>
     </Flex>
   )
   const StakeLpEarnLp = (
@@ -78,19 +92,33 @@ const ServiceTokenDisplay: React.FC<ServiceTokenDisplayProps> = ({
   )
   const DualEarn = (
     <Flex alignItems="center">
-      <TokenContainer zIndex={1} srcs={token1Urls} size={size} />
-      <TokenContainer ml={tokensMargin ? tokensMargin : -15} srcs={token2Urls} size={size} />
+      <TokenWrapper zIndex={5}>
+        <TokenContainer zIndex={1} srcs={token1Urls} size={size} />
+      </TokenWrapper>
+      <TokenWrapper ml={tokensMargin ? tokensMargin : -15} zIndex={1}>
+        <TokenContainer srcs={token2Urls} size={size} />
+      </TokenWrapper>
       <EarnIcon color={iconFill} />
-      <TokenContainer mt={-20} srcs={token3Urls} size={25} />
-      <TokenContainer mt={20} srcs={token4Urls} size={25} />
+      <TokenWrapper mt={-20} size={25}>
+        <TokenContainer srcs={token3Urls} size={25} />
+      </TokenWrapper>
+      <TokenWrapper mt={18} size={25}>
+        <TokenContainer srcs={token4Urls} size={25} />
+      </TokenWrapper>
     </Flex>
   )
   const StakeTokenEarnLp = (
     <Flex alignItems="center">
-      <TokenContainer srcs={token1Urls} size={size} />
+      <TokenWrapper>
+        <TokenContainer srcs={token1Urls} size={size} />
+      </TokenWrapper>
       <EarnIcon color={iconFill} />
-      <TokenContainer zIndex={1} srcs={token2Urls} size={size} />
-      <TokenContainer ml={tokensMargin ? tokensMargin : -15} srcs={token3Urls} size={size} />
+      <TokenWrapper zIndex={5}>
+        <TokenContainer zIndex={1} srcs={token2Urls} size={size} />
+      </TokenWrapper>
+      <TokenWrapper ml={tokensMargin ? tokensMargin : -15}>
+        <TokenContainer srcs={token3Urls} size={size} />
+      </TokenWrapper>
     </Flex>
   )
   const displayToReturn = () => {
@@ -102,9 +130,9 @@ const ServiceTokenDisplay: React.FC<ServiceTokenDisplayProps> = ({
     }
     if (token1 && !token2 && !token3 && !token4) {
       return (
-        <Flex alignItems="center">
+        <TokenWrapper size={size}>
           <TokenContainer srcs={token1Urls} size={size} />
-        </Flex>
+        </TokenWrapper>
       )
     }
     if (dualEarn) {
