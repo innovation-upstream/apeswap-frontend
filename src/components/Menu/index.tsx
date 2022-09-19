@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Navbar as UikitMenu, useModal } from '@ape.swap/uikit'
 import { ChainId } from '@ape.swap/sdk'
 import { uauth } from 'utils/web3React'
@@ -18,6 +18,7 @@ import { languageList } from '../../config/localization/languages'
 import ethConfig from './chains/ethConfig'
 import iframeConfig from './chains/iframeConfig'
 import MoonPayModal from '../../views/Topup/MoonpayModal'
+import { getSidContract } from 'utils'
 
 const Menu = (props) => {
   let isIframe = false
@@ -54,15 +55,28 @@ const Menu = (props) => {
     return bscConfig(translate)
   }
 
+  // SID TESTING
+  const [sidOwner, setSidOwner] = useState(null)
+  const getSidOwner = useCallback(async () => {
+    const domain = 'bbdrape.bnb'
+    const sid = await getSidContract(chainId)
+    const address = await sid.name(domain).getAddress()
+    const name = await sid.getName(address)
+    setSidOwner({ name, address })
+  }, [chainId])
+  console.log('sidOwner:::', sidOwner)
+
   useEffect(() => {
+    getSidOwner()
     uauth.uauth
       .user()
       .then((user) => setUDName(user.sub))
       .catch(() => null)
-  }, [fastRefresh])
+  }, [fastRefresh, getSidOwner])
 
   return (
     <UikitMenu
+      // sidName={sidName}
       uDName={uDName}
       account={account}
       login={login}

@@ -42,6 +42,7 @@
     "@reduxjs/toolkit": "^1.5.0",
     "@sentry/react": "^7.11.1",
     "@sentry/tracing": "^7.11.1",
+    "@siddomains/sidjs": "0.1.14",
     "@toruslabs/torus-embed": "^1.21.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",

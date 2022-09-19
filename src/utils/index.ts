@@ -1,3 +1,5 @@
+import * as SIDFunctions from '@siddomains/sidjs'
+import { default as SID } from '@siddomains/sidjs'
 import { BigNumber } from '@ethersproject/bignumber'
 import { getAddress } from '@ethersproject/address'
 import { BLOCK_EXPLORER } from 'config/constants/chains'
@@ -19,6 +21,9 @@ import {
 } from '@ape.swap/sdk'
 import { parseAddress, parseSmartAddress } from 'hooks/useAddress'
 import { RouterTypes } from 'config/constants'
+import getProvider from './getProvider'
+import getRpcUrl from './getRpcUrl'
+import Web3 from 'web3'
 
 export { default as formatAddress } from './formatAddress'
 
@@ -127,4 +132,13 @@ export function escapeRegExp(string: string): string {
 export function isTokenOnList(defaultTokens, currency?: Currency): boolean {
   if (currency === ETHER) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
+}
+
+// SID Contract
+export const getSidContract = async (chainId: number) => {
+  const url = getRpcUrl(chainId)
+  const provider = new Web3.providers.HttpProvider(url)
+  const contract = new SID({ provider, sidAddress: SIDFunctions.getSidAddress(chainId) })
+
+  return contract
 }
