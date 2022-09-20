@@ -98,10 +98,10 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
+  usePollBlockNumber()
   useUpdateNetwork()
   useEagerConnect()
   useFetchBananaPrice()
-  usePollBlockNumber()
   useFetchProfile()
   useFetchLiveIfoStatus()
   useFetchLiveTagsAndOrdering()

@@ -7,7 +7,14 @@ import { ChainId, Currency, CurrencyAmount } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from './components/ZapPanel'
 import { Field } from 'state/zap/actions'
-import { useDerivedZapInfo, useSetZapOutputList, useZapActionHandlers, useZapState } from 'state/zap/hooks'
+import {
+  getZapInputList,
+  useDerivedZapInfo,
+  useSetZapInputList,
+  useSetZapOutputList,
+  useZapActionHandlers,
+  useZapState,
+} from 'state/zap/hooks'
 import ZapLiquidityActions from './components/ZapLiquidityActions'
 import { styles } from './styles'
 import { dexStyles } from '../styles'
@@ -27,6 +34,7 @@ function ZapLiquidity({
   },
   history,
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string; currencyIdC: string }>) {
+  useSetZapInputList()
   const { chainId } = useActiveWeb3React()
 
   // This needs to be updated as addresses should not be hardcoded
@@ -54,17 +62,6 @@ function ZapLiquidity({
     zapErrorMessage: undefined,
     txHash: undefined,
   })
-
-  // Set the zap default list
-  // Get default token list and pinned pair tokens and create valid pairs
-  const trackedTokenPairs = useValidTrackedTokenPairs()
-  useSetZapOutputList(
-    useMemo(() => {
-      return trackedTokenPairs?.map(([token1, token2]) => {
-        return { currencyIdA: token1.address, currencyIdB: token2.address }
-      })
-    }, [trackedTokenPairs]),
-  )
 
   const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
 
@@ -207,6 +204,17 @@ function ZapLiquidity({
     onUserInput(Field.INPUT, '')
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [])
+
+  // Set the zap default list
+  // Get default token list and pinned pair tokens and create valid pairs
+  const trackedTokenPairs = useValidTrackedTokenPairs()
+  useSetZapOutputList(
+    useMemo(() => {
+      return trackedTokenPairs?.map(([token1, token2]) => {
+        return { currencyIdA: token1.address, currencyIdB: token2.address }
+      })
+    }, [trackedTokenPairs, chainId]),
+  )
 
   return (
     <Flex sx={dexStyles.pageContainer}>

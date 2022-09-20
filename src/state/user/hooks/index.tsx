@@ -402,6 +402,7 @@ export function usePairAdder(): (pair: Pair) => void {
  * @param tokenB the other token
  * @param smartRouter the router to be used
  */
+
 export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token], smartRouter?: SmartRouter): Token {
   return new Token(
     tokenA.chainId,
@@ -484,9 +485,6 @@ export function useTrackedTokenPairs(): [Token, Token][] {
 export function useValidTrackedTokenPairs(): [Token, Token][] {
   const { chainId } = useActiveWeb3React()
   const tokens = useDefaultTokens()
-
-  // pinned pairs
-  const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 
   // pairs for every token against every base
   const generatedPairs: [Token, Token][] = useMemo(

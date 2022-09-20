@@ -1,7 +1,7 @@
 import { parseUnits } from '@ethersproject/units'
 import { ChainId, Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Zap, ZapType } from '@ape.swap/sdk'
 import { ParsedQs } from 'qs'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import contracts from 'config/constants/contracts'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -18,6 +18,7 @@ import {
   replaceZapState,
   selectInputCurrency,
   selectOutputCurrency,
+  setInputList,
   setRecipient,
   setZapNewOutputList,
   setZapType,
@@ -29,6 +30,8 @@ import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import BigNumber from 'bignumber.js'
+import fetchZapInputTokens from './api'
+import { AppThunk } from 'state/types'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -384,4 +387,24 @@ export const useZapOutputList = (): { currencyA: Token; currencyB: Token }[] => 
     [currencyIds, tokens],
   )
   return filteredTokens
+}
+
+export function useSetZapInputList() {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    const getZapInputList = async () => {
+      const resp: { [symbol: string]: Token } = await fetchZapInputTokens()
+      dispatch(setInputList({ zapInputList: resp }))
+    }
+    getZapInputList()
+  }, [dispatch])
+}
+
+export const getZapInputList = (): AppThunk => async (dispatch) => {
+  try {
+    const resp: { [symbol: string]: Token } = await fetchZapInputTokens()
+    if (resp) dispatch(setInputList({ zapInputList: resp }))
+  } catch (error) {
+    console.error(error)
+  }
 }
