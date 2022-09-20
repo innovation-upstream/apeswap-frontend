@@ -19,8 +19,8 @@ const CircularModal: React.FC<MP> = ({ actionType, description, supporting, chil
 
   return (
     <Flex sx={circular.container}>
-      <Text sx={circular.supporting}>{supporting}</Text>
-      <Text sx={circular.description}>{description}</Text>
+      <Text sx={circular.supporting}>{t(`${supporting}`)}</Text>
+      <Text sx={circular.description}>{t(`${description}`)}</Text>
 
       {children}
 
@@ -35,7 +35,7 @@ const CircularModal: React.FC<MP> = ({ actionType, description, supporting, chil
             )
           }
         >
-          Learn More
+          {t('Learn More')}
         </Button>
         <Flex sx={circular.checkSection}>
           <Flex sx={circular.checkboxParent}>

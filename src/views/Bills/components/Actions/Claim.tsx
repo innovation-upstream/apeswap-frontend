@@ -22,10 +22,9 @@ const Claim: React.FC<ClaimProps> = ({ billAddress, billIds, buttonSize, pending
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const [onPresentGHModal] = useModal(<CircularModal actionType={MODAL_TYPE.GENERAL_HARVEST} />, true, true, 'ghModal')
-
   const { generalHarvest: isGHShown } = useIsModalShown()
-  const displayGHCircular = () => isGHShown && onPresentGHModal()
 
+  const displayGHCircular = () => isGHShown && onPresentGHModal()
   const bananaBill = billType === 'bill'
 
   const handleClaim = async () => {

@@ -1,12 +1,14 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Text, Flex } from '@ape.swap/uikit'
+import { useTranslation } from 'contexts/Localization'
 
 import { CTA_CARD_INFO, CTA_TYPE, MODAL_TYPE } from 'config/constants'
 import { CTACardProps } from './types'
 import { circular } from './styles'
 
 const CTACard: React.FC<CTACardProps> = ({ type, action }) => {
+  const { t } = useTranslation()
   const content = CTA_CARD_INFO[type]
 
   const sellModal = action === MODAL_TYPE.SELLING
@@ -54,8 +56,8 @@ const CTACard: React.FC<CTACardProps> = ({ type, action }) => {
             // textAlign: (((maximizer && phModal) || (pool && (buyModal || ghModal)) || lending) && 'end') || 'start',
           }}
         >
-          <Text sx={circular.ctaTitle}>{content.title.toUpperCase()}</Text>
-          <Text sx={circular.ctaDescription}>{content.description}</Text>
+          <Text sx={circular.ctaTitle}>{t(`${content.title.toUpperCase()}`)}</Text>
+          <Text sx={circular.ctaDescription}>{t(`${content.description}`)}</Text>
         </Flex>
         <Flex
           sx={{

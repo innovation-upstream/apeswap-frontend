@@ -41,8 +41,8 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
               resp.map((trx) => {
                 const trxHash = trx.transactionHash
                 if (trxHash) displayGHCircular()
-                return toastSuccess('Harvest Successful', {
-                  text: 'View Transaction',
+                return toastSuccess(t('Claim Successful'), {
+                  text: t('View Transaction'),
                   url: getEtherscanLink(trxHash, 'transaction', chainId),
                 })
               })

@@ -8,6 +8,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAppDispatch } from 'state'
 import { useIsModalShown } from 'state/user/hooks'
 import { StyledButtonSquare } from './styles'
+import { useTranslation } from 'contexts/Localization'
 
 interface HarvestActionsProps {
   pids: number[]
@@ -21,6 +22,7 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ pids, disabled }) => {
   const { onHarvestAll } = useHarvestAllMaximizer(pids)
   const { toastSuccess } = useToast()
   const history = useHistory()
+  const { t } = useTranslation()
 
   const { generalHarvest: isGHShown } = useIsModalShown()
   const displayGHCircular = () => isGHShown && history.push({ search: '?modal=circular-gh' })
@@ -32,8 +34,8 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ pids, disabled }) => {
         resp.map((trx) => {
           const trxHash = trx.transactionHash
           if (trxHash) displayGHCircular()
-          return toastSuccess('Harvest Successful', {
-            text: 'View Transaction',
+          return toastSuccess(t('Harvest Successful'), {
+            text: t('View Transaction'),
             url: getEtherscanLink(trxHash, 'transaction', chainId),
           })
         })
