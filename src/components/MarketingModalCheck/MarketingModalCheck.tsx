@@ -59,6 +59,20 @@ const MarketingModalCheck = () => {
       pathname: location.pathname,
     })
   }
+  // DO THIS IN THE HANDLER FOR MODAL ON DISMISS
+  // on close of selling modal
+  // -> set fPT
+  // -> set fPT2
+
+  // DO THIS ON CLICK OF DEX SWAP BUTTON
+  // On click of Swap Modal
+  // -> prompted? (was modal shown before?)
+  // if yes -> is cT > fPT2 ?
+  // if yes -> show selling modal again
+  // otherwise -> show Confirm Modal
+  // -> if prompted is false
+  //  -> show selling modal
+  //  -> set prompted true
 
   const lending = [
     <LendingBody1 key="lend1" />,

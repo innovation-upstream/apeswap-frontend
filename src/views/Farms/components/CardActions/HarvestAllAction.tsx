@@ -7,6 +7,8 @@ import { updateFarmUserEarnings } from 'state/farms'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
 import { useIsModalShown } from 'state/user/hooks'
+import { useToast } from 'state/hooks'
+import { getEtherscanLink } from 'utils'
 import { ActionContainer } from './styles'
 
 interface HarvestActionsProps {
@@ -21,6 +23,7 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
   const { onReward } = useAllHarvest(pids, chainId)
   const { t } = useTranslation()
   const history = useHistory()
+  const { toastSuccess } = useToast()
 
   const { generalHarvest: isGHShown } = useIsModalShown()
   const displayGHCircular = () => isGHShown && history.push({ search: '?modal=circular-gh' })
@@ -33,14 +36,24 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
         disabled={disabled || pendingTrx}
         onClick={async () => {
           setPendingTrx(true)
-          await onReward().catch((e) => {
-            console.error(e)
-            setPendingTrx(false)
-          })
+          await onReward()
+            .then((resp) => {
+              resp.map((trx) => {
+                const trxHash = trx.transactionHash
+                if (trxHash) displayGHCircular()
+                return toastSuccess('Harvest Successful', {
+                  text: 'View Transaction',
+                  url: getEtherscanLink(trxHash, 'transaction', chainId),
+                })
+              })
+            })
+            .catch((e) => {
+              console.error(e)
+              setPendingTrx(false)
+            })
           pids.map((pid) => {
             return dispatch(updateFarmUserEarnings(chainId, pid, account))
           })
-          displayGHCircular()
           setPendingTrx(false)
         }}
         endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
