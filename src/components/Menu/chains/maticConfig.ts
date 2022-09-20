@@ -1,5 +1,5 @@
 import { MenuEntry } from '@ape.swap/uikit'
-import { ChainId } from '@apeswapfinance/sdk'
+import { ChainId } from '@ape.swap/sdk'
 import { NETWORK_INFO_LINK } from 'config/constants/chains'
 import { ContextApi } from '../../../contexts/Localization/types'
 
@@ -16,13 +16,13 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Liquidity'),
-        href: '/add-liquidity',
+        href: '/zap',
         isNew: false,
       },
       {
         label: t('Pro Trading'),
         href: 'https://pro.apeswap.finance',
-        isNew: true,
+        isNew: false,
       },
     ],
   },
@@ -44,6 +44,11 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('ApeStats'),
         href: '/apestats',
+        isNew: false,
+      },
+      {
+        label: t('Dashboard'),
+        href: 'protocol-dashboard',
         isNew: true,
       },
       {
@@ -58,12 +63,8 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Governance'),
-        href: 'https://vote.apeswap.finance',
+        href: 'https://discuss.apeswap.finance',
         isNew: false,
-      },
-      {
-        label: t('Education'),
-        href: 'https://www.apelabs.education/',
       },
     ],
   },

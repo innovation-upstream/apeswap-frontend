@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useMemo } from 'react'
-import { currencyEquals, Trade } from '@apeswapfinance/sdk'
+import { currencyEquals, Trade } from '@ape.swap/sdk'
 import { ModalProps } from '@apeswapfinance/uikit'
 import { Flex } from '@ape.swap/uikit'
 import { RouterTypeParams } from 'state/swap/actions'
@@ -97,7 +97,7 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
           onDismiss={onDismiss}
           message={
             swapErrorMessage.includes('INSUFFICIENT_OUTPUT_AMOUNT')
-              ? t('Slippage Error: Please check your slippage & try again!')
+              ? t('Slippage Error: Please check your slippage using the ⚙️ icon & try again!')
               : swapErrorMessage
           }
         />
@@ -107,7 +107,7 @@ const ConfirmSwapModal: React.FC<ModalProps & ConfirmSwapModalProps> = ({
           {modalBottom()}
         </Flex>
       ),
-    [onDismiss, modalBottom, modalHeader, t, swapErrorMessage],
+    [onDismiss, modalBottom, modalHeader, swapErrorMessage, t],
   )
 
   return (
