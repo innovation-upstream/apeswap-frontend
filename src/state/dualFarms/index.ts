@@ -100,7 +100,7 @@ export const updateDualFarmUserAllowances =
     const dualFarms = getState().dualFarms.data
     const allowances = await fetchDualFarmUserAllowances(chainId, account, dualFarms)
     const pidIndex = dualFarms.findIndex((f) => f.pid === pid)
-    dispatch(updateDualFarmUserData({ pid, field: 'allowance', value: allowances[pidIndex] }))
+    dispatch(updateDualFarmUserData({ pid, field: 'allowance', value: allowances[pidIndex].value }))
   }
 
 export const updateDualFarmUserTokenBalances =
@@ -109,7 +109,7 @@ export const updateDualFarmUserTokenBalances =
     const dualFarms = getState().dualFarms.data
     const tokenBalances = await fetchDualFarmUserTokenBalances(chainId, account, dualFarms)
     const pidIndex = dualFarms.findIndex((f) => f.pid === pid)
-    dispatch(updateDualFarmUserData({ pid, field: 'tokenBalance', value: tokenBalances[pidIndex] }))
+    dispatch(updateDualFarmUserData({ pid, field: 'tokenBalance', value: tokenBalances[pidIndex].value }))
   }
 
 export const updateDualFarmUserStakedBalances =
@@ -118,7 +118,7 @@ export const updateDualFarmUserStakedBalances =
     const dualFarms = getState().dualFarms.data
     const stakedBalances = await fetchDualFarmUserStakedBalances(chainId, account, dualFarms)
     const pidIndex = dualFarms.findIndex((f) => f.pid === pid)
-    dispatch(updateDualFarmUserData({ pid, field: 'stakedBalance', value: stakedBalances[pidIndex] }))
+    dispatch(updateDualFarmUserData({ pid, field: 'stakedBalance', value: stakedBalances[pidIndex].value }))
   }
 
 export const updateDualFarmUserEarnings =
@@ -127,7 +127,7 @@ export const updateDualFarmUserEarnings =
     const dualFarms = getState().dualFarms.data
     const pendingRewards = await fetchDualMiniChefEarnings(chainId, account, dualFarms)
     const pidIndex = dualFarms.findIndex((f) => f.pid === pid)
-    dispatch(updateDualFarmUserData({ pid, field: 'miniChefEarnings', value: pendingRewards[pidIndex] }))
+    dispatch(updateDualFarmUserData({ pid, field: 'miniChefEarnings', value: pendingRewards[pidIndex].value }))
   }
 
 export const updateDualFarmRewarderEarnings =
@@ -136,7 +136,7 @@ export const updateDualFarmRewarderEarnings =
     const dualFarms = getState().dualFarms.data
     const rewarderEarnings = await fetchDualFarmRewarderEarnings(chainId, account, dualFarms)
     const pidIndex = dualFarms.findIndex((f) => f.pid === pid)
-    dispatch(updateDualFarmUserData({ pid, field: 'rewarderEarnings', value: rewarderEarnings[pidIndex] }))
+    dispatch(updateDualFarmUserData({ pid, field: 'rewarderEarnings', value: rewarderEarnings[pidIndex].value }))
   }
 
 export default dualFarmsSlice.reducer
