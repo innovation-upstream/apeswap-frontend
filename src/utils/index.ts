@@ -136,9 +136,7 @@ export function isTokenOnList(defaultTokens, currency?: Currency): boolean {
 
 // SID Contract
 export const getSidContract = async (chainId: number) => {
-  const url = getRpcUrl(chainId)
-  const provider = new Web3.providers.HttpProvider(url)
+  const provider = getProvider(chainId)
   const contract = new SID({ provider, sidAddress: SIDFunctions.getSidAddress(chainId) })
-
   return contract
 }

@@ -55,16 +55,21 @@ const Menu = (props) => {
     return bscConfig(translate)
   }
 
+  // Set up SID SDK
+  // sss
+
   // SID TESTING
   const [sidOwner, setSidOwner] = useState(null)
   const getSidOwner = useCallback(async () => {
-    const domain = 'bbdrape.bnb'
     const sid = await getSidContract(chainId)
-    const address = await sid.name(domain).getAddress()
-    const name = await sid.getName(address)
-    setSidOwner({ name, address })
-  }, [chainId])
-  console.log('sidOwner:::', sidOwner)
+    const resolver = await sid.resolver(account)
+    const { address } = resolver
+    const { name } = await sid.getName(account)
+    // const reverseRecordTrx = await sid.setReverseRecord(name)
+
+    setSidOwner({ resolver, address, name })
+    console.log('sidOwner:::', sidOwner)
+  }, [chainId, account, sidOwner])
 
   useEffect(() => {
     getSidOwner()
