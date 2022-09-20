@@ -25,41 +25,44 @@ const CTACard: React.FC<CTACardProps> = ({ type, action }) => {
   // const triggerCompoundTx = () => null
   // compound ? triggerCompoundTx : goToDestination
 
+  // display CTA in order of Left, Right, Left (order, 1, 2, 3)
+  // odd children left and even children right
+
   return (
     <Flex
       sx={{
         ...circular.ctaCard,
         backgroundImage: bannersUrl,
         color: ((pool || compound) && 'brown') || 'primaryBright',
-        '-webkit-transform': ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
-        transform: ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
+        // '-webkit-transform': ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
+        // transform: ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
       }}
       onClick={goToDestination}
     >
       <Flex
         sx={{
           ...circular.ctaContent,
-          flexDirection:
-            (((maximizer && phModal) || (pool && (buyModal || ghModal)) || lending) && 'row') || 'row-reverse',
-          '-webkit-transform': ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
-          transform: ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
+          // flexDirection:
+          //   (((maximizer && phModal) || (pool && (buyModal || ghModal)) || lending) && 'row') || 'row-reverse',
+          // '-webkit-transform': ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
+          // transform: ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
         }}
       >
+        <Flex
+          sx={{
+            flexDirection: 'column',
+            // textAlign: (((maximizer && phModal) || (pool && (buyModal || ghModal)) || lending) && 'end') || 'start',
+          }}
+        >
+          <Text sx={circular.ctaTitle}>{content.title.toUpperCase()}</Text>
+          <Text sx={circular.ctaDescription}>{content.description}</Text>
+        </Flex>
         <Flex
           sx={{
             ...circular.bannerIcon,
             backgroundImage: iconUrl,
           }}
         />
-        <Flex
-          sx={{
-            flexDirection: 'column',
-            textAlign: (((maximizer && phModal) || (pool && (buyModal || ghModal)) || lending) && 'end') || 'start',
-          }}
-        >
-          <Text sx={circular.ctaTitle}>{content.title.toUpperCase()}</Text>
-          <Text sx={circular.ctaDescription}>{content.description}</Text>
-        </Flex>
       </Flex>
     </Flex>
   )

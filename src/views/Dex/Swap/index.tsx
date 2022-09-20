@@ -232,6 +232,13 @@ const Swap: React.FC = () => {
     'swapConfirmModal',
   )
 
+  // click swap with BANANA as inputToken
+  // -> show selling modal
+  // -> user closes selling modal
+  //   -> onDismiss of modal, start a 5 mins timer to not show modal (show Confirm Modal in this case)
+  // -> click swap again
+  // -> show confirm modal
+
   const buyingBanana = outputCurrency === bananaToken
   const sellingBanana = inputCurrency === bananaToken
   const showTimedModal = useCallback(() => {

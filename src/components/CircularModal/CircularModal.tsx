@@ -29,7 +29,10 @@ const CircularModal: React.FC<MP> = ({ actionType, description, supporting, chil
           variant="secondary"
           sx={{ width: ['100%', '188px'] }}
           onClick={() =>
-            window.open('https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/banana', '_blank')
+            window.open(
+              'https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/banana#what-can-i-do-with-banana',
+              '_blank',
+            )
           }
         >
           Learn More
