@@ -309,10 +309,6 @@ const App: React.FC = () => {
               <Route exact strict path="/find" component={PoolFinder} />
               <Route exact strict path="/liquidity" component={Pool} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-              {/* clean these three components before merging */}
-              <Route exact path="/oldAdd" component={AddLiquidity} />
-              <Route exact path="/oldAdd/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/oldAdd/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
 
               <Route exact path="/add/:currencyIdA" component={RedirectRegularLiquidityPathStructure} />
               <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectRegularDuplicateTokenIds} />
@@ -345,9 +341,9 @@ const App: React.FC = () => {
             <Route exact path="/bab-raffle">
               <BabRaffle />
             </Route>
-            <Route exact path="/zapTest">
+            {/*<Route exact path="/zapTest">
               <Zap />
-            </Route>
+            </Route>*/}
             <Route path="/" exact component={Home} />
             <Route path="/banana-farms">
               <Farms />
@@ -418,10 +414,6 @@ const App: React.FC = () => {
             <Route exact strict path="/find" component={PoolFinder} />
             <Route exact strict path="/liquidity" component={Pool} />
             <Route exact strict path="/create" component={RedirectToAddLiquidity} />
-            {/* clean these three components before merging */}
-            <Route exact path="/oldAdd" component={AddLiquidity} />
-            <Route exact path="/oldAdd/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-            <Route exact path="/oldAdd/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
 
             <Route exact path="/add/:currencyIdA" component={RedirectRegularLiquidityPathStructure} />
             <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectRegularDuplicateTokenIds} />
