@@ -313,7 +313,6 @@ export function queryParametersToZapState(parsedQs: ParsedQs, chainId: ChainId):
     zapNewOutputList: null,
     zapOutputList: null,
     zapInputList: null,
-    zapSlippage: null,
   }
 }
 

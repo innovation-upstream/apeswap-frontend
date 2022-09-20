@@ -1,5 +1,7 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Flex, Modal, Text } from '@apeswapfinance/uikit'
+import { Flex, Text } from '@apeswapfinance/uikit'
+import { Modal, ModalProvider } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { Bills } from 'state/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -75,106 +77,108 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
   }
 
   return (
-    <Modal onDismiss={onDismiss} maxWidth="1200px">
-      {billId ? (
-        <UserBillModalView bill={bill} billId={billId} onDismiss={onDismiss} />
-      ) : (
-        <ModalBodyContainer>
-          <StyledExit onClick={onDismiss}>x</StyledExit>
-          <Flex alignItems="center" justifyContent="center">
-            {loading && !billId ? (
-              <BillsImage>
-                <ReactPlayer playing muted loop url="videos/bills-video.mp4" height="100%" width="100%" playsInline />
-              </BillsImage>
-            ) : (
-              <BillsImage image="images/hidden-bill.png" />
-            )}
-          </Flex>
-          <BillDescriptionContainer p="20px 0px" minHeight={450}>
-            <Flex flexDirection="column">
-              <BillTitleContainer>
-                <TopDescriptionText>{billType}</TopDescriptionText>
-                <Flex alignItems="center">
-                  <ServiceTokenDisplay
-                    token1={token.symbol}
-                    token2={quoteToken.symbol}
-                    token3={earnToken.symbol}
-                    billArrow
-                    stakeLp
-                  />
-                  <Flex flexDirection="column">
-                    <StyledHeadingText ml="10px" bold>
-                      {lpToken.symbol}
-                    </StyledHeadingText>
-                    <TopDescriptionText ml="12px">
-                      {t('Vesting Term')}: {`${vestingTime.days}d, ${vestingTime.minutes}h, ${vestingTime.seconds}m`}
-                    </TopDescriptionText>
-                  </Flex>
-                </Flex>
-              </BillTitleContainer>
-              <Flex flexDirection="column" mt={25}>
-                <Flex style={{ width: '250px' }}>
-                  <TopDescriptionText>
-                    {earnToken.symbol} {t('Market Price')}{' '}
-                    <span style={{ textDecoration: 'line-through' }}>${getFirstNonZeroDigits(earnTokenPrice)}</span>
-                  </TopDescriptionText>
-                </Flex>
-                <Flex alignItems="center">
-                  <ServiceTokenDisplay token1={earnToken.symbol} />
-                  <StyledHeadingText ml="10px" bold>
-                    ${getFirstNonZeroDigits(discountEarnTokenPrice)} ({discount}% Discount)
-                  </StyledHeadingText>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Flex flexDirection="column">
-              <ActionButtonsContainer>
-                <Actions
-                  price={price}
-                  token={token}
-                  quoteToken={quoteToken}
-                  lpToken={lpToken}
-                  userLpValue={userData?.stakingTokenBalance}
-                  allowance={userData?.allowance}
-                  billAddress={contractAddress[chainId]}
-                  billIndex={index}
-                  disabled={
-                    billValue === 'NaN' ||
-                    parseFloat(billValue) < 0.01 ||
-                    parseFloat(billValue) > safeAvailable.toNumber()
-                  }
-                  onValueChange={onHandleValueChange}
-                  value={value}
-                  onBillId={onHandleReturnedBillId}
-                  onTransactionSubmited={(trxSent) => setLoading(trxSent)}
-                  lpPrice={lpPrice}
-                />
-              </ActionButtonsContainer>
-              {new BigNumber(userData?.allowance).gt(0) && (
-                <BillValueContainer>
-                  <TextWrapper>
-                    <Text fontSize="14px" pr={1}>
-                      {t('Bill Value')}:{' '}
-                      <span style={{ fontWeight: 700 }}>
-                        {billValue === 'NaN' ? '0' : parseFloat(billValue).toFixed(3)} {earnToken?.symbol}
-                      </span>
-                    </Text>
-                  </TextWrapper>
-                  <TextWrapper>
-                    <Text fontSize="14px">
-                      {t('Available')}:{' '}
-                      <span style={{ fontWeight: 700 }}>
-                        {!available ? '0' : safeAvailable.toFixed(3)} {earnToken?.symbol}
-                      </span>
-                    </Text>
-                  </TextWrapper>
-                </BillValueContainer>
+    <ModalProvider>
+      <Modal onDismiss={onDismiss} maxWidth="1200px" minWidth="350px" zIndex={98}>
+        {billId ? (
+          <UserBillModalView bill={bill} billId={billId} onDismiss={onDismiss} />
+        ) : (
+          <ModalBodyContainer>
+            <StyledExit onClick={onDismiss}>x</StyledExit>
+            <Flex alignItems="center" justifyContent="center">
+              {loading && !billId ? (
+                <BillsImage>
+                  <ReactPlayer playing muted loop url="videos/bills-video.mp4" height="100%" width="100%" playsInline />
+                </BillsImage>
+              ) : (
+                <BillsImage image="images/hidden-bill.png" />
               )}
             </Flex>
-          </BillDescriptionContainer>
-        </ModalBodyContainer>
-      )}
-    </Modal>
+            <BillDescriptionContainer p="20px 0px" minHeight={450}>
+              <Flex flexDirection="column">
+                <BillTitleContainer>
+                  <TopDescriptionText>{billType}</TopDescriptionText>
+                  <Flex alignItems="center">
+                    <ServiceTokenDisplay
+                      token1={token.symbol}
+                      token2={quoteToken.symbol}
+                      token3={earnToken.symbol}
+                      billArrow
+                      stakeLp
+                    />
+                    <Flex flexDirection="column">
+                      <StyledHeadingText ml="10px" bold>
+                        {lpToken.symbol}
+                      </StyledHeadingText>
+                      <TopDescriptionText ml="12px">
+                        {t('Vesting Term')}: {`${vestingTime.days}d, ${vestingTime.minutes}h, ${vestingTime.seconds}m`}
+                      </TopDescriptionText>
+                    </Flex>
+                  </Flex>
+                </BillTitleContainer>
+                <Flex flexDirection="column" mt={25}>
+                  <Flex style={{ width: '250px' }}>
+                    <TopDescriptionText>
+                      {earnToken.symbol} {t('Market Price')}{' '}
+                      <span style={{ textDecoration: 'line-through' }}>${getFirstNonZeroDigits(earnTokenPrice)}</span>
+                    </TopDescriptionText>
+                  </Flex>
+                  <Flex alignItems="center">
+                    <ServiceTokenDisplay token1={earnToken.symbol} />
+                    <StyledHeadingText ml="10px" bold>
+                      ${getFirstNonZeroDigits(discountEarnTokenPrice)} ({discount}% Discount)
+                    </StyledHeadingText>
+                  </Flex>
+                </Flex>
+              </Flex>
+              <Flex flexDirection="column">
+                <ActionButtonsContainer>
+                  <Actions
+                    price={price}
+                    token={token}
+                    quoteToken={quoteToken}
+                    lpToken={lpToken}
+                    userLpValue={userData?.stakingTokenBalance}
+                    allowance={userData?.allowance}
+                    billAddress={contractAddress[chainId]}
+                    billIndex={index}
+                    disabled={
+                      billValue === 'NaN' ||
+                      parseFloat(billValue) < 0.01 ||
+                      parseFloat(billValue) > safeAvailable.toNumber()
+                    }
+                    onValueChange={onHandleValueChange}
+                    value={value}
+                    onBillId={onHandleReturnedBillId}
+                    onTransactionSubmited={(trxSent) => setLoading(trxSent)}
+                    lpPrice={lpPrice}
+                  />
+                </ActionButtonsContainer>
+                {new BigNumber(userData?.allowance).gt(0) && (
+                  <BillValueContainer>
+                    <TextWrapper>
+                      <Text fontSize="14px" pr={1}>
+                        {t('Bill Value')}:{' '}
+                        <span style={{ fontWeight: 700 }}>
+                          {billValue === 'NaN' ? '0' : parseFloat(billValue).toFixed(3)} {earnToken?.symbol}
+                        </span>
+                      </Text>
+                    </TextWrapper>
+                    <TextWrapper>
+                      <Text fontSize="14px">
+                        {t('Available')}:{' '}
+                        <span style={{ fontWeight: 700 }}>
+                          {!available ? '0' : safeAvailable.toFixed(3)} {earnToken?.symbol}
+                        </span>
+                      </Text>
+                    </TextWrapper>
+                  </BillValueContainer>
+                )}
+              </Flex>
+            </BillDescriptionContainer>
+          </ModalBodyContainer>
+        )}
+      </Modal>
+    </ModalProvider>
   )
 }
 

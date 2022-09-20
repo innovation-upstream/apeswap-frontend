@@ -19,7 +19,7 @@ import DexNav from '../components/DexNav'
 import MyPositions from '../components/MyPositions'
 import LiquiditySubNav from '../components/LiquiditySubNav'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useValidTrackedTokenPairs } from 'state/user/hooks'
+import { useUserSlippageTolerance, useValidTrackedTokenPairs } from 'state/user/hooks'
 
 function ZapLiquidity({
   match: {
@@ -66,7 +66,8 @@ function ZapLiquidity({
     }, [trackedTokenPairs]),
   )
 
-  const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
+  const { INPUT, OUTPUT, typedValue, recipient, zapType } = useZapState()
+  const [zapSlippage] = useUserSlippageTolerance(true)
 
   const currencyA = currencyIdA || INPUT.currencyId
   const currencyB = currencyIdB || OUTPUT.currency1
@@ -149,7 +150,7 @@ function ZapLiquidity({
       // if (handleCurrenciesURL) handleCurrenciesURL(Field.OUTPUT, farm.lpAddress)
       onCurrencySelection(Field.OUTPUT, [currencyA, currencyB])
     },
-    [handleCurrenciesURL, onOutputSelect],
+    [handleCurrenciesURL, onCurrencySelection],
   )
 
   const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
