@@ -128,3 +128,9 @@ export function isTokenOnList(defaultTokens, currency?: Currency): boolean {
   if (currency === ETHER) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }
+
+export const getLargestNumber = (numsArray: Array<number>) => {
+  return numsArray.reduce((prevNum, curNum) => {
+    return (curNum > prevNum ? curNum : prevNum) || 0
+  })
+}

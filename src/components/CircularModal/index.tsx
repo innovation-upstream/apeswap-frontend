@@ -14,7 +14,7 @@ const CM: React.FC<CMProps> = ({ actionType, onDismiss }) => {
   const buyingCTA = <CTA actionType={MODAL_TYPE.BUYING} />
 
   return (
-    <Modal zIndex={10} title={MODAL_INFO[actionType]['title']} onDismiss={onDismiss} {...modalProps}>
+    <Modal zIndex={350} title={MODAL_INFO[actionType]['title']} onDismiss={onDismiss} {...modalProps}>
       <CircularModal
         supporting={MODAL_INFO[actionType]['supporting']}
         description={MODAL_INFO[actionType]['description']}

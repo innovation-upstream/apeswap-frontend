@@ -7,13 +7,11 @@ import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { computeTradePriceBreakdown } from 'utils/prices'
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { useTranslation } from 'contexts/Localization'
 import track from 'utils/track'
 import {
   useExpertModeManager,
   useIsModalShown,
-  useModalTimer,
   useUserRecentTransactions,
   useUserSlippageTolerance,
 } from 'state/user/hooks'
@@ -34,12 +32,9 @@ import ExpertModeRecipient from './components/ExpertModeRecipient'
 import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
 import RecentTransactions from '../components/RecentTransactions'
 import { useBananaAddress } from 'hooks/useAddress'
-import { setFPT, setFPT24, setPrompted } from 'state/user/actions'
 
 const Swap: React.FC = () => {
-  // modal and loading
   const { buying: showBuyingModal, selling: showSellingModal } = useIsModalShown()
-  const { fPT24, prompted } = useModalTimer()
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
@@ -55,7 +50,6 @@ const Swap: React.FC = () => {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
   const history = useHistory()
-  const dispatch = useDispatch()
 
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
 
@@ -78,6 +72,8 @@ const Swap: React.FC = () => {
 
   const [inputCurrency, outputCurrency] = [useCurrency(INPUT?.currencyId), useCurrency(OUTPUT?.currencyId)]
   const bananaToken = useCurrency(useBananaAddress())
+  const buyingBanana = outputCurrency === bananaToken
+  const sellingBanana = inputCurrency === bananaToken
 
   const {
     wrapType,
@@ -147,6 +143,7 @@ const Swap: React.FC = () => {
   const { routerType } = bestRoute
 
   const handleSwap = useCallback(() => {
+    const displaySellCircular = () => showSellingModal && history.push({ search: '?modal=circular-sell' })
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
       return
     }
@@ -169,6 +166,7 @@ const Swap: React.FC = () => {
             token2Amount: Number(trade?.outputAmount.toSignificant(6)),
           },
         })
+        if (sellingBanana && hash) displaySellCircular()
       })
       .catch((error) => {
         setSwapState({
@@ -178,7 +176,19 @@ const Swap: React.FC = () => {
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, trade, tradeValueUsd, chainId, t, routerType])
+  }, [
+    priceImpactWithoutFee,
+    swapCallback,
+    tradeToConfirm,
+    trade,
+    tradeValueUsd,
+    chainId,
+    t,
+    routerType,
+    sellingBanana,
+    showSellingModal,
+    history,
+  ])
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -232,43 +242,10 @@ const Swap: React.FC = () => {
     'swapConfirmModal',
   )
 
-  // click swap with BANANA as inputToken
-  // -> show selling modal
-  // -> user closes selling modal
-  //   -> onDismiss of modal, start a 5 mins timer to not show modal (show Confirm Modal in this case)
-  // -> click swap again
-  // -> show confirm modal
-
-  const buyingBanana = outputCurrency === bananaToken
-  const sellingBanana = inputCurrency === bananaToken
-  const showTimedModal = useCallback(() => {
-    const displaySellCircular = () => showSellingModal && history.push({ search: '?modal=circular-sell' })
-
-    if (prompted && sellingBanana) {
-      const cT = Date.now()
-      if (cT > fPT24) {
-        dispatch(setFPT(cT))
-        sellingBanana && displaySellCircular()
-        const cT24 = cT + 3600000 * 24
-        dispatch(setFPT24(cT24))
-      }
-    } else if (sellingBanana) {
-      const fPT = Date.now()
-      dispatch(setFPT(fPT))
-
-      displaySellCircular()
-      dispatch(setPrompted(!prompted))
-
-      const fPT24 = fPT + 3600000 * 24
-      dispatch(setFPT24(fPT24))
-    }
-  }, [history, showSellingModal, sellingBanana, fPT24, prompted, dispatch])
-
   useEffect(() => {
     const displayBuyCircular = () => showBuyingModal && txHash && history.push({ search: '?modal=circular-buy' })
     buyingBanana && displayBuyCircular()
-    showTimedModal()
-  }, [history, buyingBanana, showBuyingModal, txHash, showSellingModal, sellingBanana, showTimedModal])
+  }, [history, buyingBanana, showBuyingModal, txHash])
 
   return (
     <Flex sx={dexStyles.pageContainer}>
@@ -323,6 +300,7 @@ const Swap: React.FC = () => {
             />
           )}
           <DexActions
+            inputCurrency={inputCurrency}
             trade={trade}
             wrapInputError={wrapInputError}
             swapInputError={swapInputError}

@@ -189,12 +189,12 @@ export const MODAL_INFO = {
 export const CTA_CARD_INFO = {
   maximizers: {
     title: 'Maximizers',
-    description: 'Earn up to {X%} APY',
+    description: 'Earn up to ',
     destination: 'https://apeswap.finance/maximizers',
   },
   pools: {
     title: 'Pools',
-    description: 'Earn up to {X%} APR',
+    description: 'Earn up to ',
     destination: 'https://apeswap.finance/pools',
   },
   lending: {
@@ -209,7 +209,7 @@ export const CTA_CARD_INFO = {
   },
   compound: {
     title: 'Compound',
-    description: 'Earn up to {X%} APR',
+    description: 'Earn up to ',
     destination: 'https://apeswap.finance/pools',
   },
 }
