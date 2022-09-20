@@ -71,10 +71,4 @@ export const toggleModal = createAction<{
   value: boolean
 }>('user/toggleModal')
 
-export const setFPT = createAction<number>('user/setFPT')
-
-export const setFPT24 = createAction<number>('user/setFPT24')
-
-export const setPrompted = createAction<boolean>('user/setPrompted')
-
 export const updateUserBonusRouter = createAction<{ userBonusRouterDisabled: boolean }>('user/updateUserBonusRouter')

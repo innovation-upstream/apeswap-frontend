@@ -34,9 +34,6 @@ import {
   setIsExchangeChartDisplayed,
   setUnlimitedGnana,
   toggleModal,
-  setFPT,
-  setFPT24,
-  setPrompted,
   updateUserBonusRouter,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
@@ -101,11 +98,6 @@ export interface UserState {
     poolHarvest: boolean
     generalHarvest: boolean
   }
-  showModalTimer: {
-    fPT: number
-    fPT24: number
-    prompted: boolean
-  }
   userBonusRouterDisabled: boolean
 }
 
@@ -144,11 +136,6 @@ export const initialState: UserState = {
     buying: true,
     poolHarvest: true,
     generalHarvest: true,
-  },
-  showModalTimer: {
-    fPT: null,
-    fPT24: null,
-    prompted: false,
   },
   userBonusRouterDisabled: false,
 }
@@ -297,24 +284,6 @@ export default createReducer(initialState, (builder) =>
       state.showModal = {
         ...state.showModal,
         [payload.actionType]: payload.value,
-      }
-    })
-    .addCase(setFPT, (state, { payload }) => {
-      state.showModalTimer = {
-        ...state.showModalTimer,
-        fPT: payload,
-      }
-    })
-    .addCase(setFPT24, (state, { payload }) => {
-      state.showModalTimer = {
-        ...state.showModalTimer,
-        fPT24: payload,
-      }
-    })
-    .addCase(setPrompted, (state, { payload }) => {
-      state.showModalTimer = {
-        ...state.showModalTimer,
-        prompted: payload,
       }
     })
     .addCase(updateUserBonusRouter, (state, action) => {

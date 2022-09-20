@@ -532,9 +532,3 @@ export const useToggleModal = (actionType: string, value: boolean) => {
 
   return [setToggleModal]
 }
-
-export const useModalTimer = () => {
-  const getModalTimer = useSelector<AppState, AppState['user']['showModalTimer']>((state) => state.user.showModalTimer)
-
-  return { ...getModalTimer }
-}
