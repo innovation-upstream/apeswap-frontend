@@ -4,7 +4,7 @@ import useRefresh from './useRefresh'
 
 export const baseUrl = 'https://api.apeswap.com/api/v1'
 
-export const apiBaseUrl = 'https://apeswap-api-development.herokuapp.com'
+export const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'https://ape-swap-api.herokuapp.com'
 export const moonPayBaseUrl =
   process.env.REACT_APP_MOONPAY_BASE_URL ||
   'https://buy-staging.moonpay.io?apiKey=pk_test_ofxbUiq0BDNvCBwRbO5mHjG7gKBKLWY2&colorCode=%23ffb300'
@@ -13,7 +13,8 @@ export const baseUrlStrapi = 'https://apeswap-strapi.herokuapp.com'
 const EXCHANGE_SUBGRAPH_URL = 'https://graph.apeswap.finance/subgraphs/name/ape-swap/apeswap-subgraph'
 const EXCHANGE_POLYGON_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/apeswapfinance/dex-polygon'
 
-export const apeswapListUrl = 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-lists/feat/polygon-bills/config'
+export const apeswapListUrl =
+  process.env.REACT_APP_LISTS_CONFIG_URL || 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-lists/main/config'
 /* eslint-disable camelcase */
 
 export interface TradePair {
