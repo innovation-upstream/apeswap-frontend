@@ -51,9 +51,6 @@ const ApeZone = lazy(() => import('./views/ApeZone'))
 const Stats = lazy(() => import('./views/Stats'))
 const Auction = lazy(() => import('./views/Auction'))
 const BurningGames = lazy(() => import('./views/BurningGames'))
-const Iazos = lazy(() => import('./views/Iazos'))
-const CreateIazo = lazy(() => import('./views/Iazos/components/CreateIazo'))
-const IazoPage = lazy(() => import('./views/Iazos/components/IazoPage'))
 const AdminPools = lazy(() => import('./views/AdminPools'))
 const Vaults = lazy(() => import('./views/Vaults'))
 const NfaStaking = lazy(() => import('./views/NfaStaking'))
@@ -193,15 +190,6 @@ const App: React.FC = () => {
               <Route path="/apestats">
                 <Stats />
               </Route>
-              <Route exact path="/ss-iao">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/create">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/:id">
-                <Redirect to="/" />
-              </Route>
               {/* SWAP ROUTES */}
               <Route path="/swap" component={Swap} />
               <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
@@ -288,15 +276,6 @@ const App: React.FC = () => {
               <Route path="/gnana">
                 <Redirect to="/" />
               </Route>
-              <Route exact path="/ss-iao">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/create">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/:id">
-                <Redirect to="/" />
-              </Route>
               {/* SWAP ROUTES */}
               <Route path="/swap" component={Swap} />
               <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
@@ -359,15 +338,6 @@ const App: React.FC = () => {
             </Route>
             <Route path="/auction">
               <Auction />
-            </Route>
-            <Route exact path="/ss-iao">
-              <Iazos />
-            </Route>
-            <Route path="/ss-iao/create">
-              <CreateIazo />
-            </Route>
-            <Route path="/ss-iao/:id">
-              <IazoPage />
             </Route>
             <Route exact path="/nft">
               <Nft />

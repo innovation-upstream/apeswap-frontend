@@ -51,14 +51,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
     [onCurrencySelection],
   )
 
-  const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
-    zap,
-    zapType,
-    zapSlippage,
-    recipient,
-    '',
-    null,
-  )
+  const { callback: zapCallback } = useZapCallback(zap, zapType, zapSlippage, recipient, '', null)
 
   const handleZap = useCallback(() => {
     setZapErrorMessage(null)
