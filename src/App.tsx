@@ -59,8 +59,6 @@ const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 const ZapLiquidityWrapper = lazy(() => import('./views/Dex/AddLiquidity/ZapLiquidityWrapper'))
 const RegularLiquidityWrapper = lazy(() => import('./views/Dex/AddLiquidity/RegularLiquidityWrapper'))
-// Test zap state
-const Zap = lazy(() => import('./views/ZapTest'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
