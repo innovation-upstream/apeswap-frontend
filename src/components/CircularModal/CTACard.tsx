@@ -1,47 +1,24 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Text, Flex } from '@ape.swap/uikit'
-import { useWeb3React } from '@web3-react/core'
 
 import { useTranslation } from 'contexts/Localization'
-import { useVaults } from 'state/vaults/hooks'
-import { Vault, Pool } from 'state/types'
-import { usePools } from 'state/pools/hooks'
 import { getLargestNumber } from 'utils'
 import { CTA_CARD_INFO, CTA_TYPE, MODAL_TYPE } from 'config/constants'
 import { CTACardProps } from './types'
 import { circular } from './styles'
-import { PoolCategory } from 'config/constants/types'
-import useBlockNumber from 'lib/hooks/useBlockNumber'
-import { partition } from 'lodash'
 
-const CTACard: React.FC<CTACardProps> = ({ type, action }) => {
-  const { account } = useWeb3React()
+const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
   const { t } = useTranslation()
-  const currentBlock = useBlockNumber()
-  const { vaults } = useVaults()
-  const allPools = usePools(account)
-  console.log('vaults:::', vaults)
-  console.log('allPools:::', allPools)
 
-  const [, activeVaults] = partition(vaults, (vault) => vault.inactive)
-  const vaultsWithAPY = activeVaults.map((vault) => vault?.apy?.yearly)
+  // ACTIVE VAULTS
+  const vaultsWithAPY = data?.vaults.map((vault) => vault?.apy?.yearly)
   const vAPY = vaultsWithAPY.length > 0 && getLargestNumber(vaultsWithAPY)
 
-  // ISSUE vaults only load when you're inside maximizers page
-  // ISSUE pools only load when you're inside pools page
-  // MAYBE MOVE vaults and pools CALL TO MAIN CIRCULAR MODAL AND REMOVE FROM CTA CARD
-
-  // remove unwanted pools first like adminPools
-  // filter based on openPools
-  const allNonAdminPools = allPools.filter((pool) => !pool.forAdmins && pool?.poolCategory !== PoolCategory.JUNGLE)
-  const curPools = allNonAdminPools.map((pool) => {
-    return { ...pool, isFinished: pool.sousId === 0 ? false : pool.isFinished || currentBlock > pool.endBlock }
-  })
-  const [, openPools] = partition(curPools, (pool) => pool.isFinished)
-  const poolsWithAPR = openPools.map((pool) => pool?.apr)
+  // OPEN POOLS
+  const poolsWithAPR = data?.pools.map((pool) => pool?.apr)
   const pAPR = poolsWithAPR.length > 0 && getLargestNumber(poolsWithAPR)
-  const cAPR = openPools[0]?.apr
+  const cAPR = data?.pools[0]?.apr
 
   const content = CTA_CARD_INFO[type]
   const sellModal = action === MODAL_TYPE.SELLING
@@ -58,8 +35,6 @@ const CTACard: React.FC<CTACardProps> = ({ type, action }) => {
   const goToDestination = () => window.open(content.destination, '_blank')
 
   // TO DO - GET THESE DATA AND DISPLAY
-  let ccAPR
-  let ppAPR
   const maxAPY = `${(vAPY && vAPY.toFixed(2)) || '0.00'}% APY`
   const poolAPR = `${(pAPR && pAPR.toFixed(2)) || '0.00'}% APR`
   const compoundAPR = `${(cAPR && cAPR.toFixed(2)) || '0.00'}% APR`
@@ -71,33 +46,32 @@ const CTACard: React.FC<CTACardProps> = ({ type, action }) => {
   // const triggerCompoundTx = () => null
   // compound ? triggerCompoundTx : goToDestination
 
-  // display CTA in order of Left, Right, Left (order, 1, 2, 3)
-  // odd children left and even children right
-
   return (
     <Flex
       sx={{
         ...circular.ctaCard,
         backgroundImage: bannersUrl,
         color: ((pool || compound) && 'brown') || 'primaryBright',
-        // '-webkit-transform': ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
-        // transform: ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
+        '-webkit-transform': (compound || (maximizer && phModal)) && 'scaleX(-1)',
+        transform: (compound || (maximizer && phModal)) && 'scaleX(-1)',
+        ':hover': {
+          cursor: 'pointer',
+        },
       }}
       onClick={goToDestination}
     >
       <Flex
         sx={{
           ...circular.ctaContent,
-          // flexDirection:
-          //   (((maximizer && phModal) || (pool && (buyModal || ghModal)) || lending) && 'row') || 'row-reverse',
-          // '-webkit-transform': ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
-          // transform: ((pool && sellModal) || (compound && phModal) || (maximizer && phModal)) && 'scaleX(-1)',
+          '-webkit-transform': (pool || compound) && 'scaleX(-1)',
+          transform: (pool || compound) && 'scaleX(-1)',
         }}
       >
         <Flex
           sx={{
             flexDirection: 'column',
-            // textAlign: (((maximizer && phModal) || (pool && (buyModal || ghModal)) || lending) && 'end') || 'start',
+            '-webkit-transform': ((maximizer && phModal) || pool) && 'scaleX(-1)',
+            textAlign: ((maximizer && phModal) || pool) && 'end',
           }}
         >
           <Text sx={circular.ctaTitle}>{t(`${content.title.toUpperCase()}`)}</Text>
@@ -107,6 +81,8 @@ const CTACard: React.FC<CTACardProps> = ({ type, action }) => {
           sx={{
             ...circular.bannerIcon,
             backgroundImage: iconUrl,
+            '-webkit-transform': lending && 'scaleX(-1)',
+            transform: lending && 'scaleX(-1)',
           }}
         />
       </Flex>
