@@ -54,4 +54,3 @@ export const setZapNewOutputList = createAction<{ zapNewOutputList: { currencyId
   'zap/setZapNewOutputList',
 )
 export const setZapOutputList = createAction<{ zapOutputList: ParsedFarm[]; chainId: ChainId }>('zap/setOutputList')
-export const setZapSlippage = createAction<{ zapSlippage: number }>('zap/setZapSlippage')

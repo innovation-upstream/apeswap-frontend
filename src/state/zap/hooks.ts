@@ -1,16 +1,14 @@
 import { parseUnits } from '@ethersproject/units'
-import { ChainId, Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Zap, ZapType } from '@ape.swap/sdk'
-import { ParsedQs } from 'qs'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Zap, ZapType } from '@ape.swap/sdk'
+import { useCallback, useEffect, useMemo } from 'react'
 import contracts from 'config/constants/contracts'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useENS from 'hooks/ENS/useENS'
 import { useCurrency, useDefaultTokens } from 'hooks/Tokens'
 import { mergeBestZaps, useTradeExactIn } from 'hooks/Zap/Zap'
-import useParsedQueryString from 'hooks/useParsedQueryString'
 import { isAddress } from 'utils'
-import { AppDispatch, AppState, useAppDispatch } from '../index'
+import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import {
   Field,
@@ -24,14 +22,12 @@ import {
   setZapType,
   typeInput,
 } from './actions'
-import { ZapState } from './reducer'
-import { useUserSlippageTolerance } from '../user/hooks'
+import { useUserSlippageTolerance, useValidTrackedTokenPairs } from '../user/hooks'
 import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import BigNumber from 'bignumber.js'
 import fetchZapInputTokens from './api'
-import { AppThunk } from 'state/types'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -253,126 +249,49 @@ export function useDerivedZapInfo(
   }
 }
 
-function parseCurrencyFromURLParameter(urlParam: any): string {
-  if (typeof urlParam === 'string') {
-    const valid = isAddress(urlParam)
-    if (valid) return valid
-    if (urlParam.toUpperCase() === 'ETH') return 'ETH'
-    if (valid === false) return 'ETH'
-  }
-  return 'ETH' ?? ''
-}
-
-function parseTokenAmountURLParameter(urlParam: any): string {
-  // eslint-disable-next-line no-restricted-globals
-  return typeof urlParam === 'string' && !isNaN(parseFloat(urlParam)) ? urlParam : ''
-}
-
-function parseIndependentFieldURLParameter(urlParam: any): Field {
-  return typeof urlParam === 'string' && urlParam.toLowerCase() === 'output' ? Field.OUTPUT : Field.INPUT
-}
-
-const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?$/
-const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
-
-function validatedRecipient(recipient: any): string | null {
-  if (typeof recipient !== 'string') return null
-  const address = isAddress(recipient)
-  if (address) return address
-  if (ENS_NAME_REGEX.test(recipient)) return recipient
-  if (ADDRESS_REGEX.test(recipient)) return recipient
-  return null
-}
-
-export function queryParametersToZapState(parsedQs: ParsedQs, chainId: ChainId): ZapState {
-  let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
-  let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
-
-  const chainAddress = contracts.banana[chainId]
-
-  if (inputCurrency === outputCurrency) {
-    if (typeof parsedQs.outputCurrency === 'string') {
-      inputCurrency = ''
-    } else {
-      outputCurrency = chainAddress
-    }
-  }
-
-  const recipient = validatedRecipient(parsedQs.recipient)
-
-  return {
-    [Field.INPUT]: {
-      currencyId: inputCurrency,
-    },
-    [Field.OUTPUT]: {
-      currency1: '',
-      currency2: '',
-    },
-    shareOfPool: '',
-    typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
-    independentField: parseIndependentFieldURLParameter(parsedQs.exactField),
-    zapType: ZapType.ZAP,
-    recipient,
-    zapNewOutputList: null,
-    zapOutputList: null,
-    zapInputList: null,
-    zapSlippage: null,
-  }
-}
-
-// updates the swap state to use the defaults for a given network
-export function useDefaultsFromURLSearch():
-  | {
-      inputCurrencyId: string | undefined
-      outputCurrencies: { currency1: string | undefined; currency2: string | undefined }
-    }
-  | undefined {
+// Set default currencies for zap state
+export function useDefaultCurrencies() {
   const { chainId } = useActiveWeb3React()
-  const dispatch = useDispatch<AppDispatch>()
-  const parsedQs = useParsedQueryString()
-  const [result, setResult] = useState<
-    | {
-        inputCurrencyId: string | undefined
-        outputCurrencies: { currency1: string | undefined; currency2: string | undefined }
-      }
-    | undefined
-  >()
-
+  const dispatch = useAppDispatch()
   useEffect(() => {
-    if (!chainId) return
-    const parsed = queryParametersToZapState(parsedQs, chainId)
-
+    const outputCurrencies = { currency1: 'ETH', currency2: contracts.banana[chainId] }
+    const inputCurrency = 'ETH'
     dispatch(
       replaceZapState({
-        typedValue: parsed.typedValue,
-        field: parsed.independentField,
-        inputCurrencyId: parsed[Field.INPUT].currencyId,
-        outputCurrencyId: parsed[Field.OUTPUT],
-        recipient: parsed.recipient,
-        zapType: parsed.zapType,
+        typedValue: '',
+        field: '',
+        inputCurrencyId: inputCurrency,
+        outputCurrencyId: outputCurrencies,
+        recipient: '',
+        zapType: ZapType.ZAP,
       }),
     )
-
-    setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencies: parsed[Field.OUTPUT] })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, chainId])
-
-  return result
-}
-
-export function useZapInputList(): { [address: string]: Token } {
-  const { zapInputList } = useZapState()
-  if (!zapInputList) return
-  return zapInputList
 }
 
 // Set zap output list. Keep this pretty simple to allow multiple products to use it
+// This will be mostly used by products rather than the dex
 export function useSetZapOutputList(currencyIds: { currencyIdA: string; currencyIdB: string }[]) {
   const dispatch = useAppDispatch()
   /* eslint-disable react-hooks/exhaustive-deps */
   useMemo(() => dispatch(setZapNewOutputList({ zapNewOutputList: currencyIds })), [currencyIds.length, dispatch])
 }
 
+// Hook to set the dex output list.
+// Since we want to use multiple token pairs that exists this hook is a bit more involved than the simple setOutputList
+export function useSetZapDexOutputList() {
+  // Get default token list and pinned pair tokens and create valid pairs
+  const trackedTokenPairs = useValidTrackedTokenPairs()
+  useSetZapOutputList(
+    useMemo(() => {
+      return trackedTokenPairs?.map(([token1, token2]) => {
+        return { currencyIdA: token1.address, currencyIdB: token2.address }
+      })
+    }, [trackedTokenPairs]),
+  )
+}
+
+// Hook to return the output token list to be used in the search modal
 export const useZapOutputList = (): { currencyA: Token; currencyB: Token }[] => {
   const { zapNewOutputList: currencyIds } = useZapState()
   const tokens = useDefaultTokens()
@@ -389,6 +308,7 @@ export const useZapOutputList = (): { currencyA: Token; currencyB: Token }[] => 
   return filteredTokens
 }
 
+// Hook to set the zap input list
 export function useSetZapInputList() {
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -400,11 +320,9 @@ export function useSetZapInputList() {
   }, [dispatch])
 }
 
-export const getZapInputList = (): AppThunk => async (dispatch) => {
-  try {
-    const resp: { [symbol: string]: Token } = await fetchZapInputTokens()
-    if (resp) dispatch(setInputList({ zapInputList: resp }))
-  } catch (error) {
-    console.error(error)
-  }
+// Hook to use the input list
+export function useZapInputList(): { [address: string]: Token } {
+  const { zapInputList } = useZapState()
+  if (!zapInputList) return
+  return zapInputList
 }

@@ -36,9 +36,9 @@ import {
   updateUserAutonomyPrepay,
   setUnlimitedGnana,
   updateUserBonusRouter,
+  setZapSlippage,
 } from '../actions'
 import { deserializeToken, serializeToken } from './helpers'
-import { setZapSlippage } from '../../zap/actions'
 import { PairState, usePairs } from 'hooks/usePairs'
 
 export function useAudioModeManager(): [boolean, () => void] {
@@ -180,8 +180,8 @@ export function useUserRecentTransactions(): [boolean, (recentTransaction: boole
 export function useUserSlippageTolerance(isZap?: boolean): [number, (slippage: number) => void] {
   const dispatch = useDispatch<AppDispatch>()
 
-  const zapSlippageTolerance = useSelector<AppState, AppState['zap']['zapSlippage']>((state) => {
-    return state.zap.zapSlippage
+  const zapSlippageTolerance = useSelector<AppState, AppState['user']['userZapSlippage']>((state) => {
+    return state.user.userZapSlippage
   })
   const setZapSlippageTolerance = useCallback(
     (slippage: number) => {

@@ -1,17 +1,17 @@
 /** @jsxImportSource theme-ui */
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { useCurrency } from 'hooks/Tokens'
-import { ChainId, Currency, CurrencyAmount } from '@ape.swap/sdk'
+import { Currency, CurrencyAmount } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from './components/ZapPanel'
 import { Field } from 'state/zap/actions'
 import {
-  getZapInputList,
+  useDefaultCurrencies,
   useDerivedZapInfo,
+  useSetZapDexOutputList,
   useSetZapInputList,
-  useSetZapOutputList,
   useZapActionHandlers,
   useZapState,
 } from 'state/zap/hooks'
@@ -20,41 +20,20 @@ import { styles } from './styles'
 import { dexStyles } from '../styles'
 import { useZapCallback } from 'hooks/useZapCallback'
 import DistributionPanel from './components/DistributionPanel/DistributionPanel'
-import { currencyId } from 'utils/currencyId'
 import { RouteComponentProps } from 'react-router-dom'
 import DexNav from '../components/DexNav'
 import MyPositions from '../components/MyPositions'
 import LiquiditySubNav from '../components/LiquiditySubNav'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useValidTrackedTokenPairs } from 'state/user/hooks'
+import { useUserSlippageTolerance } from 'state/user/hooks'
 
 function ZapLiquidity({
   match: {
     params: { currencyIdA, currencyIdB, currencyIdC },
   },
-  history,
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string; currencyIdC: string }>) {
   useSetZapInputList()
-  const { chainId } = useActiveWeb3React()
+  useDefaultCurrencies()
 
-  // This needs to be updated as addresses should not be hardcoded
-  useEffect(() => {
-    // set default values if there are no URL params
-    if (!currencyIdA || !currencyIdB) {
-      onOutputSelect(
-        chainId === ChainId.BSC
-          ? {
-              currency1: '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95',
-              currency2: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
-            }
-          : {
-              currency1: '0x5d47baba0d66083c52009271faf3f50dcc01023c',
-              currency2: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-            },
-      )
-    }
-    /* eslint-disable react-hooks/exhaustive-deps */
-  }, [chainId])
   const [{ zapErrorMessage, txHash }, setZapState] = useState<{
     zapErrorMessage: string | undefined
     txHash: string | undefined
@@ -63,7 +42,8 @@ function ZapLiquidity({
     txHash: undefined,
   })
 
-  const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
+  const { INPUT, OUTPUT, typedValue, recipient, zapType } = useZapState()
+  const [zapSlippage] = useUserSlippageTolerance(true)
 
   const currencyA = currencyIdA || INPUT.currencyId
   const currencyB = currencyIdB || OUTPUT.currency1
@@ -77,76 +57,13 @@ function ZapLiquidity({
     inputError: zapInputError,
     currencyBalances,
   } = useDerivedZapInfo(typedValue, inputCurrency, outputCurrency, recipient)
-  const { onUserInput, onInputSelect, onOutputSelect, onCurrencySelection } = useZapActionHandlers()
+  const { onUserInput, onCurrencySelection } = useZapActionHandlers()
 
-  // TODO: handle url params on selection
-  // // Handle currency selection
-  // const handleCurrencySelect = useCallback(
-  //     (field: Field, currency: Currency) => {
-  //       const newCurrencyId = currencyId(currency)
-  //       if (field === Field.CURRENCY_A) {
-  //         if (newCurrencyId === currencyIdB) {
-  //           history.push(`/add-liquidity/${currencyIdB}/${currencyIdA}`)
-  //         } else if (currencyIdB) {
-  //           history.push(`/add-liquidity/${newCurrencyId}/${currencyIdB}`)
-  //         } else {
-  //           history.push(`/add-liquidity/${newCurrencyId}`)
-  //         }
-  //       } else if (field === Field.CURRENCY_B) {
-  //         if (newCurrencyId === currencyIdA) {
-  //           if (currencyIdB) {
-  //             history.push(`/add-liquidity/${currencyIdB}/${newCurrencyId}`)
-  //           } else {
-  //             history.push(`/add-liquidity/${newCurrencyId}`)
-  //           }
-  //         } else {
-  //           history.push(`/add-liquidity/${currencyIdA || 'ETH'}/${newCurrencyId}`)
-  //         }
-  //       }
-  //     },
-  //     [currencyIdA, history, currencyIdB],
-  //   )
-
-  const handleCurrenciesURL = useCallback(
-    (field: Field, currency: string) => {
-      const newCurrencyId = currency
-      if (field === Field.INPUT) {
-        if (newCurrencyId === currencyIdB) {
-          history.push(`/zap/${currencyIdB}/${currencyIdA}/${currencyIdC}`)
-        } else if (currencyIdB) {
-          history.push(`/zap/${newCurrencyId}/${currencyIdB}/${currencyIdC}`)
-        } else {
-          history.push(`/zap/${newCurrencyId}`)
-        }
-      } else if (field === Field.OUTPUT) {
-        if (newCurrencyId === currencyIdA) {
-          if (currencyIdB) {
-            history.push(`/zap/${currencyIdB}/${newCurrencyId}/${currencyIdC}}`)
-          } else {
-            history.push(`/zap/${newCurrencyId}`)
-          }
-        } else {
-          history.push(`/zap/${currencyIdA || 'ETH'}/${newCurrencyId}/${currencyIdC}`)
-        }
-      }
+  const handleCurrencySelect = useCallback(
+    (field: Field, currency: Currency[]) => {
+      onCurrencySelection(field, currency)
     },
-    [currencyIdA, history, currencyIdB],
-  )
-  const handleInputSelect = useCallback(
-    (field: Field, currency: Currency) => {
-      const currencyAddress = currencyId(currency)
-      if (handleCurrenciesURL) handleCurrenciesURL(field, currencyAddress)
-      onInputSelect(field, currency)
-    },
-    [handleCurrenciesURL, onInputSelect],
-  )
-
-  const handleOutputSelect = useCallback(
-    (currencyA: Currency, currencyB: Currency) => {
-      // if (handleCurrenciesURL) handleCurrenciesURL(Field.OUTPUT, farm.lpAddress)
-      onCurrencySelection(Field.OUTPUT, [currencyA, currencyB])
-    },
-    [handleCurrenciesURL, onOutputSelect],
+    [onCurrencySelection],
   )
 
   const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
@@ -204,17 +121,7 @@ function ZapLiquidity({
     onUserInput(Field.INPUT, '')
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [])
-
-  // Set the zap default list
-  // Get default token list and pinned pair tokens and create valid pairs
-  const trackedTokenPairs = useValidTrackedTokenPairs()
-  useSetZapOutputList(
-    useMemo(() => {
-      return trackedTokenPairs?.map(([token1, token2]) => {
-        return { currencyIdA: token1.address, currencyIdB: token2.address }
-      })
-    }, [trackedTokenPairs, chainId]),
-  )
+  useSetZapDexOutputList()
 
   return (
     <Flex sx={dexStyles.pageContainer}>
@@ -230,7 +137,7 @@ function ZapLiquidity({
               currency={inputCurrency}
               otherCurrency={null}
               fieldType={Field.INPUT}
-              onCurrencySelect={handleInputSelect}
+              onCurrencySelect={(field, currency) => handleCurrencySelect(field, [currency])}
               onUserInput={onUserInput}
               handleMaxInput={handleMaxInput}
               isZapInput
@@ -240,7 +147,7 @@ function ZapLiquidity({
             </Flex>
             <ZapPanel
               value={zap?.pairOut?.liquidityMinted?.toSignificant(10) || '0.0'}
-              onSelect={handleOutputSelect}
+              onSelect={(currency0, currency1) => handleCurrencySelect(Field.OUTPUT, [currency0, currency1])}
               lpPair={zap.pairOut.pair}
             />
             {typedValue && parseFloat(typedValue) > 0 && zap?.pairOut?.liquidityMinted && (

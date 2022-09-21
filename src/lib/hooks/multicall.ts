@@ -1,6 +1,5 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import multicall from 'lib/state/multicall'
-import { useBlock } from 'state/block/hooks'
 import { SkipFirst } from 'types/tuple'
 import useBlockNumber from './useBlockNumber'
 

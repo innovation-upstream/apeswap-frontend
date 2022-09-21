@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { MergedZap } from 'state/zap/actions'
 import DetailsPanel from './DetailsPanel'
 import ConvertionPanel from './ConvertionPanel'
+import { ExpandedContainer } from './styles'
 
 interface DistributionPanelProps {
   zap: MergedZap
@@ -31,10 +32,10 @@ const DistributionPanel: React.FC<DistributionPanelProps> = ({ zap }) => {
         <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="10px" />
       </Flex>
       {expanded && (
-        <Flex sx={{ flexDirection: 'column', marginTop: '20px' }}>
+        <ExpandedContainer>
           <ConvertionPanel zap={zap} />
           <DetailsPanel zap={zap} />
-        </Flex>
+        </ExpandedContainer>
       )}
     </Flex>
   )

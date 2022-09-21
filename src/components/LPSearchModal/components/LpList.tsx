@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback } from 'react'
-import { ParsedFarm } from 'state/zap/reducer'
 import styled from 'styled-components'
 import { FixedSizeList } from 'react-window'
 import LpRow from './LPRow'

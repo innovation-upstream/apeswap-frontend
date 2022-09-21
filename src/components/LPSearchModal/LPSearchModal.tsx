@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 import { Flex, Modal } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import LPSearcher from './LPSearcher'
-import { ParsedFarm } from 'state/zap/reducer'
 import { Token } from '@ape.swap/sdk'
 
 interface LPSearchModalProps {

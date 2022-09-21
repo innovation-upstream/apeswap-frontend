@@ -17,12 +17,14 @@ import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
+import PoolFinder from './views/Dex/PoolFinder'
+import ResetScroll from './utils/resetScroll'
+// Most used routes get loaded directly
 import Pool from './views/Dex/Pool'
 import Swap from './views/Dex/Swap'
 import AddLiquidity from './views/Dex/AddLiquidity'
+import Zap from './views/Dex/Zap'
 import RemoveLiquidity from './views/Dex/RemoveLiquidity'
-import PoolFinder from './views/Dex/PoolFinder'
-import ResetScroll from './utils/resetScroll'
 
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -60,9 +62,8 @@ const Orders = lazy(() => import('./views/Dex/Orders'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
-const Zap = lazy(() => import('./views/Dex/Zap'))
-
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
+
 const RedirectPathToSwapOnly = lazy(async () =>
   redirectSwap().then((r) => ({
     default: r.RedirectPathToSwapOnly,
@@ -215,6 +216,9 @@ const App: React.FC = () => {
               <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+              <Route path="/zap">
+                <Redirect to={'/add-liquidity'} />
+              </Route>
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
             </Switch>
@@ -308,8 +312,8 @@ const App: React.FC = () => {
               <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
               <Route exact path="/zap" component={Zap} />
-              <Route exact path="/zap/:currencyIdA" component={Zap} />
-              <Route exact path="/zap/:currencyIdA/:currencyIdB" component={Zap} />
+              <Route exact strict path="/zap/:currencyIdA" component={Zap} />
+              <Route exact strict path="/zap/:currencyIdA/:currencyIdB/:currencyIdC" component={Zap} />
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
             </Switch>
@@ -414,8 +418,8 @@ const App: React.FC = () => {
             <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
             <Route exact path="/zap" component={Zap} />
-            <Route exact path="/zap/:currencyIdA" component={Zap} />
-            <Route exact path="/zap/:currencyIdA/:currencyIdB" component={Zap} />
+            <Route exact strict path="/zap/:currencyIdA" component={Zap} />
+            <Route exact strict path="/zap/:currencyIdA/:currencyIdB/:currencyIdC" component={Zap} />
             {/* SWAP ROUTES */}
             <Route component={NotFound} />
           </Switch>

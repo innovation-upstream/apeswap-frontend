@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { useCurrency } from 'hooks/Tokens'
-import { Currency, CurrencyAmount } from '@ape.swap/sdk'
+import { Currency, CurrencyAmount, Pair } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from 'views/Dex/Zap/components/ZapPanel'
 import { Field } from 'state/zap/actions'
@@ -11,28 +11,21 @@ import ZapLiquidityActions from 'views/Dex/Zap/components/ZapLiquidityActions'
 import { styles } from './styles'
 import { useZapCallback } from 'hooks/useZapCallback'
 import DistributionPanel from 'views/Dex/Zap/components/DistributionPanel/DistributionPanel'
-import { currencyId } from '../../utils/currencyId'
+import { useUserSlippageTolerance } from '../../state/user/hooks'
 
 interface ZapLiquidityProps {
-  currencyIdA?: string
-  currencyIdB?: { currency1: string; currency2: string }
-  handleCurrenciesURL?: (Field, currencyAddress: string) => void
+  handleConfirmedTx: (hash: string, pairOut: Pair) => void
 }
 
-const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, handleCurrenciesURL }) => {
+const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
   useSetZapInputList()
-  const [{ zapErrorMessage, txHash }, setZapState] = useState<{
-    zapErrorMessage: string | undefined
-    txHash: string | undefined
-  }>({
-    zapErrorMessage: undefined,
-    txHash: undefined,
-  })
+  const [zapErrorMessage, setZapErrorMessage] = useState<string>(null)
 
-  const { INPUT, OUTPUT, typedValue, recipient, zapType, zapSlippage } = useZapState()
+  const { INPUT, OUTPUT, typedValue, recipient, zapType } = useZapState()
+  const [zapSlippage] = useUserSlippageTolerance(true)
 
-  const currencyA = currencyIdA || INPUT.currencyId
-  const currencyB = currencyIdB || OUTPUT
+  const currencyA = INPUT.currencyId
+  const currencyB = OUTPUT
 
   const inputCurrency = useCurrency(currencyA)
   const outputCurrency = currencyB
@@ -42,22 +35,20 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
     inputError: zapInputError,
     currencyBalances,
   } = useDerivedZapInfo(typedValue, inputCurrency, outputCurrency, recipient)
-  const { onUserInput, onInputSelect, onOutputSelect, onCurrencySelection } = useZapActionHandlers()
+  const { onUserInput, onInputSelect, onCurrencySelection } = useZapActionHandlers()
 
   const handleInputSelect = useCallback(
     (field: Field, currency: Currency) => {
-      const currencyAddress = currencyId(currency)
-      if (handleCurrenciesURL) handleCurrenciesURL(field, currencyAddress)
       onInputSelect(field, currency)
     },
-    [handleCurrenciesURL, onInputSelect],
+    [onInputSelect],
   )
 
   const handleOutputSelect = useCallback(
     (currencyIdA: Currency, currencyIdB: Currency) => {
       onCurrencySelection(Field.OUTPUT, [currencyIdA, currencyIdB])
     },
-    [handleCurrenciesURL, onOutputSelect],
+    [onCurrencySelection],
   )
 
   const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
@@ -70,32 +61,20 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
   )
 
   const handleZap = useCallback(() => {
-    setZapState({
-      zapErrorMessage: undefined,
-      txHash: undefined,
-    })
+    setZapErrorMessage(null)
     zapCallback()
       .then((hash) => {
-        setZapState({
-          zapErrorMessage: undefined,
-          txHash: hash,
-        })
+        handleConfirmedTx(hash, zap.pairOut.pair)
       })
       .catch((error) => {
-        setZapState({
-          zapErrorMessage: error.message,
-          txHash: undefined,
-        })
+        setZapErrorMessage(error.message)
       })
-  }, [zapCallback])
+  }, [handleConfirmedTx, zap.pairOut.pair, zapCallback])
 
   const handleDismissConfirmation = useCallback(() => {
-    // clear zapState if user close the error modal
-    setZapState({
-      zapErrorMessage: undefined,
-      txHash: undefined,
-    })
-  }, [setZapState])
+    // clear zapErrorMessage if user closes the error modal
+    setZapErrorMessage(null)
+  }, [])
 
   const handleMaxInput = useCallback(
     (field: Field) => {
@@ -150,7 +129,6 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ currencyIdA, currencyIdB, h
           zap={zap}
           handleZap={handleZap}
           zapErrorMessage={zapErrorMessage}
-          txHash={txHash}
           handleDismissConfirmation={handleDismissConfirmation}
         />
         <Flex sx={{ marginTop: '10px', justifyContent: 'center' }}>

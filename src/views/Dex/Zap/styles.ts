@@ -95,7 +95,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     borderRadius: '10px',
     justifyContent: 'flex-start',
     flexDirection: 'column',
-    cursor: 'pointer',
   },
   centered: {
     alignItems: 'center',
@@ -115,6 +114,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     fontSize: '12px',
     lineHeight: '18px',
     justifyContent: 'space-between',
+    cursor: 'pointer',
   },
   switchStyles: {
     display: 'flex',

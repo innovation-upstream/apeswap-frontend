@@ -9,7 +9,6 @@ import {
   setRecipient,
   setZapNewOutputList,
   setZapOutputList,
-  setZapSlippage,
   setZapType,
   typeInput,
 } from './actions'
@@ -34,12 +33,10 @@ export interface ZapState {
     readonly currency1: string | undefined
     readonly currency2: string | undefined
   }
-  readonly shareOfPool: string | undefined
   readonly recipient: string | null
   readonly zapInputList: { [symbol: string]: Token } | undefined
   readonly zapNewOutputList: { currencyIdA: string; currencyIdB: string }[]
   readonly zapOutputList: { [chain: string]: ParsedFarm[] } | undefined
-  readonly zapSlippage: number
 }
 
 const initialState: ZapState = {
@@ -53,12 +50,10 @@ const initialState: ZapState = {
     currency1: '',
     currency2: '',
   },
-  shareOfPool: '',
   recipient: null,
   zapInputList: null,
   zapNewOutputList: [],
   zapOutputList: { [ChainId.BSC]: [], [ChainId.MATIC]: [] },
-  zapSlippage: 100,
 }
 
 export default createReducer<ZapState>(initialState, (builder) =>
@@ -124,12 +119,6 @@ export default createReducer<ZapState>(initialState, (builder) =>
       return {
         ...state,
         zapOutputList: { ...state.zapOutputList, [chainId]: zapOutputList },
-      }
-    })
-    .addCase(setZapSlippage, (state, { payload: { zapSlippage } }) => {
-      return {
-        ...state,
-        zapSlippage,
       }
     }),
 )
