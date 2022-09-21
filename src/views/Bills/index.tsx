@@ -9,14 +9,14 @@ import { useTranslation } from 'contexts/Localization'
 import BillsListView from './components/BillsListView'
 import UserBillViews from './components/UserBillViews'
 import BillMenu from './components/Menu'
-import { useNetworkChainId } from 'state/hooks'
 import { BannerTypes } from 'components/Banner/types'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const Bills: React.FC = () => {
   useSetBills()
   usePollBills()
   usePollUserBills()
-  const chainId = useNetworkChainId()
+  const { chainId } = useActiveWeb3React()
   const bills = useBills()
   const { t } = useTranslation()
   const [query, setQuery] = useState('')
