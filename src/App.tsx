@@ -272,7 +272,7 @@ const App: React.FC = () => {
                 <Redirect to="/" />
               </Route>
               <Route path="/treasury-bills">
-                <Redirect to="/" />
+                <Bills />
               </Route>
               <Route exact path="/nft">
                 <Redirect to="/" />
