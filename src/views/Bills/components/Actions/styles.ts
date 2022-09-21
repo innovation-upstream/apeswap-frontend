@@ -26,17 +26,10 @@ export const BuyButton = styled(Button)`
 `
 
 export const StyledInput = styled(Input)`
-  height: 69px;
   width: 100%;
   border: none;
-  padding: 0px 80px 22.5px 67px;
-  font-size: 14px;
+  font-size: 22px;
   font-weight: 700;
-  @media screen and (min-width: 1180px) {
-    width: 230px;
-    height: 69px;
-    padding: 0px 71px 22.5px 67px;
-  }
 `
 
 export const MaxButton = styled(Button)`

@@ -31,7 +31,6 @@ interface BillModalProps {
 }
 
 const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
-  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const {
     token,
@@ -40,14 +39,10 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
     billType,
     lpToken,
     price,
-    userData,
-    contractAddress,
-    index,
     discount,
     earnTokenPrice,
     maxTotalPayOut,
     totalPayoutGiven,
-    lpPrice,
   } = bill
   const discountEarnTokenPrice = earnTokenPrice - earnTokenPrice * (parseFloat(discount) / 100)
   const [value, setValue] = useState('')
@@ -133,14 +128,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
               <Flex flexDirection="column">
                 <ActionButtonsContainer>
                   <Actions
-                    price={price}
-                    token={token}
-                    quoteToken={quoteToken}
-                    lpToken={lpToken}
-                    userLpValue={userData?.stakingTokenBalance}
-                    allowance={userData?.allowance}
-                    billAddress={contractAddress[chainId]}
-                    billIndex={index}
+                    bill={bill}
                     disabled={
                       billValue === 'NaN' ||
                       parseFloat(billValue) < 0.01 ||
@@ -150,29 +138,9 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                     value={value}
                     onBillId={onHandleReturnedBillId}
                     onTransactionSubmited={(trxSent) => setLoading(trxSent)}
-                    lpPrice={lpPrice}
+                    safeAvailable={safeAvailable?.toString()}
                   />
                 </ActionButtonsContainer>
-                {new BigNumber(userData?.allowance).gt(0) && (
-                  <BillValueContainer>
-                    <TextWrapper>
-                      <Text fontSize="14px" pr={1}>
-                        {t('Bill Value')}:{' '}
-                        <span style={{ fontWeight: 700 }}>
-                          {billValue === 'NaN' ? '0' : parseFloat(billValue).toFixed(3)} {earnToken?.symbol}
-                        </span>
-                      </Text>
-                    </TextWrapper>
-                    <TextWrapper>
-                      <Text fontSize="14px">
-                        {t('Available')}:{' '}
-                        <span style={{ fontWeight: 700 }}>
-                          {!available ? '0' : safeAvailable.toFixed(3)} {earnToken?.symbol}
-                        </span>
-                      </Text>
-                    </TextWrapper>
-                  </BillValueContainer>
-                )}
               </Flex>
             </BillDescriptionContainer>
           </ModalBodyContainer>

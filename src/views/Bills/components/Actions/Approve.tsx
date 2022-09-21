@@ -8,11 +8,12 @@ import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
 import useApproveBill from '../../hooks/useApproveBill'
 import { StyledButton } from '../styles'
-import { ApproveProps } from './types'
+import { ActionProps } from './types'
 
-const Approve: React.FC<ApproveProps> = ({ lpToken, billAddress, billIndex }) => {
+const Approve: React.FC<ActionProps> = ({ bill }) => {
+  const { lpToken, contractAddress, index } = bill
   const { chainId, account } = useActiveWeb3React()
-  const { onApprove } = useApproveBill(lpToken.address[chainId], billAddress)
+  const { onApprove } = useApproveBill(lpToken.address[chainId], contractAddress[chainId])
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
   const { toastSuccess, toastError } = useToast()
@@ -33,7 +34,7 @@ const Approve: React.FC<ApproveProps> = ({ lpToken, billAddress, billIndex }) =>
         toastError(e?.data?.message || t('Error: Please try again.'))
         setPendingTrx(false)
       })
-    dispatch(updateUserAllowance(chainId, billIndex, account))
+    dispatch(updateUserAllowance(chainId, index, account))
     setPendingTrx(false)
   }
 

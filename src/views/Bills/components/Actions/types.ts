@@ -1,25 +1,4 @@
-import { Token } from 'config/constants/types'
-
-export interface BuyProps {
-  userLpValue: string
-  token: Token
-  quoteToken: Token
-  lpToken: Token
-  billAddress: string
-  disabled?: boolean
-  onValueChange: (val: string) => void
-  onBillId: (billId: string, transactionHash: string) => void
-  onTransactionSubmited: (trxSent: boolean) => void
-  value: string
-  lpPrice: number
-  price: string
-}
-
-export interface ApproveProps {
-  billAddress: string
-  billIndex: number
-  lpToken: Token
-}
+import { Bills } from 'state/types'
 
 export interface ClaimProps {
   billAddress: string
@@ -35,6 +14,12 @@ export interface TransferProps {
   disabled?: boolean
 }
 
-export interface ActionProps extends BuyProps, ApproveProps {
-  allowance: string
+export interface ActionProps {
+  bill: Bills
+  disabled?: boolean
+  onValueChange: (val: string) => void
+  onBillId: (billId: string, transactionHash: string) => void
+  onTransactionSubmited: (trxSent: boolean) => void
+  value: string
+  safeAvailable: string
 }
