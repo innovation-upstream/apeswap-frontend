@@ -17,12 +17,14 @@ import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
+import PoolFinder from './views/Dex/PoolFinder'
+import ResetScroll from './utils/resetScroll'
+// Most used routes get loaded directly
 import Pool from './views/Dex/Pool'
 import Swap from './views/Dex/Swap'
 import AddLiquidity from './views/Dex/AddLiquidity'
+import Zap from './views/Dex/Zap'
 import RemoveLiquidity from './views/Dex/RemoveLiquidity'
-import PoolFinder from './views/Dex/PoolFinder'
-import ResetScroll from './utils/resetScroll'
 
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -49,9 +51,6 @@ const ApeZone = lazy(() => import('./views/ApeZone'))
 const Stats = lazy(() => import('./views/Stats'))
 const Auction = lazy(() => import('./views/Auction'))
 const BurningGames = lazy(() => import('./views/BurningGames'))
-const Iazos = lazy(() => import('./views/Iazos'))
-const CreateIazo = lazy(() => import('./views/Iazos/components/CreateIazo'))
-const IazoPage = lazy(() => import('./views/Iazos/components/IazoPage'))
 const AdminPools = lazy(() => import('./views/AdminPools'))
 const Vaults = lazy(() => import('./views/Vaults'))
 const NfaStaking = lazy(() => import('./views/NfaStaking'))
@@ -60,9 +59,8 @@ const Orders = lazy(() => import('./views/Dex/Orders'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
-const Zap = lazy(() => import('./views/Dex/Zap'))
-
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
+
 const RedirectPathToSwapOnly = lazy(async () =>
   redirectSwap().then((r) => ({
     default: r.RedirectPathToSwapOnly,
@@ -98,10 +96,10 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
+  usePollBlockNumber()
   useUpdateNetwork()
   useEagerConnect()
   useFetchBananaPrice()
-  usePollBlockNumber()
   useFetchProfile()
   useFetchLiveIfoStatus()
   useFetchLiveTagsAndOrdering()
@@ -192,15 +190,6 @@ const App: React.FC = () => {
               <Route path="/apestats">
                 <Stats />
               </Route>
-              <Route exact path="/ss-iao">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/create">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/:id">
-                <Redirect to="/" />
-              </Route>
               {/* SWAP ROUTES */}
               <Route path="/swap" component={Swap} />
               <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
@@ -215,6 +204,9 @@ const App: React.FC = () => {
               <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+              <Route path="/zap">
+                <Redirect to={'/add-liquidity'} />
+              </Route>
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
             </Switch>
@@ -255,7 +247,7 @@ const App: React.FC = () => {
                 <Redirect to="/" />
               </Route>
               <Route path="/treasury-bills">
-                <Redirect to="/" />
+                <Bills />
               </Route>
               <Route exact path="/nft">
                 <Redirect to="/" />
@@ -284,15 +276,6 @@ const App: React.FC = () => {
               <Route path="/gnana">
                 <Redirect to="/" />
               </Route>
-              <Route exact path="/ss-iao">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/create">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ss-iao/:id">
-                <Redirect to="/" />
-              </Route>
               {/* SWAP ROUTES */}
               <Route path="/swap" component={Swap} />
               <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
@@ -308,8 +291,8 @@ const App: React.FC = () => {
               <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
               <Route exact path="/zap" component={Zap} />
-              <Route exact path="/zap/:currencyIdA" component={Zap} />
-              <Route exact path="/zap/:currencyIdA/:currencyIdB" component={Zap} />
+              <Route exact strict path="/zap/:currencyIdA" component={Zap} />
+              <Route exact strict path="/zap/:currencyIdA/:currencyIdB/:currencyIdC" component={Zap} />
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
             </Switch>
@@ -355,15 +338,6 @@ const App: React.FC = () => {
             </Route>
             <Route path="/auction">
               <Auction />
-            </Route>
-            <Route exact path="/ss-iao">
-              <Iazos />
-            </Route>
-            <Route path="/ss-iao/create">
-              <CreateIazo />
-            </Route>
-            <Route path="/ss-iao/:id">
-              <IazoPage />
             </Route>
             <Route exact path="/nft">
               <Nft />
@@ -414,8 +388,8 @@ const App: React.FC = () => {
             <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
             <Route exact path="/zap" component={Zap} />
-            <Route exact path="/zap/:currencyIdA" component={Zap} />
-            <Route exact path="/zap/:currencyIdA/:currencyIdB" component={Zap} />
+            <Route exact strict path="/zap/:currencyIdA" component={Zap} />
+            <Route exact strict path="/zap/:currencyIdA/:currencyIdB/:currencyIdC" component={Zap} />
             {/* SWAP ROUTES */}
             <Route component={NotFound} />
           </Switch>

@@ -161,7 +161,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                   )
                 }
               >
-                {t('GET LP')} <Svg icon="ZapIcon" />
+                {t('GET LP')} <Svg icon="ZapIcon" color="primaryBright" />
               </StyledButton>
             ) : (
               <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">

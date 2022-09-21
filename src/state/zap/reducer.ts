@@ -33,7 +33,6 @@ export interface ZapState {
     readonly currency1: string | undefined
     readonly currency2: string | undefined
   }
-  readonly shareOfPool: string | undefined
   readonly recipient: string | null
   readonly zapInputList: { [symbol: string]: Token } | undefined
   readonly zapNewOutputList: { currencyIdA: string; currencyIdB: string }[]
@@ -51,7 +50,6 @@ const initialState: ZapState = {
     currency1: '',
     currency2: '',
   },
-  shareOfPool: '',
   recipient: null,
   zapInputList: null,
   zapNewOutputList: [],

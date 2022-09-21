@@ -177,7 +177,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
                 )
               }
             >
-              {t('GET LP')} <Svg icon="ZapIcon" />
+              {t('GET LP')} <Svg icon="ZapIcon" color="primaryBright" />
             </StyledButton>
 
             {!isMobile && (

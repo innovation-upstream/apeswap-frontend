@@ -6,7 +6,7 @@ import { Currency, CurrencyAmount, Pair } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from 'views/Dex/Zap/components/ZapPanel'
 import { Field } from 'state/zap/actions'
-import { useDerivedZapInfo, useZapActionHandlers, useZapState } from 'state/zap/hooks'
+import { useDerivedZapInfo, useSetZapInputList, useZapActionHandlers, useZapState } from 'state/zap/hooks'
 import ZapLiquidityActions from 'views/Dex/Zap/components/ZapLiquidityActions'
 import { styles } from './styles'
 import { useZapCallback } from 'hooks/useZapCallback'
@@ -18,6 +18,7 @@ interface ZapLiquidityProps {
 }
 
 const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
+  useSetZapInputList()
   const [zapErrorMessage, setZapErrorMessage] = useState<string>(null)
 
   const { INPUT, OUTPUT, typedValue, recipient, zapType } = useZapState()
@@ -50,14 +51,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
     [onCurrencySelection],
   )
 
-  const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
-    zap,
-    zapType,
-    zapSlippage,
-    recipient,
-    '',
-    null,
-  )
+  const { callback: zapCallback } = useZapCallback(zap, zapType, zapSlippage, recipient, '', null)
 
   const handleZap = useCallback(() => {
     setZapErrorMessage(null)

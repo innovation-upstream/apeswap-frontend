@@ -54,7 +54,7 @@ const ZapTest: React.FC = () => {
     [bills, pairOut],
   )
 
-  const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
+  const { callback: zapCallback } = useZapCallback(
     zap,
     zapType,
     allowedSlippage,
