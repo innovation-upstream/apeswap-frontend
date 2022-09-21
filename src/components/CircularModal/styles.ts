@@ -67,7 +67,11 @@ export const circular: Record<string, ThemeUIStyleObject> = {
     backgroundSize: 'cover',
     borderRadius: '10px',
     height: ['75px', '120px'],
-    marginBottom: '10px',
+    margin: '0 5px 10px 5px',
+    ':hover': {
+      cursor: 'pointer',
+      boxShadow: '0 0 0.8em gold',
+    },
   },
   ctaContent: {
     width: '100%',

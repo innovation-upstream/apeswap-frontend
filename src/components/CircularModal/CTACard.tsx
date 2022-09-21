@@ -51,13 +51,11 @@ const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
     <Flex
       sx={{
         ...circular.ctaCard,
-        backgroundImage: [bannersUrl, gnana && iconUrl],
+        backgroundImage: bannersUrl,
+        // backgroundImage: [bannersUrl, gnana && iconUrl],
         color: ((pool || compound) && 'brown') || 'primaryBright',
         '-webkit-transform': (compound || (maximizer && phModal)) && 'scaleX(-1)',
         transform: (compound || (maximizer && phModal)) && 'scaleX(-1)',
-        ':hover': {
-          cursor: 'pointer',
-        },
       }}
       onClick={goToDestination}
     >
