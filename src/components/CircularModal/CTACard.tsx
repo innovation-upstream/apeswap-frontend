@@ -29,6 +29,7 @@ const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
   const pool = type === CTA_TYPE.POOLS
   const lending = type === CTA_TYPE.LENDING
   const compound = type === CTA_TYPE.COMPOUND
+  const gnana = type === CTA_TYPE.GNANA
 
   const iconUrl = `url(/images/cta/${compound ? 'pools' : type}-icon.svg)`
   const bannersUrl = `url(/images/cta/${compound ? 'pools' : type}-banner.svg)`
@@ -50,7 +51,7 @@ const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
     <Flex
       sx={{
         ...circular.ctaCard,
-        backgroundImage: bannersUrl,
+        backgroundImage: [bannersUrl, gnana && iconUrl],
         color: ((pool || compound) && 'brown') || 'primaryBright',
         '-webkit-transform': (compound || (maximizer && phModal)) && 'scaleX(-1)',
         transform: (compound || (maximizer && phModal)) && 'scaleX(-1)',
@@ -77,14 +78,16 @@ const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
           <Text sx={circular.ctaTitle}>{t(`${content.title.toUpperCase()}`)}</Text>
           <Text sx={circular.ctaDescription}>{t(`${formattedDescription}`)}</Text>
         </Flex>
-        <Flex
-          sx={{
-            ...circular.bannerIcon,
-            backgroundImage: iconUrl,
-            '-webkit-transform': lending && 'scaleX(-1)',
-            transform: lending && 'scaleX(-1)',
-          }}
-        />
+        {!gnana ? (
+          <Flex
+            sx={{
+              ...circular.bannerIcon,
+              backgroundImage: iconUrl,
+              '-webkit-transform': lending && 'scaleX(-1)',
+              transform: lending && 'scaleX(-1)',
+            }}
+          />
+        ) : null}
       </Flex>
     </Flex>
   )
