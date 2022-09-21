@@ -128,3 +128,17 @@ export function isTokenOnList(defaultTokens, currency?: Currency): boolean {
   if (currency === ETHER) return true
   return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
 }
+
+export function wrappedToNative(symbol: string) {
+  if (symbol.includes('WBNB')) return symbol.replace('WBNB', 'BNB')
+
+  if (symbol.includes('WETH')) return symbol.replace('WETH', 'ETH')
+
+  if (symbol.includes('WMATIC')) return symbol.replace('WMATIC', 'MATIC')
+
+  if (symbol.includes('eLunr')) return symbol.replace('eLunr', 'LUNR')
+
+  if (symbol.includes('BTCB')) return symbol.replace('BTCB', 'BTC')
+
+  return symbol
+}

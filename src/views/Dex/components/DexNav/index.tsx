@@ -10,7 +10,11 @@ import MoonPayModal from 'views/Topup/MoonpayModal'
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
 
-const DexNav = () => {
+interface DexNavProps {
+  zapSettings?: boolean
+}
+
+const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
   const { t } = useTranslation()
   const { pathname } = useHistory().location
   const { chainId } = useActiveWeb3React()
@@ -19,9 +23,10 @@ const DexNav = () => {
     pathname?.includes('add-liquidity') ||
     pathname?.includes('liquidity') ||
     pathname?.includes('remove') ||
-    pathname?.includes('find')
+    pathname?.includes('find') ||
+    pathname?.includes('zap')
 
-  const [onPresentSettingsModal] = useModal(<SettingsModal />)
+  const [onPresentSettingsModal] = useModal(<SettingsModal zapSettings={zapSettings} />)
   const [onPresentModal] = useModal(<MoonPayModal />)
 
   return (
@@ -62,7 +67,7 @@ const DexNav = () => {
           size="14px"
           sx={{ ...styles.navLink, color: !onLiquidity && 'textDisabled' }}
           as={Link}
-          to="/add-liquidity"
+          to="/zap"
           id="liquidity-link"
           className="liquidity"
         >

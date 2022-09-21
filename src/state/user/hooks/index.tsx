@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useAllTokens } from 'hooks/Tokens'
+import { useAllTokens, useDefaultTokens } from 'hooks/Tokens'
 import { AppDispatch, AppState } from '../../index'
 import {
   addSerializedPair,
@@ -35,8 +35,12 @@ import {
   setIsExchangeChartDisplayed,
   updateUserAutonomyPrepay,
   lastZapMigratorRouter,
+  setUnlimitedGnana,
+  updateUserBonusRouter,
+  setZapSlippage,
 } from '../actions'
 import { deserializeToken, serializeToken } from './helpers'
+import { PairState, usePairs } from 'hooks/usePairs'
 
 export function useAudioModeManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
@@ -97,6 +101,19 @@ export function useExpertModeManager(): [boolean, () => void] {
   }, [expertMode, dispatch])
 
   return [expertMode, toggleSetExpertMode]
+}
+
+export function useBonusRouterManager(): [boolean, () => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const bonusRouterDisabled = useSelector<AppState, AppState['user']['userBonusRouterDisabled']>(
+    (state) => state.user.userBonusRouterDisabled,
+  )
+
+  const toggleSetBonusRouter = useCallback(() => {
+    dispatch(updateUserBonusRouter({ userBonusRouterDisabled: !bonusRouterDisabled }))
+  }, [bonusRouterDisabled, dispatch])
+
+  return [bonusRouterDisabled, toggleSetBonusRouter]
 }
 
 export function useThemeManager(): [boolean, () => void] {
@@ -177,12 +194,22 @@ export function useUserRecentTransactions(): [boolean, (recentTransaction: boole
   return [recentTransactions, setRecentTransactions]
 }
 
-export function useUserSlippageTolerance(): [number, (slippage: number) => void] {
+export function useUserSlippageTolerance(isZap?: boolean): [number, (slippage: number) => void] {
   const dispatch = useDispatch<AppDispatch>()
+
+  const zapSlippageTolerance = useSelector<AppState, AppState['user']['userZapSlippage']>((state) => {
+    return state.user.userZapSlippage
+  })
+  const setZapSlippageTolerance = useCallback(
+    (slippage: number) => {
+      dispatch(setZapSlippage({ zapSlippage: slippage }))
+    },
+    [dispatch],
+  )
+
   const userSlippageTolerance = useSelector<AppState, AppState['user']['userSlippageTolerance']>((state) => {
     return state.user.userSlippageTolerance
   })
-
   const setUserSlippageTolerance = useCallback(
     (slippage: number) => {
       dispatch(updateUserSlippageTolerance({ userSlippageTolerance: slippage }))
@@ -190,6 +217,7 @@ export function useUserSlippageTolerance(): [number, (slippage: number) => void]
     [dispatch],
   )
 
+  if (isZap) return [zapSlippageTolerance, setZapSlippageTolerance]
   return [userSlippageTolerance, setUserSlippageTolerance]
 }
 
@@ -391,6 +419,7 @@ export function usePairAdder(): (pair: Pair) => void {
  * @param tokenB the other token
  * @param smartRouter the router to be used
  */
+
 export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token], smartRouter?: SmartRouter): Token {
   return new Token(
     tokenA.chainId,
@@ -467,6 +496,61 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   }, [combinedList])
 }
 
+/**
+ * Returns all the valid pairs of tokens that are tracked by the user for the current chain ID.
+ */
+export function useValidTrackedTokenPairs(): [Token, Token][] {
+  const { chainId } = useActiveWeb3React()
+  const tokens = useDefaultTokens()
+
+  // pairs for every token against every base
+  const generatedPairs: [Token, Token][] = useMemo(
+    () =>
+      chainId
+        ? flatMap(Object.keys(tokens), (tokenAddress) => {
+            const token = tokens[tokenAddress]
+            // for each token on the current chain,
+            return (
+              // loop though all bases on the current chain
+              (BASES_TO_TRACK_LIQUIDITY_FOR[chainId] ?? [])
+                // to construct pairs of the given token with each base
+                .map((base) => {
+                  if (base.address === token.address) {
+                    return null
+                  }
+                  return [base, token]
+                })
+                .filter((p): p is [Token, Token] => p !== null)
+            )
+          })
+        : [],
+    [tokens, chainId],
+  )
+
+  const filterInvalidPairs = usePairs(useMemo(() => generatedPairs, [generatedPairs]))?.filter(
+    (pair) => pair[0] === PairState.EXISTS,
+  )
+
+  const filteredGeneratedPair: [Token, Token][] = useMemo(() => {
+    return filterInvalidPairs?.map(([, pair]) => {
+      return [pair.token0, pair.token1]
+    })
+  }, [filterInvalidPairs])
+
+  return useMemo(() => {
+    // dedupes pairs of tokens in the combined list
+    const keyed = filteredGeneratedPair.reduce<{ [key: string]: [Token, Token] }>((memo, [tokenA, tokenB]) => {
+      const sorted = tokenA.sortsBefore(tokenB)
+      const key = sorted ? `${tokenA.address}:${tokenB.address}` : `${tokenB.address}:${tokenA.address}`
+      if (memo[key]) return memo
+      memo[key] = sorted ? [tokenA, tokenB] : [tokenB, tokenA]
+      return memo
+    }, {})
+
+    return Object.keys(keyed).map((key) => keyed[key])
+  }, [filteredGeneratedPair])
+}
+
 export const useWatchlistTokens = (): [string[], (address: string) => void] => {
   const dispatch = useDispatch<AppDispatch>()
   const savedTokens = useSelector((state: AppState) => state.user.watchlistTokens) ?? []
@@ -489,4 +573,19 @@ export const useWatchlistPools = (): [string[], (address: string) => void] => {
     [dispatch],
   )
   return [savedPools, updateSavedPools]
+}
+
+export function useUserUnlimitedGnana(): [boolean, (allowUnlimitedGnana: boolean) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+
+  const unlimitedGnana = useSelector<AppState, AppState['user']['unlimitedGnana']>((state) => state.user.unlimitedGnana)
+
+  const setUnlimitedGnanaMinting = useCallback(
+    (allowUnlimitedGnana: boolean) => {
+      dispatch(setUnlimitedGnana(allowUnlimitedGnana))
+    },
+    [dispatch],
+  )
+
+  return [unlimitedGnana, setUnlimitedGnanaMinting]
 }

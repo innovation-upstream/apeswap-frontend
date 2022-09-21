@@ -12,6 +12,9 @@ import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './ENS/useENS'
 import { useZapContract } from './useContract'
 import { MergedZap } from 'state/zap/actions'
+import track from '../utils/track'
+import { getBalanceNumber } from '../utils/formatBalance'
+import { BigNumber as BN } from 'bignumber.js'
 
 export enum SwapCallbackState {
   INVALID,
@@ -75,19 +78,8 @@ function useZapCallArguments(
 
     const swapMethods = []
 
-    console.log(zap, {
-      feeOnTransfer: false,
-      allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
-      zapType: zapType,
-      poolAddress: poolAddress,
-      billAddress: billAddress,
-      recipient,
-      deadline: deadline.toNumber(),
-    })
-
     swapMethods.push(
       ZapV1.zapCallParameters(zap, {
-        feeOnTransfer: false,
         allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
         zapType: zapType,
         poolAddress: poolAddress,
@@ -98,7 +90,19 @@ function useZapCallArguments(
     )
 
     return swapMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, contract, zap])
+  }, [
+    account,
+    allowedSlippage,
+    chainId,
+    deadline,
+    library,
+    recipient,
+    contract,
+    zap,
+    billAddress,
+    poolAddress,
+    zapType,
+  ])
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -141,7 +145,6 @@ export function useZapCallback(
               contract,
             } = call
             const options = !value || isZero(value) ? {} : { value }
-            console.log(call)
 
             return contract.estimateGas[methodName](...args, options)
               .then((gasEstimate) => {
@@ -197,10 +200,10 @@ export function useZapCallback(
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
         })
           .then((response: any) => {
-            const inputSymbol = zap.currencyIn.currency.getSymbol(chainId)
-            const outputSymbol = `${zap.pairOut.pair.token0.getSymbol(chainId)} - ${zap.pairOut.pair.token1.getSymbol(
+            const inputSymbol = zap?.currencyIn?.currency?.getSymbol(chainId)
+            const outputSymbol = `${zap?.pairOut?.pair?.token0?.getSymbol(
               chainId,
-            )}`
+            )} - ${zap?.pairOut?.pair?.token1?.getSymbol(chainId)}`
 
             const base = `Zap ${inputSymbol} into ${outputSymbol}`
             const withRecipient =
@@ -214,6 +217,18 @@ export function useZapCallback(
 
             addTransaction(response, {
               summary: withRecipient,
+            })
+            track({
+              event: 'zap',
+              chain: chainId,
+              data: {
+                cat: 'liquidity',
+                token1: zap.currencyIn.currency.getSymbol(chainId),
+                token2: `${zap.currencyOut1.outputCurrency.getSymbol(
+                  chainId,
+                )}-${zap.currencyOut2.outputCurrency.getSymbol(chainId)}`,
+                amount: getBalanceNumber(new BN(zap.currencyIn.inputAmount.toString())),
+              },
             })
 
             return response.hash

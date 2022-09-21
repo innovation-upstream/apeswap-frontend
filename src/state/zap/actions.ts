@@ -1,6 +1,7 @@
-import { ChainId, Currency, CurrencyAmount, JSBI, Pair, SmartRouter, Token, TokenAmount, ZapType } from '@ape.swap/sdk'
+import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Percent, Token, TokenAmount, ZapType } from '@ape.swap/sdk'
 import { createAction } from '@reduxjs/toolkit'
 import { PairState } from 'hooks/usePairs'
+import { ParsedFarm } from './reducer'
 
 export enum Field {
   INPUT = 'INPUT',
@@ -24,11 +25,14 @@ export type MergedZap = {
   pairOut: {
     pair: Pair
     pairState: PairState
-    inAmount: { token1: string; token2: string }
+    inAmount: { token1: CurrencyAmount; token2: CurrencyAmount }
     minInAmount: { token1: string; token2: string }
     totalPairSupply: TokenAmount
     liquidityMinted: TokenAmount
+    poolTokenPercentage: Percent
   }
+  liquidityProviderFee: CurrencyAmount
+  totalPriceImpact: Percent
   chainId: ChainId
 }
 
@@ -45,3 +49,8 @@ export const replaceZapState = createAction<{
   zapType: ZapType
 }>('zap/replaceSwapState')
 export const setRecipient = createAction<{ recipient: string | null }>('zap/setRecipient')
+export const setInputList = createAction<{ zapInputList: { [symbol: string]: Token } }>('zap/setInputList')
+export const setZapNewOutputList = createAction<{ zapNewOutputList: { currencyIdA: string; currencyIdB: string }[] }>(
+  'zap/setZapNewOutputList',
+)
+export const setZapOutputList = createAction<{ zapOutputList: ParsedFarm[]; chainId: ChainId }>('zap/setOutputList')

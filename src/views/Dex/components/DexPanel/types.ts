@@ -21,4 +21,5 @@ export interface DexPanelProps {
   ordersDisabled?: boolean
   independentField?: Field
   disableTokenSelect?: boolean
+  isZapInput?: boolean
 }

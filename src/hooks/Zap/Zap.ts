@@ -1,5 +1,18 @@
 /* eslint-disable no-param-reassign */
-import { Currency, CurrencyAmount, JSBI, Pair, Percent, Token, TokenAmount, Zap } from '@ape.swap/sdk'
+import {
+  Currency,
+  CurrencyAmount,
+  currencyEquals,
+  ETHER,
+  JSBI,
+  Pair,
+  Percent,
+  SmartRouter,
+  Token,
+  TokenAmount,
+  WETH,
+  Zap,
+} from '@ape.swap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -17,6 +30,7 @@ import { wrappedCurrency, wrappedCurrencyAmount } from '../../utils/wrappedCurre
 import { useUnsupportedTokens } from '../Tokens'
 import isZapBetter from 'utils/zap'
 import { MergedZap } from 'state/zap/actions'
+import { computeTradePriceBreakdown } from 'utils/prices'
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const { chainId } = useActiveWeb3React()
@@ -98,12 +112,16 @@ const MAX_HOPS = 3
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
 export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Zap | null {
+  const { chainId } = useActiveWeb3React()
   const allowedPairs = useAllCommonPairs(currencyAmountIn?.currency, currencyOut)
 
   const [singleHopOnly] = useUserSingleHopOnly()
+  const wrapped =
+    (currencyAmountIn?.currency === ETHER && currencyEquals(WETH[chainId], currencyOut)) ||
+    (currencyEquals(WETH[chainId], currencyAmountIn?.currency) && currencyOut === ETHER)
 
   return useMemo(() => {
-    if (currencyAmountIn?.currency === currencyOut) {
+    if (currencyAmountIn?.currency === currencyOut || wrapped) {
       return null
     }
     if (currencyAmountIn && currencyOut && allowedPairs.length > 0) {
@@ -126,7 +144,7 @@ export function useTradeExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?:
     }
 
     return null
-  }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly])
+  }, [allowedPairs, currencyAmountIn, currencyOut, singleHopOnly, wrapped])
 }
 
 export function useIsTransactionUnsupported(currencyIn?: Currency, currencyOut?: Currency): boolean {
@@ -162,9 +180,17 @@ export function mergeBestZaps(
   const currencyIn = bestZapOne?.inputAmount.currency || bestZapTwo?.inputAmount.currency
   const slippageTolerance = new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE)
 
+  // We need to check if a zap path will wrap to not estimate a route
+  const inAndOutWrappedOne =
+    (currencyIn === ETHER && currencyEquals(WETH[chainId], outputCurrencies[0])) ||
+    (currencyEquals(WETH[chainId], currencyIn) && outputCurrencies[0] === ETHER)
+  const inAndOutWrappedTwo =
+    (currencyIn === ETHER && currencyEquals(WETH[chainId], outputCurrencies[1])) ||
+    (currencyEquals(WETH[chainId], currencyIn) && outputCurrencies[1] === ETHER)
+
   // If the input token and output token are the same we need to handle values differently
-  const inAndOutAreTheSame1Flag = currencyIn === outputCurrencies[0]
-  const inAndOutAreTheSame2Flag = currencyIn === outputCurrencies[1]
+  const inAndOutAreTheSame1Flag = currencyIn === outputCurrencies[0] || inAndOutWrappedOne
+  const inAndOutAreTheSame2Flag = currencyIn === outputCurrencies[1] || inAndOutWrappedTwo
 
   // output currencies
   const outputCurrencyOne = wrappedCurrency(outputCurrencies[0], chainId)
@@ -192,8 +218,8 @@ export function mergeBestZaps(
   // output pairs
   const [pairState, pair] = outputPair
 
-  const swapOutOne = outputOne?.raw.toString()
-  const swapOutTwo = outputTwo?.raw.toString()
+  const swapOutOne = outputOne
+  const swapOutTwo = outputTwo
 
   const minSwapOutOne = inAndOutAreTheSame1Flag ? halfInput : bestZapOne?.minimumAmountOut(slippageTolerance)
   const minSwapOutTwo = inAndOutAreTheSame2Flag ? halfInput : bestZapTwo?.minimumAmountOut(slippageTolerance)
@@ -206,6 +232,30 @@ export function mergeBestZaps(
     wrappedCurrencyAmount(minSwapOutTwo, chainId),
   ]
 
+  const { priceImpactWithoutFee: priceImpactWithoutFeeOne, realizedLPFee: realizedLPFeeOne } =
+    computeTradePriceBreakdown(chainId, SmartRouter.APE, bestZapOne)
+
+  const { priceImpactWithoutFee: priceImpactWithoutFeeTwo, realizedLPFee: realizedLPFeeTwo } =
+    computeTradePriceBreakdown(chainId, SmartRouter.APE, bestZapTwo)
+
+  // Take the greater price impact as that will be used for the LP value
+  const totalPriceImpact =
+    priceImpactWithoutFeeOne && priceImpactWithoutFeeTwo
+      ? priceImpactWithoutFeeOne.greaterThan(priceImpactWithoutFeeTwo)
+        ? priceImpactWithoutFeeOne
+        : priceImpactWithoutFeeTwo
+      : priceImpactWithoutFeeOne
+      ? priceImpactWithoutFeeOne
+      : priceImpactWithoutFeeTwo
+
+  // Add fees if swap occurs otherwise use swap
+  const liquidityProviderFee =
+    realizedLPFeeOne && realizedLPFeeTwo
+      ? realizedLPFeeOne?.add(realizedLPFeeTwo)
+      : realizedLPFeeOne
+      ? realizedLPFeeOne
+      : realizedLPFeeTwo
+
   const pairInAmount =
     outputCurrencyOne &&
     wOutputOne &&
@@ -214,7 +264,7 @@ export function mergeBestZaps(
     pair
       ?.priceOf(inAndOutAreTheSame1Flag ? outputCurrencyTwo : outputCurrencyOne)
       .quote(inAndOutAreTheSame1Flag ? wOutputTwo : wOutputOne)
-      .raw.toString()
+
   const minPairInAmount =
     outputCurrencyOne &&
     wMinSwapOutOne &&
@@ -227,6 +277,11 @@ export function mergeBestZaps(
 
   const liquidityMinted =
     wOutputOne && wOutputTwo && totalPairSupply && pair?.getLiquidityMinted(totalPairSupply, wOutputOne, wOutputTwo)
+
+  const poolTokenPercentage =
+    liquidityMinted && totalPairSupply
+      ? new Percent(liquidityMinted.raw, totalPairSupply.add(liquidityMinted).raw)
+      : null
 
   return {
     currencyIn: {
@@ -256,7 +311,10 @@ export function mergeBestZaps(
       minInAmount: inAndOutAreTheSame1Flag
         ? { token1: minPairInAmount, token2: minSwapOutTwo?.raw.toString() }
         : { token1: minSwapOutOne?.raw.toString(), token2: minPairInAmount },
+      poolTokenPercentage,
     },
+    liquidityProviderFee,
+    totalPriceImpact,
     chainId,
   }
 }

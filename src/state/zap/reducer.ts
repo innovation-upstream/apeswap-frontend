@@ -1,14 +1,26 @@
-import { ZapType } from '@ape.swap/sdk'
+import { ChainId, Token, ZapType } from '@ape.swap/sdk'
 import { createReducer } from '@reduxjs/toolkit'
 import {
   Field,
   replaceZapState,
   selectInputCurrency,
   selectOutputCurrency,
+  setInputList,
   setRecipient,
+  setZapNewOutputList,
+  setZapOutputList,
   setZapType,
   typeInput,
 } from './actions'
+
+export interface ParsedFarm {
+  lpSymbol: string
+  lpAddress: string
+  currency1: string
+  currency1Symbol: string
+  currency2: string
+  currency2Symbol: string
+}
 
 export interface ZapState {
   readonly independentField: Field
@@ -22,6 +34,9 @@ export interface ZapState {
     readonly currency2: string | undefined
   }
   readonly recipient: string | null
+  readonly zapInputList: { [symbol: string]: Token } | undefined
+  readonly zapNewOutputList: { currencyIdA: string; currencyIdB: string }[]
+  readonly zapOutputList: { [chain: string]: ParsedFarm[] } | undefined
 }
 
 const initialState: ZapState = {
@@ -29,13 +44,16 @@ const initialState: ZapState = {
   zapType: ZapType.ZAP,
   typedValue: '',
   [Field.INPUT]: {
-    currencyId: '',
+    currencyId: 'ETH',
   },
   [Field.OUTPUT]: {
     currency1: '',
     currency2: '',
   },
   recipient: null,
+  zapInputList: null,
+  zapNewOutputList: [],
+  zapOutputList: { [ChainId.BSC]: [], [ChainId.MATIC]: [] },
 }
 
 export default createReducer<ZapState>(initialState, (builder) =>
@@ -44,10 +62,15 @@ export default createReducer<ZapState>(initialState, (builder) =>
       replaceZapState,
       (state, { payload: { typedValue, recipient, inputCurrencyId, outputCurrencyId, zapType } }) => {
         return {
+          ...state,
           [Field.INPUT]: {
             currencyId: inputCurrencyId,
           },
-          [Field.OUTPUT]: outputCurrencyId,
+          [Field.OUTPUT]: {
+            ...state[Field.OUTPUT],
+            currency1: outputCurrencyId.currency1,
+            currency2: outputCurrencyId.currency2,
+          },
           independentField: Field.INPUT,
           zapType,
           typedValue,
@@ -79,5 +102,23 @@ export default createReducer<ZapState>(initialState, (builder) =>
     })
     .addCase(setZapType, (state, { payload: { zapType } }) => {
       state.zapType = zapType
+    })
+    .addCase(setInputList, (state, { payload: { zapInputList } }) => {
+      return {
+        ...state,
+        zapInputList,
+      }
+    })
+    .addCase(setZapNewOutputList, (state, { payload: { zapNewOutputList } }) => {
+      return {
+        ...state,
+        zapNewOutputList,
+      }
+    })
+    .addCase(setZapOutputList, (state, { payload: { zapOutputList, chainId } }) => {
+      return {
+        ...state,
+        zapOutputList: { ...state.zapOutputList, [chainId]: zapOutputList },
+      }
     }),
 )

@@ -75,32 +75,34 @@ function RemoveLiquidity({
             <Text weight={700}>{t('REMOVE LIQUIDITY')}</Text>
           </Flex>
           <MyPositions />
-          <DexPanel
-            value={formattedAmounts[Field.LIQUIDITY_PERCENT]}
-            setTradeValueUsd={setTradeValueUsd}
-            panelText={t('Remove:')}
-            currency={currencyA}
-            otherCurrency={currencyB}
-            fieldType={Field.LIQUIDITY_PERCENT}
-            onCurrencySelect={null}
-            onUserInput={(field, val) =>
-              parseInt(val) > 100
-                ? onUserInput(field, '100')
-                : val.toString() === ''
-                ? onUserInput(field, '0')
-                : onUserInput(field, parseInt(val).toString())
-            }
-            handleMaxInput={handleMaxInput}
-            showCommonBases
-            lpPair={pair}
-          />
-          <PoolInfo pair={pair} parsedAmounts={parsedAmounts} chainId={chainId} />
-          <RemoveLiquidityActions
-            pair={pair}
-            error={error}
-            parsedAmounts={parsedAmounts}
-            tradeValueUsd={tradeValueUsd}
-          />
+          <Flex sx={{ marginTop: '35px', flexWrap: 'wrap' }}>
+            <DexPanel
+              value={formattedAmounts[Field.LIQUIDITY_PERCENT]}
+              setTradeValueUsd={setTradeValueUsd}
+              panelText={t('Remove:')}
+              currency={currencyA}
+              otherCurrency={currencyB}
+              fieldType={Field.LIQUIDITY_PERCENT}
+              onCurrencySelect={null}
+              onUserInput={(field, val) =>
+                parseInt(val) > 100
+                  ? onUserInput(field, '100')
+                  : val.toString() === ''
+                  ? onUserInput(field, '0')
+                  : onUserInput(field, parseInt(val).toString())
+              }
+              handleMaxInput={handleMaxInput}
+              showCommonBases
+              lpPair={pair}
+            />
+            <PoolInfo pair={pair} parsedAmounts={parsedAmounts} chainId={chainId} />
+            <RemoveLiquidityActions
+              pair={pair}
+              error={error}
+              parsedAmounts={parsedAmounts}
+              tradeValueUsd={tradeValueUsd}
+            />
+          </Flex>
         </Flex>
         {recentTransactions && <RecentTransactions />}
       </Flex>

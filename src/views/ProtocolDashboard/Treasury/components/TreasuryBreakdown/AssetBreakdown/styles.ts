@@ -1,3 +1,5 @@
+import styled from 'styled-components'
+import { Tag } from '@ape.swap/uikit'
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
@@ -48,3 +50,14 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     },
   },
 }
+
+export const StyledTag = styled(Tag)`
+  font-size: 10px;
+  padding: 0px 6px !important;
+  margin-left: 6px;
+  font-weight: 700;
+  border: 1px;
+  border-radius: 10px;
+  height: auto;
+  width: max-content;
+`

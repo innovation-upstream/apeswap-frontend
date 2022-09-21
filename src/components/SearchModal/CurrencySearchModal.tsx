@@ -16,6 +16,7 @@ interface CurrencySearchModalProps extends ModalProps {
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
+  isZapInput?: boolean
 }
 
 export const modalProps = {
@@ -33,6 +34,7 @@ export default function CurrencySearchModal({
   selectedCurrency,
   otherSelectedCurrency,
   showCommonBases = false,
+  isZapInput,
 }: CurrencySearchModalProps) {
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.search)
 
@@ -77,6 +79,7 @@ export default function CurrencySearchModal({
               showCommonBases={showCommonBases}
               showImportView={() => setModalView(CurrencyModalView.importToken)}
               setImportToken={setImportToken}
+              isZapInput={isZapInput}
             />
           ) : modalView === CurrencyModalView.importToken && importToken ? (
             <ImportToken tokens={[importToken]} handleCurrencySelect={handleCurrencySelect} />
@@ -92,7 +95,7 @@ export default function CurrencySearchModal({
           ) : (
             ''
           )}
-          {modalView === CurrencyModalView.search && (
+          {modalView === CurrencyModalView.search && !isZapInput && (
             <Box sx={{ marginBottom: ['30px', '0px'] }}>
               <ModalFooter onDismiss={onDismiss}>
                 <Text

@@ -16,13 +16,13 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Liquidity'),
-        href: '/add-liquidity',
+        href: '/zap',
         isNew: false,
       },
       {
         label: t('Pro Trading'),
         href: 'https://pro.apeswap.finance',
-        isNew: true,
+        isNew: false,
       },
     ],
   },
@@ -32,6 +32,11 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     isNew: false,
   },
   {
+    label: t('Bills'),
+    href: '/treasury-bills',
+    isNew: true,
+  },
+  {
     label: t('Explore'),
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',
@@ -39,7 +44,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('ApeStats'),
         href: '/apestats',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Dashboard'),
@@ -60,10 +65,6 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         label: t('Governance'),
         href: 'https://discuss.apeswap.finance',
         isNew: false,
-      },
-      {
-        label: t('Education'),
-        href: 'https://www.apelabs.education/',
       },
     ],
   },

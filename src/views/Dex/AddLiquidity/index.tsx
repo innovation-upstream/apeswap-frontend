@@ -22,6 +22,7 @@ import PoolInfo from './components/PoolInfo'
 import AddLiquidityActions from './components/Actions'
 import MyPositions from '../components/MyPositions'
 import RecentTransactions from '../components/RecentTransactions'
+import LiquiditySubNav from '../components/LiquiditySubNav'
 
 function AddLiquidity({
   match: {
@@ -126,10 +127,8 @@ function AddLiquidity({
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={{ ...dexStyles.dexContainer }}>
           <DexNav />
-          <Flex sx={{ margin: '20px 0px 5px 0px', justifyContent: 'center', maxWidth: '100%', width: '420px' }}>
-            <Text weight={700}>ADD LIQUIDITY</Text>
-          </Flex>
           <MyPositions />
+          <LiquiditySubNav />
           {noLiquidity && (
             <Flex sx={{ ...styles.warningMessageContainer }}>
               <Text size="14px" weight={700} mb="10px" color="primaryBright">

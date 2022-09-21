@@ -19,6 +19,9 @@ const chainIdSafeCheck = (): { chainId: number; chainIdFromUrl: boolean } => {
     if (chainStr.toLowerCase() === NETWORK_LABEL[ChainId.MATIC].toLowerCase()) {
       return { chainId: ChainId.MATIC, chainIdFromUrl: true }
     }
+    if (chainStr.toLowerCase() === NETWORK_LABEL[ChainId.MAINNET].toLowerCase()) {
+      return { chainId: ChainId.MAINNET, chainIdFromUrl: true }
+    }
     return { chainId: localStorageChain || ChainId.BSC, chainIdFromUrl: false }
   }
   return { chainId: localStorageChain || ChainId.BSC, chainIdFromUrl: false }

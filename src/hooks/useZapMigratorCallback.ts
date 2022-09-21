@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, ZapMigratorV1, ZapType, ZapV1 } from '@ape.swap/sdk'
+import { JSBI, Percent, ZapMigratorV1 } from '@ape.swap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import truncateHash from 'utils/truncateHash'
@@ -67,10 +67,7 @@ function useZapMigratorCallArguments(
 
     swapMethods.push(
       ZapMigratorV1.zapCallParameters(zap, {
-        feeOnTransfer: false,
         allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
-        poolAddress: poolAddress,
-        billAddress: billAddress,
         recipient,
         deadline: deadline.toNumber(),
       }),
