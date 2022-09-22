@@ -3,27 +3,14 @@ import React from 'react'
 import { Text, Flex } from '@ape.swap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
-import { getLargestNumber } from 'utils'
 import { CTA_CARD_INFO, CTA_TYPE, MODAL_TYPE } from 'config/constants'
 import { CTACardProps } from './types'
 import { circular } from './styles'
 
-const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
+const CTACard: React.FC<CTACardProps> = ({ type, action }) => {
   const { t } = useTranslation()
 
-  // ACTIVE VAULTS
-  const vaultsWithAPY = data?.vaults.map((vault) => vault?.apy?.yearly)
-  const vAPY = vaultsWithAPY.length > 0 && getLargestNumber(vaultsWithAPY)
-
-  // OPEN POOLS
-  const poolsWithAPR = data?.pools.map((pool) => pool?.apr)
-  const pAPR = poolsWithAPR.length > 0 && getLargestNumber(poolsWithAPR)
-  const cAPR = data?.pools[0]?.apr
-
   const content = CTA_CARD_INFO[type]
-  const sellModal = action === MODAL_TYPE.SELLING
-  const buyModal = action === MODAL_TYPE.BUYING
-  const ghModal = action === MODAL_TYPE.GENERAL_HARVEST
   const phModal = action === MODAL_TYPE.POOL_HARVEST
   const maximizer = type === CTA_TYPE.MAXIMIZERS
   const pool = type === CTA_TYPE.POOLS
@@ -34,18 +21,6 @@ const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
   const bannersUrl = `url(/images/cta/${compound ? 'pools' : type}-banner.svg)`
   const gnanaDesktop = `url(/images/cta/gnana-lg-banner.svg)`
   const goToDestination = () => window.open(content.destination, '_blank')
-
-  // TO DO - GET THESE DATA AND DISPLAY
-  const maxAPY = `${(vAPY && vAPY.toFixed(2)) || '0.00'}% APY`
-  const poolAPR = `${(pAPR && pAPR.toFixed(2)) || '0.00'}% APR`
-  const compoundAPR = `${(cAPR && cAPR.toFixed(2)) || '0.00'}% APR`
-  const formattedDescription = `${
-    content.description + ((maximizer && maxAPY) || (pool && poolAPR) || (compound && compoundAPR) || '')
-  }`
-
-  // TO DO - Implement triggerCompoundTx
-  // const triggerCompoundTx = () => null
-  // compound ? triggerCompoundTx : goToDestination
 
   return (
     <Flex
@@ -74,7 +49,7 @@ const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
           }}
         >
           <Text sx={circular.ctaTitle}>{t(`${content.title.toUpperCase()}`)}</Text>
-          <Text sx={circular.ctaDescription}>{t(`${formattedDescription}`)}</Text>
+          <Text sx={circular.ctaDescription}>{t(`${content.description}`)}</Text>
         </Flex>
         {!gnana && (
           <Flex

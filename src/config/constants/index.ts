@@ -189,27 +189,27 @@ export const MODAL_INFO = {
 export const CTA_CARD_INFO = {
   maximizers: {
     title: 'Maximizers',
-    description: 'Earn up to ',
+    description: 'Maximize your yields automatically.',
     destination: 'https://apeswap.finance/maximizers',
   },
   pools: {
     title: 'Pools',
-    description: 'Earn up to ',
+    description: 'Discover the next gem!',
     destination: 'https://apeswap.finance/pools',
   },
   lending: {
     title: 'Lending',
-    description: 'Supply, borrow, and earn',
+    description: 'Supply, borrow, and earn.',
     destination: 'https://lending.apeswap.finance',
   },
   gnana: {
     title: 'Gnana',
-    description: 'Unlock exclusive utility',
+    description: 'Unlock exclusive utility.',
     destination: 'https://apeswap.finance/gnana',
   },
   compound: {
     title: 'Compound',
-    description: 'Earn up to ',
+    description: 'Stake your rewards to earn more!',
     destination: 'https://apeswap.finance/pools',
   },
 }
