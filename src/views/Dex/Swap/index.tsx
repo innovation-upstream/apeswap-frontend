@@ -34,7 +34,7 @@ import RecentTransactions from '../components/RecentTransactions'
 import { useBananaAddress } from 'hooks/useAddress'
 
 const Swap: React.FC = () => {
-  const { buying: showBuyingModal, selling: showSellingModal } = useIsModalShown()
+  const { buying: showBuyingModal } = useIsModalShown()
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
@@ -73,7 +73,6 @@ const Swap: React.FC = () => {
   const [inputCurrency, outputCurrency] = [useCurrency(INPUT?.currencyId), useCurrency(OUTPUT?.currencyId)]
   const bananaToken = useCurrency(useBananaAddress())
   const buyingBanana = outputCurrency === bananaToken
-  const sellingBanana = inputCurrency === bananaToken
 
   const {
     wrapType,
@@ -142,10 +141,6 @@ const Swap: React.FC = () => {
 
   const { routerType } = bestRoute
 
-  const displaySellCircular = useCallback(
-    () => showSellingModal && history.push({ search: '?modal=circular-sell' }),
-    [history, showSellingModal],
-  )
   const displayBuyCircular = useCallback(
     () => showBuyingModal && history.push({ search: '?modal=circular-buy' }),
     [history, showBuyingModal],
@@ -173,7 +168,6 @@ const Swap: React.FC = () => {
             token2Amount: Number(trade?.outputAmount.toSignificant(6)),
           },
         })
-        if (sellingBanana && hash) displaySellCircular()
         if (buyingBanana && hash) displayBuyCircular()
       })
       .catch((error) => {
@@ -193,10 +187,8 @@ const Swap: React.FC = () => {
     chainId,
     t,
     routerType,
-    sellingBanana,
     buyingBanana,
     displayBuyCircular,
-    displaySellCircular,
   ])
 
   // token warning stuff
