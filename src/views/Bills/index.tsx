@@ -9,11 +9,14 @@ import { useTranslation } from 'contexts/Localization'
 import BillsListView from './components/BillsListView'
 import UserBillViews from './components/UserBillViews'
 import BillMenu from './components/Menu'
+import { BannerTypes } from 'components/Banner/types'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const Bills: React.FC = () => {
   useSetBills()
   usePollBills()
   usePollUserBills()
+  const { chainId } = useActiveWeb3React()
   const bills = useBills()
   const { t } = useTranslation()
   const [query, setQuery] = useState('')
@@ -62,7 +65,7 @@ const Bills: React.FC = () => {
       >
         <ListViewLayout>
           <Banner
-            banner="treasury-bills"
+            banner={`${chainId}-treasury-bills` as BannerTypes}
             title={t('Treasury Bills')}
             link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills"
             listViewBreak

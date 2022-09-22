@@ -33,12 +33,13 @@ export const useDualFarms = (account): DualFarm[] => {
   const { slowRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
+  const farms = useSelector((state: State) => state.dualFarms.data)
+  const farmsLoaded = farms.length > 0
   useEffect(() => {
     if (account && (chainId === ChainId.MATIC || chainId === ChainId.MATIC_TESTNET)) {
       dispatch(fetchDualFarmUserDataAsync(chainId, account))
     }
-  }, [account, dispatch, slowRefresh, chainId])
-  const farms = useSelector((state: State) => state.dualFarms.data)
+  }, [account, dispatch, slowRefresh, chainId, farmsLoaded])
   return farms
 }
 
