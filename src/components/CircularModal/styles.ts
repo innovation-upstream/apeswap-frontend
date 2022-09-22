@@ -6,7 +6,6 @@ export const modalProps = {
     width: ['280px'],
     maxWidth: '440px',
     height: ['555px', '700px'],
-    // height: ['calc(100vh - 18%)', 'auto'],
   },
 }
 
@@ -15,8 +14,6 @@ export const circular: Record<string, ThemeUIStyleObject> = {
     flexDirection: 'column',
     paddingTop: [20, 30],
     paddingBottom: [20, 30],
-    // justifyContent: 'space-between',
-    // height: ['90%', 'auto'],
     overflowY: 'auto',
   },
   supporting: {
@@ -70,8 +67,6 @@ export const circular: Record<string, ThemeUIStyleObject> = {
     margin: '0 0 10px 0',
     ':hover': {
       cursor: 'pointer',
-      // boxShadow: '0 0 0.8em gold',
-
       border: '2px solid #FFCD38',
       boxShadow: 'inset 0px 0px 10px #FFBD00',
     },
