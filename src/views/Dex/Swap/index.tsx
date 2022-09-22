@@ -142,8 +142,15 @@ const Swap: React.FC = () => {
 
   const { routerType } = bestRoute
 
+  const displaySellCircular = useCallback(
+    () => showSellingModal && history.push({ search: '?modal=circular-sell' }),
+    [history, showSellingModal],
+  )
+  const displayBuyCircular = useCallback(
+    () => showBuyingModal && history.push({ search: '?modal=circular-buy' }),
+    [history, showBuyingModal],
+  )
   const handleSwap = useCallback(() => {
-    const displaySellCircular = () => showSellingModal && history.push({ search: '?modal=circular-sell' })
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
       return
     }
@@ -167,6 +174,7 @@ const Swap: React.FC = () => {
           },
         })
         if (sellingBanana && hash) displaySellCircular()
+        if (buyingBanana && hash) displayBuyCircular()
       })
       .catch((error) => {
         setSwapState({
@@ -186,8 +194,9 @@ const Swap: React.FC = () => {
     t,
     routerType,
     sellingBanana,
-    showSellingModal,
-    history,
+    buyingBanana,
+    displayBuyCircular,
+    displaySellCircular,
   ])
 
   // token warning stuff
@@ -241,11 +250,6 @@ const Swap: React.FC = () => {
     true,
     'swapConfirmModal',
   )
-
-  useEffect(() => {
-    const displayBuyCircular = () => showBuyingModal && txHash && history.push({ search: '?modal=circular-buy' })
-    buyingBanana && displayBuyCircular()
-  }, [history, buyingBanana, showBuyingModal, txHash])
 
   return (
     <Flex sx={dexStyles.pageContainer}>
