@@ -27,12 +27,12 @@ const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
   const phModal = action === MODAL_TYPE.POOL_HARVEST
   const maximizer = type === CTA_TYPE.MAXIMIZERS
   const pool = type === CTA_TYPE.POOLS
-  const lending = type === CTA_TYPE.LENDING
   const compound = type === CTA_TYPE.COMPOUND
   const gnana = type === CTA_TYPE.GNANA
 
   const iconUrl = `url(/images/cta/${compound ? 'pools' : type}-icon.svg)`
   const bannersUrl = `url(/images/cta/${compound ? 'pools' : type}-banner.svg)`
+  const gnanaDesktop = `url(/images/cta/gnana-lg-banner.svg)`
   const goToDestination = () => window.open(content.destination, '_blank')
 
   // TO DO - GET THESE DATA AND DISPLAY
@@ -51,8 +51,8 @@ const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
     <Flex
       sx={{
         ...circular.ctaCard,
-        backgroundImage: bannersUrl,
-        // backgroundImage: [bannersUrl, gnana && iconUrl],
+        backgroundImage: [bannersUrl, gnana && gnanaDesktop],
+        backgroundPosition: gnana && 'center',
         color: ((pool || compound) && 'brown') || 'primaryBright',
         '-webkit-transform': (compound || (maximizer && phModal)) && 'scaleX(-1)',
         transform: (compound || (maximizer && phModal)) && 'scaleX(-1)',
@@ -76,16 +76,14 @@ const CTACard: React.FC<CTACardProps> = ({ type, action, data }) => {
           <Text sx={circular.ctaTitle}>{t(`${content.title.toUpperCase()}`)}</Text>
           <Text sx={circular.ctaDescription}>{t(`${formattedDescription}`)}</Text>
         </Flex>
-        {!gnana ? (
+        {!gnana && (
           <Flex
             sx={{
               ...circular.bannerIcon,
               backgroundImage: iconUrl,
-              '-webkit-transform': lending && 'scaleX(-1)',
-              transform: lending && 'scaleX(-1)',
             }}
           />
-        ) : null}
+        )}
       </Flex>
     </Flex>
   )
