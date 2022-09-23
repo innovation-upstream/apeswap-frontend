@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
-import { getEtherscanLink } from 'utils'
+import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSousStake } from 'hooks/useStake'
 import { fetchPoolsUserDataAsync, updateUserPendingReward } from 'state/pools'
@@ -42,7 +42,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
   const { t } = useTranslation()
 
   const harvestBanana = earnTokenSymbol === bananaToken.symbol
-  const displayPHCircular = () => isPHShown && harvestBanana && history.push({ search: '?modal=circular-ph' })
+  const displayPHCircular = () => isPHShown && harvestBanana && showCircular(chainId, history, '?modal=circular-ph')
 
   const handleHarvest = async () => {
     setPendingTrx(true)

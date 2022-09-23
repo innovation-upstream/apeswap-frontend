@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useToast } from 'state/hooks'
 import { fetchVaultUserDataAsync } from 'state/vaults'
-import { getEtherscanLink } from 'utils'
+import { getEtherscanLink, showCircular } from 'utils'
 import useHarvestAllMaximizer from 'views/Vaults/hooks/useHarvestAllMaximizer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAppDispatch } from 'state'
@@ -25,7 +25,7 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ pids, disabled }) => {
   const { t } = useTranslation()
 
   const { generalHarvest: isGHShown } = useIsModalShown()
-  const displayGHCircular = () => isGHShown && history.push({ search: '?modal=circular-gh' })
+  const displayGHCircular = () => isGHShown && showCircular(chainId, history, '?modal=circular-gh')
 
   const handleHarvestAll = async () => {
     setPendingTrx(true)

@@ -11,6 +11,7 @@ import { WrapType } from 'hooks/useWrapCallback'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useIsModalShown, useUserSlippageTolerance } from 'state/user/hooks'
+import { showCircular } from 'utils'
 import { warningSeverity } from 'utils/prices'
 import { styles } from './styles'
 import { DexActionProps } from './types'
@@ -35,13 +36,13 @@ const DexActions: React.FC<DexActionProps> = ({
   inputCurrency,
 }) => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const history = useHistory()
   const { selling: showSellingModal } = useIsModalShown()
   const bananaToken = useCurrency(useBananaAddress())
 
   const sellingBanana = inputCurrency === bananaToken
-  const displaySellCircular = () => showSellingModal && history.push({ search: '?modal=circular-sell' })
+  const displaySellCircular = () => showSellingModal && showCircular(chainId, history, '?modal=circular-sell')
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()

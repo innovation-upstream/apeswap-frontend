@@ -32,6 +32,7 @@ import ExpertModeRecipient from './components/ExpertModeRecipient'
 import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
 import RecentTransactions from '../components/RecentTransactions'
 import { useBananaAddress } from 'hooks/useAddress'
+import { showCircular } from 'utils'
 
 const Swap: React.FC = () => {
   const { buying: showBuyingModal } = useIsModalShown()
@@ -142,8 +143,8 @@ const Swap: React.FC = () => {
   const { routerType } = bestRoute
 
   const displayBuyCircular = useCallback(
-    () => showBuyingModal && history.push({ search: '?modal=circular-buy' }),
-    [history, showBuyingModal],
+    () => showBuyingModal && showCircular(chainId, history, '?modal=circular-buy'),
+    [history, showBuyingModal, chainId],
   )
   const handleSwap = useCallback(() => {
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
-import { getEtherscanLink } from 'utils'
+import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
 import { fetchVaultUserDataAsync } from 'state/vaults'
@@ -29,7 +29,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, earnTokenSymbol, di
   const history = useHistory()
 
   const { generalHarvest: isGHShown } = useIsModalShown()
-  const displayGHCircular = () => isGHShown && history.push({ search: '?modal=circular-gh' })
+  const displayGHCircular = () => isGHShown && showCircular(chainId, history, '?modal=circular-gh')
 
   const handleHarvest = async () => {
     setPendingTrx(true)

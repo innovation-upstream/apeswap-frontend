@@ -8,7 +8,7 @@ import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
 import { useIsModalShown } from 'state/user/hooks'
 import { useToast } from 'state/hooks'
-import { getEtherscanLink } from 'utils'
+import { getEtherscanLink, showCircular } from 'utils'
 import { ActionContainer } from './styles'
 
 interface HarvestActionsProps {
@@ -26,7 +26,7 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
   const { toastSuccess } = useToast()
 
   const { generalHarvest: isGHShown } = useIsModalShown()
-  const displayGHCircular = () => isGHShown && history.push({ search: '?modal=circular-gh' })
+  const displayGHCircular = () => isGHShown && showCircular(chainId, history, '?modal=circular-gh')
 
   return (
     <ActionContainer>

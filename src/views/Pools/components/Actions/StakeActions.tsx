@@ -8,7 +8,7 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
 import { useAppDispatch } from 'state'
-import { getEtherscanLink } from 'utils'
+import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
@@ -58,7 +58,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const history = useHistory()
 
   const harvestBanana = earnTokenSymbol === bananaToken.symbol
-  const displayPHCircular = () => isPHShown && harvestBanana && history.push({ search: '?modal=circular-ph' })
+  const displayPHCircular = () => isPHShown && harvestBanana && showCircular(chainId, history, '?modal=circular-gh')
 
   const [onPresentDeposit] = useModal(
     <DepositModal

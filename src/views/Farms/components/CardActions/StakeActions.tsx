@@ -16,7 +16,7 @@ import useUnstake from 'hooks/useUnstake'
 import { useToast } from 'state/hooks'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
-import { getEtherscanLink } from 'utils'
+import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import ListViewContent from 'components/ListViewContent'
@@ -49,7 +49,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
   const { t } = useTranslation()
   const history = useHistory()
   const { generalHarvest: isGHShown } = useIsModalShown()
-  const displayGHCircular = () => isGHShown && history.push({ search: '?modal=circular-gh' })
+  const displayGHCircular = () => isGHShown && showCircular(chainId, history, '?modal=circular-gh')
 
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
@@ -66,7 +66,6 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
               text: t('View Transaction'),
               url: getEtherscanLink(trxHash, 'transaction', chainId),
             })
-            if (trxHash) displayGHCircular()
           })
           .catch((e) => {
             console.error(e)
@@ -92,6 +91,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
                 <Text> {t('View Transaction')} </Text>
               </LinkExternal>,
             )
+            if (trxHash) displayGHCircular()
           })
           .catch((e) => {
             console.error(e)

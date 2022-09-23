@@ -8,7 +8,7 @@ import { useToast } from 'state/hooks'
 import { useAppDispatch } from 'state'
 import { useVaultStake } from 'views/Vaults/hooks/useVaultStake'
 import { useVaultUnstake } from 'views/Vaults/hooks/useVaultUnstake'
-import { getEtherscanLink } from 'utils'
+import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
 import DepositModal from '../Modals/DepositModal'
@@ -78,7 +78,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
     />,
   )
 
-  const displayGHCircular = () => history.push({ search: '?modal=circular-gh' })
+  const displayGHCircular = () => showGHModal && showCircular(chainId, history, '?modal=circular-gh')
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
       max={stakedBalance}
@@ -93,7 +93,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
               text: 'View Transaction',
               url: getEtherscanLink(trxHash, 'transaction', chainId),
             })
-            if (showGHModal && trxHash) displayGHCircular()
+            if (trxHash) displayGHCircular()
           })
           .catch((e) => {
             console.error(e)
