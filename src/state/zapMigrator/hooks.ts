@@ -1,18 +1,26 @@
 import { Currency, CurrencyAmount, JSBI, Pair, Percent, SmartRouter, TokenAmount } from '@ape.swap/sdk'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { usePair } from 'hooks/usePairs'
 import { useTranslation } from 'contexts/Localization'
 import useTotalSupply from 'hooks/useTotalSupply'
-
 import { AppDispatch, AppState } from '../index'
 import { tryParseAmount } from '../swap/hooks'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput, setMigrator, MigratorZap } from './actions'
 import { useLastZapMigratorRouter, useUserSlippageTolerance } from 'state/user/hooks'
 import { calculateSlippageAmount } from 'utils'
+import { useMultipleContractSingleData, useSingleCallResult } from 'lib/hooks/multicall'
+import { useMigratorBalanceCheckerContract } from 'hooks/useContract'
+import { CHEF_ADDRESSES } from 'config/constants/chains'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { Interface } from '@ethersproject/abi'
+import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import BigNumber from 'bignumber.js'
+
+const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)
 
 export function useZapMigratorState(): AppState['zapMigrator'] {
   return useSelector<AppState, AppState['zapMigrator']>((state) => state.zapMigrator)
@@ -195,5 +203,86 @@ export function useZapMigratorActionHandlers(): {
   return {
     onUserInput,
     onUserSetMigrator,
+  }
+}
+
+export const useMigratorBalances = (): {
+  valid: boolean
+  loading: boolean
+  results: {
+    smartRouter: SmartRouter
+    chefAddress: string
+    lpAddress: string
+    token0: { address: string; symbol: string; decimals: number; reserves: number }
+    token1: { address: string; symbol: string; decimals: string; reserves: number }
+    pid: number
+    walletBalance: string
+    stakedBalance: string
+  }[]
+} => {
+  const { account, chainId } = useActiveWeb3React()
+  const migratorBalanceCheckerContract = useMigratorBalanceCheckerContract()
+  // The default gasRequired is too small for this call so we have to up the limit.
+  // default variables can be seen here https://github.com/Uniswap/redux-multicall/blob/96dde8853e4990d06735c29e1eb1a76f748c5258/src/constants.ts
+  const options = { gasRequired: 10000000 }
+  const callResult = useSingleCallResult(migratorBalanceCheckerContract, 'getBalance', [account], options)
+  const { result, valid, loading: balanceLoading } = callResult
+  // List of LP addresses
+  const loLpAddresses = result ? result.pBalances.flatMap((b) => b.balances.map((item) => item.lp)) : []
+  // List of Token addresses
+  const loTokenAddresses = result
+    ? result.pBalances.flatMap((b) => b.balances.flatMap((item) => [item.token0, item.token1]))
+    : []
+
+  const lpCallResults = useMultipleContractSingleData(loLpAddresses, PAIR_INTERFACE, 'getReserves')
+  const tokenSymbolResults = useMultipleContractSingleData(loTokenAddresses, PAIR_INTERFACE, 'symbol')
+  const tokenDecimalResults = useMultipleContractSingleData(loTokenAddresses, PAIR_INTERFACE, 'decimals')
+
+  const sortedReserves = loLpAddresses.map((address, i) => {
+    return { address, value: lpCallResults[i]?.result?.[0].toString() }
+  })
+  const sortedSymbols = loTokenAddresses.map((address, i) => {
+    return { address, value: tokenSymbolResults[i]?.result?.[0] }
+  })
+  const sortedDecimals = loTokenAddresses.map((address, i) => {
+    return { address, value: tokenDecimalResults[i]?.result?.[0] }
+  })
+
+  const balanceData = useMemo(() => {
+    return result
+      ? result.pBalances.flatMap((b, i) => {
+          const chef = CHEF_ADDRESSES[chainId][b.stakingAddress] as SmartRouter
+          return b.balances.map(([pid, lp, token0, token1, total, wallet, staked]) => {
+            return {
+              smartRouter: chef,
+              chefAddress: b.stakingAddress,
+              lpAddress: lp,
+              token0: {
+                address: token0,
+                symbol: sortedSymbols.find((item) => item.address === token0)?.value,
+                decimals: sortedDecimals.find((item) => item.address === token0)?.value,
+                reserves: sortedReserves.find((item) => item.address === lp)?.value,
+              },
+              token1: {
+                address: token1,
+                symbol: sortedSymbols.find((item) => item.address === token1)?.value,
+                decimals: sortedDecimals.find((item) => item.address === token1)?.value,
+                reserves: sortedReserves.find((item) => item.address === lp)?.value,
+              },
+              pid: parseInt(pid.toString()),
+              walletBalance: getFullDisplayBalance(new BigNumber(wallet.toString())),
+              stakedBalance: getFullDisplayBalance(new BigNumber(staked.toString())),
+              totalBalance: getFullDisplayBalance(new BigNumber(total.toString())),
+            }
+          })
+        })
+      : []
+  }, [result, sortedReserves, chainId, sortedSymbols, sortedDecimals])
+
+  return {
+    valid,
+    loading:
+      balanceLoading || lpCallResults[0]?.loading || tokenSymbolResults[0]?.loading || tokenDecimalResults[0]?.loading,
+    results: balanceData,
   }
 }

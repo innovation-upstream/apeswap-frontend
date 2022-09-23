@@ -119,54 +119,6 @@ export function useAllSmartPairs(currencies: [Currency | undefined, Currency | u
   return pairResults
 }
 
-export function useMigratePairs(
-  currencies: [Currency | undefined, Currency | undefined][],
-  smartRouter: SmartRouter[],
-): [PairState, Pair | null][] {
-  const { chainId } = useActiveWeb3React()
-
-  const tokens = useMemo(
-    () =>
-      currencies.map(([currencyA, currencyB]) => [
-        wrappedCurrency(currencyA, chainId),
-        wrappedCurrency(currencyB, chainId),
-      ]),
-    [chainId, currencies],
-  )
-
-  const pairAddresses = useMemo(
-    () =>
-      tokens.map(([tokenA, tokenB], i) => {
-        return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB, smartRouter[i]) : undefined
-      }),
-    [tokens, smartRouter],
-  )
-
-  const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
-
-  return useMemo(() => {
-    return results.map((result, i) => {
-      const { result: reserves, loading } = result
-      const tokenA = tokens[i][0]
-      const tokenB = tokens[i][1]
-
-      if (loading) return [PairState.LOADING, null]
-      if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
-      if (!reserves) return [PairState.NOT_EXISTS, null]
-      const { reserve0, reserve1 } = reserves
-      const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
-      return [
-        PairState.EXISTS,
-        new Pair(
-          new TokenAmount(token0, reserve0.toString()),
-          new TokenAmount(token1, reserve1.toString()),
-          smartRouter[i],
-        ),
-      ]
-    })
-  }, [results, tokens, smartRouter])
-}
-
 export function usePair(tokenA?: Currency, tokenB?: Currency, smartRouter?: SmartRouter): [PairState, Pair | null] {
   return usePairs([[tokenA, tokenB]], smartRouter || SmartRouter.APE)[0]
 }

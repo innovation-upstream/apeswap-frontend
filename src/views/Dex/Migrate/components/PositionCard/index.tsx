@@ -1,79 +1,70 @@
 /** @jsxImportSource theme-ui */
-import React, { useCallback, useEffect, useState } from 'react'
-import { JSBI, Pair, Percent, SmartRouter } from '@ape.swap/sdk'
+import React, { useState } from 'react'
+import { SmartRouter, Token } from '@ape.swap/sdk'
 import { Text, Flex, CardProps, Button, Svg } from '@ape.swap/uikit'
 import { Divider } from 'theme-ui'
 import { AnimatePresence, motion } from 'framer-motion'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
 import { useTranslation } from 'contexts/Localization'
 import useTotalSupply from '../../../../../hooks/useTotalSupply'
-
-import { useTokenBalance } from '../../../../../state/wallet/hooks'
-import { unwrappedToken } from '../../../../../utils/wrappedCurrency'
-
-import CurrencyLogo from 'components/Logo/CurrencyLogo'
-import { DoubleCurrencyLogo } from 'components/Logo'
 import Dots from 'components/Loader/Dots'
 import { styles } from './styles'
 import { Link } from 'react-router-dom'
-import { currencyId } from 'utils/currencyId'
 import { useZapMigratorActionHandlers } from 'state/zapMigrator/hooks'
 import { useLastZapMigratorRouter } from 'state/user/hooks'
+import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
+import { useTokenPriceUsd } from 'hooks/useTokenPriceUsd'
+import { wrappedToNative } from 'utils'
 
 interface PositionCardProps extends CardProps {
-  pair: Pair
+  smartRouter: SmartRouter
+  chefAddress: string
+  lpAddress: string
+  token0: { address: string; symbol: string; decimals: number; reserves: number }
+  token1: { address: string; symbol: string; decimals: string; reserves: number }
+  pid: number
+  walletBalance: string
+  stakedBalance: string
+  inWallet?: boolean
   showUnwrapped?: boolean
 }
 
-export default function FullPositionCard({ pair }: PositionCardProps) {
-  const { account, chainId } = useActiveWeb3React()
+export default function FullPositionCard({
+  token0,
+  token1,
+  smartRouter,
+  lpAddress,
+  inWallet,
+  walletBalance,
+  stakedBalance,
+}: PositionCardProps) {
+  const { chainId } = useActiveWeb3React()
 
-  const [currencyPrice, setCurrencyPrice] = useState<number>(null)
+  const lpToken = new Token(chainId, lpAddress, 18)
+
+  const userBalance = inWallet ? walletBalance : stakedBalance
 
   const { onUserSetMigrator } = useZapMigratorActionHandlers()
-
-  const currency0 = unwrappedToken(pair.token0)
-  const currency1 = unwrappedToken(pair.token1)
-  const liquidityToken = pair?.liquidityToken
-  const smartRouter = pair?.router
 
   const [showMore, setShowMore] = useState(false)
   const { t } = useTranslation()
 
-  const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
-  const totalPoolTokens = useTotalSupply(pair.liquidityToken)
+  const totalPoolTokens = useTotalSupply(lpToken)
   const [, updateLastZapMigratorRouter] = useLastZapMigratorRouter()
 
   const onSetMigrator = () => {
-    onUserSetMigrator(pair.liquidityToken.address, smartRouter)
+    onUserSetMigrator(lpAddress, smartRouter)
     updateLastZapMigratorRouter(smartRouter)
   }
 
-  useEffect(() => {
-    const fetchCurrencyTokenPrice = async () => {
-      const tokenPriceReturned = await getTokenUsdPrice(chainId, pair?.liquidityToken?.address, 18, true, false)
-      setCurrencyPrice(tokenPriceReturned)
-    }
-    fetchCurrencyTokenPrice()
-  }, [pair, chainId])
+  const currencyPrice = useTokenPriceUsd(chainId, lpToken, true)
 
-  const poolTokenPercentage =
-    !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
-      ? new Percent(userPoolBalance.raw, totalPoolTokens.raw)
-      : undefined
+  const poolTokenPercentage = parseFloat(userBalance) / parseFloat(totalPoolTokens?.raw.toString())
 
-  const [token0Deposited, token1Deposited] =
-    !!pair &&
-    !!totalPoolTokens &&
-    !!userPoolBalance &&
-    // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-    JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
-      ? [
-          pair.getLiquidityValue(pair.token0, totalPoolTokens, userPoolBalance, false),
-          pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false),
-        ]
-      : [undefined, undefined]
+  const [token0Deposited, token1Deposited] = [
+    poolTokenPercentage * token0.reserves,
+    poolTokenPercentage * token1.reserves,
+  ]
 
   return (
     <Flex sx={{ ...styles.poolContainer }} onClick={() => setShowMore((prev) => !prev)}>
@@ -81,21 +72,21 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
         <Flex sx={{ ...styles.titleContainer }}>
           <Flex sx={{ alignItems: 'center' }}>
             <Flex sx={{ mr: '7.5px' }}>
-              <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
+              <ServiceTokenDisplay token1={token0.symbol} token2={token1.symbol} noEarnToken size={20} />
             </Flex>
             <Flex sx={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' }}>
               <Text size="10px" weight={400} sx={{ lineHeight: '5px' }}>
-                {liquidityToken?.symbol}
+                {smartRouter} LP
               </Text>
               <Text size="12px" weight={700}>
-                {!currency0 || !currency1 ? (
+                {!token0 || !token1 ? (
                   <Dots>Loading</Dots>
                 ) : (
-                  `${currency0.getSymbol(chainId)} - ${currency1.getSymbol(chainId)}`
+                  `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`
                 )}
               </Text>
               <Text size="10px" weight={400} sx={{ lineHeight: '5px' }}>
-                {currencyPrice ? `$${(currencyPrice * parseFloat(userPoolBalance?.toSignificant(4))).toFixed(2)}` : '-'}
+                {currencyPrice ? `$${(currencyPrice * parseFloat(userBalance)).toFixed(2)}` : '-'}
               </Text>
             </Flex>
           </Flex>
@@ -104,7 +95,9 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
           <Button
             as={Link}
             onClick={onSetMigrator}
-            to={`migrate/${currencyId(currency0)}/${currencyId(currency1)}`}
+            to={
+              inWallet ? `migrate/${token0.address}/${token1.address}` : `unstake/${token0.address}/${token1.address}`
+            }
             sx={{ height: '40px', mr: '10px' }}
           >
             <Svg icon="trade" width="15px" />
@@ -130,9 +123,9 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
                 <Text size="14px" weight={500}>
                   {t('Total pooled tokens')}
                 </Text>
-                {userPoolBalance ? (
+                {userBalance ? (
                   <Text size="14px" weight={700}>
-                    {userPoolBalance?.toSignificant(4)}
+                    {parseFloat(userBalance)?.toFixed(6)}
                   </Text>
                 ) : (
                   '-'
@@ -140,14 +133,14 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
               </Flex>
               <Flex sx={{ justifyContent: 'space-between', margin: '2.5px 0px' }}>
                 <Text size="14px" weight={500}>
-                  {t('Pooled')} {currency0.getSymbol(chainId)}
+                  {t('Pooled')} {wrappedToNative(token0.symbol)}
                 </Text>
                 {token0Deposited ? (
                   <Flex sx={{ alignItems: 'center' }}>
                     <Text size="14px" weight={700} mr="8px">
-                      {token0Deposited?.toSignificant(6)}
+                      {token0Deposited?.toFixed(6)}
                     </Text>
-                    <CurrencyLogo size="20px" currency={currency0} />
+                    <ServiceTokenDisplay token1={token0.symbol} size={20} />
                   </Flex>
                 ) : (
                   '-'
@@ -155,14 +148,14 @@ export default function FullPositionCard({ pair }: PositionCardProps) {
               </Flex>
               <Flex sx={{ justifyContent: 'space-between', margin: '2.5px 0px' }}>
                 <Text size="14px" weight={500}>
-                  {t('Pooled')} {currency1.getSymbol(chainId)}
+                  {t('Pooled')} {wrappedToNative(token1.symbol)}
                 </Text>
                 {token1Deposited ? (
                   <Flex sx={{ alignItems: 'center' }}>
                     <Text size="14px" weight={700} mr="8px">
-                      {token1Deposited?.toSignificant(6)}
+                      {token1Deposited?.toFixed(6)}
                     </Text>
-                    <CurrencyLogo size="20px" currency={currency1} />
+                    <ServiceTokenDisplay token1={token1.symbol} size={20} />
                   </Flex>
                 ) : (
                   '-'

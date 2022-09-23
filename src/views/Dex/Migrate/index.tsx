@@ -7,103 +7,59 @@ import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import FullPositionCard from './components/PositionCard'
-import { useTokenBalancesWithLoadingIndicator } from '../../../state/wallet/hooks'
-import { useAllSmartPairs, useMigratePairs } from '../../../hooks/usePairs'
-import { toV2LiquidityToken, useTrackedTokenPairs, useUserRecentTransactions } from '../../../state/user/hooks'
+import { useUserRecentTransactions } from '../../../state/user/hooks'
 import { dexStyles } from '../styles'
 import DexNav from '../components/DexNav'
 import { styles } from '../AddLiquidity/styles'
 import RecentTransactions from '../components/RecentTransactions'
-import { PRIORITY_SMART_ROUTERS } from 'config/constants/chains'
+import LiquiditySubNav from '../components/LiquiditySubNav'
+import MyPositions from '../components/MyPositions'
+import { useMigratorBalances } from 'state/zapMigrator/hooks'
 
 export default function Migrate() {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const [recentTransactions] = useUserRecentTransactions()
   const { t } = useTranslation()
-  const filteredSmartRouters = useMemo(
-    () => PRIORITY_SMART_ROUTERS[chainId].filter((smartRouter) => smartRouter !== SmartRouter.APE),
-    [chainId],
-  )
 
-  // fetch the user's balances of all tracked V2 LP tokens
-  const trackedTokenPairs = useTrackedTokenPairs()
-  const tokenPairsWithLiquidityTokens = useMemo(
-    () =>
-      trackedTokenPairs.flatMap((tokens) =>
-        filteredSmartRouters.map((smartRouter) => {
-          return { liquidityToken: toV2LiquidityToken(tokens, smartRouter), tokens, smartRouter }
-        }),
-      ),
-    [trackedTokenPairs, filteredSmartRouters],
-  )
-  const liquidityTokens = useMemo(
-    () => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken),
-    [tokenPairsWithLiquidityTokens],
-  )
-  const [v2PairsBalances, fetchingV2PairBalances] = useTokenBalancesWithLoadingIndicator(
-    account ?? undefined,
-    liquidityTokens,
-  )
-
-  // fetch the reserves for all V2 pools in which the user has a balance
-  const liquidityTokensWithBalances = useMemo(
-    () =>
-      tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
-        v2PairsBalances[liquidityToken.address]?.greaterThan('0'),
-      ),
-    [tokenPairsWithLiquidityTokens, v2PairsBalances],
-  )
-
-  const v2Pairs = useMigratePairs(
-    liquidityTokensWithBalances.map(({ tokens }) => tokens),
-    liquidityTokensWithBalances.map(({ smartRouter }) => smartRouter),
-  )
-
-  console.log(v2Pairs)
-
-  const v2IsLoading =
-    fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some((V2Pair) => !V2Pair)
-
-  const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
-
-  const renderBody = () => {
-    if (!account) {
-      return <></>
-    }
-    if (v2IsLoading) {
-      return (
-        <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Spinner size={200} />
-        </Flex>
-      )
-    }
-    if (allV2PairsWithLiquidity?.length > 0) {
-      return allV2PairsWithLiquidity.map((v2Pair, index) => (
-        <FullPositionCard
-          key={v2Pair.liquidityToken.address}
-          pair={v2Pair}
-          mb={index < allV2PairsWithLiquidity.length - 1 ? '16px' : 0}
-        />
-      ))
-    }
-    return (
-      <Flex sx={{ justifyContent: 'center' }}>
-        <Text textAlign="center">{t('No liquidity found.')}</Text>
-      </Flex>
-    )
-  }
+  const { loading, valid, results } = useMigratorBalances()
+  const walletBalances = valid ? results.filter((bal) => parseFloat(bal.walletBalance) > 0.0) : []
+  const stakedBalances = valid ? results.filter((bal) => parseFloat(bal.stakedBalance) > 0.0) : []
 
   return (
     <Flex sx={{ ...dexStyles.pageContainer }}>
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={{ ...dexStyles.dexContainer }}>
           <DexNav />
-          <Flex sx={{ height: '70px' }} />
+          <MyPositions />
+          <LiquiditySubNav />
           <Flex sx={{ flexDirection: 'column', maxWidth: '100%', width: '420px' }}>
             <Flex sx={{ ...styles.topContainer }}>{!account && <UnlockButton fullWidth mt="10px" />}</Flex>
-            {renderBody()}
+            {loading || !valid ? (
+              <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Spinner size={100} />
+              </Flex>
+            ) : (
+              <Flex sx={{ flexDirection: 'column' }}>
+                {walletBalances && (
+                  <Text mb="15px" ml="1px">
+                    {t('Wallet')} ({walletBalances.length})
+                  </Text>
+                )}
+                {walletBalances.map((bal) => (
+                  <FullPositionCard {...bal} inWallet key={bal.lpAddress} />
+                ))}
+                {stakedBalances && (
+                  <Text margin="15px 0px" ml="1px">
+                    {t('Staked')} ({stakedBalances.length})
+                  </Text>
+                )}
+                {stakedBalances.map((bal) => (
+                  <FullPositionCard {...bal} key={bal.lpAddress} />
+                ))}
+              </Flex>
+            )}
           </Flex>
-          {account && !v2IsLoading && (
+          {account && (
             <Flex sx={{ flexDirection: 'column', alignItems: 'center', margin: '20px 0px 10px 0px' }}>
               <Text mb="8px">{t('Dont see a pool you joined?')}</Text>
               <Text style={{ textDecoration: 'underline' }} mb="8px" as={Link} to="/find">

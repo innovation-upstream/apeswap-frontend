@@ -57,6 +57,9 @@ export const jungleStake = async (jungleChefContract: JungleChef, amount) => {
 }
 
 export const unstake = async (masterChefContract: Masterchef, pid, amount) => {
+  console.log(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+  console.log(masterChefContract)
+  console.log(pid)
   if (pid === 0) {
     return masterChefContract
       .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
