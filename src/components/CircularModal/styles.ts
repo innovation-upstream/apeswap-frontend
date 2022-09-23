@@ -76,8 +76,8 @@ export const circular: Record<string, ThemeUIStyleObject> = {
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: ['20px', '38px'],
-    paddingRight: ['20px', '38px'],
+    paddingLeft: ['20px', '35px'],
+    paddingRight: ['20px', '35px'],
   },
   bannerIcon: {
     width: ['60px', '100px'],
