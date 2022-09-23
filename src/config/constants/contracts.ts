@@ -6,6 +6,7 @@ const contracts = {
     [ChainId.BSC]: '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95',
     [ChainId.MATIC]: '0x5d47baba0d66083c52009271faf3f50dcc01023c',
     [ChainId.MAINNET]: '0x92df60c51c710a1b1c20e42d85e221f3a1bfc7f2',
+    [ChainId.TLOS]: '0x667fd83e24ca1d935d36717d305d54fa0cac991c',
   },
   syrup: {
     [ChainId.BSC_TESTNET]: '0xAf1B22cBDbB502B2089885bcd230255f8B80243b',
