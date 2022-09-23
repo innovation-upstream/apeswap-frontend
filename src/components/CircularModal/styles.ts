@@ -65,6 +65,7 @@ export const circular: Record<string, ThemeUIStyleObject> = {
     borderRadius: '10px',
     height: ['75px', '120px'],
     margin: '0 0 10px 0',
+    border: '2px solid transparent',
     ':hover': {
       cursor: 'pointer',
       border: '2px solid #FFCD38',
@@ -75,8 +76,8 @@ export const circular: Record<string, ThemeUIStyleObject> = {
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: ['20px', '40px'],
-    paddingRight: ['20px', '40px'],
+    paddingLeft: ['20px', '38px'],
+    paddingRight: ['20px', '38px'],
   },
   bannerIcon: {
     width: ['60px', '100px'],

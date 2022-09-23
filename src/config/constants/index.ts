@@ -166,22 +166,22 @@ export const MODAL_INFO = {
   selling: {
     title: 'Selling BANANA?',
     supporting: 'Before You Sell...',
-    description: 'You can put your BANANA to work to earn more rewards:',
+    description: 'Have you tried these products?',
   },
   buying: {
     title: "You've Got BANANA!",
-    supporting: 'Did You Know?',
-    description: 'You can put your BANANA to work to earn more rewards:',
+    supporting: "Now You're Ready...",
+    description: 'Put your new BANANA to work!',
   },
   generalHarvest: {
     title: "You've Earned BANANA!",
     supporting: 'Did You Know?',
-    description: 'You can put your BANANA to work to earn more rewards:',
+    description: 'You can use your BANANA to earn more rewards:',
   },
   poolHarvest: {
     title: "You've Earned BANANA!",
     supporting: 'Did You Know?',
-    description: 'You can put your BANANA to work to earn more rewards:',
+    description: 'You can use your BANANA to earn more rewards:',
   },
 }
 
@@ -189,7 +189,7 @@ export const MODAL_INFO = {
 export const CTA_CARD_INFO = {
   maximizers: {
     title: 'Maximizers',
-    description: 'Maximize your yields automatically.',
+    description: 'Maximize your yields automatically!',
     destination: 'https://apeswap.finance/maximizers',
   },
   pools: {
@@ -199,12 +199,12 @@ export const CTA_CARD_INFO = {
   },
   lending: {
     title: 'Lending',
-    description: 'Supply, borrow, and earn.',
+    description: 'Supply, borrow, and earn!',
     destination: 'https://lending.apeswap.finance',
   },
   gnana: {
     title: 'Gnana',
-    description: 'Unlock exclusive utility.',
+    description: 'Unlock exclusive utility!',
     destination: 'https://apeswap.finance/gnana',
   },
   compound: {
