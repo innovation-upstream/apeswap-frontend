@@ -22,7 +22,7 @@ const MyPositions: React.FC = () => {
     >
       <Svg icon="caret" direction="left" width="7px" />
       <Text size="12px" ml="5px">
-        {t('My positions')}
+        {t('My LPs')}
       </Text>
     </Flex>
   )

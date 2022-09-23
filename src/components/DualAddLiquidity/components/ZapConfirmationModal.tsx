@@ -55,7 +55,7 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
           onDismiss={onDismiss}
           message={
             zapErrorMessage.includes('INSUFFICIENT')
-              ? t('Slippage Error: Please check your slippage & try again!')
+              ? t('Slippage Error: Please check your slippage using the ⚙️ icon & try again!')
               : zapErrorMessage
           }
         />

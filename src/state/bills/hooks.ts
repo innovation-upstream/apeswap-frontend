@@ -1,6 +1,6 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFetchTokenPrices, useTokenPrices } from 'state/tokenPrices/hooks'
@@ -26,7 +26,8 @@ export const usePollUserBills = (): Bills[] => {
   const dispatch = useAppDispatch()
   const { chainId, account } = useActiveWeb3React()
   const bills = useSelector((state: State) => state.bills.data)
-  const billsLoaded = bills.length > 0
+  // When the length of bills change data will be reloaded. Need for cross chain and pulling bills data
+  const billsLoaded = bills.length
   useEffect(() => {
     if (account) {
       dispatch(fetchBillsUserDataAsync(chainId, account))
@@ -42,10 +43,15 @@ export const useBills = (): Bills[] => {
 }
 
 export const useSetBills = () => {
+  const { chainId } = useActiveWeb3React()
+  const refChainId = useRef(null)
   useFetchTokenPrices()
   const dispatch = useAppDispatch()
   const bills = useBills()
-  if (bills.length === 0) {
-    dispatch(setInitialBillsDataAsync())
-  }
+  useEffect(() => {
+    if (bills.length === 0 || refChainId.current !== chainId) {
+      dispatch(setInitialBillsDataAsync(chainId))
+      refChainId.current = chainId
+    }
+  }, [chainId, bills.length, dispatch])
 }
