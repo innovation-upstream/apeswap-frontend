@@ -78,11 +78,6 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         href: '/iao',
         isNew: false,
       },
-      {
-        label: t('Self-Serve IAO'),
-        href: '/ss-iao',
-        isNew: false,
-      },
     ],
   },
   {

@@ -31,9 +31,9 @@ export const fetchUserBalances = async (chainId: number, account: string, bills:
   return tokenBalances
 }
 
-export const fetchUserOwnedBillNftData = async (ownedBillsData: { id: string; billNftAddress: string }[]) => {
+export const fetchUserOwnedBillNftData = async (ownedBillsData: { id: string; billNftAddress: string }[], chainId) => {
   const billNftData = ownedBillsData?.map(async ({ id, billNftAddress }) => {
-    return { id, data: await getBillNftData(id, billNftAddress) }
+    return { id, data: await getBillNftData(id, billNftAddress, chainId) }
   })
   return Promise.all(billNftData)
 }
