@@ -16,10 +16,6 @@ export interface TransferProps {
 
 export interface ActionProps {
   bill: Bills
-  disabled?: boolean
-  onValueChange: (val: string) => void
   onBillId: (billId: string, transactionHash: string) => void
   onTransactionSubmited: (trxSent: boolean) => void
-  value: string
-  safeAvailable: string
 }

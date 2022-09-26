@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
-import React, { useState } from 'react'
-import { AutoRenewIcon, Flex, Text } from '@ape.swap/uikit'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import React, { useCallback, useState } from 'react'
+import { AutoRenewIcon, Flex, Svg, Text, Text as StyledText, useModal } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useBuyBill from 'views/Bills/hooks/useBuyBill'
 import BigNumber from 'bignumber.js'
@@ -12,39 +11,85 @@ import { fetchBillsUserDataAsync, fetchUserOwnedBillsDataAsync } from 'state/bil
 import { Field, selectCurrency } from 'state/swap/actions'
 import { useTranslation } from 'contexts/Localization'
 import { ActionProps } from './types'
-import { BuyButton, GetLPButton, MaxButton, StyledInput } from './styles'
+import { BuyButton, GetLPButton, styles } from './styles'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { Svg, useModal, Text as StyledText } from '@ape.swap/uikit'
 import { selectOutputCurrency } from 'state/zap/actions'
 import { BillValueContainer, TextWrapper } from '../Modals/styles'
+import InputPanel from './InputPanel/InputPanel'
+import { usePair } from 'hooks/usePairs'
+import { Currency, ZapType } from '@ape.swap/sdk'
+import { useDerivedZapInfo, useZapActionHandlers, useZapState } from 'state/zap/hooks'
+import { useCurrency } from 'hooks/Tokens'
+import { Box } from 'theme-ui'
+import { useCurrencyBalance } from 'state/wallet/hooks'
+import maxAmountSpend from 'utils/maxAmountSpend'
+import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useZapCallback } from 'hooks/useZapCallback'
 
-const Buy: React.FC<ActionProps> = ({
-  bill,
-  disabled,
-  onValueChange,
-  onBillId,
-  onTransactionSubmited,
-  value,
-  safeAvailable,
-}) => {
-  const { userData, token, quoteToken, contractAddress, price, lpPrice, earnToken, maxTotalPayOut, totalPayoutGiven } =
-    bill
-  const formatUserLpValue = getFullDisplayBalance(new BigNumber(userData?.stakingTokenBalance))
+export interface TestPair {
+  currencyA: Currency
+  currencyB: Currency
+}
+
+const Buy: React.FC<ActionProps> = ({ bill, onBillId, onTransactionSubmited }) => {
+  const {
+    userData,
+    token,
+    quoteToken,
+    contractAddress,
+    price,
+    lpPrice,
+    earnToken,
+    earnTokenPrice,
+    maxTotalPayOut,
+    totalPayoutGiven,
+  } = bill
   const { chainId, account } = useActiveWeb3React()
+  const [value, setValue] = useState('')
   const { onBuyBill } = useBuyBill(contractAddress[chainId], value, lpPrice, price)
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()
-  const bigValue = new BigNumber(value).times(new BigNumber(10).pow(18))
-  const billValue = bigValue.div(new BigNumber(price))?.toString()
 
+  const billCurrencyA = useCurrency(token.address[chainId])
+  const billCurrencyB = useCurrency(quoteToken.address[chainId])
+  const [currencyA, setCurrencyA] = useState(billCurrencyA)
+  const [currencyB, setCurrencyB] = useState(billCurrencyB)
+
+  const billsCurrencies: TestPair = { currencyA: billCurrencyA, currencyB: billCurrencyB }
+
+  const inputCurrencies = [currencyA, currencyB]
+  const [, pair] = usePair(inputCurrencies[0], inputCurrencies[1])
+  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, pair?.liquidityToken ?? inputCurrencies[0])
+
+  const { INPUT, OUTPUT, typedValue, recipient } = useZapState()
+  const { zap } = useDerivedZapInfo(typedValue, INPUT, OUTPUT, recipient)
+  const [zapSlippage] = useUserSlippageTolerance(true)
+  const { onCurrencySelection, onUserInput } = useZapActionHandlers()
+  const { callback: zapCallback } = useZapCallback(
+    zap,
+    ZapType.ZAP_T_BILL,
+    zapSlippage,
+    recipient,
+    '',
+    contractAddress[chainId] || 's',
+  )
+
+  const consideredValue = inputCurrencies[1] ? value : zap?.pairOut?.liquidityMinted?.toExact()
+  const bigValue = new BigNumber(consideredValue).times(new BigNumber(10).pow(18))
+  const billValue = bigValue.div(new BigNumber(price))?.toString()
   const available = new BigNumber(maxTotalPayOut)
     ?.minus(new BigNumber(totalPayoutGiven))
     ?.div(new BigNumber(10).pow(earnToken.decimals))
 
-  const handleInput = (val: string) => {
-    onValueChange(val)
+  // threshold equals to 2 usd in earned tokens (banana or jungle token)
+  const threshold = new BigNumber(10).div(earnTokenPrice)
+  const safeAvailable = available.minus(threshold)
+
+  const onHandleValueChange = (val: string) => {
+    setValue(val)
+    onUserInput(Field.INPUT, val)
   }
 
   const searchForBillId = (resp) => {
@@ -55,22 +100,38 @@ const Buy: React.FC<ActionProps> = ({
 
   const handleBuy = async () => {
     setPendingTrx(true)
-    onTransactionSubmited(true)
-    await onBuyBill()
-      .then((resp) => {
-        const trxHash = resp.transactionHash
-        searchForBillId(resp)
-        toastSuccess(t('Buy Successful'), {
-          text: t('View Transaction'),
-          url: getEtherscanLink(trxHash, 'transaction', chainId),
+    if (currencyB) {
+      onTransactionSubmited(true)
+      await onBuyBill()
+        .then((resp) => {
+          const trxHash = resp.transactionHash
+          searchForBillId(resp)
+          toastSuccess(t('Buy Successful'), {
+            text: t('View Transaction'),
+            url: getEtherscanLink(trxHash, 'transaction', chainId),
+          })
         })
-      })
-      .catch((e) => {
-        console.error(e)
-        toastError(e?.data?.message || t('Error: Please try again.'))
-        setPendingTrx(false)
-        onTransactionSubmited(false)
-      })
+        .catch((e) => {
+          console.error(e)
+          toastError(e?.data?.message || t('Error: Please try again.'))
+          setPendingTrx(false)
+          onTransactionSubmited(false)
+        })
+    } else {
+      await zapCallback()
+        .then((hash) => {
+          toastSuccess(t('Buy Successful'), {
+            text: t('View Transaction'),
+            url: getEtherscanLink(hash, 'transaction', chainId),
+          })
+        })
+        .catch((e) => {
+          console.error(e)
+          toastError(e?.data?.message || t('Error: Please try again.'))
+          setPendingTrx(false)
+          onTransactionSubmited(false)
+        })
+    }
     dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
     dispatch(fetchBillsUserDataAsync(chainId, account))
     setPendingTrx(false)
@@ -100,53 +161,93 @@ const Buy: React.FC<ActionProps> = ({
     onPresentAddLiquidityModal()
   }
 
+  const handleMaxInput = () => {
+    if (!currencyB && currencyA.symbol === 'ETH') {
+      onHandleValueChange(maxAmountSpend(selectedCurrencyBalance)?.toExact())
+    }
+    onHandleValueChange(selectedCurrencyBalance.toExact())
+  }
+
+  const handleCurrencySelect = useCallback(
+    (currency: TestPair) => {
+      // if currencyB !== use buyBill logic
+      if (currency?.currencyB) {
+        setCurrencyA(currency.currencyA)
+        setCurrencyB(currency.currencyB)
+      } else {
+        // if there's no currencyB apply zap logic
+        onCurrencySelection(Field.INPUT, [currency.currencyA])
+        onCurrencySelection(Field.OUTPUT, [billCurrencyA, billCurrencyB])
+        setCurrencyA(currency.currencyA)
+        setCurrencyB(null)
+      }
+    },
+    [billCurrencyA, billCurrencyB, onCurrencySelection],
+  )
+
   return (
-    <Flex sx={{ width: '100%', flexDirection: 'column' }}>
-      <div>
-        <Flex style={{ position: 'relative', height: '69px', background: 'white1' }}>
-          <MaxButton size="sm" onClick={() => handleInput(formatUserLpValue)}>
-            {t('Max')}
-          </MaxButton>
-          <StyledInput onChange={(e) => handleInput(e.target.value)} value={value} />
-          <Text fontSize="12px">{t('Balance')}:</Text>
-          <Text fontSize="12px" style={{ position: 'absolute', bottom: 5, right: 10, zIndex: 1, opacity: 0.8 }}>
-            {formatUserLpValue?.slice(0, 15)} LP
-          </Text>
-        </Flex>
-        {new BigNumber(userData?.allowance).gt(0) && (
-          <BillValueContainer>
-            <TextWrapper>
-              <Text fontSize="14px" pr={1}>
-                {t('Bill Value')}:{' '}
-                <span style={{ fontWeight: 700 }}>
-                  {billValue === 'NaN' ? '0' : parseFloat(billValue).toFixed(3)} {earnToken?.symbol}
-                </span>
-              </Text>
-            </TextWrapper>
-            <TextWrapper>
-              <Text fontSize="14px">
-                {t('Available')}:{' '}
-                <span style={{ fontWeight: 700 }}>
-                  {!available ? '0' : new BigNumber(safeAvailable).toFixed(3)} {earnToken?.symbol}
-                </span>
-              </Text>
-            </TextWrapper>
-          </BillValueContainer>
-        )}
-      </div>
-      <div>
-        <GetLPButton variant="secondary" onClick={showLiquidity}>
-          <StyledText sx={{ marginRight: '5px' }}>{t('Get LP')}</StyledText>
-          <Svg icon="ZapIcon" color="yellow" />
-        </GetLPButton>
-        <BuyButton
-          onClick={handleBuy}
-          endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
-          disabled={disabled || parseFloat(formatUserLpValue) < parseFloat(value) || pendingTrx}
-        >
-          {t('Buy')}
-        </BuyButton>
-      </div>
+    <Flex sx={styles.buyContainer}>
+      <Flex sx={{ flexWrap: 'wrap' }}>
+        <Box>
+          <Box sx={styles.lpContainer}>
+            <GetLPButton variant="secondary" onClick={showLiquidity}>
+              <StyledText sx={{ marginRight: '5px' }}>{t('Get LP')}</StyledText>
+              <Svg icon="ZapIcon" color="yellow" />
+            </GetLPButton>
+          </Box>
+          <InputPanel
+            handleMaxInput={handleMaxInput}
+            onUserInput={onHandleValueChange}
+            value={value}
+            onCurrencySelect={handleCurrencySelect}
+            inputCurrencies={inputCurrencies}
+            lpList={[billsCurrencies]}
+          />
+          {new BigNumber(userData?.allowance).gt(0) && (
+            <BillValueContainer>
+              <TextWrapper>
+                <Text size="12px" pr={1}>
+                  {t('Bill Value')}:{' '}
+                  <span style={{ fontWeight: 700 }}>
+                    {billValue === 'NaN' ? '0' : parseFloat(billValue).toFixed(3)} {earnToken?.symbol}
+                  </span>
+                </Text>
+              </TextWrapper>
+              <TextWrapper>
+                <Text size="12px">
+                  {t('Available')}:{' '}
+                  <span style={{ fontWeight: 700 }}>
+                    {!available ? '0' : new BigNumber(safeAvailable).toFixed(3)} {earnToken?.symbol}
+                  </span>
+                </Text>
+              </TextWrapper>
+            </BillValueContainer>
+          )}
+        </Box>
+      </Flex>
+      <Flex sx={{ width: '100%' }}>
+        <Box sx={styles.getLpContainer}>
+          <GetLPButton variant="secondary" onClick={showLiquidity}>
+            <StyledText sx={{ marginRight: '5px' }}>{t('Get LP')}</StyledText>
+            <Svg icon="ZapIcon" color="yellow" />
+          </GetLPButton>
+        </Box>
+        <Box sx={styles.buyButtonContainer}>
+          <BuyButton
+            onClick={handleBuy}
+            endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
+            disabled={
+              billValue === 'NaN' ||
+              parseFloat(billValue) < 0.01 ||
+              parseFloat(billValue) > safeAvailable.toNumber() ||
+              parseFloat(selectedCurrencyBalance.toExact()) < parseFloat(value) ||
+              pendingTrx
+            }
+          >
+            {t('Buy')}
+          </BuyButton>
+        </Box>
+      </Flex>
     </Flex>
   )
 }

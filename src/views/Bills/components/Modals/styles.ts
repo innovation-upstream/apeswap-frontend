@@ -29,7 +29,6 @@ export const BillsImage = styled.div<{ image?: string }>`
   background-repeat: no-repeat;
   background-size: 100% 100%;
   margin-top: 30px;
-  margin-bottom: 10px;
   @media screen and (min-width: 1180px) {
     min-width: 606px;
     height: 341px;
@@ -59,10 +58,9 @@ export const BillDescriptionContainer = styled(Flex)<{ p?: string; minHeight?: n
   justify-content: space-around;
   @media screen and (min-width: 1180px) {
     width: 540px;
-    height: auto;
     justify-content: space-between;
     padding: ${({ p }) => p || '20px 30px'};
-    margin-left: 20px;
+    margin: 10px 10px 10px 20px;
     min-height: auto;
   }
 `
@@ -70,12 +68,12 @@ export const BillDescriptionContainer = styled(Flex)<{ p?: string; minHeight?: n
 export const TopDescriptionText = styled(Text)<{ width?: string }>`
   opacity: 0.6;
   font-size: 12px;
-  margin-bottom: 5px;
   width: ${({ width }) => width || '100%'};
 `
 
 export const BillTitleContainer = styled(Flex)`
   flex-direction: column;
+  margin: 10px 0;
 `
 
 export const GridTextValContainer = styled(Flex)`
@@ -103,7 +101,6 @@ export const ActionButtonsContainer = styled(Flex)`
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
-  height: 215px;
   @media screen and (min-width: 1180px) {
     flex-direction: row;
     height: auto;
@@ -152,11 +149,8 @@ export const BillFooterContentContainer = styled(Flex)`
 export const BillValueContainer = styled('div')`
   display: flex;
   width: 100%;
-  padding-top: 20px;
+  padding: 10px 0;
   flex-wrap: wrap;
-  @media screen and (min-width: 1180px) {
-    padding-right: 40px;
-  }
 `
 
 export const TextWrapper = styled('div')`
