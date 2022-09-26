@@ -42,21 +42,14 @@ function ZapLiquidity({
     txHash: undefined,
   })
 
-  const { INPUT, OUTPUT, typedValue, recipient, zapType } = useZapState()
+  const { INPUT, typedValue, recipient, zapType } = useZapState()
   const [zapSlippage] = useUserSlippageTolerance(true)
 
   const currencyA = currencyIdA || INPUT.currencyId
-  const currencyB = currencyIdB || OUTPUT.currency1
-  const currencyC = currencyIdC || OUTPUT.currency2
 
   const inputCurrency = useCurrency(currencyA)
-  const outputCurrency = { currency1: currencyB, currency2: currencyC } as { currency1: string; currency2: string }
 
-  const {
-    zap,
-    inputError: zapInputError,
-    currencyBalances,
-  } = useDerivedZapInfo(typedValue, inputCurrency, outputCurrency, recipient)
+  const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
   const { onUserInput, onCurrencySelection } = useZapActionHandlers()
 
   const handleCurrencySelect = useCallback(
