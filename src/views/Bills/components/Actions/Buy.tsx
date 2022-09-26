@@ -63,8 +63,8 @@ const Buy: React.FC<ActionProps> = ({ bill, onBillId, onTransactionSubmited }) =
   const [, pair] = usePair(inputCurrencies[0], inputCurrencies[1])
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, pair?.liquidityToken ?? inputCurrencies[0])
 
-  const { INPUT, OUTPUT, typedValue, recipient } = useZapState()
-  const { zap } = useDerivedZapInfo(typedValue, INPUT, OUTPUT, recipient)
+  const { recipient } = useZapState()
+  const { zap } = useDerivedZapInfo()
   const [zapSlippage] = useUserSlippageTolerance(true)
   const { onCurrencySelection, onUserInput } = useZapActionHandlers()
   const { callback: zapCallback } = useZapCallback(
@@ -87,10 +87,13 @@ const Buy: React.FC<ActionProps> = ({ bill, onBillId, onTransactionSubmited }) =
   const threshold = new BigNumber(10).div(earnTokenPrice)
   const safeAvailable = available.minus(threshold)
 
-  const onHandleValueChange = (val: string) => {
-    setValue(val)
-    onUserInput(Field.INPUT, val)
-  }
+  const onHandleValueChange = useCallback(
+    (val: string) => {
+      setValue(val)
+      onUserInput(Field.INPUT, val)
+    },
+    [onUserInput],
+  )
 
   const searchForBillId = (resp) => {
     const billId = resp.events[6]?.args?.billId?.toString()
@@ -170,19 +173,17 @@ const Buy: React.FC<ActionProps> = ({ bill, onBillId, onTransactionSubmited }) =
 
   const handleCurrencySelect = useCallback(
     (currency: TestPair) => {
-      // if currencyB !== use buyBill logic
-      if (currency?.currencyB) {
-        setCurrencyA(currency.currencyA)
-        setCurrencyB(currency.currencyB)
-      } else {
+      setCurrencyA(currency?.currencyA)
+      setCurrencyB(currency?.currencyB)
+      onHandleValueChange('')
+      // if currencyB is null, use buyBill logic
+      if (!currency?.currencyB) {
         // if there's no currencyB apply zap logic
         onCurrencySelection(Field.INPUT, [currency.currencyA])
         onCurrencySelection(Field.OUTPUT, [billCurrencyA, billCurrencyB])
-        setCurrencyA(currency.currencyA)
-        setCurrencyB(null)
       }
     },
-    [billCurrencyA, billCurrencyB, onCurrencySelection],
+    [billCurrencyA, billCurrencyB, onCurrencySelection, onHandleValueChange],
   )
 
   return (

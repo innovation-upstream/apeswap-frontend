@@ -43,7 +43,7 @@ const DualCurrencySearchModal: React.FC<CurrencySearchModalProps> = ({
       onCurrencySelect(currency, index)
       handleSearchQuery('')
     },
-    [onDismiss, onCurrencySelect],
+    [onDismiss, onCurrencySelect, handleSearchQuery],
   )
 
   const handleInput = useCallback(

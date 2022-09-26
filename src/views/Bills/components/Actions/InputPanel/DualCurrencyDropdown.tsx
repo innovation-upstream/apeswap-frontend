@@ -22,7 +22,6 @@ const DualCurrencyDropdown: React.FC<{
   const rawZapInputList = useZapInputList()
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const [active, setActive] = useState(0)
   const [searchQuery, setSearchQuery] = useState<string>('')
 
   const handleSearchQuery = useCallback((val: string) => {
@@ -60,9 +59,8 @@ const DualCurrencyDropdown: React.FC<{
     (currency: TestPair, index: number) => {
       onCurrencySelect(currency)
       setSearchQuery('')
-      setActive(index)
     },
-    [currenciesList, onCurrencySelect],
+    [onCurrencySelect],
   )
 
   const [onPresentCurrencyModal] = useModal(
