@@ -22,7 +22,7 @@ const ZapTest: React.FC = () => {
 
   const { INPUT, OUTPUT, independentField, typedValue, recipient, zapType } = useZapState()
 
-  const { zap, parsedAmount, inputError: zapInputError } = useDerivedZapInfo(typedValue, INPUT, OUTPUT, recipient)
+  const { zap, parsedAmount, inputError: zapInputError } = useDerivedZapInfo()
 
   const { onCurrencySelection, onUserInput, onSetZapType } = useZapActionHandlers()
 

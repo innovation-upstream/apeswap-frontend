@@ -154,21 +154,23 @@ function involvesAddress(trade: Zap, checksummedAddress: string): boolean {
 }
 
 // from the current swap inputs, compute the best trade and return it.
-export function useDerivedZapInfo(
-  typedValue,
-  inputCurrency,
-  OUTPUT: { currency1: string; currency2: string },
-  recipient,
-): {
+export function useDerivedZapInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
   zap: MergedZap
   inputError?: string
 } {
-  const { account, chainId } = useActiveWeb3React()
-  const { currency1: outputCurrencyId1, currency2: outputCurrencyId2 } = OUTPUT
+  const {
+    typedValue,
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+    [Field.OUTPUT]: { currency1: outputCurrencyId1, currency2: outputCurrencyId2 },
+    recipient,
+  } = useZapState()
 
+  const { account, chainId } = useActiveWeb3React()
+
+  const inputCurrency = useCurrency(inputCurrencyId)
   const out1 = useCurrency(useMemo(() => outputCurrencyId1, [outputCurrencyId1]))
   const out2 = useCurrency(useMemo(() => outputCurrencyId2, [outputCurrencyId2]))
   const outputCurrencies = useMemo(() => {
@@ -188,6 +190,7 @@ export function useDerivedZapInfo(
 
   // Change to currency amount. Divide the typed input by 2 to get correct distributions
   const halfTypedValue = new BigNumber(typedValue).div(2).toFixed(18, 5)
+
   const parsedAmount = tryParseAmount(halfTypedValue === 'NaN' ? '0' : halfTypedValue, inputCurrency ?? undefined)
 
   const bestZapOne = useTradeExactIn(parsedAmount, outputCurrencies[0] ?? undefined)

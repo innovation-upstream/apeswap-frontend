@@ -21,20 +21,14 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
   useSetZapInputList()
   const [zapErrorMessage, setZapErrorMessage] = useState<string>(null)
 
-  const { INPUT, OUTPUT, typedValue, recipient, zapType } = useZapState()
+  const { INPUT, typedValue, recipient, zapType } = useZapState()
   const [zapSlippage] = useUserSlippageTolerance(true)
 
   const currencyA = INPUT.currencyId
-  const currencyB = OUTPUT
 
   const inputCurrency = useCurrency(currencyA)
-  const outputCurrency = currencyB
 
-  const {
-    zap,
-    inputError: zapInputError,
-    currencyBalances,
-  } = useDerivedZapInfo(typedValue, inputCurrency, outputCurrency, recipient)
+  const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
   const { onUserInput, onInputSelect, onCurrencySelection } = useZapActionHandlers()
 
   const handleInputSelect = useCallback(
