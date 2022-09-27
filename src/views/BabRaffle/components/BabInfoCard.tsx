@@ -6,6 +6,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React from 'react'
 import ReactPlayer from 'react-player'
 import { useClaimRaffle, useFetchBabToken } from 'state/hooks'
+import { styles } from '../styles'
+import NumberedList from './NumberedList'
 
 const BabInfoCard: React.FC = () => {
   const { t } = useTranslation()
@@ -37,24 +39,42 @@ const BabInfoCard: React.FC = () => {
       <Flex
         sx={{
           flexDirection: 'column',
-          padding: '20px 50px',
+          padding: '0 50px',
           '@media screen and (max-width: 725px)': { padding: '0px 0px' },
         }}
       >
         <Flex sx={{ flexDirection: 'column' }}>
-          <Text size="28px" mb="24px" mt="15px" weight={600} sx={{ textAlign: 'center', lineHeight: '35px' }}>
-            {t('Become Part of the ApeSwap-BAB Family')}
+          <Text size="22px" mb="6px" mt="15px" weight={700} sx={{ lineHeight: '35px' }}>
+            {t('ApeSwap x BAB')}
           </Text>
-          <Text size="16px" weight={500} padding="0px 20px">
-            {t(`ApeSwap is proud to be one of the premiere platforms to add Binance’s BAB (Binance Account Bound) token
-              support at its launch.`)}{' '}
-            <br />
-            <br />
-            {t(`To celebrate the launch of the BAB token, ApeSwap and Binance BNB Chain have partnered to create a unique,
-              commemorative NFT, free to mint for BAB Token holders for the month of September 2022.`)}
-            <br />
-            <br />
+          <Text sx={styles.playBody}>
+            {t(
+              `ApeSwap is proud to be one of the first platforms to add support for Binance's BAB (Binance Account Bound) token at its launch.`,
+            )}
           </Text>
+          <Text sx={styles.playBody}>
+            {t(
+              `To celebrate the launch of the BAB token, ApeSwap and Binance BNB Chain have partnered to create a unique, commemorative NFT, free to mint for BAB Token holders for the month of September 2022.`,
+            )}
+          </Text>
+        </Flex>
+        <Flex sx={{ flexDirection: 'column', gap: '10px' }}>
+          <NumberedList
+            title="1- Mint Your BAB Token ✅"
+            description="To mint an ApeSwap BAB Club NFT, you must first mint a BAB token."
+            showBtn
+            t={t}
+          />
+          <NumberedList
+            title="2- Claim Raffle NFT ✅"
+            description="Mint your ApeSwap BAB Club Token to be eligible for the Non Fungible Banana NFT giveaway."
+            t={t}
+          />
+          <NumberedList
+            title="3- Good Luck! ✅"
+            description="You are now participating in the Raffle. Visit this page each day to see if you've won!"
+            t={t}
+          />
         </Flex>
         <Flex sx={{ alignItems: 'center', justifyContent: 'center', mt: '20px' }}>
           {!loading ? (
