@@ -7,7 +7,6 @@ import SwiperProvider from 'contexts/SwiperProvider'
 import Values from 'views/Homepage/components/Values/Values'
 import BabInfoCard from './components/BabInfoCard'
 import NFBGiveaway from './components/NFBGiveaway'
-import Products from './components/Products'
 import Services from 'views/Homepage/components/Services/Services'
 
 const Nft = () => {

@@ -1,17 +1,48 @@
 import styled from 'styled-components'
+import { ThemeUIStyleObject } from 'theme-ui'
 import { FadeIn } from '../../styles'
 
-export const ColorWrap = styled.div<{ bab?: boolean }>`
-  position: relative;
-  display: flex;
-  background: ${({ theme }) => theme.colors.white2};
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  flex-direction: column;
-  padding: ${({ bab }) => (bab ? '100px 0 50px 0' : '')};
-  width: 100%;
-`
+export const styles: Record<string, ThemeUIStyleObject> = {
+  colorWrap: {
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    flexDirection: 'column',
+    width: '100%',
+  },
+  yieldCard: {
+    position: 'relative',
+    minWidth: '338px',
+    maxWidth: '338px',
+    height: '442px',
+    opacity: 1,
+    padding: '20px 20px',
+    borderRadius: '10px',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    animation: `${FadeIn} 0.5s linear`,
+  },
+  bubble: {
+    height: '14px',
+    width: '14px',
+    borderRadius: '50px',
+    margin: '0px 2.5px 0px 2.5px',
+    cursor: 'pointer',
+    display: 'block',
+    '@media screen and (min-width: 1488px)': {
+      display: 'none',
+    },
+  },
+  serviceWrapper: {
+    width: '95vw',
+    maxWidth: '1412px',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    overflow: 'hidden',
+  },
+}
 
 export const YieldCard = styled.div<{ image?: string }>`
   position: relative;
@@ -25,29 +56,4 @@ export const YieldCard = styled.div<{ image?: string }>`
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  animation: ${FadeIn} 0.5s linear;
-`
-
-export const Bubble = styled.div<{ isActive?: boolean }>`
-  background: ${({ isActive, theme }) =>
-    isActive ? 'linear-gradient(53.53deg, #a16552 15.88%, #e1b242 92.56%)' : theme.colors.white4};
-  height: 14px;
-  width: 14px;
-  border-radius: 50px;
-  margin: 0px 2.5px 0px 2.5px;
-  cursor: pointer;
-  display: block;
-  @media screen and (min-width: 1488px) {
-    display: none;
-  }
-`
-
-export const ServiceWrapper = styled.div<{ bab?: boolean }>`
-  display: flex;
-  height: ${({ bab }) => (bab ? '500px' : '610px')};
-  width: 95vw;
-  max-width: 1412px;
-  align-items: center;
-  justify-content: space-between;
-  overflow: hidden;
 `

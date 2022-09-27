@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
-import { Flex, Skeleton, Text } from '@apeswapfinance/uikit'
-import { Text as V2Text } from '@ape.swap/uikit'
+import { Text as V2Text, Flex as V2Flex, Skeleton } from '@ape.swap/uikit'
 import SwiperCore from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import useSwiper from 'hooks/useSwiper'
@@ -12,11 +11,13 @@ import { useFetchHomepageServiceStats, useHomepageServiceStats } from 'state/hoo
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { useTranslation } from 'contexts/Localization'
 import { getDotPos } from 'utils/getDotPos'
-import { ServiceWrapper, YieldCard, ColorWrap, Bubble } from './styles'
+import { styles } from './styles'
 import { defaultServiceData } from './defaultServiceData'
+import useTheme from 'hooks/useTheme'
 
 const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
   const { swiper, setSwiper } = useSwiper()
+  const { isDark } = useTheme()
   const [loadServices, setLoadServices] = useState(false)
   useFetchHomepageServiceStats(loadServices)
   const [activeSlide, setActiveSlide] = useState(0)
@@ -71,24 +72,29 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
   const displayStats = (id: string, link: string, stats: ServiceData[]) => {
     return (
       <>
-        <Flex
-          flexDirection="column"
-          justifyContent="space-between"
-          style={{ position: 'absolute', bottom: '60px', height: '250px', width: '300px' }}
+        <V2Flex
+          sx={{
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            position: 'absolute',
+            bottom: '60px',
+            height: '250px',
+            width: '300px',
+          }}
         >
           {stats?.map((stat) => {
             const { name, tokenImage } = handleEachService(id, stat)
             return (
               <a href={stat?.link} rel="noopener noreferrer" key={stat?.apr}>
-                <Flex
-                  mt="5px"
-                  mb="5px"
-                  pl="20px"
-                  style={{
+                <V2Flex
+                  sx={{
                     width: '100%',
                     height: '70px',
                     background: 'rgba(11, 11, 11, .55)',
                     borderRadius: '10px',
+                    marginTop: '5px',
+                    marginBottom: '5px',
+                    paddingLeft: '20px',
                   }}
                 >
                   {id === 'farmDetails' ? (
@@ -113,34 +119,38 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                   ) : (
                     <ServiceTokenDisplay token1={tokenImage[0]} />
                   )}
-                  <Flex pl="15px" justifyContent="center" flexDirection="column">
-                    <Text bold style={{ width: '100%', color: 'white' }}>
+                  <V2Flex sx={{ paddingLeft: '15px', justifyContent: 'center', flexDirection: 'column' }}>
+                    <V2Text bold sx={{ width: '100%', color: 'white' }}>
                       {name}
-                    </Text>
+                    </V2Text>
                     {id === 'lendingDetails' ? (
-                      <Text style={{ width: '100%', color: 'white' }}>APY: {stat.apy.toFixed(2)}%</Text>
+                      <V2Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
+                        APY: {stat.apy.toFixed(2)}%
+                      </V2Text>
                     ) : id === 'billDetails' ? (
-                      <Text style={{ width: '100%', color: 'white' }}>
+                      <V2Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
                         Discount:{' '}
-                        <span style={{ color: stat.discount > 0 ? 'white' : '#DF4141' }}>
+                        <V2Text sx={{ color: stat.discount > 0 ? 'primaryBright' : '#DF4141' }}>
                           {stat.discount.toFixed(2)}%
-                        </span>
-                      </Text>
+                        </V2Text>
+                      </V2Text>
                     ) : (
-                      <Text style={{ width: '100%', color: 'white' }}>APR: {(stat.apr * 100).toFixed(2)}%</Text>
+                      <V2Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
+                        APR: {(stat.apr * 100).toFixed(2)}%
+                      </V2Text>
                     )}
-                  </Flex>
-                </Flex>
+                  </V2Flex>
+                </V2Flex>
               </a>
             )
           })}
-        </Flex>
+        </V2Flex>
         <a href={link} rel="noopener noreferrer">
-          <Flex alignItems="center" justifyContent="center" style={{ textAlign: 'center' }}>
-            <Text color="white" fontSize="16px" bold>
+          <V2Flex sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+            <V2Text sx={{ color: 'primaryBright', fontSize: '16px' }} bold>
               {t('See All')} {'>'}
-            </Text>
-          </Flex>
+            </V2Text>
+          </V2Flex>
         </a>
       </>
     )
@@ -149,7 +159,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
   return (
     <>
       <div ref={observerRef} />
-      <ColorWrap bab>
+      <V2Flex sx={{ ...styles.colorWrap, background: (bab && 'white1') || 'white2', paddingTop: bab && '100px' }}>
         {bab && (
           <V2Text
             sx={{ textAlign: 'center', lineHeight: '45px', fontSize: '30px', fontWeight: 700, margin: '0 0 0 0' }}
@@ -157,7 +167,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
             {t('Featured ApeSwap Products')}
           </V2Text>
         )}
-        <ServiceWrapper bab>
+        <V2Flex sx={{ ...styles.serviceWrapper, padding: bab && '30px 0 90px 0', height: !bab && '610px' }}>
           {displayData ? (
             width < 1488 ? (
               <Swiper
@@ -182,23 +192,40 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                 {displayData?.map((service) => {
                   return (
                     <SwiperSlide style={{ maxWidth: '338px', minWidth: '338px' }} key={service.title}>
-                      <YieldCard image={service.backgroundImg}>
-                        <Flex flexDirection="column" justifyContent="space-between" style={{ height: '100%' }}>
-                          <Flex flexDirection="column">
-                            <Flex>
-                              <Text color="white" fontSize="23px" bold>
+                      <V2Flex
+                        sx={{
+                          ...styles.yieldCard,
+                          background: `url(${service.backgroundImg}-${isDark ? 'dark' : 'light'}.svg)`,
+                        }}
+                      >
+                        <V2Flex sx={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+                          <V2Flex sx={{ flexDirection: 'column' }}>
+                            <V2Flex>
+                              <V2Text
+                                sx={{
+                                  fontSize: '23px',
+                                  color: 'primaryBright',
+                                  fontWeight: 'bold',
+                                }}
+                              >
                                 {service.title}
-                              </Text>
-                            </Flex>
-                            <Flex padding="0px 40px 0px 0px">
-                              <Text color="white" bold fontSize="15px">
+                              </V2Text>
+                            </V2Flex>
+                            <V2Flex padding="0px 40px 0px 0px">
+                              <V2Text
+                                sx={{
+                                  fontSize: '15px',
+                                  color: 'primaryBright',
+                                  fontWeight: 'bold',
+                                }}
+                              >
                                 {service.description}
-                              </Text>
-                            </Flex>
-                          </Flex>
+                              </V2Text>
+                            </V2Flex>
+                          </V2Flex>
                           {displayStats(service.id, service.link, service.stats)}
-                        </Flex>
-                      </YieldCard>
+                        </V2Flex>
+                      </V2Flex>
                     </SwiperSlide>
                   )
                 })}
@@ -206,50 +233,67 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
             ) : (
               displayData?.map((service) => {
                 return (
-                  <YieldCard image={service.backgroundImg} key={service.id}>
-                    <Flex flexDirection="column" justifyContent="space-between" style={{ height: '100%' }}>
-                      <Flex flexDirection="column">
-                        <Flex>
-                          <Text color="white" fontSize="23px" bold>
+                  <V2Flex
+                    sx={{
+                      ...styles.yieldCard,
+                      background: `${service.backgroundImg}-${isDark ? 'dark' : 'light'}.svg`,
+                    }}
+                    key={service.id}
+                  >
+                    <V2Flex sx={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+                      <V2Flex flexDirection="column">
+                        <V2Flex>
+                          <V2Text sx={{ color: 'primaryBright', fontSize: '23px' }} bold>
                             {service.title}
-                          </Text>
-                        </Flex>
-                        <Flex padding="0px 40px 0px 0px">
-                          <Text color="white" bold fontSize="15px">
+                          </V2Text>
+                        </V2Flex>
+                        <V2Flex padding="0px 40px 0px 0px">
+                          <V2Text bold sx={{ color: 'primaryBright', fontSize: '15px' }}>
                             {service.description}
-                          </Text>
-                        </Flex>
-                      </Flex>
+                          </V2Text>
+                        </V2Flex>
+                      </V2Flex>
                       {displayStats(service.id, service.link, service.stats)}
-                    </Flex>
-                  </YieldCard>
+                    </V2Flex>
+                  </V2Flex>
                 )
               })
             )
           ) : (
             [...Array(4)].map((i) => {
               return (
-                <YieldCard key={i}>
+                <V2Flex sx={{ ...styles.yieldCard }} key={i}>
                   <Skeleton height="100%" width="100%" />
-                </YieldCard>
+                </V2Flex>
               )
             })
           )}
-          <Flex
-            justifyContent="center"
-            alignContent="center"
-            style={{ position: 'absolute', bottom: '35px', left: '0', width: '100%' }}
+          <V2Flex
+            sx={{
+              justifyContent: 'center',
+              alignContent: 'center',
+              position: 'absolute',
+              bottom: '35px',
+              left: '0',
+              width: '100%',
+            }}
           >
-            {!bab && (
-              <>
-                {[...Array(displayData?.length)].map((_, i) => {
-                  return <Bubble isActive={i === activeSlide} onClick={() => slideNewsNav(i)} key={i} />
-                })}
-              </>
-            )}
-          </Flex>
-        </ServiceWrapper>
-      </ColorWrap>
+            {[...Array(displayData?.length)].map((_, i) => {
+              return (
+                <V2Flex
+                  sx={{
+                    ...styles.bubble,
+                    background:
+                      (i === activeSlide && 'linear-gradient(53.53deg, #a16552 15.88%, #e1b242 92.56%)') || 'white4',
+                  }}
+                  onClick={() => slideNewsNav(i)}
+                  key={i}
+                />
+              )
+            })}
+          </V2Flex>
+        </V2Flex>
+      </V2Flex>
     </>
   )
 }
