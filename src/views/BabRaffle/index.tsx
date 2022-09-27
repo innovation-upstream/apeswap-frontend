@@ -8,10 +8,16 @@ import Values from 'views/Homepage/components/Values/Values'
 import BabInfoCard from './components/BabInfoCard'
 import NFBGiveaway from './components/NFBGiveaway'
 import Products from './components/Products'
+import Services from 'views/Homepage/components/Services/Services'
 
 const Nft = () => {
   const { t } = useTranslation()
 
+  // Stage #1
+  // Change all wording for components that already exist
+  // on the /bab-raffle page
+  // Implement "New to DeFi" section
+  // Implement "Featured ApeSwap Products" section
   return (
     <Flex
       sx={{
@@ -22,7 +28,7 @@ const Nft = () => {
         marginTop: '10px',
       }}
     >
-      <Flex sx={{ flexDirection: 'column', padding: '0px 10px', width: '100%', maxWidth: '1150px' }}>
+      <Flex sx={{ flexDirection: 'column', width: '100%', maxWidth: '1200px' }}>
         <Banner
           banner="BABbanner"
           link="https://ape-swap.medium.com/apeswap-adds-launch-support-for-binances-first-soulbound-token-dbb2e0e4c263"
@@ -31,8 +37,10 @@ const Nft = () => {
         />
         <BabInfoCard />
         <NFBGiveaway />
+      </Flex>
+      <Flex className="services-con" sx={{ width: '100%', flexDirection: 'column' }}>
         <SwiperProvider>
-          <Products />
+          <Services bab />
         </SwiperProvider>
         <Flex sx={{ marginTop: '25px' }} />
         <SwiperProvider>

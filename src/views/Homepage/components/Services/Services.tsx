@@ -1,5 +1,7 @@
+/** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
 import { Flex, Skeleton, Text } from '@apeswapfinance/uikit'
+import { Text as V2Text } from '@ape.swap/uikit'
 import SwiperCore from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import useSwiper from 'hooks/useSwiper'
@@ -13,7 +15,7 @@ import { getDotPos } from 'utils/getDotPos'
 import { ServiceWrapper, YieldCard, ColorWrap, Bubble } from './styles'
 import { defaultServiceData } from './defaultServiceData'
 
-const Services: React.FC = () => {
+const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
   const { swiper, setSwiper } = useSwiper()
   const [loadServices, setLoadServices] = useState(false)
   useFetchHomepageServiceStats(loadServices)
@@ -147,8 +149,15 @@ const Services: React.FC = () => {
   return (
     <>
       <div ref={observerRef} />
-      <ColorWrap>
-        <ServiceWrapper>
+      <ColorWrap bab>
+        {bab && (
+          <V2Text
+            sx={{ textAlign: 'center', lineHeight: '45px', fontSize: '30px', fontWeight: 700, margin: '0 0 0 0' }}
+          >
+            {t('Featured ApeSwap Products')}
+          </V2Text>
+        )}
+        <ServiceWrapper bab>
           {displayData ? (
             width < 1488 ? (
               <Swiper
@@ -231,9 +240,13 @@ const Services: React.FC = () => {
             alignContent="center"
             style={{ position: 'absolute', bottom: '35px', left: '0', width: '100%' }}
           >
-            {[...Array(displayData?.length)].map((_, i) => {
-              return <Bubble isActive={i === activeSlide} onClick={() => slideNewsNav(i)} key={i} />
-            })}
+            {!bab && (
+              <>
+                {[...Array(displayData?.length)].map((_, i) => {
+                  return <Bubble isActive={i === activeSlide} onClick={() => slideNewsNav(i)} key={i} />
+                })}
+              </>
+            )}
           </Flex>
         </ServiceWrapper>
       </ColorWrap>

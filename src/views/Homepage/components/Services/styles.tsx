@@ -1,13 +1,16 @@
 import styled from 'styled-components'
 import { FadeIn } from '../../styles'
 
-export const ColorWrap = styled.div`
+export const ColorWrap = styled.div<{ bab?: boolean }>`
   position: relative;
   display: flex;
   background: ${({ theme }) => theme.colors.white2};
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  flex-direction: column;
+  padding: ${({ bab }) => (bab ? '100px 0 50px 0' : '')};
+  width: 100%;
 `
 
 export const YieldCard = styled.div<{ image?: string }>`
@@ -39,9 +42,9 @@ export const Bubble = styled.div<{ isActive?: boolean }>`
   }
 `
 
-export const ServiceWrapper = styled.div`
+export const ServiceWrapper = styled.div<{ bab?: boolean }>`
   display: flex;
-  height: 610px;
+  height: ${({ bab }) => (bab ? '500px' : '610px')};
   width: 95vw;
   max-width: 1412px;
   align-items: center;

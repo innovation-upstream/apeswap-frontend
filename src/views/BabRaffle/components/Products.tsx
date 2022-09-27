@@ -146,10 +146,10 @@ const Services: React.FC = () => {
         alignItems="center"
         sx={{
           width: '100%',
-          backgroundColor: 'white1',
+          backgroundColor: 'white2',
           flexDirection: 'column',
           alignItems: 'center',
-          padding: '30px 20px',
+          padding: '30px 30px',
           mt: '25px',
           borderRadius: '10px',
           '@media screen and (max-width: 725px)': {
@@ -157,7 +157,7 @@ const Services: React.FC = () => {
           },
         }}
       >
-        <V2Text mb="50px" mt="20px" weight={600} size="28px" style={{ textAlign: 'center', lineHeight: '30px' }}>
+        <V2Text mb="50px" mt="20px" weight={700} size="28px" sx={{ textAlign: 'center', lineHeight: '30px' }}>
           {t('Featured ApeSwap Products')}
         </V2Text>
         <Flex style={{ width: '100%' }}>
