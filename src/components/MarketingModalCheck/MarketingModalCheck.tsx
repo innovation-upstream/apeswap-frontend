@@ -13,7 +13,6 @@ import MoonPayModal from 'views/Topup/MoonpayModal'
 import QuestModal from '../MarketingModalContent/Quests/QuestModal'
 import GnanaModal from 'components/GnanaModal'
 import { MODAL_TYPE, SET_DEFAULT_MODAL_KEY, SHOW_DEFAULT_MODAL_KEY } from 'config/constants'
-
 import { circularRoute } from 'utils'
 
 const MarketingModalCheck = () => {

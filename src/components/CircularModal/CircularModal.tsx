@@ -10,12 +10,19 @@ import { MODAL_TYPE } from 'config/constants'
 const CircularModal: React.FC<MP> = ({ actionType, description, supporting, children }) => {
   const { t } = useTranslation()
   const { showBuyModal, showSellModal, showPoolHarvestModal, showGeneralHarvestModal } = useIsModalShown()
+  // Get the boolean values to send to the `showModal` state
+  // based on which modal is currently open
   const values =
     (actionType === MODAL_TYPE.BUYING && showBuyModal) ||
     (actionType === MODAL_TYPE.SELLING && showSellModal) ||
     (actionType === MODAL_TYPE.POOL_HARVEST && showPoolHarvestModal) ||
     (actionType === MODAL_TYPE.GENERAL_HARVEST && showGeneralHarvestModal)
   const [setFlagModal] = useFlagModal(actionType, values)
+  const openLearnMore = () =>
+    window.open(
+      'https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/banana#what-can-i-do-with-banana',
+      '_blank',
+    )
 
   return (
     <Flex sx={circular.container}>
@@ -25,16 +32,7 @@ const CircularModal: React.FC<MP> = ({ actionType, description, supporting, chil
       {children}
 
       <Flex sx={circular.footer}>
-        <Button
-          variant="secondary"
-          sx={{ width: ['100%', '188px'] }}
-          onClick={() =>
-            window.open(
-              'https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/banana#what-can-i-do-with-banana',
-              '_blank',
-            )
-          }
-        >
+        <Button variant="secondary" sx={{ width: ['100%', '188px'] }} onClick={openLearnMore}>
           {t('Learn More')}
         </Button>
         <Flex sx={circular.checkSection}>

@@ -136,12 +136,12 @@ export const getLargestNumber = (numsArray: Array<number>) => {
   })
 }
 
-// Show circular modal to show only in BNB chain
+// Show circular modals only in BNB chain
 export const showCircular = (chainId: number, history, modalUrl: string) => {
   if (chainId === ChainId.BSC) history.push({ search: modalUrl })
 }
 
-// Set circular modal route to show only in BNB chain
+// Set circular modalss routes to show only in BNB chain
 export const circularRoute = (chainId: number, location, modalUrl: string) => {
   return chainId === ChainId.BSC && location.search.includes(modalUrl)
 }
