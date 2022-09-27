@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { getAddress } from '@ethersproject/address'
-import { BLOCK_EXPLORER, CHAIN_ID } from 'config/constants/chains'
+import { ChainId } from '@ape.swap/sdk'
+import { BLOCK_EXPLORER } from 'config/constants/chains'
 import { Contract } from '@ethersproject/contracts'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
@@ -136,9 +137,9 @@ export const getLargestNumber = (numsArray: Array<number>) => {
 }
 
 export const showCircular = (chainId: number, history, modalUrl: string) => {
-  if (chainId === CHAIN_ID.BSC) history.push({ search: modalUrl })
+  if (chainId === ChainId.BSC) history.push({ search: modalUrl })
 }
 
 export const circularRoute = (chainId: number, location, modalUrl: string) => {
-  return chainId === CHAIN_ID.BSC && location.search.includes(modalUrl)
+  return chainId === ChainId.BSC && location.search.includes(modalUrl)
 }

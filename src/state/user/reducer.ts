@@ -33,7 +33,7 @@ import {
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
   setUnlimitedGnana,
-  toggleModal,
+  flagModal,
   updateUserBonusRouter,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
@@ -280,7 +280,7 @@ export default createReducer(initialState, (builder) =>
     .addCase(setUnlimitedGnana, (state, { payload }) => {
       state.unlimitedGnana = payload
     })
-    .addCase(toggleModal, (state, { payload }) => {
+    .addCase(flagModal, (state, { payload }) => {
       state.showModal = {
         ...state.showModal,
         [payload.actionType]: payload.value,
