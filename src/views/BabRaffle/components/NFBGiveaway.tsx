@@ -11,7 +11,7 @@ const BabInfoCard: React.FC = () => {
     <Flex
       sx={{
         background: 'white2',
-        padding: '20px',
+        padding: ['20px', '40px'],
         borderRadius: '10px',
         mt: '25px',
         minHeight: '400px',
@@ -23,7 +23,8 @@ const BabInfoCard: React.FC = () => {
       <Flex
         sx={{
           flexDirection: 'column',
-          padding: '20px 10px 0px 0px',
+          width: '666px',
+          padding: '0px 10px 0px 0px',
         }}
       >
         <Flex
@@ -40,56 +41,46 @@ const BabInfoCard: React.FC = () => {
           }}
         >
           <Text
-            size="28px"
-            mb="24px"
-            weight={600}
+            size="30px"
+            mb="50px"
+            weight={700}
             sx={{
               textAlign: 'left',
-              lineHeight: '35px',
+              lineHeight: '45px',
               '@media screen and (max-width: 725px)': { textAlign: 'center' },
             }}
           >
-            {t('Join the 30-day Non-fungible Banana NFT Raffle')}
+            {t('The 30-Day Non-Fungible Banana NFT Raffle')}
           </Text>
           <Text
-            size="16px"
+            size="22px"
             weight={500}
             sx={{ textAlign: 'left', '@media screen and (max-width: 725px)': { textAlign: 'center' } }}
           >
-            {t(`During the month of October the big 30-day ApeSwapNFT raffle will start.`)}
-            <br />
-            <br />
             {t(
-              `Holders of an ApeSwap BAB NFT automatically participate in the daily raffles. Make sure to come back to this page daily in October to see if you have won a Non-fungible Banana NFT.`,
+              `From October 1st through October 31st, all holders of an ApeSwap BAB NFT will be eligible to participate in a daily raffle to win a Non Fungible Banana NFT.`,
             )}
+            <br />
+            <br />
+            {t(`Make sure to return to this page daily in October to see if you have won an NFB!`)}
             <br />
             <br />
           </Text>
           <Text
-            size="20px"
-            style={{ textDecoration: 'underline', marginTop: '25px', alignSelf: 'center', textAlign: 'center' }}
+            sx={{ textDecoration: 'underline', marginTop: '25px', fontSize: ['16px', '22px'], fontWeight: '700px' }}
           >
             <Link
               href="https://ape-swap.medium.com/apeswap-adds-launch-support-for-binances-first-soulbound-token-dbb2e0e4c263"
               target="_blank"
               rel="noopener noreferrer"
             >
-              {t('Learn more at our medium article')}
+              {t('Check out our Medium article to learn more >')}
             </Link>
           </Text>
         </Flex>
       </Flex>
-      <Flex>
-        <ReactPlayer
-          playing
-          muted
-          loop
-          url="videos/bab-nfb.mp4"
-          height="100%"
-          borderRadius="10px"
-          width="100%"
-          playsInline
-        />
+      <Flex sx={{ width: ['240px', '414px'] }}>
+        <ReactPlayer playing muted loop url="videos/bab-nfb.mp4" height="100%" width="100%" playsInline />
       </Flex>
     </Flex>
   )

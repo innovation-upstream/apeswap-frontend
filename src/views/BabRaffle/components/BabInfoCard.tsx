@@ -24,7 +24,7 @@ const BabInfoCard: React.FC = () => {
         '@media screen and (max-width: 725px)': { flexWrap: 'wrap' },
       }}
     >
-      <Flex>
+      <Flex sx={{ borderRadius: '10px' }}>
         <ReactPlayer
           playing
           muted
