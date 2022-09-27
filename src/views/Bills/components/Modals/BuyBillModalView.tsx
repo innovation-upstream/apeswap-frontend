@@ -17,9 +17,9 @@ import {
   StyledHeadingText,
   TopDescriptionText,
 } from './styles'
-import Actions from '../Actions'
 import UserBillModalView from './UserBillModalView'
 import { getFirstNonZeroDigits } from 'utils/roundNumber'
+import Buy from '../Actions/Buy'
 
 interface BillModalProps {
   onDismiss: () => void
@@ -95,7 +95,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
               </Flex>
               <Flex flexDirection="column">
                 <ActionButtonsContainer>
-                  <Actions
+                  <Buy
                     bill={bill}
                     onBillId={onHandleReturnedBillId}
                     onTransactionSubmited={(trxSent) => setLoading(trxSent)}

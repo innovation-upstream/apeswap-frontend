@@ -1,4 +1,5 @@
 import { Bills } from 'state/types'
+import { Currency } from '@ape.swap/sdk'
 
 export interface ClaimProps {
   billAddress: string
@@ -14,8 +15,19 @@ export interface TransferProps {
   disabled?: boolean
 }
 
-export interface ActionProps {
+export interface BuyProps {
   bill: Bills
   onBillId: (billId: string, transactionHash: string) => void
   onTransactionSubmited: (trxSent: boolean) => void
+}
+
+export interface BillActionsProps {
+  bill: Bills
+  currencyB: Currency
+  handleBuy: () => void
+  billValue: string
+  value: string
+  safeAvailable: string
+  balance: string
+  pendingTrx: boolean
 }

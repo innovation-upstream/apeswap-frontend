@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useState } from 'react'
-import { AutoRenewIcon, Flex, Svg, Text, Text as StyledText, useModal } from '@ape.swap/uikit'
+import { Flex, Svg, Text, Text as StyledText, useModal } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useBuyBill from 'views/Bills/hooks/useBuyBill'
 import BigNumber from 'bignumber.js'
@@ -10,8 +10,8 @@ import { useAppDispatch } from 'state'
 import { fetchBillsUserDataAsync, fetchUserOwnedBillsDataAsync } from 'state/bills'
 import { Field, selectCurrency } from 'state/swap/actions'
 import { useTranslation } from 'contexts/Localization'
-import { ActionProps } from './types'
-import { BuyButton, GetLPButton, styles } from './styles'
+import { BuyProps } from './types'
+import { GetLPButton, styles } from './styles'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from 'state/zap/actions'
 import { BillValueContainer, TextWrapper } from '../Modals/styles'
@@ -25,15 +25,15 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useZapCallback } from 'hooks/useZapCallback'
+import BillActions from './BillActions'
 
 export interface TestPair {
   currencyA: Currency
   currencyB: Currency
 }
 
-const Buy: React.FC<ActionProps> = ({ bill, onBillId, onTransactionSubmited }) => {
+const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   const {
-    userData,
     token,
     quoteToken,
     contractAddress,
@@ -101,7 +101,7 @@ const Buy: React.FC<ActionProps> = ({ bill, onBillId, onTransactionSubmited }) =
     onBillId(billId, transactionHash)
   }
 
-  const handleBuy = async () => {
+  const handleBuy = useCallback(async () => {
     setPendingTrx(true)
     if (currencyB) {
       onTransactionSubmited(true)
@@ -138,7 +138,19 @@ const Buy: React.FC<ActionProps> = ({ bill, onBillId, onTransactionSubmited }) =
     dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
     dispatch(fetchBillsUserDataAsync(chainId, account))
     setPendingTrx(false)
-  }
+  }, [
+    account,
+    chainId,
+    currencyB,
+    dispatch,
+    onBuyBill,
+    onTransactionSubmited,
+    searchForBillId,
+    t,
+    toastError,
+    toastSuccess,
+    zapCallback,
+  ])
 
   const [onPresentAddLiquidityModal] = useModal(<DualLiquidityModal />, true, true, 'liquidityWidgetModal')
 
@@ -204,26 +216,24 @@ const Buy: React.FC<ActionProps> = ({ bill, onBillId, onTransactionSubmited }) =
             inputCurrencies={inputCurrencies}
             lpList={[billsCurrencies]}
           />
-          {new BigNumber(userData?.allowance).gt(0) && (
-            <BillValueContainer>
-              <TextWrapper>
-                <Text size="12px" pr={1}>
-                  {t('Bill Value')}:{' '}
-                  <span style={{ fontWeight: 700 }}>
-                    {billValue === 'NaN' ? '0' : parseFloat(billValue).toFixed(3)} {earnToken?.symbol}
-                  </span>
-                </Text>
-              </TextWrapper>
-              <TextWrapper>
-                <Text size="12px">
-                  {t('Available')}:{' '}
-                  <span style={{ fontWeight: 700 }}>
-                    {!available ? '0' : new BigNumber(safeAvailable).toFixed(3)} {earnToken?.symbol}
-                  </span>
-                </Text>
-              </TextWrapper>
-            </BillValueContainer>
-          )}
+          <BillValueContainer>
+            <TextWrapper>
+              <Text size="12px" pr={1}>
+                {t('Bill Value')}:{' '}
+                <span style={{ fontWeight: 700 }}>
+                  {billValue === 'NaN' ? '0' : parseFloat(billValue).toFixed(3)} {earnToken?.symbol}
+                </span>
+              </Text>
+            </TextWrapper>
+            <TextWrapper>
+              <Text size="12px">
+                {t('Available')}:{' '}
+                <span style={{ fontWeight: 700 }}>
+                  {!available ? '0' : new BigNumber(safeAvailable).toFixed(3)} {earnToken?.symbol}
+                </span>
+              </Text>
+            </TextWrapper>
+          </BillValueContainer>
         </Box>
       </Flex>
       <Flex sx={{ width: '100%' }}>
@@ -234,19 +244,16 @@ const Buy: React.FC<ActionProps> = ({ bill, onBillId, onTransactionSubmited }) =
           </GetLPButton>
         </Box>
         <Box sx={styles.buyButtonContainer}>
-          <BuyButton
-            onClick={handleBuy}
-            endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
-            disabled={
-              billValue === 'NaN' ||
-              parseFloat(billValue) < 0.01 ||
-              parseFloat(billValue) > safeAvailable.toNumber() ||
-              parseFloat(selectedCurrencyBalance.toExact()) < parseFloat(value) ||
-              pendingTrx
-            }
-          >
-            {t('Buy')}
-          </BuyButton>
+          <BillActions
+            bill={bill}
+            currencyB={currencyB}
+            handleBuy={handleBuy}
+            billValue={billValue}
+            value={value}
+            safeAvailable={safeAvailable?.toString()}
+            balance={selectedCurrencyBalance?.toExact()}
+            pendingTrx={pendingTrx}
+          />
         </Box>
       </Flex>
     </Flex>

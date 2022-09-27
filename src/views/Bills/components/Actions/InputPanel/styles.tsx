@@ -69,5 +69,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   tokenText: {
     textTransform: 'uppercase',
     fontWeight: 700,
+    fontSize: '12px !important',
+  },
+  symbolText: {
+    textTransform: 'uppercase',
+    fontWeight: 700,
+    fontSize: '14px !important',
   },
 }

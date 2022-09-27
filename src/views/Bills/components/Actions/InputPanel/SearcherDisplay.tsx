@@ -59,7 +59,7 @@ const SearcherDisplay: React.FC<{ item: { currencyA: Currency; currencyB: Curren
       </Flex>
       <Flex sx={{ alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
         <Flex sx={{ marginLeft: '10px', flexDirection: 'column' }}>
-          <Text sx={styles.tokenText} size="16px">
+          <Text sx={styles.symbolText}>
             {currencyB
               ? `${wrappedToNative(currencyA?.getSymbol(chainId))}-${wrappedToNative(currencyB?.getSymbol(chainId))}`
               : currencyA?.getSymbol(chainId)}

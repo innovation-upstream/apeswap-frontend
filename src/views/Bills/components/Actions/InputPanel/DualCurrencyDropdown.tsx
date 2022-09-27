@@ -44,10 +44,28 @@ const DualCurrencyDropdown: React.FC<{
     return Object.fromEntries(filteredZapInputTokens)
   }, [allTokens, chainId, rawZapInputList])
 
+  const quickSorting = (token1, token2) => {
+    // we might want to make this more involved
+    if (token1.getSymbol(chainId) === 'WETH') {
+      return -1
+    } else if (token1.getSymbol(chainId) === 'BUSD') {
+      if (token2.getSymbol(chainId) === 'WETH') {
+        return 1
+      } else return -1
+    } else if (token1.getSymbol(chainId) === 'DAI') {
+      if (token2.getSymbol(chainId) === 'WETH') {
+        return 1
+      } else if (token2.getSymbol(chainId) === 'BUSD') {
+        return 1
+      } else return -1
+    }
+  }
+
   const currenciesList: TestPair[] = useMemo(() => {
     const filterToken = createFilterToken(searchQuery)
     const parsedList = Object.values(zapInputList)
       .filter(filterToken)
+      .sort(quickSorting)
       .map((token) => {
         return { currencyA: token, currencyB: null }
       })

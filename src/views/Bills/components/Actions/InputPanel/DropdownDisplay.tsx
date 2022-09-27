@@ -46,7 +46,7 @@ const DropdownDisplay: React.FC<{ inputCurrencies: Currency[]; active? }> = ({ i
         />
       </Flex>
       <Flex sx={{ alignItems: 'center', justifyContent: 'space-between', width: active ? null : '100%' }}>
-        <Text sx={styles.tokenText} size="12px">
+        <Text sx={styles.tokenText}>
           {inputCurrencies[1]
             ? `${wrappedToNative(inputCurrencies[0]?.getSymbol(chainId))}-${wrappedToNative(
                 inputCurrencies[1]?.getSymbol(chainId),
