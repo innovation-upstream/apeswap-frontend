@@ -80,13 +80,15 @@ const BabInfoCard: React.FC = () => {
           {!loading ? (
             <div>
               {!account ? (
-                <UnlockButton />
+                <UnlockButton bab />
               ) : (
                 <div>
                   <Text fontSize="20px" padding="20px">
-                    {!holdsBab
-                      ? t('No BAB token found in wallet. Acquire a BAB token to continue!')
-                      : t('Your wallet holds a BAB Token')}
+                    {!holdsBab ? (
+                      <Button disabled>{t('No Bab Token Detected')}</Button>
+                    ) : (
+                      t('Your wallet holds a BAB Token')
+                    )}
                   </Text>
                   {holdsBab && (
                     <div>
