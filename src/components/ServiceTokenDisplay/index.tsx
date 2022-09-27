@@ -130,9 +130,11 @@ const ServiceTokenDisplay: React.FC<ServiceTokenDisplayProps> = ({
     }
     if (token1 && !token2 && !token3 && !token4) {
       return (
-        <TokenWrapper size={size}>
-          <TokenContainer srcs={token1Urls} size={size} />
-        </TokenWrapper>
+        <Flex alignItems="center">
+          <TokenWrapper size={size}>
+            <TokenContainer srcs={token1Urls} size={size} />
+          </TokenWrapper>
+        </Flex>
       )
     }
     if (dualEarn) {

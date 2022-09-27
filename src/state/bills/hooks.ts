@@ -26,7 +26,8 @@ export const usePollUserBills = (): Bills[] => {
   const dispatch = useAppDispatch()
   const { chainId, account } = useActiveWeb3React()
   const bills = useSelector((state: State) => state.bills.data)
-  const billsLoaded = bills.length > 0
+  // When the length of bills change data will be reloaded. Need for cross chain and pulling bills data
+  const billsLoaded = bills.length
   useEffect(() => {
     if (account) {
       dispatch(fetchBillsUserDataAsync(chainId, account))
