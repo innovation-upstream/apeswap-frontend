@@ -25,8 +25,8 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
   const history = useHistory()
   const { toastSuccess } = useToast()
 
-  const { generalHarvest: isGHShown } = useIsModalShown()
-  const displayGHCircular = () => isGHShown && showCircular(chainId, history, '?modal=circular-gh')
+  const { showGeneralHarvestModal } = useIsModalShown()
+  const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
 
   return (
     <ActionContainer>

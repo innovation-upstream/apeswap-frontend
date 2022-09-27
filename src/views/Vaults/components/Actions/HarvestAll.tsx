@@ -24,8 +24,8 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ pids, disabled }) => {
   const history = useHistory()
   const { t } = useTranslation()
 
-  const { generalHarvest: isGHShown } = useIsModalShown()
-  const displayGHCircular = () => isGHShown && showCircular(chainId, history, '?modal=circular-gh')
+  const { showGeneralHarvestModal } = useIsModalShown()
+  const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
 
   const handleHarvestAll = async () => {
     setPendingTrx(true)

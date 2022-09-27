@@ -9,12 +9,12 @@ import { MODAL_TYPE } from 'config/constants'
 
 const CircularModal: React.FC<MP> = ({ actionType, description, supporting, children }) => {
   const { t } = useTranslation()
-  const { buying, selling, poolHarvest, generalHarvest } = useIsModalShown()
+  const { showBuyModal, showSellModal, showPoolHarvestModal, showGeneralHarvestModal } = useIsModalShown()
   const values =
-    (actionType === MODAL_TYPE.BUYING && buying) ||
-    (actionType === MODAL_TYPE.SELLING && selling) ||
-    (actionType === MODAL_TYPE.POOL_HARVEST && poolHarvest) ||
-    (actionType === MODAL_TYPE.GENERAL_HARVEST && generalHarvest)
+    (actionType === MODAL_TYPE.BUYING && showBuyModal) ||
+    (actionType === MODAL_TYPE.SELLING && showSellModal) ||
+    (actionType === MODAL_TYPE.POOL_HARVEST && showPoolHarvestModal) ||
+    (actionType === MODAL_TYPE.GENERAL_HARVEST && showGeneralHarvestModal)
   const [setFlagModal] = useFlagModal(actionType, values)
 
   return (

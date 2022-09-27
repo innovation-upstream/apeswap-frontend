@@ -37,7 +37,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   vaultVersion,
 }) => {
   const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
-  const { generalHarvest: showGHModal } = useIsModalShown()
+  const { showGeneralHarvestModal } = useIsModalShown()
   const dispatch = useAppDispatch()
   const history = useHistory()
   const { chainId, account } = useActiveWeb3React()
@@ -78,7 +78,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
     />,
   )
 
-  const displayGHCircular = () => showGHModal && showCircular(chainId, history, '?modal=circular-gh')
+  const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
       max={stakedBalance}

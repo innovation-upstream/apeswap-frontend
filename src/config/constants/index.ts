@@ -163,22 +163,22 @@ export const SET_DEFAULT_MODAL_KEY = 'SET_DEFAULT_MODAL'
 
 // MODALS CONSTANTS
 export const MODAL_INFO = {
-  selling: {
+  sellModal: {
     title: 'Selling BANANA?',
     supporting: 'Before You Sell...',
     description: 'Have you tried these products?',
   },
-  buying: {
+  buyModal: {
     title: "You've Got BANANA!",
     supporting: "Now You're Ready...",
     description: 'Put your new BANANA to work!',
   },
-  generalHarvest: {
+  generalHarvestModal: {
     title: "You've Earned BANANA!",
     supporting: 'Did You Know?',
     description: 'You can use your BANANA to earn more rewards:',
   },
-  poolHarvest: {
+  poolHarvestModal: {
     title: "You've Earned BANANA!",
     supporting: 'Did You Know?',
     description: 'You can use your BANANA to earn more rewards:',
@@ -225,8 +225,16 @@ export enum CTA_TYPE {
 
 // MODAL TYPES ENUM
 export enum MODAL_TYPE {
-  SELLING = 'selling',
-  BUYING = 'buying',
-  GENERAL_HARVEST = 'generalHarvest',
-  POOL_HARVEST = 'poolHarvest',
+  SELLING = 'sellModal',
+  BUYING = 'buyModal',
+  GENERAL_HARVEST = 'generalHarvestModal',
+  POOL_HARVEST = 'poolHarvestModal',
+}
+
+// SHOW MODAL TYPES IN STATE
+export enum SHOW_MODAL_TYPES {
+  sellModal = 'showSellModal',
+  buyModal = 'showBuyModal',
+  poolModal = 'showPoolHarvestModal',
+  generalHarvestModal = 'showGeneralHarvestModal',
 }

@@ -48,8 +48,8 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
   const { t } = useTranslation()
   const history = useHistory()
-  const { generalHarvest: isGHShown } = useIsModalShown()
-  const displayGHCircular = () => isGHShown && showCircular(chainId, history, '?modal=circular-gh')
+  const { showGeneralHarvestModal } = useIsModalShown()
+  const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
 
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)

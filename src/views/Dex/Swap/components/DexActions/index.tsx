@@ -38,11 +38,11 @@ const DexActions: React.FC<DexActionProps> = ({
   const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
   const history = useHistory()
-  const { selling: showSellingModal } = useIsModalShown()
+  const { showSellModal } = useIsModalShown()
   const bananaToken = useCurrency(useBananaAddress())
 
   const sellingBanana = inputCurrency === bananaToken
-  const displaySellCircular = () => showSellingModal && showCircular(chainId, history, '?modal=circular-sell')
+  const displaySellCircular = () => showSellModal && showCircular(chainId, history, '?modal=circular-sell')
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()

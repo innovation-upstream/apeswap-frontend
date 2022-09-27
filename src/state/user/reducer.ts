@@ -93,10 +93,10 @@ export interface UserState {
   unlimitedGnana: boolean
 
   showModal: {
-    selling: boolean
-    buying: boolean
-    poolHarvest: boolean
-    generalHarvest: boolean
+    showBuyModal: boolean
+    showSellModal: boolean
+    showPoolHarvestModal: boolean
+    showGeneralHarvestModal: boolean
   }
   userBonusRouterDisabled: boolean
 }
@@ -132,10 +132,10 @@ export const initialState: UserState = {
   showPhishingWarningBanner: true,
   unlimitedGnana: false,
   showModal: {
-    selling: true,
-    buying: true,
-    poolHarvest: true,
-    generalHarvest: true,
+    showBuyModal: true,
+    showSellModal: true,
+    showPoolHarvestModal: true,
+    showGeneralHarvestModal: true,
   },
   userBonusRouterDisabled: false,
 }

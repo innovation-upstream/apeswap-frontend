@@ -2,7 +2,7 @@ import { Pair, SmartRouter, Token } from '@ape.swap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
+import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS, SHOW_MODAL_TYPES } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAllTokens } from 'hooks/Tokens'
 import { AppDispatch, AppState } from '../../index'
@@ -527,7 +527,7 @@ export const useFlagModal = (actionType: string, value: boolean) => {
   const dispatch = useDispatch<AppDispatch>()
 
   const setFlagModal = useCallback(() => {
-    dispatch(flagModal({ actionType, value: !value }))
+    dispatch(flagModal({ actionType: SHOW_MODAL_TYPES[actionType], value: !value }))
   }, [actionType, dispatch, value])
 
   return [setFlagModal]

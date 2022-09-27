@@ -35,7 +35,7 @@ import { useBananaAddress } from 'hooks/useAddress'
 import { showCircular } from 'utils'
 
 const Swap: React.FC = () => {
-  const { buying: showBuyingModal } = useIsModalShown()
+  const { showBuyModal } = useIsModalShown()
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade | undefined
     attemptingTxn: boolean
@@ -143,8 +143,8 @@ const Swap: React.FC = () => {
   const { routerType } = bestRoute
 
   const displayBuyCircular = useCallback(
-    () => showBuyingModal && showCircular(chainId, history, '?modal=circular-buy'),
-    [history, showBuyingModal, chainId],
+    () => showBuyModal && showCircular(chainId, history, '?modal=circular-buy'),
+    [history, showBuyModal, chainId],
   )
   const handleSwap = useCallback(() => {
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {

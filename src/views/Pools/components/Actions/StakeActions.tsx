@@ -54,11 +54,12 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const { onUnstake } = useSousUnstake(sousId)
   const { t } = useTranslation()
   const bananaToken = useCurrency(useBananaAddress())
-  const { poolHarvest: isPHShown } = useIsModalShown()
+  const { showPoolHarvestModal } = useIsModalShown()
   const history = useHistory()
 
   const harvestBanana = earnTokenSymbol === bananaToken.symbol
-  const displayPHCircular = () => isPHShown && harvestBanana && showCircular(chainId, history, '?modal=circular-gh')
+  const displayPHCircular = () =>
+    showPoolHarvestModal && harvestBanana && showCircular(chainId, history, '?modal=circular-gh')
 
   const [onPresentDeposit] = useModal(
     <DepositModal

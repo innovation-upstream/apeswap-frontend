@@ -34,7 +34,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
   const { onHarvest } = useSousHarvest(sousId)
   const { onStake } = useSousStake(sousId)
   const bananaToken = useCurrency(useBananaAddress())
-  const { poolHarvest: isPHShown } = useIsModalShown()
+  const { showPoolHarvestModal } = useIsModalShown()
   const history = useHistory()
 
   const { toastSuccess } = useToast()
@@ -42,7 +42,8 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
   const { t } = useTranslation()
 
   const harvestBanana = earnTokenSymbol === bananaToken.symbol
-  const displayPHCircular = () => isPHShown && harvestBanana && showCircular(chainId, history, '?modal=circular-ph')
+  const displayPHCircular = () =>
+    showPoolHarvestModal && harvestBanana && showCircular(chainId, history, '?modal=circular-ph')
 
   const handleHarvest = async () => {
     setPendingTrx(true)

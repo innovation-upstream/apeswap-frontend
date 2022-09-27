@@ -30,8 +30,8 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
   const { t } = useTranslation()
   const history = useHistory()
 
-  const { generalHarvest: isGHShown } = useIsModalShown()
-  const displayGHCircular = () => isGHShown && showCircular(chainId, history, '?modal=circular-gh')
+  const { showGeneralHarvestModal } = useIsModalShown()
+  const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
 
   return (
     <ActionContainer>
