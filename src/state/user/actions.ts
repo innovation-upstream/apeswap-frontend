@@ -66,9 +66,9 @@ export const setIsExchangeChartDisplayed = createAction<boolean>('user/toggleIsE
 
 export const setUnlimitedGnana = createAction<boolean>('user/setUnlimitedGnanaMinting')
 
-export const flagModal = createAction<{
+export const showModal = createAction<{
   actionType: string
-  value: boolean
-}>('user/flagModal')
+  flag: boolean
+}>('user/showModal')
 
 export const updateUserBonusRouter = createAction<{ userBonusRouterDisabled: boolean }>('user/updateUserBonusRouter')

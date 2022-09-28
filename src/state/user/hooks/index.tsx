@@ -35,7 +35,7 @@ import {
   setIsExchangeChartDisplayed,
   updateUserAutonomyPrepay,
   setUnlimitedGnana,
-  flagModal,
+  showModal,
   updateUserBonusRouter,
 } from '../actions'
 import { deserializeToken, serializeToken } from './helpers'
@@ -523,12 +523,12 @@ export const useIsModalShown = () => {
   return { ...isModalShown }
 }
 
-export const useFlagModal = (actionType: string, value: boolean) => {
+export const useShowModal = (actionType: string, flag: boolean) => {
   const dispatch = useDispatch<AppDispatch>()
 
-  const setFlagModal = useCallback(() => {
-    dispatch(flagModal({ actionType: SHOW_MODAL_TYPES[actionType], value: !value }))
-  }, [actionType, dispatch, value])
+  const setShowModal = useCallback(() => {
+    dispatch(showModal({ actionType: SHOW_MODAL_TYPES[actionType], flag: !flag }))
+  }, [actionType, dispatch, flag])
 
-  return [setFlagModal]
+  return [setShowModal]
 }

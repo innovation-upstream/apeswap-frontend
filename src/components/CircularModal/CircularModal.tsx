@@ -4,7 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Text, Flex, Checkbox, Button } from '@ape.swap/uikit'
 import { MP } from './types'
 import { circular } from './styles'
-import { useIsModalShown, useFlagModal } from 'state/user/hooks'
+import { useIsModalShown, useShowModal } from 'state/user/hooks'
 import { MODAL_TYPE } from 'config/constants'
 
 const CircularModal: React.FC<MP> = ({ actionType, description, supporting, children }) => {
@@ -12,12 +12,12 @@ const CircularModal: React.FC<MP> = ({ actionType, description, supporting, chil
   const { showBuyModal, showSellModal, showPoolHarvestModal, showGeneralHarvestModal } = useIsModalShown()
   // Get the boolean values to send to the `showModal` state
   // based on which modal is currently open
-  const values =
+  const flag =
     (actionType === MODAL_TYPE.BUYING && showBuyModal) ||
     (actionType === MODAL_TYPE.SELLING && showSellModal) ||
     (actionType === MODAL_TYPE.POOL_HARVEST && showPoolHarvestModal) ||
     (actionType === MODAL_TYPE.GENERAL_HARVEST && showGeneralHarvestModal)
-  const [setFlagModal] = useFlagModal(actionType, values)
+  const [setShowModal] = useShowModal(actionType, flag)
   const openLearnMore = () =>
     window.open(
       'https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/banana#what-can-i-do-with-banana',
@@ -39,9 +39,9 @@ const CircularModal: React.FC<MP> = ({ actionType, description, supporting, chil
           <Flex sx={circular.checkboxParent}>
             <Checkbox
               id="checkbox"
-              checked={values ? false : true}
+              checked={flag ? false : true}
               sx={{ backgroundColor: 'white2' }}
-              onChange={setFlagModal}
+              onChange={setShowModal}
             />
           </Flex>
           <Text sx={circular.checkboxText}>{t("Don't show this again")}</Text>
