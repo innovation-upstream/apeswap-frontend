@@ -12,7 +12,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     width: ['90%'],
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
+    flexDirection: ['column', 'row'],
     gap: ['20px'],
     marginBottom: ['20px'],
   },

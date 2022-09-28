@@ -16,6 +16,7 @@ const NewToDeFi: React.FC = () => {
         justifyContent: 'center',
         flexDirection: 'column',
         marginTop: ['50px', '100px'],
+        gap: [0, '15px'],
       }}
     >
       <Flex
@@ -25,7 +26,7 @@ const NewToDeFi: React.FC = () => {
           justifyContent: 'center',
           flexDirection: 'column',
           textAlign: 'center',
-          marginTop: ['20px'],
+          marginTop: ['20px', '30px'],
         }}
       >
         <Text sx={{ fontSize: '30px', lineHeight: '45px', fontWeight: 700 }}>{t('New to DeFi?')}</Text>
