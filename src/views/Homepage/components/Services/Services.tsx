@@ -79,7 +79,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
             position: 'absolute',
             bottom: '60px',
             height: '250px',
-            width: ['93%', '300px'],
+            width: '93%',
           }}
         >
           {stats?.map((stat) => {
@@ -212,30 +212,33 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                           background: `url(${service.backgroundImg}-${isDark ? 'dark' : 'light'}.svg)`,
                         }}
                       >
-                        <V2Flex sx={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-                          <V2Flex sx={{ flexDirection: 'column' }}>
-                            <V2Flex>
-                              <V2Text
-                                sx={{
-                                  fontSize: '23px',
-                                  color: 'primaryBright',
-                                  fontWeight: 'bold',
-                                }}
-                              >
-                                {service.title}
-                              </V2Text>
-                            </V2Flex>
-                            <V2Flex padding="0px 40px 0px 0px">
-                              <V2Text
-                                sx={{
-                                  fontSize: '15px',
-                                  color: 'primaryBright',
-                                  fontWeight: 'bold',
-                                }}
-                              >
-                                {service.description}
-                              </V2Text>
-                            </V2Flex>
+                        <V2Flex
+                          sx={{
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            height: '100%',
+                            width: '100%',
+                          }}
+                        >
+                          <V2Flex sx={{ flexDirection: 'column', padding: ['15px 5px', '20px 5px'], gap: '5px' }}>
+                            <V2Text
+                              sx={{
+                                fontSize: '23px',
+                                color: 'primaryBright',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              {service.title}
+                            </V2Text>
+                            <V2Text
+                              sx={{
+                                fontSize: '15px',
+                                color: 'primaryBright',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              {service.description}
+                            </V2Text>
                           </V2Flex>
                           {displayStats(service.id, service.link, service.stats)}
                         </V2Flex>
@@ -250,22 +253,37 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                   <V2Flex
                     sx={{
                       ...styles.yieldCard,
-                      background: `${service.backgroundImg}-${isDark ? 'dark' : 'light'}.svg`,
+                      background: `url(${service.backgroundImg}-${isDark ? 'dark' : 'light'}.svg)`,
                     }}
                     key={service.id}
                   >
-                    <V2Flex sx={{ flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-                      <V2Flex flexDirection="column">
-                        <V2Flex>
-                          <V2Text sx={{ color: 'primaryBright', fontSize: '23px' }} bold>
-                            {service.title}
-                          </V2Text>
-                        </V2Flex>
-                        <V2Flex padding="0px 40px 0px 0px">
-                          <V2Text bold sx={{ color: 'primaryBright', fontSize: '15px' }}>
-                            {service.description}
-                          </V2Text>
-                        </V2Flex>
+                    <V2Flex
+                      sx={{
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        height: '100%',
+                        width: '100%',
+                      }}
+                    >
+                      <V2Flex sx={{ flexDirection: 'column', padding: ['15px 5px', '20px 5px'], gap: '5px' }}>
+                        <V2Text
+                          sx={{
+                            fontSize: '23px',
+                            color: 'primaryBright',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {service.title}
+                        </V2Text>
+                        <V2Text
+                          sx={{
+                            fontSize: '15px',
+                            color: 'primaryBright',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {service.description}
+                        </V2Text>
                       </V2Flex>
                       {displayStats(service.id, service.link, service.stats)}
                     </V2Flex>
