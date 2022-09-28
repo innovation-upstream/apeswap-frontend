@@ -20,7 +20,7 @@ const Nft = () => {
         justifyContent: 'center',
         flexDirection: 'column',
         mb: '100px',
-        marginTop: ['20px', '20px', '20px', '100px'],
+        marginTop: '30px',
       }}
     >
       <Flex
