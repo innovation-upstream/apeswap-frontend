@@ -5,7 +5,7 @@ export const defaultServiceData: (t: ContextApi['t']) => DefaultServiceData[] = 
   {
     id: 'poolDetails',
     title: t('Staking Pools'),
-    description: t('Earn partner tokens by staking BANANA or GNANA'),
+    description: t('Stake BANANA or GNANA'),
     backgroundImg: 'images/homepage-pools',
     link: '/pools',
     stats: [],
@@ -13,7 +13,7 @@ export const defaultServiceData: (t: ContextApi['t']) => DefaultServiceData[] = 
   {
     id: 'farmDetails',
     title: t('Yield Farms'),
-    description: t('Earn BANANA or partner tokens by staking LP tokens'),
+    description: t('Stake LP, earn BANANA'),
     backgroundImg: 'images/homepage-farms',
     link: '/banana-farms',
     stats: [],
@@ -21,7 +21,7 @@ export const defaultServiceData: (t: ContextApi['t']) => DefaultServiceData[] = 
   {
     id: 'lendingDetails',
     title: t('Lending Network'),
-    description: t('Earn interest by supplying popular tokens'),
+    description: t('Earn while you HODL'),
     backgroundImg: 'images/homepage-lending',
     link: 'https://lending.apeswap.finance/markets',
     stats: [],
