@@ -8,4 +8,19 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     marginBottom: '10px',
   },
   walletHolds: { padding: ['0', '20px'], fontSize: ['14px', '20px'] },
+  btnContainer: {
+    width: ['90%'],
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    gap: ['20px'],
+    marginBottom: ['20px'],
+  },
+  btn: {
+    width: ['100%', '100%', 'auto'],
+    fontSize: '16px',
+    lineHeight: '24px',
+    fontWeight: 700,
+    height: '44px',
+  },
 }

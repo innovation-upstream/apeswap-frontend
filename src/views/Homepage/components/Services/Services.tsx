@@ -159,7 +159,9 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
   return (
     <>
       <div ref={observerRef} />
-      <V2Flex sx={{ ...styles.colorWrap, background: (bab && 'white1') || 'white2', paddingTop: bab && '100px' }}>
+      <V2Flex
+        sx={{ ...styles.colorWrap, background: (bab && 'white1') || 'white2', paddingTop: bab && ['50px', '100px'] }}
+      >
         {bab && (
           <V2Text
             sx={{

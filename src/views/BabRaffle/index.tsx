@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, Text } from '@ape.swap/uikit'
+import { Flex } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Banner from 'components/Banner'
 import SwiperProvider from 'contexts/SwiperProvider'
@@ -8,15 +8,11 @@ import Values from 'views/Homepage/components/Values/Values'
 import BabInfoCard from './components/BabInfoCard'
 import NFBGiveaway from './components/NFBGiveaway'
 import Services from 'views/Homepage/components/Services/Services'
+import NewToDeFi from './components/NewToDeFi'
 
 const Nft = () => {
   const { t } = useTranslation()
 
-  // Stage #1
-  // Change all wording for components that already exist
-  // on the /bab-raffle page
-  // Implement "New to DeFi" section
-  // Implement "Featured ApeSwap Products" section
   return (
     <Flex
       sx={{
@@ -44,7 +40,7 @@ const Nft = () => {
         <NFBGiveaway />
       </Flex>
       <Flex className="services-con" sx={{ width: '100%', flexDirection: 'column' }}>
-        <Text>New To DeFi Section</Text>
+        <NewToDeFi />
         <SwiperProvider>
           <Services bab />
         </SwiperProvider>
