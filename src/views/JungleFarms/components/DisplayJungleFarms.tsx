@@ -36,7 +36,12 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
   const isActive = !pathname.includes('history')
   const dispatch = useAppDispatch()
 
-  const [onPresentAddLiquidityWidgetModal] = useModal(<DualLiquidityModal />, true, true, 'dualLiquidityModal')
+  const [onPresentAddLiquidityWidgetModal] = useModal(
+    <DualLiquidityModal showStakeOption />,
+    true,
+    true,
+    'dualLiquidityModal',
+  )
 
   const showLiquidity = (token, quoteToken, farm) => {
     dispatch(

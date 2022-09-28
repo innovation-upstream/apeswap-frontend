@@ -24,7 +24,7 @@ const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
 
   return (
     <Flex sx={{ margin: '15px 0', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Flex>
+      <Flex sx={{ alignItems: 'flex-start' }}>
         <Flex sx={{ marginRight: '5px', alignItems: 'center' }}>
           <Svg icon="ZapIcon" />
         </Flex>

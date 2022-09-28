@@ -46,7 +46,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   } = bill
   const { chainId, account } = useActiveWeb3React()
   const [value, setValue] = useState('')
-  const { onBuyBill } = useBuyBill(contractAddress[chainId], value, lpPrice, price)
+  const { onBuyBill, maxPrice } = useBuyBill(contractAddress[chainId], value, lpPrice, price)
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
   const { toastSuccess, toastError } = useToast()
@@ -74,6 +74,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
     recipient,
     '',
     contractAddress[chainId] || 's',
+    maxPrice.toFixed(0),
   )
 
   const consideredValue = inputCurrencies[1] ? value : zap?.pairOut?.liquidityMinted?.toExact()
@@ -95,11 +96,14 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
     [onUserInput],
   )
 
-  const searchForBillId = (resp) => {
-    const billId = resp.events[6]?.args?.billId?.toString()
-    const { transactionHash } = resp
-    onBillId(billId, transactionHash)
-  }
+  const searchForBillId = useCallback(
+    (resp) => {
+      const billId = resp.events[6]?.args?.billId?.toString()
+      const { transactionHash } = resp
+      onBillId(billId, transactionHash)
+    },
+    [onBillId],
+  )
 
   const handleBuy = useCallback(async () => {
     setPendingTrx(true)
