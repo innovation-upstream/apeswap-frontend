@@ -1,29 +1,32 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import React, { ReactNode } from 'react'
+import { MIGRATION_STEPS, useMigrateAll } from '../provider'
 
 interface MigrateProcessBarInterface {
-  activeIndex: number
-  steps: { title: string; description: string; complete: boolean; active: boolean }[]
+  activeLineMargin?: number
   children: ReactNode
 }
 
-const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ steps, activeIndex, children }) => {
+const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargin, children }) => {
+  const { activeIndex, setActiveIndexCallback } = useMigrateAll()
   return (
     <Flex sx={{ flexDirection: 'column' }}>
       <Flex sx={{ alignItems: 'center' }}>
-        {steps?.map(({ title, description, complete, active }, i) => {
+        {MIGRATION_STEPS.map(({ title, description }, i) => {
           return (
             <>
               <Flex
                 key={title}
+                onClick={() => setActiveIndexCallback(i)}
                 sx={{
-                  background: active || complete ? 'gradient' : 'white2',
+                  background: activeIndex >= i ? 'gradient' : 'white2',
                   height: '100px',
-                  width: `${100 - steps.length}%`,
+                  width: '100%',
                   alignItems: 'center',
                   padding: '10px',
                   borderRadius: '10px',
+                  cursor: 'pointer',
                 }}
               >
                 <Flex
@@ -35,14 +38,15 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ steps, activeIn
                     alignItems: 'center',
                     justifyContent: 'center',
                     mr: '15px',
+                    ml: '5px',
                   }}
                 >
-                  {complete ? (
+                  {activeIndex > i ? (
                     <Svg icon="success" width="100%" />
                   ) : (
                     <Text
                       size="35px"
-                      color={active ? 'smartGradient' : 'text'}
+                      color={activeIndex === i ? 'smartGradient' : 'text'}
                       weight={700}
                       sx={{
                         lineHeight: '2.5px',
@@ -57,7 +61,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ steps, activeIn
                   )}
                 </Flex>
                 <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
-                  <Text size="20px" weight={700} mr="5px" color={active || complete ? 'primaryBright' : 'text'}>
+                  <Text size="20px" weight={700} mr="5px" color={activeIndex >= i ? 'primaryBright' : 'text'}>
                     {title}
                   </Text>
                   <Flex sx={{ mt: '2.5px' }}>
@@ -67,14 +71,18 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ steps, activeIn
                       transformTip="translate(10%, 0%)"
                       width="200px"
                     >
-                      <Svg icon="info" width="16.5px" color={active || complete ? 'primaryBright' : 'text'} />
+                      <Svg icon="info" width="16.5px" color={activeIndex >= i ? 'primaryBright' : 'text'} />
                     </TooltipBubble>
                   </Flex>
                 </Flex>
               </Flex>
-              {i !== steps.length - 1 && (
+              {i !== MIGRATION_STEPS.length - 1 && (
                 <Flex
-                  sx={{ background: complete ? 'gradient' : 'white2', width: `${10 - steps.length}%`, height: '10px' }}
+                  sx={{
+                    background: activeIndex > i ? 'gradient' : 'white2',
+                    width: `${10 - MIGRATION_STEPS.length}%`,
+                    height: '10px',
+                  }}
                 />
               )}
             </>
@@ -87,7 +95,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ steps, activeIn
             background: 'gradient',
             height: '75px',
             width: '10px',
-            left: `${(activeIndex / steps.length) * 100 + 11}%`,
+            left: `${(activeIndex / MIGRATION_STEPS.length) * 100 + activeIndex + activeLineMargin || 15}%`,
             position: 'absolute',
             zindex: -1,
           }}

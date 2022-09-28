@@ -206,19 +206,21 @@ export function useZapMigratorActionHandlers(): {
   }
 }
 
+export interface MigrateResult {
+  smartRouter: SmartRouter
+  chefAddress: string
+  lpAddress: string
+  token0: { address: string; symbol: string; decimals: number; reserves: number }
+  token1: { address: string; symbol: string; decimals: string; reserves: number }
+  pid: number
+  walletBalance: string
+  stakedBalance: string
+}
+
 export const useMigratorBalances = (): {
   valid: boolean
   loading: boolean
-  results: {
-    smartRouter: SmartRouter
-    chefAddress: string
-    lpAddress: string
-    token0: { address: string; symbol: string; decimals: number; reserves: number }
-    token1: { address: string; symbol: string; decimals: string; reserves: number }
-    pid: number
-    walletBalance: string
-    stakedBalance: string
-  }[]
+  results: MigrateResult[]
 } => {
   const { account, chainId } = useActiveWeb3React()
   const migratorBalanceCheckerContract = useMigratorBalanceCheckerContract()
