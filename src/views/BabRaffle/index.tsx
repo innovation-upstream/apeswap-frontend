@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Banner from 'components/Banner'
 import SwiperProvider from 'contexts/SwiperProvider'
@@ -24,20 +24,27 @@ const Nft = () => {
         justifyContent: 'center',
         flexDirection: 'column',
         mb: '100px',
-        marginTop: '10px',
+        marginTop: ['20px', '20px', '20px', '100px'],
       }}
     >
-      <Flex sx={{ flexDirection: 'column', width: '100%', maxWidth: '1200px' }}>
+      <Flex
+        sx={{
+          flexDirection: 'column',
+          width: ['90%', '90%', '90%', '100%'],
+          maxWidth: '1200px',
+          gap: ['20px', '20px', '20px', '50px'],
+        }}
+      >
         <Banner
           banner="BABbanner"
           link="https://ape-swap.medium.com/apeswap-adds-launch-support-for-binances-first-soulbound-token-dbb2e0e4c263"
           title={t('ApeSwap BAB Pass')}
-          margin="0 0 20px 0"
         />
         <BabInfoCard />
         <NFBGiveaway />
       </Flex>
       <Flex className="services-con" sx={{ width: '100%', flexDirection: 'column' }}>
+        <Text>New To DeFi Section</Text>
         <SwiperProvider>
           <Services bab />
         </SwiperProvider>

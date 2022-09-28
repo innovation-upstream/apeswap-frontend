@@ -43,8 +43,17 @@ const BabInfoCard: React.FC = () => {
           '@media screen and (max-width: 725px)': { padding: '0px 0px' },
         }}
       >
-        <Flex sx={{ flexDirection: 'column' }}>
-          <Text size="22px" mb="6px" mt="15px" weight={700} sx={{ lineHeight: '35px' }}>
+        <Flex
+          sx={{
+            flexDirection: 'column',
+            alignItems: ['center', 'flex-start'],
+            textAlign: ['center', 'start'],
+          }}
+        >
+          <Text
+            weight={700}
+            sx={{ lineHeight: '35px', fontSize: '22px', marginBottom: '6px', marginTop: '15px', fontWeight: 700 }}
+          >
             {t('ApeSwap x BAB')}
           </Text>
           <Text sx={styles.playBody}>
@@ -83,7 +92,7 @@ const BabInfoCard: React.FC = () => {
                 <UnlockButton bab />
               ) : (
                 <div>
-                  <Text fontSize="20px" padding="20px">
+                  <Text sx={styles.walletHolds}>
                     {!holdsBab ? (
                       <Button disabled>{t('No Bab Token Detected')}</Button>
                     ) : (
@@ -93,9 +102,7 @@ const BabInfoCard: React.FC = () => {
                   {holdsBab && (
                     <div>
                       {hasClaimed ? (
-                        <Text fontSize="20px" padding="20px">
-                          Raffle NFT Already Claimed! ✅
-                        </Text>
+                        <Text sx={styles.walletHolds}>Raffle NFT Already Claimed! ✅</Text>
                       ) : (
                         <Button onClick={() => claim(tokenId)} disabled={claiming}>
                           Claim Raffle

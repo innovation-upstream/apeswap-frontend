@@ -7,4 +7,5 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     fontWeight: 500,
     marginBottom: '10px',
   },
+  walletHolds: { padding: ['0', '20px'], fontSize: ['14px', '20px'] },
 }

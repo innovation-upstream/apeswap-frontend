@@ -13,11 +13,11 @@ const BabInfoCard: React.FC = () => {
         background: 'white2',
         padding: ['20px', '40px'],
         borderRadius: '10px',
-        mt: '25px',
         minHeight: '400px',
         width: '100%',
         alignItems: 'center',
-        '@media screen and (max-width: 725px)': { flexWrap: 'wrap-reverse' },
+        flexWrap: ['wrap', 'nowrap'],
+        gap: ['20px', 0],
       }}
     >
       <Flex
@@ -29,33 +29,26 @@ const BabInfoCard: React.FC = () => {
       >
         <Flex
           sx={{
+            gap: ['20px', '50px'],
             flexDirection: 'column',
-            padding: '0px 20px 0px 30px',
-            mr: '30px',
-            '@media screen and (max-width: 725px)': {
-              padding: '0px 0px',
-              alignItems: 'center',
-              justifyContent: 'center',
-              mr: '0px',
-            },
+            textAlign: ['center', 'left'],
           }}
         >
           <Text
-            size="30px"
-            mb="50px"
-            weight={700}
             sx={{
-              textAlign: 'left',
+              fontSize: ['25px', '30px'],
+              fontWeight: 700,
               lineHeight: '45px',
-              '@media screen and (max-width: 725px)': { textAlign: 'center' },
             }}
           >
             {t('The 30-Day Non-Fungible Banana NFT Raffle')}
           </Text>
           <Text
-            size="22px"
-            weight={500}
-            sx={{ textAlign: 'left', '@media screen and (max-width: 725px)': { textAlign: 'center' } }}
+            sx={{
+              fontSize: ['16px', '22px'],
+              lineHeight: ['24px', '33px'],
+              fontWeight: 500,
+            }}
           >
             {t(
               `From October 1st through October 31st, all holders of an ApeSwap BAB NFT will be eligible to participate in a daily raffle to win a Non Fungible Banana NFT.`,
@@ -63,11 +56,13 @@ const BabInfoCard: React.FC = () => {
             <br />
             <br />
             {t(`Make sure to return to this page daily in October to see if you have won an NFB!`)}
-            <br />
-            <br />
           </Text>
           <Text
-            sx={{ textDecoration: 'underline', marginTop: '25px', fontSize: ['16px', '22px'], fontWeight: '700px' }}
+            sx={{
+              textDecoration: 'underline',
+              fontSize: ['16px', '22px'],
+              fontWeight: '700px',
+            }}
           >
             <Link
               href="https://ape-swap.medium.com/apeswap-adds-launch-support-for-binances-first-soulbound-token-dbb2e0e4c263"

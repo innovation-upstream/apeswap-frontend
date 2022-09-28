@@ -13,11 +13,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
   yieldCard: {
     position: 'relative',
-    minWidth: '338px',
+    minWidth: ['300px', '338px'],
     maxWidth: '338px',
     height: '442px',
     opacity: 1,
-    padding: '20px 20px',
+    padding: '10px 10px',
     borderRadius: '10px',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',

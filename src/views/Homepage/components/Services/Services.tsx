@@ -79,7 +79,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
             position: 'absolute',
             bottom: '60px',
             height: '250px',
-            width: '300px',
+            width: ['93%', '300px'],
           }}
         >
           {stats?.map((stat) => {
@@ -162,7 +162,13 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
       <V2Flex sx={{ ...styles.colorWrap, background: (bab && 'white1') || 'white2', paddingTop: bab && '100px' }}>
         {bab && (
           <V2Text
-            sx={{ textAlign: 'center', lineHeight: '45px', fontSize: '30px', fontWeight: 700, margin: '0 0 0 0' }}
+            sx={{
+              textAlign: 'center',
+              lineHeight: ['38px', '45px'],
+              fontSize: ['25px', '30px'],
+              fontWeight: 700,
+              margin: '0 0 0 0',
+            }}
           >
             {t('Featured ApeSwap Products')}
           </V2Text>
@@ -191,7 +197,13 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
               >
                 {displayData?.map((service) => {
                   return (
-                    <SwiperSlide style={{ maxWidth: '338px', minWidth: '338px' }} key={service.title}>
+                    <SwiperSlide
+                      style={{
+                        maxWidth: '338px',
+                        minWidth: '300px',
+                      }}
+                      key={service.title}
+                    >
                       <V2Flex
                         sx={{
                           ...styles.yieldCard,
