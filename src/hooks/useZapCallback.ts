@@ -55,7 +55,6 @@ function useZapCallArguments(
   maxPrice?: string,
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
-
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
   const deadline = useTransactionDeadline()
@@ -64,7 +63,7 @@ function useZapCallArguments(
   return useMemo(() => {
     if (
       !zap?.currencyIn?.currency ||
-      !zap?.pairOut?.pair ||
+      //!zap?.pairOut?.pair ||
       !recipient ||
       !library ||
       !account ||
@@ -79,9 +78,11 @@ function useZapCallArguments(
 
     const swapMethods = []
 
+    console.log(zap)
+
     swapMethods.push(
       ZapV1.zapCallParameters(zap, {
-        allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
+        allowedSlippage: new Percent(JSBI.BigInt(200), BIPS_BASE),
         zapType: zapType,
         poolAddress: poolAddress,
         billAddress: billAddress,
@@ -130,7 +131,7 @@ export function useZapCallback(
     billAddress,
     maxPrice,
   )
-
+  console.log(swapCalls)
   const addTransaction = useTransactionAdder()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)

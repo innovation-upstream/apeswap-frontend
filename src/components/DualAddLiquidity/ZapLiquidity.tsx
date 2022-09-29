@@ -56,24 +56,22 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, showStak
   )
 
   const handleZapChange = (newState) => {
-    const contractAddress = store
+    const jungleFarmAddress = store
       .getState()
       .jungleFarms.data.find(
         (jungleFarm) =>
           jungleFarm?.stakingToken?.address[chainId]?.toLowerCase() ===
           zap?.pairOut?.pair?.liquidityToken?.address?.toLowerCase(),
-      ).contractAddress[chainId]
+      )?.contractAddress[chainId]
     setStakeIntoProduct(newState)
     if (newState) {
-      setLocalZapType(ZapType.ZAP_SINGLE_ASSET_POOL)
-      setPoolAddress(contractAddress)
+      setLocalZapType(ZapType.ZAP_LP_POOL)
+      setPoolAddress(jungleFarmAddress)
     } else {
       setLocalZapType(ZapType.ZAP)
       setPoolAddress('')
     }
   }
-
-  console.log(zap)
 
   const { callback: zapCallback } = useZapCallback(zap, localZapType, zapSlippage, recipient, poolAddress, null)
 

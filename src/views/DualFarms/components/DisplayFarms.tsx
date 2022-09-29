@@ -34,7 +34,12 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
   const isMobile = useIsMobile()
   const dispatch = useAppDispatch()
 
-  const [onPresentAddLiquidityWidgetModal] = useModal(<DualLiquidityModal />, true, true, 'liquidityWidgetModal')
+  const [onPresentAddLiquidityWidgetModal] = useModal(
+    <DualLiquidityModal showStakeOption />,
+    true,
+    true,
+    'liquidityWidgetModal',
+  )
 
   const showLiquidity = (token, quoteToken, farm) => {
     dispatch(
