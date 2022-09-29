@@ -67,13 +67,14 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   const { zap } = useDerivedZapInfo()
   const [zapSlippage] = useUserSlippageTolerance(true)
   const { onCurrencySelection, onUserInput } = useZapActionHandlers()
+  const maxPrice = new BigNumber(price).times(102).div(100).toFixed(0)
   const { callback: zapCallback } = useZapCallback(
     zap,
     ZapType.ZAP_T_BILL,
     zapSlippage,
     recipient,
-    '',
     contractAddress[chainId] || 's',
+    maxPrice,
   )
 
   const consideredValue = inputCurrencies[1] ? value : zap?.pairOut?.liquidityMinted?.toExact()
@@ -129,7 +130,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
           })
         })
         .catch((e) => {
-          console.error(e)
+          console.log(e)
           toastError(e?.data?.message || t('Error: Please try again.'))
           setPendingTrx(false)
           onTransactionSubmited(false)
