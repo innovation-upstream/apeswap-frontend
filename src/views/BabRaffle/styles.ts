@@ -10,6 +10,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   walletHolds: {
     margin: [0, '20px'],
     fontSize: '14px',
+    width: '100%',
   },
   btnContainer: {
     width: ['90%'],

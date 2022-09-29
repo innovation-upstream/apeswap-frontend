@@ -6,16 +6,20 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import ReactPlayer from 'react-player'
-import { useClaimRaffle, useFetchBabToken } from 'state/hooks'
+import { useFetchBabToken } from 'state/hooks'
 import { styles } from '../styles'
 import NumberedList from './NumberedList'
 
 const BabInfoCard: React.FC = () => {
   const { t } = useTranslation()
-  const { tokenId, loading, holdsBab } = useFetchBabToken()
-  const { claim, claiming, hasClaimed } = useClaimRaffle()
+  const { loading, holdsBab } = useFetchBabToken()
   const { account } = useActiveWeb3React()
   const isMobile = useIsMobile()
+
+  const mint = () => null
+  const minting = false
+  const hasMinted = false
+  const wonPrize = false
 
   // Not connected -> Connect Wallet
   // Connected
@@ -48,8 +52,7 @@ const BabInfoCard: React.FC = () => {
       <Flex
         sx={{
           flexDirection: 'column',
-          padding: '0 50px',
-          '@media screen and (max-width: 725px)': { padding: '0px 0px' },
+          padding: [0, '0 10px 0 30px', '0 50px'],
         }}
       >
         <Flex
@@ -94,36 +97,38 @@ const BabInfoCard: React.FC = () => {
             t={t}
           />
         </Flex>
-        <Flex sx={{ alignItems: 'center', justifyContent: 'center', mt: '20px' }}>
+        <Flex sx={{ alignItems: 'center', justifyContent: 'center', marginTop: ['20px', '20px', '40px'] }}>
           {!loading ? (
-            <div>
+            <Flex sx={{ width: ['100%', '388px'] }}>
               {!account ? (
-                <UnlockButton />
+                <UnlockButton fullWidth />
               ) : (
-                <div>
-                  <Text sx={styles.walletHolds}>
-                    {!holdsBab ? (
-                      <Button disabled>{t('No Bab Token Detected')}</Button>
-                    ) : (
-                      t('Your wallet holds a BAB Token')
-                    )}
-                  </Text>
+                <Flex sx={{ width: ['100%', '388px'] }}>
+                  {!holdsBab && (
+                    <Button disabled fullWidth>
+                      {t('No Bab Token Detected')}
+                    </Button>
+                  )}
                   {holdsBab && (
-                    <Text sx={styles.walletHolds}>
-                      {hasClaimed ? (
-                        <Button onClick={null} fullWidth sx={{ marginTop: '10px' }}>
-                          {t('Show NFT')}
-                        </Button>
+                    <Flex sx={{ width: ['100%', '388px'] }}>
+                      {hasMinted ? (
+                        <>
+                          {wonPrize ? (
+                            <Button onClick={null} fullWidth>
+                              {t('Show NFT')}
+                            </Button>
+                          ) : null}
+                        </>
                       ) : (
-                        <Button onClick={() => claim(tokenId)} disabled={claiming}>
+                        <Button onClick={mint} disabled={minting} fullWidth>
                           {t('Mint')}
                         </Button>
                       )}
-                    </Text>
+                    </Flex>
                   )}
-                </div>
+                </Flex>
               )}
-            </div>
+            </Flex>
           ) : (
             <Spinner size={130} />
           )}

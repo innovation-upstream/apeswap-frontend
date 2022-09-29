@@ -3,9 +3,15 @@ import { Flex, Link, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import ReactPlayer from 'react-player'
+import { useClaimRaffle, useFetchBabToken } from 'state/hooks'
 
 const BabInfoCard: React.FC = () => {
   const { t } = useTranslation()
+  const { tokenId, loading, holdsBab } = useFetchBabToken()
+  const { claim, claiming, hasClaimed } = useClaimRaffle()
+
+  // claim(tokenId)
+  // disabled={claiming}
 
   return (
     <Flex
@@ -16,6 +22,7 @@ const BabInfoCard: React.FC = () => {
         minHeight: '400px',
         width: '100%',
         alignItems: 'center',
+        justifyContent: ['center', 'left'],
         flexWrap: ['wrap', 'nowrap'],
         gap: ['20px', 0],
       }}
@@ -25,7 +32,7 @@ const BabInfoCard: React.FC = () => {
           flexDirection: 'column',
           width: '666px',
           padding: '0px 10px 0px 0px',
-          justifyContent: ['center', 'left'],
+          justifyContent: 'center',
         }}
       >
         <Flex
