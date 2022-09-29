@@ -163,8 +163,11 @@ const App: React.FC = () => {
               <Route path="/protocol-dashboard">
                 <ProtocolDashboard />
               </Route>
-              <Route path="/jungle-farms">
+              <Route path="/farms">
                 <JungleFarms />
+              </Route>
+              <Route path="/treasury-bills">
+                <Bills />
               </Route>
               <Route path="/apestats">
                 <Stats />

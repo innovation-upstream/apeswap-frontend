@@ -179,7 +179,7 @@ const JungleFarms: React.FC = () => {
         <ListViewLayout>
           <Banner
             banner="jungle-farms"
-            title={t('Jungle Farms')}
+            title={chainId === 40 ? t('Telos Farms') : t('Jungle Farms')}
             link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
             listViewBreak
             maxWidth={1130}

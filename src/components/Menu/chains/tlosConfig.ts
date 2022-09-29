@@ -28,7 +28,12 @@ const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   },
   {
     label: t('Farms'),
-    href: '/jungle-farms',
+    href: '/farms',
+    isNew: false,
+  },
+  {
+    label: t('Bills'),
+    href: '/treasury-bills',
     isNew: false,
   },
   {
