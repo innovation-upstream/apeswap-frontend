@@ -6,20 +6,26 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import ReactPlayer from 'react-player'
-import { useFetchBabToken } from 'state/hooks'
+import { useClaimRaffle, useFetchBabToken } from 'state/hooks'
 import { styles } from '../styles'
 import NumberedList from './NumberedList'
 
 const BabInfoCard: React.FC = () => {
   const { t } = useTranslation()
   const { loading, holdsBab } = useFetchBabToken()
+  const { hasClaimed } = useClaimRaffle()
   const { account } = useActiveWeb3React()
   const isMobile = useIsMobile()
 
   const mint = () => null
   const minting = false
-  const hasMinted = false
-  const wonPrize = false
+  const hasMinted = true
+  const wonPrize = true
+
+  // Note:
+  // -> No function for 'Show NFT' button
+  // if hasMinted is false, there is no way wonPrize can be true
+  // as you will have minted a token to win a prize
 
   // Not connected -> Connect Wallet
   // Connected
@@ -113,7 +119,7 @@ const BabInfoCard: React.FC = () => {
                     <Flex sx={{ width: ['100%', '388px'] }}>
                       {hasMinted ? (
                         <>
-                          {wonPrize ? (
+                          {wonPrize && hasClaimed ? (
                             <Button onClick={null} fullWidth>
                               {t('Show NFT')}
                             </Button>

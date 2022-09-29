@@ -60,4 +60,41 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     lineHeight: ['24px', '33px'],
     fontWeight: 400,
   },
+  nfb: {
+    background: 'white2',
+    padding: ['20px', '40px'],
+    borderRadius: '10px',
+    minHeight: '400px',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: ['center', 'left'],
+    flexWrap: ['wrap', 'nowrap'],
+    gap: ['20px', 0],
+  },
+  nfbCon: {
+    flexDirection: 'column',
+    width: '666px',
+    padding: '0px 10px 0px 0px',
+    justifyContent: 'center',
+  },
+  nfbTextCon: {
+    gap: ['20px', '50px'],
+    flexDirection: 'column',
+    textAlign: ['center', 'left'],
+  },
+  nfbHeader: {
+    fontSize: '22px',
+    fontWeight: 700,
+    lineHeight: '33px',
+  },
+  nfbDescription: {
+    fontSize: '12px',
+    lineHeight: '14px',
+    fontWeight: 500,
+  },
+  nfbBottom: {
+    fontSize: ['16px', '18px'],
+    lineHeight: ['24px', '27px'],
+    fontWeight: '700px',
+  },
 }
