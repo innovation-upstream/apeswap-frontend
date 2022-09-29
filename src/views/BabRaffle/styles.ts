@@ -80,6 +80,8 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     gap: ['20px', '50px'],
     flexDirection: 'column',
     textAlign: ['center', 'left'],
+    justifyContent: ['center', 'flex-start'],
+    alignItems: ['center', 'flex-start'],
   },
   nfbHeader: {
     fontSize: '22px',

@@ -13,7 +13,7 @@ const BabInfoCard: React.FC = () => {
   const { claim, claiming, hasClaimed } = useClaimRaffle()
   const { account } = useActiveWeb3React()
 
-  const wonPrize = true
+  const wonPrize = false
   const nfbNumber = 2701
 
   // wonPrize
