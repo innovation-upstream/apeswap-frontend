@@ -170,6 +170,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
               fontSize: ['25px', '30px'],
               fontWeight: 700,
               margin: '0 0 0 0',
+              width: ['80%', 'auto'],
             }}
           >
             {t('Featured ApeSwap Products')}
