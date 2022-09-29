@@ -16,6 +16,7 @@ export const WRAPPED_NATIVE_ONLY: ChainTokenList = {
   [ChainId.MATIC_TESTNET]: [WETH[ChainId.MATIC_TESTNET]],
   [ChainId.BSC]: [WETH[ChainId.BSC]],
   [ChainId.BSC_TESTNET]: [WETH[ChainId.BSC_TESTNET]],
+  [ChainId.TLOS]: [WETH[ChainId.TLOS]],
 }
 
 export const MIN_BNB: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 BNB
@@ -55,10 +56,20 @@ export const MATIC: { [key: string]: Token } = {
   FXS: new Token(ChainId.MATIC, '0x3e121107F6F22DA4911079845a470757aF4e1A1b', 18, 'FXS', 'Frax Share'),
 }
 
+export const TLOS: { [key: string]: Token } = {
+  WTLOS: new Token(ChainId.TLOS, '0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E', 18, 'WTLOS', 'WTLOS'),
+  WETH: new Token(ChainId.TLOS, '0xfa9343c3897324496a05fc75abed6bac29f8a40f', 18, 'WETH', 'Ethereum'),
+  USDC: new Token(ChainId.TLOS, '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b', 6, 'USDC', 'USD Coin'),
+  USDT: new Token(ChainId.TLOS, '0xefaeee334f0fd1712f9a8cc375f427d9cdd40d73', 6, 'USDT', 'Tether USD'),
+  WBTC: new Token(ChainId.TLOS, '0xf390830df829cf22c53c8840554b98eafc5dcbc2', 8, 'WBTC', 'Bitcoin'),
+  // BANANA: new Token(ChainId.TLOS, '', 18, 'BANANA', 'ApeSwapFinance BANANA'),
+}
+
 export const CHAIN_USD: { [key: number]: Token } = {
   [ChainId.BSC]: BSC.USD,
   [ChainId.MATIC]: MATIC.USDC,
   [ChainId.MAINNET]: USDC,
+  [ChainId.TLOS]: TLOS.USDC,
 }
 
 export const ZERO_PERCENT = new Percent('0')
@@ -105,6 +116,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     BSC.FRMX,
   ],
   [ChainId.MAINNET]: [...WRAPPED_NATIVE_ONLY[ChainId.MAINNET], DAI, USDC, USDT, WBTC],
+  [ChainId.TLOS]: [...WRAPPED_NATIVE_ONLY[ChainId.TLOS], TLOS.USDC, TLOS.USDT, TLOS.WETH, TLOS.WBTC],
 }
 
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
@@ -137,6 +149,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   ],
   [ChainId.BSC]: [...WRAPPED_NATIVE_ONLY[ChainId.BSC], BSC.DAI, BSC.USD, BSC.USDC, BSC.USDT, BSC.BTCB],
   [ChainId.MAINNET]: [...WRAPPED_NATIVE_ONLY[ChainId.MAINNET], DAI, USDC, USDT, WBTC],
+  [ChainId.TLOS]: [...WRAPPED_NATIVE_ONLY[ChainId.TLOS], TLOS.USDC, TLOS.USDT, TLOS.WETH, TLOS.WBTC],
 }
 
 // default allowed slippage, in bips

@@ -57,6 +57,15 @@ export default function CurrencyLogo({
   }, [chainId, currency, uriLocations])
 
   if (currency === ETHER && chainId) {
+    if (chainId === ChainId.TLOS) {
+      return (
+        <StyledNativeCurrencyLogo
+          size={size}
+          style={style}
+          src="https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/TLOS.svg"
+        />
+      )
+    }
     if (chainId === ChainId.MATIC || chainId === ChainId.MATIC_TESTNET) {
       return (
         <StyledNativeCurrencyLogo

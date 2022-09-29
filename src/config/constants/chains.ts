@@ -2,14 +2,6 @@
 
 import { ChainId, SmartRouter } from '@ape.swap/sdk'
 
-export const CHAIN_ID = {
-  BSC: 56,
-  BSC_TESTNET: 97,
-  MATIC: 137,
-  MATIC_TESTNET: 80001,
-  ETH: 1,
-}
-
 // Network labels
 export const NETWORK_LABEL = {
   [ChainId.BSC]: 'BSC',
@@ -17,6 +9,7 @@ export const NETWORK_LABEL = {
   [ChainId.MATIC]: 'Polygon',
   [ChainId.MATIC_TESTNET]: 'Polygon Testnet',
   [ChainId.MAINNET]: 'Ethereum',
+  [ChainId.TLOS]: 'Telos',
 }
 
 export const NETWORK_INFO_LINK = {
@@ -25,6 +18,7 @@ export const NETWORK_INFO_LINK = {
   [ChainId.MATIC]: 'https://polygon.info.apeswap.finance/',
   [ChainId.MATIC_TESTNET]: 'https://polygon.info.apeswap.finance/',
   [ChainId.MAINNET]: 'https://ethereum.info.apeswap.finance',
+  [ChainId.TLOS]: 'https://telos.info.apeswap.finance',
 }
 
 // Network RPC nodes
@@ -38,6 +32,7 @@ export const NETWORK_RPC = {
   [ChainId.MATIC]: ['https://polygon-rpc.com/'],
   [ChainId.MATIC_TESTNET]: ['https://matic-mumbai.chainstacklabs.com'],
   [ChainId.MAINNET]: ['https://eth-mainnet.nodereal.io/v1/43f9100965104de49b580d1fa1ab28c0'],
+  [ChainId.TLOS]: ['https://mainnet.telos.net/evm'],
 }
 
 // Network block explorers
@@ -47,6 +42,7 @@ export const BLOCK_EXPLORER = {
   [ChainId.MATIC]: 'https://polygonscan.com',
   [ChainId.MATIC_TESTNET]: 'https://mumbai.polygonscan.com/',
   [ChainId.MAINNET]: 'https://etherscan.io/',
+  [ChainId.TLOS]: 'https://www.teloscan.io',
 }
 
 export const CHAIN_PARAMS = {
@@ -105,6 +101,17 @@ export const CHAIN_PARAMS = {
     rpcUrls: NETWORK_RPC[ChainId.MAINNET],
     blockExplorerUrls: [BLOCK_EXPLORER[ChainId.MAINNET]],
   },
+  [ChainId.TLOS]: {
+    chainId: '0x28',
+    chainName: 'Telos',
+    nativeCurrency: {
+      name: 'Telos',
+      symbol: 'TLOS',
+      decimals: 18,
+    },
+    rpcUrls: NETWORK_RPC[ChainId.TLOS],
+    blockExplorerUrls: [BLOCK_EXPLORER[ChainId.TLOS]],
+  },
 }
 
 // Ape price impact cutoff
@@ -117,6 +124,7 @@ export const PRIORITY_SMART_ROUTERS = {
   [ChainId.BSC]: [SmartRouter.APE, SmartRouter.PANCAKE, SmartRouter.BISWAP],
   [ChainId.MATIC]: [SmartRouter.APE, SmartRouter.QUICKSWAP],
   [ChainId.BSC_TESTNET]: [SmartRouter.APE],
+  [ChainId.TLOS]: [SmartRouter.APE],
 }
 
 // Wallchain Configs
@@ -166,6 +174,12 @@ export const WALLCHAIN_PARAMS = {
       apiKey: 'e04868d1-c99d-4bb3-9af9-fb2336310eaa',
     },
   },
+  [ChainId.TLOS]: {
+    [SmartRouter.APE]: {
+      apiUrl: '',
+      apiKey: '',
+    },
+  },
 }
 
 // Dont use bonus router if the bonus is lower than the cutoff
@@ -174,6 +188,7 @@ export const BONUS_CUTOFF_AMOUNT = {
   [ChainId.BSC_TESTNET]: 0,
   [ChainId.MATIC]: 0,
   [ChainId.MAINNET]: 0,
+  [ChainId.TLOS]: 0,
 }
 
 // To display correct prices for each liquidity pool when need to swap the contract out
@@ -196,6 +211,9 @@ export const SMART_PRICE_GETTERS = {
     [SmartRouter.UNISWAP]: '0x0187D959A28B0D3B490c2D898fA1CcD054cCC3cd',
     [SmartRouter.SUSHISWAP]: '0x51FA9ed2908C76f51fDDA7fa0F6a1d57557668b2',
   },
+  [ChainId.TLOS]: {
+    [SmartRouter.APE]: '0x29392efed565c13a0901aeb88e32bf58eeb8a067',
+  },
 }
 
 export const SMART_LP_FEES = {
@@ -215,5 +233,8 @@ export const SMART_LP_FEES = {
     [SmartRouter.APE]: 20,
     [SmartRouter.UNISWAP]: 30,
     [SmartRouter.SUSHISWAP]: 25,
+  },
+  [ChainId.TLOS]: {
+    [SmartRouter.APE]: 20,
   },
 }

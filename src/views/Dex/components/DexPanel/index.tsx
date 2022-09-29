@@ -42,7 +42,7 @@ const DexPanel: React.FC<DexPanelProps> = ({
   )
   const currencyBalance = selectedCurrencyBalance?.toSignificant(6)
   const { t } = useTranslation()
-
+  // TODO uncomment
   useMemo(async () => {
     setUsdVal(null)
     setUsdVal(await getCurrencyUsdPrice(chainId, lpPair?.liquidityToken || currency, isRemoveLiquidity, smartRouter))

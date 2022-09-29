@@ -392,9 +392,7 @@ export const useSetInitialZapData = () => {
   }, [dispatch, zapInputList])
 
   useEffect(() => {
-    if (jungleFarms.length === 0 && chainId === ChainId.BSC) {
-      dispatch(setInitialJungleFarmDataAsync())
-    }
+    dispatch(setInitialJungleFarmDataAsync(chainId))
   }, [chainId, dispatch, jungleFarms.length])
 
   useEffect(() => {
