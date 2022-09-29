@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { MarketingModal } from '@ape.swap/uikit'
 import { LendingBodies } from 'components/MarketingModalContent/Lending/'
@@ -6,16 +6,17 @@ import { FarmsBodies } from 'components/MarketingModalContent/Farms/'
 import { PoolsBodies } from 'components/MarketingModalContent/Pools/'
 import { BillsBodies } from 'components/MarketingModalContent/Bills/'
 import { useTranslation } from 'contexts/Localization'
-import SwiperProvider from 'contexts/SwiperProvider'
+//import SwiperProvider from 'contexts/SwiperProvider'
 import MoonPayModal from 'views/Topup/MoonpayModal'
-import QuestModal from '../MarketingModalContent/Quests/QuestModal'
+//import QuestModal from '../MarketingModalContent/Quests/QuestModal'
 import GnanaModal from 'components/GnanaModal'
-import { SET_DEFAULT_MODAL_KEY, SHOW_DEFAULT_MODAL_KEY } from 'config/constants'
+//import { SET_DEFAULT_MODAL_KEY, SHOW_DEFAULT_MODAL_KEY } from 'config/constants'
 
 const MarketingModalCheck = () => {
   const location = useLocation()
   const history = useHistory()
   const { t } = useTranslation()
+  /*
   useMemo(() => {
     const onHomepage = history.location.pathname === '/'
     const sdmk = localStorage.getItem(SET_DEFAULT_MODAL_KEY)
@@ -35,12 +36,13 @@ const MarketingModalCheck = () => {
       history.push({ search: '?modal=tutorial' })
     }
   }, [history])
+  */
 
   const farmsRoute = location.search.includes('modal=1')
   const poolsRoute = location.search.includes('modal=2')
   const lendingRoute = location.search.includes('modal=3')
   const billsRoute = location.search.includes('modal=bills')
-  const questRoute = location.search.includes('modal=tutorial')
+  //const questRoute = location.search.includes('modal=tutorial')
   const moonpayRoute = location.search.includes('modal=moonpay')
   const getGnanaRoute = location.search.includes('modal=gnana')
 
@@ -115,11 +117,11 @@ const MarketingModalCheck = () => {
     >
       {bills}
     </MarketingModal>
-  ) : questRoute ? (
-    <SwiperProvider>
-      <QuestModal onDismiss={onDismiss} />
-    </SwiperProvider>
-  ) : moonpayRoute ? (
+  ) : /* ) : questRoute ? (
+     <SwiperProvider>
+       <QuestModal onDismiss={onDismiss} />
+     </SwiperProvider> */
+  moonpayRoute ? (
     <MoonPayModal onDismiss={onDismiss} />
   ) : getGnanaRoute ? (
     <GnanaModal onDismiss={onDismiss} />
