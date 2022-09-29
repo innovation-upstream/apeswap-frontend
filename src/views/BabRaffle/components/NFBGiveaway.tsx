@@ -2,7 +2,6 @@
 import { Button, Flex, Link, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import ReactPlayer from 'react-player'
 import { useClaimRaffle, useFetchBabToken } from 'state/hooks'
@@ -13,7 +12,6 @@ const BabInfoCard: React.FC = () => {
   const { tokenId, holdsBab } = useFetchBabToken()
   const { claim, claiming, hasClaimed } = useClaimRaffle()
   const { account } = useActiveWeb3React()
-  const isMobile = useIsMobile()
 
   const wonPrize = true
   const nfbNumber = 2701
@@ -71,7 +69,7 @@ const BabInfoCard: React.FC = () => {
                 rel="noopener noreferrer"
                 style={{ textDecoration: 'underline' }}
               >
-                {t('Check out our Medium article to learn more >')}
+                {t('Read our Medium article >')}
               </Link>
             )}
           </Text>

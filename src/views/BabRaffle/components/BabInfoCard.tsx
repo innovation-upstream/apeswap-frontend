@@ -58,6 +58,7 @@ const BabInfoCard: React.FC = () => {
       <Flex
         sx={{
           flexDirection: 'column',
+          justifyContent: ['', 'center'],
           padding: [0, '0 10px 0 30px', '0 50px'],
         }}
       >

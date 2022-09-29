@@ -17,7 +17,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: ['column', 'row'],
-    gap: ['20px'],
+    gap: ['8px'],
     marginBottom: ['20px'],
   },
   btn: {
@@ -53,7 +53,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     fontSize: ['18px', '22px'],
     lineHeight: ['27px', '33px'],
     fontWeight: 700,
-    width: ['70%', 'max-content'],
   },
   ntdDescription: {
     fontSize: ['16px', '22px'],
