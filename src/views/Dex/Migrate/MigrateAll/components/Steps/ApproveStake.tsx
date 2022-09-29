@@ -14,7 +14,7 @@ import { Switch } from 'theme-ui'
 import StatusIcons from '../StatusIcons'
 import { useMigrateAll } from '../../provider'
 
-const Approve: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({ apeswapWalletLps }) => {
+const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({ apeswapWalletLps }) => {
   const { chainId, account } = useActiveWeb3React()
   // Get all farm and maximizer data
   useSetVaults()
@@ -90,4 +90,4 @@ const Approve: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }
   )
 }
 
-export default React.memo(Approve)
+export default React.memo(ApproveStake)

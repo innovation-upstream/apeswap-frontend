@@ -44,7 +44,7 @@ export function useDerivedZapMigratorInfo(
 
   const { independentField, typedValue, smartRouter } = useZapMigratorState()
   const [zapMigratorRouter] = useLastZapMigratorRouter()
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippageTolerance(true)
 
   // pair + totalsupply
   const [, pair] = usePair(currencyA, currencyB, smartRouter || zapMigratorRouter)
@@ -210,8 +210,9 @@ export interface MigrateResult {
   smartRouter: SmartRouter
   chefAddress: string
   lpAddress: string
+  totalSupply: string
   token0: { address: string; symbol: string; decimals: number; reserves: number }
-  token1: { address: string; symbol: string; decimals: string; reserves: number }
+  token1: { address: string; symbol: string; decimals: number; reserves: number }
   pid: number
   walletBalance: string
   stakedBalance: string
@@ -237,11 +238,15 @@ export const useMigratorBalances = (): {
     : []
 
   const lpCallResults = useMultipleContractSingleData(loLpAddresses, PAIR_INTERFACE, 'getReserves')
+  const lpTotalSupply = useMultipleContractSingleData(loLpAddresses, PAIR_INTERFACE, 'totalSupply')
   const tokenSymbolResults = useMultipleContractSingleData(loTokenAddresses, PAIR_INTERFACE, 'symbol')
   const tokenDecimalResults = useMultipleContractSingleData(loTokenAddresses, PAIR_INTERFACE, 'decimals')
 
   const sortedReserves = loLpAddresses.map((address, i) => {
-    return { address, value: lpCallResults[i]?.result?.[0].toString() }
+    return { address, value: lpCallResults[i]?.result }
+  })
+  const sortedTotalSupply = loLpAddresses.map((address, i) => {
+    return { address, value: lpTotalSupply[i]?.result?.[0].toString() }
   })
   const sortedSymbols = loTokenAddresses.map((address, i) => {
     return { address, value: tokenSymbolResults[i]?.result?.[0] }
@@ -259,17 +264,20 @@ export const useMigratorBalances = (): {
               smartRouter: chef,
               chefAddress: b.stakingAddress,
               lpAddress: lp,
+              totalSupply: getFullDisplayBalance(
+                new BigNumber(sortedTotalSupply.find((item) => item.address === lp)?.value),
+              ),
               token0: {
                 address: token0,
                 symbol: sortedSymbols.find((item) => item.address === token0)?.value,
                 decimals: sortedDecimals.find((item) => item.address === token0)?.value,
-                reserves: sortedReserves.find((item) => item.address === lp)?.value,
+                reserves: sortedReserves.find((item) => item.address === lp)?.value?.[0].toString(),
               },
               token1: {
                 address: token1,
                 symbol: sortedSymbols.find((item) => item.address === token1)?.value,
                 decimals: sortedDecimals.find((item) => item.address === token1)?.value,
-                reserves: sortedReserves.find((item) => item.address === lp)?.value,
+                reserves: sortedReserves.find((item) => item.address === lp)?.value?.[1].toString(),
               },
               pid: parseInt(pid.toString()),
               walletBalance: getFullDisplayBalance(new BigNumber(wallet.toString())),
@@ -279,7 +287,7 @@ export const useMigratorBalances = (): {
           })
         })
       : []
-  }, [result, sortedReserves, chainId, sortedSymbols, sortedDecimals])
+  }, [result, sortedReserves, chainId, sortedSymbols, sortedDecimals, sortedTotalSupply])
 
   return {
     valid,

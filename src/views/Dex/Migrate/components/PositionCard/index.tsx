@@ -21,7 +21,7 @@ interface PositionCardProps extends CardProps {
   chefAddress: string
   lpAddress: string
   token0: { address: string; symbol: string; decimals: number; reserves: number }
-  token1: { address: string; symbol: string; decimals: string; reserves: number }
+  token1: { address: string; symbol: string; decimals: number; reserves: number }
   pid: number
   walletBalance: string
   stakedBalance: string
@@ -65,6 +65,7 @@ export default function FullPositionCard({
     poolTokenPercentage * token0.reserves,
     poolTokenPercentage * token1.reserves,
   ]
+  console.log([token0Deposited, token1Deposited])
 
   return (
     <Flex sx={{ ...styles.poolContainer }} onClick={() => setShowMore((prev) => !prev)}>

@@ -11,7 +11,7 @@ const MigrateAll: React.FC = () => {
     <Flex sx={{ ...dexStyles.pageContainer }}>
       <Flex sx={{ flexDirection: 'column', border: '1px solid red', width: '1200px' }}>
         <MigrateProvider>
-          <MigrateProgress activeLineMargin={10}>
+          <MigrateProgress activeLineMargin={8.25}>
             <Steps />
           </MigrateProgress>
         </MigrateProvider>

@@ -2,10 +2,14 @@ import React, { createContext, ReactNode, useCallback, useContext, useEffect, us
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MigrateResult, useMigratorBalances } from 'state/zapMigrator/hooks'
 import useLpBalances from 'hooks/useLpBalances'
-import { Pair, TokenAmount } from '@ape.swap/sdk'
+import { Pair, TokenAmount, ZAP_ADDRESS } from '@ape.swap/sdk'
+import erc20ABI from 'config/abi/erc20.json'
+import multicall from 'utils/multicall'
+import BigNumber from 'bignumber.js'
 
 export const MIGRATION_STEPS: { title: string; description: string }[] = [
   { title: 'Unstake', description: 'some description' },
+  { title: 'Approve', description: 'some description' },
   { title: 'Migrate', description: 'some description' },
   { title: 'Approve', description: 'some description' },
   { title: 'Stake', description: 'some description' },
@@ -24,14 +28,18 @@ interface MigrateProviderProps {
 
 interface MigrateLpStatus {
   lpAddress: string
-  status: { unstake: Status; migrate: Status; approve: Status; stake: Status }
+  status: { unstake: Status; approveMigrate: Status; migrate: Status; approveStake: Status; stake: Status }
   statusText: string
 }
 
 interface MigrateContextData {
   activeIndex: number
   setActiveIndexCallback: (activeIndex: number) => void
-  handleUpdateMigrateLp: (lpAddress: string, type: 'unstake' | 'migrate' | 'approve' | 'stake', status: Status) => void
+  handleUpdateMigrateLp: (
+    lpAddress: string,
+    type: 'unstake' | 'approveMigrate' | 'migrate' | 'approveStake' | 'stake',
+    status: Status,
+  ) => void
   migrateStakeLps: MigrateResult[]
   migrateWalletLps: MigrateResult[]
   apeswapWalletLps: { pair: Pair; balance: TokenAmount }[]
@@ -41,41 +49,39 @@ interface MigrateContextData {
 const MigrateContext = createContext<MigrateContextData>({} as MigrateContextData)
 
 export function MigrateProvider({ children }: MigrateProviderProps) {
+  const { account, chainId } = useActiveWeb3React()
   const [activeIndex, setActiveIndex] = useState(0)
-  const [migrateLpStatus, setMigrateLpStatus] = useState<MigrateLpStatus[]>([])
+  const [lpStatus, setLpStatus] = useState<MigrateLpStatus[]>([])
   const { results: migrateLpBalances, valid } = useMigratorBalances()
   const migrateWalletBalances = valid ? migrateLpBalances.filter((bal) => parseFloat(bal.walletBalance) > 0.0) : []
   const migrateStakedBalances = valid ? migrateLpBalances.filter((bal) => parseFloat(bal.stakedBalance) > 0.0) : []
   const apeswapLpBalances = useLpBalances()
-  const migrateLpsStatus = useSetMigrateLpStatus(migrateLpBalances)
-  const apeswapLpStatus = useSetApeswapLpStatus(apeswapLpBalances)
-  const mergedLpStatus = useMemo(() => {
-    return [...migrateLpsStatus, ...apeswapLpStatus]
-  }, [migrateLpsStatus, apeswapLpStatus])
-
-  useEffect(() => {
-    setMigrateLpStatus(mergedLpStatus)
-  }, [mergedLpStatus.length])
+  useMemo(() => {
+    setMigrateLpStatus(migrateLpBalances, apeswapLpBalances, setLpStatus, account, chainId)
+  }, [migrateLpBalances.length, apeswapLpBalances.length, account, setLpStatus, chainId])
 
   const setActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
   const handleUpdateMigrateLp = useCallback(
-    (lpAddress: string, type: 'unstake' | 'migrate' | 'approve' | 'stake', status: Status) => {
-      const updatedMigrateLpStatus = migrateLpStatus
-      const lpToUpdateIndex = migrateLpStatus.findIndex((migrateLp) => migrateLp.lpAddress === lpAddress)
+    (lpAddress: string, type: 'unstake' | 'approveMigrate' | 'migrate' | 'approveStake' | 'stake', status: Status) => {
+      console.log(lpAddress)
+      console.log(lpStatus)
+      const updatedMigrateLpStatus = lpStatus
+      const lpToUpdateIndex = lpStatus.findIndex((migrateLp) => migrateLp.lpAddress === lpAddress)
+      console.log(lpToUpdateIndex)
       const lpToUpdate = {
-        ...migrateLpStatus[lpToUpdateIndex],
-        status: { ...migrateLpStatus[lpToUpdateIndex].status, [type]: status },
+        ...lpStatus[lpToUpdateIndex],
+        status: { ...lpStatus[lpToUpdateIndex].status, [type]: status },
         statusText: '',
       }
       console.log(lpToUpdate)
       updatedMigrateLpStatus[lpToUpdateIndex] = lpToUpdate
       console.log(updatedMigrateLpStatus)
-      setMigrateLpStatus(updatedMigrateLpStatus)
+      setLpStatus(updatedMigrateLpStatus)
     },
-    [migrateLpStatus],
+    [setLpStatus, lpStatus],
   )
 
-  console.log('yeeehhhaaaaaa', migrateLpStatus)
+  console.log('yeeehhhaaaaaa', lpStatus)
 
   return (
     <MigrateContext.Provider
@@ -86,7 +92,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
         migrateWalletLps: migrateWalletBalances,
         migrateStakeLps: migrateStakedBalances,
         apeswapWalletLps: apeswapLpBalances,
-        migrateLpStatus: migrateLpStatus,
+        migrateLpStatus: lpStatus,
       }}
     >
       {children}
@@ -99,38 +105,51 @@ export function useMigrateAll() {
   return context
 }
 
-const useSetMigrateLpStatus = (migrateLps: MigrateResult[]): MigrateLpStatus[] => {
-  const status = useMemo(() => {
-    return migrateLps?.map((migrateLp) => {
+const setMigrateLpStatus = async (
+  migrateLps: MigrateResult[],
+  apeswapLps: { pair: Pair; balance: TokenAmount }[],
+  setLpStatus: React.Dispatch<React.SetStateAction<MigrateLpStatus[]>>,
+  account,
+  chainId,
+) => {
+  const getMigrateLpStatus = async () => {
+    const calls = migrateLps?.map((migrateLp) => {
+      return { address: migrateLp.lpAddress, name: 'allowance', params: [account, ZAP_ADDRESS[chainId]] }
+    })
+    const rawLpAllowances = await multicall(chainId, erc20ABI, calls)
+    return migrateLps?.map((migrateLp, i) => {
       return {
         lpAddress: migrateLp.lpAddress,
         status: {
           unstake: parseFloat(migrateLp.stakedBalance) > 0 ? Status.INCOMPLETE : Status.COMPLETE,
-          migrate: parseFloat(migrateLp.walletBalance) > 0 ? Status.INCOMPLETE : Status.COMPLETE,
-          approve: Status.INCOMPLETE,
+          approveMigrate: new BigNumber(rawLpAllowances[i]).gt(0) ? Status.COMPLETE : Status.INCOMPLETE,
+          migrate:
+            parseFloat(migrateLp.walletBalance) > 0 || parseFloat(migrateLp.stakedBalance) > 0
+              ? Status.INCOMPLETE
+              : Status.COMPLETE,
+          approveStake: Status.INCOMPLETE,
           stake: Status.INCOMPLETE,
         },
         statusText: 'Some shit',
       }
     })
-  }, [migrateLps])
-  return status
-}
-
-const useSetApeswapLpStatus = (apeswapLps: { pair: Pair; balance: TokenAmount }[]): MigrateLpStatus[] => {
-  const status = useMemo(() => {
+  }
+  const getApeswapLpStatus = async () => {
     return apeswapLps?.map(({ pair }) => {
       return {
         lpAddress: pair.liquidityToken.address,
         status: {
           unstake: Status.COMPLETE,
+          approveMigrate: Status.COMPLETE,
           migrate: Status.COMPLETE,
-          approve: Status.INCOMPLETE,
+          approveStake: Status.INCOMPLETE,
           stake: Status.INCOMPLETE,
         },
         statusText: 'Some shit',
       }
     })
-  }, [apeswapLps])
-  return status
+  }
+  const migrateLpStatus = await getMigrateLpStatus()
+  const apeswapLpStatus = await getApeswapLpStatus()
+  setLpStatus([...migrateLpStatus, ...apeswapLpStatus])
 }
