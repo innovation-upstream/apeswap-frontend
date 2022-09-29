@@ -2,6 +2,7 @@
 import { Button, Flex, Link, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import ReactPlayer from 'react-player'
 import { useClaimRaffle, useFetchBabToken } from 'state/hooks'
@@ -9,9 +10,10 @@ import { styles } from '../styles'
 
 const BabInfoCard: React.FC = () => {
   const { t } = useTranslation()
-  const { tokenId } = useFetchBabToken()
+  const { tokenId, holdsBab } = useFetchBabToken()
   const { claim, claiming, hasClaimed } = useClaimRaffle()
   const { account } = useActiveWeb3React()
+  const isMobile = useIsMobile()
 
   const wonPrize = true
   const nfbNumber = 2701
@@ -50,14 +52,14 @@ const BabInfoCard: React.FC = () => {
               : t(`Make sure to return to this page daily in October to see if you have won an NFB!`)}
           </Text>
           <Text sx={styles.nfbBottom}>
-            {wonPrize && account ? (
+            {holdsBab && wonPrize && account ? (
               <>
                 {hasClaimed ? (
-                  <Button disabled fullWidth>
+                  <Button disabled sx={{ width: ['100%', '300px', '388px'] }}>
                     {t('Claimed')}
                   </Button>
                 ) : (
-                  <Button onClick={() => claim(tokenId)} disabled={claiming} fullWidth>
+                  <Button onClick={() => claim(tokenId)} disabled={claiming} sx={{ width: ['100%', '300px', '388px'] }}>
                     {t('Claim NFB')}
                   </Button>
                 )}
@@ -76,7 +78,11 @@ const BabInfoCard: React.FC = () => {
         </Flex>
       </Flex>
       <Flex sx={{ width: ['240px', '414px'] }}>
-        <ReactPlayer playing muted loop url="videos/bab-nfb.mp4" height="100%" width="100%" playsInline />
+        {wonPrize ? (
+          <ReactPlayer playing muted loop url="videos/bab-nfb.mp4" height="100%" width="100%" playsInline />
+        ) : (
+          <ReactPlayer playing muted loop url="videos/bab-nfb.mp4" height="100%" width="100%" playsInline />
+        )}
       </Flex>
     </Flex>
   )
