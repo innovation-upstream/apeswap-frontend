@@ -9,7 +9,7 @@ const UnlockButton = (props) => {
   const { t } = useTranslation()
   const { login, logout } = useAuth()
   const { onPresentConnectModal } = useWalletModal(login, logout, t)
-  const { large, table, bab } = props
+  const { large, table } = props
 
   const LargeButton = () => {
     return (
@@ -59,7 +59,6 @@ const UnlockButton = (props) => {
       {...props}
     >
       {t('Connect Wallet')}
-      {bab && t('/Mint')}
     </Button>
   )
 }

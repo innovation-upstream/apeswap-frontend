@@ -25,6 +25,7 @@ const BabInfoCard: React.FC = () => {
           flexDirection: 'column',
           width: '666px',
           padding: '0px 10px 0px 0px',
+          justifyContent: ['center', 'left'],
         }}
       >
         <Flex
@@ -36,17 +37,17 @@ const BabInfoCard: React.FC = () => {
         >
           <Text
             sx={{
-              fontSize: ['25px', '30px'],
+              fontSize: '22px',
               fontWeight: 700,
-              lineHeight: '45px',
+              lineHeight: '33px',
             }}
           >
             {t('The 30-Day Non-Fungible Banana NFT Raffle')}
           </Text>
           <Text
             sx={{
-              fontSize: ['16px', '22px'],
-              lineHeight: ['24px', '33px'],
+              fontSize: '12px',
+              lineHeight: '14px',
               fontWeight: 500,
             }}
           >
@@ -60,7 +61,8 @@ const BabInfoCard: React.FC = () => {
           <Text
             sx={{
               textDecoration: 'underline',
-              fontSize: ['16px', '22px'],
+              fontSize: ['16px', '18px'],
+              lineHeight: ['24px', '27px'],
               fontWeight: '700px',
             }}
           >

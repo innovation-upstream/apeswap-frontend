@@ -40,12 +40,12 @@ const NewToDeFi: React.FC = () => {
       <Flex sx={styles.btnContainer}>
         <Button
           variant="secondary"
-          onClick={() => openLink('https://apeswap.finance/?modal=tutorial')}
+          onClick={() => openLink('https://welcome.apeswap.finance')}
           sx={{ ...styles.btn, margin: ['25px 0 0 0', 0] }}
         >
           {t('Learn More')}
         </Button>
-        <Button onClick={() => openLink('https://welcome.apeswap.finance')} sx={styles.btn}>
+        <Button onClick={() => openLink('https://apeswap.finance/?modal=tutorial')} sx={styles.btn}>
           {t('Get Started')}
         </Button>
       </Flex>

@@ -3,6 +3,7 @@ import { Button, Flex, Spinner, Text } from '@ape.swap/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import ReactPlayer from 'react-player'
 import { useClaimRaffle, useFetchBabToken } from 'state/hooks'
@@ -14,6 +15,14 @@ const BabInfoCard: React.FC = () => {
   const { tokenId, loading, holdsBab } = useFetchBabToken()
   const { claim, claiming, hasClaimed } = useClaimRaffle()
   const { account } = useActiveWeb3React()
+  const isMobile = useIsMobile()
+
+  // Not connected -> Connect Wallet
+  // Connected
+  // -> No Bab Token (No Bab Token Detected)
+  // -> Holds Bab
+  // ----> Minted (Show NFT)
+  // ----> Not Minted (Mint)
 
   return (
     <Flex
@@ -54,7 +63,7 @@ const BabInfoCard: React.FC = () => {
             weight={700}
             sx={{ lineHeight: '35px', fontSize: '22px', marginBottom: '6px', marginTop: '15px', fontWeight: 700 }}
           >
-            {t('ApeSwap x BAB')}
+            {isMobile ? t('ApeSwap x BAB') : t('ApeSwap x Binance Account Bound Token')}
           </Text>
           <Text sx={styles.playBody}>
             {t(
@@ -89,7 +98,7 @@ const BabInfoCard: React.FC = () => {
           {!loading ? (
             <div>
               {!account ? (
-                <UnlockButton bab />
+                <UnlockButton />
               ) : (
                 <div>
                   <Text sx={styles.walletHolds}>
@@ -100,15 +109,17 @@ const BabInfoCard: React.FC = () => {
                     )}
                   </Text>
                   {holdsBab && (
-                    <div>
+                    <Text sx={styles.walletHolds}>
                       {hasClaimed ? (
-                        <Text sx={styles.walletHolds}>Raffle NFT Already Claimed! ✅</Text>
+                        <Button onClick={null} fullWidth sx={{ marginTop: '10px' }}>
+                          {t('Show NFT')}
+                        </Button>
                       ) : (
                         <Button onClick={() => claim(tokenId)} disabled={claiming}>
-                          Claim Raffle
+                          {t('Mint')}
                         </Button>
                       )}
-                    </div>
+                    </Text>
                   )}
                 </div>
               )}
