@@ -235,6 +235,6 @@ export enum MODAL_TYPE {
 export enum SHOW_MODAL_TYPES {
   sellModal = 'showSellModal',
   buyModal = 'showBuyModal',
-  poolModal = 'showPoolHarvestModal',
+  poolHarvestModal = 'showPoolHarvestModal',
   generalHarvestModal = 'showGeneralHarvestModal',
 }
