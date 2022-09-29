@@ -33,6 +33,7 @@ import {
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
   setUnlimitedGnana,
+  showModal,
   updateUserBonusRouter,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
@@ -90,6 +91,13 @@ export interface UserState {
   watchlistPools: string[]
   showPhishingWarningBanner: boolean
   unlimitedGnana: boolean
+
+  showModal: {
+    showBuyModal: boolean
+    showSellModal: boolean
+    showPoolHarvestModal: boolean
+    showGeneralHarvestModal: boolean
+  }
   userBonusRouterDisabled: boolean
 }
 
@@ -123,6 +131,12 @@ export const initialState: UserState = {
   watchlistPools: [],
   showPhishingWarningBanner: true,
   unlimitedGnana: false,
+  showModal: {
+    showBuyModal: true,
+    showSellModal: true,
+    showPoolHarvestModal: true,
+    showGeneralHarvestModal: true,
+  },
   userBonusRouterDisabled: false,
 }
 
@@ -265,6 +279,12 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setUnlimitedGnana, (state, { payload }) => {
       state.unlimitedGnana = payload
+    })
+    .addCase(showModal, (state, { payload }) => {
+      state.showModal = {
+        ...state.showModal,
+        [payload.actionType]: payload.flag,
+      }
     })
     .addCase(updateUserBonusRouter, (state, action) => {
       state.userBonusRouterDisabled = action.payload.userBonusRouterDisabled
