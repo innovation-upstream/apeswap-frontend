@@ -1,6 +1,6 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useNetworkChainId } from 'state/hooks'
@@ -33,16 +33,17 @@ export const useJungleFarms = (account): JungleFarm[] => {
   return farms
 }
 
+let prevChainId = null
+
 export const useSetJungleFarms = () => {
   useFetchTokenPrices()
   const { chainId } = useActiveWeb3React()
-  const refChainId = useRef(null)
   const dispatch = useAppDispatch()
   const jungleFarms = useJungleFarms(null)
   useEffect(() => {
-    if (jungleFarms.length === 0 || refChainId.current !== chainId) {
+    if (jungleFarms.length === 0 || chainId !== prevChainId) {
       dispatch(setInitialJungleFarmDataAsync(chainId))
-      refChainId.current = chainId
+      prevChainId = chainId
     }
   }, [chainId, jungleFarms.length, dispatch])
 }

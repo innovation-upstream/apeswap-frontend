@@ -52,7 +52,12 @@ export const { setInitialJungleFarmData, setJungleFarmsPublicData, setJungleFarm
 export const setInitialJungleFarmDataAsync = (chainId: number) => async (dispatch) => {
   try {
     const initialJungleFarmState: JungleFarm[] = await fetchJungleFarmConfig()
-    const filterJungleFarmsByChainId = initialJungleFarmState.filter((farm) => farm.contractAddress?.[chainId] !== '')
+    const filterJungleFarmsByChainId = initialJungleFarmState.filter(
+      (farm) =>
+        farm.contractAddress?.[chainId] !== '' ||
+        farm.contractAddress?.[chainId] !== null ||
+        farm.contractAddress?.[chainId] !== undefined,
+    )
     dispatch(setInitialJungleFarmData(filterJungleFarmsByChainId || []))
   } catch (error) {
     console.error(error)
