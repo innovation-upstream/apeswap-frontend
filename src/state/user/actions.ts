@@ -26,7 +26,7 @@ export const updateUserRecentTransactions = createAction<{ userRecentTransaction
 export const updateUserSlippageTolerance = createAction<{ userSlippageTolerance: number }>(
   'user/updateUserSlippageTolerance',
 )
-export const setZapSlippage = createAction<{ zapSlippage: number }>('zap/setZapSlippage')
+export const setZapSlippage = createAction<{ userZapSlippage: number }>('zap/setZapSlippage')
 
 export const updateUserDeadline = createAction<{ userDeadline: number }>('user/updateUserDeadline')
 export const addSerializedToken = createAction<{ serializedToken: SerializedToken }>('user/addSerializedToken')
