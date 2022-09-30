@@ -14,7 +14,7 @@ interface ZapLiquidityActionsProps {
   zapInputError: string
   zap: MergedZap
   zapErrorMessage: string
-  txHash: string
+  txHash?: string
   handleDismissConfirmation: () => void
 }
 
