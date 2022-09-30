@@ -6,8 +6,8 @@ import { useTranslation } from 'contexts/Localization'
 import track from 'utils/track'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import MoonPayModal from 'views/Topup/MoonpayModal'
-import SettingsModal from '../../Menu/GlobalSettings/SettingsModal'
 import { styles } from '../styles'
+import SettingsModal from 'components/Menu/GlobalSettings/SettingsModal'
 import { TitleText } from '../../ListViewContent/styles'
 
 interface ZapSwitchProps {

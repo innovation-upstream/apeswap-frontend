@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { MergedZap } from 'state/zap/actions'
 import DetailsPanel from './DetailsPanel'
 import ConvertionPanel from './ConvertionPanel'
+import { AnimatePresence, motion } from 'framer-motion'
 
 interface DistributionPanelProps {
   zap: MergedZap
@@ -30,12 +31,20 @@ const DistributionPanel: React.FC<DistributionPanelProps> = ({ zap }) => {
         {currencyOut2?.outputCurrency?.symbol} Pooled
         <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="10px" />
       </Flex>
-      {expanded && (
-        <Flex sx={{ flexDirection: 'column', marginTop: '20px' }}>
-          <ConvertionPanel zap={zap} />
-          <DetailsPanel zap={zap} />
-        </Flex>
-      )}
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'fit-content' }}
+            transition={{ opacity: { duration: 0.2 } }}
+            exit={{ opacity: 0, height: 0 }}
+            sx={{ position: 'relative', overflow: 'hidden', marginTop: '20px' }}
+          >
+            <ConvertionPanel zap={zap} />
+            <DetailsPanel zap={zap} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Flex>
   )
 }

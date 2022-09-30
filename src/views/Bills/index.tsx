@@ -10,6 +10,7 @@ import BillsListView from './components/BillsListView'
 import UserBillViews from './components/UserBillViews'
 import BillMenu from './components/Menu'
 import { BannerTypes } from 'components/Banner/types'
+import { useSetZapOutputList } from 'state/zap/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const Bills: React.FC = () => {
@@ -53,6 +54,15 @@ const Bills: React.FC = () => {
 
     return billsToReturn
   }
+  // Set zap output list to match dual farms
+  useSetZapOutputList(
+    renderBills(false)?.map((bill) => {
+      return {
+        currencyIdA: bill?.token.address[chainId],
+        currencyIdB: bill?.quoteToken.address[chainId],
+      }
+    }),
+  )
 
   return (
     <>
