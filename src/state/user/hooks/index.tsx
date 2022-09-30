@@ -35,7 +35,7 @@ import {
   setIsExchangeChartDisplayed,
   updateUserAutonomyPrepay,
   setUnlimitedGnana,
-  showModal,
+  setShowModal,
   updateUserBonusRouter,
   setZapSlippage,
 } from '../actions'
@@ -583,9 +583,9 @@ export const useIsModalShown = () => {
 export const useShowModal = (actionType: string, flag: boolean) => {
   const dispatch = useDispatch<AppDispatch>()
 
-  const setShowModal = useCallback(() => {
-    dispatch(showModal({ actionType: SHOW_MODAL_TYPES[actionType], flag: !flag }))
+  const toggleShowModal = useCallback(() => {
+    dispatch(setShowModal({ actionType: SHOW_MODAL_TYPES[actionType], flag: !flag }))
   }, [actionType, dispatch, flag])
 
-  return [setShowModal]
+  return [toggleShowModal]
 }
