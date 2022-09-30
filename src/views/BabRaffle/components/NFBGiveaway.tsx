@@ -38,7 +38,7 @@ const BabInfoCard: React.FC = () => {
           <Text sx={styles.nfbDescription}>
             {wonPrize && account && (
               <Text sx={{ fontWeight: 700, margin: 0, lineHeight: 0 }}>
-                {t(`NFB #${nfbNumber} us ready to be in your wallet!`)}
+                {t(`NFB #${nfbNumber} is ready to be in your wallet!`)}
                 <br />
                 <br />
               </Text>
