@@ -10,14 +10,14 @@ import { MODAL_TYPE } from 'config/constants'
 const CircularModal: React.FC<MP> = ({ actionType, description, supporting, children }) => {
   const { t } = useTranslation()
   const { showBuyModal, showSellModal, showPoolHarvestModal, showGeneralHarvestModal } = useIsModalShown()
-  // Get the boolean values to send to the `showModal` state
+  // Get the boolean values to send to the `displayModal` state
   // based on which modal is currently open
   const flag =
     (actionType === MODAL_TYPE.BUYING && showBuyModal) ||
     (actionType === MODAL_TYPE.SELLING && showSellModal) ||
     (actionType === MODAL_TYPE.POOL_HARVEST && showPoolHarvestModal) ||
     (actionType === MODAL_TYPE.GENERAL_HARVEST && showGeneralHarvestModal)
-  const [setShowModal] = useShowModal(actionType, flag)
+  const [toggleShowModal] = useShowModal(actionType, flag)
   const openLearnMore = () =>
     window.open(
       'https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/banana#what-can-i-do-with-banana',
@@ -41,7 +41,7 @@ const CircularModal: React.FC<MP> = ({ actionType, description, supporting, chil
               id="checkbox"
               checked={flag ? false : true}
               sx={{ backgroundColor: 'white2' }}
-              onChange={setShowModal}
+              onChange={toggleShowModal}
             />
           </Flex>
           <Text sx={circular.checkboxText}>{t("Don't show this again")}</Text>
