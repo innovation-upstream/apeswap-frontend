@@ -1,24 +1,24 @@
 import React, { MutableRefObject, useCallback } from 'react'
 import { Flex } from '@ape.swap/uikit'
-import { TestPair } from '../Buy'
 import { FixedSizeList } from 'react-window'
 import styled from 'styled-components'
 import SearcherDisplay from './SearcherDisplay'
+import { DualCurrencySelector } from '../../views/Bills/components/Actions/types'
 
 export default function CurrencyList({
   currenciesList,
   onCurrencySelect,
   fixedListRef,
 }: {
-  currenciesList: TestPair[]
-  onCurrencySelect: (currency: TestPair, index) => void
+  currenciesList: DualCurrencySelector[]
+  onCurrencySelect: (currency: DualCurrencySelector, index) => void
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
 }) {
-  const itemData: (TestPair | undefined)[] = currenciesList
+  const itemData: (DualCurrencySelector | undefined)[] = currenciesList
 
   const Row = useCallback(
     ({ data, index, style }) => {
-      const currency: TestPair = data[index]
+      const currency: DualCurrencySelector = data[index]
       const handleSelect = () => onCurrencySelect(currency, index)
       const key = index
 

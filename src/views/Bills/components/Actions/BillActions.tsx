@@ -11,11 +11,11 @@ import { BillActionsProps } from './types'
 import { Button } from '@ape.swap/uikit'
 import { ApprovalState, useApproveCallbackFromZap } from 'hooks/useApproveCallback'
 import { BuyButton } from './styles'
-import { useDerivedZapInfo } from 'state/zap/hooks'
 import BigNumber from 'bignumber.js'
 
 const BillActions: React.FC<BillActionsProps> = ({
   bill,
+  zap,
   currencyB,
   handleBuy,
   billValue,
@@ -25,7 +25,6 @@ const BillActions: React.FC<BillActionsProps> = ({
   pendingTrx,
 }) => {
   const { lpToken, contractAddress, index } = bill
-  const { zap, inputError: zapInputError } = useDerivedZapInfo()
   const [approval, approveCallback] = useApproveCallbackFromZap(zap)
   const showApproveZapFlow = approval === ApprovalState.NOT_APPROVED || approval === ApprovalState.PENDING
   const showApproveBillFlow = !new BigNumber(bill?.userData?.allowance).gt(0)
@@ -80,13 +79,14 @@ const BillActions: React.FC<BillActionsProps> = ({
       ) : (
         <BuyButton
           onClick={handleBuy}
-          endIcon={pendingApprove && <AutoRenewIcon spin color="currentColor" />}
+          endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
           disabled={
             billValue === 'NaN' ||
             parseFloat(billValue) < 0.01 ||
             parseFloat(billValue) > parseFloat(safeAvailable) ||
             parseFloat(balance) < parseFloat(value) ||
-            pendingApprove
+            pendingApprove ||
+            pendingTrx
           }
         >
           {t('Buy')}

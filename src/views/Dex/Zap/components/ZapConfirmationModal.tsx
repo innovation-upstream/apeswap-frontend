@@ -47,7 +47,8 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
     currencyIn?.currency?.symbol === 'ETH' ? (chainId === ChainId.BSC ? 'BNB' : 'MATIC') : currencyIn?.currency?.symbol
 
   const pendingText = `Zapping ${getBalanceNumber(
-    new BigNumber(currencyIn.inputAmount.toString(), currencyIn.currency.decimals),
+    new BigNumber(currencyIn.inputAmount.toString()),
+    currencyIn.currency.decimals,
   )} ${currencyInputSymbol}
    into ${pairOut?.liquidityMinted?.toSignificant(4)} ${wrappedToNative(
     pairOut?.pair.token0.getSymbol(chainId),

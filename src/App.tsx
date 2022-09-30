@@ -24,7 +24,6 @@ import Pool from './views/Dex/Pool'
 import Swap from './views/Dex/Swap'
 import AddLiquidity from './views/Dex/AddLiquidity'
 import Zap from './views/Dex/Zap'
-import ZapTest from './views/ZapTest'
 import RemoveLiquidity from './views/Dex/RemoveLiquidity'
 
 Sentry.init({
@@ -306,9 +305,6 @@ const App: React.FC = () => {
       <Menu>
         <Suspense fallback={<PageLoader />}>
           <Switch>
-            <Route exact path="/zaptest">
-              <ZapTest />
-            </Route>
             <Route exact path="/nft">
               <Nft />
             </Route>

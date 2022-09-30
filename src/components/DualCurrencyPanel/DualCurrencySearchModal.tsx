@@ -4,15 +4,16 @@ import { Currency } from '@ape.swap/sdk'
 import { Flex, ModalProps, Modal, Input } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from '@emotion/styled'
-import { isAddress } from '../../../../../utils'
+import { isAddress } from '../../utils'
 import { FixedSizeList } from 'react-window'
-import { TestPair } from '../Buy'
 import CurrencyList from './CurrencyList'
+import { DualCurrencySelector } from 'views/Bills/components/Actions/types'
+import { styles } from './styles'
 
 interface CurrencySearchModalProps extends ModalProps {
-  onCurrencySelect: (currency: TestPair, index) => void
+  onCurrencySelect: (currency: DualCurrencySelector, index) => void
   inputCurrencies: Currency[]
-  currenciesList: TestPair[]
+  currenciesList: DualCurrencySelector[]
   searchQuery: string
   handleSearchQuery: (val: string) => void
 }
@@ -38,7 +39,7 @@ const DualCurrencySearchModal: React.FC<CurrencySearchModalProps> = ({
   const { t } = useTranslation()
 
   const handleCurrencySelect = useCallback(
-    (currency: TestPair, index) => {
+    (currency: DualCurrencySelector, index) => {
       onDismiss()
       onCurrencySelect(currency, index)
       handleSearchQuery('')
@@ -56,27 +57,6 @@ const DualCurrencySearchModal: React.FC<CurrencySearchModalProps> = ({
     [handleSearchQuery],
   )
 
-  /* TODO: handleEnter
-  const handleEnter = useCallback(
-    (e: KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter') {
-        const s = debouncedQuery.toLowerCase().trim()
-        if (s === 'eth') {
-          handleCurrencySelect({ currencyA: ETHER, currencyB: null })
-        } else if (currenciesList.length > 1) {
-          if (
-            filteredSortedTokens[0].symbol?.toLowerCase() === debouncedQuery.trim().toLowerCase() ||
-            filteredSortedTokens.length === 1
-          ) {
-            handleCurrencySelect(filteredSortedTokens[0])
-          }
-        }
-      }
-    },
-    [filteredSortedTokens, handleCurrencySelect, debouncedQuery],
-  )
-   */
-
   const getCurrencyListRows = useCallback(() => {
     return (
       <CurrencyList currenciesList={currenciesList} onCurrencySelect={handleCurrencySelect} fixedListRef={fixedList} />
@@ -85,32 +65,20 @@ const DualCurrencySearchModal: React.FC<CurrencySearchModalProps> = ({
 
   return (
     <Modal {...modalProps} onDismiss={onDismiss} title={t('Tokens')}>
-      <Flex
-        sx={{
-          flexDirection: 'column',
-          maxHeight: 'none',
-          height: ['auto'],
-          width: ['auto'],
-          overflowY: 'auto',
-        }}
-        className="YOU"
-      >
-        <Flex sx={{ flexDirection: 'column', width: '380px', maxWidth: '100%', alignSelf: 'center' }}>
-          <Flex sx={{ flexDirection: 'column' }}>
-            <Flex sx={{ position: 'relative', margin: '10px 0px 15px 0px' }}>
-              <StyledInput
-                id="token-search-input"
-                placeholder={t('Name or Address')}
-                autoComplete="off"
-                value={searchQuery}
-                onChange={handleInput}
-                // onKeyDown={handleEnter}
-                icon="search"
-                autoFocus
-              />
-            </Flex>
-            {getCurrencyListRows()}
+      <Flex sx={styles.tokenSearcherContainer}>
+        <Flex sx={{ flexDirection: 'column' }}>
+          <Flex sx={{ position: 'relative', margin: '10px 0px 15px 0px' }}>
+            <StyledInput
+              id="token-search-input"
+              placeholder={t('Name or Address')}
+              autoComplete="off"
+              value={searchQuery}
+              onChange={handleInput}
+              icon="search"
+              autoFocus
+            />
           </Flex>
+          {getCurrencyListRows()}
         </Flex>
       </Flex>
     </Modal>
