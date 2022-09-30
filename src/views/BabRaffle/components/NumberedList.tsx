@@ -22,7 +22,7 @@ const NumberedList: React.FC<{
             <>
               <Text color="yellow" sx={styles.playBody}>
                 <a
-                  href="https://apeswap.finance"
+                  href="https://www.binance.com/en/support/faq/bacaf9595b52440ea2b023195ba4a09c"
                   style={{ textDecoration: 'underline', padding: 0, margin: 0 }}
                   target="_blank"
                   rel="noreferrer noopener"

@@ -6,21 +6,20 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import ReactPlayer from 'react-player'
-import { useClaimRaffle, useFetchBabToken } from 'state/hooks'
+import { useFetchBabToken, useWonRaffles } from 'state/hooks'
 import { styles } from '../styles'
 import NumberedList from './NumberedList'
 
 const BabInfoCard: React.FC = () => {
   const { t } = useTranslation()
   const { loading, holdsBab } = useFetchBabToken()
-  const { hasClaimed } = useClaimRaffle()
+  const { userWon: wonPrize, userClaimed: hasClaimed } = useWonRaffles()
   const { account } = useActiveWeb3React()
   const isMobile = useIsMobile()
 
   const mint = () => null
   const minting = false
   const hasMinted = true
-  const wonPrize = true
 
   // Note:
   // -> No function for 'Show NFT' button
