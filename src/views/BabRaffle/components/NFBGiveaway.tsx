@@ -4,17 +4,22 @@ import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React from 'react'
 import ReactPlayer from 'react-player'
-import { useClaimRaffle, useFetchBabToken } from 'state/hooks'
+import { useFetchBabToken, useWonRaffles } from 'state/hooks'
 import { styles } from '../styles'
 
 const BabInfoCard: React.FC = () => {
   const { t } = useTranslation()
-  const { tokenId, holdsBab } = useFetchBabToken()
-  const { claim, claiming, hasClaimed } = useClaimRaffle()
+  const { holdsBab } = useFetchBabToken()
+  const {
+    claim: claimWin,
+    claiming: winClaiming,
+    userWins,
+    userWon: wonPrize,
+    userClaimed: hasClaimed,
+  } = useWonRaffles()
   const { account } = useActiveWeb3React()
 
-  const wonPrize = false
-  const nfbNumber = 2701
+  const nfbNumber = userWins[0]?.prizeTokenId
 
   // wonPrize
   // -> Congratulations Text, New Description with NFB #number
@@ -33,7 +38,7 @@ const BabInfoCard: React.FC = () => {
           <Text sx={styles.nfbDescription}>
             {wonPrize && account && (
               <Text sx={{ fontWeight: 700, margin: 0, lineHeight: 0 }}>
-                {t(`NFB #${nfbNumber} should be in your wallet!`)}
+                {t(`NFB #${nfbNumber} us ready to be in your wallet!`)}
                 <br />
                 <br />
               </Text>
@@ -57,7 +62,11 @@ const BabInfoCard: React.FC = () => {
                     {t('Claimed')}
                   </Button>
                 ) : (
-                  <Button onClick={() => claim(tokenId)} disabled={claiming} sx={{ width: ['100%', '300px', '388px'] }}>
+                  <Button
+                    onClick={() => claimWin(userWins[0].id)}
+                    disabled={winClaiming}
+                    sx={{ width: ['100%', '300px', '388px'] }}
+                  >
                     {t('Claim NFB')}
                   </Button>
                 )}
