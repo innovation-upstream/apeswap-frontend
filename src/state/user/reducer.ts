@@ -296,10 +296,10 @@ export default createReducer(initialState, (builder) =>
       state.userBonusRouterDisabled = action.payload.userBonusRouterDisabled
       state.timestamp = currentTimestamp()
     })
-    .addCase(setZapSlippage, (state, { payload: { zapSlippage } }) => {
+    .addCase(setZapSlippage, (state, { payload: { userZapSlippage } }) => {
       return {
         ...state,
-        zapSlippage,
+        userZapSlippage,
       }
     }),
 )

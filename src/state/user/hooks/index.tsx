@@ -186,7 +186,7 @@ export function useUserSlippageTolerance(isZap?: boolean): [number, (slippage: n
   })
   const setZapSlippageTolerance = useCallback(
     (slippage: number) => {
-      dispatch(setZapSlippage({ zapSlippage: slippage }))
+      dispatch(setZapSlippage({ userZapSlippage: slippage }))
     },
     [dispatch],
   )
