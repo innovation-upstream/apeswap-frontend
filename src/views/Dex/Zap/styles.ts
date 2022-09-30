@@ -1,5 +1,5 @@
 import { ThemeUIStyleObject } from 'theme-ui'
-import { buttonHover } from 'views/Dex/styles'
+import { buttonHover } from '../styles'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   liquidityContainer: {
@@ -95,7 +95,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     borderRadius: '10px',
     justifyContent: 'flex-start',
     flexDirection: 'column',
-    cursor: 'pointer',
   },
   centered: {
     alignItems: 'center',
@@ -115,11 +114,12 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     fontSize: '12px',
     lineHeight: '18px',
     justifyContent: 'space-between',
+    cursor: 'pointer',
   },
   switchStyles: {
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: 'rgba(241, 234, 218, 1)',
+    backgroundColor: 'rgba(56, 56, 56, 1)',
     height: '20px',
     width: '40px',
     '& div': {

@@ -12,18 +12,15 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'space-between',
     flexDirection: 'column',
   },
-
   panelTopContainer: {
     width: '100%',
     height: 'auto',
     justifyContent: 'space-between',
   },
-
   panelBottomContainer: {
     width: '100%',
     justifyContent: 'space-between',
   },
-
   panelBottomText: {
     opacity: 0.8,
   },
@@ -35,7 +32,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     top: 0,
     transform: 'translate(0px, -30px)',
   },
-
   maxButton: {
     background: 'yellow',
     alignItems: 'center',
@@ -52,5 +48,35 @@ export const styles: Record<string, ThemeUIStyleObject> = {
       transform: 'scale(0.9)',
     },
     ':hover': buttonHover,
+  },
+  primaryFlex: {
+    minWidth: 'max-content',
+    background: 'white4',
+    borderRadius: '10px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'inherit',
+    transition: 'inherit',
+    '&:active': {
+      transform: 'inherit',
+    },
+    ':hover': { background: 'inherit' },
+  },
+  tokenText: {
+    textTransform: 'uppercase',
+    fontWeight: 700,
+    fontSize: '12px !important',
+  },
+  symbolText: {
+    textTransform: 'uppercase',
+    fontWeight: 700,
+    fontSize: '14px !important',
+  },
+  tokenSearcherContainer: {
+    flexDirection: 'column',
+    maxHeight: 'none',
+    height: 'auto',
+    width: 'auto',
+    overflowY: 'auto',
   },
 }
