@@ -52,7 +52,7 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
   )} ${currencyInputSymbol}
    into ${pairOut?.liquidityMinted?.toSignificant(4)} ${wrappedToNative(
     pairOut?.pair.token0.getSymbol(chainId),
-  )}-${wrappedToNative(pairOut?.pair.token0.getSymbol(chainId))} LP`
+  )}-${wrappedToNative(pairOut?.pair.token1.getSymbol(chainId))} LP`
 
   return (
     <Modal title={title} {...modalProps} onDismiss={onDismiss}>
