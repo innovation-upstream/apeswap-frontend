@@ -38,8 +38,9 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
     earnTokenPrice,
     maxTotalPayOut,
     totalPayoutGiven,
+    billNftAddress,
   } = bill
-  const { chainId, account } = useActiveWeb3React()
+  const { chainId, account, library } = useActiveWeb3React()
   const { recipient, typedValue } = useZapState()
   const { onBuyBill } = useBuyBill(contractAddress[chainId], typedValue, lpPrice, price)
   const dispatch = useAppDispatch()
@@ -111,6 +112,8 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
             text: t('View Transaction'),
             url: getEtherscanLink(trxHash, 'transaction', chainId),
           })
+          dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
+          dispatch(fetchBillsUserDataAsync(chainId, account))
         })
         .catch((e) => {
           console.error(e)
@@ -121,10 +124,24 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
     } else {
       await zapCallback()
         .then((hash) => {
-          toastSuccess(t('Buy Successful'), {
-            text: t('View Transaction'),
-            url: getEtherscanLink(hash, 'transaction', chainId),
-          })
+          setPendingTrx(true)
+          library
+            .waitForTransaction(hash)
+            .then((receipt) => {
+              const { logs } = receipt
+              const findBillNftLog = logs.find((log) => log.address.toLowerCase() === billNftAddress.toLowerCase())
+              const getBillNftIndex = findBillNftLog.topics[findBillNftLog.topics.length - 1]
+              const convertHexId = parseInt(getBillNftIndex, 16)
+              onBillId(convertHexId.toString(), hash)
+              dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
+              dispatch(fetchBillsUserDataAsync(chainId, account))
+            })
+            .catch((e) => {
+              console.error(e)
+              toastError(e?.data?.message || t('Error: Please try again.'))
+              setPendingTrx(false)
+              onTransactionSubmited(false)
+            })
         })
         .catch((e) => {
           console.error(e)
@@ -133,13 +150,13 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
           onTransactionSubmited(false)
         })
     }
-    dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
-    dispatch(fetchBillsUserDataAsync(chainId, account))
-    setPendingTrx(false)
   }, [
     account,
     chainId,
     currencyB,
+    library,
+    billNftAddress,
+    onBillId,
     dispatch,
     onBuyBill,
     onTransactionSubmited,

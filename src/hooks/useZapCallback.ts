@@ -237,7 +237,6 @@ export function useZapCallback(
                 amount: getBalanceNumber(new BN(zap.currencyIn.inputAmount.toString())),
               },
             })
-
             return response.hash
           })
           .catch((error: any) => {
