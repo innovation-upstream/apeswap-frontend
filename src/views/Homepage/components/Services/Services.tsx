@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
-import { Text as V2Text, Flex as V2Flex, Skeleton } from '@ape.swap/uikit'
+import { Text, Flex, Skeleton } from '@ape.swap/uikit'
 import SwiperCore from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import useSwiper from 'hooks/useSwiper'
@@ -11,13 +11,11 @@ import { useFetchHomepageServiceStats, useHomepageServiceStats } from 'state/hoo
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { useTranslation } from 'contexts/Localization'
 import { getDotPos } from 'utils/getDotPos'
-import { styles } from './styles'
+import { styles, YieldCard } from './styles'
 import { defaultServiceData } from './defaultServiceData'
-import useTheme from 'hooks/useTheme'
 
 const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
   const { swiper, setSwiper } = useSwiper()
-  const { isDark } = useTheme()
   const [loadServices, setLoadServices] = useState(false)
   useFetchHomepageServiceStats(loadServices)
   const [activeSlide, setActiveSlide] = useState(0)
@@ -72,7 +70,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
   const displayStats = (id: string, link: string, stats: ServiceData[]) => {
     return (
       <>
-        <V2Flex
+        <Flex
           sx={{
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -86,7 +84,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
             const { name, tokenImage } = handleEachService(id, stat)
             return (
               <a href={stat?.link} rel="noopener noreferrer" key={stat?.apr}>
-                <V2Flex
+                <Flex
                   sx={{
                     width: '100%',
                     height: '70px',
@@ -119,38 +117,36 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                   ) : (
                     <ServiceTokenDisplay token1={tokenImage[0]} />
                   )}
-                  <V2Flex sx={{ paddingLeft: '15px', justifyContent: 'center', flexDirection: 'column' }}>
-                    <V2Text bold sx={{ width: '100%', color: 'white' }}>
-                      {name}
-                    </V2Text>
+                  <Flex sx={{ paddingLeft: '15px', justifyContent: 'center', flexDirection: 'column' }}>
+                    <Text sx={{ width: '100%', color: 'white', fontWeight: 700 }}>{name}</Text>
                     {id === 'lendingDetails' ? (
-                      <V2Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
+                      <Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
                         APY: {stat.apy.toFixed(2)}%
-                      </V2Text>
+                      </Text>
                     ) : id === 'billDetails' ? (
-                      <V2Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
+                      <Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
                         Discount:{' '}
-                        <V2Text sx={{ color: stat.discount > 0 ? 'primaryBright' : '#DF4141' }}>
+                        <span sx={{ color: stat.discount > 0 ? 'primaryBright' : '#DF4141' }}>
                           {stat.discount.toFixed(2)}%
-                        </V2Text>
-                      </V2Text>
+                        </span>
+                      </Text>
                     ) : (
-                      <V2Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
+                      <Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
                         APR: {(stat.apr * 100).toFixed(2)}%
-                      </V2Text>
+                      </Text>
                     )}
-                  </V2Flex>
-                </V2Flex>
+                  </Flex>
+                </Flex>
               </a>
             )
           })}
-        </V2Flex>
+        </Flex>
         <a href={link} rel="noopener noreferrer">
-          <V2Flex sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-            <V2Text sx={{ color: 'primaryBright', fontSize: '16px' }} bold>
+          <Flex sx={{ alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+            <Text sx={{ color: 'primaryBright', fontSize: '16px', fontWeight: 700 }}>
               {t('See All')} {'>'}
-            </V2Text>
-          </V2Flex>
+            </Text>
+          </Flex>
         </a>
       </>
     )
@@ -159,11 +155,11 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
   return (
     <>
       <div ref={observerRef} />
-      <V2Flex
+      <Flex
         sx={{ ...styles.colorWrap, background: (bab && 'white1') || 'white2', paddingTop: bab && ['50px', '100px'] }}
       >
         {bab && (
-          <V2Text
+          <Text
             sx={{
               textAlign: 'center',
               lineHeight: ['38px', '45px'],
@@ -174,9 +170,9 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
             }}
           >
             {t('Featured ApeSwap Products')}
-          </V2Text>
+          </Text>
         )}
-        <V2Flex sx={{ ...styles.serviceWrapper, padding: bab && '30px 0 90px 0', height: !bab && '610px' }}>
+        <Flex sx={{ ...styles.serviceWrapper, padding: bab && '30px 0 90px 0', height: !bab && '610px' }}>
           {displayData ? (
             width < 1488 ? (
               <Swiper
@@ -186,6 +182,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                 spaceBetween={20}
                 slidesPerView="auto"
                 loopedSlides={displayData?.length}
+                autoplay={{ delay: 5000 }}
                 loop
                 centeredSlides
                 resizeObserver
@@ -207,13 +204,8 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                       }}
                       key={service.title}
                     >
-                      <V2Flex
-                        sx={{
-                          ...styles.yieldCard,
-                          background: `url(${service.backgroundImg}-${isDark ? 'dark' : 'light'}.svg)`,
-                        }}
-                      >
-                        <V2Flex
+                      <YieldCard image={service.backgroundImg}>
+                        <Flex
                           sx={{
                             flexDirection: 'column',
                             justifyContent: 'space-between',
@@ -221,29 +213,29 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                             width: '100%',
                           }}
                         >
-                          <V2Flex sx={{ flexDirection: 'column', padding: ['15px 5px', '20px 5px'], gap: '5px' }}>
-                            <V2Text
+                          <Flex sx={{ flexDirection: 'column', padding: ['15px 5px', '20px 5px'], gap: '5px' }}>
+                            <Text
                               sx={{
                                 fontSize: '23px',
                                 color: 'primaryBright',
-                                fontWeight: 'bold',
+                                fontWeight: 700,
                               }}
                             >
                               {service.title}
-                            </V2Text>
-                            <V2Text
+                            </Text>
+                            <Text
                               sx={{
                                 fontSize: '15px',
                                 color: 'primaryBright',
-                                fontWeight: 'bold',
+                                fontWeight: 700,
                               }}
                             >
                               {service.description}
-                            </V2Text>
-                          </V2Flex>
+                            </Text>
+                          </Flex>
                           {displayStats(service.id, service.link, service.stats)}
-                        </V2Flex>
-                      </V2Flex>
+                        </Flex>
+                      </YieldCard>
                     </SwiperSlide>
                   )
                 })}
@@ -251,14 +243,8 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
             ) : (
               displayData?.map((service) => {
                 return (
-                  <V2Flex
-                    sx={{
-                      ...styles.yieldCard,
-                      background: `url(${service.backgroundImg}-${isDark ? 'dark' : 'light'}.svg)`,
-                    }}
-                    key={service.id}
-                  >
-                    <V2Flex
+                  <YieldCard image={service.backgroundImg} key={service.id}>
+                    <Flex
                       sx={{
                         flexDirection: 'column',
                         justifyContent: 'space-between',
@@ -266,42 +252,42 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                         width: '100%',
                       }}
                     >
-                      <V2Flex sx={{ flexDirection: 'column', padding: ['15px 5px', '20px 5px'], gap: '5px' }}>
-                        <V2Text
+                      <Flex sx={{ flexDirection: 'column', padding: ['15px 5px', '20px 5px'], gap: '5px' }}>
+                        <Text
                           sx={{
                             fontSize: '23px',
                             color: 'primaryBright',
-                            fontWeight: 'bold',
+                            fontWeight: 700,
                           }}
                         >
                           {service.title}
-                        </V2Text>
-                        <V2Text
+                        </Text>
+                        <Text
                           sx={{
                             fontSize: '15px',
                             color: 'primaryBright',
-                            fontWeight: 'bold',
+                            fontWeight: 700,
                           }}
                         >
                           {service.description}
-                        </V2Text>
-                      </V2Flex>
+                        </Text>
+                      </Flex>
                       {displayStats(service.id, service.link, service.stats)}
-                    </V2Flex>
-                  </V2Flex>
+                    </Flex>
+                  </YieldCard>
                 )
               })
             )
           ) : (
             [...Array(4)].map((i) => {
               return (
-                <V2Flex sx={{ ...styles.yieldCard }} key={i}>
+                <YieldCard key={i}>
                   <Skeleton height="100%" width="100%" />
-                </V2Flex>
+                </YieldCard>
               )
             })
           )}
-          <V2Flex
+          <Flex
             sx={{
               justifyContent: 'center',
               alignContent: 'center',
@@ -313,7 +299,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
           >
             {[...Array(displayData?.length)].map((_, i) => {
               return (
-                <V2Flex
+                <Flex
                   sx={{
                     ...styles.bubble,
                     background:
@@ -324,9 +310,9 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                 />
               )
             })}
-          </V2Flex>
-        </V2Flex>
-      </V2Flex>
+          </Flex>
+        </Flex>
+      </Flex>
     </>
   )
 }

@@ -46,11 +46,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
 
 export const YieldCard = styled.div<{ image?: string }>`
   position: relative;
-  min-width: 338px;
+  min-width: 300px;
   max-width: 338px;
   height: 442px;
   opacity: 1;
-  padding: 20px 20px;
+  padding: 10px 10px;
   border-radius: 10px;
   background: url(${({ theme, image }) => (theme.isDark ? `${image}-dark.svg` : `${image}-light.svg`)});
   background-repeat: no-repeat;
