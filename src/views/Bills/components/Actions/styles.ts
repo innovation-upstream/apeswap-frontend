@@ -47,8 +47,10 @@ export const styles = {
     },
   },
   buttonsContainer: {
-    flexDirection: 'column',
+    flexDirection: 'row',
+    flexWrap: 'wrap-reverse',
     '@media screen and (min-width: 1180px)': {
+      flexWrap: 'wrap',
       flexDirection: 'row',
     },
   },

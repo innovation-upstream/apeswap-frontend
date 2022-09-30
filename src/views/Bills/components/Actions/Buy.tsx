@@ -241,7 +241,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
             </Text>
           </TextWrapper>
         </BillValueContainer>
-        <Flex sx={styles.buttonsContainer}>
+        <Flex sx={{ ...styles.buttonsContainer }}>
           <Box sx={styles.getLpContainer}>
             <GetLPButton variant="secondary" onClick={showLiquidity}>
               <StyledText sx={{ marginRight: '5px' }}>{t('Get LP')}</StyledText>
