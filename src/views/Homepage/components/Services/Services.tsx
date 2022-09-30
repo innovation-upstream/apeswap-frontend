@@ -86,7 +86,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
               <a href={stat?.link} rel="noopener noreferrer" key={stat?.apr}>
                 <Flex
                   sx={{
-                    width: '100%',
+                    width: ['100%', '100%', '95%'],
                     height: '70px',
                     background: 'rgba(11, 11, 11, .55)',
                     borderRadius: '10px',
