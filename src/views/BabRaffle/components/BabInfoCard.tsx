@@ -6,14 +6,13 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import ReactPlayer from 'react-player'
-import { useClaimRaffle, useFetchBabToken, useWonRaffles } from 'state/hooks'
+import { useClaimRaffle, useFetchBabToken } from 'state/hooks'
 import { styles } from '../styles'
 import NumberedList from './NumberedList'
 
 const BabInfoCard: React.FC = () => {
   const { t } = useTranslation()
   const { loading, holdsBab, tokenId } = useFetchBabToken()
-  const { userWon: wonPrize } = useWonRaffles()
   const { claim, hasClaimed, claiming } = useClaimRaffle()
   const { account } = useActiveWeb3React()
   const isMobile = useIsMobile()
@@ -114,15 +113,7 @@ const BabInfoCard: React.FC = () => {
                   )}
                   {holdsBab && (
                     <Flex sx={{ width: ['100%', '388px'] }}>
-                      {hasClaimed ? (
-                        <>
-                          {hasClaimed ? (
-                            <Button onClick={null} fullWidth>
-                              {t('Show NFT')}
-                            </Button>
-                          ) : null}
-                        </>
-                      ) : (
+                      {!hasClaimed && (
                         <Button onClick={() => claim(tokenId)} disabled={claiming} fullWidth>
                           {t('Mint')}
                         </Button>
