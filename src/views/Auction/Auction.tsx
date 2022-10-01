@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { Flex } from '@apeswapfinance/uikit'
 import SwiperProvider from 'contexts/SwiperProvider'
 import Banner from 'components/Banner'
 import { useAuctions, useFetchAuctions } from 'state/hooks'
@@ -9,7 +9,6 @@ import Positions from './components/Positions'
 import Container from './components/Container'
 import History from './components/History'
 import ListYourNfa from './components/Actions/ListYourNfa'
-import useIsMobile from 'hooks/useIsMobile'
 
 const PageWrapper = styled.div`
   display: none;

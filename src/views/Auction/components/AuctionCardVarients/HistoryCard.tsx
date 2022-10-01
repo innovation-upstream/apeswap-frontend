@@ -153,7 +153,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({ auction }) => {
           <>
             <BoughtText>{t('Bought For')}</BoughtText>
             <BidAmount> {rawBidAmount.toFixed(3)} BNB</BidAmount>
-            <CurrentBidDollarWrapper>~${dollarValue}</CurrentBidDollarWrapper>
           </>
         )}
       </TextHolder>
