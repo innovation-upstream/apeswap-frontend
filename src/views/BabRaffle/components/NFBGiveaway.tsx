@@ -33,7 +33,9 @@ const BabInfoCard: React.FC = () => {
       <Flex sx={styles.nfbCon}>
         <Flex sx={styles.nfbTextCon}>
           <Text sx={styles.nfbHeader}>
-            {wonPrize && account
+            {!holdsBab
+              ? t('No BAB Token Found!')
+              : wonPrize && account
               ? t("Congratulations, You've Won!")
               : t('You are not a winner... yet! Check back tomorrow.')}
           </Text>
