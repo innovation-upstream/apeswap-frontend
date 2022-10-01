@@ -84,9 +84,14 @@ const BabInfoCard: React.FC = () => {
           </Text>
         </Flex>
       </Flex>
-      <Flex sx={{ width: ['240px', '414px'] }}>
+      <Flex sx={{ width: ['240px', '414px'], height: ['240px', '414px'] }}>
         {wonPrize ? (
-          <ReactPlayer playing muted loop url="videos/bab-nfb.mp4" height="100%" width="100%" playsInline />
+          <Flex
+            sx={{
+              ...styles.nfbImage,
+              backgroundImage: `url(https://apeswap.mypinata.cloud/ipfs/QmYhuJnr3GGUnDGtg6rmSXTgo7FzaWgrriqikfgn5SkXhZ/${nfbNumber}.png)`,
+            }}
+          />
         ) : (
           <ReactPlayer playing muted loop url="videos/bab-nfb.mp4" height="100%" width="100%" playsInline />
         )}

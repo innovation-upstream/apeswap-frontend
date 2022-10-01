@@ -98,4 +98,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     lineHeight: ['24px', '27px'],
     fontWeight: '700px',
   },
+  nfbImage: {
+    width: '100%',
+    height: '100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    backgroundPosition: 'center',
+  },
 }
