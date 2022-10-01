@@ -33,7 +33,7 @@ import {
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
   setUnlimitedGnana,
-  showModal,
+  setShowModal,
   updateUserBonusRouter,
   setZapSlippage,
 } from './actions'
@@ -133,13 +133,13 @@ export const initialState: UserState = {
   watchlistPools: [],
   showPhishingWarningBanner: true,
   unlimitedGnana: false,
+  userBonusRouterDisabled: false,
   showModal: {
     showBuyModal: true,
     showSellModal: true,
     showPoolHarvestModal: true,
     showGeneralHarvestModal: true,
   },
-  userBonusRouterDisabled: false,
   userZapSlippage: INITIAL_ZAP_SLIPPAGE,
 }
 
@@ -286,7 +286,7 @@ export default createReducer(initialState, (builder) =>
     .addCase(setUnlimitedGnana, (state, { payload }) => {
       state.unlimitedGnana = payload
     })
-    .addCase(showModal, (state, { payload }) => {
+    .addCase(setShowModal, (state, { payload }) => {
       state.showModal = {
         ...state.showModal,
         [payload.actionType]: payload.flag,
