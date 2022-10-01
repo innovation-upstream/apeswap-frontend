@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex } from '@apeswapfinance/uikit'
+import { Flex, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import SwiperProvider from 'contexts/SwiperProvider'
 import Banner from 'components/Banner'
 import { useAuctions, useFetchAuctions } from 'state/hooks'
@@ -13,7 +13,8 @@ import ListYourNfa from './components/Actions/ListYourNfa'
 const PageWrapper = styled.div`
   display: none;
   display: flex;
-  margin-bottom: 8px;
+  padding-bottom: 200px;
+  margin-bottom: 100px;
 `
 
 const AuctionCardsWrapper = styled.div`
@@ -87,7 +88,8 @@ const Auction: React.FC = () => {
   useFetchAuctions()
   const { auctions } = useAuctions()
   const { t } = useTranslation()
-
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isDesktop = isXxl || isXl
   return (
     <SwiperProvider>
       <Container>
@@ -117,8 +119,8 @@ const Auction: React.FC = () => {
           <SplitWrapper>
             <AuctionCardsWrapper>{auctions && <Positions auctions={auctions} />}</AuctionCardsWrapper>
           </SplitWrapper>
+          {isDesktop && <History />}
         </PageWrapper>
-        <History />
       </Container>
     </SwiperProvider>
   )
