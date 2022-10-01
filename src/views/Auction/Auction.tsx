@@ -9,12 +9,12 @@ import Positions from './components/Positions'
 import Container from './components/Container'
 import History from './components/History'
 import ListYourNfa from './components/Actions/ListYourNfa'
+import useIsMobile from 'hooks/useIsMobile'
 
 const PageWrapper = styled.div`
   display: none;
   display: flex;
-  padding-bottom: 200px;
-  margin-bottom: 100px;
+  margin-bottom: 8px;
 `
 
 const AuctionCardsWrapper = styled.div`
@@ -88,8 +88,7 @@ const Auction: React.FC = () => {
   useFetchAuctions()
   const { auctions } = useAuctions()
   const { t } = useTranslation()
-  const { isXl, isXxl } = useMatchBreakpoints()
-  const isDesktop = isXxl || isXl
+
   return (
     <SwiperProvider>
       <Container>
@@ -119,8 +118,8 @@ const Auction: React.FC = () => {
           <SplitWrapper>
             <AuctionCardsWrapper>{auctions && <Positions auctions={auctions} />}</AuctionCardsWrapper>
           </SplitWrapper>
-          {isDesktop && <History />}
         </PageWrapper>
+        <History />
       </Container>
     </SwiperProvider>
   )

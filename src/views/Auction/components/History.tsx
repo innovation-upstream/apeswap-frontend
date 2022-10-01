@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useGetNfaAuctionHistory } from 'hooks/api'
 import { useTranslation } from 'contexts/Localization'
+import useIsMobile from 'hooks/useIsMobile'
 
 interface RowProps {
   background?: boolean
@@ -15,13 +16,11 @@ interface ArrowProps {
 }
 
 const PositinBox = styled.div`
-  position: absolute;
   width: 100%;
-  height: 600px;
-  top: 910px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 10px;
 `
 
 const HistoryWrapper = styled.div`
@@ -53,10 +52,16 @@ const ColumnHeadersWrapper = styled.div`
   height: 40px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding-left: 90px;
-  padding-right: 70px;
+  padding-left: 20px;
+  padding-right: 30px;
+  justify-content: space-around;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-left: 90px;
+    padding-right: 70px;
+    justify-content: space-between;
+  }
 `
 const HeaderText = styled(Text)`
   font-style: normal;
@@ -84,10 +89,15 @@ const Row = styled.div<RowProps>`
   background: ${(props) => props.background && props.theme.colors.white3};
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding-left: 45px;
-  padding-right: 45px;
-  flex-shrink: 0;
+  justify-content: space-around;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-left: 45px;
+    padding-right: 45px;
+    justify-content: space-between;
+  }
 `
 
 const Column = styled.div`
@@ -129,7 +139,6 @@ const StyledForwardArrow = styled(ArrowForwardIcon)<ArrowProps>`
   cursor: ${(props) => props.active && 'pointer'};
   opacity: ${(props) => !props.active && '.3'};
 `
-
 const ROWS_PER_PAGE = 13
 
 const History: React.FC = () => {
@@ -139,6 +148,7 @@ const History: React.FC = () => {
   const [backArrowFlag, setBackArrowFlag] = useState(false)
   const [forwardArrowFlag, setForwardArrowFlag] = useState(false)
   const { t } = useTranslation()
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     setForwardArrowFlag(ROWS_PER_PAGE < historyData?.length)
@@ -181,7 +191,7 @@ const History: React.FC = () => {
             <Column>
               {data.bidder.slice(0, 4)}...{data.bidder.slice(data.bidder.length - 4, data.bidder.length)}
             </Column>
-            <Column>{data.blockNumber}</Column>
+            {!isMobile && <Column>{data.blockNumber}</Column>}
           </Row>
         ) : (
           <Row>
@@ -190,7 +200,7 @@ const History: React.FC = () => {
             <Column>
               {data.bidder.slice(0, 4)}...{data.bidder.slice(data.bidder.length - 4, data.bidder.length)}
             </Column>
-            <Column>{data.blockNumber}</Column>
+            {!isMobile && <Column>{data.blockNumber}</Column>}
           </Row>
         ),
       )
@@ -205,7 +215,7 @@ const History: React.FC = () => {
           <HeaderText>{t('NFA Index')}</HeaderText>
           <HeaderText>{t('Amount')}</HeaderText>
           <HeaderText>{t('Bidder')}</HeaderText>
-          <HeaderText>{t('Block Number')}</HeaderText>
+          {!isMobile && <HeaderText>{t('Block Number')}</HeaderText>}
         </ColumnHeadersWrapper>
         <BodyWrapper>{renderRows()}</BodyWrapper>
         <ArrowsWrapper>
