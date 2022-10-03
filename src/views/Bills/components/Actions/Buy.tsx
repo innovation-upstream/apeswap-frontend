@@ -144,7 +144,6 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
               setPendingTrx(false)
               onTransactionSubmited(false)
             })
-          console.log('send track')
           track({
             event: 'zap',
             chain: chainId,

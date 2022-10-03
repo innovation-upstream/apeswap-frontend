@@ -83,7 +83,6 @@ function ZapLiquidity({
           zapErrorMessage: undefined,
           txHash: hash,
         })
-        console.log('send track')
         track({
           event: 'zap',
           chain: chainId,

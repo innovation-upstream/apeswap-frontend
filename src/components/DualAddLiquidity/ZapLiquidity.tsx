@@ -57,7 +57,6 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
     zapCallback()
       .then((hash) => {
         handleConfirmedTx(hash, zap.pairOut.pair)
-        console.log('send track')
         track({
           event: 'zap',
           chain: chainId,
