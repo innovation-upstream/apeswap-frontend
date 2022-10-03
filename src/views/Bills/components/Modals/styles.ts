@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 
 export const ModalBodyContainer = styled(Flex)`
   flex-direction: column;
+  align-items: center;
   @media screen and (min-width: 1180px) {
     flex-direction: row;
   }
@@ -110,6 +111,9 @@ export const ActionButtonsContainer = styled(Flex)`
 export const UserActionButtonsContainer = styled(ActionButtonsContainer)`
   height: 110px;
   justify-content: space-between;
+  @media screen and (min-width: 1180px) {
+    transform: translate(0px, 25px);
+  }
 `
 
 export const StyledHeadingText = styled(Text)`

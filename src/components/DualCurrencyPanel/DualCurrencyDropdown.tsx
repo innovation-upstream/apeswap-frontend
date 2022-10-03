@@ -6,16 +6,16 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Spinner } from 'theme-ui'
 import DualCurrencySearchModal from './DualCurrencySearchModal'
 import { useAllTokens } from 'hooks/Tokens'
-import { TestPair } from '../Buy'
 import { useSetZapInputList, useZapInputList } from 'state/zap/hooks'
 import DropdownDisplay from './DropdownDisplay'
 import { useTranslation } from 'contexts/Localization'
 import { createFilterToken } from 'components/SearchModal/filtering'
+import { DualCurrencySelector } from '../../views/Bills/components/Actions/types'
 
 const DualCurrencyDropdown: React.FC<{
   inputCurrencies: Currency[]
-  onCurrencySelect?: (currency: TestPair) => void
-  lpList: TestPair[]
+  onCurrencySelect?: (currency: DualCurrencySelector) => void
+  lpList: DualCurrencySelector[]
 }> = ({ inputCurrencies, onCurrencySelect, lpList }) => {
   useSetZapInputList()
   const allTokens = useAllTokens()
@@ -61,7 +61,7 @@ const DualCurrencyDropdown: React.FC<{
     }
   }
 
-  const currenciesList: TestPair[] = useMemo(() => {
+  const currenciesList: DualCurrencySelector[] = useMemo(() => {
     const filterToken = createFilterToken(searchQuery)
     const parsedList = Object.values(zapInputList)
       .filter(filterToken)
@@ -74,7 +74,7 @@ const DualCurrencyDropdown: React.FC<{
   }, [zapInputList, searchQuery])
 
   const handleCurrencyDynamic = useCallback(
-    (currency: TestPair, index: number) => {
+    (currency: DualCurrencySelector) => {
       onCurrencySelect(currency)
       setSearchQuery('')
     },
@@ -100,7 +100,7 @@ const DualCurrencyDropdown: React.FC<{
         <DropdownItem
           size="sm"
           key={index}
-          onClick={() => handleCurrencyDynamic(currenciesList[index], index)}
+          onClick={() => handleCurrencyDynamic(currenciesList[index])}
           sx={{ width: '100%' }}
         >
           <DropdownDisplay inputCurrencies={item} />
@@ -122,11 +122,7 @@ const DualCurrencyDropdown: React.FC<{
             {currenciesList.slice(0, 4).map((item, index) => {
               return Item([item.currencyA, item.currencyB], index)
             })}
-            <DropdownItem
-              size="sm"
-              sx={{ textAlign: 'center', '&:hover': { textDecoration: 'underline' } }}
-              onClick={onPresentCurrencyModal}
-            >
+            <DropdownItem size="sm" sx={{ textAlign: 'center' }} onClick={onPresentCurrencyModal}>
               <Text sx={{ '&:hover': { textDecoration: 'underline' } }}>{t('See all')} &gt;</Text>
             </DropdownItem>
           </Dropdown>

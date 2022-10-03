@@ -50,11 +50,11 @@ function useZapCallArguments(
   zapType: ZapType,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-  poolAddress?: string,
-  billAddress?: string,
+  stakingContractAddress?: string,
   maxPrice?: string,
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
+
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
   const deadline = useTransactionDeadline()
@@ -63,7 +63,7 @@ function useZapCallArguments(
   return useMemo(() => {
     if (
       !zap?.currencyIn?.currency ||
-      //!zap?.pairOut?.pair ||
+      !zap?.pairOut?.pair ||
       !recipient ||
       !library ||
       !account ||
@@ -78,17 +78,14 @@ function useZapCallArguments(
 
     const swapMethods = []
 
-    console.log(zap)
-
     swapMethods.push(
       ZapV1.zapCallParameters(zap, {
-        allowedSlippage: new Percent(JSBI.BigInt(200), BIPS_BASE),
+        allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
         zapType: zapType,
-        poolAddress: poolAddress,
-        billAddress: billAddress,
+        stakingContractAddress,
         recipient,
         deadline: deadline.toNumber(),
-        maxPrice: maxPrice,
+        maxPrice,
       }),
     )
 
@@ -102,8 +99,8 @@ function useZapCallArguments(
     recipient,
     contract,
     zap,
-    billAddress,
-    poolAddress,
+    stakingContractAddress,
+    maxPrice,
     zapType,
     maxPrice,
   ])
@@ -116,8 +113,7 @@ export function useZapCallback(
   zapType: ZapType,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-  poolAddress?: string,
-  billAddress?: string,
+  stakingContractAddress?: string,
   maxPrice?: string,
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
@@ -127,11 +123,10 @@ export function useZapCallback(
     zapType,
     allowedSlippage,
     recipientAddressOrName,
-    poolAddress,
-    billAddress,
+    stakingContractAddress,
     maxPrice,
   )
-  console.log(swapCalls)
+
   const addTransaction = useTransactionAdder()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
@@ -243,7 +238,6 @@ export function useZapCallback(
                 amount: getBalanceNumber(new BN(zap.currencyIn.inputAmount.toString())),
               },
             })
-
             return response.hash
           })
           .catch((error: any) => {

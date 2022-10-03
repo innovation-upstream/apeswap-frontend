@@ -22,7 +22,10 @@ const StyledBalanceText = styled(Text)`
 `
 
 export function Balance({ balance }: { balance: CurrencyAmount }) {
-  return <StyledBalanceText title={balance?.toExact()}>{balance?.toSignificant(4)}</StyledBalanceText>
+  const bal = parseFloat(balance.toExact())
+  return (
+    <StyledBalanceText title={balance?.toExact()}>{bal > 0.0001 ? balance?.toSignificant(4) : '0'}</StyledBalanceText>
+  )
 }
 
 const DropdownDisplay: React.FC<{ inputCurrencies: Currency[]; active? }> = ({ inputCurrencies, active }) => {

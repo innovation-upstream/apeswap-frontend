@@ -38,27 +38,36 @@ export const styles = {
       marginRight: '40px',
     },
   },
-  getLpContainer: {
-    display: 'none',
-    width: '50%',
-    padding: '0 20px',
-    height: '44px',
+  detailsContainer: {
+    width: '100%',
+    flexDirection: 'column-reverse',
     '@media screen and (min-width: 1180px)': {
-      display: 'initial',
+      marginRight: '40px',
+      flexDirection: 'column',
     },
   },
-  buyButtonContainer: {
+  buttonsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap-reverse',
+    '@media screen and (min-width: 1180px)': {
+      flexWrap: 'wrap',
+      flexDirection: 'row',
+    },
+  },
+  getLpContainer: {
     width: '100%',
+    padding: '10px 0 0 0',
     '@media screen and (min-width: 1180px)': {
       width: '50%',
       padding: '0 20px',
     },
   },
-  lpContainer: {
+  buyButtonContainer: {
     width: '100%',
-    marginBottom: '15px',
+    padding: '10px 0 0 0',
     '@media screen and (min-width: 1180px)': {
-      display: 'none',
+      width: '50%',
+      padding: '0 20px',
     },
   },
 }
