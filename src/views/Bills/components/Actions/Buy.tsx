@@ -26,6 +26,8 @@ import maxAmountSpend from 'utils/maxAmountSpend'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useZapCallback } from 'hooks/useZapCallback'
 import BillActions from './BillActions'
+import track from 'utils/track'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   const {
@@ -142,6 +144,18 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
               setPendingTrx(false)
               onTransactionSubmited(false)
             })
+          track({
+            event: 'zap',
+            chain: chainId,
+            data: {
+              cat: 'bill',
+              token1: zap.currencyIn.currency.getSymbol(chainId),
+              token2: `${zap.currencyOut1.outputCurrency.getSymbol(
+                chainId,
+              )}-${zap.currencyOut2.outputCurrency.getSymbol(chainId)}`,
+              amount: getBalanceNumber(new BigNumber(zap.currencyIn.inputAmount.toString())),
+            },
+          })
         })
         .catch((e) => {
           console.error(e)
@@ -165,6 +179,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
     toastError,
     toastSuccess,
     zapCallback,
+    zap,
   ])
 
   // would love to create a function on the near future to avoid the same code repeating itself along several parts of the repo

@@ -12,9 +12,6 @@ import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './ENS/useENS'
 import { useZapContract } from './useContract'
 import { MergedZap } from 'state/zap/actions'
-import track from '../utils/track'
-import { getBalanceNumber } from '../utils/formatBalance'
-import { BigNumber as BN } from 'bignumber.js'
 
 export enum SwapCallbackState {
   INVALID,
@@ -224,18 +221,6 @@ export function useZapCallback(
 
             addTransaction(response, {
               summary: withRecipient,
-            })
-            track({
-              event: 'zap',
-              chain: chainId,
-              data: {
-                cat: 'liquidity',
-                token1: zap.currencyIn.currency.getSymbol(chainId),
-                token2: `${zap.currencyOut1.outputCurrency.getSymbol(
-                  chainId,
-                )}-${zap.currencyOut2.outputCurrency.getSymbol(chainId)}`,
-                amount: getBalanceNumber(new BN(zap.currencyIn.inputAmount.toString())),
-              },
             })
             return response.hash
           })
