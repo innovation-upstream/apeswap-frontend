@@ -73,7 +73,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
       .catch((error) => {
         setZapErrorMessage(error.message)
       })
-  }, [handleConfirmedTx, zap.pairOut.pair, zapCallback])
+  }, [chainId, handleConfirmedTx, zap, zapCallback])
 
   const handleDismissConfirmation = useCallback(() => {
     // clear zapErrorMessage if user closes the error modal

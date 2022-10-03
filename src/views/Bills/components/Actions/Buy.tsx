@@ -179,6 +179,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
     toastError,
     toastSuccess,
     zapCallback,
+    zap,
   ])
 
   // would love to create a function on the near future to avoid the same code repeating itself along several parts of the repo

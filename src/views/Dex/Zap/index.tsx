@@ -102,7 +102,7 @@ function ZapLiquidity({
           txHash: undefined,
         })
       })
-  }, [zapCallback, zap])
+  }, [chainId, zapCallback, zap])
 
   const handleDismissConfirmation = useCallback(() => {
     // clear zapState if user close the error modal
