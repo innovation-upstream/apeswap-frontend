@@ -7,7 +7,7 @@ import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from './Logo'
 
-const getTokenLogoURL = (address: string, chainId: any) => {
+const getTokenLogoURL = (symbol: string, address: string, chainId: any) => {
   let imageURL
   if (chainId === ChainId.BSC) {
     if (address?.toLowerCase() === '0x55d398326f99059fF775485246999027B3197955'.toLowerCase()) {
@@ -17,8 +17,10 @@ const getTokenLogoURL = (address: string, chainId: any) => {
     }
   } else if (chainId === ChainId.MATIC) {
     imageURL = getMaticTokenLogoURL(address)
-  } else {
+  } else if (chainId === ChainId.MAINNET) {
     imageURL = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
+  } else {
+    imageURL = `https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${symbol?.toUpperCase()}.svg`
   }
   return imageURL
 }
@@ -49,9 +51,9 @@ export default function CurrencyLogo({
 
     if (currency instanceof Token) {
       if (currency instanceof WrappedTokenInfo) {
-        return [...uriLocations, getTokenLogoURL(currency.address, chainId)]
+        return [...uriLocations, getTokenLogoURL(currency.getSymbol(chainId), currency.address, chainId)]
       }
-      return [getTokenLogoURL(currency.address, chainId)]
+      return [getTokenLogoURL(currency.getSymbol(chainId), currency.address, chainId)]
     }
     return []
   }, [chainId, currency, uriLocations])

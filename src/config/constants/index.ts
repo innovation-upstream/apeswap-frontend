@@ -100,6 +100,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.BSC]: [...WRAPPED_NATIVE_ONLY[ChainId.BSC], BSC.USD, BSC.USDT],
   [ChainId.MATIC]: [...WRAPPED_NATIVE_ONLY[ChainId.MATIC], MATIC.USDC],
   [ChainId.MAINNET]: [...WRAPPED_NATIVE_ONLY[ChainId.MAINNET], DAI],
+  [ChainId.TLOS]: [...WRAPPED_NATIVE_ONLY[ChainId.TLOS], TLOS.USDC, TLOS.USDT],
 }
 
 // used to construct intermediary pairs for trading
