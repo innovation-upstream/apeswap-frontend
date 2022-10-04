@@ -195,23 +195,15 @@ const App: React.FC = () => {
               <Route exact strict path="/liquidity" component={Pool} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
               {/* clean these three components before merging */}
-              <Route exact path="/oldAdd" component={AddLiquidity} />
-              <Route exact path="/oldAdd/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/oldAdd/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-
-              <Route exact path="/add/:currencyIdA" component={RedirectRegularLiquidityPathStructure} />
-              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectRegularDuplicateTokenIds} />
-              <Route exact path="/add-liquidity" component={RegularLiquidityWrapper} />
-              <Route exact path="/add-liquidity/:currencyIdA" component={RedirectRegularLiquidityPathStructure} />
-              <Route
-                exact
-                path="/add-liquidity/:currencyIdA/:currencyIdB"
-                component={RedirectRegularDuplicateTokenIds}
-              />
-              <Route exact path="/zap" component={ZapLiquidityWrapper} />
-              <Route exact path="/zap/:currencyIdA" component={RedirectZapLiquidityPathStructure} />
-              <Route exact path="/zap/:currencyIdA/:currencyIdB" component={RedirectZapDuplicateTokenIds} />
+              <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              <Route exact path="/add-liquidity" component={AddLiquidity} />
+              <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+              <Route exact path="/zap" component={Zap} />
+              <Route exact strict path="/zap/:currencyIdA" component={Zap} />
+              <Route exact strict path="/zap/:currencyIdA/:currencyIdB/:currencyIdC" component={Zap} />
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
             </Switch>
