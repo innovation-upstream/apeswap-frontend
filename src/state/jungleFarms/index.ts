@@ -54,8 +54,8 @@ export const setInitialJungleFarmDataAsync = (chainId: number) => async (dispatc
     const initialJungleFarmState: JungleFarm[] = await fetchJungleFarmConfig()
     const filterJungleFarmsByChainId = initialJungleFarmState.filter(
       (farm) =>
-        farm.contractAddress?.[chainId] !== '' ||
-        farm.contractAddress?.[chainId] !== null ||
+        farm.contractAddress?.[chainId] !== '' &&
+        farm.contractAddress?.[chainId] !== null &&
         farm.contractAddress?.[chainId] !== undefined,
     )
     dispatch(setInitialJungleFarmData(filterJungleFarmsByChainId || []))
