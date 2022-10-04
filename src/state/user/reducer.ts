@@ -287,6 +287,14 @@ export default createReducer(initialState, (builder) =>
       state.unlimitedGnana = payload
     })
     .addCase(setShowModal, (state, { payload }) => {
+      if (!state.showModal) {
+        state.showModal = {
+          showBuyModal: true,
+          showSellModal: true,
+          showPoolHarvestModal: true,
+          showGeneralHarvestModal: true,
+        }
+      }
       state.showModal = {
         ...state.showModal,
         [payload.actionType]: payload.flag,
