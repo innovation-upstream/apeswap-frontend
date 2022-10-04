@@ -92,7 +92,6 @@ export interface UserState {
   watchlistPools: string[]
   showPhishingWarningBanner: boolean
   unlimitedGnana: boolean
-
   showModal: {
     showBuyModal: boolean
     showSellModal: boolean
@@ -286,19 +285,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(setUnlimitedGnana, (state, { payload }) => {
       state.unlimitedGnana = payload
     })
-    .addCase(setShowModal, (state, { payload }) => {
-      if (!state.showModal) {
-        state.showModal = {
-          showBuyModal: true,
-          showSellModal: true,
-          showPoolHarvestModal: true,
-          showGeneralHarvestModal: true,
-        }
-      }
-      state.showModal = {
-        ...state.showModal,
-        [payload.actionType]: payload.flag,
-      }
+    .addCase(setShowModal, (state, { payload: { actionType, flag } }) => {
+      state.showModal = { ...state.showModal, [actionType]: flag }
     })
     .addCase(updateUserBonusRouter, (state, action) => {
       state.userBonusRouterDisabled = action.payload.userBonusRouterDisabled

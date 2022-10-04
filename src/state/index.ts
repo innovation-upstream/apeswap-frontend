@@ -9,7 +9,9 @@ const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
 
 const store = configureStore({
   reducer,
-  middleware: (getDefaultMiddleware) => [...getDefaultMiddleware({ thunk: true }), save({ states: PERSISTED_KEYS })],
+  middleware: (getDefaultMiddleware) => [
+    ...getDefaultMiddleware({ thunk: true }).concat(save({ states: PERSISTED_KEYS, debounce: 1000 })),
+  ],
   preloadedState: load({ states: PERSISTED_KEYS }),
 })
 
