@@ -51,7 +51,13 @@ const fetchJungleFarmTokenStatsAndApr = (
     ? tokenPrices.find((token) => token?.address[chainId] === farm?.stakingToken.address[chainId])
     : farm.stakingToken
   // Calculate apr
-  const apr = getPoolApr(stakingToken?.price, rewardToken?.price, getBalanceNumber(totalStaked), curFarm?.tokenPerBlock)
+  const apr = getPoolApr(
+    chainId,
+    stakingToken?.price,
+    rewardToken?.price,
+    getBalanceNumber(totalStaked),
+    curFarm?.tokenPerBlock,
+  )
 
   return [stakingToken, rewardToken, apr]
 }

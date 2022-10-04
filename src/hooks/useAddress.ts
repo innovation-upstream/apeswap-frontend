@@ -9,7 +9,7 @@ export const parseAddress = (currAddress: Address, chainId: ChainId) => {
 }
 
 export const parseSmartAddress = (
-  currAddress: Record<ChainId, Record<SmartRouter, string>>,
+  currAddress: Record<ChainId, Partial<Record<SmartRouter, string>>>,
   chainId: ChainId,
   smartRouter: SmartRouter,
 ) => {

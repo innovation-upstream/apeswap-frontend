@@ -1,9 +1,10 @@
 // Network chain ids
 
 import { ChainId, SmartRouter } from '@ape.swap/sdk'
+import BigNumber from 'bignumber.js'
 
 // Network labels
-export const NETWORK_LABEL = {
+export const NETWORK_LABEL: Partial<Record<ChainId, string>> = {
   [ChainId.BSC]: 'BSC',
   [ChainId.BSC_TESTNET]: 'BSC Testnet',
   [ChainId.MATIC]: 'Polygon',
@@ -12,7 +13,7 @@ export const NETWORK_LABEL = {
   [ChainId.TLOS]: 'Telos',
 }
 
-export const NETWORK_INFO_LINK = {
+export const NETWORK_INFO_LINK: Partial<Record<ChainId, string>> = {
   [ChainId.BSC]: 'https://info.apeswap.finance',
   [ChainId.BSC_TESTNET]: 'https://info.apeswap.finance',
   [ChainId.MATIC]: 'https://polygon.info.apeswap.finance/',
@@ -22,7 +23,7 @@ export const NETWORK_INFO_LINK = {
 }
 
 // Network RPC nodes
-export const NETWORK_RPC = {
+export const NETWORK_RPC: Partial<Record<ChainId, string[]>> = {
   [ChainId.BSC]: [
     'https://bsc-dataseed1.ninicoin.io',
     'https://bsc-dataseed.binance.org/',
@@ -32,11 +33,16 @@ export const NETWORK_RPC = {
   [ChainId.MATIC]: ['https://polygon-rpc.com/'],
   [ChainId.MATIC_TESTNET]: ['https://matic-mumbai.chainstacklabs.com'],
   [ChainId.MAINNET]: ['https://eth-mainnet.nodereal.io/v1/43f9100965104de49b580d1fa1ab28c0'],
-  [ChainId.TLOS]: ['https://mainnet.telos.net/evm'],
+  [ChainId.TLOS]: [
+    'https://mainnet.telos.net/evm',
+    'https://rpc2.eu.telos.net/evm',
+    'https://rpc.telosarabia.net/evm',
+    'https://evm.teloskorea.com/evm',
+  ],
 }
 
 // Network block explorers
-export const BLOCK_EXPLORER = {
+export const BLOCK_EXPLORER: Partial<Record<ChainId, string>> = {
   [ChainId.BSC]: 'https://bscscan.com',
   [ChainId.BSC_TESTNET]: 'https://testnet.bscscan.com/',
   [ChainId.MATIC]: 'https://polygonscan.com',
@@ -45,7 +51,18 @@ export const BLOCK_EXPLORER = {
   [ChainId.TLOS]: 'https://www.teloscan.io',
 }
 
-export const CHAIN_PARAMS = {
+export const CHAIN_PARAMS: Partial<
+  Record<
+    ChainId,
+    {
+      chainId: string
+      chainName: string
+      nativeCurrency: { name: string; symbol: string; decimals: number }
+      rpcUrls: string[]
+      blockExplorerUrls: string[]
+    }
+  >
+> = {
   [ChainId.BSC]: {
     chainId: '0x38',
     chainName: 'Binance Smart Chain',
@@ -119,7 +136,7 @@ export const APE_PRICE_IMPACT = 15
 
 // This sets the priority of when a router is used
 // After APE router should be in order of highest liquidity
-export const PRIORITY_SMART_ROUTERS = {
+export const PRIORITY_SMART_ROUTERS: Partial<Record<ChainId, SmartRouter[]>> = {
   [ChainId.MAINNET]: [SmartRouter.APE, SmartRouter.SUSHISWAP, SmartRouter.UNISWAP],
   [ChainId.BSC]: [SmartRouter.APE, SmartRouter.PANCAKE, SmartRouter.BISWAP],
   [ChainId.MATIC]: [SmartRouter.APE, SmartRouter.QUICKSWAP],
@@ -129,7 +146,9 @@ export const PRIORITY_SMART_ROUTERS = {
 
 // Wallchain Configs
 // If a router is in the priority list for a certain chain it must be added to the wallchain params
-export const WALLCHAIN_PARAMS = {
+export const WALLCHAIN_PARAMS: Partial<
+  Record<ChainId, Partial<Record<SmartRouter, { apiUrl: string; apiKey: string }>>>
+> = {
   [ChainId.BSC]: {
     [SmartRouter.APE]: {
       apiUrl: 'https://bsc.wallchains.com/upgrade_txn/',
@@ -183,7 +202,7 @@ export const WALLCHAIN_PARAMS = {
 }
 
 // Dont use bonus router if the bonus is lower than the cutoff
-export const BONUS_CUTOFF_AMOUNT = {
+export const BONUS_CUTOFF_AMOUNT: Partial<Record<ChainId, number>> = {
   [ChainId.BSC]: 0.5,
   [ChainId.BSC_TESTNET]: 0,
   [ChainId.MATIC]: 0,
@@ -193,7 +212,7 @@ export const BONUS_CUTOFF_AMOUNT = {
 
 // To display correct prices for each liquidity pool when need to swap the contract out
 // Routers in prioirty list must be in here
-export const SMART_PRICE_GETTERS = {
+export const SMART_PRICE_GETTERS: Partial<Record<ChainId, Partial<Record<SmartRouter, string>>>> = {
   [ChainId.BSC]: {
     [SmartRouter.APE]: '0x5e545322b83626c745FE46144a15C00C94cBD803',
     [SmartRouter.PANCAKE]: '0xF724471B00B5fACBA78D195bD241d090350a04Bd',
@@ -216,7 +235,7 @@ export const SMART_PRICE_GETTERS = {
   },
 }
 
-export const SMART_LP_FEES = {
+export const SMART_LP_FEES: Partial<Record<ChainId, Partial<Record<SmartRouter, number>>>> = {
   [ChainId.BSC]: {
     [SmartRouter.APE]: 20,
     [SmartRouter.PANCAKE]: 25,
@@ -237,4 +256,12 @@ export const SMART_LP_FEES = {
   [ChainId.TLOS]: {
     [SmartRouter.APE]: 20,
   },
+}
+
+// Block times
+export const CHAIN_BLOCKS_PER_YEAR: Partial<Record<ChainId, BigNumber>> = {
+  [ChainId.BSC]: new BigNumber(10512000),
+  [ChainId.MATIC]: new BigNumber(13711304),
+  [ChainId.MAINNET]: new BigNumber(2628000),
+  [ChainId.TLOS]: new BigNumber(63072000),
 }
