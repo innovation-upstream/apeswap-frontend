@@ -2,8 +2,11 @@
 import React from 'react'
 import { Modal, ModalProps } from '@ape.swap/uikit'
 import MoonPayIframe from './MoonFrame'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { ChainId } from '@ape.swap/sdk'
 
 export default function MoonPayModal({ onDismiss }: ModalProps) {
+  const { chainId } = useActiveWeb3React()
   const modalProps = {
     style: {
       zIndex: 10,
@@ -20,7 +23,7 @@ export default function MoonPayModal({ onDismiss }: ModalProps) {
   }
   return (
     <Modal title="Buy crypto with MoonPay" onDismiss={onDismiss} {...modalProps}>
-      <MoonPayIframe />
+      {chainId === ChainId.TLOS ? <>unsoported</> : <MoonPayIframe />}
     </Modal>
   )
 }

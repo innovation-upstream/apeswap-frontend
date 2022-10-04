@@ -16,7 +16,7 @@ const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Liquidity'),
-        href: '/liquidity',
+        href: '/zap',
         isNew: false,
       },
       {

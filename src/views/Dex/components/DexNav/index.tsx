@@ -67,7 +67,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
           size="14px"
           sx={{ ...styles.navLink, color: !onLiquidity && 'textDisabled' }}
           as={Link}
-          to="/liquidity"
+          to="/zap"
           id="liquidity-link"
           className="liquidity"
         >
