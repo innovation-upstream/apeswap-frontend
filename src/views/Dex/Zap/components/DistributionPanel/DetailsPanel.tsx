@@ -4,7 +4,7 @@ import { ONE_BIPS } from 'config/constants'
 import { Flex, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { MergedZap } from 'state/zap/actions'
-import FormattedPriceImpact from './FormattedPriceImpact'
+import FormattedPriceImpact from '../../../components/FormattedPriceImpact'
 
 interface DetailsPanelProps {
   zap: MergedZap

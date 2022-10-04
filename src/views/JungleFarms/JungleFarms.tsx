@@ -22,6 +22,7 @@ import DisplayJungleFarms from './components/DisplayJungleFarms'
 import ListViewMenu from '../../components/ListViewMenu'
 import HarvestAll from './components/Actions/HarvestAll'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { useSetZapOutputList } from 'state/zap/hooks'
 
 const NUMBER_OF_FARMS_VISIBLE = 10
 
@@ -167,6 +168,16 @@ const JungleFarms: React.FC = () => {
 
     return sortJungleFarms(chosenJungleFarms).slice(0, numberOfFarmsVisible)
   }
+
+  // Set zap output list to match dual farms
+  useSetZapOutputList(
+    openFarms?.map((farm) => {
+      return {
+        currencyIdA: farm?.lpTokens.token.address[chainId],
+        currencyIdB: farm?.lpTokens.quoteToken.address[chainId],
+      }
+    }),
+  )
 
   return (
     <>
