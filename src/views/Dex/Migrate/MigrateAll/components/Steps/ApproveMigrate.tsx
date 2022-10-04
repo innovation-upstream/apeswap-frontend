@@ -9,7 +9,7 @@ import { wrappedToNative } from 'utils'
 import React from 'react'
 import { Pair, TokenAmount } from '@ape.swap/sdk'
 import StatusIcons from '../StatusIcons'
-import { Status, useMigrateAll } from '../../provider'
+import { MigrateStatus, useMigrateAll } from '../../provider'
 import useApproveAll from '../hooks/useApproveAll'
 
 const ApproveMigrate: React.FC<{
@@ -20,7 +20,8 @@ const ApproveMigrate: React.FC<{
   const handleApproveAll = useApproveAll()
   const filteredLps = migrateList?.filter(
     (lp) =>
-      migrateLpStatus?.find((status) => status.lpAddress === lp.lpAddress)?.status.approveMigrate !== Status.COMPLETE,
+      migrateLpStatus?.find((status) => status.lpAddress === lp.lpAddress)?.status.approveMigrate !==
+      MigrateStatus.COMPLETE,
   )
   const listView = filteredLps?.map((migrate) => {
     const { token0, token1, lpAddress, walletBalance } = migrate

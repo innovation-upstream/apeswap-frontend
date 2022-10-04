@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import React, { ReactNode } from 'react'
-import { MIGRATION_STEPS, useMigrateAll } from '../provider'
+import { MigrateStatus, MIGRATION_STEPS, useMigrateAll } from '../provider'
 
 interface MigrateProcessBarInterface {
   activeLineMargin?: number
@@ -9,11 +9,16 @@ interface MigrateProcessBarInterface {
 }
 
 const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargin, children }) => {
-  const { activeIndex, setActiveIndexCallback } = useMigrateAll()
+  const { activeIndex, migrateLpStatus, setActiveIndexCallback } = useMigrateAll()
+  const isComplete = migrateLpStatus?.map((item) =>
+    Object.entries(item.status).map((each) => each[1] === MigrateStatus.COMPLETE),
+  )
+  console.log(isComplete)
   return (
     <Flex sx={{ flexDirection: 'column' }}>
       <Flex sx={{ alignItems: 'center' }}>
         {MIGRATION_STEPS.map(({ title, description }, i) => {
+          const isIndexComplete = isComplete.length > 0 && isComplete.filter((loFlag) => !loFlag[i]).length === 0
           return (
             <>
               <Flex
@@ -41,7 +46,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
                     ml: '5px',
                   }}
                 >
-                  {activeIndex > i ? (
+                  {isIndexComplete ? (
                     <Svg icon="success" width="100%" />
                   ) : (
                     <Text
@@ -79,7 +84,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
               {i !== MIGRATION_STEPS.length - 1 && (
                 <Flex
                   sx={{
-                    background: activeIndex > i ? 'gradient' : 'white2',
+                    background: isIndexComplete ? 'gradient' : 'white2',
                     width: `${10 - MIGRATION_STEPS.length}%`,
                     height: '10px',
                   }}

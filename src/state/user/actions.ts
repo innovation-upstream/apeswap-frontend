@@ -27,7 +27,7 @@ export const updateUserRecentTransactions = createAction<{ userRecentTransaction
 export const updateUserSlippageTolerance = createAction<{ userSlippageTolerance: number }>(
   'user/updateUserSlippageTolerance',
 )
-export const setZapSlippage = createAction<{ zapSlippage: number }>('zap/setZapSlippage')
+export const setZapSlippage = createAction<{ userZapSlippage: number }>('zap/setZapSlippage')
 
 export const updateUserDeadline = createAction<{ userDeadline: number }>('user/updateUserDeadline')
 export const addSerializedToken = createAction<{ serializedToken: SerializedToken }>('user/addSerializedToken')
@@ -69,5 +69,7 @@ export const setIsExchangeChartDisplayed = createAction<boolean>('user/toggleIsE
 
 export const lastZapMigratorRouter = createAction<{ router: SmartRouter }>('user/lastZapMigratorRouter')
 export const setUnlimitedGnana = createAction<boolean>('user/setUnlimitedGnanaMinting')
+
+export const setShowModal = createAction<{ actionType: string; flag: boolean }>('user/setShowModal')
 
 export const updateUserBonusRouter = createAction<{ userBonusRouterDisabled: boolean }>('user/updateUserBonusRouter')

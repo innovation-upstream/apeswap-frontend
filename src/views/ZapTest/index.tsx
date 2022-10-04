@@ -59,7 +59,6 @@ const ZapTest: React.FC = () => {
     zapType,
     allowedSlippage,
     recipient,
-    '',
     billExists?.contractAddress[56] || 's',
   )
 

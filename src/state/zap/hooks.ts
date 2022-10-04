@@ -254,7 +254,7 @@ export function useDerivedZapInfo(): {
 
 // Set default currencies for zap state
 export function useDefaultCurrencies() {
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   useEffect(() => {
     const outputCurrencies = { currency1: 'ETH', currency2: contracts.banana[chainId] }
@@ -265,11 +265,11 @@ export function useDefaultCurrencies() {
         field: '',
         inputCurrencyId: inputCurrency,
         outputCurrencyId: outputCurrencies,
-        recipient: '',
+        recipient: account,
         zapType: ZapType.ZAP,
       }),
     )
-  }, [dispatch, chainId])
+  }, [dispatch, chainId, account])
 }
 
 // Set zap output list. Keep this pretty simple to allow multiple products to use it

@@ -2,7 +2,7 @@
 import { Flex, Svg, Text } from '@ape.swap/uikit'
 import React from 'react'
 import { Spinner } from 'theme-ui'
-import { Status, useMigrateAll } from '../provider'
+import { MigrateStatus, useMigrateAll } from '../provider'
 
 const StatusIcons: React.FC<{ lpAddress: string }> = ({ lpAddress }) => {
   const { migrateLpStatus } = useMigrateAll()
@@ -11,11 +11,11 @@ const StatusIcons: React.FC<{ lpAddress: string }> = ({ lpAddress }) => {
     <Flex sx={{ width: '100px', transform: 'translate(-15px, 0px)' }}>
       {status &&
         Object.values(status.status).map((val, i) =>
-          val === Status.COMPLETE ? (
+          val === MigrateStatus.COMPLETE ? (
             <Flex sx={{ width: '25px', mr: '3px' }}>
               <Svg icon="success" width="100%" />
             </Flex>
-          ) : val === Status.INCOMPLETE ? (
+          ) : val === MigrateStatus.INCOMPLETE ? (
             <Flex
               sx={{
                 width: '25px',
@@ -28,7 +28,7 @@ const StatusIcons: React.FC<{ lpAddress: string }> = ({ lpAddress }) => {
             >
               <Text size="14px">{i + 1}</Text>
             </Flex>
-          ) : val === Status.PENDING ? (
+          ) : val === MigrateStatus.PENDING ? (
             <Flex sx={{ width: '25px', mr: '3px' }}>
               <Spinner width="25px" height="25px" />
             </Flex>

@@ -7,7 +7,7 @@ import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { wrappedToNative } from 'utils'
-import { Status, useMigrateAll } from '../../provider'
+import { MigrateStatus, useMigrateAll } from '../../provider'
 import useUnstakeAll from '../hooks/useUnstakeAll'
 import StatusIcons from '../StatusIcons'
 
@@ -18,7 +18,6 @@ const Unstake: React.FC<{ migrateList: MigrateResult[] }> = ({ migrateList }) =>
   const listView = migrateList?.map((migrate) => {
     const { token0, token1, lpAddress, stakedBalance, walletBalance } = migrate
     const status = migrateLpStatus.find((status) => status.lpAddress === lpAddress)
-    console.log('this is the status', status)
     return {
       beforeTokenContent: <StatusIcons lpAddress={lpAddress} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
@@ -32,7 +31,7 @@ const Unstake: React.FC<{ migrateList: MigrateResult[] }> = ({ migrateList }) =>
           <ListViewContent title={t('Staked')} value={stakedBalance || '0'} ml={20} />
           <ListViewContent title={t('Wallet')} value={walletBalance || '0'} ml={20} />
           <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} />
-          <Button onClick={() => handleUpdateMigrateLp(lpAddress, 'unstake', Status.PENDING)}>yeehah</Button>
+          <Button onClick={() => handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.PENDING)}>yeehah</Button>
         </>
       ),
     } as ExtendedListViewProps

@@ -35,6 +35,7 @@ import {
   setIsExchangeChartDisplayed,
   lastZapMigratorRouter,
   setUnlimitedGnana,
+  setShowModal,
   updateUserBonusRouter,
   setZapSlippage,
 } from './actions'
@@ -94,6 +95,13 @@ export interface UserState {
   showPhishingWarningBanner: boolean
   zapMigratorRouter: SmartRouter
   unlimitedGnana: boolean
+
+  showModal: {
+    showBuyModal: boolean
+    showSellModal: boolean
+    showPoolHarvestModal: boolean
+    showGeneralHarvestModal: boolean
+  }
   userBonusRouterDisabled: boolean
   userZapSlippage: number
 }
@@ -130,6 +138,12 @@ export const initialState: UserState = {
   zapMigratorRouter: null,
   unlimitedGnana: false,
   userBonusRouterDisabled: false,
+  showModal: {
+    showBuyModal: true,
+    showSellModal: true,
+    showPoolHarvestModal: true,
+    showGeneralHarvestModal: true,
+  },
   userZapSlippage: INITIAL_ZAP_SLIPPAGE,
 }
 
@@ -279,14 +293,20 @@ export default createReducer(initialState, (builder) =>
     .addCase(setUnlimitedGnana, (state, { payload }) => {
       state.unlimitedGnana = payload
     })
+    .addCase(setShowModal, (state, { payload }) => {
+      state.showModal = {
+        ...state.showModal,
+        [payload.actionType]: payload.flag,
+      }
+    })
     .addCase(updateUserBonusRouter, (state, action) => {
       state.userBonusRouterDisabled = action.payload.userBonusRouterDisabled
       state.timestamp = currentTimestamp()
     })
-    .addCase(setZapSlippage, (state, { payload: { zapSlippage } }) => {
+    .addCase(setZapSlippage, (state, { payload: { userZapSlippage } }) => {
       return {
         ...state,
-        zapSlippage,
+        userZapSlippage,
       }
     }),
 )

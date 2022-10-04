@@ -5,7 +5,7 @@ import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.
 import { useCallback } from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { getProviderOrSigner } from 'utils'
-import { Status, useMigrateAll } from '../../provider'
+import { MigrateStatus, useMigrateAll } from '../../provider'
 import { ZAP_ADDRESS } from '@ape.swap/sdk'
 
 const useApproveAll = () => {
@@ -18,13 +18,13 @@ const useApproveAll = () => {
         const { lpAddress } = migrateLp
         const lpContract = new Contract(lpAddress, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
         const txHash = lpContract.approve(ZAP_ADDRESS[chainId], ethers.constants.MaxUint256)
-        handleUpdateMigrateLp(lpAddress, 'approveMigrate', Status.PENDING)
+        handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.PENDING)
         txHash
           .then(() => {
-            handleUpdateMigrateLp(lpAddress, 'approveMigrate', Status.COMPLETE)
+            handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.COMPLETE)
           })
           .catch(() => {
-            handleUpdateMigrateLp(lpAddress, 'approveMigrate', Status.INVALID)
+            handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.INVALID)
           })
       })
     },

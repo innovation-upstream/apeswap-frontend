@@ -23,7 +23,7 @@ const StyledBalanceText = styled(Text)`
   margin-right: 5px;
 `
 
-function Balance({ balance }: { balance: CurrencyAmount }) {
+export function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance?.toExact()}>{balance?.toSignificant(6)}</StyledBalanceText>
 }
 

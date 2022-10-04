@@ -2,7 +2,7 @@ import { Pair, SmartRouter, Token } from '@ape.swap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
+import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS, SHOW_MODAL_TYPES } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAllTokens, useDefaultTokens } from 'hooks/Tokens'
 import { AppDispatch, AppState } from '../../index'
@@ -36,6 +36,7 @@ import {
   updateUserAutonomyPrepay,
   lastZapMigratorRouter,
   setUnlimitedGnana,
+  setShowModal,
   updateUserBonusRouter,
   setZapSlippage,
 } from '../actions'
@@ -202,7 +203,7 @@ export function useUserSlippageTolerance(isZap?: boolean): [number, (slippage: n
   })
   const setZapSlippageTolerance = useCallback(
     (slippage: number) => {
-      dispatch(setZapSlippage({ zapSlippage: slippage }))
+      dispatch(setZapSlippage({ userZapSlippage: slippage }))
     },
     [dispatch],
   )
@@ -588,4 +589,20 @@ export function useUserUnlimitedGnana(): [boolean, (allowUnlimitedGnana: boolean
   )
 
   return [unlimitedGnana, setUnlimitedGnanaMinting]
+}
+
+export const useIsModalShown = () => {
+  const isModalShown = useSelector<AppState, AppState['user']['showModal']>((state) => state.user.showModal)
+
+  return { ...isModalShown }
+}
+
+export const useShowModal = (actionType: string, flag: boolean) => {
+  const dispatch = useDispatch<AppDispatch>()
+
+  const toggleShowModal = useCallback(() => {
+    dispatch(setShowModal({ actionType: SHOW_MODAL_TYPES[actionType], flag: !flag }))
+  }, [actionType, dispatch, flag])
+
+  return [toggleShowModal]
 }

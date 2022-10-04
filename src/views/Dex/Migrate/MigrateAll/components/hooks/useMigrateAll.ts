@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { getProviderOrSigner } from 'utils'
 import { unstake } from 'utils/callHelpers'
-import { Status, useMigrateAll } from '../../provider'
+import { MigrateStatus, useMigrateAll } from '../../provider'
 import { useZapMigratorCallback } from 'hooks/useZapMigratorCallback'
 import { useZapContract } from 'hooks/useContract'
 import { JSBI, Pair, SMART_ROUTER_ADDRESS, Token, TokenAmount } from '@ape.swap/sdk'
@@ -69,11 +69,11 @@ const useMigrateAllLps = () => {
           deadline.toString(),
         )
         console.log(tx)
-        handleUpdateMigrateLp(lpAddress, 'migrate', Status.PENDING)
+        handleUpdateMigrateLp(lpAddress, 'migrate', MigrateStatus.PENDING)
         tx.then(() => {
-          handleUpdateMigrateLp(lpAddress, 'migrate', Status.COMPLETE)
+          handleUpdateMigrateLp(lpAddress, 'migrate', MigrateStatus.COMPLETE)
         }).catch(() => {
-          handleUpdateMigrateLp(lpAddress, 'migrate', Status.INVALID)
+          handleUpdateMigrateLp(lpAddress, 'migrate', MigrateStatus.INVALID)
         })
       })
     },

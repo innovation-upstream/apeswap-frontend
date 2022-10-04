@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { getProviderOrSigner } from 'utils'
 import { unstake } from 'utils/callHelpers'
-import { Status, useMigrateAll } from '../../provider'
+import { MigrateStatus, useMigrateAll } from '../../provider'
 
 const useUnstakeAll = () => {
   const { library, account } = useActiveWeb3React()
@@ -21,9 +21,9 @@ const useUnstakeAll = () => {
           getProviderOrSigner(library, account),
         ) as Masterchef
         const trxHash = unstake(masterChefContract, pid, stakedBalance)
-        handleUpdateMigrateLp(lpAddress, 'unstake', Status.PENDING)
+        handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.PENDING)
         trxHash.then(() => {
-          handleUpdateMigrateLp(lpAddress, 'unstake', Status.COMPLETE)
+          handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.COMPLETE)
         })
       })
     },

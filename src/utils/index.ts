@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { getAddress } from '@ethersproject/address'
+import { ChainId } from '@ape.swap/sdk'
 import { BLOCK_EXPLORER } from 'config/constants/chains'
 import { Contract } from '@ethersproject/contracts'
 import { AddressZero } from '@ethersproject/constants'
@@ -142,4 +143,20 @@ export function wrappedToNative(symbol: string) {
   if (symbol.includes('BTCB')) return symbol.replace('BTCB', 'BTC')
 
   return symbol
+}
+
+export const getLargestNumber = (numsArray: Array<number>) => {
+  return numsArray.reduce((prevNum, curNum) => {
+    return (curNum > prevNum ? curNum : prevNum) || 0
+  })
+}
+
+// Show circular modals only in BNB chain
+export const showCircular = (chainId: number, history, modalUrl: string) => {
+  if (chainId === ChainId.BSC) history.push({ search: modalUrl })
+}
+
+// Set circular modalss routes to show only in BNB chain
+export const circularRoute = (chainId: number, location, modalUrl: string) => {
+  return chainId === ChainId.BSC && location.search.includes(modalUrl)
 }

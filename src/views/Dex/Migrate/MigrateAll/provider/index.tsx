@@ -1,11 +1,9 @@
-import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MigrateResult, useMigratorBalances } from 'state/zapMigrator/hooks'
 import useLpBalances from 'hooks/useLpBalances'
-import { Pair, TokenAmount, ZAP_ADDRESS } from '@ape.swap/sdk'
-import erc20ABI from 'config/abi/erc20.json'
-import multicall from 'utils/multicall'
-import BigNumber from 'bignumber.js'
+import { Pair, TokenAmount } from '@ape.swap/sdk'
+import { setMigrateLpStatus } from './utils'
 
 export const MIGRATION_STEPS: { title: string; description: string }[] = [
   { title: 'Unstake', description: 'some description' },
@@ -15,7 +13,7 @@ export const MIGRATION_STEPS: { title: string; description: string }[] = [
   { title: 'Stake', description: 'some description' },
 ]
 
-export const enum Status {
+export const enum MigrateStatus {
   PENDING = 'pending',
   INCOMPLETE = 'incomplete',
   COMPLETE = 'complete',
@@ -26,9 +24,15 @@ interface MigrateProviderProps {
   children: ReactNode
 }
 
-interface MigrateLpStatus {
+export interface MigrateLpStatus {
   lpAddress: string
-  status: { unstake: Status; approveMigrate: Status; migrate: Status; approveStake: Status; stake: Status }
+  status: {
+    unstake: MigrateStatus
+    approveMigrate: MigrateStatus
+    migrate: MigrateStatus
+    approveStake: MigrateStatus
+    stake: MigrateStatus
+  }
   statusText: string
 }
 
@@ -38,7 +42,7 @@ interface MigrateContextData {
   handleUpdateMigrateLp: (
     lpAddress: string,
     type: 'unstake' | 'approveMigrate' | 'migrate' | 'approveStake' | 'stake',
-    status: Status,
+    status: MigrateStatus,
   ) => void
   migrateStakeLps: MigrateResult[]
   migrateWalletLps: MigrateResult[]
@@ -62,7 +66,11 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
 
   const setActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
   const handleUpdateMigrateLp = useCallback(
-    (lpAddress: string, type: 'unstake' | 'approveMigrate' | 'migrate' | 'approveStake' | 'stake', status: Status) => {
+    (
+      lpAddress: string,
+      type: 'unstake' | 'approveMigrate' | 'migrate' | 'approveStake' | 'stake',
+      status: MigrateStatus,
+    ) => {
       console.log(lpAddress)
       console.log(lpStatus)
       const updatedMigrateLpStatus = lpStatus
@@ -103,53 +111,4 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
 export function useMigrateAll() {
   const context = useContext(MigrateContext)
   return context
-}
-
-const setMigrateLpStatus = async (
-  migrateLps: MigrateResult[],
-  apeswapLps: { pair: Pair; balance: TokenAmount }[],
-  setLpStatus: React.Dispatch<React.SetStateAction<MigrateLpStatus[]>>,
-  account,
-  chainId,
-) => {
-  const getMigrateLpStatus = async () => {
-    const calls = migrateLps?.map((migrateLp) => {
-      return { address: migrateLp.lpAddress, name: 'allowance', params: [account, ZAP_ADDRESS[chainId]] }
-    })
-    const rawLpAllowances = await multicall(chainId, erc20ABI, calls)
-    return migrateLps?.map((migrateLp, i) => {
-      return {
-        lpAddress: migrateLp.lpAddress,
-        status: {
-          unstake: parseFloat(migrateLp.stakedBalance) > 0 ? Status.INCOMPLETE : Status.COMPLETE,
-          approveMigrate: new BigNumber(rawLpAllowances[i]).gt(0) ? Status.COMPLETE : Status.INCOMPLETE,
-          migrate:
-            parseFloat(migrateLp.walletBalance) > 0 || parseFloat(migrateLp.stakedBalance) > 0
-              ? Status.INCOMPLETE
-              : Status.COMPLETE,
-          approveStake: Status.INCOMPLETE,
-          stake: Status.INCOMPLETE,
-        },
-        statusText: 'Some shit',
-      }
-    })
-  }
-  const getApeswapLpStatus = async () => {
-    return apeswapLps?.map(({ pair }) => {
-      return {
-        lpAddress: pair.liquidityToken.address,
-        status: {
-          unstake: Status.COMPLETE,
-          approveMigrate: Status.COMPLETE,
-          migrate: Status.COMPLETE,
-          approveStake: Status.INCOMPLETE,
-          stake: Status.INCOMPLETE,
-        },
-        statusText: 'Some shit',
-      }
-    })
-  }
-  const migrateLpStatus = await getMigrateLpStatus()
-  const apeswapLpStatus = await getApeswapLpStatus()
-  setLpStatus([...migrateLpStatus, ...apeswapLpStatus])
 }
