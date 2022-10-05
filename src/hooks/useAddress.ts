@@ -98,8 +98,13 @@ export const useIazoFactoryAddress = () => {
   return useAddress(addresses.iazoFactoryProxy)
 }
 
+const zap2 = {
+  56: '0x7E060D0e0563fbD4CD2b3B845a992Eab31e47f8b',
+  137: '0x236290f7da54465BF7A26f279d2B3553e5402780',
+}
+
 export const useZapAddress = () => {
-  return useAddress(ZAP_ADDRESS)
+  return useAddress(zap2)
 }
 
 export const useBabTokenAddress = () => {

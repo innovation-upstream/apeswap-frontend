@@ -13,6 +13,7 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 interface DualLiquidityModalProps {
   onDismiss?: () => void
   showStakeOption?: boolean
+  poolAddress?: string
 }
 
 const modalProps = {
@@ -26,7 +27,11 @@ const modalProps = {
   },
 }
 
-const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ onDismiss = () => null, showStakeOption }) => {
+const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({
+  onDismiss = () => null,
+  showStakeOption,
+  poolAddress,
+}) => {
   const { t } = useTranslation()
   const [goZap, setGoZap] = useState(true)
   const [{ txHash, pairOut }, setTxHash] = useState({
@@ -55,7 +60,11 @@ const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ onDismiss = () 
             <Box>
               <ZapSwitch goZap={goZap} handleZapSwitch={handleZapSwitch} />
               {goZap ? (
-                <ZapLiquidity handleConfirmedTx={handleConfirmedTx} showStakeOption={showStakeOption} />
+                <ZapLiquidity
+                  handleConfirmedTx={handleConfirmedTx}
+                  showStakeOption={showStakeOption}
+                  poolAddress={poolAddress}
+                />
               ) : (
                 <RegularLiquidity />
               )}

@@ -13,6 +13,7 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useAppDispatch } from '../../state'
 import DualLiquidityModal from '../DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from '../../state/zap/actions'
+import useAddLiquidityModal from 'hooks/useAddLiquidityModal'
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
@@ -46,7 +47,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   jungleFarm,
 }) => {
   const { chainId } = useActiveWeb3React()
-  const dispatch = useAppDispatch()
+  const onAddLiquidityModal = useAddLiquidityModal()
   const { t } = useTranslation()
   const farmApy = new BigNumber(apy).times(new BigNumber(100)).toNumber()
   const tokenPrice =
@@ -73,30 +74,6 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     farmApy,
     rewardTokenPrice,
   })
-
-  const [onPresentAddLiquidityWidgetModal] = useModal(<DualLiquidityModal />, true, true, 'dualLiquidityModal')
-
-  const showLiquidity = (token, quoteToken, farm) => {
-    dispatch(
-      selectCurrency({
-        field: Field.INPUT,
-        currencyId: token,
-      }),
-    )
-    dispatch(
-      selectCurrency({
-        field: Field.OUTPUT,
-        currencyId: quoteToken,
-      }),
-    )
-    dispatch(
-      selectOutputCurrency({
-        currency1: farm.lpTokens.token.address[chainId],
-        currency2: farm.lpTokens.quoteToken.address[chainId],
-      }),
-    )
-    onPresentAddLiquidityWidgetModal()
-  }
 
   return (
     <Modal onDismiss={onDismiss} title={t('CURRENT RATES')}>
@@ -179,10 +156,9 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
       <Flex justifyContent="center">
         <StyledText
           onClick={() =>
-            showLiquidity(
+            onAddLiquidityModal(
               jungleFarm.lpTokens.token.address[chainId],
               jungleFarm.lpTokens.quoteToken.symbol === 'BNB' ? 'ETH' : jungleFarm.lpTokens.quoteToken.address[chainId],
-              jungleFarm,
             )
           }
           sx={{ '&:hover': { textDecoration: 'underline', cursor: 'pointer' } }}

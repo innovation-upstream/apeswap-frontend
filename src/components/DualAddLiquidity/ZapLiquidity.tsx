@@ -16,20 +16,21 @@ import { useTranslation } from '../../contexts/Localization'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { Box, Switch } from 'theme-ui'
 import store from '../../state'
+import useTheme from '../../hooks/useTheme'
 
 interface ZapLiquidityProps {
   handleConfirmedTx: (hash: string, pairOut: Pair) => void
   showStakeOption?: boolean
+  poolAddress: string
 }
 
-const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, showStakeOption }) => {
+const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, showStakeOption, poolAddress }) => {
   useSetZapInputList()
   const [zapErrorMessage, setZapErrorMessage] = useState<string>(null)
   const [stakeIntoProduct, setStakeIntoProduct] = useState<boolean>(false)
-  const [poolAddress, setPoolAddress] = useState('')
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-  const [localZapType, setLocalZapType] = useState<ZapType>(ZapType.ZAP)
+  const { isDark } = useTheme()
 
   const { INPUT, typedValue, recipient, zapType } = useZapState()
   const [zapSlippage] = useUserSlippageTolerance(true)
@@ -39,7 +40,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, showStak
   const inputCurrency = useCurrency(currencyA)
 
   const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
-  const { onUserInput, onInputSelect, onCurrencySelection } = useZapActionHandlers()
+  const { onUserInput, onInputSelect, onCurrencySelection, onSetZapType } = useZapActionHandlers()
 
   const handleInputSelect = useCallback(
     (field: Field, currency: Currency) => {
@@ -65,15 +66,13 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, showStak
       )?.contractAddress[chainId]
     setStakeIntoProduct(newState)
     if (newState) {
-      setLocalZapType(ZapType.ZAP_LP_POOL)
-      setPoolAddress(jungleFarmAddress)
+      onSetZapType(ZapType.ZAP_MINI_APE)
     } else {
-      setLocalZapType(ZapType.ZAP)
-      setPoolAddress('')
+      onSetZapType(ZapType.ZAP)
     }
   }
 
-  const { callback: zapCallback } = useZapCallback(zap, localZapType, zapSlippage, recipient, poolAddress, null)
+  const { callback: zapCallback } = useZapCallback(zap, zapType, zapSlippage, recipient, poolAddress, null, '0')
 
   const handleZap = useCallback(() => {
     setZapErrorMessage(null)
@@ -123,7 +122,10 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, showStak
               <Switch
                 checked={stakeIntoProduct}
                 onChange={() => handleZapChange(!stakeIntoProduct)}
-                sx={styles.switchStyles}
+                sx={{
+                  ...styles.switchStyles,
+                  backgroundColor: isDark ? 'rgba(56, 56, 56, 1)' : 'rgba(241, 234, 218, 1)',
+                }}
               />
             </Box>
           </Flex>

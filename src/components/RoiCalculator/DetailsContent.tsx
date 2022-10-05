@@ -151,7 +151,7 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
         <Flex sx={{ marginTop: '25px', justifyContent: 'center' }}>
           {isLp && !liquidityUrl && (
             <FarmButton onClick={() => showLiquidity(tokenAddress, quoteTokenAddress)}>
-              {t('GET')} {label} <Svg icon="ZapIcon" />
+              {t('GET')} {label} <Svg icon="ZapIcon" color="primaryBright" />
             </FarmButton>
           )}
           {isLp && liquidityUrl && (
@@ -180,7 +180,7 @@ const DetailsContent: React.FC<DetailsContentProps> = ({
               }}
             >
               <Button style={{ fontSize: '16px' }}>
-                {t('GET')} {label} <Svg icon="ZapIcon" />
+                {t('GET')} {label} <Svg icon="ZapIcon" color="primaryBright" />
               </Button>
             </Link>
           )}

@@ -52,6 +52,7 @@ function useZapCallArguments(
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   stakingContractAddress?: string,
   maxPrice?: string,
+  stakingPid?: string,
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
 
@@ -86,6 +87,7 @@ function useZapCallArguments(
         recipient,
         deadline: deadline.toNumber(),
         maxPrice,
+        stakingPid,
       }),
     )
 
@@ -102,7 +104,7 @@ function useZapCallArguments(
     stakingContractAddress,
     maxPrice,
     zapType,
-    maxPrice,
+    stakingPid,
   ])
 }
 
@@ -115,6 +117,7 @@ export function useZapCallback(
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   stakingContractAddress?: string,
   maxPrice?: string,
+  poolPid?: string,
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
 
@@ -125,7 +128,9 @@ export function useZapCallback(
     recipientAddressOrName,
     stakingContractAddress,
     maxPrice,
+    poolPid,
   )
+  console.log(swapCalls)
 
   const addTransaction = useTransactionAdder()
 
