@@ -13,6 +13,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Switch } from 'theme-ui'
 import StatusIcons from '../StatusIcons'
 import { useMigrateAll } from '../../provider'
+import useStakeApproveAll from '../../hooks/useStakeApproveAll'
 
 const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({ apeswapWalletLps }) => {
   const { chainId, account } = useActiveWeb3React()
@@ -22,7 +23,8 @@ const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmo
   const farms = useFarms(account)
   const { vaults } = useVaults()
   const { t } = useTranslation()
-  const { migrateLpStatus } = useMigrateAll()
+  const { migrateLpStatus, migrateMaximizers, setMigrateMaximizersCallback } = useMigrateAll()
+  const handleApproveAll = useStakeApproveAll()
   // Since each vault needs a farm we can filter by just farms
   const filteredLpsForStake = apeswapWalletLps.filter(({ pair }) =>
     farms.find((farm) => pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
@@ -47,7 +49,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmo
         <>
           <ListViewContent title={t('Wallet')} value={balance?.toSignificant(6) || '0'} ml={20} />
           <ListViewContent title={t('Staked')} value="0" ml={20} />
-          <ListViewContent title={t('Status')} value={status?.statusText} ml={20} />
+          <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={300} />
         </>
       ),
     } as ExtendedListViewProps
@@ -81,10 +83,14 @@ const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmo
                 backgroundColor: 'yellow',
               },
             }}
+            checked={migrateMaximizers}
+            onChange={() => setMigrateMaximizersCallback(!migrateMaximizers)}
           />
         </Flex>
       </Flex>
-      <Button mb="20px">Approve All</Button>
+      <Button mb="20px" onClick={() => handleApproveAll(filteredLpsForStake)}>
+        Approve All
+      </Button>
       <ListView listViews={listView} />
     </Flex>
   )

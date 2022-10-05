@@ -8,7 +8,7 @@ import React from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { wrappedToNative } from 'utils'
 import { MigrateStatus, useMigrateAll } from '../../provider'
-import useUnstakeAll from '../hooks/useUnstakeAll'
+import useUnstakeAll from '../../hooks/useUnstakeAll'
 import StatusIcons from '../StatusIcons'
 
 const Unstake: React.FC<{ migrateList: MigrateResult[] }> = ({ migrateList }) => {

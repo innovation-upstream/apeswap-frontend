@@ -12,11 +12,13 @@ import { useVaults } from 'state/vaults/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import StatusIcons from '../StatusIcons'
 import { useMigrateAll } from '../../provider'
+import useStakeAll from '../../hooks/useStakeAll'
 const Stake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({ apeswapWalletLps }) => {
   const { chainId, account } = useActiveWeb3React()
   const farms = useFarms(account)
   const { vaults } = useVaults()
   const { migrateLpStatus } = useMigrateAll()
+  const handleStakeAll = useStakeAll()
   const { t } = useTranslation()
   // Since each vault needs a farm we can filter by just farms
   const filteredLpsForStake = apeswapWalletLps.filter(({ pair }) =>
@@ -42,7 +44,7 @@ const Stake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[]
         <>
           <ListViewContent title={t('Wallet')} value={balance?.toSignificant(6) || '0'} ml={20} />
           <ListViewContent title={t('Staked')} value="0" ml={20} />
-          <ListViewContent title={t('Status')} value={status?.statusText} ml={20} />
+          <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={300} />
         </>
       ),
     } as ExtendedListViewProps
@@ -56,7 +58,9 @@ const Stake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[]
       <Text size="12px" weight={500} mb="15px">
         {t('Unstake all your current LPs to migrate')}
       </Text>
-      <Button mb="20px">Stake All</Button>
+      <Button mb="20px" onClick={() => handleStakeAll(filteredLpsForStake)}>
+        Stake All
+      </Button>
       <ListView listViews={listView} />
     </Flex>
   )

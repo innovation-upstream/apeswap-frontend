@@ -5,12 +5,14 @@ import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.
 import { useCallback } from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { getProviderOrSigner } from 'utils'
-import { MigrateStatus, useMigrateAll } from '../../provider'
+import { MigrateStatus, useMigrateAll } from '../provider'
 import { ZAP_ADDRESS } from '@ape.swap/sdk'
+import { useFarms } from 'state/farms/hooks'
 
-const useApproveAll = () => {
+const useMigrateApproveAll = () => {
   const { library, account, chainId } = useActiveWeb3React()
   const { handleUpdateMigrateLp } = useMigrateAll()
+  const farms = useFarms(account)
 
   const handleApproveAll = useCallback(
     (migrateLps: MigrateResult[]) => {
@@ -33,4 +35,4 @@ const useApproveAll = () => {
   return handleApproveAll
 }
 
-export default useApproveAll
+export default useMigrateApproveAll

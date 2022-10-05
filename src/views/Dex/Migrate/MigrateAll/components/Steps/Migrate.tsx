@@ -10,7 +10,7 @@ import React from 'react'
 import { Pair, TokenAmount } from '@ape.swap/sdk'
 import StatusIcons from '../StatusIcons'
 import { useMigrateAll } from '../../provider'
-import useMigrateAllLps from '../hooks/useMigrateAll'
+import useMigrateAllLps from '../../hooks/useMigrateAll'
 
 const Migrate: React.FC<{ migrateList: MigrateResult[]; apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({
   migrateList,

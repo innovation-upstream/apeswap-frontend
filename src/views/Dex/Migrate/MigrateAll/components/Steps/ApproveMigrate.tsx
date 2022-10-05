@@ -10,14 +10,14 @@ import React from 'react'
 import { Pair, TokenAmount } from '@ape.swap/sdk'
 import StatusIcons from '../StatusIcons'
 import { MigrateStatus, useMigrateAll } from '../../provider'
-import useApproveAll from '../hooks/useApproveAll'
+import useMigrateApproveAll from '../../hooks/useMigrateApproveAll'
 
 const ApproveMigrate: React.FC<{
   migrateList: MigrateResult[]
 }> = ({ migrateList }) => {
   const { t } = useTranslation()
   const { migrateLpStatus } = useMigrateAll()
-  const handleApproveAll = useApproveAll()
+  const handleApproveAll = useMigrateApproveAll()
   const filteredLps = migrateList?.filter(
     (lp) =>
       migrateLpStatus?.find((status) => status.lpAddress === lp.lpAddress)?.status.approveMigrate !==

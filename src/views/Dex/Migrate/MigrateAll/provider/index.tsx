@@ -39,11 +39,14 @@ export interface MigrateLpStatus {
 interface MigrateContextData {
   activeIndex: number
   setActiveIndexCallback: (activeIndex: number) => void
+  setMigrateMaximizersCallback: (migrateMaximizers: boolean) => void
   handleUpdateMigrateLp: (
     lpAddress: string,
     type: 'unstake' | 'approveMigrate' | 'migrate' | 'approveStake' | 'stake',
     status: MigrateStatus,
+    statusText?: string,
   ) => void
+  migrateMaximizers: boolean
   migrateStakeLps: MigrateResult[]
   migrateWalletLps: MigrateResult[]
   apeswapWalletLps: { pair: Pair; balance: TokenAmount }[]
@@ -55,6 +58,7 @@ const MigrateContext = createContext<MigrateContextData>({} as MigrateContextDat
 export function MigrateProvider({ children }: MigrateProviderProps) {
   const { account, chainId } = useActiveWeb3React()
   const [activeIndex, setActiveIndex] = useState(0)
+  const [migrateMaximizers, setMigrateMaximizers] = useState<boolean>(false)
   const [lpStatus, setLpStatus] = useState<MigrateLpStatus[]>([])
   const { results: migrateLpBalances, valid } = useMigratorBalances()
   const migrateWalletBalances = valid ? migrateLpBalances.filter((bal) => parseFloat(bal.walletBalance) > 0.0) : []
@@ -65,12 +69,12 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   }, [migrateLpBalances.length, apeswapLpBalances.length, account, setLpStatus, chainId])
 
   const setActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
+  const setMigrateMaximizersCallback = useCallback(
+    (migrateMaximizers: boolean) => setMigrateMaximizers(migrateMaximizers),
+    [],
+  )
   const handleUpdateMigrateLp = useCallback(
-    (
-      lpAddress: string,
-      type: 'unstake' | 'approveMigrate' | 'migrate' | 'approveStake' | 'stake',
-      status: MigrateStatus,
-    ) => {
+    (lpAddress, type, status, statusText) => {
       console.log(lpAddress)
       console.log(lpStatus)
       const updatedMigrateLpStatus = lpStatus
@@ -79,7 +83,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
       const lpToUpdate = {
         ...lpStatus[lpToUpdateIndex],
         status: { ...lpStatus[lpToUpdateIndex].status, [type]: status },
-        statusText: '',
+        statusText: statusText,
       }
       console.log(lpToUpdate)
       updatedMigrateLpStatus[lpToUpdateIndex] = lpToUpdate
@@ -94,9 +98,11 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   return (
     <MigrateContext.Provider
       value={{
-        activeIndex,
         setActiveIndexCallback,
         handleUpdateMigrateLp,
+        setMigrateMaximizersCallback,
+        activeIndex,
+        migrateMaximizers,
         migrateWalletLps: migrateWalletBalances,
         migrateStakeLps: migrateStakedBalances,
         apeswapWalletLps: apeswapLpBalances,
