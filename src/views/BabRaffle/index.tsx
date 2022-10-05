@@ -9,6 +9,7 @@ import BabInfoCard from './components/BabInfoCard'
 import NFBGiveaway from './components/NFBGiveaway'
 import Services from 'views/Homepage/components/Services/Services'
 import NewToDeFi from './components/NewToDeFi'
+import Newsletter from 'components/Newsletter'
 
 const Nft = () => {
   const { t } = useTranslation()
@@ -19,7 +20,6 @@ const Nft = () => {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        mb: '100px',
         marginTop: '30px',
       }}
     >
@@ -41,14 +41,15 @@ const Nft = () => {
       </Flex>
       <Flex className="services-con" sx={{ width: '100%', flexDirection: 'column' }}>
         <NewToDeFi />
-        <SwiperProvider>
+        {/* <SwiperProvider>
           <Services bab />
-        </SwiperProvider>
+        </SwiperProvider> */}
         <Flex sx={{ marginTop: '25px' }} />
-        <SwiperProvider>
+        {/* <SwiperProvider>
           <Values />
-        </SwiperProvider>
+        </SwiperProvider> */}
       </Flex>
+      <Newsletter />
     </Flex>
   )
 }
