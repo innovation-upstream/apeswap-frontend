@@ -1,12 +1,13 @@
 import getTimePeriods from 'utils/getTimePeriods'
-import { ApiResponse } from '../types'
+import { ApiResponse, Chain } from '../types'
 import { wrappedToNative } from './rawToPortfolio'
 
 export interface NftInfo {
   type: 'NFA' | 'NFB' | 'Bill'
-  id: number
+  id: number | string
   name: string
   imageUrl: string
+  chain?: Chain
   rarityRank?: number
   rarityTier?: number
   billType?: 'Banana' | 'Jungle'
