@@ -126,7 +126,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                     ) : id === 'billDetails' ? (
                       <Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
                         Discount:{' '}
-                        <span sx={{ color: stat.discount > 0 ? 'primaryBright' : '#DF4141' }}>
+                        <span style={{ color: stat.discount > 0 ? 'white' : '#DF4141' }}>
                           {stat.discount.toFixed(2)}%
                         </span>
                       </Text>
@@ -156,7 +156,11 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
     <>
       <div ref={observerRef} />
       <Flex
-        sx={{ ...styles.colorWrap, background: (bab && 'white1') || 'white2', paddingTop: bab && ['50px', '100px'] }}
+        sx={{
+          ...styles.colorWrap,
+          background: (bab && 'white1') || 'white2',
+          paddingTop: bab && ['50px', '100px'],
+        }}
       >
         {bab && (
           <Text
@@ -172,7 +176,13 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
             {t('Featured ApeSwap Products')}
           </Text>
         )}
-        <Flex sx={{ ...styles.serviceWrapper, padding: bab && '30px 0 90px 0', height: !bab && '610px' }}>
+        <Flex
+          sx={{
+            ...styles.serviceWrapper,
+            padding: bab && '30px 0 90px 0',
+            height: '610px',
+          }}
+        >
           {displayData ? (
             width < 1488 ? (
               <Swiper
@@ -187,7 +197,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                 centeredSlides
                 resizeObserver
                 lazy
-                preloadImages={false}
+                preloadImages={true}
                 onSlideChange={handleSlide}
                 breakpoints={{
                   480: {
