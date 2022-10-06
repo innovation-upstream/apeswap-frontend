@@ -150,3 +150,12 @@ export const TableContainer = styled.div`
     }
   }
 `
+
+export const ChainIndicator = styled.span`
+  float: left;
+  padding-left: 8px;
+
+  svg {
+    vertical-align: middle;
+  }
+`
