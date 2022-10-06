@@ -7,24 +7,25 @@ import { MigrateResult } from 'state/zapMigrator/hooks'
 import { getProviderOrSigner } from 'utils'
 import { MigrateStatus, useMigrateAll } from '../provider'
 import { ZAP_ADDRESS } from '@ape.swap/sdk'
-import { useFarms } from 'state/farms/hooks'
 
 const useMigrateApproveAll = () => {
   const { library, account, chainId } = useActiveWeb3React()
   const { handleUpdateMigrateLp } = useMigrateAll()
-  const farms = useFarms(account)
 
   const handleApproveAll = useCallback(
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
         const { lpAddress } = migrateLp
         const lpContract = new Contract(lpAddress, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
-        const txHash = lpContract.approve(ZAP_ADDRESS[chainId], ethers.constants.MaxUint256)
         handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.PENDING)
-        txHash
-          .then(() => {
-            handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.COMPLETE)
-          })
+        lpContract
+          .approve(ZAP_ADDRESS[chainId], ethers.constants.MaxUint256)
+          .then((tx) =>
+            library
+              .waitForTransaction(tx.hash)
+              .then(() => handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.COMPLETE))
+              .catch(() => handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.INVALID)),
+          )
           .catch(() => {
             handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.INVALID)
           })

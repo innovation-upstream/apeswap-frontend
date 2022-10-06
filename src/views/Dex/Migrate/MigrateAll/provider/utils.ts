@@ -4,11 +4,15 @@ import { Pair, TokenAmount, ZAP_ADDRESS } from '@ape.swap/sdk'
 import erc20ABI from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import BigNumber from 'bignumber.js'
-import { MigrateLpStatus, MigrateStatus } from '.'
+import { MigrateLpStatus, MigrateStatus, MIGRATION_STEPS } from '.'
+import { Farm, Vault } from 'state/types'
 
 export const setMigrateLpStatus = async (
   migrateLps: MigrateResult[],
   apeswapLps: { pair: Pair; balance: TokenAmount }[],
+  farms: Farm[],
+  vaults: Vault[],
+  migrateMaximizers: boolean,
   setLpStatus: React.Dispatch<React.SetStateAction<MigrateLpStatus[]>>,
   account,
   chainId,
@@ -37,13 +41,26 @@ export const setMigrateLpStatus = async (
   }
   const getApeswapLpStatus = async () => {
     return apeswapLps?.map(({ pair }) => {
+      const matchedVault = vaults.find(
+        (vault) => vault.stakeToken.address[chainId].toLowerCase() === pair.liquidityToken.address.toLowerCase(),
+      )
+      const matchedFarm = farms.find(
+        (farm) => farm.lpAddresses[chainId].toLowerCase() === pair.liquidityToken.address.toLowerCase(),
+      )
+      const migrateVaultAvailable = migrateMaximizers && matchedVault
       return {
         lpAddress: pair.liquidityToken.address,
         status: {
           unstake: MigrateStatus.COMPLETE,
           approveMigrate: MigrateStatus.COMPLETE,
           migrate: MigrateStatus.COMPLETE,
-          approveStake: MigrateStatus.INCOMPLETE,
+          approveStake: migrateVaultAvailable
+            ? new BigNumber(matchedVault?.userData?.allowance).gt(0)
+              ? MigrateStatus.COMPLETE
+              : MigrateStatus.INCOMPLETE
+            : new BigNumber(matchedFarm?.userData?.allowance).gt(0)
+            ? MigrateStatus.COMPLETE
+            : MigrateStatus.INCOMPLETE,
           stake: MigrateStatus.INCOMPLETE,
         },
         statusText: 'Some shit',
@@ -53,4 +70,16 @@ export const setMigrateLpStatus = async (
   const migrateLpStatus = await getMigrateLpStatus()
   const apeswapLpStatus = await getApeswapLpStatus()
   setLpStatus([...migrateLpStatus, ...apeswapLpStatus])
+}
+
+export const activeIndexHelper = (migrateLpStatus: MigrateLpStatus[]) => {
+  const isComplete = migrateLpStatus?.map((item) =>
+    Object.entries(item.status).map((each) => each[1] === MigrateStatus.COMPLETE),
+  )
+  for (let i = 0; i < MIGRATION_STEPS.length; i++) {
+    if (isComplete.filter((loFlag) => !loFlag[i]).length !== 0) {
+      return i
+    }
+  }
+  return 0
 }

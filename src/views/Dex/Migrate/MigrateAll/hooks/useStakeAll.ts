@@ -8,7 +8,7 @@ import { useMasterchef, useVaultApeV2 } from 'hooks/useContract'
 import { useFarms } from 'state/farms/hooks'
 
 const useStakeAll = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, library } = useActiveWeb3React()
   const { handleUpdateMigrateLp, migrateMaximizers } = useMigrateAll()
   const masterChefContract = useMasterchef()
   const vaultApeV2Contract = useVaultApeV2()
@@ -24,21 +24,24 @@ const useStakeAll = () => {
           (vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddress.toLowerCase(),
         )
         const matchedFarm = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lpAddress.toLowerCase())
-        const trxHash =
+        const txResponse =
           migrateMaximizers && matchedVault
             ? stakeVaultV2(vaultApeV2Contract, matchedVault.pid, balance.toExact())
             : stake(masterChefContract, matchedFarm.pid, balance.toExact())
         handleUpdateMigrateLp(lpAddress, 'stake', MigrateStatus.PENDING, 'Almost there!')
-        trxHash
-          .then(() => {
-            handleUpdateMigrateLp(lpAddress, 'stake', MigrateStatus.COMPLETE, 'Nice job!')
-          })
-          .catch((error) => {
-            handleUpdateMigrateLp(lpAddress, 'stake', MigrateStatus.INVALID, error.message)
+        txResponse
+          .then((tx) =>
+            library
+              .waitForTransaction(tx.transactionHash)
+              .then(() => handleUpdateMigrateLp(lpAddress, 'stake', MigrateStatus.COMPLETE))
+              .catch(() => handleUpdateMigrateLp(lpAddress, 'stake', MigrateStatus.INVALID)),
+          )
+          .catch(() => {
+            handleUpdateMigrateLp(lpAddress, 'stake', MigrateStatus.INVALID)
           })
       })
     },
-    [handleUpdateMigrateLp, chainId, masterChefContract, vaultApeV2Contract, migrateMaximizers, farms, vaults],
+    [handleUpdateMigrateLp, chainId, masterChefContract, vaultApeV2Contract, migrateMaximizers, farms, library, vaults],
   )
   return handleStakeAll
 }

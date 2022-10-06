@@ -20,11 +20,17 @@ const useUnstakeAll = () => {
           masterChefAbi,
           getProviderOrSigner(library, account),
         ) as Masterchef
-        const trxHash = unstake(masterChefContract, pid, stakedBalance)
         handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.PENDING)
-        trxHash.then(() => {
-          handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.COMPLETE)
-        })
+        unstake(masterChefContract, pid, stakedBalance)
+          .then((tx) =>
+            library
+              .waitForTransaction(tx.transactionHash)
+              .then(() => handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.COMPLETE))
+              .catch(() => handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.INVALID)),
+          )
+          .catch(() => {
+            handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.INVALID)
+          })
       })
     },
     [account, handleUpdateMigrateLp, library],

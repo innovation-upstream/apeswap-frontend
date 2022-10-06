@@ -13,12 +13,11 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
   const isComplete = migrateLpStatus?.map((item) =>
     Object.entries(item.status).map((each) => each[1] === MigrateStatus.COMPLETE),
   )
-  console.log(isComplete)
   return (
     <Flex sx={{ flexDirection: 'column' }}>
       <Flex sx={{ alignItems: 'center' }}>
         {MIGRATION_STEPS.map(({ title, description }, i) => {
-          const isIndexComplete = isComplete.length > 0 && isComplete.filter((loFlag) => !loFlag[i]).length === 0
+          const isIndexComplete = isComplete.filter((loFlag) => !loFlag[i]).length === 0
           return (
             <>
               <Flex
@@ -84,7 +83,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
               {i !== MIGRATION_STEPS.length - 1 && (
                 <Flex
                   sx={{
-                    background: isIndexComplete ? 'gradient' : 'white2',
+                    background: activeIndex >= i ? 'gradient' : 'white2',
                     width: `${10 - MIGRATION_STEPS.length}%`,
                     height: '10px',
                   }}

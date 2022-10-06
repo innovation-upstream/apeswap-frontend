@@ -3,11 +3,9 @@ import { Contract, ethers } from 'ethers'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { useCallback } from 'react'
-import { MigrateResult } from 'state/zapMigrator/hooks'
 import { getProviderOrSigner } from 'utils'
 import { MigrateStatus, useMigrateAll } from '../provider'
-import { Pair, TokenAmount, ZAP_ADDRESS } from '@ape.swap/sdk'
-import { useFarms } from 'state/farms/hooks'
+import { Pair, TokenAmount } from '@ape.swap/sdk'
 import { useVaults } from 'state/vaults/hooks'
 import { useMasterChefAddress, useVaultApeAddressV2 } from 'hooks/useAddress'
 
@@ -27,27 +25,22 @@ const useStakeApproveAll = () => {
           (vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddress.toLowerCase(),
         )
         const lpContract = new Contract(lpAddress, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
-        const txHash = lpContract.approve(
-          migrateMaximizers && matchedVault ? vaultAddress : masterChefAddress,
-          ethers.constants.MaxUint256,
-        )
         handleUpdateMigrateLp(
           lpAddress,
           'approveStake',
           MigrateStatus.PENDING,
           `Pending ${migrateMaximizers && matchedVault ? 'Maximizer' : 'Farm'} Approval`,
         )
-        txHash
-          .then(() => {
-            handleUpdateMigrateLp(
-              lpAddress,
-              'approveStake',
-              MigrateStatus.COMPLETE,
-              `Successfully Approved ${migrateMaximizers && matchedVault ? 'Maximizer' : 'Farm'}`,
-            )
-          })
-          .catch((error) => {
-            handleUpdateMigrateLp(lpAddress, 'approveStake', MigrateStatus.INVALID, error.message)
+        lpContract
+          .approve(migrateMaximizers && matchedVault ? vaultAddress : masterChefAddress, ethers.constants.MaxUint256)
+          .then((tx) =>
+            library
+              .waitForTransaction(tx.hash)
+              .then(() => handleUpdateMigrateLp(lpAddress, 'approveStake', MigrateStatus.COMPLETE))
+              .catch(() => handleUpdateMigrateLp(lpAddress, 'approveStake', MigrateStatus.INVALID)),
+          )
+          .catch(() => {
+            handleUpdateMigrateLp(lpAddress, 'approveStake', MigrateStatus.INVALID)
           })
       })
     },

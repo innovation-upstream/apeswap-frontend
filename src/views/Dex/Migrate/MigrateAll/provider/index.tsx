@@ -3,7 +3,9 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MigrateResult, useMigratorBalances } from 'state/zapMigrator/hooks'
 import useLpBalances from 'hooks/useLpBalances'
 import { Pair, TokenAmount } from '@ape.swap/sdk'
-import { setMigrateLpStatus } from './utils'
+import { activeIndexHelper, setMigrateLpStatus } from './utils'
+import { useFarms } from 'state/farms/hooks'
+import { usePollVaultUserData, useVaults } from 'state/vaults/hooks'
 
 export const MIGRATION_STEPS: { title: string; description: string }[] = [
   { title: 'Unstake', description: 'some description' },
@@ -55,18 +57,51 @@ interface MigrateContextData {
 
 const MigrateContext = createContext<MigrateContextData>({} as MigrateContextData)
 
+/* eslint-disable react-hooks/exhaustive-deps */
 export function MigrateProvider({ children }: MigrateProviderProps) {
   const { account, chainId } = useActiveWeb3React()
-  const [activeIndex, setActiveIndex] = useState(0)
   const [migrateMaximizers, setMigrateMaximizers] = useState<boolean>(false)
   const [lpStatus, setLpStatus] = useState<MigrateLpStatus[]>([])
   const { results: migrateLpBalances, valid } = useMigratorBalances()
   const migrateWalletBalances = valid ? migrateLpBalances.filter((bal) => parseFloat(bal.walletBalance) > 0.0) : []
   const migrateStakedBalances = valid ? migrateLpBalances.filter((bal) => parseFloat(bal.stakedBalance) > 0.0) : []
+  const [activeIndex, setActiveIndex] = useState(0)
   const apeswapLpBalances = useLpBalances()
+  // Since we already need to pull farm and vault data for this page we can use the already fetched approved data
+  const farms = useFarms(account)
+  const { vaults } = useVaults()
+  // Since each vault needs a farm we can filter by just farms
+  const filteredLpsForStake = apeswapLpBalances?.filter((lp) =>
+    farms?.find((farm) => lp.pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
+  )
+  console.log(farms, vaults)
+  const farmAndVaultUserDataLoaded = farms?.[0]?.userData !== undefined && vaults?.[0]?.userData !== undefined
+  console.log(farmAndVaultUserDataLoaded)
   useMemo(() => {
-    setMigrateLpStatus(migrateLpBalances, apeswapLpBalances, setLpStatus, account, chainId)
-  }, [migrateLpBalances.length, apeswapLpBalances.length, account, setLpStatus, chainId])
+    setMigrateLpStatus(
+      migrateLpBalances,
+      filteredLpsForStake,
+      farms,
+      vaults,
+      migrateMaximizers,
+      setLpStatus,
+      account,
+      chainId,
+    )
+  }, [
+    migrateLpBalances.length,
+    filteredLpsForStake.length,
+    account,
+    setLpStatus,
+    migrateMaximizers,
+    farmAndVaultUserDataLoaded,
+    chainId,
+  ])
+
+  // Monitor is status change for active index
+  useMemo(() => {
+    setActiveIndex(activeIndexHelper(lpStatus))
+  }, [lpStatus])
 
   const setActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
   const setMigrateMaximizersCallback = useCallback(
@@ -75,25 +110,30 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   )
   const handleUpdateMigrateLp = useCallback(
     (lpAddress, type, status, statusText) => {
-      console.log(lpAddress)
-      console.log(lpStatus)
       const updatedMigrateLpStatus = lpStatus
       const lpToUpdateIndex = lpStatus.findIndex((migrateLp) => migrateLp.lpAddress === lpAddress)
-      console.log(lpToUpdateIndex)
       const lpToUpdate = {
         ...lpStatus[lpToUpdateIndex],
         status: { ...lpStatus[lpToUpdateIndex].status, [type]: status },
         statusText: statusText,
       }
-      console.log(lpToUpdate)
       updatedMigrateLpStatus[lpToUpdateIndex] = lpToUpdate
-      console.log(updatedMigrateLpStatus)
-      setLpStatus(updatedMigrateLpStatus)
+      setLpStatus([...updatedMigrateLpStatus])
     },
     [setLpStatus, lpStatus],
   )
 
-  console.log('yeeehhhaaaaaa', lpStatus)
+  console.log({
+    setActiveIndexCallback,
+    handleUpdateMigrateLp,
+    setMigrateMaximizersCallback,
+    activeIndex,
+    migrateMaximizers,
+    migrateWalletLps: migrateWalletBalances,
+    migrateStakeLps: migrateStakedBalances,
+    apeswapWalletLps: apeswapLpBalances,
+    migrateLpStatus: lpStatus,
+  })
 
   return (
     <MigrateContext.Provider

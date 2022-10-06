@@ -12,23 +12,27 @@ import { usePollVaultsData, useSetVaults, useVaults } from 'state/vaults/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Switch } from 'theme-ui'
 import StatusIcons from '../StatusIcons'
-import { useMigrateAll } from '../../provider'
+import { MigrateStatus, useMigrateAll } from '../../provider'
 import useStakeApproveAll from '../../hooks/useStakeApproveAll'
 
 const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({ apeswapWalletLps }) => {
   const { chainId, account } = useActiveWeb3React()
-  // Get all farm and maximizer data
-  useSetVaults()
-  usePollVaultsData()
   const farms = useFarms(account)
   const { vaults } = useVaults()
   const { t } = useTranslation()
   const { migrateLpStatus, migrateMaximizers, setMigrateMaximizersCallback } = useMigrateAll()
   const handleApproveAll = useStakeApproveAll()
   // Since each vault needs a farm we can filter by just farms
-  const filteredLpsForStake = apeswapWalletLps.filter(({ pair }) =>
+  const filteredLps = apeswapWalletLps.filter(({ pair }) =>
     farms.find((farm) => pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
   )
+  // Filter LPs that have been approved
+  const filteredLpsForStake = filteredLps?.filter(
+    ({ pair }) =>
+      migrateLpStatus?.find((status) => status.lpAddress.toLowerCase() === pair.liquidityToken.address.toLowerCase())
+        ?.status.approveStake !== MigrateStatus.COMPLETE,
+  )
+  console.log(migrateLpStatus)
 
   const listView = filteredLpsForStake?.map((apeLp) => {
     const { pair, balance } = apeLp
