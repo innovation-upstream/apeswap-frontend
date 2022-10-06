@@ -1,11 +1,53 @@
 /** @jsxImportSource theme-ui */
-import React from 'react'
+import React, { useState } from 'react'
 import useIsMobile from 'hooks/useIsMobile'
-import { Text, Flex, Svg, Input, ChevronRightIcon, useMatchBreakpoints } from '@ape.swap/uikit'
+import { Text, Flex, Svg, Input, ChevronRightIcon, useMatchBreakpoints, Button } from '@ape.swap/uikit'
+import useMailChimpSubscribe from 'hooks/useMailChimpSubscribe'
+import { useToast } from 'state/hooks'
+import { useTranslation } from 'contexts/Localization'
 
-const Newsletter = () => {
+// TWO OPTIONS
+// - FORM ACTION - USING THIS
+// - API KEY
+// - subscribe a user to mailchimp
+
+const Newsletter: React.FC<{
+  status: any
+  message: any
+  onValidated: any
+}> = ({ status, message, onValidated }) => {
   const isMobile = useIsMobile()
   const { isMd } = useMatchBreakpoints()
+  // const { toastSuccess } = useToast()
+  const { t } = useTranslation()
+  const [subscriber, setSubscriber] = useState('')
+
+  // const [mailchimpSubscribe] = useMailChimpSubscribe(subscriber)
+
+  const onHandleChange = (evt) => {
+    const { value } = evt.target
+    setSubscriber(value)
+  }
+
+  // const subscribe = async () => {
+  //   const subscribed = await mailchimpSubscribe()
+  //   console.log('subscribed:::', subscribed)
+  //   if (subscribed) {
+  //     toastSuccess(t('Subscribe Successful'))
+  //   }
+  //   setSubscriber('')
+  // }
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault()
+    console.log('subscriber:::', subscriber)
+    subscriber.indexOf('@') > -1 &&
+      onValidated({
+        EMAIL: subscriber,
+      })
+    setSubscriber('')
+  }
+
   return (
     <Flex
       className="newsletter-con"
@@ -39,6 +81,9 @@ const Newsletter = () => {
         </Flex>
 
         <Flex
+          className="input-form-container"
+          as="form"
+          onSubmit={(e) => handleSubmit(e)}
           sx={{
             background: 'white3',
             width: ['360px', '360px', '360px', ''],
@@ -52,6 +97,10 @@ const Newsletter = () => {
           <Flex sx={{ alignItems: 'center' }}>
             <Svg icon="message" />
             <Input
+              className="input"
+              name="EMAIL"
+              onChange={onHandleChange}
+              value={subscriber}
               placeholder="hornyape@domain.com"
               sx={{
                 border: 'none',
@@ -66,8 +115,11 @@ const Newsletter = () => {
               }}
             />
           </Flex>
-          <Flex
+          <Button
+            variant="text"
+            className="input-btn"
             sx={{
+              border: 'none',
               background: 'white4',
               width: '75px',
               height: '42px',
@@ -75,11 +127,16 @@ const Newsletter = () => {
               alignItems: 'center',
               justifyContent: 'center',
             }}
+            type="submit"
+            formValues={[subscriber]}
           >
-            <ChevronRightIcon sx={{ width: '40px' }} />
-          </Flex>
+            {status === 'sending' ? '...' : <ChevronRightIcon sx={{ width: '40px' }} />}
+          </Button>
         </Flex>
       </Flex>
+      <Text fontWeight={700}>Thank you for subscribing...</Text>
+      {status === 'error' && <Text color="error">{t(`${message}`)}</Text>}
+      {status === 'success' && <Text color="success">{t(`${message}`)}</Text>}
     </Flex>
   )
 }
