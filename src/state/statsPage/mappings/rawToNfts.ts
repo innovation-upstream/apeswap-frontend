@@ -34,8 +34,9 @@ export function rawToNfts({ userHoldings, userStats }: ApiResponse) {
       }
 
       nfts.push({
+        chain: chain.chainId,
         name: `${tokens.token1}-${tokens.token2}`,
-        id: bill.billId,
+        id: `${chain.chainId}-${bill.billId}`,
         imageUrl: bill.imageUrl,
         type: 'Bill',
         billType: bill.type,
