@@ -33,6 +33,7 @@ export const BillCard: React.FC<BillProps> = ({ chain, imageUrl, name, type, tok
       <Flex flexDirection="column" alignItems="center" style={{ height: '100%' }}>
         <BillImageContainer>
           <ChainIndicator>{renderChain(chain)}</ChainIndicator>
+          <Image src={`${imageUrl}?img-width=280`} width={230} height={132} />
         </BillImageContainer>
         <div style={{ padding: '20px', width: '100%' }}>
           <Flex alignItems="center" justifyContent="flex-start" style={{ gap: '14px', width: '100%' }}>
