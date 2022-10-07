@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { SerializedToken } from 'config/constants/types'
-import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
+import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE, INITIAL_ZAP_SLIPPAGE } from '../../config/constants'
 import { updateVersion } from '../global/actions'
 import {
   addSerializedPair,
@@ -33,7 +33,9 @@ import {
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
   setUnlimitedGnana,
+  setShowModal,
   updateUserBonusRouter,
+  setZapSlippage,
 } from './actions'
 import { GAS_PRICE_GWEI } from './hooks/helpers'
 
@@ -90,7 +92,14 @@ export interface UserState {
   watchlistPools: string[]
   showPhishingWarningBanner: boolean
   unlimitedGnana: boolean
+  showModal: {
+    showBuyModal: boolean
+    showSellModal: boolean
+    showPoolHarvestModal: boolean
+    showGeneralHarvestModal: boolean
+  }
   userBonusRouterDisabled: boolean
+  userZapSlippage: number
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -124,15 +133,25 @@ export const initialState: UserState = {
   showPhishingWarningBanner: true,
   unlimitedGnana: false,
   userBonusRouterDisabled: false,
+  showModal: {
+    showBuyModal: true,
+    showSellModal: true,
+    showPoolHarvestModal: true,
+    showGeneralHarvestModal: true,
+  },
+  userZapSlippage: INITIAL_ZAP_SLIPPAGE,
 }
 
 export default createReducer(initialState, (builder) =>
   builder
     .addCase(updateVersion, (state) => {
-      // slippage isnt being tracked in local storage, reset to default
+      // slippage for swap & zap are not being tracked in local storage, reset to default
       // noinspection SuspiciousTypeOfGuard
       if (typeof state.userSlippageTolerance !== 'number') {
         state.userSlippageTolerance = INITIAL_ALLOWED_SLIPPAGE
+      }
+      if (typeof state.userZapSlippage !== 'number') {
+        state.userZapSlippage = INITIAL_ZAP_SLIPPAGE
       }
 
       // deadline isnt being tracked in local storage, reset to default
@@ -266,8 +285,17 @@ export default createReducer(initialState, (builder) =>
     .addCase(setUnlimitedGnana, (state, { payload }) => {
       state.unlimitedGnana = payload
     })
+    .addCase(setShowModal, (state, { payload: { actionType, flag } }) => {
+      state.showModal = { ...state.showModal, [actionType]: flag }
+    })
     .addCase(updateUserBonusRouter, (state, action) => {
       state.userBonusRouterDisabled = action.payload.userBonusRouterDisabled
       state.timestamp = currentTimestamp()
+    })
+    .addCase(setZapSlippage, (state, { payload: { userZapSlippage } }) => {
+      return {
+        ...state,
+        userZapSlippage,
+      }
     }),
 )

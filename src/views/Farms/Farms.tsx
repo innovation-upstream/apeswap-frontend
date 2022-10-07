@@ -14,6 +14,7 @@ import { useFarms, useFarmTags, usePollFarms, useSetFarms, useFarmOrderings } fr
 import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
+import { useSetZapOutputList } from 'state/zap/hooks'
 
 const Farms: React.FC = () => {
   useSetFarms()
@@ -106,6 +107,7 @@ const Farms: React.FC = () => {
       })
     }
 
+    // TODO: Refactor this to be a helper function outside of this file
     switch (sortOption) {
       case 'all':
         return farmOrderings
@@ -153,6 +155,13 @@ const Farms: React.FC = () => {
           : farms.slice(0, numberOfFarmsVisible)
     }
   }
+
+  // Set zap output list to match farms
+  useSetZapOutputList(
+    activeFarms?.map((farm) => {
+      return { currencyIdA: farm?.tokenAddresses[chainId], currencyIdB: farm?.quoteTokenAdresses[chainId] }
+    }),
+  )
 
   return (
     <>

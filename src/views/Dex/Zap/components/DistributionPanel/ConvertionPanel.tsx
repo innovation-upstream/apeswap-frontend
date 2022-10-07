@@ -2,10 +2,10 @@
 import React from 'react'
 import { Flex, Svg, Text } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
-import ServiceTokenDisplay from '../../../ServiceTokenDisplay'
 import { MergedZap } from 'state/zap/actions'
 import { useTranslation } from 'contexts/Localization'
 import { JSBI, Token, TokenAmount } from '@ape.swap/sdk'
+import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 
 interface ConvertionPanelProps {
   zap: MergedZap
