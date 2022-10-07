@@ -4,7 +4,7 @@ import Form from './Form'
 
 const { REACT_APP_MAILCHIMP_ID, REACT_APP_MAILCHIMP_U } = process.env
 
-const mailchimpUrl = `https://gmail.us18.list-manage.com/subscribe/post?u=${REACT_APP_MAILCHIMP_U}&id=${REACT_APP_MAILCHIMP_ID}`
+const mailchimpUrl = `https://finance.us10.list-manage.com/subscribe/post?u=${REACT_APP_MAILCHIMP_U}&id=${REACT_APP_MAILCHIMP_ID}`
 
 const Newsletter: React.FC<{ isModal?: boolean }> = ({ isModal }) => {
   return (

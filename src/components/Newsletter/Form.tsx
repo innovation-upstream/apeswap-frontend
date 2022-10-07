@@ -12,6 +12,8 @@ const Form: React.FC<{
   onValidated: any
   isModal?: boolean
 }> = ({ status, message, onValidated, isModal }) => {
+  const isMobile = useIsMobile()
+  const { isMd } = useMatchBreakpoints()
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const [subscriber, setSubscriber] = useState('')
@@ -34,20 +36,28 @@ const Form: React.FC<{
   return (
     <Flex
       sx={{
-        flexDirection: 'column',
-        marginTop: '25px',
-        width: ['100%', '100%', '60%'],
-        padding: ['', '', '20px'],
-        alignItems: ['', '', 'center'],
-        justifyContent: ['', '', 'center'],
+        flexDirection: ['column', (isModal && 'column') || 'row'],
+        marginTop: isModal && '25px',
+        width: ['100%', '100%', (isModal && '60%') || '100%'],
+        padding: [(!isModal && '10px') || '', '', '20px'],
+        alignItems: [(!isModal && 'center') || '', '', 'center'],
+        justifyContent: [(!isModal && 'center') || '', '', 'center'],
+        background: !isModal && 'white2',
       }}
     >
       <Flex sx={{ ...styles.leftForm, width: '100%' }}>
         <Text
-          sx={{ ...styles.getLatestText, fontSize: ['16px', '16px', '25px'], lineheight: ['24px', '24px', '28px'] }}
+          sx={{ ...styles.getLatestText, fontSize: ['16px', '16px', '25px'], lineHeight: ['24px', '24px', '28px'] }}
         >
-          Get the latest from <br /> ApeSwap right to your <br /> inbox.
+          Get the latest from {isModal && <br />} ApeSwap {!isModal && (isMobile || isMd) && <br />} right to your{' '}
+          {isModal && <br />} inbox.
         </Text>
+        {!isModal && (
+          <Flex sx={{ alignSelf: 'flex-start', marginTop: (isModal && '10px') || '5px' }}>
+            <Text sx={{ ...styles.privacyText }}>We respect your privacy</Text>
+            <Svg icon="question" width="10px" />
+          </Flex>
+        )}
       </Flex>
       {/* <Newsletter isModal /> */}
 
@@ -58,7 +68,7 @@ const Form: React.FC<{
         sx={{
           ...styles.form,
           width: [(isModal && '100%') || '360px', (isModal && '100%') || '360px', (isModal && '100%') || '360px', ''],
-          marginTop: [isModal && '10px', '', isModal && '20px'],
+          marginTop: ['10px', '', isModal && '20px'],
         }}
       >
         <Flex sx={{ alignItems: 'center' }}>
@@ -95,10 +105,12 @@ const Form: React.FC<{
           {status === 'sending' ? '...' : <ChevronRightIcon sx={{ width: '40px' }} />}
         </Button>
       </Flex>
-      <Flex sx={{ alignSelf: 'flex-start', marginTop: '10px' }}>
-        <Text sx={{ ...styles.privacyText }}>We respect your privacy</Text>
-        <Svg icon="question" width="10px" />
-      </Flex>
+      {isModal && (
+        <Flex sx={{ alignSelf: 'flex-start', marginTop: '10px' }}>
+          <Text sx={{ ...styles.privacyText }}>We respect your privacy</Text>
+          <Svg icon="question" width="10px" />
+        </Flex>
+      )}
     </Flex>
   )
 }
