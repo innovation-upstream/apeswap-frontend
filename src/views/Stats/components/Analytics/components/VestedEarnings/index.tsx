@@ -23,18 +23,10 @@ export const VestedEarnings: React.FC = () => {
   const renderChain = (chain: Chain) => {
     switch (chain) {
       case 56:
-        return (
-          <ChainIndicator>
-            <BinanceIcon width={isMobile ? 12 : 14} />
-          </ChainIndicator>
-        )
+        return <BinanceIcon width={isMobile ? 12 : 14} />
 
       case 137:
-        return (
-          <ChainIndicator>
-            <POLYGON width={isMobile ? 12 : 14} />
-          </ChainIndicator>
-        )
+        return <POLYGON width={isMobile ? 12 : 14} />
     }
   }
 
@@ -61,7 +53,7 @@ export const VestedEarnings: React.FC = () => {
               return (
                 <tr key={`${vesting.chain}-${'billId' in vesting ? vesting.billId : vesting.id}`}>
                   <td>
-                    {renderChain(vesting.chain)}
+                    <ChainIndicator>{renderChain(vesting.chain)}</ChainIndicator>
                     {'billId' in vesting
                       ? `${vesting.type} Bill #${vesting.billId}`
                       : `${vesting.earnToken?.symbol} IAO (${vesting.type})`}
