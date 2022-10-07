@@ -197,7 +197,7 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                 centeredSlides
                 resizeObserver
                 lazy
-                preloadImages={true}
+                preloadImages={false}
                 onSlideChange={handleSlide}
                 breakpoints={{
                   480: {
