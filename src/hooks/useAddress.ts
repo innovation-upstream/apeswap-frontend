@@ -109,3 +109,7 @@ export const useBabTokenAddress = () => {
 export const useRaffleAddress = () => {
   return useAddress(addresses.raffle)
 }
+
+export const useMigratorBalanceCheckerAddress = () => {
+  return useAddress(addresses.migratorBalanceChecker)
+}

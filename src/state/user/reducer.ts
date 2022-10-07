@@ -1,3 +1,4 @@
+import { SmartRouter } from '@ape.swap/sdk'
 import { createReducer } from '@reduxjs/toolkit'
 import { SerializedToken } from 'config/constants/types'
 import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE, INITIAL_ZAP_SLIPPAGE } from '../../config/constants'
@@ -32,6 +33,7 @@ import {
   updateUserExpertModeAcknowledgementShow,
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
+  lastZapMigratorRouter,
   setUnlimitedGnana,
   setShowModal,
   updateUserBonusRouter,
@@ -91,6 +93,7 @@ export interface UserState {
   watchlistTokens: string[]
   watchlistPools: string[]
   showPhishingWarningBanner: boolean
+  zapMigratorRouter: SmartRouter
   unlimitedGnana: boolean
   showModal: {
     showBuyModal: boolean
@@ -131,6 +134,7 @@ export const initialState: UserState = {
   watchlistTokens: [],
   watchlistPools: [],
   showPhishingWarningBanner: true,
+  zapMigratorRouter: null,
   unlimitedGnana: false,
   userBonusRouterDisabled: false,
   showModal: {
@@ -278,6 +282,9 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(hidePhishingWarningBanner, (state) => {
       state.showPhishingWarningBanner = false
+    })
+    .addCase(lastZapMigratorRouter, (state, { payload: { router } }) => {
+      state.zapMigratorRouter = router
     })
     .addCase(setIsExchangeChartDisplayed, (state, { payload }) => {
       state.isExchangeChartDisplayed = payload

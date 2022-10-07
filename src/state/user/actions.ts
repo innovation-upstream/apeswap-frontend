@@ -1,3 +1,4 @@
+import { SmartRouter } from '@ape.swap/sdk'
 import { createAction } from '@reduxjs/toolkit'
 import { SerializedToken } from 'config/constants/types'
 
@@ -66,6 +67,7 @@ export const hidePhishingWarningBanner = createAction<void>('user/hidePhishingWa
 
 export const setIsExchangeChartDisplayed = createAction<boolean>('user/toggleIsExchangeChartDisplayed')
 
+export const lastZapMigratorRouter = createAction<{ router: SmartRouter }>('user/lastZapMigratorRouter')
 export const setUnlimitedGnana = createAction<boolean>('user/setUnlimitedGnanaMinting')
 
 export const setShowModal = createAction<{ actionType: string; flag: boolean }>('user/setShowModal')

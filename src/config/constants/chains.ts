@@ -217,3 +217,11 @@ export const SMART_LP_FEES = {
     [SmartRouter.SUSHISWAP]: 25,
   },
 }
+
+// Chef addresses for the LP migrator
+export const CHEF_ADDRESSES = {
+  [ChainId.BSC]: {
+    '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652': SmartRouter.PANCAKE,
+    '0xDbc1A13490deeF9c3C12b44FE77b503c1B061739': SmartRouter.BISWAP,
+  },
+}

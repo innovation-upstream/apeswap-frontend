@@ -60,6 +60,11 @@ const Orders = lazy(() => import('./views/Dex/Orders'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
 const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
+const Migrate = lazy(() => import('./views/Dex/Migrate'))
+const MigrateLiquidity = lazy(() => import('./views/Dex/Migrate/MigrateLiquidity'))
+const MigrateAll = lazy(() => import('./views/Dex/Migrate/MigrateAll'))
+const UnstakeLiquidity = lazy(() => import('./views/Dex/Migrate/UnstakeLiquidity'))
+
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -384,6 +389,10 @@ const App: React.FC = () => {
             <Route exact strict path="/find" component={PoolFinder} />
             <Route exact strict path="/liquidity" component={Pool} />
             <Route exact strict path="/create" component={RedirectToAddLiquidity} />
+            <Route exact strict path="/migrate" component={Migrate} />
+            <Route exact strict path="/migrate/all" component={MigrateAll} />
+            <Route exact strict path="/migrate/:currencyIdA/:currencyIdB" component={MigrateLiquidity} />
+            <Route exact strict path="/unstake/:currencyIdA/:currencyIdB" component={UnstakeLiquidity} />
             <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
             <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
             <Route exact path="/add-liquidity" component={AddLiquidity} />

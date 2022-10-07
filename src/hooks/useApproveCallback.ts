@@ -7,8 +7,8 @@ import {
   ETHER,
   BONUS_ROUTER_ADDRESS,
   SMART_ROUTER_ADDRESS,
-  SmartRouter,
   ZAP_ADDRESS,
+  SmartRouter,
   Token,
 } from '@ape.swap/sdk'
 import { AUTONOMY_MIDROUTER_ADDRESS } from '@autonomylabs/limit-stop-orders'
@@ -24,6 +24,7 @@ import { useTokenContract } from './useContract'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
 import { parseAddress, parseSmartAddress } from './useAddress'
 import { MergedZap } from 'state/zap/actions'
+import { MigratorZap } from 'state/zapMigrator/actions'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -151,3 +152,13 @@ export function useApproveCallbackFromZap(zap?: MergedZap) {
 
   return useApproveCallback(inAmount as CurrencyAmount, parseAddress(ZAP_ADDRESS, chainId))
 }
+
+// export function useApproveCallbackFromZapMigrator(zap?: MigratorZap) {
+//   const { chainId } = useActiveWeb3React()
+
+//   const inAmount = zap.amount
+//     ? new TokenAmount(zap.currencyIn.currency as Token, zap.currencyIn?.inputAmount)
+//     : undefined
+
+//   return useApproveCallback(inAmount as CurrencyAmount, parseAddress(ZAP_ADDRESS, chainId))
+// }
