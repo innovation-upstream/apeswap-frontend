@@ -10,6 +10,7 @@ import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import MoonPayModal from 'views/Topup/MoonpayModal'
 import GnanaModal from 'components/GnanaModal'
+import SubscribeModal from 'components/Newsletter/SubscribeModal'
 //import SwiperProvider from 'contexts/SwiperProvider'
 //import QuestModal from '../MarketingModalContent/Quests/QuestModal'
 import {
@@ -57,6 +58,7 @@ const MarketingModalCheck = () => {
   const sellRoute = circularRoute(chainId, location, 'modal=circular-sell')
   const phRoute = circularRoute(chainId, location, 'modal=circular-ph')
   const ghRoute = circularRoute(chainId, location, 'modal=circular-gh')
+  const newsletterRoute = location.search.includes('modal=newsletter')
 
   const { LendingBody1, LendingBody2, LendingBody3, LendingBody4, LendingBody5 } = LendingBodies
   const { FarmsBody1, FarmsBody2, FarmsBody3, FarmsBody4 } = FarmsBodies
@@ -145,6 +147,8 @@ const MarketingModalCheck = () => {
     <CircularModal actionType={MODAL_TYPE.POOL_HARVEST} onDismiss={onDismiss} />
   ) : ghRoute ? (
     <CircularModal actionType={MODAL_TYPE.GENERAL_HARVEST} onDismiss={onDismiss} />
+  ) : newsletterRoute ? (
+    <SubscribeModal onDismiss={onDismiss} />
   ) : null
 }
 

@@ -22,8 +22,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
   getLatestText: {
     fontWeight: 700,
-    fontSize: '16px',
-    lineHeight: '24px',
   },
   privacyText: {
     fontWeight: 500,
@@ -43,7 +41,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
   input: {
     border: 'none',
-    width: ['220px', '230px', '220px'],
     paddingRight: '5px',
   },
   submit: {
@@ -54,6 +51,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     borderRadius: '10px',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 1,
   },
   status: {
     mt: '10px',

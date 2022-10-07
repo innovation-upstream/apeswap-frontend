@@ -68,7 +68,7 @@ const Newsletter: React.FC<{
                   fontSize: ['12px', '14px'],
                   lineHeight: '14px',
                   fontWeight: status === 'success' && 500,
-                  color: status === 'success' && 'success',
+                  color: (status === 'success' && 'success') || 'text',
                 },
               }}
             />
