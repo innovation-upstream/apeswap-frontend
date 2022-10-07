@@ -153,9 +153,9 @@ export const TableContainer = styled.div`
 
 export const ChainIndicator = styled.span`
   float: left;
-  padding-left: 8px;
+  padding-left: 6px;
 
   svg {
-    vertical-align: middle;
+    vertical-align: sub;
   }
 `
