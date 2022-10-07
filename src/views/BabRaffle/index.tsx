@@ -45,9 +45,9 @@ const Nft = () => {
           <Services bab />
         </SwiperProvider> */}
         <Flex sx={{ marginTop: '25px' }} />
-        <SwiperProvider>
+        {/* <SwiperProvider>
           <Values />
-        </SwiperProvider>
+        </SwiperProvider> */}
       </Flex>
       <Newsletter />
     </Flex>

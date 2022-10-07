@@ -1,6 +1,6 @@
 import React from 'react'
 import MailChimpSubscribe from 'react-mailchimp-subscribe'
-import Form from './Form'
+import NewsletterForm from './NewsletterForm'
 
 const { REACT_APP_MAILCHIMP_ID, REACT_APP_MAILCHIMP_U } = process.env
 
@@ -11,7 +11,12 @@ const Newsletter: React.FC<{ isModal?: boolean }> = ({ isModal }) => {
     <MailChimpSubscribe
       url={mailchimpUrl}
       render={({ subscribe, status, message }) => (
-        <Form status={status} message={message} onValidated={(formData) => subscribe(formData)} isModal={isModal} />
+        <NewsletterForm
+          status={status}
+          message={message}
+          onValidated={(formData) => subscribe(formData)}
+          isModal={isModal}
+        />
       )}
     />
   )
