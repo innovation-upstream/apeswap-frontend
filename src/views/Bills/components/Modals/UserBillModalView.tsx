@@ -60,7 +60,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
         <ModalBodyContainer>
           <StyledExit onClick={onDismiss}>x</StyledExit>
           {userOwnedBillNftData?.image ? (
-            <BillsImage image={userOwnedBillNftData?.image} />
+            <BillsImage image={`${userOwnedBillNftData?.image + '?img-width=720'}`} />
           ) : (
             <Flex alignItems="center" justifyContent="center">
               <BillsImage>
