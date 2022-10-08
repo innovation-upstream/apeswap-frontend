@@ -15,6 +15,7 @@ import { useLastZapMigratorRouter } from 'state/user/hooks'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { useTokenPriceUsd } from 'hooks/useTokenPriceUsd'
 import { wrappedToNative } from 'utils'
+import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 
 interface PositionCardProps extends CardProps {
   smartRouter: SmartRouter
@@ -65,7 +66,9 @@ export default function FullPositionCard({
     poolTokenPercentage * token0.reserves,
     poolTokenPercentage * token1.reserves,
   ]
-  console.log([token0Deposited, token1Deposited])
+
+  const tokenObj0 = new Token(chainId, token0.address, token0.decimals, token0.symbol)
+  const tokenObj1 = new Token(chainId, token1.address, token1.decimals, token1.symbol)
 
   return (
     <Flex sx={{ ...styles.poolContainer }} onClick={() => setShowMore((prev) => !prev)}>
@@ -73,7 +76,7 @@ export default function FullPositionCard({
         <Flex sx={{ ...styles.titleContainer }}>
           <Flex sx={{ alignItems: 'center' }}>
             <Flex sx={{ mr: '7.5px' }}>
-              <ServiceTokenDisplay token1={token0.symbol} token2={token1.symbol} noEarnToken size={20} />
+              <DoubleCurrencyLogo currency0={tokenObj0} currency1={tokenObj1} />
             </Flex>
             <Flex sx={{ flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center' }}>
               <Text size="10px" weight={400} sx={{ lineHeight: '5px' }}>
@@ -101,7 +104,7 @@ export default function FullPositionCard({
             }
             sx={{ height: '40px', mr: '10px' }}
           >
-            <Svg icon="trade" width="15px" />
+            <Svg icon="Migrate" width="15px" />
             <Text size="10px" weight={700} ml="5px">
               {t('Migrate Liquidity')}
             </Text>
@@ -141,7 +144,7 @@ export default function FullPositionCard({
                     <Text size="14px" weight={700} mr="8px">
                       {token0Deposited?.toFixed(6)}
                     </Text>
-                    <ServiceTokenDisplay token1={token0.symbol} size={20} />
+                    <CurrencyLogo currency={tokenObj0} />
                   </Flex>
                 ) : (
                   '-'
@@ -156,7 +159,7 @@ export default function FullPositionCard({
                     <Text size="14px" weight={700} mr="8px">
                       {token1Deposited?.toFixed(6)}
                     </Text>
-                    <ServiceTokenDisplay token1={token1.symbol} size={20} />
+                    <CurrencyLogo currency={tokenObj1} />
                   </Flex>
                 ) : (
                   '-'

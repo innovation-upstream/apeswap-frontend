@@ -2,7 +2,7 @@
 import React from 'react'
 import { Flex, Svg, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { StyledTag, styles } from './styles'
+import { styles } from './styles'
 import { useHistory, Link } from 'react-router-dom'
 
 export enum LiquidityTypes {
@@ -17,9 +17,16 @@ const LiquiditySelector: React.FC = () => {
   const { t } = useTranslation()
   return (
     <Flex sx={styles.liquiditySelectorContainer}>
+      <Flex sx={styles.liquiditySelector} as={Link} to="/liquidity" id="zap-link">
+        <Flex sx={{ marginRight: '5px' }}>
+          <Svg color={pathname.includes('/liquidity') ? 'text' : 'textDisabled'} icon="trade" width="10px" />
+        </Flex>
+        <Text color={pathname.includes('/liquidity') ? 'text' : 'textDisabled'}>{t('Positions')}</Text>
+      </Flex>
       <Flex sx={styles.liquiditySelector}>
         <Text
           color={pathname.includes('add-liquidity') ? 'text' : 'textDisabled'}
+          sx={{ whiteSpace: 'nowrap' }}
           as={Link}
           to="/add-liquidity"
           id="add-liquidity-link"

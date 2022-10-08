@@ -20,7 +20,6 @@ import DexNav from '../components/DexNav'
 import AddLiquiditySign from './components/AddLiquiditySign'
 import PoolInfo from './components/PoolInfo'
 import AddLiquidityActions from './components/Actions'
-import MyPositions from '../components/MyPositions'
 import RecentTransactions from '../components/RecentTransactions'
 import LiquiditySubNav from '../components/LiquiditySubNav'
 
@@ -127,7 +126,6 @@ function AddLiquidity({
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={{ ...dexStyles.dexContainer }}>
           <DexNav />
-          <MyPositions />
           <LiquiditySubNav />
           {noLiquidity && (
             <Flex sx={{ ...styles.warningMessageContainer }}>
@@ -141,6 +139,7 @@ function AddLiquidity({
               </Text>
             </Flex>
           )}
+          <Flex sx={{ marginBottom: '30px' }} />
           <DexPanel
             value={formattedAmounts[Field.CURRENCY_A]}
             panelText="Token 1"

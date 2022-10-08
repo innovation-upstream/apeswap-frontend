@@ -27,6 +27,8 @@ function MigrateLiquidity({
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const { chainId, account } = useActiveWeb3React()
 
+  const [pendingTx, setPendingTx] = useState(false)
+
   const { t } = useTranslation()
   const [recentTransactions] = useUserRecentTransactions()
 
@@ -117,7 +119,19 @@ function MigrateLiquidity({
       )
     }
     return (
-      <Button fullWidth onClick={zapMigrator}>
+      <Button
+        fullWidth
+        onClick={() => {
+          setPendingTx(true)
+          zapMigrator()
+            .then(() => {
+              setPendingTx(false)
+            })
+            .catch(() => setPendingTx(false))
+        }}
+        load={pendingTx}
+        disabled={pendingTx}
+      >
         {t('Migrate')}
       </Button>
     )

@@ -13,7 +13,6 @@ import DexNav from '../components/DexNav'
 import { styles } from '../AddLiquidity/styles'
 import RecentTransactions from '../components/RecentTransactions'
 import LiquiditySubNav from '../components/LiquiditySubNav'
-import MyPositions from '../components/MyPositions'
 import { useMigratorBalances } from 'state/zapMigrator/hooks'
 
 export default function Migrate() {
@@ -30,15 +29,14 @@ export default function Migrate() {
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={{ ...dexStyles.dexContainer }}>
           <DexNav />
-          <MyPositions />
           <LiquiditySubNav />
           <Flex sx={{ flexDirection: 'column', maxWidth: '100%', width: '420px' }}>
-            <Flex sx={{ ...styles.topContainer }}>{!account && <UnlockButton fullWidth mt="10px" />}</Flex>
-            {loading || !valid ? (
+            <Flex sx={{ ...styles.topContainer }}>{!account && <UnlockButton fullWidth />}</Flex>
+            {(loading || !valid) && account ? (
               <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Spinner size={100} />
               </Flex>
-            ) : (
+            ) : account ? (
               <Flex sx={{ flexDirection: 'column' }}>
                 {walletBalances && (
                   <Text mb="15px" ml="1px">
@@ -57,16 +55,10 @@ export default function Migrate() {
                   <FullPositionCard {...bal} key={bal.lpAddress} />
                 ))}
               </Flex>
+            ) : (
+              <></>
             )}
           </Flex>
-          {account && (
-            <Flex sx={{ flexDirection: 'column', alignItems: 'center', margin: '20px 0px 10px 0px' }}>
-              <Text mb="8px">{t('Dont see a pool you joined?')}</Text>
-              <Text style={{ textDecoration: 'underline' }} mb="8px" as={Link} to="/find">
-                {t('Find other LP tokens')}
-              </Text>
-            </Flex>
-          )}
         </Flex>
         {recentTransactions && <RecentTransactions />}
       </Flex>
