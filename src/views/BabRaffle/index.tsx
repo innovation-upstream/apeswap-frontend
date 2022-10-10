@@ -41,13 +41,13 @@ const Nft = () => {
       </Flex>
       <Flex className="services-con" sx={{ width: '100%', flexDirection: 'column' }}>
         <NewToDeFi />
-        {/* <SwiperProvider>
+        <SwiperProvider>
           <Services bab />
-        </SwiperProvider> */}
+        </SwiperProvider>
         <Flex sx={{ marginTop: '25px' }} />
-        {/* <SwiperProvider>
+        <SwiperProvider>
           <Values />
-        </SwiperProvider> */}
+        </SwiperProvider>
       </Flex>
       <Newsletter />
     </Flex>
