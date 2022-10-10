@@ -13,7 +13,7 @@ const NewsletterForm: React.FC<{
   isModal?: boolean
 }> = ({ status, message, onValidated, isModal }) => {
   const isMobile = useIsMobile()
-  const { isMd } = useMatchBreakpoints()
+  const { isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const [subscriber, setSubscriber] = useState('')
@@ -85,7 +85,12 @@ const NewsletterForm: React.FC<{
           onSubmit={(e) => handleSubmit(e)}
           sx={{
             ...styles.form,
-            width: ['100%', (!isModal && '45%') || '100%', (!isModal && '60%') || '100%', (!isModal && '40%') || ''],
+            width: [
+              '100%',
+              (!isModal && '45%') || '100%',
+              (!isModal && '60%') || '100%',
+              (!isModal && ((isLg && '42%') || (isXl && '42%') || (isXxl && '37%'))) || '',
+            ],
             marginTop: ['10px', '', isModal && '20px'],
           }}
         >
@@ -100,14 +105,14 @@ const NewsletterForm: React.FC<{
               sx={{
                 border: 'none',
                 paddingRight: '5px',
-                width: [(isModal && '190px') || '', (isModal && '290px') || ''],
+                width: [(isModal && '190px') || '240px', (isModal && '230px') || '290px', (isModal && '270px') || ''],
                 paddingLeft: '10px',
-                '@media screen and (min-width: 425px)': {
-                  width: (isModal && '230px') || '',
+                '@media screen and (min-width: 425px) and (max-width: 768px)': {
+                  width: (isModal && '230px') || (!isModal && ((isMd && '225px') || (isXl && '310px'))) || '290px',
                 },
                 '@media screen and (max-width: 320px)': {
                   paddingLeft: '5px',
-                  width: (isModal && '140px') || '',
+                  width: (isModal && '140px') || '185px',
                 },
                 '::placeholder': {
                   opacity: (status === 'success' && 0.8) || 0.5,
