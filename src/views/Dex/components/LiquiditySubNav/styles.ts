@@ -8,8 +8,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   liquiditySelector: {
     position: 'relative',
     alignItems: 'center',
+    fontSize: '14px',
     cursor: 'pointer',
-    margin: '0 12.5px',
+    '@media (max-width: 350px)': {
+      fontSize: '12px',
+    },
     ...textUnderlineHover,
   },
   liquiditySelectorContainer: {

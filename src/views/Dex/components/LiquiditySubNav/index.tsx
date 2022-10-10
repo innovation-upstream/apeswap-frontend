@@ -16,10 +16,10 @@ const LiquiditySelector: React.FC = () => {
 
   const { t } = useTranslation()
   return (
-    <Flex sx={styles.liquiditySelectorContainer}>
+    <Flex sx={{ alignItems: 'center', justifyContent: 'space-around', margin: '20px 0px' }}>
       <Flex sx={styles.liquiditySelector} as={Link} to="/liquidity" id="zap-link">
         <Flex sx={{ marginRight: '5px' }}>
-          <Svg color={pathname.includes('/liquidity') ? 'text' : 'textDisabled'} icon="trade" width="10px" />
+          <Svg color={pathname.includes('/liquidity') ? 'text' : 'textDisabled'} icon="Positions" width="20px" />
         </Flex>
         <Text color={pathname.includes('/liquidity') ? 'text' : 'textDisabled'}>{t('Positions')}</Text>
       </Flex>
@@ -34,13 +34,13 @@ const LiquiditySelector: React.FC = () => {
           {t('+ Add')}
         </Text>
       </Flex>
-      <Flex sx={styles.liquiditySelector} as={Link} to="/zap" id="zap-link">
+      <Flex as={Link} to="/zap" id="zap-link" sx={styles.liquiditySelector}>
         <Flex sx={{ marginRight: '5px' }}>
           <Svg color={pathname.includes('zap') ? 'text' : 'textDisabled'} icon="ZapIcon" />
         </Flex>
         <Text color={pathname.includes('zap') ? 'text' : 'textDisabled'}>{t('Zap')}</Text>
       </Flex>
-      <Flex sx={styles.migrate} as={Link} to="/migrate" id="migrate-link">
+      <Flex as={Link} to="/migrate" id="migrate-link" sx={styles.liquiditySelector}>
         <Flex sx={{ marginRight: '5px' }}>
           <Svg color={pathname.includes('migrate') ? 'text' : 'textDisabled'} icon="Migrate" width="20px" />
         </Flex>
