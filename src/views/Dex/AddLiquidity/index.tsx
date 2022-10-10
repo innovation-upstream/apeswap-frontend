@@ -6,7 +6,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { RouteComponentProps } from 'react-router-dom'
 import { Currency, TokenAmount } from '@ape.swap/sdk'
-import { useSwapState } from 'state/swap/hooks'
+import { useDefaultsFromURLSearch, useDerivedSwapInfo, useSwapState } from 'state/swap/hooks'
 import { useUserRecentTransactions } from 'state/user/hooks'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import { useAppDispatch } from 'state'
@@ -29,6 +29,7 @@ function AddLiquidity({
   },
   history,
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
+  useDefaultsFromURLSearch()
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { INPUT, OUTPUT } = useSwapState()

@@ -180,12 +180,6 @@ function MigrateLiquidity({
           <PoolInfo pair={pair} parsedAmounts={parsedAmounts} chainId={chainId} />
           <Flex sx={{ height: '10px' }} />
           {renderAction()}
-          {/* <RemoveLiquidityActions
-            pair={pair}
-            error={error}
-            parsedAmounts={parsedAmounts}
-            tradeValueUsd={tradeValueUsd}
-          /> */}
         </Flex>
         {recentTransactions && <RecentTransactions />}
       </Flex>

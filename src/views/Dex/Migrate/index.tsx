@@ -14,7 +14,7 @@ import { styles } from '../AddLiquidity/styles'
 import RecentTransactions from '../components/RecentTransactions'
 import LiquiditySubNav from '../components/LiquiditySubNav'
 import { useMigratorBalances } from 'state/zapMigrator/hooks'
-import { usePollFarms, useSetFarms } from 'state/farms/hooks'
+import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
 import { useFetchFarmLpAprs } from 'state/hooks'
 
 export default function Migrate() {
@@ -23,12 +23,25 @@ export default function Migrate() {
   usePollFarms()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
+  const farms = useFarms(null)
   const [recentTransactions] = useUserRecentTransactions()
   const { t } = useTranslation()
 
   const { loading, valid, results } = useMigratorBalances()
-  const walletBalances = valid ? results.filter((bal) => parseFloat(bal.walletBalance) > 0.0) : []
-  const stakedBalances = valid ? results.filter((bal) => parseFloat(bal.stakedBalance) > 0.0) : []
+  const filterResultsByFarms = valid
+    ? results.filter((res) => {
+        const { token0, token1 } = res
+        return farms.find(
+          (farm) =>
+            (farm.tokenAddresses[chainId].toLowerCase() === token0.address.toLowerCase() ||
+              farm.tokenAddresses[chainId].toLowerCase() === token1.address.toLowerCase()) &&
+            (farm.quoteTokenAdresses[chainId].toLowerCase() === token0.address.toLowerCase() ||
+              farm.quoteTokenAdresses[chainId].toLowerCase() === token1.address.toLowerCase()),
+        )
+      })
+    : []
+  const walletBalances = valid ? filterResultsByFarms.filter((bal) => parseFloat(bal.walletBalance) > 0.0) : []
+  const stakedBalances = valid ? filterResultsByFarms.filter((bal) => parseFloat(bal.stakedBalance) > 0.0) : []
 
   return (
     <Flex sx={{ ...dexStyles.pageContainer }}>

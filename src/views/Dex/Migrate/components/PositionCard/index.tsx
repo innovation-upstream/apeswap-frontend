@@ -18,6 +18,7 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { useFarms } from 'state/farms/hooks'
 import { Link } from 'react-router-dom'
 import { MigrateFarmIcon } from 'components/Icons'
+import useWindowSize from 'hooks/useDimensions'
 
 interface PositionCardProps extends CardProps {
   smartRouter: SmartRouter
@@ -43,6 +44,8 @@ export default function FullPositionCard({
 }: PositionCardProps) {
   // Load farms to check if a farm matches tokens
   const farms = useFarms(null)
+
+  const { width } = useWindowSize()
 
   const { chainId } = useActiveWeb3React()
 
@@ -86,7 +89,7 @@ export default function FullPositionCard({
   return (
     <Flex sx={{ ...styles.poolContainer }} onClick={() => setShowMore((prev) => !prev)}>
       <Flex sx={{ ...styles.innerContainer }}>
-        <Flex sx={{ ...styles.titleContainer }}>
+        <Flex sx={{ ...styles.titleContainer, flexShrink: 0 }}>
           <Flex sx={{ alignItems: 'center' }}>
             <Flex sx={{ mr: '7.5px' }}>
               <DoubleCurrencyLogo currency0={tokenObj0} currency1={tokenObj1} />
@@ -99,7 +102,7 @@ export default function FullPositionCard({
                 {!token0 || !token1 ? (
                   <Dots>Loading</Dots>
                 ) : (
-                  `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`
+                  `${wrappedToNative(token0.symbol)}-${wrappedToNative(token1.symbol)}`
                 )}
               </Text>
               <Text size="10px" weight={400} sx={{ lineHeight: '5px' }}>
@@ -119,7 +122,7 @@ export default function FullPositionCard({
           >
             <Svg icon="Migrate" width="15px" color="primaryBright" />
             <Text size="10px" weight={700} ml="5px">
-              {t('Migrate Liquidity')}
+              {width < 400 ? t('Migrate') : t('Migrate Liquidity')}
             </Text>
           </Button>
           <Svg icon="caret" width="8px" direction={showMore ? 'up' : 'down'} />
