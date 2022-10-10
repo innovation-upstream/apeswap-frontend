@@ -26,6 +26,8 @@ import AddLiquidity from './views/Dex/AddLiquidity'
 import Zap from './views/Dex/Zap'
 import RemoveLiquidity from './views/Dex/RemoveLiquidity'
 import useCircularStaking from 'hooks/useCircularStaking'
+// Load HomePage with Lazy load
+import Home from './views/Homepage'
 
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
@@ -38,7 +40,6 @@ declare module '@emotion/react' {
 }
 
 // Route-based code splitting
-const Home = lazy(() => import('./views/Homepage'))
 const Farms = lazy(() => import('./views/Farms'))
 const Pools = lazy(() => import('./views/Pools'))
 const JungleFarms = lazy(() => import('./views/JungleFarms'))
