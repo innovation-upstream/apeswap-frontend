@@ -14,9 +14,15 @@ import { styles } from '../AddLiquidity/styles'
 import RecentTransactions from '../components/RecentTransactions'
 import LiquiditySubNav from '../components/LiquiditySubNav'
 import { useMigratorBalances } from 'state/zapMigrator/hooks'
+import { usePollFarms, useSetFarms } from 'state/farms/hooks'
+import { useFetchFarmLpAprs } from 'state/hooks'
 
 export default function Migrate() {
-  const { account } = useActiveWeb3React()
+  // Since we need to display corresponding farm data for an lp we need to pull the farm fata
+  useSetFarms()
+  usePollFarms()
+  const { account, chainId } = useActiveWeb3React()
+  useFetchFarmLpAprs(chainId)
   const [recentTransactions] = useUserRecentTransactions()
   const { t } = useTranslation()
 

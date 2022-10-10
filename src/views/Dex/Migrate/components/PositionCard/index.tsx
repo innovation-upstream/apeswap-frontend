@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { SmartRouter, Token } from '@ape.swap/sdk'
-import { Text, Flex, CardProps, Button, Svg } from '@ape.swap/uikit'
+import { Text, Flex, CardProps, Button, Svg, Link as UiLink } from '@ape.swap/uikit'
 import { Divider } from 'theme-ui'
 import { AnimatePresence, motion } from 'framer-motion'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -9,13 +9,15 @@ import { useTranslation } from 'contexts/Localization'
 import useTotalSupply from '../../../../../hooks/useTotalSupply'
 import Dots from 'components/Loader/Dots'
 import { styles } from './styles'
-import { Link } from 'react-router-dom'
 import { useZapMigratorActionHandlers } from 'state/zapMigrator/hooks'
 import { useLastZapMigratorRouter } from 'state/user/hooks'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { useTokenPriceUsd } from 'hooks/useTokenPriceUsd'
 import { wrappedToNative } from 'utils'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
+import { useFarms } from 'state/farms/hooks'
+import { Link } from 'react-router-dom'
+import { MigrateFarmIcon } from 'components/Icons'
 
 interface PositionCardProps extends CardProps {
   smartRouter: SmartRouter
@@ -39,6 +41,9 @@ export default function FullPositionCard({
   walletBalance,
   stakedBalance,
 }: PositionCardProps) {
+  // Load farms to check if a farm matches tokens
+  const farms = useFarms(null)
+
   const { chainId } = useActiveWeb3React()
 
   const lpToken = new Token(chainId, lpAddress, 18)
@@ -69,6 +74,14 @@ export default function FullPositionCard({
 
   const tokenObj0 = new Token(chainId, token0.address, token0.decimals, token0.symbol)
   const tokenObj1 = new Token(chainId, token1.address, token1.decimals, token1.symbol)
+
+  const matchingFarm = farms.find(
+    (farm) =>
+      (farm.tokenAddresses[chainId].toLowerCase() === token0.address.toLowerCase() ||
+        farm.tokenAddresses[chainId].toLowerCase() === token1.address.toLowerCase()) &&
+      (farm.quoteTokenAdresses[chainId].toLowerCase() === token0.address.toLowerCase() ||
+        farm.quoteTokenAdresses[chainId].toLowerCase() === token1.address.toLowerCase()),
+  )
 
   return (
     <Flex sx={{ ...styles.poolContainer }} onClick={() => setShowMore((prev) => !prev)}>
@@ -104,7 +117,7 @@ export default function FullPositionCard({
             }
             sx={{ height: '40px', mr: '10px' }}
           >
-            <Svg icon="Migrate" width="15px" />
+            <Svg icon="Migrate" width="15px" color="primaryBright" />
             <Text size="10px" weight={700} ml="5px">
               {t('Migrate Liquidity')}
             </Text>
@@ -175,6 +188,38 @@ export default function FullPositionCard({
                     : '-'}
                 </Text>
               </Flex>
+              {matchingFarm && (
+                <Flex
+                  sx={{
+                    mt: '10px',
+                    flexDirection: 'row',
+                    height: '100px',
+                    alignItems: 'center',
+                    background: 'white4',
+                    padding: '15px',
+                    borderRadius: '10px',
+                  }}
+                >
+                  <Flex sx={{ width: '25%', alignItems: 'center', justifyContent: 'center', mr: '10px' }}>
+                    <MigrateFarmIcon />
+                  </Flex>
+                  <Flex sx={{ flexDirection: 'column' }}>
+                    <Text size="12px" weight={400} sx={{ lineHeight: '20px' }}>
+                      Earn <span sx={{ fontWeight: 700 }}> {matchingFarm?.apy || ''}% APY </span>
+                      with the{' '}
+                      <span sx={{ fontWeight: 700 }}>
+                        {wrappedToNative(token0.symbol)}-{wrappedToNative(token1.symbol)} farm at ApeSwap
+                      </span>
+                    </Text>
+                    <UiLink href={`https://apeswap.finance/banana-farms?pid=${matchingFarm.pid}`} target="_blank">
+                      <Text size="12px" mr="10px">
+                        View farm
+                      </Text>
+                      <Svg icon="external" />
+                    </UiLink>
+                  </Flex>
+                </Flex>
+              )}
             </Flex>
           </motion.div>
         )}
