@@ -89,7 +89,7 @@ const NewsletterForm: React.FC<{
               '100%',
               (!isModal && '45%') || '100%',
               (!isModal && '60%') || '100%',
-              (!isModal && ((isLg && '42%') || (isXl && '42%') || (isXxl && '37%'))) || '',
+              (!isModal && ((isLg && '42%') || (isXl && '42%') || (isXxl && '35%'))) || '',
             ],
             marginTop: ['10px', '', isModal && '20px'],
           }}
