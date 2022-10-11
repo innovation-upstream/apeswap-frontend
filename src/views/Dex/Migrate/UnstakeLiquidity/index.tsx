@@ -1,20 +1,17 @@
 /** @jsxImportSource theme-ui */
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useCurrency } from 'hooks/Tokens'
-import { Button, Flex, LinkExternal, Svg, Text } from '@ape.swap/uikit'
+import { Button, Flex, Svg, Text } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { Link, RouteComponentProps, useHistory } from 'react-router-dom'
-import { CurrencyAmount, JSBI, Percent, TokenAmount, ZAP_ADDRESS } from '@ape.swap/sdk'
-import { useUserRecentTransactions, useUserSlippageTolerance } from 'state/user/hooks'
+import { JSBI, Percent, TokenAmount } from '@ape.swap/sdk'
+import { useUserRecentTransactions } from 'state/user/hooks'
 import { Field } from 'state/burn/actions'
 import { dexStyles, textUnderlineHover } from '../../styles'
 import DexPanel from '../../components/DexPanel'
 import DexNav from '../../components/DexNav'
-import PoolInfo from '../components/PoolInfo'
 import RecentTransactions from '../../components/RecentTransactions'
-import { usePair } from 'hooks/usePairs'
-import { useZapMigratorCallback } from 'hooks/useZapMigratorCallback'
 import {
   useDerivedZapMigratorInfo,
   useMigratorBalances,
@@ -22,20 +19,19 @@ import {
   useZapMigratorState,
 } from 'state/zapMigrator/hooks'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { parseAddress } from 'hooks/useAddress'
 import UnlockButton from 'components/UnlockButton'
 import { useMigrateUnstake } from 'hooks/useUnstake'
 import BigNumber from 'bignumber.js'
 import { useToast } from 'state/hooks'
 import { getEtherscanLink } from 'utils'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { SMART_ROUTER_FULL_NAME } from 'config/constants/chains'
 
 function MigrateLiquidity({
   match: {
     params: { currencyIdA, currencyIdB },
   },
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
-  const { chainId, account } = useActiveWeb3React()
+  const { chainId, account, library } = useActiveWeb3React()
 
   const { t } = useTranslation()
   const [recentTransactions] = useUserRecentTransactions()
@@ -49,10 +45,7 @@ function MigrateLiquidity({
 
   // burn state
   const { independentField, typedValue } = useZapMigratorState()
-  const { pair, zapMigrate, parsedAmounts, error } = useDerivedZapMigratorInfo(
-    currencyA ?? undefined,
-    currencyB ?? undefined,
-  )
+  const { pair, parsedAmounts, error } = useDerivedZapMigratorInfo(currencyA ?? undefined, currencyB ?? undefined)
   const { valid, results } = useMigratorBalances()
   const stakedBalances = valid ? results.filter((bal) => parseFloat(bal.stakedBalance) > 0.0) : []
   const lpToUnstake = stakedBalances
@@ -83,13 +76,6 @@ function MigrateLiquidity({
       independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
   }
 
-  // const zapMigratorState = useState<MigratorZap>({
-  //   chainId: chainId,
-  //   router: smartRouter
-  //   zapLp: pair,
-  //   amount: formattedAmounts.
-  // })
-
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, value: string) => {
@@ -108,17 +94,23 @@ function MigrateLiquidity({
   const handleUnstake = useCallback(
     (amount: string) => {
       setPendingTx(true)
-      onUnstake(amount).then((resp) => {
-        const trxHash = resp.transactionHash
-        setPendingTx(false)
-        toastSuccess(t('Withdraw Successful'), {
-          text: t('View Transaction'),
-          url: getEtherscanLink(trxHash, 'transaction', chainId),
+      onUnstake(amount)
+        .then((resp) => {
+          library.waitForTransaction(resp.transactionHash).then((finishedTx) => {
+            setPendingTx(false)
+            toastSuccess(t('Withdraw Successful'), {
+              text: t('View Transaction'),
+              url: getEtherscanLink(finishedTx.transactionHash, 'transaction', chainId),
+            })
+            history.push({ pathname: `/migrate/${lpToUnstake.token0.address}/${lpToUnstake.token1.address}` })
+          })
         })
-        history.push({ pathname: `/migrate/${lpToUnstake.token0.address}/${lpToUnstake.token1.address}` })
-      })
+        .catch((e) => {
+          setPendingTx(false)
+          console.error(e)
+        })
     },
-    [onUnstake, chainId, t, toastSuccess, history, lpToUnstake],
+    [onUnstake, chainId, t, toastSuccess, history, lpToUnstake, library],
   )
 
   const amountToApprove =
@@ -203,7 +195,7 @@ function MigrateLiquidity({
           <DexPanel
             value={formattedAmounts[Field.LIQUIDITY_PERCENT]}
             userBalance={parseFloat(lpToUnstake?.stakedBalance)}
-            panelText={`${t('Unstake From ')}${lpToUnstake?.smartRouter.toLowerCase() || ''}:`}
+            panelText={`${t('Unstake From ')}${SMART_ROUTER_FULL_NAME[lpToUnstake?.smartRouter] || ''}:`}
             currency={currencyA}
             otherCurrency={currencyB}
             fieldType={Field.LIQUIDITY_PERCENT}
@@ -219,15 +211,8 @@ function MigrateLiquidity({
             showCommonBases
             lpPair={pair}
           />
-          {/* <PoolInfo pair={pair} parsedAmounts={parsedAmounts} chainId={chainId} /> */}
           <Flex sx={{ height: '10px' }} />
           {renderAction()}
-          {/* <RemoveLiquidityActions
-            pair={pair}
-            error={error}
-            parsedAmounts={parsedAmounts}
-            tradeValueUsd={tradeValueUsd}
-          /> */}
         </Flex>
         {recentTransactions && <RecentTransactions />}
       </Flex>

@@ -3,10 +3,9 @@ import { Contract } from '@ethersproject/contracts'
 import { JSBI, Percent, ZapMigratorV1 } from '@ape.swap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import truncateHash from 'utils/truncateHash'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import { calculateGasMargin, isAddress } from '../utils'
+import { calculateGasMargin } from '../utils'
 import isZero from '../utils/isZero'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './ENS/useENS'
@@ -165,20 +164,6 @@ export function useZapMigratorCallback(
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
         })
           .then((response: any) => {
-            const base = `Zap`
-            const withRecipient =
-              recipient === account
-                ? base
-                : `${base} to ${
-                    recipientAddressOrName && isAddress(recipientAddressOrName)
-                      ? truncateHash(recipientAddressOrName)
-                      : recipientAddressOrName
-                  }`
-
-            addTransaction(response, {
-              summary: withRecipient,
-            })
-
             return response.hash
           })
           .catch((error: any) => {

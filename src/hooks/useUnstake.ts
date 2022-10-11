@@ -190,7 +190,6 @@ export const useMigrateUnstake = (chefAddress: string, pid: number) => {
 
   const handleUnstake = useCallback(
     async (amount: string) => {
-      console.log(amount)
       const masterChefContract = new Contract(
         chefAddress,
         masterChefAbi,

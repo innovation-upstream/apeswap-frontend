@@ -225,3 +225,8 @@ export const CHEF_ADDRESSES = {
     '0xDbc1A13490deeF9c3C12b44FE77b503c1B061739': SmartRouter.BISWAP,
   },
 }
+
+export const SMART_ROUTER_FULL_NAME = {
+  [SmartRouter.PANCAKE]: 'PancakeSwap',
+  [SmartRouter.BISWAP]: 'Biswap',
+}

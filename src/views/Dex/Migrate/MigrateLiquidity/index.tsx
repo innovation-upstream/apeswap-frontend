@@ -4,7 +4,7 @@ import { useCurrency } from 'hooks/Tokens'
 import { Button, Flex, Svg, Text } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { Link, RouteComponentProps } from 'react-router-dom'
+import { Link, RouteComponentProps, useHistory } from 'react-router-dom'
 import { Percent, ZAP_ADDRESS } from '@ape.swap/sdk'
 import { useUserRecentTransactions, useUserSlippageTolerance } from 'state/user/hooks'
 import { Field } from 'state/burn/actions'
@@ -13,19 +13,28 @@ import DexPanel from '../../components/DexPanel'
 import DexNav from '../../components/DexNav'
 import PoolInfo from '../components/PoolInfo'
 import RecentTransactions from '../../components/RecentTransactions'
-import { usePair } from 'hooks/usePairs'
 import { useZapMigratorCallback } from 'hooks/useZapMigratorCallback'
-import { useDerivedZapMigratorInfo, useZapMigratorActionHandlers, useZapMigratorState } from 'state/zapMigrator/hooks'
+import {
+  useDerivedZapMigratorInfo,
+  useMigratorBalances,
+  useZapMigratorActionHandlers,
+  useZapMigratorState,
+} from 'state/zapMigrator/hooks'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { parseAddress } from 'hooks/useAddress'
 import UnlockButton from 'components/UnlockButton'
+import { useToast } from 'state/hooks'
+import { useFarms } from 'state/farms/hooks'
 
 function MigrateLiquidity({
   match: {
     params: { currencyIdA, currencyIdB },
   },
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
-  const { chainId, account } = useActiveWeb3React()
+  useMigratorBalances()
+  const { chainId, account, library } = useActiveWeb3React()
+  const { toastSuccess } = useToast()
+  const history = useHistory()
 
   const [pendingTx, setPendingTx] = useState(false)
 
@@ -62,13 +71,6 @@ function MigrateLiquidity({
       independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
   }
 
-  // const zapMigratorState = useState<MigratorZap>({
-  //   chainId: chainId,
-  //   router: smartRouter
-  //   zapLp: pair,
-  //   amount: formattedAmounts.
-  // })
-
   // wrapped onUserInput to clear signatures
   const onUserInput = useCallback(
     (field: Field, value: string) => {
@@ -85,6 +87,16 @@ function MigrateLiquidity({
   const [allowedSlippage] = useUserSlippageTolerance()
 
   const { callback: zapMigrator } = useZapMigratorCallback(zapMigrate, allowedSlippage, account)
+
+  const farms = useFarms(null)
+
+  const matchingFarm = farms.find(
+    (farm) =>
+      (farm.tokenAddresses[chainId].toLowerCase() === pair?.token0?.address.toLowerCase() ||
+        farm.tokenAddresses[chainId].toLowerCase() === pair?.token1?.address.toLowerCase()) &&
+      (farm.quoteTokenAdresses[chainId].toLowerCase() === pair?.token0?.address.toLowerCase() ||
+        farm.quoteTokenAdresses[chainId].toLowerCase() === pair?.token1?.address.toLowerCase()),
+  )
 
   // Approval
   const [approval, approveCallback] = useApproveCallback(
@@ -124,9 +136,16 @@ function MigrateLiquidity({
         onClick={() => {
           setPendingTx(true)
           zapMigrator()
-            .then(() => {
-              setPendingTx(false)
-            })
+            .then((txHash) =>
+              library.waitForTransaction(txHash).then(() => {
+                setPendingTx(false)
+                toastSuccess(t('Withdraw Successful'), {
+                  text: t('Go To Farm'),
+                  url: `/banana-farms?pid=${matchingFarm.pid}`,
+                })
+                history.push({ pathname: `/migrate` })
+              }),
+            )
             .catch(() => setPendingTx(false))
         }}
         load={pendingTx}
