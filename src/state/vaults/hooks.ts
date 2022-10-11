@@ -33,7 +33,6 @@ export const usePollVaultUserData = () => {
   const vaultsLoaded = vaults.length > 0
   useEffect(() => {
     if (account) {
-      console.log('ASDASDASDASDASDASDASDASD')
       dispatch(fetchVaultUserDataAsync(account, chainId))
     }
   }, [dispatch, slowRefresh, vaultsLoaded, account, chainId])

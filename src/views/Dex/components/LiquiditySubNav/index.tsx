@@ -1,9 +1,12 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
+import { ChainId } from '@ape.swap/sdk'
 import { Flex, Svg, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { styles } from './styles'
 import { useHistory, Link } from 'react-router-dom'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { StyledTag } from 'views/Pools/components/styles'
 
 export enum LiquidityTypes {
   ADD = 'ADD',
@@ -13,6 +16,7 @@ export enum LiquidityTypes {
 
 const LiquiditySelector: React.FC = () => {
   const { pathname } = useHistory().location
+  const { chainId } = useActiveWeb3React()
 
   const { t } = useTranslation()
   return (
@@ -40,12 +44,30 @@ const LiquiditySelector: React.FC = () => {
         </Flex>
         <Text color={pathname.includes('zap') ? 'text' : 'textDisabled'}>{t('Zap')}</Text>
       </Flex>
-      <Flex as={Link} to="/migrate" id="migrate-link" sx={styles.liquiditySelector}>
-        <Flex sx={{ marginRight: '5px' }}>
-          <Svg color={pathname.includes('migrate') ? 'text' : 'textDisabled'} icon="Migrate" width="20px" />
+      {chainId === ChainId.BSC ? (
+        <Flex as={Link} to="/migrate" id="migrate-link" sx={styles.liquiditySelector}>
+          <Flex sx={{ marginRight: '5px' }}>
+            <Svg color={pathname.includes('migrate') ? 'text' : 'textDisabled'} icon="Migrate" width="20px" />
+          </Flex>
+          <Text color={pathname.includes('migrate') ? 'text' : 'textDisabled'}>{t('Migrate')} </Text>
         </Flex>
-        <Text color={pathname.includes('migrate') ? 'text' : 'textDisabled'}>{t('Migrate')} </Text>
-      </Flex>
+      ) : (
+        <Flex
+          sx={{
+            position: 'relative',
+            alignItems: 'center',
+            fontSize: '14px',
+            '@media (max-width: 350px)': {
+              fontSize: '12px',
+            },
+          }}
+        >
+          <Text color={pathname.includes('migrate') ? 'text' : 'textDisabled'} mr="5px">
+            {t('Migrate')}{' '}
+          </Text>
+          <StyledTag variant={'binance'}> {t('Soon')} </StyledTag>
+        </Flex>
+      )}
     </Flex>
   )
 }

@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
+import { Button, Flex, Text } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
@@ -8,7 +8,6 @@ import { wrappedToNative } from 'utils'
 import React from 'react'
 import { Pair, TokenAmount } from '@ape.swap/sdk'
 import { useFarms } from 'state/farms/hooks'
-import { usePollVaultsData, useSetVaults, useVaults } from 'state/vaults/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Switch } from 'theme-ui'
 import StatusIcons from '../StatusIcons'
@@ -18,7 +17,6 @@ import useStakeApproveAll from '../../hooks/useStakeApproveAll'
 const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({ apeswapWalletLps }) => {
   const { chainId, account } = useActiveWeb3React()
   const farms = useFarms(account)
-  const { vaults } = useVaults()
   const { t } = useTranslation()
   const { migrateLpStatus, migrateMaximizers, setMigrateMaximizersCallback } = useMigrateAll()
   const handleApproveAll = useStakeApproveAll()
@@ -32,14 +30,11 @@ const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmo
       migrateLpStatus?.find((status) => status.lpAddress.toLowerCase() === pair.liquidityToken.address.toLowerCase())
         ?.status.approveStake !== MigrateStatus.COMPLETE,
   )
-  console.log(migrateLpStatus)
 
   const listView = filteredLpsForStake?.map((apeLp) => {
     const { pair, balance } = apeLp
     const { token0, token1, liquidityToken } = pair
     const { address: lpAddress } = liquidityToken
-    const farm = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lpAddress.toLowerCase())
-    const vault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddress.toLowerCase())
     const status = migrateLpStatus.find((status) => status.lpAddress === lpAddress)
     return {
       beforeTokenContent: <StatusIcons lpAddress={lpAddress} />,

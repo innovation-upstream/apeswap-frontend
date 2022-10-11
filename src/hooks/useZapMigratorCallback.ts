@@ -4,7 +4,6 @@ import { JSBI, Percent, ZapMigratorV1 } from '@ape.swap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
-import { useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin } from '../utils'
 import isZero from '../utils/isZero'
 import useTransactionDeadline from './useTransactionDeadline'
@@ -45,8 +44,6 @@ function useZapMigratorCallArguments(
   zap: MigratorZap,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-  poolAddress?: string,
-  billAddress?: string,
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
 
@@ -82,17 +79,10 @@ export function useZapMigratorCallback(
   zap: MigratorZap,
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-  poolAddress?: string,
-  billAddress?: string,
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const swapCalls = useZapMigratorCallArguments(zap, allowedSlippage, recipientAddressOrName, poolAddress, billAddress)
-
-  const addTransaction = useTransactionAdder()
-
-  const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName === null ? account : recipientAddress
+  const swapCalls = useZapMigratorCallArguments(zap, allowedSlippage, recipientAddressOrName)
 
   return useMemo(() => {
     if (!library || !account || !chainId) {
@@ -179,5 +169,5 @@ export function useZapMigratorCallback(
       },
       error: null,
     }
-  }, [zap, library, account, chainId, recipient, recipientAddressOrName, swapCalls, addTransaction])
+  }, [library, account, chainId, swapCalls])
 }

@@ -1,8 +1,6 @@
 /** @jsxImportSource theme-ui */
-import React, { useMemo } from 'react'
-import { Pair, SmartRouter, Token } from '@ape.swap/sdk'
-import { Text, Flex, AddIcon, Button, Spinner } from '@ape.swap/uikit'
-import { Link } from 'react-router-dom'
+import React from 'react'
+import { Text, Flex, Spinner } from '@ape.swap/uikit'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'

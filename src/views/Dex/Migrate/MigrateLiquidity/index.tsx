@@ -139,7 +139,7 @@ function MigrateLiquidity({
             .then((txHash) =>
               library.waitForTransaction(txHash).then(() => {
                 setPendingTx(false)
-                toastSuccess(t('Withdraw Successful'), {
+                toastSuccess(t('Migrate Successful'), {
                   text: t('Go To Farm'),
                   url: `/banana-farms?pid=${matchingFarm.pid}`,
                 })
