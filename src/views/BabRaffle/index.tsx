@@ -9,7 +9,6 @@ import BabInfoCard from './components/BabInfoCard'
 import NFBGiveaway from './components/NFBGiveaway'
 import Services from 'views/Homepage/components/Services/Services'
 import NewToDeFi from './components/NewToDeFi'
-import Newsletter from 'components/Newsletter'
 
 const Nft = () => {
   const { t } = useTranslation()
@@ -49,7 +48,6 @@ const Nft = () => {
           <Values />
         </SwiperProvider>
       </Flex>
-      <Newsletter />
     </Flex>
   )
 }

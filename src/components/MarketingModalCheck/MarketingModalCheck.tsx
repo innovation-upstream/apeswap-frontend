@@ -10,7 +10,7 @@ import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import MoonPayModal from 'views/Topup/MoonpayModal'
 import GnanaModal from 'components/GnanaModal'
-import SubscribeModal from 'components/Newsletter/SubscribeModal'
+import NewsletterModal from 'components/NewsletterModal'
 //import SwiperProvider from 'contexts/SwiperProvider'
 //import QuestModal from '../MarketingModalContent/Quests/QuestModal'
 import {
@@ -148,7 +148,7 @@ const MarketingModalCheck = () => {
   ) : ghRoute ? (
     <CircularModal actionType={MODAL_TYPE.GENERAL_HARVEST} onDismiss={onDismiss} />
   ) : newsletterRoute ? (
-    <SubscribeModal onDismiss={onDismiss} />
+    <NewsletterModal onDismiss={onDismiss} />
   ) : null
 }
 

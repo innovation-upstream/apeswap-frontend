@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex } from '@apeswapfinance/uikit'
 import Footer from 'components/Footer/Footer'
-import Newsletter from 'components/Newsletter'
 
 const StyledPage = styled.div<{ $removePadding: boolean }>`
   display: flex;
@@ -45,7 +44,6 @@ const Page: React.FC<React.HTMLAttributes<HTMLDivElement> & { removePadding?: bo
       <StyledPage $removePadding={removePadding} {...props}>
         {children}
         <Flex flexGrow={1} />
-        <Newsletter />
         <StyledContainer>
           <Footer />
         </StyledContainer>
