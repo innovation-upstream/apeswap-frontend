@@ -22,7 +22,6 @@ import { useZapCallback } from 'hooks/useZapCallback'
 import DistributionPanel from './components/DistributionPanel/DistributionPanel'
 import { RouteComponentProps } from 'react-router-dom'
 import DexNav from '../components/DexNav'
-import MyPositions from '../components/MyPositions'
 import LiquiditySubNav from '../components/LiquiditySubNav'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import track from 'utils/track'
@@ -137,8 +136,8 @@ function ZapLiquidity({
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={dexStyles.dexContainer}>
           <DexNav zapSettings />
-          <MyPositions />
           <LiquiditySubNav />
+          <Flex sx={{ marginBottom: '30px' }} />
           <Flex sx={styles.liquidityContainer}>
             <DexPanel
               value={typedValue}
