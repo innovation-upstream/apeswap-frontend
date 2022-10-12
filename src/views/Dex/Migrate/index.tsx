@@ -80,7 +80,7 @@ export default function Migrate() {
                 >
                   <MonkeyImage />
                   <Text size="14px" sx={{ margin: '10px 0px 5px 0px', opacity: '.5' }}>
-                    {t('Empty list')}
+                    {t('No Other LPs Found!')}
                   </Text>
                 </Flex>
               )

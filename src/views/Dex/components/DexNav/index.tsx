@@ -25,7 +25,8 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
     pathname?.includes('remove') ||
     pathname?.includes('find') ||
     pathname?.includes('zap') ||
-    pathname?.includes('migrate')
+    pathname?.includes('migrate') ||
+    pathname?.includes('unstake')
 
   const [onPresentSettingsModal] = useModal(<SettingsModal zapSettings={zapSettings} />)
   const [onPresentModal] = useModal(<MoonPayModal />)
