@@ -1,4 +1,5 @@
 import { ChainId } from '@ape.swap/sdk'
+import Newsletter from 'components/Newsletter'
 import SwiperProvider from 'contexts/SwiperProvider'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React from 'react'
@@ -34,6 +35,7 @@ const Home: React.FC = () => {
       <SwiperProvider>
         <LaunchCalendar />
       </SwiperProvider>
+      <Newsletter />
     </>
   )
 }

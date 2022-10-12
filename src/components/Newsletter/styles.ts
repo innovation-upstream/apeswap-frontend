@@ -1,11 +1,12 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
-  privacyText: {
+  privacyLink: {
     fontWeight: 500,
     fontSize: '12px',
     lineHeight: '14px',
     fontStyle: 'italic',
+    textDecoration: 'underline',
     mr: '5px',
   },
   form: {

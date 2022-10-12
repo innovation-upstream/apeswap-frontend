@@ -1,8 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import useIsMobile from 'hooks/useIsMobile'
-import { Text, Flex, Svg, Input, ChevronRightIcon, useMatchBreakpoints, Button } from '@ape.swap/uikit'
-import { useToast } from 'state/hooks'
+import { Text, Flex, Svg, Input, ChevronRightIcon, useMatchBreakpoints, Button, TooltipBubble } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { styles } from './styles'
 
@@ -14,7 +13,6 @@ const NewsletterForm: React.FC<{
 }> = ({ status, message, onValidated, isModal }) => {
   const isMobile = useIsMobile()
   const { isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
-  const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const [subscriber, setSubscriber] = useState('')
 
@@ -25,18 +23,22 @@ const NewsletterForm: React.FC<{
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-    subscriber.indexOf('@') > -1 &&
-      onValidated({
-        EMAIL: subscriber,
-      })
-    setSubscriber('')
-    return status === 'success' && toastSuccess(t('Subscribe Successful'))
+    if (!subscriber.includes('@')) {
+      return
+    } else {
+      subscriber.indexOf('@') > -1 &&
+        onValidated({
+          EMAIL: subscriber,
+        })
+      setSubscriber('')
+    }
   }
 
   return (
     <Flex
       sx={{
-        marginTop: isModal && '25px',
+        marginTop: isModal && isMobile && '25px',
+        height: isModal && !isMobile && '350px',
         width: ['100%', '100%', (isModal && '60%') || '100%'],
         padding: [(!isModal && '15px') || '', '', '20px'],
         alignItems: [isModal && 'center', isModal && 'center', isModal && 'center', 'center'],
@@ -68,13 +70,35 @@ const NewsletterForm: React.FC<{
               lineHeight: ['24px', '24px', isModal && '28px'],
             }}
           >
-            Get the latest from {isModal && <br />} ApeSwap {!isModal && (isMobile || isMd) && <br />} right to your{' '}
-            {isModal && <br />} inbox.
+            Get the latest news from {isModal && <br />} ApeSwap {!isModal && (isMobile || isMd) && <br />} directly to
+            your {isModal && <br />} inbox.
           </Text>
           {!isModal && (
-            <Flex sx={{ alignSelf: 'flex-start', marginTop: (isModal && '10px') || '5px' }}>
-              <Text sx={{ ...styles.privacyText }}>We respect your privacy</Text>
-              <Svg icon="question" width="10px" />
+            <Flex
+              sx={{
+                alignSelf: 'flex-start',
+                marginTop: (isModal && '10px') || '5px',
+                ':hover': {
+                  cursor: 'pointer',
+                },
+              }}
+            >
+              <a href="https://apeswap.finance/privacy" target="_blank" rel="noopener noreferrer">
+                <Text sx={styles.privacyLink}>{t('We respect your privacy')}</Text>
+              </a>
+              <TooltipBubble
+                placement="topLeft"
+                body={
+                  <Text>
+                    ApeSwap will only use your email address for the sole purpose of marketing newsletters. Your
+                    personal information will not be shared with any third party.
+                  </Text>
+                }
+                transformTip="translate(-8%, 0%)"
+                width="200px"
+              >
+                <Svg icon="question" width="10px" />
+              </TooltipBubble>
             </Flex>
           )}
         </Flex>
@@ -101,7 +125,7 @@ const NewsletterForm: React.FC<{
               name="EMAIL"
               onChange={onHandleChange}
               value={subscriber}
-              placeholder={(status === 'success' && message) || 'hornyape@domain.com'}
+              placeholder={(status === 'success' && message) || 'example@domain.com'}
               sx={{
                 border: 'none',
                 paddingRight: '5px',
@@ -125,25 +149,66 @@ const NewsletterForm: React.FC<{
               }}
             />
           </Flex>
-          <Button variant="text" className="input-btn" sx={styles.submit} type="submit" formValues={[subscriber]}>
+          <Button
+            variant="text"
+            className="input-btn"
+            sx={styles.submit}
+            type="submit"
+            formValues={[subscriber]}
+            disabled={status === 'sending'}
+          >
             {status === 'sending' ? '...' : <ChevronRightIcon sx={{ width: '40px' }} />}
           </Button>
         </Flex>
         {isModal && (
-          <Flex sx={{ alignSelf: 'flex-start', marginTop: '10px' }}>
-            <Text sx={{ ...styles.privacyText }}>We respect your privacy</Text>
-            <Svg icon="question" width="10px" />
+          <Flex
+            sx={{
+              alignSelf: 'flex-start',
+              marginTop: '10px',
+              ':hover': {
+                cursor: 'pointer',
+              },
+            }}
+          >
+            <a href="https://apeswap.finance/privacy" target="_blank" rel="noopener noreferrer">
+              <Text sx={styles.privacyLink}>{t('We respect your privacy')}</Text>
+            </a>
+            <TooltipBubble
+              placement="topLeft"
+              body={
+                <Text>
+                  ApeSwap will only use your email address for the sole purpose of marketing newsletters. Your personal
+                  information will not be shared with any third party.
+                </Text>
+              }
+              transformTip="translate(-8%, 0%)"
+              width="200px"
+            >
+              <Svg icon="question" width="10px" />
+            </TooltipBubble>
           </Flex>
         )}
         {isModal && status === 'error' && (
           <Text color="error" sx={styles.status}>
-            {t(`${message}`)}
+            {t(
+              `${
+                message.includes('email address is invalid')
+                  ? "Invalid email address. Make sure the format is 'email@domain.com'"
+                  : message
+              }`,
+            )}
           </Text>
         )}
       </Flex>
       {!isModal && status === 'error' && (
         <Text color="error" sx={{ ...styles.status, alignSelf: ['flex-start', '', 'center'] }}>
-          {t(`${message}`)}
+          {t(
+            `${
+              message.includes('email address is invalid')
+                ? "Invalid email address. Make sure the format is 'email@domain.com'"
+                : message
+            }`,
+          )}
         </Text>
       )}
     </Flex>
