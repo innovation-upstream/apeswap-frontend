@@ -14,6 +14,7 @@ import LiquiditySubNav from '../components/LiquiditySubNav'
 import { useMigratorBalances } from 'state/zapMigrator/hooks'
 import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
 import { useFetchFarmLpAprs } from 'state/hooks'
+import MonkeyImage from '../Orders/components/OrderHistoryPanel/MonkeyImage'
 
 export default function Migrate() {
   // Since we need to display corresponding farm data for an lp we need to pull the farm fata
@@ -54,24 +55,35 @@ export default function Migrate() {
                 <Spinner size={100} />
               </Flex>
             ) : account ? (
-              <Flex sx={{ flexDirection: 'column' }}>
-                {walletBalances && (
-                  <Text mb="15px" ml="1px">
-                    {t('Wallet')} ({walletBalances.length})
+              walletBalances?.length > 0 && stakedBalances?.length > 0 ? (
+                <Flex sx={{ flexDirection: 'column' }}>
+                  {walletBalances && (
+                    <Text mb="15px" ml="1px">
+                      {t('Wallet')} ({walletBalances.length})
+                    </Text>
+                  )}
+                  {walletBalances.map((bal) => (
+                    <FullPositionCard {...bal} inWallet key={bal.lpAddress} />
+                  ))}
+                  {stakedBalances && (
+                    <Text margin="15px 0px" ml="1px">
+                      {t('Staked')} ({stakedBalances.length})
+                    </Text>
+                  )}
+                  {stakedBalances.map((bal) => (
+                    <FullPositionCard {...bal} key={bal.lpAddress} />
+                  ))}
+                </Flex>
+              ) : (
+                <Flex
+                  sx={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '50px 0px' }}
+                >
+                  <MonkeyImage />
+                  <Text size="14px" sx={{ margin: '10px 0px 5px 0px', opacity: '.5' }}>
+                    {t('Empty list')}
                   </Text>
-                )}
-                {walletBalances.map((bal) => (
-                  <FullPositionCard {...bal} inWallet key={bal.lpAddress} />
-                ))}
-                {stakedBalances && (
-                  <Text margin="15px 0px" ml="1px">
-                    {t('Staked')} ({stakedBalances.length})
-                  </Text>
-                )}
-                {stakedBalances.map((bal) => (
-                  <FullPositionCard {...bal} key={bal.lpAddress} />
-                ))}
-              </Flex>
+                </Flex>
+              )
             ) : (
               <></>
             )}
