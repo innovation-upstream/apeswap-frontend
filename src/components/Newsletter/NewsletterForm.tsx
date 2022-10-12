@@ -44,7 +44,7 @@ const NewsletterForm: React.FC<{
         alignItems: [isModal && 'center', isModal && 'center', isModal && 'center', 'center'],
         justifyContent: [(!isModal && 'flex-start') || '', '', 'center'],
         background: !isModal && 'white2',
-        flexDirection: status === 'success' && 'column',
+        flexDirection: status === 'error' && 'column',
       }}
     >
       <Flex
