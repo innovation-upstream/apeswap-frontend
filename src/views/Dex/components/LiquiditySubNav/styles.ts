@@ -8,16 +8,22 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   liquiditySelector: {
     position: 'relative',
     alignItems: 'center',
+    fontSize: '14px',
     cursor: 'pointer',
-    margin: '0 20px',
+    '@media (max-width: 350px)': {
+      fontSize: '12px',
+    },
     ...textUnderlineHover,
   },
   liquiditySelectorContainer: {
-    marginBottom: '40px',
+    marginBottom: '20px',
     justifyContent: 'center',
     fontSize: '14px',
+    alignItems: 'space-between',
+    justifyItems: 'space-between',
+    marginTop: '20px',
   },
-  migrate: { margin: '0 20px', position: 'relative', alignItems: 'center', color: 'textDisabled' },
+  migrate: { margin: '0 15px', position: 'relative', alignItems: 'center', color: 'textDisabled' },
 }
 
 export const StyledTag = styled(Tag)`

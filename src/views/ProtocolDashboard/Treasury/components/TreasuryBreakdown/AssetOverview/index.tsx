@@ -2,7 +2,7 @@
 import { Flex, Text } from '@ape.swap/uikit'
 import React, { useMemo } from 'react'
 import { Doughnut } from 'react-chartjs-2'
-import { styles } from './styles'
+import { styles } from '../styles'
 import { useTranslation } from 'contexts/Localization'
 import CountUp from 'react-countup'
 import { useFetchTreasuryAssetOverview } from 'state/protocolDashboard/hooks'
