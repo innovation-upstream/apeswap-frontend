@@ -1,5 +1,5 @@
-import { NewsletterProps } from '@ape.swap/uikit'
-
-export interface NewsModalProps extends NewsletterProps {
+export interface NewsModalProps {
+  isNewsModal?: boolean
+  t: (text: string) => string
   onDismiss?: () => void
 }
