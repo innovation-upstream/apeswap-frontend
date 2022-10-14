@@ -17,6 +17,8 @@ const fetchJungleFarms = async (chainId: number, tokenPrices: TokenPrices[], jun
   const chunkSize = vals.length / jungleFarmsConfig.length
   const chunkedFarms = chunk(vals, chunkSize)
 
+  console.log(chunkedFarms)
+
   return cleanJungleFarmData(farmIds, chunkedFarms, tokenPrices, chainId, jungleFarmsConfig)
 }
 
