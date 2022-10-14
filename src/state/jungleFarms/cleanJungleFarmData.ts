@@ -56,7 +56,7 @@ const fetchJungleFarmTokenStatsAndApr = (
         stakingToken?.price,
         rewardToken?.price,
         getBalanceNumber(totalStaked),
-        curFarm?.tokenPerBlock,
+        curFarm?.rewardsPerSecond,
       )
     : getPoolApr(
         chainId,
@@ -65,6 +65,7 @@ const fetchJungleFarmTokenStatsAndApr = (
         getBalanceNumber(totalStaked),
         curFarm?.tokenPerBlock,
       )
+  console.log(apr)
 
   return [stakingToken, rewardToken, apr]
 }
