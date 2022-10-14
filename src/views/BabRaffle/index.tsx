@@ -19,7 +19,6 @@ const Nft = () => {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        mb: '100px',
         marginTop: '30px',
       }}
     >
