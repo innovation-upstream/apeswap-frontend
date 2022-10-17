@@ -152,20 +152,23 @@ const App: React.FC = () => {
               <Route path="/privacy">
                 <PrivacyPolicy />
               </Route>
-              <Route path="/treasury-bills">
-                <Bills />
+              <Route path="/pools">
+                <Pools />
+              </Route>
+              <Route path="/maximizers">
+                <Vaults />
+              </Route>
+              <Route path="/jungle-farms">
+                <JungleFarms />
               </Route>
               {/* Redirects */}
               <Route path="/vaults">
                 <Redirect to="/" />
               </Route>
+              <Route path="/banana-farms">
+                <Redirect to="/farms" />
+              </Route>
               <Route exact path="/nft">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/pools">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/jungle-farms">
                 <Redirect to="/" />
               </Route>
               <Route path="/admin-pools">
@@ -227,6 +230,24 @@ const App: React.FC = () => {
               <Route path="/protocol-dashboard">
                 <ProtocolDashboard />
               </Route>
+              <Route path="/treasury-bills">
+                <Bills />
+              </Route>
+              <Route path="/pools">
+                <Pools />
+              </Route>
+              <Route path="/jungle-farms">
+                <JungleFarms />
+              </Route>
+              <Route path="/maximizers">
+                <Vaults />
+              </Route>
+              <Route path="/farms">
+                <Farms />
+              </Route>
+              <Route path="/banana-farms">
+                <Farms />
+              </Route>
               {/* Redirects */}
               <Route path="/admin-pools">
                 <Redirect to="/" />
@@ -234,19 +255,7 @@ const App: React.FC = () => {
               <Route path="/banana-farms">
                 <Redirect to="/" />
               </Route>
-              <Route path="/maximizers">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/treasury-bills">
-                <Redirect to="/" />
-              </Route>
               <Route exact path="/nft">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/pools">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/jungle-farms">
                 <Redirect to="/" />
               </Route>
               <Route path="/admin-pools">
@@ -325,20 +334,26 @@ const App: React.FC = () => {
               <Route path="/privacy">
                 <PrivacyPolicy />
               </Route>
-              {/* Redirects */}
-              <Route path="/vaults">
-                <Redirect to="/" />
+              <Route path="/pools">
+                <Pools />
+              </Route>
+              <Route path="/maximizers">
+                <Vaults />
+              </Route>
+              <Route path="/jungle-farms">
+                <JungleFarms />
               </Route>
               <Route path="/treasury-bills">
                 <Bills />
               </Route>
+              {/* Redirects */}
+              <Route path="/vaults">
+                <Redirect to="/" />
+              </Route>
+              <Route path="/farms">
+                <Redirect to="/banana-farms" />
+              </Route>
               <Route exact path="/nft">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/pools">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/jungle-farms">
                 <Redirect to="/" />
               </Route>
               <Route path="/admin-pools">
@@ -455,6 +470,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/syrup">
               <Redirect to="/pools" />
+            </Route>
+            <Route path="/farms">
+              <Redirect to="/banana-farms" />
             </Route>
             {/* SWAP ROUTES */}
             <Route path="/swap" component={Swap} />
