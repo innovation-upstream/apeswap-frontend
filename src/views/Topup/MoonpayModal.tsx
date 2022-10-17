@@ -53,7 +53,7 @@ export default function MoonPayModal({ onDismiss }: ModalProps) {
               }}
             />
           </Flex>
-          {accept && <MoonPayIframe manualChainId={56} />}
+          {accept && <MoonPayIframe />}
         </Flex>
       ) : (
         <MoonPayIframe />
