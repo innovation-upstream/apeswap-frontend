@@ -29,13 +29,15 @@ const InfoContent: React.FC<{ farm: JungleFarm }> = ({ farm }) => {
         {farm?.endBlock > 0 && farm?.rewardToken?.symbol !== 'BANANA' && (
           <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
             {farm?.rewardsPerSecond ? (
-              <Text style={{ fontSize: '14px' }}>{farm?.startBlock > currentTime ? 'Starts in' : 'Ends in'}</Text>
+              <Text style={{ fontSize: '14px' }}>
+                {farm?.startBlock > currentTime / 1000 ? 'Starts in' : 'Ends in'}
+              </Text>
             ) : (
               <Text style={{ fontSize: '14px' }}>{farm?.startBlock > currentBlock ? 'Starts in' : 'Ends in'}</Text>
             )}
             {farm?.rewardsPerSecond ? (
               <Text style={{ fontSize: '16px' }} bold>
-                {farm?.startBlock > currentTime
+                {farm?.startBlock > currentTime / 1000
                   ? `${timeUntilStart.days}d, ${timeUntilStart.hours}h, ${timeUntilStart.minutes}m`
                   : `${timeUntilEnd.days}d, ${timeUntilEnd.hours}h, ${timeUntilEnd.minutes}m`}
               </Text>
