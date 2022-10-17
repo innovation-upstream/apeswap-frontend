@@ -218,10 +218,12 @@ const defaultCurrencies = {
   137: 'matic_polygon',
 }
 
-export const useMoonPayUrl = () => {
+export const useMoonPayUrl = (manualChainId?: number) => {
   const { account, chainId } = useActiveWeb3React()
-  const defaultCurrency = defaultCurrencies[chainId] || defaultCurrencies[56]
+  const chainIdToUse = manualChainId || chainId
+  const defaultCurrency = defaultCurrencies[chainIdToUse] || defaultCurrencies[56]
   const baseMoonPayUrl = `${moonPayBaseUrl}&defaultCurrencyCode=${defaultCurrency}`
+  console.log(baseMoonPayUrl)
   const [url, setUrl] = useState<string>(baseMoonPayUrl)
 
   useEffect(() => {
