@@ -195,8 +195,8 @@ export const WALLCHAIN_PARAMS: Partial<
   },
   [ChainId.TLOS]: {
     [SmartRouter.APE]: {
-      apiUrl: '',
-      apiKey: '',
+      apiUrl: 'https://tlos.wallchains.com/upgrade_txn/',
+      apiKey: '1717a226-bb5a-42c4-ad37-6de5229f9e28',
     },
   },
 }
