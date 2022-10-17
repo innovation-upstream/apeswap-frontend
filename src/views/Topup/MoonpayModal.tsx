@@ -1,16 +1,18 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Modal, ModalProps, Flex } from '@ape.swap/uikit'
+import { Modal, ModalProps, Flex, Checkbox, Text } from '@ape.swap/uikit'
 import MoonPayIframe from './MoonFrame'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ChainId } from '@ape.swap/sdk'
-import { CHAIN_PARAMS } from 'config/constants/chains'
-import { Switch } from 'theme-ui'
+import { NETWORK_LABEL } from 'config/constants/chains'
+import { useTranslation } from 'contexts/Localization'
 
-const supportedList = [ChainId.BSC, ChainId.MAINNET, ChainId.MATIC]
+// Supported chains for moonpay
+const SUPPORTED_CHAINS = [ChainId.BSC, ChainId.MAINNET, ChainId.MATIC]
 
 export default function MoonPayModal({ onDismiss }: ModalProps) {
   const [accept, setAccept] = useState(false)
+  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const modalProps = {
     style: {
@@ -28,12 +30,17 @@ export default function MoonPayModal({ onDismiss }: ModalProps) {
   }
   return (
     <Modal title="Buy crypto with MoonPay" onDismiss={onDismiss} {...modalProps}>
-      {!supportedList.includes(chainId) ? (
-        <Flex sx={{ flexDirection: 'column' }}>
-          {`${CHAIN_PARAMS[chainId].chainName} is unsupported by MoonPay. Assests purchased will be sent to other chains, depending on asset purchased. Would you still like to purchase crypto with fiat?`}{' '}
-          <Flex sx={{ margin: '10px 0px' }}>
-            <Switch
+      {!SUPPORTED_CHAINS.includes(chainId) ? (
+        <Flex sx={{ margin: '10px 0px', flexDirection: 'column' }}>
+          <Text>
+            {`${NETWORK_LABEL[chainId]} is unsupported by MoonPay. Assests purchased will be sent to other chains, depending on asset purchased.`}{' '}
+          </Text>
+          <Flex sx={{ margin: '20px 10px' }}>
+            <Text size="14px">{t('Would you still like to purchase crypto with fiat?')}</Text>
+            {'  '}
+            <Checkbox
               sx={{
+                ml: '10px',
                 borderRadius: '8px',
                 backgroundColor: 'white3',
                 'input:checked ~ &': {
@@ -42,11 +49,11 @@ export default function MoonPayModal({ onDismiss }: ModalProps) {
               }}
               checked={accept}
               onChange={() => {
-                setAccept(true)
+                setAccept((prev) => !prev)
               }}
-            />{' '}
+            />
           </Flex>
-          {accept && <MoonPayIframe />}
+          {accept && <MoonPayIframe manualChainId={56} />}
         </Flex>
       ) : (
         <MoonPayIframe />
