@@ -23,6 +23,7 @@ import ListViewMenu from '../../components/ListViewMenu'
 import HarvestAll from './components/Actions/HarvestAll'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useSetZapOutputList } from 'state/zap/hooks'
+import { BannerTypes } from 'components/Banner/types'
 
 const NUMBER_OF_FARMS_VISIBLE = 10
 
@@ -189,7 +190,7 @@ const JungleFarms: React.FC = () => {
       >
         <ListViewLayout>
           <Banner
-            banner="jungle-farms"
+            banner={`${chainId}-jungle-farms` as BannerTypes}
             title={chainId === 40 ? t('Telos Farms') : t('Jungle Farms')}
             link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
             listViewBreak
