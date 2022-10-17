@@ -1,72 +1,180 @@
+/** @jsxImportSource theme-ui */
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal, AutoRenewIcon, ModalFooter } from '@apeswapfinance/uikit'
-import ModalInput from 'components/ModalInput'
+import React, { useCallback, useState } from 'react'
+import { Modal, ModalProvider } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import DualCurrencyPanel from '../../../../components/DualCurrencyPanel/DualCurrencyPanel'
+import { Field } from '../../../../state/swap/actions'
+import { useDerivedZapInfo, useZapActionHandlers, useZapState } from '../../../../state/zap/hooks'
+import { DualCurrencySelector } from '../../../Bills/components/Actions/types'
+import { useCurrency } from '../../../../hooks/Tokens'
+import { DualFarm } from '../../../../state/types'
+import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
+import maxAmountSpend from '../../../../utils/maxAmountSpend'
+import { useCurrencyBalance } from '../../../../state/wallet/hooks'
+import { usePair } from '../../../../hooks/usePairs'
+import { Box } from 'theme-ui'
+import { useToast } from '../../../../state/hooks'
+import { getEtherscanLink } from '../../../../utils'
+import { useDualFarmStake } from '../../../../hooks/useStake'
+import { useZapCallback } from '../../../../hooks/useZapCallback'
+import { ZapType } from '@ape.swap/sdk'
+import { useUserSlippageTolerance } from '../../../../state/user/hooks'
+import { useMiniChefAddress } from '../../../../hooks/useAddress'
+import DualActions from '../CardActions/DualActions'
 
 interface DepositModalProps {
-  max: string
-  onConfirm: (amount: string) => void
   onDismiss?: () => void
-  tokenName?: string
-  addLiquidityUrl?: string
+  setPendingDepositTrx: (value: boolean) => void
+  pid?: number
+  allowance?: string
+  token0?: string
+  token1?: string
+  lpAddress?: string
 }
 
-const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, tokenName = '', addLiquidityUrl }) => {
-  const [val, setVal] = useState('')
-  const [pendingTx, setPendingTx] = useState(false)
-  const { t } = useTranslation()
-  const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(new BigNumber(max))
-  }, [max])
+const modalProps = {
+  sx: {
+    zIndex: 11,
+    maxHeight: 'calc(100% - 30px)',
+    minWidth: ['90%', '420px'],
+    width: '200px',
+    maxWidth: '425px',
+  },
+}
 
-  const handleChange = useCallback(
-    (e: React.FormEvent<HTMLInputElement>) => {
-      setVal(e.currentTarget.value)
+const DepositModal: React.FC<DepositModalProps> = ({
+  onDismiss,
+  setPendingDepositTrx,
+  pid,
+  allowance,
+  token0,
+  token1,
+  lpAddress,
+}) => {
+  const [pendingTrx, setPendingTrx] = useState(false)
+  const { onStake } = useDualFarmStake(pid)
+  const { account, chainId } = useActiveWeb3React()
+  const { t } = useTranslation()
+  const { toastSuccess } = useToast()
+  const showApproveContract = !new BigNumber(allowance).gt(0)
+
+  const { recipient, typedValue } = useZapState()
+  const { onCurrencySelection, onUserInput } = useZapActionHandlers()
+
+  const onHandleValueChange = useCallback(
+    (val: string) => {
+      onUserInput(Field.INPUT, val)
     },
-    [setVal],
+    [onUserInput],
   )
 
-  const handleSelectMax = useCallback(() => {
-    setVal(fullBalance)
-  }, [fullBalance, setVal])
+  const billsCurrencies: DualCurrencySelector = {
+    currencyA: useCurrency(token0),
+    currencyB: useCurrency(token1),
+  }
+  const [currencyA, setCurrencyA] = useState(billsCurrencies.currencyA)
+  const [currencyB, setCurrencyB] = useState(billsCurrencies.currencyB)
+  const inputCurrencies = [currencyA, currencyB]
+
+  const handleCurrencySelect = useCallback(
+    (currency: DualCurrencySelector) => {
+      setCurrencyA(currency?.currencyA)
+      setCurrencyB(currency?.currencyB)
+      onHandleValueChange('')
+      if (!currency?.currencyB) {
+        // if there's no currencyB use zap logic
+        onCurrencySelection(Field.INPUT, [currency.currencyA])
+        onCurrencySelection(Field.OUTPUT, [billsCurrencies.currencyA, billsCurrencies.currencyB])
+      }
+    },
+    [billsCurrencies.currencyA, billsCurrencies.currencyB, onCurrencySelection, onHandleValueChange],
+  )
+
+  const [, pair] = usePair(inputCurrencies[0], inputCurrencies[1])
+  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, pair?.liquidityToken ?? currencyA)
+  const { zap } = useDerivedZapInfo()
+  const [zapSlippage] = useUserSlippageTolerance(true)
+  const miniApeAddress = useMiniChefAddress()
+  const { callback: zapCallback } = useZapCallback(
+    zap,
+    ZapType.ZAP_MINI_APE,
+    zapSlippage,
+    recipient,
+    miniApeAddress,
+    null,
+    pid,
+  )
+
+  const handleMaxInput = useCallback(() => {
+    onHandleValueChange(maxAmountSpend(selectedCurrencyBalance)?.toExact())
+  }, [onHandleValueChange, selectedCurrencyBalance])
+
+  const handleLoadingButtons = (value: boolean) => {
+    setPendingDepositTrx(value)
+    setPendingTrx(value)
+  }
+
+  const handleDeposit = async () => {
+    handleLoadingButtons(true)
+    // if there's currencyB use deposit LP logic, otherwise use zapcallback
+    if (currencyB) {
+      await onStake(typedValue)
+        .then((resp) => {
+          const trxHash = resp.transactionHash
+          toastSuccess(t('Deposit Successful'), {
+            text: t('View Transaction'),
+            url: getEtherscanLink(trxHash, 'transaction', chainId),
+          })
+          onDismiss()
+          handleLoadingButtons(false)
+        })
+        .catch((e) => {
+          console.error(e)
+          handleLoadingButtons(false)
+        })
+    } else {
+      zapCallback()
+        .then((hash) => {
+          handleLoadingButtons(false)
+        })
+        .catch((error) => {
+          handleLoadingButtons(false)
+        })
+    }
+  }
 
   return (
-    <Modal title={t('Stake LP tokens')} onDismiss={onDismiss}>
-      <ModalInput
-        value={val}
-        onSelectMax={handleSelectMax}
-        onChange={handleChange}
-        max={fullBalance}
-        symbol={tokenName}
-        addLiquidityUrl={addLiquidityUrl}
-        inputTitle={t('Stake')}
-      />
-      <ModalFooter onDismiss={onDismiss}>
-        <Button
-          fullWidth
-          disabled={pendingTx || fullBalance === '0' || val === '0' || parseFloat(fullBalance) < parseFloat(val)}
-          onClick={async () => {
-            setPendingTx(true)
-            try {
-              await onConfirm(val)
-              onDismiss()
-            } catch (e) {
-              console.error('Transaction Failed')
-            } finally {
-              setPendingTx(false)
-            }
-          }}
-          endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
-          style={{
-            borderRadius: '10px',
-          }}
-        >
-          {pendingTx ? t('Pending Confirmation') : t('Confirm')}
-        </Button>
-      </ModalFooter>
-    </Modal>
+    <ModalProvider>
+      <Modal title={t('Stake LP')} onDismiss={onDismiss} {...modalProps}>
+        <Box sx={{ margin: '15px 0' }}>
+          <DualCurrencyPanel
+            handleMaxInput={handleMaxInput}
+            onUserInput={onHandleValueChange}
+            value={typedValue}
+            onCurrencySelect={handleCurrencySelect}
+            inputCurrencies={inputCurrencies}
+            lpList={[billsCurrencies]}
+          />
+        </Box>
+        <DualActions
+          lpToApprove={lpAddress}
+          showApproveLpFlow={showApproveContract}
+          pid={pid}
+          isZapSelected={!currencyB}
+          inputError={typedValue === '0' || typedValue === '0.0' || !typedValue ? 'Enter an amount' : null}
+          disabled={
+            pendingTrx ||
+            selectedCurrencyBalance?.toExact() === '0' ||
+            typedValue === '0' ||
+            typedValue === '0.0' ||
+            parseFloat(selectedCurrencyBalance?.toExact()) < parseFloat(typedValue)
+          }
+          pendingTrx={pendingTrx}
+          handleAction={handleDeposit}
+        />
+      </Modal>
+    </ModalProvider>
   )
 }
 

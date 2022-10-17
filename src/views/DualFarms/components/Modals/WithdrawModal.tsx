@@ -32,7 +32,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={t('Unstake LP tokens')} onDismiss={onDismiss}>
+    <Modal title={t('Unstake LP')} onDismiss={onDismiss}>
       <ModalInput
         onSelectMax={handleSelectMax}
         onChange={handleChange}
@@ -41,29 +41,28 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
         symbol={tokenName}
         inputTitle={t('Unstake')}
       />
-      <ModalFooter onDismiss={onDismiss}>
-        <Button
-          disabled={pendingTx || parseFloat(fullBalance) < parseFloat(val)}
-          onClick={async () => {
-            setPendingTx(true)
-            try {
-              await onConfirm(val)
-              onDismiss()
-            } catch (e) {
-              console.error('Transaction Failed')
-            } finally {
-              setPendingTx(false)
-            }
-          }}
-          fullWidth
-          endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
-          style={{
-            borderRadius: '10px',
-          }}
-        >
-          {pendingTx ? t('Pending Confirmation') : t('Confirm')}
-        </Button>
-      </ModalFooter>
+      <Button
+        disabled={pendingTx || parseFloat(fullBalance) < parseFloat(val)}
+        onClick={async () => {
+          setPendingTx(true)
+          try {
+            await onConfirm(val)
+            onDismiss()
+          } catch (e) {
+            console.error('Transaction Failed')
+          } finally {
+            setPendingTx(false)
+          }
+        }}
+        fullWidth
+        endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
+        style={{
+          borderRadius: '10px',
+          marginTop: '10px',
+        }}
+      >
+        {pendingTx ? t('Pending Confirmation') : t('Confirm')}
+      </Button>
     </Modal>
   )
 }

@@ -47,8 +47,9 @@ const StyledButton = styled(Button)`
   border-radius: 6px;
   color: ${({ theme }) => theme.colors.primaryBright};
   font-weight: 500;
-  font-size: 16px;
+  font-size: 12px;
   padding: 3px 10px;
+  height: 22px;
 `
 
 const ModalInput: React.FC<ModalInputProps> = ({

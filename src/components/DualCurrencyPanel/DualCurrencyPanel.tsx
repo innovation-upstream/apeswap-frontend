@@ -26,7 +26,7 @@ import { DualCurrencySelector } from 'views/Bills/components/Actions/types'
  */
 
 interface DualCurrencyPanelProps {
-  handleMaxInput: (field: any) => void
+  handleMaxInput: () => void
   onUserInput: (val: string) => void
   value: string
   onCurrencySelect: (currency: DualCurrencySelector) => void

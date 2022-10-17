@@ -241,3 +241,8 @@ export enum SHOW_MODAL_TYPES {
   poolHarvestModal = 'showPoolHarvestModal',
   generalHarvestModal = 'showGeneralHarvestModal',
 }
+
+export enum ZAP_MODAL_LOCATION {
+  FARMS = 0,
+  DUAL_FARM = 1,
+}

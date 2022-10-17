@@ -82,12 +82,7 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
       )
     }
     return (
-      <Button
-        fullWidth
-        onClick={() => {
-          handleConfirmZap()
-        }}
-      >
+      <Button fullWidth onClick={() => handleConfirmZap()}>
         {t('Zap Liquidity')}
       </Button>
     )

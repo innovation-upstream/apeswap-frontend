@@ -9,15 +9,15 @@ import { useTranslation } from 'contexts/Localization'
 import { StyledButton } from './styles'
 
 interface ApprovalActionProps {
-  stakingTokenContractAddress: string
+  addressToApprove: string
   pid: number
   isLoading?: boolean
 }
 
-const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAddress, pid, isLoading = false }) => {
+const ApprovalAction: React.FC<ApprovalActionProps> = ({ addressToApprove, pid, isLoading = false }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const stakingTokenContract = useERC20(stakingTokenContractAddress)
+  const stakingTokenContract = useERC20(addressToApprove)
   const [pendingTrx, setPendingTrx] = useState(false)
   const { onApprove } = useDualFarmApprove(stakingTokenContract, pid)
   const { toastSuccess } = useToast()

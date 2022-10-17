@@ -11,20 +11,21 @@ import ZapLiquidityActions from 'views/Dex/Zap/components/ZapLiquidityActions'
 import { styles } from './styles'
 import { useZapCallback } from 'hooks/useZapCallback'
 import DistributionPanel from 'views/Dex/Zap/components/DistributionPanel/DistributionPanel'
-import { useUserSlippageTolerance } from '../../state/user/hooks'
-import { useTranslation } from '../../contexts/Localization'
-import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useTranslation } from 'contexts/Localization'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Box, Switch } from 'theme-ui'
-import store from '../../state'
-import useTheme from '../../hooks/useTheme'
+import store from 'state'
+import useTheme from 'hooks/useTheme'
+import { wrappedToNative } from '../../utils'
 
 interface ZapLiquidityProps {
   handleConfirmedTx: (hash: string, pairOut: Pair) => void
-  showStakeOption?: boolean
   poolAddress: string
+  pid: number
 }
 
-const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, showStakeOption, poolAddress }) => {
+const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddress, pid }) => {
   useSetZapInputList()
   const [zapErrorMessage, setZapErrorMessage] = useState<string>(null)
   const [stakeIntoProduct, setStakeIntoProduct] = useState<boolean>(false)
@@ -57,13 +58,6 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, showStak
   )
 
   const handleZapChange = (newState) => {
-    const jungleFarmAddress = store
-      .getState()
-      .jungleFarms.data.find(
-        (jungleFarm) =>
-          jungleFarm?.stakingToken?.address[chainId]?.toLowerCase() ===
-          zap?.pairOut?.pair?.liquidityToken?.address?.toLowerCase(),
-      )?.contractAddress[chainId]
     setStakeIntoProduct(newState)
     if (newState) {
       onSetZapType(ZapType.ZAP_MINI_APE)
@@ -72,7 +66,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, showStak
     }
   }
 
-  const { callback: zapCallback } = useZapCallback(zap, zapType, zapSlippage, recipient, poolAddress, null, '0')
+  const { callback: zapCallback } = useZapCallback(zap, zapType, zapSlippage, recipient, poolAddress, null, pid)
 
   const handleZap = useCallback(() => {
     setZapErrorMessage(null)
@@ -112,11 +106,13 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, showStak
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
-        {showStakeOption && (
-          <Flex sx={{ marginBottom: '12px', fontSize: '12px', alignItems: 'center' }}>
+        {!!poolAddress && (
+          <Flex sx={{ marginBottom: '10px', fontSize: '12px', alignItems: 'center' }}>
             <Text>
               {t('Stake in')}{' '}
-              {`${zap?.pairOut?.pair?.token0?.getSymbol(chainId)} - ${zap?.pairOut?.pair?.token1?.getSymbol(chainId)}`}
+              {`${wrappedToNative(zap?.pairOut?.pair?.token0?.getSymbol(chainId)) ?? ''} - ${
+                wrappedToNative(zap?.pairOut?.pair?.token1?.getSymbol(chainId)) ?? ''
+              }`}
             </Text>
             <Box sx={{ width: '50px', marginLeft: '10px' }}>
               <Switch

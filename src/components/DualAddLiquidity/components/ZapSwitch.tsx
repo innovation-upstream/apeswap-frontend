@@ -25,7 +25,7 @@ const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
   const [onPresentSettingsModal] = useModal(<SettingsModal zapSettings={goZap} />)
 
   return (
-    <Flex sx={{ margin: '15px 0', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Flex sx={{ margin: '15px 0 5px 0', justifyContent: 'space-between', alignItems: 'center' }}>
       <Flex sx={{ alignItems: 'flex-start' }}>
         <Flex sx={{ marginRight: '5px', alignItems: 'center' }}>
           <Svg icon="ZapIcon" />
