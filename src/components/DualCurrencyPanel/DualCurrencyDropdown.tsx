@@ -117,7 +117,7 @@ const DualCurrencyDropdown: React.FC<{
           <Dropdown
             size="sm"
             component={<DropdownDisplay inputCurrencies={inputCurrencies} active />}
-            sx={{ width: '195px', zIndex: 500, background: 'white4' }}
+            sx={{ width: '190px', zIndex: 500, background: 'white4' }}
           >
             {currenciesList.slice(0, 4).map((item, index) => {
               return Item([item.currencyA, item.currencyB], index)

@@ -5,8 +5,8 @@ import BigNumber from 'bignumber.js'
 
 // Network labels
 export const NETWORK_LABEL: Partial<Record<ChainId, string>> = {
-  [ChainId.BSC]: 'BSC',
-  [ChainId.BSC_TESTNET]: 'BSC Testnet',
+  [ChainId.BSC]: 'BNB',
+  [ChainId.BSC_TESTNET]: 'BNB Testnet',
   [ChainId.MATIC]: 'Polygon',
   [ChainId.MATIC_TESTNET]: 'Polygon Testnet',
   [ChainId.MAINNET]: 'Ethereum',
@@ -195,8 +195,8 @@ export const WALLCHAIN_PARAMS: Partial<
   },
   [ChainId.TLOS]: {
     [SmartRouter.APE]: {
-      apiUrl: '',
-      apiKey: '',
+      apiUrl: 'https://tlos.wallchains.com/upgrade_txn/',
+      apiKey: '1717a226-bb5a-42c4-ad37-6de5229f9e28',
     },
   },
 }
