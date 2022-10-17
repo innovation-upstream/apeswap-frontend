@@ -26,11 +26,12 @@ const getTokenLogoURL = (address: string, chainId: any) => {
 const StyledLogo = styled(Logo)<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
+  border-radius: 10px;
 `
 const StyledNativeCurrencyLogo = styled.img<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
-  border-radius: 10px;
+  border-radius: ${({ size }) => parseInt(size) / 2};
 `
 export default function CurrencyLogo({
   currency,

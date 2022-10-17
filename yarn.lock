@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/sdk@4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.1.0.tgz#4913ce8d02cf4293a17be07a2e2fe79f5ce49753"
-  integrity sha512-PO1v3/ttG5fEWbIqwk8dBzMjNjY5nDizBAA2WCBTwUnhRPPG6Sjj0gEHEWkPE0c1/G7u/GZkSRITVZwvbNJ+MA==
+"@ape.swap/sdk@4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.2.0.tgz#f55e3b707b434f2ff4960bfad459baa019682f0b"
+  integrity sha512-HcSRnStUYPYvb4+neV+WCfy0r+IOabkRgrpYb1kEPSytFxknS/L23JF3dnI1CLQjvcAHJO3YD3TSm2gCmBKIqA==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"
@@ -23,20 +23,22 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/uikit@1.3.28":
-  version "1.3.28"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.28.tgz#56ed105f1f377fe27314f8da320bfd57a44b5d05"
-  integrity sha512-7Dd6u7Hc4RMO/YmxMiBs3Vc3aCd9WpmgzWG5cHtepW4XI58KVxOF2+fUPs/QTieuRNpemLFrpQui2vFPU6Eiow==
+"@ape.swap/uikit@1.3.33":
+  version "1.3.33"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.33.tgz#b307a993ff9ac3fe0eb8cc9851ed0ea3c9df5513"
+  integrity sha512-yM7/tFPPD+kHEARH/7TPT52Advm+vshnJFeTDJFjzRoaAhR3YQVEIa5XftqBekegcix0ROlY1wIjGdvZ1VYcbA==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
     "@mdx-js/react" "1.6.22"
     "@rollup/plugin-json" "^4.1.0"
     "@types/lodash" "^4.14.162"
+    "@types/react-mailchimp-subscribe" "^2.1.1"
     "@types/styled-system" "^5.1.10"
     framer-motion "^4.1.17"
     lodash "^4.17.20"
     lottie-react "^2.2.1"
+    react-mailchimp-subscribe "^2.1.3"
     react-transition-group "^4.4.1"
     styled-system "^5.1.5"
     theme-ui "^0.13.1"
@@ -57,10 +59,10 @@
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
 
-"@apeswapfinance/token-lists@1.0.315":
-  version "1.0.315"
-  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.315/f617945e7b5220e186448d46bd65aff76791e096#f617945e7b5220e186448d46bd65aff76791e096"
-  integrity sha512-cIpPqXL/0j447zByu5Ye+/PvXg3MISvjym1VFIw7MI6Ci1SpPO0wiMWROiJE0QM3YXIgfndrBeiQRCdQIurfHA==
+"@apeswapfinance/token-lists@1.0.317":
+  version "1.0.317"
+  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.317/fb9e8fd2e832ca5b23852f650ccbbd14fee8983e#fb9e8fd2e832ca5b23852f650ccbbd14fee8983e"
+  integrity sha512-YcubnWpyudE5AnsT7reD8HlE/acC7jmR9pHIf/ZLT+OlZGqZaXiVas0OimuRoapa89rgxtc9h7b7e7WhcNSRZg==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
@@ -3659,6 +3661,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-mailchimp-subscribe@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-mailchimp-subscribe/-/react-mailchimp-subscribe-2.1.1.tgz#e42b6d84aab84881d0b0868667a6b9ba38059425"
+  integrity sha512-ic6ruLaDdlgwj94CeML/FGHiMacXB92bZbmJimNKVzrc147/hORPCy3nZ4MHGKBiZNVqi4NBmX1pN6i3Kbg1JA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^7.1.20":
   version "7.1.23"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.23.tgz#3c2bb1bcc698ae69d70735f33c5a8e95f41ac528"
@@ -6734,7 +6743,7 @@ date-fns@^2.0.1, date-fns@^2.16.1, date-fns@^2.24.0:
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
   integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
 
-debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
+debug@2.6.9, debug@^2.1.3, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
@@ -10704,6 +10713,13 @@ jsonify@~0.0.0:
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
 
+jsonp@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/jsonp/-/jsonp-0.2.1.tgz#a65b4fa0f10bda719a05441ea7b94c55f3e15bae"
+  integrity sha512-pfog5gdDxPdV4eP7Kg87M8/bHgshlZ5pybl+yKxAnCZ5O7lCIn7Ixydj03wOlnDQesky2BPyA91SQ+5Y/mNwzw==
+  dependencies:
+    debug "^2.1.3"
+
 jsonparse@^1.2.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/jsonparse/-/jsonparse-1.3.1.tgz#3f4dae4a91fac315f71062f8521cc239f1366280"
@@ -13404,7 +13420,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.5.10, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -13744,6 +13760,15 @@ react-is@^17.0.1, react-is@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react-mailchimp-subscribe@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/react-mailchimp-subscribe/-/react-mailchimp-subscribe-2.1.3.tgz#2f195f20b98c9be9608fac95d1f4f5bcb2d81929"
+  integrity sha512-ZRuPZMnX/9pHQLnAQavsgB5xIF+gNqjNCCq1vvTs23cn+93W2oOp17qjg3LpDBEt1HJi6IHXMwpKXn0taY8FHw==
+  dependencies:
+    jsonp "^0.2.1"
+    prop-types "^15.5.10"
+    to-querystring "^1.0.4"
 
 react-onclickoutside@^6.12.0:
   version "6.12.1"
@@ -15907,6 +15932,11 @@ to-object-path@^0.3.0:
   integrity sha1-KXWIt7Dn4KwI4E5nL4XB9JmeF68=
   dependencies:
     kind-of "^3.0.2"
+
+to-querystring@^1.0.4:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/to-querystring/-/to-querystring-1.1.1.tgz#98de5b00c79768a98ca48a2c09a960238d960265"
+  integrity sha512-ZgIacl9TXAoT7sGXUYjQiy0MW7Tf/7CJQLt757hYHfXXc8JBzOVBMx4DckqKUO4hi36J72/m8UcH/GCHK+n97g==
 
 to-readable-stream@^1.0.0:
   version "1.0.0"

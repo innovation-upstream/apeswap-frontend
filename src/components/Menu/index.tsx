@@ -19,6 +19,7 @@ import ethConfig from './chains/ethConfig'
 import iframeConfig from './chains/iframeConfig'
 import MoonPayModal from '../../views/Topup/MoonpayModal'
 import { getSidContract } from 'utils'
+import { mailChimpUrl } from 'config/constants'
 
 const Menu = (props) => {
   let isIframe = false
@@ -105,6 +106,7 @@ const Menu = (props) => {
       track={track}
       liveResult={liveIfos}
       iframe={isIframe}
+      mailChimpUrl={mailChimpUrl}
       {...props}
     />
   )
