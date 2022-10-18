@@ -23,6 +23,8 @@ import ListViewMenu from '../../components/ListViewMenu'
 import HarvestAll from './components/Actions/HarvestAll'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useSetZapOutputList } from 'state/zap/hooks'
+import { ChainId } from '@ape.swap/sdk'
+import useCurrentTime from 'hooks/useTimer'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
 import { BannerTypes } from 'components/Banner/types'
@@ -51,6 +53,7 @@ const JungleFarms: React.FC = () => {
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const { jungleFarmTags } = useJungleFarmTags(chainId)
   const { jungleFarmOrderings } = useJungleFarmOrderings(chainId)
+  const currentTime = useCurrentTime()
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
   }
@@ -74,7 +77,11 @@ const JungleFarms: React.FC = () => {
   }, [observerIsSet])
 
   const currJungleFarms = allJungleFarms.map((farm) => {
-    return { ...farm, isFinished: farm.isFinished || currentBlock > farm.endBlock }
+    return {
+      ...farm,
+      isFinished:
+        farm.isFinished || farm.rewardsPerSecond ? currentTime / 1000 > farm.endBlock : currentBlock > farm.endBlock,
+    }
   })
 
   const farmsWithHarvestAvailable = currJungleFarms.filter((farm) =>

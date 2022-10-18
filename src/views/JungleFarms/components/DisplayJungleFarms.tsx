@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
-import { JungleFarm, Tag } from 'state/types'
+import { Farm, JungleFarm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
@@ -22,7 +22,7 @@ import { useAppDispatch } from 'state'
 import { StyledTag } from '../../Pools/components/styles'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from 'state/zap/actions'
-import CalcButton from '../../../components/RoiCalculator/CalcButton'
+import CalcButton from 'components/RoiCalculator/CalcButton'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
   jungleFarms,

@@ -275,7 +275,7 @@ export interface JungleFarmConfig {
   contractAddress: Address
   projectLink: string
   twitter?: string
-  tokenPerBlock: string
+  tokenPerBlock?: string
   sortOrder?: number
   harvest?: boolean
   reflect?: boolean
@@ -290,6 +290,8 @@ export interface JungleFarmConfig {
   forAdmins?: boolean
   emergencyWithdraw?: boolean
   isEarnTokenLp?: boolean
+  // With the switching of rewards per block to seconds
+  rewardsPerSecond?: string
   network: number
 }
 
