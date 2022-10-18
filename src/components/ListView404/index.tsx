@@ -8,6 +8,14 @@ import useSwitchNetwork from 'hooks/useSelectNetwork'
 import React from 'react'
 import MonkeyImage from 'views/Dex/Orders/components/OrderHistoryPanel/MonkeyImage'
 
+const FULL_PRODUCT_NAMES = {
+  bills: 'Treasury Bills',
+  maximizers: 'Banana Maximizers',
+  jungleFarms: 'Jungle Farms',
+  pools: 'Pools',
+  farms: 'Farms',
+}
+
 const ListView404: React.FC<{ product: 'bills' | 'maximizers' | 'jungleFarms' | 'pools' | 'farms' }> = ({
   product,
 }) => {
@@ -26,18 +34,21 @@ const ListView404: React.FC<{ product: 'bills' | 'maximizers' | 'jungleFarms' | 
       }}
     >
       <Flex sx={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '50px 20px' }}>
-        <Text size="25px" sx={{ mb: '15px' }}>
-          {' '}
-          Your on {NETWORK_LABEL[chainId]}
+        <Text size="25px" sx={{ mb: '15px', textAlign: 'center' }}>
+          {"You're"} connected to: {NETWORK_LABEL[chainId]}
         </Text>
         <MonkeyImage />
-        <Text size="12px" sx={{ margin: '10px 0px 5px 0px', opacity: '.5' }}>
-          {t('The {feature} that you are trying to use is only available on {chains} Switch to:')}
+        <Text size="12px" sx={{ margin: '10px 0px 5px 0px', opacity: '.5', textAlign: 'center' }}>
+          {t('%product% is only available on ', {
+            product: FULL_PRODUCT_NAMES[product],
+          })}
+          {AVAILABLE_CHAINS_ON_PRODUCTS[product].map((chainId) => `${NETWORK_LABEL[chainId]}, `)}
+          {t('switch to ')}
         </Text>
         <Text size="14px" sx={{ opacity: '.5' }}>
           {t('Switch To')}
         </Text>
-        <Flex sx={{ mt: '10px', flexWrap: 'wrap' }}>
+        <Flex sx={{ mt: '10px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
           {AVAILABLE_CHAINS_ON_PRODUCTS[product].map((chainId) => {
             return (
               <Flex
