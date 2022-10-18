@@ -6,7 +6,6 @@ import { useTranslation } from 'contexts/Localization'
 import { styles } from './styles'
 import { useHistory, Link } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { StyledTag } from 'views/Pools/components/styles'
 
 export enum LiquidityTypes {
   ADD = 'ADD',

@@ -45,9 +45,6 @@ const ListView404: React.FC<{ product: 'bills' | 'maximizers' | 'jungleFarms' | 
           {AVAILABLE_CHAINS_ON_PRODUCTS[product].map((chainId) => `${NETWORK_LABEL[chainId]}, `)}
           {t('switch to ')}
         </Text>
-        <Text size="14px" sx={{ opacity: '.5' }}>
-          {t('Switch To')}
-        </Text>
         <Flex sx={{ mt: '10px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
           {AVAILABLE_CHAINS_ON_PRODUCTS[product].map((chainId) => {
             return (
