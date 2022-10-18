@@ -1,5 +1,7 @@
 import { JSBI, Percent, Token, ChainId, WETH } from '@ape.swap/sdk'
 
+export const mailChimpUrl = `https://finance.us10.list-manage.com/subscribe/post?u=${process.env.REACT_APP_MAILCHIMP_U}&id=${process.env.REACT_APP_MAILCHIMP_ID}`
+
 export enum RouterTypes {
   APE = 'APE',
   SMART = 'SMART',

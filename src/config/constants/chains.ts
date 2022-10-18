@@ -265,3 +265,16 @@ export const CHAIN_BLOCKS_PER_YEAR: Partial<Record<ChainId, BigNumber>> = {
   [ChainId.MAINNET]: new BigNumber(2628000),
   [ChainId.TLOS]: new BigNumber(63072000),
 }
+
+// Chef addresses for the LP migrator
+export const CHEF_ADDRESSES = {
+  [ChainId.BSC]: {
+    '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652': SmartRouter.PANCAKE,
+    '0xDbc1A13490deeF9c3C12b44FE77b503c1B061739': SmartRouter.BISWAP,
+  },
+}
+
+export const SMART_ROUTER_FULL_NAME = {
+  [SmartRouter.PANCAKE]: 'PancakeSwap',
+  [SmartRouter.BISWAP]: 'Biswap',
+}
