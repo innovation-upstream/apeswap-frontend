@@ -279,7 +279,7 @@ export const SMART_ROUTER_FULL_NAME = {
   [SmartRouter.BISWAP]: 'Biswap',
 }
 
-// Products on different chans and their available chains
+// Products on different chains and their available chains
 export const AVAILABLE_CHAINS_ON_PRODUCTS: Record<
   'bills' | 'maximizers' | 'jungleFarms' | 'pools' | 'farms',
   ChainId[]
