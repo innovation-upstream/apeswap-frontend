@@ -134,20 +134,20 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
             aprCalculator={
               <CalcButton
                 label={farm.tokenName}
-                rewardTokenName={farm.rewardToken.symbol}
-                rewardTokenPrice={farm.rewardToken.price}
+                rewardTokenName={farm?.rewardToken?.symbol}
+                rewardTokenPrice={farm?.rewardToken?.price}
                 apr={farm?.apr}
-                lpAddress={farm.stakingToken.address[chainId]}
+                lpAddress={farm?.stakingToken?.address[chainId]}
                 isLp
-                lpPrice={farm.stakingToken.price}
-                tokenAddress={farm.lpTokens.token.address[chainId]}
+                lpPrice={farm?.stakingToken?.price}
+                tokenAddress={farm?.lpTokens?.token?.address[chainId]}
                 quoteTokenAddress={
-                  farm.lpTokens.quoteToken.address[chainId] === 'TLOS'
+                  farm?.lpTokens?.quoteToken?.address[chainId] === 'TLOS'
                     ? 'ETH'
-                    : farm.lpTokens.quoteToken.address[chainId]
+                    : farm?.lpTokens?.quoteToken?.address[chainId]
                 }
-                lpCurr1={farm.lpTokens.token.address[chainId]}
-                lpCurr2={farm.lpTokens.quoteToken.address[chainId]}
+                lpCurr1={farm?.lpTokens?.token?.address[chainId]}
+                lpCurr2={farm?.lpTokens?.quoteToken?.address[chainId]}
               />
             }
           />
