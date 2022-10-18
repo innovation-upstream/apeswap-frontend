@@ -217,6 +217,9 @@ const App: React.FC = () => {
               <Route exact path="/zap" component={Zap} />
               <Route exact strict path="/zap/:currencyIdA" component={Zap} />
               <Route exact strict path="/zap/:currencyIdA/:currencyIdB/:currencyIdC" component={Zap} />
+              <Route path="/migrate">
+                <Redirect to={'/swap'} />
+              </Route>
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
             </Switch>
