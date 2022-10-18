@@ -65,7 +65,6 @@ const fetchJungleFarmTokenStatsAndApr = (
         getBalanceNumber(totalStaked),
         curFarm?.tokenPerBlock,
       )
-  console.log(apr)
 
   return [stakingToken, rewardToken, apr]
 }

@@ -223,7 +223,6 @@ export const useMoonPayUrl = (manualChainId?: number) => {
   const chainIdToUse = manualChainId || chainId
   const defaultCurrency = defaultCurrencies[chainIdToUse] || defaultCurrencies[56]
   const baseMoonPayUrl = `${moonPayBaseUrl}&defaultCurrencyCode=${defaultCurrency}`
-  console.log(baseMoonPayUrl)
   const [url, setUrl] = useState<string>(baseMoonPayUrl)
 
   useEffect(() => {
