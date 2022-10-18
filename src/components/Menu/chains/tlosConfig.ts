@@ -56,11 +56,12 @@ const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         href: 'https://apeswap.gitbook.io/apeswap-finance/',
         isNew: false,
       },
-      {
-        label: t('Charts'),
-        href: NETWORK_INFO_LINK[ChainId.TLOS],
-        isNew: false,
-      },
+      // Info page is not completely ready yet
+      // {
+      //   label: t('Charts'),
+      //   href: NETWORK_INFO_LINK[ChainId.TLOS],
+      //   isNew: false,
+      // },
       {
         label: t('Governance'),
         href: 'https://discuss.apeswap.finance',
