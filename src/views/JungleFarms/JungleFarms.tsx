@@ -23,6 +23,8 @@ import ListViewMenu from '../../components/ListViewMenu'
 import HarvestAll from './components/Actions/HarvestAll'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useSetZapOutputList } from 'state/zap/hooks'
+import ListView404 from 'components/ListView404'
+import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
 import { BannerTypes } from 'components/Banner/types'
 
 const NUMBER_OF_FARMS_VISIBLE = 10
@@ -45,6 +47,7 @@ const JungleFarms: React.FC = () => {
   const params = new URLSearchParams(search)
   const urlSearchedFarm = parseInt(params.get('id'))
   const isActive = !pathname.includes('history')
+  const isJungleFarms = pathname.includes('jungle-farms')
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const { jungleFarmTags } = useJungleFarmTags(chainId)
   const { jungleFarmOrderings } = useJungleFarmOrderings(chainId)
@@ -209,11 +212,29 @@ const JungleFarms: React.FC = () => {
               isJungle
             />
           </Flex>
-          <DisplayJungleFarms
-            jungleFarms={renderJungleFarms()}
-            openId={urlSearchedFarm}
-            jungleFarmTags={jungleFarmTags}
-          />
+          {isJungleFarms ? (
+            !AVAILABLE_CHAINS_ON_PRODUCTS['jungleFarms'].includes(chainId) ? (
+              <Flex mt="20px">
+                <ListView404 product="jungleFarms" />
+              </Flex>
+            ) : (
+              <DisplayJungleFarms
+                jungleFarms={renderJungleFarms()}
+                openId={urlSearchedFarm}
+                jungleFarmTags={jungleFarmTags}
+              />
+            )
+          ) : !AVAILABLE_CHAINS_ON_PRODUCTS['farms'].includes(chainId) ? (
+            <Flex mt="20px">
+              <ListView404 product="farms" />
+            </Flex>
+          ) : (
+            <DisplayJungleFarms
+              jungleFarms={renderJungleFarms()}
+              openId={urlSearchedFarm}
+              jungleFarmTags={jungleFarmTags}
+            />
+          )}
         </ListViewLayout>
       </Flex>
       <div ref={loadMoreRef} />

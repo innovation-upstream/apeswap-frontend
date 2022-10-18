@@ -278,3 +278,15 @@ export const SMART_ROUTER_FULL_NAME = {
   [SmartRouter.PANCAKE]: 'PancakeSwap',
   [SmartRouter.BISWAP]: 'Biswap',
 }
+
+// Products on different chains and their available chains
+export const AVAILABLE_CHAINS_ON_PRODUCTS: Record<
+  'bills' | 'maximizers' | 'jungleFarms' | 'pools' | 'farms',
+  ChainId[]
+> = {
+  bills: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  farms: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  maximizers: [ChainId.BSC],
+  jungleFarms: [ChainId.BSC],
+  pools: [ChainId.BSC],
+}
