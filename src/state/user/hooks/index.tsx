@@ -34,6 +34,7 @@ import {
   hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
   updateUserAutonomyPrepay,
+  lastZapMigratorRouter,
   setUnlimitedGnana,
   setShowModal,
   updateUserBonusRouter,
@@ -125,6 +126,22 @@ export function useThemeManager(): [boolean, () => void] {
   }, [dispatch])
 
   return [isDark, toggleTheme]
+}
+
+export function useLastZapMigratorRouter(): [SmartRouter, (router: SmartRouter) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const zapMigratorRouter = useSelector<AppState, AppState['user']['zapMigratorRouter']>(
+    (state) => state.user.zapMigratorRouter,
+  )
+
+  const updateLastZapMigratorRouter = useCallback(
+    (router: SmartRouter) => {
+      dispatch(lastZapMigratorRouter({ router }))
+    },
+    [dispatch],
+  )
+
+  return [zapMigratorRouter, updateLastZapMigratorRouter]
 }
 
 export function useUserSingleHopOnly(): [boolean, (newSingleHopOnly: boolean) => void] {
@@ -409,8 +426,8 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token], smartRouter
     tokenA.chainId,
     Pair.getAddress(tokenA, tokenB, smartRouter || SmartRouter.APE),
     18,
-    'Ape-LP',
-    'Apeswap LPs',
+    `${smartRouter || 'Ape'}-LP`,
+    `${smartRouter || 'Apeswap'} LPs`,
   )
 }
 

@@ -142,6 +142,9 @@ const contracts = {
     [ChainId.BSC]: '0xE136585d860B53dc2fC7ef00c268c8A8351c69d3',
     [ChainId.BSC_TESTNET]: '0x954c20D203e46e1e947079D5c7a265aFc52F0Efc',
   },
+  migratorBalanceChecker: {
+    [ChainId.BSC]: '0x353045418118965FB2e2EF4637143776Cd98d5ce',
+  },
 }
 
 export default contracts
