@@ -20,13 +20,27 @@ const LiquiditySelector: React.FC = () => {
 
   const { t } = useTranslation()
   return (
-    <Flex sx={{ alignItems: 'center', justifyContent: 'space-around', margin: '20px 0px' }}>
+    <Flex
+      sx={{
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        margin: chainId === ChainId.BSC ? '20px 0px' : '20px 20px',
+      }}
+    >
       <Flex sx={styles.liquiditySelector} as={Link} to="/liquidity" id="zap-link">
         <Flex sx={{ marginRight: '5px' }}>
           <Svg color={pathname.includes('/liquidity') ? 'text' : 'textDisabled'} icon="Positions" width="20px" />
         </Flex>
         <Text color={pathname.includes('/liquidity') ? 'text' : 'textDisabled'}>{t('Positions')}</Text>
       </Flex>
+      {chainId !== ChainId.BSC && (
+        <Flex as={Link} to="/zap" id="zap-link" sx={styles.liquiditySelector}>
+          <Flex sx={{ marginRight: '5px' }}>
+            <Svg color={pathname.includes('zap') ? 'text' : 'textDisabled'} icon="ZapIcon" />
+          </Flex>
+          <Text color={pathname.includes('zap') ? 'text' : 'textDisabled'}>{t('Zap')}</Text>
+        </Flex>
+      )}
       <Flex sx={styles.liquiditySelector}>
         <Text
           color={pathname.includes('add-liquidity') ? 'text' : 'textDisabled'}
@@ -38,34 +52,20 @@ const LiquiditySelector: React.FC = () => {
           {t('+ Add')}
         </Text>
       </Flex>
-      <Flex as={Link} to="/zap" id="zap-link" sx={styles.liquiditySelector}>
-        <Flex sx={{ marginRight: '5px' }}>
-          <Svg color={pathname.includes('zap') ? 'text' : 'textDisabled'} icon="ZapIcon" />
+      {chainId === ChainId.BSC && (
+        <Flex as={Link} to="/zap" id="zap-link" sx={styles.liquiditySelector}>
+          <Flex sx={{ marginRight: '5px' }}>
+            <Svg color={pathname.includes('zap') ? 'text' : 'textDisabled'} icon="ZapIcon" />
+          </Flex>
+          <Text color={pathname.includes('zap') ? 'text' : 'textDisabled'}>{t('Zap')}</Text>
         </Flex>
-        <Text color={pathname.includes('zap') ? 'text' : 'textDisabled'}>{t('Zap')}</Text>
-      </Flex>
-      {chainId === ChainId.BSC ? (
+      )}
+      {chainId === ChainId.BSC && (
         <Flex as={Link} to="/migrate" id="migrate-link" sx={styles.liquiditySelector}>
           <Flex sx={{ marginRight: '5px' }}>
             <Svg color={pathname.includes('migrate') ? 'text' : 'textDisabled'} icon="Migrate" width="20px" />
           </Flex>
           <Text color={pathname.includes('migrate') ? 'text' : 'textDisabled'}>{t('Migrate')} </Text>
-        </Flex>
-      ) : (
-        <Flex
-          sx={{
-            position: 'relative',
-            alignItems: 'center',
-            fontSize: '14px',
-            '@media (max-width: 350px)': {
-              fontSize: '12px',
-            },
-          }}
-        >
-          <Text color={pathname.includes('migrate') ? 'text' : 'textDisabled'} mr="5px">
-            {t('Migrate')}{' '}
-          </Text>
-          <StyledTag variant={'binance'}> {t('Soon')} </StyledTag>
         </Flex>
       )}
     </Flex>
