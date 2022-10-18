@@ -23,10 +23,10 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/uikit@1.3.34-alpha.0":
-  version "1.3.34-alpha.0"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.34-alpha.0.tgz#b072d205fcb753a417b1e7e582e2c9ff1a6cbbba"
-  integrity sha512-NQe8xrQGIY38NKRwHipdQnQneL3S9V5kg0tB1kHNOjVa2qBLAZpOO1SbSDdkDBC0e1S+eP6cs6rTTU2SEyb24Q==
+"@ape.swap/uikit@1.3.34-alpha.1":
+  version "1.3.34-alpha.1"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.34-alpha.1.tgz#637e70cb19c013fc60fbaf5e56adb5b262c048f3"
+  integrity sha512-6TTJvjkpBKuSvyZKaubAN9+3CTfffPVcN2ztH6IKiTGqOCbWnyGfvVr9UbA0ZM6vwvT51YQByWgJf/pLEOqrSA==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
