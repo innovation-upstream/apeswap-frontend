@@ -6,7 +6,6 @@ import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
 import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ApyButton from 'components/ApyCalculator/ApyButton'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import { Farm, JungleFarm, Tag } from 'state/types'
@@ -134,19 +133,21 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
             toolTipTransform="translate(8%, 0%)"
             aprCalculator={
               <CalcButton
-                label={farm.stakingToken.symbol}
-                rewardTokenName={farm?.rewardToken?.symbol}
-                rewardTokenPrice={farm?.rewardToken?.price}
+                label={farm.tokenName}
+                rewardTokenName={farm.rewardToken.symbol}
+                rewardTokenPrice={farm.rewardToken.price}
                 apr={farm?.apr}
-                lpApr={0}
-                apy={parseInt(farm?.apy)}
                 lpAddress={farm.stakingToken.address[chainId]}
                 isLp
+                lpPrice={farm.stakingToken.price}
                 tokenAddress={farm.lpTokens.token.address[chainId]}
                 quoteTokenAddress={
-                  farm.lpTokens.quoteToken.symbol === 'BNB' ? 'ETH' : farm.lpTokens.quoteToken.address[chainId]
+                  farm.lpTokens.quoteToken.address[chainId] === 'TLOS'
+                    ? 'ETH'
+                    : farm.lpTokens.quoteToken.address[chainId]
                 }
-                farm={farm as any}
+                lpCurr1={farm.lpTokens.token.address[chainId]}
+                lpCurr2={farm.lpTokens.quoteToken.address[chainId]}
               />
             }
           />
