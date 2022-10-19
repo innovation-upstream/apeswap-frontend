@@ -23,10 +23,10 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/uikit@1.3.34-alpha.1":
-  version "1.3.34-alpha.1"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.34-alpha.1.tgz#637e70cb19c013fc60fbaf5e56adb5b262c048f3"
-  integrity sha512-6TTJvjkpBKuSvyZKaubAN9+3CTfffPVcN2ztH6IKiTGqOCbWnyGfvVr9UbA0ZM6vwvT51YQByWgJf/pLEOqrSA==
+"@ape.swap/uikit@1.3.36":
+  version "1.3.36"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.36.tgz#0cbd60536c381335d9c3b2329ebbf686eb35007c"
+  integrity sha512-mo14TjrU4SBRazel7wvfvkone/OEkykCD/WqJjVD0z9FRMeGfEcEPa8lsIiTu/HHzxIGwMp8bwKiR5jP8dg06Q==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
@@ -59,10 +59,10 @@
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
 
-"@apeswapfinance/token-lists@1.0.315-alpha.3":
-  version "1.0.315-alpha.3"
-  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.315-alpha.3/e524cbab661ac0625fc351e7a4918ee4bcec81c5#e524cbab661ac0625fc351e7a4918ee4bcec81c5"
-  integrity sha512-2r+Wbj8IAgRL13coLaNqjiAyST3neRnET3J74MmOQXXFPqOVHBjm9RCt7MMR0CXjHtHRxb42VOHsBu+b8UrpXA==
+"@apeswapfinance/token-lists@1.0.318":
+  version "1.0.318"
+  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.318/18bfbbd19017858e286819618c7968265add036c#18bfbbd19017858e286819618c7968265add036c"
+  integrity sha512-OYDD3ShbM7/GDM4+2pTPP/u1MEFcdhLGfZoHr5qMeNCLw19Z6c6Vx3KfXH4ptL4zq7uj+HmPD0N326ZH5w28Gw==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
