@@ -33,12 +33,7 @@ export const NETWORK_RPC: Partial<Record<ChainId, string[]>> = {
   [ChainId.MATIC]: ['https://polygon-rpc.com/'],
   [ChainId.MATIC_TESTNET]: ['https://matic-mumbai.chainstacklabs.com'],
   [ChainId.MAINNET]: ['https://eth-mainnet.nodereal.io/v1/43f9100965104de49b580d1fa1ab28c0'],
-  [ChainId.TLOS]: [
-    'https://mainnet.telos.net/evm',
-    'https://rpc1.us.telos.net/evm',
-    'https://rpc2.eu.telos.net/evm',
-    'https://evm.teloskorea.com/evm',
-  ],
+  [ChainId.TLOS]: ['https://mainnet.telos.net/evm', 'https://rpc1.us.telos.net/evm'],
 }
 
 // Network block explorers
