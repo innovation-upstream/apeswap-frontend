@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/sdk@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.2.0.tgz#f55e3b707b434f2ff4960bfad459baa019682f0b"
-  integrity sha512-HcSRnStUYPYvb4+neV+WCfy0r+IOabkRgrpYb1kEPSytFxknS/L23JF3dnI1CLQjvcAHJO3YD3TSm2gCmBKIqA==
+"@ape.swap/sdk@4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.3.0.tgz#91bf8527e752342ef5734959798f32c65e66e202"
+  integrity sha512-Rsdm2luK5ksMfaoEHkAJl4gc7KE5DeM6n+9AsHSB4NAY5LBspjgbdxt2ORaB+U97J2mjrXsi+qKKR6UZqqTGUA==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"
@@ -23,10 +23,10 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/uikit@1.3.32":
-  version "1.3.32"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.32.tgz#af045644577b36b07f7b46f871322d891d44e925"
-  integrity sha512-nxzjxGiFsrsbQtZvMRZMvGtTbbO53HGYlsBCiolgKgd1WkC2v8pGCFsy1ivD9lH4xmz8mb+DNP5mU0aL2sru9g==
+"@ape.swap/uikit@1.3.36":
+  version "1.3.36"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.36.tgz#0cbd60536c381335d9c3b2329ebbf686eb35007c"
+  integrity sha512-mo14TjrU4SBRazel7wvfvkone/OEkykCD/WqJjVD0z9FRMeGfEcEPa8lsIiTu/HHzxIGwMp8bwKiR5jP8dg06Q==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
@@ -59,10 +59,10 @@
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
 
-"@apeswapfinance/token-lists@1.0.317":
-  version "1.0.317"
-  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.317/fb9e8fd2e832ca5b23852f650ccbbd14fee8983e#fb9e8fd2e832ca5b23852f650ccbbd14fee8983e"
-  integrity sha512-YcubnWpyudE5AnsT7reD8HlE/acC7jmR9pHIf/ZLT+OlZGqZaXiVas0OimuRoapa89rgxtc9h7b7e7WhcNSRZg==
+"@apeswapfinance/token-lists@1.0.318":
+  version "1.0.318"
+  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.318/18bfbbd19017858e286819618c7968265add036c#18bfbbd19017858e286819618c7968265add036c"
+  integrity sha512-OYDD3ShbM7/GDM4+2pTPP/u1MEFcdhLGfZoHr5qMeNCLw19Z6c6Vx3KfXH4ptL4zq7uj+HmPD0N326ZH5w28Gw==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"

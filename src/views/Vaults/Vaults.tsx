@@ -15,6 +15,8 @@ import { Vault } from 'state/types'
 import DisplayVaults from './components/DisplayVaults'
 import VaultMenu from './components/Menu'
 import { useSetZapOutputList } from 'state/zap/hooks'
+import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
+import ListView404 from 'components/ListView404'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
@@ -163,7 +165,11 @@ const Vaults: React.FC = () => {
             stakedOnly={stakedOnly}
             query={searchQuery}
           />
-          <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
+          {!AVAILABLE_CHAINS_ON_PRODUCTS['maximizers'].includes(chainId) ? (
+            <ListView404 product="maximizers" />
+          ) : (
+            <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
+          )}
         </ListViewLayout>
         <div ref={loadMoreRef} />
       </Flex>

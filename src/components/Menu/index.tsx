@@ -16,6 +16,7 @@ import bscConfig from './chains/bscConfig'
 import maticConfig from './chains/maticConfig'
 import { languageList } from '../../config/localization/languages'
 import ethConfig from './chains/ethConfig'
+import tlosConfig from './chains/tlosConfig'
 import iframeConfig from './chains/iframeConfig'
 import MoonPayModal from '../../views/Topup/MoonpayModal'
 import { mailChimpUrl } from 'config/constants'
@@ -48,6 +49,9 @@ const Menu = (props) => {
     }
     if (chainId === ChainId.MAINNET && isIframe !== true) {
       return ethConfig(translate)
+    }
+    if (chainId === ChainId.TLOS && isIframe !== true) {
+      return tlosConfig(translate)
     }
     if (isIframe === true) {
       return iframeConfig(translate)
