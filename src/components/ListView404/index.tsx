@@ -42,8 +42,15 @@ const ListView404: React.FC<{ product: 'bills' | 'maximizers' | 'jungleFarms' | 
           {t('%product% is only available on ', {
             product: FULL_PRODUCT_NAMES[product],
           })}
-          {AVAILABLE_CHAINS_ON_PRODUCTS[product].map((chainId) => `${NETWORK_LABEL[chainId]}, `)}
-          {t('switch to ')}
+          {AVAILABLE_CHAINS_ON_PRODUCTS[product].length === 1
+            ? AVAILABLE_CHAINS_ON_PRODUCTS[product].map((chainId) => `${NETWORK_LABEL[chainId]}. `)
+            : AVAILABLE_CHAINS_ON_PRODUCTS[product].map((chainId) =>
+                AVAILABLE_CHAINS_ON_PRODUCTS[product].indexOf(chainId) ===
+                AVAILABLE_CHAINS_ON_PRODUCTS[product].length - 1
+                  ? `${NETWORK_LABEL[chainId]}. `
+                  : `${NETWORK_LABEL[chainId]}, `,
+              )}
+          {t('Switch to: ')}
         </Text>
         <Flex sx={{ mt: '10px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
           {AVAILABLE_CHAINS_ON_PRODUCTS[product].map((chainId) => {
