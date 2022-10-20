@@ -165,7 +165,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
               cat: 'buy',
               address: contractAddress[chainId],
               typedValue,
-              usdAmount: parseFloat(typedValue) * lpPrice,
+              usdAmount: parseFloat(zap?.pairOut?.liquidityMinted?.toExact()) * lpPrice,
             },
           })
         })
