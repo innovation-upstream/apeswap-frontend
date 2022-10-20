@@ -1,4 +1,5 @@
-import { Flex } from '@apeswapfinance/uikit'
+/** @jsxImportSource theme-ui */
+import { Flex } from '@ape.swap/uikit'
 import { useLocation } from 'react-router-dom'
 import React, { useState } from 'react'
 import { usePollBills, useBills, usePollUserBills, useSetBills } from 'state/bills/hooks'
@@ -12,6 +13,8 @@ import BillMenu from './components/Menu'
 import { BannerTypes } from 'components/Banner/types'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import ListView404 from 'components/ListView404'
+import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
 
 const Bills: React.FC = () => {
   useSetBills()
@@ -67,11 +70,15 @@ const Bills: React.FC = () => {
   return (
     <>
       <Flex
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
         mb="80px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
+        sx={{
+          position: 'relative',
+          top: '30px',
+          width: '100%',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItem: 'center',
+        }}
       >
         <ListViewLayout>
           <Banner
@@ -89,8 +96,16 @@ const Bills: React.FC = () => {
             activeOption={sortOption}
             query={query}
           />
-          <UserBillViews bills={renderBills(true)} />
-          <BillsListView bills={renderBills(false)} />
+          {!AVAILABLE_CHAINS_ON_PRODUCTS['bills'].includes(chainId) ? (
+            <Flex sx={{ mt: '20px' }}>
+              <ListView404 product="bills" />
+            </Flex>
+          ) : (
+            <>
+              <UserBillViews bills={renderBills(true)} />
+              <BillsListView bills={renderBills(false)} />
+            </>
+          )}
         </ListViewLayout>
       </Flex>
     </>
