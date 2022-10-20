@@ -33,7 +33,7 @@ export default function MoonPayModal({ onDismiss }: ModalProps) {
       {!SUPPORTED_CHAINS.includes(chainId) ? (
         <Flex sx={{ margin: '10px 0px', flexDirection: 'column' }}>
           <Text>
-            {`${NETWORK_LABEL[chainId]} is unsupported by MoonPay. Assests purchased will be sent to other chains, depending on asset purchased.`}{' '}
+            {`${NETWORK_LABEL[chainId]} is unsupported by MoonPay. Assets purchased will be sent to other chains, depending on the asset.`}{' '}
           </Text>
           <Flex sx={{ margin: '20px 10px' }}>
             <Text size="14px">{t('Would you still like to purchase crypto with fiat?')}</Text>
