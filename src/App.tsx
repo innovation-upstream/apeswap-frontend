@@ -134,8 +134,8 @@ const App: React.FC = () => {
 
   useEffect(() => {
     showScroll()
-    if (account) dataLayer?.push({ event: 'wallet_connect', user_id: account })
-  }, [account, showScroll])
+    if (account) dataLayer?.push({ event: 'wallet_connect', chain: chainId, user_id: account })
+  }, [account, chainId, showScroll])
 
   const loadMenu = () => {
     if (chainId === ChainId.TLOS) {
