@@ -23,8 +23,6 @@ import {
 import { parseAddress, parseSmartAddress } from 'hooks/useAddress'
 import { RouterTypes } from 'config/constants'
 import getProvider from './getProvider'
-import getRpcUrl from './getRpcUrl'
-import Web3 from 'web3'
 
 export { default as formatAddress } from './formatAddress'
 

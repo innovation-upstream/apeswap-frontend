@@ -37,6 +37,7 @@ const Menu = (props) => {
   const { liveIfos } = useLiveIfoStatus()
   const { fastRefresh } = useRefresh()
   const [uDName, setUDName] = useState(null)
+  const [sidOwner, setSidOwner] = useState(null)
 
   const bananaPriceUsd = useBananaPrice()
   const [onPresentModal] = useModal(<MoonPayModal />)
@@ -56,33 +57,28 @@ const Menu = (props) => {
     return bscConfig(translate)
   }
 
-  // Set up SID SDK
-  // sss
-
   // SID TESTING
-  const [sidOwner, setSidOwner] = useState(null)
   const getSidOwner = useCallback(async () => {
     const sid = await getSidContract(chainId)
-    const resolver = await sid.resolver(account)
-    const { address } = resolver
     const { name } = await sid.getName(account)
-    // const reverseRecordTrx = await sid.setReverseRecord(name)
 
-    setSidOwner({ resolver, address, name })
-    console.log('sidOwner:::', sidOwner)
-  }, [chainId, account, sidOwner])
+    setSidOwner({ account, name })
+  }, [chainId, account])
 
   useEffect(() => {
-    getSidOwner()
+    account && getSidOwner()
+  }, [getSidOwner, account])
+
+  useEffect(() => {
     uauth.uauth
       .user()
       .then((user) => setUDName(user.sub))
       .catch(() => null)
-  }, [fastRefresh, getSidOwner])
+  }, [fastRefresh])
 
   return (
     <UikitMenu
-      // sidName={sidName}
+      sidName={sidOwner?.name}
       uDName={uDName}
       account={account}
       login={login}
