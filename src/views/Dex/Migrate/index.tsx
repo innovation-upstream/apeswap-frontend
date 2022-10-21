@@ -55,7 +55,7 @@ export default function Migrate() {
                 <Spinner size={100} />
               </Flex>
             ) : account ? (
-              walletBalances?.length > 0 && stakedBalances?.length > 0 ? (
+              walletBalances?.length > 0 || stakedBalances?.length > 0 ? (
                 <Flex sx={{ flexDirection: 'column' }}>
                   {walletBalances && (
                     <Text mb="15px" ml="1px">
