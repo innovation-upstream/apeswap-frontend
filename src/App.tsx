@@ -134,7 +134,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     showScroll()
-    if (account) dataLayer?.push({ event: 'wallet_connect', user_id: account })
+    if (account) dataLayer?.push({ event: 'wallet_connect', chain: chainId, user_id: account })
+    // if chainId is added to deps, it will be triggered each time users switch chain
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, showScroll])
 
   const loadMenu = () => {

@@ -11,6 +11,7 @@ import { useTranslation } from 'contexts/Localization'
 import { replaceSwapState, SwapDelay } from 'state/swap/actions'
 import { RouterTypes } from 'config/constants'
 import { SmartRouter } from '@ape.swap/sdk'
+import track from '../utils/track'
 
 const useSwitchNetwork = () => {
   const { chainId, account, library, connector } = useWeb3React()
@@ -44,6 +45,11 @@ const useSwitchNetwork = () => {
               bestRoute: { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE },
             }),
           )
+          track({
+            event: 'switch_network',
+            chain: userChainId,
+            data: {},
+          })
         } catch {
           // If the user doesn't have the chain add it
           await provider.request({
@@ -58,6 +64,11 @@ const useSwitchNetwork = () => {
               params: [{ chainId: formattedChainId }],
             })
             dispatch(fetchChainIdFromUrl(false))
+            track({
+              event: 'switch_network',
+              chain: userChainId,
+              data: {},
+            })
           } catch (error) {
             console.warn(error)
           }
