@@ -10,7 +10,7 @@ import { MigrateStatus, useMigrateAll } from '../provider'
 
 const useUnstakeAll = () => {
   const { library, account } = useActiveWeb3React()
-  const { handleUpdateMigrateLp } = useMigrateAll()
+  const { handleUpdateMigrateLp, handleUpdateMigratorResults } = useMigrateAll()
   const handleUnstakeAll = useCallback(
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
@@ -25,7 +25,10 @@ const useUnstakeAll = () => {
           .then((tx) =>
             library
               .waitForTransaction(tx.transactionHash)
-              .then(() => handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.COMPLETE))
+              .then(() => {
+                handleUpdateMigratorResults()
+                handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.COMPLETE)
+              })
               .catch(() => handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.INVALID)),
           )
           .catch(() => {
@@ -33,7 +36,7 @@ const useUnstakeAll = () => {
           })
       })
     },
-    [account, handleUpdateMigrateLp, library],
+    [account, handleUpdateMigrateLp, handleUpdateMigratorResults, library],
   )
   return handleUnstakeAll
 }

@@ -221,6 +221,7 @@ export interface MigrateResult {
 export const useMigratorBalances = (): {
   valid: boolean
   loading: boolean
+  syncing: boolean
   results: MigrateResult[]
 } => {
   const { account, chainId } = useActiveWeb3React()
@@ -229,7 +230,7 @@ export const useMigratorBalances = (): {
   // default variables can be seen here https://github.com/Uniswap/redux-multicall/blob/96dde8853e4990d06735c29e1eb1a76f748c5258/src/constants.ts
   const options = { gasRequired: 10000000 }
   const callResult = useSingleCallResult(migratorBalanceCheckerContract, 'getBalance', [account], options)
-  const { result, valid, loading: balanceLoading } = callResult
+  const { result, valid, loading: balanceLoading, syncing } = callResult
   // List of LP addresses
   const loLpAddresses = result ? result.pBalances.flatMap((b) => b.balances.map((item) => item.lp)) : []
   // List of Token addresses
@@ -291,6 +292,7 @@ export const useMigratorBalances = (): {
 
   return {
     valid,
+    syncing,
     loading:
       balanceLoading || lpCallResults[0]?.loading || tokenSymbolResults[0]?.loading || tokenDecimalResults[0]?.loading,
     results: balanceData,

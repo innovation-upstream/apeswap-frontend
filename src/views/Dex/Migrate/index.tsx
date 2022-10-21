@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Text, Flex, Spinner } from '@ape.swap/uikit'
+import { Text, Flex, Spinner, Button } from '@ape.swap/uikit'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
@@ -15,6 +15,7 @@ import { useMigratorBalances } from 'state/zapMigrator/hooks'
 import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import MonkeyImage from '../Orders/components/OrderHistoryPanel/MonkeyImage'
+import { Link } from 'react-router-dom'
 
 export default function Migrate() {
   // Since we need to display corresponding farm data for an lp we need to pull the farm fata
@@ -51,7 +52,15 @@ export default function Migrate() {
           <DexNav />
           <LiquiditySubNav />
           <Flex sx={{ flexDirection: 'column', maxWidth: '100%', width: '420px' }}>
-            <Flex sx={{ ...styles.topContainer }}>{!account && <UnlockButton fullWidth />}</Flex>
+            <Flex sx={{ ...styles.topContainer, mb: '20px' }}>
+              {!account ? (
+                <UnlockButton fullWidth />
+              ) : (
+                <Button fullWidth as={Link} to="/migrate/all">
+                  Migrate All
+                </Button>
+              )}
+            </Flex>
             {(loading || !valid) && account ? (
               <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Spinner size={100} />

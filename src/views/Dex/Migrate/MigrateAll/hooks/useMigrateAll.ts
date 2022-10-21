@@ -10,7 +10,7 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 
 const useMigrateAllLps = () => {
   const { library, chainId } = useActiveWeb3React()
-  const { handleUpdateMigrateLp } = useMigrateAll()
+  const { handleUpdateMigrateLp, handleUpdateMigratorResults } = useMigrateAll()
   const zapContract = useZapContract()
   const [allowedSlippage] = useUserSlippageTolerance(true)
   const deadline = useTransactionDeadline()
@@ -53,7 +53,10 @@ const useMigrateAllLps = () => {
           .then((tx) =>
             library
               .waitForTransaction(tx.hash)
-              .then(() => handleUpdateMigrateLp(lpAddress, 'migrate', MigrateStatus.COMPLETE))
+              .then(() => {
+                handleUpdateMigratorResults()
+                handleUpdateMigrateLp(lpAddress, 'migrate', MigrateStatus.COMPLETE)
+              })
               .catch(() => handleUpdateMigrateLp(lpAddress, 'migrate', MigrateStatus.INVALID)),
           )
           .catch(() => {
@@ -61,7 +64,7 @@ const useMigrateAllLps = () => {
           })
       })
     },
-    [library, deadline, allowedSlippage, zapContract, chainId, handleUpdateMigrateLp],
+    [library, deadline, allowedSlippage, zapContract, chainId, handleUpdateMigrateLp, handleUpdateMigratorResults],
   )
   return handleMigrateAll
 }
