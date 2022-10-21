@@ -27,6 +27,7 @@ export default function Migrate() {
   const { t } = useTranslation()
 
   const { loading, valid, results } = useMigratorBalances()
+
   const filterResultsByFarms = valid
     ? results.filter((res) => {
         const { token0, token1 } = res
@@ -39,6 +40,7 @@ export default function Migrate() {
         )
       })
     : []
+
   const walletBalances = valid ? filterResultsByFarms.filter((bal) => parseFloat(bal.walletBalance) > 0.0) : []
   const stakedBalances = valid ? filterResultsByFarms.filter((bal) => parseFloat(bal.stakedBalance) > 0.0) : []
 
@@ -55,7 +57,7 @@ export default function Migrate() {
                 <Spinner size={100} />
               </Flex>
             ) : account ? (
-              walletBalances?.length > 0 && stakedBalances?.length > 0 ? (
+              walletBalances?.length > 0 || stakedBalances?.length > 0 ? (
                 <Flex sx={{ flexDirection: 'column' }}>
                   {walletBalances && (
                     <Text mb="15px" ml="1px">
