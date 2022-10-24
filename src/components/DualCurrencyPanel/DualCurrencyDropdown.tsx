@@ -46,25 +46,25 @@ const DualCurrencyDropdown: React.FC<{
 
   const quickSorting = (token1, token2) => {
     // we might want to make this more involved. Sorting logic is as follows: 1 WETH, 2 BUSD, 3 DAI, 4 USDC
-    if (token1.getSymbol(chainId) === 'WETH') {
+    if (token1.symbol === 'WETH') {
       return -1
-    } else if (token1.getSymbol(chainId) === 'BUSD') {
-      if (token2.getSymbol(chainId) === 'WETH') {
-        return 1
-      } else return -1
-    } else if (token1.getSymbol(chainId) === 'DAI') {
-      if (token2.getSymbol(chainId) === 'WETH' || token2.getSymbol(chainId) === 'BUSD') {
-        return 1
-      } else return -1
-    } else if (token1.getSymbol(chainId) === 'USDC') {
-      if (
-        token2.getSymbol(chainId) === 'WETH' ||
-        token2.getSymbol(chainId) === 'BUSD' ||
-        token2.getSymbol(chainId) === 'DAI'
-      ) {
+    }
+    if (token1.symbol === 'BUSD') {
+      if (token2.symbol === 'WETH') {
         return 1
       } else return -1
     }
+    if (token1.symbol === 'DAI') {
+      if (token2.symbol === 'WETH' || token2.symbol === 'BUSD') {
+        return 1
+      } else return -1
+    }
+    if (token1.symbol === 'USDC') {
+      if (token2.symbol === 'WETH' || token2.symbol === 'BUSD' || token2.symbol === 'DAI') {
+        return 1
+      } else return -1
+    }
+    return 1
   }
 
   const currenciesList: DualCurrencySelector[] = useMemo(() => {
