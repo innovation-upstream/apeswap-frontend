@@ -135,7 +135,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Dashboard'),
         href: 'protocol-dashboard',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Documentation'),
@@ -151,6 +151,11 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         label: t('Governance'),
         href: 'https://discuss.apeswap.finance',
         isNew: false,
+      },
+      {
+        label: t('Newsletter'),
+        href: '?modal=newsletter',
+        isNew: true,
       },
     ],
   },

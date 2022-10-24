@@ -22,9 +22,12 @@ import { useZapCallback } from 'hooks/useZapCallback'
 import DistributionPanel from './components/DistributionPanel/DistributionPanel'
 import { RouteComponentProps } from 'react-router-dom'
 import DexNav from '../components/DexNav'
-import MyPositions from '../components/MyPositions'
 import LiquiditySubNav from '../components/LiquiditySubNav'
 import { useUserSlippageTolerance } from 'state/user/hooks'
+import track from 'utils/track'
+import { getBalanceNumber } from 'utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 function ZapLiquidity({
   match: {
@@ -41,7 +44,7 @@ function ZapLiquidity({
     zapErrorMessage: undefined,
     txHash: undefined,
   })
-
+  const { chainId } = useActiveWeb3React()
   const { INPUT, typedValue, recipient, zapType } = useZapState()
   const [zapSlippage] = useUserSlippageTolerance(true)
 
@@ -59,14 +62,7 @@ function ZapLiquidity({
     [onCurrencySelection],
   )
 
-  const { callback: zapCallback, error: zapCallbackError } = useZapCallback(
-    zap,
-    zapType,
-    zapSlippage,
-    recipient,
-    '',
-    null,
-  )
+  const { callback: zapCallback } = useZapCallback(zap, zapType, zapSlippage, recipient, '', null)
 
   const handleZap = useCallback(() => {
     setZapState({
@@ -79,6 +75,18 @@ function ZapLiquidity({
           zapErrorMessage: undefined,
           txHash: hash,
         })
+        track({
+          event: 'zap',
+          chain: chainId,
+          data: {
+            cat: 'liquidity',
+            token1: zap.currencyIn.currency.getSymbol(chainId),
+            token2: `${zap.currencyOut1.outputCurrency.getSymbol(chainId)}-${zap.currencyOut2.outputCurrency.getSymbol(
+              chainId,
+            )}`,
+            amount: getBalanceNumber(new BigNumber(zap.currencyIn.inputAmount.toString())),
+          },
+        })
       })
       .catch((error) => {
         setZapState({
@@ -86,7 +94,7 @@ function ZapLiquidity({
           txHash: undefined,
         })
       })
-  }, [zapCallback])
+  }, [chainId, zapCallback, zap])
 
   const handleDismissConfirmation = useCallback(() => {
     // clear zapState if user close the error modal
@@ -121,8 +129,8 @@ function ZapLiquidity({
       <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={dexStyles.dexContainer}>
           <DexNav zapSettings />
-          <MyPositions />
           <LiquiditySubNav />
+          <Flex sx={{ marginBottom: '30px' }} />
           <Flex sx={styles.liquidityContainer}>
             <DexPanel
               value={typedValue}

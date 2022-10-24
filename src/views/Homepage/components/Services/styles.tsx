@@ -56,6 +56,7 @@ export const YieldCard = styled.div<{ image?: string }>`
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  animation: ${FadeIn} 0.5s linear;
   @media screen and (min-width: 851px) {
     min-width: 338px;
     padding: 10px 20px;

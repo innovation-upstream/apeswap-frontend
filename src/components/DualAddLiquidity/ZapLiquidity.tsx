@@ -13,11 +13,13 @@ import { useZapCallback } from 'hooks/useZapCallback'
 import DistributionPanel from 'views/Dex/Zap/components/DistributionPanel/DistributionPanel'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Box, Switch } from 'theme-ui'
-import store from 'state'
 import useTheme from 'hooks/useTheme'
 import { wrappedToNative } from '../../utils'
+import track from 'utils/track'
+import { getBalanceNumber } from 'utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 interface ZapLiquidityProps {
   handleConfirmedTx: (hash: string, pairOut: Pair) => void
@@ -73,11 +75,23 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
     zapCallback()
       .then((hash) => {
         handleConfirmedTx(hash, zap.pairOut.pair)
+        track({
+          event: 'zap',
+          chain: chainId,
+          data: {
+            cat: 'liquidity',
+            token1: zap.currencyIn.currency.getSymbol(chainId),
+            token2: `${zap.currencyOut1.outputCurrency.getSymbol(chainId)}-${zap.currencyOut2.outputCurrency.getSymbol(
+              chainId,
+            )}`,
+            amount: getBalanceNumber(new BigNumber(zap.currencyIn.inputAmount.toString())),
+          },
+        })
       })
       .catch((error) => {
         setZapErrorMessage(error.message)
       })
-  }, [handleConfirmedTx, zap.pairOut.pair, zapCallback])
+  }, [chainId, handleConfirmedTx, zap, zapCallback])
 
   const handleDismissConfirmation = useCallback(() => {
     // clear zapErrorMessage if user closes the error modal

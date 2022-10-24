@@ -72,6 +72,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.MATIC_TESTNET]: {},
   [ChainId.BSC]: {},
   [ChainId.BSC_TESTNET]: {},
+  [ChainId.TLOS]: {},
 }
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =
@@ -191,6 +192,7 @@ function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddress
     [ChainId.MATIC_TESTNET]: { ...map1[ChainId.MATIC_TESTNET], ...map2[ChainId.MATIC_TESTNET] }, // matic testnet
     [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2[ChainId.BSC] }, // bsc
     [ChainId.BSC_TESTNET]: { ...map1[ChainId.BSC_TESTNET], ...map2[ChainId.BSC_TESTNET] }, // bsc testnet
+    [ChainId.TLOS]: { ...map1[ChainId.TLOS], ...map2[ChainId.TLOS] },
   }
 }
 

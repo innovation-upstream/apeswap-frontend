@@ -15,6 +15,8 @@ import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import { useSetZapOutputList } from 'state/zap/hooks'
+import ListView404 from 'components/ListView404'
+import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
 
 const Farms: React.FC = () => {
   useSetFarms()
@@ -56,8 +58,8 @@ const Farms: React.FC = () => {
   const [stakedOnly, setStakedOnly] = useState(false)
   const isActive = !pathname.includes('history')
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const activeFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
   const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
@@ -185,7 +187,13 @@ const Farms: React.FC = () => {
               showMonkeyImage
             />
           </Flex>
-          <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} />
+          {!AVAILABLE_CHAINS_ON_PRODUCTS['farms'].includes(chainId) ? (
+            <Flex mt="20px">
+              <ListView404 product="farms" />
+            </Flex>
+          ) : (
+            <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} />
+          )}
         </ListViewLayout>
       </Flex>
       <div ref={loadMoreRef} />

@@ -9,7 +9,7 @@ export const parseAddress = (currAddress: Address, chainId: ChainId) => {
 }
 
 export const parseSmartAddress = (
-  currAddress: Record<ChainId, Record<SmartRouter, string>>,
+  currAddress: Record<ChainId, Partial<Record<SmartRouter, string>>>,
   chainId: ChainId,
   smartRouter: SmartRouter,
 ) => {
@@ -114,4 +114,8 @@ export const useBabTokenAddress = () => {
 
 export const useRaffleAddress = () => {
   return useAddress(addresses.raffle)
+}
+
+export const useMigratorBalanceCheckerAddress = () => {
+  return useAddress(addresses.migratorBalanceChecker)
 }
