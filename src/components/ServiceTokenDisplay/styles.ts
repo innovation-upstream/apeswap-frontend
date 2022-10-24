@@ -16,7 +16,7 @@ export const TokenContainer = styled(Logo)<{
   margin-right: ${({ mr }) => mr}px;
   margin-top: ${({ mt }) => mt}px;
   z-index: ${({ zIndex }) => zIndex};
-  border-radius: $50px;
+  border-radius: 50px;
   ${({ theme }) => theme.mediaQueries.lg} {
     width: ${({ size }) => size || 35}px;
     height: ${({ size }) => size || 35}px;

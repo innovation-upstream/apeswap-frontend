@@ -1,12 +1,13 @@
 import getTimePeriods from 'utils/getTimePeriods'
-import { ApiResponse } from '../types'
+import { ApiResponse, Chain } from '../types'
 import { wrappedToNative } from './rawToPortfolio'
 
 export interface NftInfo {
   type: 'NFA' | 'NFB' | 'Bill'
-  id: number
+  id: number | string
   name: string
   imageUrl: string
+  chain?: Chain
   rarityRank?: number
   rarityTier?: number
   billType?: 'Banana' | 'Jungle'
@@ -33,8 +34,9 @@ export function rawToNfts({ userHoldings, userStats }: ApiResponse) {
       }
 
       nfts.push({
+        chain: chain.chainId,
         name: `${tokens.token1}-${tokens.token2}`,
-        id: bill.billId,
+        id: `${chain.chainId}-${bill.billId}`,
         imageUrl: bill.imageUrl,
         type: 'Bill',
         billType: bill.type,

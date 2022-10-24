@@ -4,7 +4,7 @@ import Image from 'views/Nft/components/Image'
 import { StyledCard, StyledText } from '../styles'
 
 interface NFTProps {
-  id: number
+  id: number | string
   name: string
   imageUrl: string
   rarityRank?: number

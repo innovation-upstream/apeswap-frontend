@@ -1,11 +1,14 @@
 import React from 'react'
-import { Image, Flex, Text } from '@apeswapfinance/uikit'
+import { BinanceIcon } from '@ape.swap/uikit'
+import { Image, Flex, Text, POLYGON } from '@apeswapfinance/uikit'
+
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import CardValue from '../../CardValue'
-import { BillImageContainer, StyledCard, StyledText } from '../styles'
+import { Chain } from 'state/statsPage/types'
+import { BillImageContainer, ChainIndicator, StyledCard, StyledText } from '../styles'
 
 interface BillProps {
-  id: number
+  chain: Chain
   imageUrl: string
   name: string
   type: 'Banana' | 'Jungle'
@@ -14,12 +17,23 @@ interface BillProps {
   timeRemaining: string
 }
 
-export const BillCard: React.FC<BillProps> = ({ imageUrl, name, type, tokens, value, timeRemaining }) => {
+const renderChain = (chain: Chain) => {
+  switch (chain) {
+    case 56:
+      return <BinanceIcon width={20} />
+
+    case 137:
+      return <POLYGON width={20} />
+  }
+}
+
+export const BillCard: React.FC<BillProps> = ({ chain, imageUrl, name, type, tokens, value, timeRemaining }) => {
   return (
     <StyledCard>
       <Flex flexDirection="column" alignItems="center" style={{ height: '100%' }}>
         <BillImageContainer>
-          <Image src="/images/bills-placeholder.png" width={230} height={132} />
+          <ChainIndicator>{renderChain(chain)}</ChainIndicator>
+          <Image src={`${imageUrl}?img-width=280`} width={230} height={132} />
         </BillImageContainer>
         <div style={{ padding: '20px', width: '100%' }}>
           <Flex alignItems="center" justifyContent="flex-start" style={{ gap: '14px', width: '100%' }}>
