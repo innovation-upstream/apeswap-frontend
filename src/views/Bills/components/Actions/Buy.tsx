@@ -28,6 +28,7 @@ import { useZapCallback } from 'hooks/useZapCallback'
 import BillActions from './BillActions'
 import track from 'utils/track'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useBillType } from '../../hooks/useBillType'
 
 const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   const {
@@ -44,6 +45,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   } = bill
   const { chainId, account, library } = useActiveWeb3React()
   const { recipient, typedValue } = useZapState()
+  const billType: string = useBillType(contractAddress[chainId])
   const { onBuyBill } = useBuyBill(contractAddress[chainId], typedValue, lpPrice, price)
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
@@ -156,6 +158,16 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
               amount: getBalanceNumber(new BigNumber(zap.currencyIn.inputAmount.toString())),
             },
           })
+          track({
+            event: billType,
+            chain: chainId,
+            data: {
+              cat: 'buy',
+              address: contractAddress[chainId],
+              typedValue,
+              usdAmount: parseFloat(zap?.pairOut?.liquidityMinted?.toExact()) * lpPrice,
+            },
+          })
         })
         .catch((e) => {
           console.error(e)
@@ -180,6 +192,10 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
     toastSuccess,
     zapCallback,
     zap,
+    typedValue,
+    billType,
+    contractAddress,
+    lpPrice,
   ])
 
   // would love to create a function on the near future to avoid the same code repeating itself along several parts of the repo

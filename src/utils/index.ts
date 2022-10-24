@@ -131,8 +131,7 @@ export function isTokenOnList(defaultTokens, currency?: Currency): boolean {
 }
 
 export function wrappedToNative(symbol: string) {
-  if (!symbol) return
-
+  if (!symbol) return ''
   if (symbol.includes('WBNB')) return symbol.replace('WBNB', 'BNB')
 
   if (symbol.includes('WETH')) return symbol.replace('WETH', 'ETH')

@@ -45,7 +45,7 @@ const DualCurrencyDropdown: React.FC<{
   }, [allTokens, chainId, rawZapInputList])
 
   const quickSorting = (token1, token2) => {
-    // we might want to make this more involved
+    // we might want to make this more involved. Sorting logic is as follows: 1 WETH, 2 BUSD, 3 DAI, 4 USDC
     if (token1.getSymbol(chainId) === 'WETH') {
       return -1
     } else if (token1.getSymbol(chainId) === 'BUSD') {
@@ -53,9 +53,15 @@ const DualCurrencyDropdown: React.FC<{
         return 1
       } else return -1
     } else if (token1.getSymbol(chainId) === 'DAI') {
-      if (token2.getSymbol(chainId) === 'WETH') {
+      if (token2.getSymbol(chainId) === 'WETH' || token2.getSymbol(chainId) === 'BUSD') {
         return 1
-      } else if (token2.getSymbol(chainId) === 'BUSD') {
+      } else return -1
+    } else if (token1.getSymbol(chainId) === 'USDC') {
+      if (
+        token2.getSymbol(chainId) === 'WETH' ||
+        token2.getSymbol(chainId) === 'BUSD' ||
+        token2.getSymbol(chainId) === 'DAI'
+      ) {
         return 1
       } else return -1
     }
@@ -117,7 +123,7 @@ const DualCurrencyDropdown: React.FC<{
           <Dropdown
             size="sm"
             component={<DropdownDisplay inputCurrencies={inputCurrencies} active />}
-            sx={{ width: '195px', zIndex: 500, background: 'white4' }}
+            sx={{ width: '190px', zIndex: 500, background: 'white4' }}
           >
             {currenciesList.slice(0, 4).map((item, index) => {
               return Item([item.currencyA, item.currencyB], index)
