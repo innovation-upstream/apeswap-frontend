@@ -39,7 +39,7 @@ export interface ITVLBreakdownInfo {
 }
 
 export interface UserChainInfo {
-  chainId: number
+  chainId: Chain
   farms: Array<Farm | DualFarm>
   pools: Pool[]
   vaults: Vault[]

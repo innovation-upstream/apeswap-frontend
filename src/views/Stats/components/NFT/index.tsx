@@ -52,7 +52,7 @@ export const NFT = () => {
                 nft.type === 'Bill' ? (
                   <BillCard
                     key={nft.id}
-                    id={nft.id}
+                    chain={nft.chain}
                     imageUrl={nft.imageUrl}
                     name={nft.name}
                     tokens={nft.tokens}
@@ -75,7 +75,7 @@ export const NFT = () => {
                 nft.type === 'Bill' ? (
                   <BillCard
                     key={nft.id}
-                    id={nft.id}
+                    chain={nft.chain}
                     imageUrl={nft.imageUrl}
                     name={nft.name}
                     tokens={nft.tokens}

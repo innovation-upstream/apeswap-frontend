@@ -64,6 +64,7 @@ export const BillImageContainer = styled.div`
   margin: 20px;
   border-radius: 6px;
   overflow: hidden;
+  position: relative;
 `
 
 export const NoContentCard = styled(Card)`
@@ -71,4 +72,13 @@ export const NoContentCard = styled(Card)`
   min-height: 403px;
   margin: 30px 0 32px !important;
   padding: 30px;
+`
+
+export const ChainIndicator = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 100;
+  transform: translate(-6px, 6px);
+  filter: drop-shadow(0 2px 8px #414141);
 `
