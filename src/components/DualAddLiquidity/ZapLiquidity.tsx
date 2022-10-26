@@ -32,6 +32,8 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
   useSetZapInputList()
   const [zapErrorMessage, setZapErrorMessage] = useState<string>(null)
   const [stakeIntoProduct, setStakeIntoProduct] = useState<boolean>(true)
+  const [disableZap, setDisableZap] = useState<boolean>(false)
+
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const { isDark } = useTheme()
@@ -56,8 +58,11 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
   const handleOutputSelect = useCallback(
     (currencyIdA: Currency, currencyIdB: Currency) => {
       onCurrencySelection(Field.OUTPUT, [currencyIdA, currencyIdB])
+      setDisableZap(true)
+      onSetZapType(ZapType.ZAP)
+      setStakeIntoProduct(false)
     },
-    [onCurrencySelection],
+    [onCurrencySelection, onSetZapType],
   )
 
   const handleStakeIntoProduct = (value: boolean) => {
@@ -126,9 +131,9 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
           <Flex sx={{ marginBottom: '10px', fontSize: '12px', alignItems: 'center' }}>
             <Text>
               {t('Stake in')}{' '}
-              {`${wrappedToNative(zap?.pairOut?.pair?.token0?.getSymbol(chainId)) ?? ''} - ${
-                wrappedToNative(zap?.pairOut?.pair?.token1?.getSymbol(chainId)) ?? ''
-              }`}
+              {`${wrappedToNative(zap?.pairOut?.pair?.token0?.getSymbol(chainId))} - ${wrappedToNative(
+                zap?.pairOut?.pair?.token1?.getSymbol(chainId),
+              )}`}
             </Text>
             <Box sx={{ width: '50px', marginLeft: '10px' }}>
               <Switch
@@ -138,6 +143,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
                   ...styles.switchStyles,
                   backgroundColor: isDark ? 'rgba(56, 56, 56, 1)' : 'rgba(241, 234, 218, 1)',
                 }}
+                disabled={disableZap}
               />
             </Box>
           </Flex>

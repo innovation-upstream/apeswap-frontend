@@ -11,7 +11,7 @@ export enum RouterTypes {
 export const NetworkContextName = 'NETWORK'
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)
-// @ts-ignore
+
 export const WRAPPED_NATIVE_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
   [ChainId.MATIC]: [WETH[ChainId.MATIC]],
@@ -256,9 +256,4 @@ export enum SHOW_MODAL_TYPES {
   buyModal = 'showBuyModal',
   poolHarvestModal = 'showPoolHarvestModal',
   generalHarvestModal = 'showGeneralHarvestModal',
-}
-
-export enum ZAP_MODAL_LOCATION {
-  FARMS = 0,
-  DUAL_FARM = 1,
 }

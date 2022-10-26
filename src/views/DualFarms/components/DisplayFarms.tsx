@@ -18,7 +18,7 @@ import { ActionContainer } from './CardActions/styles'
 import useIsMobile from 'hooks/useIsMobile'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import useAddLiquidityModal from 'hooks/useAddLiquidityModal'
-import { useMiniChefAddress } from '../../../hooks/useAddress'
+import { useMiniChefAddress } from 'hooks/useAddress'
 import { ZapType } from '@ape.swap/sdk'
 
 const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags: Tag[] }> = ({

@@ -219,7 +219,7 @@ export function useDerivedZapInfo(): {
     inputError = inputError ?? 'Enter an amount'
   }
 
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
+  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT] || !outputPair[1]) {
     inputError = inputError ?? 'Select a token'
   }
 

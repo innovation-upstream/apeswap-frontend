@@ -35,7 +35,7 @@ const useBuyBill = (
     return tx
   }, [billContract, amount, account, chainId, billType, usdAmount, maxPrice])
 
-  return { onBuyBill: handleBuyBill, maxPrice }
+  return { onBuyBill: handleBuyBill }
 }
 
 export default useBuyBill

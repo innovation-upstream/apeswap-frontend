@@ -1,15 +1,10 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import BigNumber from 'bignumber.js'
 import { CenterContainer } from './styles'
-import ApprovalAction from '../../../../components/DualDepositModal/ApprovalAction'
 import StakeAction from './StakeActions'
-import UnlockButton from '../../../../components/UnlockButton'
-import { DualFarm } from '../../../../state/types'
-import { ModalProvider } from '@ape.swap/uikit'
-
-// Changed props to type string because BigNumbers cause re-renders
+import UnlockButton from 'components/UnlockButton'
+import { DualFarm } from 'state/types'
 
 interface CardActionProps {
   lpValueUsd: number
