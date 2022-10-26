@@ -17,6 +17,16 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
     <Flex sx={{ flexDirection: 'column' }}>
       <Flex sx={{ alignItems: 'center' }}>
         {MIGRATION_STEPS.map(({ title, description }, i) => {
+          console.warn('WE ARE HERE ADSDSD')
+          console.warn('WE ARE HERE ADSDSD')
+          console.warn('WE ARE HERE ADSDSD')
+          console.warn('WE ARE HERE ADSDSD')
+          console.warn('WE ARE HERE ADSDSD')
+          console.warn('WE ARE HERE ADSDSD')
+          console.warn('WE ARE HERE ADSDSD')
+          console.warn('WE ARE HERE ADSDSD')
+          console.log(isComplete)
+          console.log(migrateLpStatus)
           const isIndexComplete = isComplete.filter((loFlag) => !loFlag[i]).length === 0
           return (
             <>

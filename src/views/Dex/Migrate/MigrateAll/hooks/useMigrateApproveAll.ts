@@ -15,19 +15,23 @@ const useMigrateApproveAll = () => {
   const handleApproveAll = useCallback(
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
-        const { lpAddress } = migrateLp
+        const { lpAddress, id } = migrateLp
         const lpContract = new Contract(lpAddress, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
-        handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.PENDING)
+        handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.PENDING, 'Migrate approval in progress')
         lpContract
           .approve(ZAP_ADDRESS[chainId], ethers.constants.MaxUint256)
           .then((tx) =>
             library
               .waitForTransaction(tx.hash)
-              .then(() => handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.COMPLETE))
-              .catch(() => handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.INVALID)),
+              .then(() => {
+                handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.COMPLETE, 'Migrate approval complete')
+              })
+              .catch(() =>
+                handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.INVALID, 'Migrate approval failed'),
+              ),
           )
           .catch(() => {
-            handleUpdateMigrateLp(lpAddress, 'approveMigrate', MigrateStatus.INVALID)
+            handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.INVALID, 'Migrate approval failed')
           })
       })
     },

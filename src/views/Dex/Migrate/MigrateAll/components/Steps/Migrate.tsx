@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
+import { Button, Flex, Text } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
@@ -20,14 +20,15 @@ const Migrate: React.FC<{ migrateList: MigrateResult[]; apeswapWalletLps: { pair
   const { migrateLpStatus } = useMigrateAll()
   const handleMigrateAll = useMigrateAllLps()
   const listView = migrateList?.map((migrate) => {
-    const { token0, token1, lpAddress, stakedBalance, walletBalance } = migrate
-    const status = migrateLpStatus.find((status) => status.lpAddress === lpAddress)
+    const { token0, token1, lpAddress, walletBalance, id } = migrate
+    const status = migrateLpStatus?.find((status) => status.id === id)
     const matchedApeLps = apeswapWalletLps?.find(
       ({ pair }) => pair.token0.address === token0.address && pair.token1.address === token1.address,
     )
     return {
-      beforeTokenContent: <StatusIcons lpAddress={lpAddress} />,
+      beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
+      titleContainerWidth: 350,
       backgroundColor: 'white3',
       stakeLp: true,
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
@@ -37,7 +38,7 @@ const Migrate: React.FC<{ migrateList: MigrateResult[]; apeswapWalletLps: { pair
         <>
           <ListViewContent title={t('LP To Maigrate')} value={walletBalance} ml={20} />
           <ListViewContent title={t('Ape LP')} value={matchedApeLps?.balance?.toSignificant(6) || '0'} ml={20} />
-          <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} />
+          <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={225} />
         </>
       ),
     } as ExtendedListViewProps

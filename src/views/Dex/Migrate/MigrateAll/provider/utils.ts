@@ -4,12 +4,12 @@ import { Pair, TokenAmount, ZAP_ADDRESS } from '@ape.swap/sdk'
 import erc20ABI from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import BigNumber from 'bignumber.js'
-import { MigrateLpStatus, MigrateStatus, MIGRATION_STEPS } from '.'
+import { ApeswapWalletLpInterface, MigrateLpStatus, MigrateStatus, MIGRATION_STEPS } from '.'
 import { Farm, Vault } from 'state/types'
 
 export const setMigrateLpStatus = async (
   migrateLps: MigrateResult[],
-  apeswapLps: { pair: Pair; balance: TokenAmount }[],
+  apeswapLps: ApeswapWalletLpInterface[],
   farms: Farm[],
   vaults: Vault[],
   migrateMaximizers: boolean,
@@ -24,6 +24,7 @@ export const setMigrateLpStatus = async (
     const rawLpAllowances = await multicall(chainId, erc20ABI, calls)
     return migrateLps?.map((migrateLp, i) => {
       return {
+        id: migrateLp.id,
         lpAddress: migrateLp.lpAddress,
         status: {
           unstake: parseFloat(migrateLp.stakedBalance) > 0 ? MigrateStatus.INCOMPLETE : MigrateStatus.COMPLETE,
@@ -35,12 +36,12 @@ export const setMigrateLpStatus = async (
           approveStake: MigrateStatus.INCOMPLETE,
           stake: MigrateStatus.INCOMPLETE,
         },
-        statusText: 'Some shit',
+        statusText: '',
       }
     })
   }
   const getApeswapLpStatus = async () => {
-    return apeswapLps?.map(({ pair }) => {
+    return apeswapLps?.map(({ pair, id }) => {
       const matchedVault = vaults.find(
         (vault) => vault.stakeToken.address[chainId].toLowerCase() === pair.liquidityToken.address.toLowerCase(),
       )
@@ -49,6 +50,7 @@ export const setMigrateLpStatus = async (
       )
       const migrateVaultAvailable = migrateMaximizers && matchedVault
       return {
+        id,
         lpAddress: pair.liquidityToken.address,
         status: {
           unstake: MigrateStatus.COMPLETE,
@@ -63,7 +65,7 @@ export const setMigrateLpStatus = async (
             : MigrateStatus.INCOMPLETE,
           stake: MigrateStatus.INCOMPLETE,
         },
-        statusText: 'Some shit',
+        statusText: '',
       }
     })
   }

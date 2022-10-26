@@ -4,11 +4,11 @@ import React from 'react'
 import { Spinner } from 'theme-ui'
 import { MigrateStatus, useMigrateAll } from '../provider'
 
-const StatusIcons: React.FC<{ lpAddress: string }> = ({ lpAddress }) => {
+const StatusIcons: React.FC<{ id: number }> = ({ id }) => {
   const { migrateLpStatus } = useMigrateAll()
-  const status = migrateLpStatus.find((status) => status.lpAddress === lpAddress)
+  const status = migrateLpStatus.find((status) => status.id === id)
   return (
-    <Flex sx={{ width: '100px', transform: 'translate(-15px, 0px)' }}>
+    <Flex sx={{ width: '120px', transform: 'translate(-15px, 0px)' }}>
       {status &&
         Object.values(status.status).map((val, i) =>
           val === MigrateStatus.COMPLETE ? (

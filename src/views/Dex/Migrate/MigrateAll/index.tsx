@@ -15,7 +15,7 @@ const MigrateAll: React.FC = () => {
   usePollVaultUserData()
   return (
     <Flex sx={{ ...dexStyles.pageContainer }}>
-      <Flex sx={{ flexDirection: 'column', border: '1px solid red', width: '1200px' }}>
+      <Flex sx={{ flexDirection: 'column', width: '1200px' }}>
         <MigrateProvider>
           <MigrateProgress activeLineMargin={8.25}>
             <Steps />

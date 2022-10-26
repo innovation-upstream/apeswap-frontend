@@ -11,10 +11,10 @@ import { useFarms } from 'state/farms/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Switch } from 'theme-ui'
 import StatusIcons from '../StatusIcons'
-import { MigrateStatus, useMigrateAll } from '../../provider'
+import { ApeswapWalletLpInterface, MigrateStatus, useMigrateAll } from '../../provider'
 import useStakeApproveAll from '../../hooks/useStakeApproveAll'
 
-const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({ apeswapWalletLps }) => {
+const ApproveStake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ apeswapWalletLps }) => {
   const { chainId, account } = useActiveWeb3React()
   const farms = useFarms(account)
   const { t } = useTranslation()
@@ -32,13 +32,14 @@ const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmo
   )
 
   const listView = filteredLpsForStake?.map((apeLp) => {
-    const { pair, balance } = apeLp
+    const { pair, balance, id } = apeLp
     const { token0, token1, liquidityToken } = pair
     const { address: lpAddress } = liquidityToken
-    const status = migrateLpStatus.find((status) => status.lpAddress === lpAddress)
+    const status = migrateLpStatus?.find((status) => status.id === id)
     return {
-      beforeTokenContent: <StatusIcons lpAddress={lpAddress} />,
+      beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
+      titleContainerWidth: 350,
       stakeLp: true,
       backgroundColor: 'white3',
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,

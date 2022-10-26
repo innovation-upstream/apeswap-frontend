@@ -206,7 +206,10 @@ export function useZapMigratorActionHandlers(): {
   }
 }
 
+// Need to generate a unique id for migrate results to keep track of the progress during migrate all as the LP address switches between protocols
+// The id is only used to track migration status. It is not used in a single migration
 export interface MigrateResult {
+  id: number
   smartRouter: SmartRouter
   chefAddress: string
   lpAddress: string
@@ -218,7 +221,9 @@ export interface MigrateResult {
   stakedBalance: string
 }
 
-export const useMigratorBalances = (): {
+export const useMigratorBalances = (
+  blocksPerFetch = 1,
+): {
   valid: boolean
   loading: boolean
   syncing: boolean
@@ -228,7 +233,7 @@ export const useMigratorBalances = (): {
   const migratorBalanceCheckerContract = useMigratorBalanceCheckerContract()
   // The default gasRequired is too small for this call so we have to up the limit.
   // default variables can be seen here https://github.com/Uniswap/redux-multicall/blob/96dde8853e4990d06735c29e1eb1a76f748c5258/src/constants.ts
-  const options = { gasRequired: 10000000 }
+  const options = { gasRequired: 10000000, blocksPerFetch }
   const callResult = useSingleCallResult(migratorBalanceCheckerContract, 'getBalance', [account], options)
   const { result, valid, loading: balanceLoading, syncing } = callResult
   // List of LP addresses
@@ -262,6 +267,7 @@ export const useMigratorBalances = (): {
           const chef = CHEF_ADDRESSES[chainId][b.stakingAddress] as SmartRouter
           return b.balances.map(([pid, lp, token0, token1, total, wallet, staked]) => {
             return {
+              id: parseInt(lp),
               smartRouter: chef,
               chefAddress: b.stakingAddress,
               lpAddress: lp,

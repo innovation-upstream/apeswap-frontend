@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
+import { Button, Flex, Text } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
@@ -8,34 +8,38 @@ import { wrappedToNative } from 'utils'
 import React from 'react'
 import { Pair, TokenAmount } from '@ape.swap/sdk'
 import { useFarms } from 'state/farms/hooks'
-import { useVaults } from 'state/vaults/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import StatusIcons from '../StatusIcons'
-import { useMigrateAll } from '../../provider'
+import { ApeswapWalletLpInterface, MigrateStatus, useMigrateAll } from '../../provider'
 import useStakeAll from '../../hooks/useStakeAll'
-const Stake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({ apeswapWalletLps }) => {
+const Stake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ apeswapWalletLps }) => {
   const { chainId, account } = useActiveWeb3React()
   const farms = useFarms(account)
-  const { vaults } = useVaults()
   const { migrateLpStatus } = useMigrateAll()
   const handleStakeAll = useStakeAll()
   const { t } = useTranslation()
   // Since each vault needs a farm we can filter by just farms
-  const filteredLpsForStake = apeswapWalletLps.filter(({ pair }) =>
+  const filteredLps = apeswapWalletLps.filter(({ pair }) =>
     farms.find((farm) => pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
   )
 
+  // Filter LPs that have been approved
+  const filteredLpsForStake = filteredLps?.filter(
+    ({ pair }) =>
+      migrateLpStatus?.find((status) => status.lpAddress.toLowerCase() === pair.liquidityToken.address.toLowerCase())
+        ?.status.approveStake === MigrateStatus.COMPLETE,
+  )
+
   const listView = filteredLpsForStake?.map((apeLp) => {
-    const { pair, balance } = apeLp
+    const { pair, balance, id } = apeLp
     const { token0, token1, liquidityToken } = pair
     const { address: lpAddress } = liquidityToken
-    const farm = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lpAddress.toLowerCase())
-    const vault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddress.toLowerCase())
-    const status = migrateLpStatus.find((status) => status.lpAddress === lpAddress)
+    const status = migrateLpStatus?.find((status) => status.id === id)
     return {
-      beforeTokenContent: <StatusIcons lpAddress={lpAddress} />,
+      beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
       backgroundColor: 'white3',
+      titleContainerWidth: 350,
       stakeLp: true,
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       noEarnToken: true,

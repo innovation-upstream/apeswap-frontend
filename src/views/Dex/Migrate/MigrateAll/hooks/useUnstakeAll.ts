@@ -14,25 +14,25 @@ const useUnstakeAll = () => {
   const handleUnstakeAll = useCallback(
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
-        const { pid, chefAddress, stakedBalance, lpAddress } = migrateLp
+        const { pid, chefAddress, stakedBalance, id } = migrateLp
         const masterChefContract = new Contract(
           chefAddress,
           masterChefAbi,
           getProviderOrSigner(library, account),
         ) as Masterchef
-        handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.PENDING)
+        handleUpdateMigrateLp(id, 'unstake', MigrateStatus.PENDING, 'Unstake in progress')
         unstake(masterChefContract, pid, stakedBalance)
           .then((tx) =>
             library
               .waitForTransaction(tx.transactionHash)
               .then(() => {
+                handleUpdateMigrateLp(id, 'unstake', MigrateStatus.COMPLETE, 'Unstake complete')
                 handleUpdateMigratorResults()
-                handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.COMPLETE)
               })
-              .catch(() => handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.INVALID)),
+              .catch(() => handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, 'Unstake failed')),
           )
           .catch(() => {
-            handleUpdateMigrateLp(lpAddress, 'unstake', MigrateStatus.INVALID)
+            handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, 'Unstake failed')
           })
       })
     },

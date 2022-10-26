@@ -23,11 +23,12 @@ const ApproveMigrate: React.FC<{
       MigrateStatus.COMPLETE,
   )
   const listView = filteredLps?.map((migrate) => {
-    const { token0, token1, lpAddress, walletBalance } = migrate
-    const status = migrateLpStatus?.find((status) => status.lpAddress === lpAddress)
+    const { token0, token1, lpAddress, walletBalance, id } = migrate
+    const status = migrateLpStatus?.find((status) => status.id === id)
     return {
-      beforeTokenContent: <StatusIcons lpAddress={lpAddress} />,
+      beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
+      titleContainerWidth: 350,
       backgroundColor: 'white3',
       stakeLp: true,
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
@@ -37,7 +38,7 @@ const ApproveMigrate: React.FC<{
         <>
           <ListViewContent title={t('LP To Maigrate')} value={walletBalance} ml={20} />
           {/* <ListViewContent title={t('Ape LP')} value={matchedApeLps?.balance?.toSignificant(6) || '0'} ml={20} /> */}
-          <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} />
+          <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={225} />
         </>
       ),
     } as ExtendedListViewProps

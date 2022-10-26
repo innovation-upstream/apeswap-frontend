@@ -7,17 +7,18 @@ import { JSBI, SMART_ROUTER_ADDRESS } from '@ape.swap/sdk'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import BigNumber from 'bignumber.js'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { calculateGasMargin } from 'utils'
 
 const useMigrateAllLps = () => {
   const { library, chainId } = useActiveWeb3React()
-  const { handleUpdateMigrateLp, handleUpdateMigratorResults } = useMigrateAll()
+  const { handleUpdateMigrateLp, handleUpdateOfApeswapLpBalance, handleUpdateMigratorResults } = useMigrateAll()
   const zapContract = useZapContract()
   const [allowedSlippage] = useUserSlippageTolerance(true)
   const deadline = useTransactionDeadline()
   const handleMigrateAll = useCallback(
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
-        const { lpAddress, smartRouter, walletBalance, token0, token1, totalSupply } = migrateLp
+        const { lpAddress, smartRouter, walletBalance, token0, token1, totalSupply, id } = migrateLp
         const poolTokenPercentage = parseFloat(walletBalance) / parseFloat(totalSupply)
 
         const [token0Deposited, token1Deposited] = [
@@ -38,7 +39,18 @@ const useMigrateAllLps = () => {
           JSBI.divide(JSBI.multiply(token0MinOut, JSBI.BigInt(10000 - allowedSlippage)), JSBI.BigInt(10000)),
           JSBI.divide(JSBI.multiply(token1MinOut, JSBI.BigInt(10000 - allowedSlippage)), JSBI.BigInt(10000)),
         ]
-        handleUpdateMigrateLp(lpAddress, 'migrate', MigrateStatus.PENDING)
+        console.warn(id)
+        handleUpdateMigrateLp(id, 'migrate', MigrateStatus.PENDING, 'Migrate in progress')
+        const gasEstimate = await zapContract.estimateGas.zapLPMigrator(
+          SMART_ROUTER_ADDRESS[chainId][smartRouter],
+          lpAddress,
+          new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
+          token0MinOut.toString(),
+          token1MinOut.toString(),
+          token0MinIn.toString(),
+          token1MinIn.toString(),
+          deadline.toString(),
+        )
         zapContract
           .zapLPMigrator(
             SMART_ROUTER_ADDRESS[chainId][smartRouter],
@@ -49,22 +61,36 @@ const useMigrateAllLps = () => {
             token0MinIn.toString(),
             token1MinIn.toString(),
             deadline.toString(),
+            { gasLimit: calculateGasMargin(gasEstimate) },
           )
           .then((tx) =>
             library
               .waitForTransaction(tx.hash)
               .then(() => {
+                handleUpdateMigrateLp(id, 'migrate', MigrateStatus.COMPLETE, 'Migrate complete')
+                handleUpdateOfApeswapLpBalance(id, token0.address, token1.address)
                 handleUpdateMigratorResults()
-                handleUpdateMigrateLp(lpAddress, 'migrate', MigrateStatus.COMPLETE)
               })
-              .catch(() => handleUpdateMigrateLp(lpAddress, 'migrate', MigrateStatus.INVALID)),
+              .catch((e) => {
+                console.error(e)
+                handleUpdateMigrateLp(id, 'migrate', MigrateStatus.INVALID, e.message)
+              }),
           )
-          .catch(() => {
-            handleUpdateMigrateLp(lpAddress, 'migrate', MigrateStatus.INVALID)
+          .catch((e) => {
+            handleUpdateMigrateLp(id, 'migrate', MigrateStatus.INVALID, e.message)
           })
       })
     },
-    [library, deadline, allowedSlippage, zapContract, chainId, handleUpdateMigrateLp, handleUpdateMigratorResults],
+    [
+      library,
+      deadline,
+      allowedSlippage,
+      zapContract,
+      chainId,
+      handleUpdateMigrateLp,
+      handleUpdateOfApeswapLpBalance,
+      handleUpdateMigratorResults,
+    ],
   )
   return handleMigrateAll
 }
