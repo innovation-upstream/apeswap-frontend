@@ -4,19 +4,21 @@ import DualLiquidityModal from '../components/DualAddLiquidity/DualLiquidityModa
 import { Field, selectCurrency } from '../state/swap/actions'
 import { selectOutputCurrency } from '../state/zap/actions'
 import { useDispatch } from 'react-redux'
+import { ZapType } from '@ape.swap/sdk'
+import { useZapActionHandlers } from '../state/zap/hooks'
 
-const useAddLiquidityModal = () => {
+const useAddLiquidityModal = (zapIntoProductType?: ZapType) => {
   const [poolAddress, setPoolAddress] = useState('')
   const [pid, setPid] = useState(null)
   const dispatch = useDispatch()
   const [onPresentAddLiquidityWidgetModal] = useModal(
-    <DualLiquidityModal poolAddress={poolAddress} pid={pid} />,
+    <DualLiquidityModal poolAddress={poolAddress} pid={pid} zapIntoProductType={zapIntoProductType} />,
     true,
     true,
     'dualLiquidityModal',
   )
   return useCallback(
-    (token: string, quoteToken: string, poolAddress?: string, pid?: number) => {
+    (token: string, quoteToken: string, poolAddress?: string, pid?: number, zapType = ZapType.ZAP) => {
       dispatch(
         selectCurrency({
           field: Field.INPUT,

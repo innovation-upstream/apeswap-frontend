@@ -218,11 +218,7 @@ export const vaultUnstakeAll = async (vaultApeContract: VaultApeV1 | VaultApeV2,
 }
 
 export const miniChefStake = async (miniChefContract: MiniApeV2, pid, amount, account) => {
-  return miniChefContract
-    .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(), account)
-    .then((trx) => {
-      return trx.wait()
-    })
+  return miniChefContract.deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(), account)
 }
 
 export const miniChefHarvest = async (miniChefContract: MiniApeV2, pid, account) => {

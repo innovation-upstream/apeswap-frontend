@@ -25,12 +25,13 @@ interface ZapLiquidityProps {
   handleConfirmedTx: (hash: string, pairOut: Pair) => void
   poolAddress: string
   pid: number
+  zapIntoProductType: ZapType
 }
 
-const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddress, pid }) => {
+const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddress, pid, zapIntoProductType }) => {
   useSetZapInputList()
   const [zapErrorMessage, setZapErrorMessage] = useState<string>(null)
-  const [stakeIntoProduct, setStakeIntoProduct] = useState<boolean>(false)
+  const [stakeIntoProduct, setStakeIntoProduct] = useState<boolean>(true)
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const { isDark } = useTheme()
@@ -59,10 +60,10 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
     [onCurrencySelection],
   )
 
-  const handleZapChange = (newState) => {
-    setStakeIntoProduct(newState)
-    if (newState) {
-      onSetZapType(ZapType.ZAP_MINI_APE)
+  const handleStakeIntoProduct = (value: boolean) => {
+    setStakeIntoProduct(value)
+    if (value) {
+      onSetZapType(zapIntoProductType)
     } else {
       onSetZapType(ZapType.ZAP)
     }
@@ -114,13 +115,14 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
   // reset input value to zero on first render
   useEffect(() => {
     onUserInput(Field.INPUT, '')
+    onSetZapType(zapIntoProductType ? zapIntoProductType : ZapType.ZAP)
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [])
 
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
-        {!!poolAddress && (
+        {!!poolAddress && zap?.pairOut?.pair?.token0?.getSymbol(chainId) && (
           <Flex sx={{ marginBottom: '10px', fontSize: '12px', alignItems: 'center' }}>
             <Text>
               {t('Stake in')}{' '}
@@ -131,7 +133,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
             <Box sx={{ width: '50px', marginLeft: '10px' }}>
               <Switch
                 checked={stakeIntoProduct}
-                onChange={() => handleZapChange(!stakeIntoProduct)}
+                onChange={() => handleStakeIntoProduct(!stakeIntoProduct)}
                 sx={{
                   ...styles.switchStyles,
                   backgroundColor: isDark ? 'rgba(56, 56, 56, 1)' : 'rgba(241, 234, 218, 1)',

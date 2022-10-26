@@ -1,6 +1,7 @@
+/** @jsxImportSource theme-ui */
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal, AutoRenewIcon, ModalFooter } from '@apeswapfinance/uikit'
+import { Button, Modal, AutoRenewIcon } from '@ape.swap/uikit'
 import ModalInput from 'components/ModalInput'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -10,6 +11,16 @@ interface WithdrawModalProps {
   onConfirm: (amount: string) => void
   onDismiss?: () => void
   tokenName?: string
+}
+
+const modalProps = {
+  sx: {
+    zIndex: 11,
+    maxHeight: 'calc(100% - 30px)',
+    minWidth: ['90%', '420px'],
+    width: '200px',
+    maxWidth: '425px',
+  },
 }
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
@@ -32,7 +43,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={t('Unstake LP')} onDismiss={onDismiss}>
+    <Modal title={t('Unstake LP')} onDismiss={onDismiss} {...modalProps}>
       <ModalInput
         onSelectMax={handleSelectMax}
         onChange={handleChange}

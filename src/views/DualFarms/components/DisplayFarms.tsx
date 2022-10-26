@@ -1,6 +1,6 @@
 import React from 'react'
-import { Flex, Text, LinkExternal, Svg } from '@apeswapfinance/uikit'
-import { TagVariants } from '@ape.swap/uikit'
+import { Flex, LinkExternal, Svg, Text } from '@apeswapfinance/uikit'
+import { Svg as Icon, TagVariants } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
@@ -17,9 +17,9 @@ import HarvestAction from './CardActions/HarvestAction'
 import { ActionContainer } from './CardActions/styles'
 import useIsMobile from 'hooks/useIsMobile'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
-import { Svg as Icon } from '@ape.swap/uikit'
 import useAddLiquidityModal from 'hooks/useAddLiquidityModal'
 import { useMiniChefAddress } from '../../../hooks/useAddress'
+import { ZapType } from '@ape.swap/sdk'
 
 const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags: Tag[] }> = ({
   farms,
@@ -29,12 +29,11 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const isMobile = useIsMobile()
-  const onAddLiquidityModal = useAddLiquidityModal()
+  const onAddLiquidityModal = useAddLiquidityModal(ZapType.ZAP_MINI_APE)
   const miniApeAddress = useMiniChefAddress()
 
   const farmsListView = farms.map((farm, i) => {
     const polygonScanUrl = `https://polygonscan.com/address/${farm.stakeTokenAddress}`
-    const userAllowance = farm?.userData?.allowance
     const userEarningsMiniChef = getBalanceNumber(farm?.userData?.miniChefEarnings || new BigNumber(0)).toFixed(2)
     const userEarningsRewarder = getBalanceNumber(farm?.userData?.rewarderEarnings || new BigNumber(0)).toFixed(2)
     const userEarningsUsd = `$${(
@@ -234,7 +233,11 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
           {!isMobile && <NextArrow />}
           <CardActions lpValueUsd={lpValueUsd} farm={farm} />
           {!isMobile && <NextArrow />}
-          <HarvestAction pid={farm.pid} disabled={userEarningsMiniChef === '0.00'} userEarningsUsd={userEarningsUsd} />
+          <HarvestAction
+            pid={farm.pid}
+            disabled={userEarningsMiniChef === '0.00' && userEarningsRewarder === '0.00'}
+            userEarningsUsd={userEarningsUsd}
+          />
         </>
       ),
     } as ExtendedListViewProps

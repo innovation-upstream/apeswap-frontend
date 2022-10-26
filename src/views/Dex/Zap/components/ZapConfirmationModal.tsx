@@ -7,12 +7,11 @@ import {
   TransactionErrorContent,
   TransactionSubmittedContent,
 } from 'components/TransactionConfirmationModal'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import { wrappedToNative } from 'utils'
 import { MergedZap } from 'state/zap/actions'
-import BigNumber from 'bignumber.js'
 import { CHAIN_PARAMS } from 'config/constants/chains'
+import { tryParseAmount, useZapState } from 'state/zap/hooks'
 
 export interface ZapConfirmationModalProps {
   title?: string
@@ -43,12 +42,12 @@ const ZapConfirmationModal: React.FC<ZapConfirmationModalProps> = ({
   const { currencyIn, pairOut } = zap
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
+  const { typedValue } = useZapState()
   const currencyInputSymbol =
     currencyIn?.currency?.symbol === 'ETH' ? CHAIN_PARAMS[chainId].nativeCurrency.symbol : currencyIn?.currency?.symbol
 
-  const pendingText = `Zapping ${getBalanceNumber(
-    new BigNumber(currencyIn.inputAmount.toString()),
-    currencyIn.currency.decimals,
+  const pendingText = `Zapping ${tryParseAmount(typedValue, zap?.currencyIn?.currency)?.toSignificant(
+    4,
   )} ${currencyInputSymbol}
    into ${pairOut?.liquidityMinted?.toSignificant(4)} ${wrappedToNative(
     pairOut?.pair.token0.getSymbol(chainId),

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { Flex, AddIcon, MinusIcon, AutoRenewIcon, LinkExternal, Text, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -8,7 +8,7 @@ import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
-import DepositModal from '../Modals/DepositModal'
+import DualDepositModal from 'components/DualDepositModal'
 import WithdrawModal from '../Modals/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButton, StyledButton } from './styles'
 import { DualFarm } from 'state/types'
@@ -37,8 +37,9 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
   const { onUnstake } = useMiniChefUnstake(farm?.pid)
 
   const [onPresentDeposit] = useModal(
-    <DepositModal
+    <DualDepositModal
       setPendingDepositTrx={setPendingDepositTrx}
+      pendingTx={pendingDepositTrx}
       pid={farm?.pid}
       allowance={farm?.userData?.allowance?.toString()}
       token0={farm?.stakeTokens?.token0?.address[chainId]}
@@ -72,6 +73,9 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
         setPendingWithdrawTrx(false)
       }}
     />,
+    true,
+    true,
+    `withdrawModal-${farm.pid}`,
   )
 
   const renderStakingButtons = () => {
