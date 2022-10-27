@@ -1,6 +1,6 @@
 import React from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
-import { Pair, TokenAmount, ZAP_ADDRESS } from '@ape.swap/sdk'
+import { ZAP_ADDRESS } from '@ape.swap/sdk'
 import erc20ABI from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import BigNumber from 'bignumber.js'
@@ -36,7 +36,6 @@ export const setMigrateLpStatus = async (
           approveStake: MigrateStatus.INCOMPLETE,
           stake: MigrateStatus.INCOMPLETE,
         },
-        statusText: '',
       }
     })
   }
@@ -65,7 +64,6 @@ export const setMigrateLpStatus = async (
             : MigrateStatus.INCOMPLETE,
           stake: MigrateStatus.INCOMPLETE,
         },
-        statusText: '',
       }
     })
   }

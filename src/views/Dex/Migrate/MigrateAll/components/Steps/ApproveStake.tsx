@@ -13,11 +13,14 @@ import { Switch } from 'theme-ui'
 import StatusIcons from '../StatusIcons'
 import { ApeswapWalletLpInterface, MigrateStatus, useMigrateAll } from '../../provider'
 import useStakeApproveAll from '../../hooks/useStakeApproveAll'
+import useIsMobile from 'hooks/useIsMobile'
 
 const ApproveStake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ apeswapWalletLps }) => {
   const { chainId, account } = useActiveWeb3React()
   const farms = useFarms(account)
   const { t } = useTranslation()
+  const isMobile = useIsMobile()
+
   const { migrateLpStatus, migrateMaximizers, setMigrateMaximizersCallback } = useMigrateAll()
   const handleApproveAll = useStakeApproveAll()
   // Since each vault needs a farm we can filter by just farms
@@ -43,13 +46,27 @@ const ApproveStake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> =
       stakeLp: true,
       backgroundColor: 'white3',
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
+      expandedContentSize: 70,
       noEarnToken: true,
+      forMigratonList: true,
       id: lpAddress,
-      cardContent: (
+      cardContent: !isMobile ? (
         <>
           <ListViewContent title={t('Wallet')} value={balance?.toSignificant(6) || '0'} ml={20} />
           <ListViewContent title={t('Staked')} value="0" ml={20} />
           <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={300} />
+        </>
+      ) : (
+        <Flex sx={{ width: '100%', height: '30px', alignItems: 'flex-end', justifyContent: 'flex-start' }}>
+          <Text size="11px" weight={500}>
+            <span sx={{ opacity: '.7' }}>Status:</span> {status?.statusText || ''}
+          </Text>
+        </Flex>
+      ),
+      expandedContent: isMobile && (
+        <>
+          <ListViewContent title={t('Wallet')} value={balance?.toSignificant(6) || '0'} ml={20} />
+          <ListViewContent title={t('Staked')} value="0" ml={20} />
         </>
       ),
     } as ExtendedListViewProps

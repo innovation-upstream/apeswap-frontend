@@ -10,12 +10,14 @@ import React from 'react'
 import StatusIcons from '../StatusIcons'
 import { MigrateStatus, useMigrateAll } from '../../provider'
 import useMigrateApproveAll from '../../hooks/useMigrateApproveAll'
+import useIsMobile from 'hooks/useIsMobile'
 
 const ApproveMigrate: React.FC<{
   migrateList: MigrateResult[]
 }> = ({ migrateList }) => {
   const { t } = useTranslation()
   const { migrateLpStatus } = useMigrateAll()
+  const isMobile = useIsMobile()
   const handleApproveAll = useMigrateApproveAll()
   const filteredLps = migrateList?.filter(
     (lp) =>
@@ -29,16 +31,30 @@ const ApproveMigrate: React.FC<{
       beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
       titleContainerWidth: 350,
+      expandedContentSize: 70,
       backgroundColor: 'white3',
       stakeLp: true,
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       noEarnToken: true,
+      forMigratonList: true,
       id: lpAddress,
-      cardContent: (
+      cardContent: !isMobile ? (
         <>
           <ListViewContent title={t('LP To Maigrate')} value={walletBalance} ml={20} />
           {/* <ListViewContent title={t('Ape LP')} value={matchedApeLps?.balance?.toSignificant(6) || '0'} ml={20} /> */}
           <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={225} />
+        </>
+      ) : (
+        <Flex sx={{ width: '100%', height: '30px', alignItems: 'flex-end', justifyContent: 'flex-start' }}>
+          <Text size="11px" weight={500}>
+            <span sx={{ opacity: '.7' }}>Status:</span> {status?.statusText || ''}
+          </Text>
+        </Flex>
+      ),
+      expandedContent: isMobile && (
+        <>
+          <ListViewContent title={t('LP To Maigrate')} value={walletBalance} ml={20} />
+          {/* <ListViewContent title={t('Ape LP')} value={matchedApeLps?.balance?.toSignificant(6) || '0'} ml={20} /> */}
         </>
       ),
     } as ExtendedListViewProps

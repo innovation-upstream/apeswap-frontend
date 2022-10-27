@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, ReactNode, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MigrateResult, useMigratorBalances } from 'state/zapMigrator/hooks'
 import useLpBalances from 'hooks/useLpBalances'
@@ -9,14 +9,14 @@ import { useVaults } from 'state/vaults/hooks'
 import { getMigratorBalanceCheckerAddress } from 'utils/addressHelper'
 import migratorBalanceChecker from 'config/abi/migratorBalanceChecker.json'
 import { MigratorBalanceChecker } from 'config/abi/types'
-import { getContract, isAddress } from 'utils'
+import { getContract } from 'utils'
 import { CHEF_ADDRESSES } from 'config/constants/chains'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import multicall, { multicallForBalances } from 'utils/multicall'
-import ERC20_INTERFACE, { ERC20_ABI } from 'config/abi/erc20'
-import { PairState } from 'hooks/usePairs'
-import { Erc20, Erc20Interface } from 'config/abi/types/Erc20'
+import { ERC20_ABI } from 'config/abi/erc20'
+import { Erc20 } from 'config/abi/types/Erc20'
+
+// TODO: Move everything to context folder
 
 export const MIGRATION_STEPS: { title: string; description: string }[] = [
   { title: 'Unstake', description: 'some description' },
@@ -25,6 +25,8 @@ export const MIGRATION_STEPS: { title: string; description: string }[] = [
   { title: 'Approve', description: 'some description' },
   { title: 'Stake', description: 'some description' },
 ]
+
+// TODO: Move types to type folder
 
 export const enum MigrateStatus {
   PENDING = 'pending',
@@ -47,7 +49,7 @@ export interface MigrateLpStatus {
     approveStake: MigrateStatus
     stake: MigrateStatus
   }
-  statusText: string
+  statusText?: string
 }
 
 export interface ApeswapWalletLpInterface {
@@ -73,6 +75,7 @@ interface MigrateContextData {
   migrateWalletLps: MigrateResult[]
   apeswapWalletLps: ApeswapWalletLpInterface[]
   migrateLpStatus: MigrateLpStatus[]
+  migrationLoading: boolean
 }
 
 const MigrateContext = createContext<MigrateContextData>({} as MigrateContextData)
@@ -80,12 +83,16 @@ const MigrateContext = createContext<MigrateContextData>({} as MigrateContextDat
 /* eslint-disable react-hooks/exhaustive-deps */
 export function MigrateProvider({ children }: MigrateProviderProps) {
   const { account, chainId, library } = useActiveWeb3React()
+  const [migrationLoading, setMigrationLoading] = useState<boolean>(true)
   const [migrateMaximizers, setMigrateMaximizers] = useState<boolean>(false)
   const [migrateWalletBalances, setMigrateWalletBalances] = useState<MigrateResult[]>([])
   const [migrateStakedBalances, setMigrateStakedBalances] = useState<MigrateResult[]>([])
   const [apeswapLpBalances, setApeswapLpBalances] = useState<ApeswapWalletLpInterface[]>([])
   const [lpStatus, setLpStatus] = useState<MigrateLpStatus[]>([])
-  const { results: migrateLpBalances, syncing, loading } = useMigratorBalances(5)
+  // Making the load time minimum 3.5 seconds
+  const timer = useRef(null)
+  const [timeReady, setTimeReady] = useState<boolean>(false)
+  const { results: migrateLpBalances, syncing, loading, valid } = useMigratorBalances(5)
   const [activeIndex, setActiveIndex] = useState(0)
   // TODO: Clean useLpBalances to be specific for the migration
   const { allPairs: liquidityTokens, pairAndBalances: userApeswapLpBalances } = useLpBalances()
@@ -97,10 +104,17 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     farms?.find((farm) => lp.pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
   )
   const farmAndVaultUserDataLoaded = farms?.[0]?.userData !== undefined && vaults?.[0]?.userData !== undefined
+  timer.current = setTimeout(() => {
+    setTimeReady(true)
+  }, 3500)
+
+  if (!loading && valid && liquidityTokens.length > 0 && timeReady) {
+    if (migrationLoading) {
+      setMigrationLoading(false)
+    }
+  }
 
   useMemo(() => {
-    console.log('RUNNING')
-    console.log(migrateLpBalances)
     setMigrateWalletBalances(migrateLpBalances?.filter((bal) => parseFloat(bal.walletBalance) > 0.0))
     setMigrateStakedBalances(migrateLpBalances?.filter((bal) => parseFloat(bal.stakedBalance) > 0.0))
   }, [migrateLpBalances.length, loading, syncing])
@@ -109,8 +123,9 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     setApeswapLpBalances(userApeswapLpBalances)
   }, [userApeswapLpBalances.length])
 
+  // Set the initial statuses for each LP
+  // TODO: Make this better
   useMemo(() => {
-    console.log('SET STUFF RUNNING')
     setMigrateLpStatus(
       migrateLpBalances,
       filteredLpsForStake,
@@ -121,9 +136,15 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
       account,
       chainId,
     )
-  }, [loading, liquidityTokens.length, account, setLpStatus, migrateMaximizers, farmAndVaultUserDataLoaded, chainId])
-
-  console.log(lpStatus)
+  }, [
+    loading,
+    userApeswapLpBalances.length,
+    account,
+    setLpStatus,
+    migrateMaximizers,
+    farmAndVaultUserDataLoaded,
+    chainId,
+  ])
 
   // Monitor is status change for active index
   useMemo(() => {
@@ -135,6 +156,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     (migrateMaximizers: boolean) => setMigrateMaximizers(migrateMaximizers),
     [],
   )
+  // TODO: Move to callbacks
   const handleUpdateMigrateLp = useCallback(
     (id, type, status, statusText) => {
       const updatedMigrateLpStatus = lpStatus
@@ -150,6 +172,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     [setLpStatus, lpStatus],
   )
 
+  // TODO: Move to callbacks
   const handleUpdateMigratorResults = useCallback(async () => {
     let result = []
     const migratorAddress = getMigratorBalanceCheckerAddress(chainId)
@@ -199,12 +222,11 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     })
     const updatedMigrateWalletBalances = balanceData.filter((bal) => parseFloat(bal.walletBalance) > 0.0)
     const updatedMigrateStakedBalances = balanceData.filter((bal) => parseFloat(bal.stakedBalance) > 0.0)
-    console.log('Made it here')
-    console.log(updatedMigrateWalletBalances, updatedMigrateStakedBalances)
     setMigrateWalletBalances(updatedMigrateWalletBalances)
     setMigrateStakedBalances(updatedMigrateStakedBalances)
   }, [chainId, account, library, migrateLpBalances])
 
+  // TODO: Move to utils
   const updateStatusId = useCallback(
     (id: number, newId: number) => {
       const updatedMigrateLpStatus = lpStatus
@@ -219,7 +241,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     [setLpStatus, lpStatus],
   )
 
-  // TODO: Update to handle when a user has both ape lp and a migrate lp
+  // TODO: Move to callbacks
   const handleUpdateOfApeswapLpBalance = useCallback(
     async (id, token0, token1) => {
       let rawLpBalance = null
@@ -252,66 +274,10 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
       }
 
       updateStatusId(id, newId)
-
-      console.log(updatedApeswapLpBalances)
-      console.log(checkIfApeLpExistsIndex)
-
-      console.log(lpAddress)
-      console.log(rawLpBalance)
-      console.log(liquidityTokens)
-      console.log(findPair)
       setApeswapLpBalances(updatedApeswapLpBalances)
     },
     [chainId, library, account, liquidityTokens, apeswapLpBalances, updateStatusId, setApeswapLpBalances],
   )
-
-  // handleUpdateOfApeswapLpBalance(
-  //   0,
-  //   '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
-  //   '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-  // )
-
-  const handleUpdateApeswapLpBalances = useCallback(async () => {
-    let rawLpBalances = []
-    const filteredPairs = liquidityTokens.filter(([pairState, pair]) => pairState === PairState.EXISTS)
-    const calls = filteredPairs.map(([, pair]) => {
-      return { address: pair?.liquidityToken.address.toLowerCase(), name: 'balanceOf', params: [account] }
-    })
-    console.log(chainId)
-    console.log(calls)
-    try {
-      rawLpBalances = await multicallForBalances(chainId, ERC20_ABI, calls)
-    } catch (e) {
-      console.error(e)
-    }
-    console.log(rawLpBalances)
-    const parsedBalances = rawLpBalances.map((bal, i) => {
-      return {
-        pair: filteredPairs[i][1],
-        balance: new TokenAmount(filteredPairs[i][1].liquidityToken, bal ? bal[0].toString() : 0),
-      }
-    })
-
-    const filterPairsWithBalances = parsedBalances.filter(({ balance }) => balance.greaterThan('0'))
-    // setApeswapLpBalances(filterPairsWithBalances)
-
-    console.log(parsedBalances)
-    console.log(filterPairsWithBalances)
-  }, [liquidityTokens, account, chainId])
-
-  console.log({
-    setActiveIndexCallback,
-    handleUpdateMigrateLp,
-    handleUpdateMigratorResults,
-    setMigrateMaximizersCallback,
-    handleUpdateApeswapLpBalances,
-    activeIndex,
-    migrateMaximizers,
-    migrateWalletLps: migrateWalletBalances,
-    migrateStakeLps: migrateStakedBalances,
-    apeswapWalletLps: apeswapLpBalances,
-    migrateLpStatus: lpStatus,
-  })
 
   return (
     <MigrateContext.Provider
@@ -327,6 +293,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
         migrateStakeLps: migrateStakedBalances,
         apeswapWalletLps: apeswapLpBalances,
         migrateLpStatus: lpStatus,
+        migrationLoading,
       }}
     >
       {children}

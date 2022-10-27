@@ -2,11 +2,10 @@
 import React from 'react'
 import { Flex } from '@ape.swap/uikit'
 import { dexStyles } from '../../styles'
-import MigrateProgress from './components/MigrateProgress'
-import Steps from './components/Steps'
 import { MigrateProvider } from './provider'
 import { useSetFarms } from 'state/farms/hooks'
 import { usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
+import MigrateStart from './MigrateStart'
 
 const MigrateAll: React.FC = () => {
   // Fetch farms to filter lps on steps
@@ -14,12 +13,10 @@ const MigrateAll: React.FC = () => {
   useSetVaults()
   usePollVaultUserData()
   return (
-    <Flex sx={{ ...dexStyles.pageContainer }}>
+    <Flex sx={dexStyles.pageContainer}>
       <Flex sx={{ flexDirection: 'column', width: '1200px' }}>
         <MigrateProvider>
-          <MigrateProgress activeLineMargin={8.25}>
-            <Steps />
-          </MigrateProgress>
+          <MigrateStart />
         </MigrateProvider>
       </Flex>
     </Flex>

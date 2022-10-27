@@ -10,11 +10,13 @@ import { wrappedToNative } from 'utils'
 import { useMigrateAll } from '../../provider'
 import useUnstakeAll from '../../hooks/useUnstakeAll'
 import StatusIcons from '../StatusIcons'
+import useIsMobile from 'hooks/useIsMobile'
 
 const Unstake: React.FC<{ migrateList: MigrateResult[] }> = ({ migrateList }) => {
   const { t } = useTranslation()
   const { migrateLpStatus } = useMigrateAll()
   const handleUnstakeAll = useUnstakeAll()
+  const isMobile = useIsMobile()
   const listView = migrateList?.map((migrate) => {
     const { token0, token1, lpAddress, stakedBalance, walletBalance, id } = migrate
     const status = migrateLpStatus?.find((status) => status.id === id)
@@ -22,16 +24,30 @@ const Unstake: React.FC<{ migrateList: MigrateResult[] }> = ({ migrateList }) =>
       beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
       titleContainerWidth: 350,
+      expandedContentSize: 70,
       stakeLp: true,
       backgroundColor: 'white3',
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       noEarnToken: true,
+      forMigratonList: true,
       id: lpAddress,
-      cardContent: (
+      cardContent: !isMobile ? (
         <>
-          <ListViewContent title={t('Staked')} value={stakedBalance || '0'} ml={20} width={175} />
-          <ListViewContent title={t('Wallet')} value={walletBalance || '0'} ml={20} />
+          <ListViewContent title={t('Staked')} value={stakedBalance || '0'} ml={20} width={130} />
+          <ListViewContent title={t('Wallet')} value={walletBalance || '0'} ml={20} width={170} />
           <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={225} />
+        </>
+      ) : (
+        <Flex sx={{ width: '100%', height: '30px', alignItems: 'flex-end', justifyContent: 'flex-start' }}>
+          <Text size="11px" weight={500}>
+            <span sx={{ opacity: '.7' }}>Status:</span> {status?.statusText || ''}
+          </Text>
+        </Flex>
+      ),
+      expandedContent: isMobile && (
+        <>
+          <ListViewContent title={t('Staked')} value={stakedBalance || '0'} ml={20} />
+          <ListViewContent title={t('Wallet')} value={walletBalance || '0'} ml={20} width={125} />
         </>
       ),
     } as ExtendedListViewProps

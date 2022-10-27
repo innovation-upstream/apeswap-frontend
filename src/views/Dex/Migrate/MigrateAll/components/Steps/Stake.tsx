@@ -6,16 +6,17 @@ import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import { wrappedToNative } from 'utils'
 import React from 'react'
-import { Pair, TokenAmount } from '@ape.swap/sdk'
 import { useFarms } from 'state/farms/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import StatusIcons from '../StatusIcons'
 import { ApeswapWalletLpInterface, MigrateStatus, useMigrateAll } from '../../provider'
 import useStakeAll from '../../hooks/useStakeAll'
+import useIsMobile from 'hooks/useIsMobile'
 const Stake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ apeswapWalletLps }) => {
   const { chainId, account } = useActiveWeb3React()
   const farms = useFarms(account)
   const { migrateLpStatus } = useMigrateAll()
+  const isMobile = useIsMobile()
   const handleStakeAll = useStakeAll()
   const { t } = useTranslation()
   // Since each vault needs a farm we can filter by just farms
@@ -39,16 +40,30 @@ const Stake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ ape
       beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
       backgroundColor: 'white3',
-      titleContainerWidth: 350,
+      titleContainerWidth: isMobile ? 0 : 350,
+      expandedContentSize: 70,
       stakeLp: true,
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       noEarnToken: true,
+      forMigratonList: true,
       id: lpAddress,
-      cardContent: (
+      cardContent: !isMobile ? (
         <>
           <ListViewContent title={t('Wallet')} value={balance?.toSignificant(6) || '0'} ml={20} />
           <ListViewContent title={t('Staked')} value="0" ml={20} />
           <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={300} />
+        </>
+      ) : (
+        <Flex sx={{ width: '100%', height: '30px', alignItems: 'flex-end', justifyContent: 'flex-start' }}>
+          <Text size="11px" weight={500}>
+            <span sx={{ opacity: '.7' }}>Status:</span> {status?.statusText || ''}
+          </Text>
+        </Flex>
+      ),
+      expandedContent: isMobile && (
+        <>
+          <ListViewContent title={t('Wallet')} value={balance?.toSignificant(6) || '0'} ml={20} />
+          <ListViewContent title={t('Staked')} value="0" ml={20} />
         </>
       ),
     } as ExtendedListViewProps
@@ -57,10 +72,10 @@ const Stake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ ape
   return (
     <Flex sx={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
       <Text size="22px" weight={700} mb="15px">
-        {t('Approve All LPs')}
+        {t('Stake All LPs')}
       </Text>
       <Text size="12px" weight={500} mb="15px">
-        {t('Unstake all your current LPs to migrate')}
+        {t('Stake all your current LPs to migrate')}
       </Text>
       <Button mb="20px" onClick={() => handleStakeAll(filteredLpsForStake)}>
         Stake All
