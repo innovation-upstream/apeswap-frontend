@@ -17,8 +17,8 @@ const ConvertionPanel: React.FC<ConvertionPanelProps> = ({ zap }) => {
 
   // This is the true value out as this is the estimated LP pair values
 
-  const currencyOneOut = pairOut?.inAmount.token1.toSignificant(6)
-  const currencyTwoOut = pairOut?.inAmount.token2.toSignificant(6)
+  const currencyOneOut = pairOut?.inAmount?.token1?.toSignificant(6)
+  const currencyTwoOut = pairOut?.inAmount?.token2?.toSignificant(6)
 
   const halfInputAmount =
     currencyIn?.currency && currencyIn?.inputAmount

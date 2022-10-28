@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal, AutoRenewIcon, ModalFooter } from '@apeswapfinance/uikit'
+import { Button, Modal, AutoRenewIcon } from '@apeswapfinance/uikit'
 import ModalInput from 'components/ModalInput'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
@@ -39,33 +39,31 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         max={fullBalance}
-        symbol={tokenName}
         addLiquidityUrl={addLiquidityUrl}
         inputTitle={t('Stake')}
       />
-      <ModalFooter onDismiss={onDismiss}>
-        <Button
-          fullWidth
-          disabled={pendingTx || fullBalance === '0' || val === '0' || parseFloat(fullBalance) < parseFloat(val)}
-          onClick={async () => {
-            setPendingTx(true)
-            try {
-              await onConfirm(val)
-              onDismiss()
-            } catch (e) {
-              console.error('Transaction Failed')
-            } finally {
-              setPendingTx(false)
-            }
-          }}
-          endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
-          style={{
-            borderRadius: '10px',
-          }}
-        >
-          {pendingTx ? t('Pending Confirmation') : t('Confirm')}
-        </Button>
-      </ModalFooter>
+      <Button
+        fullWidth
+        disabled={pendingTx || fullBalance === '0' || val === '0' || parseFloat(fullBalance) < parseFloat(val)}
+        onClick={async () => {
+          setPendingTx(true)
+          try {
+            await onConfirm(val)
+            onDismiss()
+          } catch (e) {
+            console.error('Transaction Failed')
+          } finally {
+            setPendingTx(false)
+          }
+        }}
+        endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
+        style={{
+          borderRadius: '10px',
+          marginTop: '10px',
+        }}
+      >
+        {pendingTx ? t('Pending Confirmation') : t('Confirm')}
+      </Button>
     </Modal>
   )
 }

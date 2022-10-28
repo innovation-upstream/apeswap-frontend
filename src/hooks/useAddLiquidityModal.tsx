@@ -5,7 +5,6 @@ import { Field, selectCurrency } from '../state/swap/actions'
 import { selectOutputCurrency } from '../state/zap/actions'
 import { useDispatch } from 'react-redux'
 import { ZapType } from '@ape.swap/sdk'
-import { useZapActionHandlers } from '../state/zap/hooks'
 
 const useAddLiquidityModal = (zapIntoProductType?: ZapType) => {
   const [poolAddress, setPoolAddress] = useState('')

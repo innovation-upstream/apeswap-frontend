@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal, AutoRenewIcon } from '@ape.swap/uikit'
+import { Button, Modal, AutoRenewIcon, Text, Flex } from '@ape.swap/uikit'
 import ModalInput from 'components/ModalInput'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -10,20 +10,21 @@ interface WithdrawModalProps {
   max: string
   onConfirm: (amount: string) => void
   onDismiss?: () => void
-  tokenName?: string
+  title: string
+  withdrawFee?: string
 }
 
 const modalProps = {
   sx: {
     zIndex: 11,
     maxHeight: 'calc(100% - 30px)',
-    minWidth: ['90%', '420px'],
+    minWidth: ['90%', '400px'],
     width: '200px',
     maxWidth: '425px',
   },
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
+const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, title, withdrawFee }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
@@ -43,15 +44,19 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={t('Unstake LP')} onDismiss={onDismiss} {...modalProps}>
+    <Modal title={title} onDismiss={onDismiss} {...modalProps}>
       <ModalInput
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         value={val}
         max={fullBalance}
-        symbol={tokenName}
         inputTitle={t('Unstake')}
       />
+      {withdrawFee && (
+        <Flex sx={{ padding: '20px 0 10px 0', justifyContent: 'center' }}>
+          <Text>{t(`Withdrawing will have a %withdrawFee%% fee`, { withdrawFee })}</Text>
+        </Flex>
+      )}
       <Button
         disabled={pendingTx || parseFloat(fullBalance) < parseFloat(val)}
         onClick={async () => {

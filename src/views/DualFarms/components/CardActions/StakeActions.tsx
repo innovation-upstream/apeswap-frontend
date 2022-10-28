@@ -9,7 +9,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import DualDepositModal from 'components/DualDepositModal'
-import WithdrawModal from '../Modals/WithdrawModal'
+import WithdrawModal from '../../../../components/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButton, StyledButton } from './styles'
 import { DualFarm } from 'state/types'
 import { useModal } from '@ape.swap/uikit'
@@ -72,6 +72,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
           })
         setPendingWithdrawTrx(false)
       }}
+      title={t('Unstake LP tokens')}
     />,
     true,
     true,

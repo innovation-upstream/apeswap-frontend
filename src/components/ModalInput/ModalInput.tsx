@@ -5,7 +5,6 @@ import { useTranslation } from '../../contexts/Localization'
 
 interface ModalInputProps {
   max: string
-  symbol: string
   onSelectMax?: () => void
   onChange: (e: React.FormEvent<HTMLInputElement>) => void
   placeholder?: string
@@ -28,19 +27,9 @@ const StyledTokenInput = styled.div<InputProps>`
 const StyledInput = styled(Input)`
   box-shadow: none;
   border: none;
-  width: 60px;
-  margin: 0 8px;
-  padding: 0 8px;
+  width: 100%;
   font-weight: 800;
   background-color: ${({ theme }) => theme.colors.white3};
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    width: 80px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: auto;
-  }
 `
 
 const StyledButton = styled(Button)`
@@ -52,15 +41,7 @@ const StyledButton = styled(Button)`
   height: 22px;
 `
 
-const ModalInput: React.FC<ModalInputProps> = ({
-  max,
-  symbol,
-  onChange,
-  onSelectMax,
-  value,
-  inputTitle,
-  displayDecimals,
-}) => {
+const ModalInput: React.FC<ModalInputProps> = ({ max, onChange, onSelectMax, value, inputTitle, displayDecimals }) => {
   const { t } = useTranslation()
   const isBalanceZero = max === '0' || !max
 
@@ -69,7 +50,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
   return (
     <div style={{ position: 'relative' }}>
       <StyledTokenInput isWarning={isBalanceZero}>
-        <Flex justifyContent="space-between" pl="16px">
+        <Flex justifyContent="space-between" alignItems="flex-end" pl="16px">
           <Text fontSize="14px" fontWeight={800}>
             {inputTitle}
           </Text>
@@ -77,14 +58,11 @@ const ModalInput: React.FC<ModalInputProps> = ({
             {t('Balance')}: {displayBalance.toLocaleString()}
           </Text>
         </Flex>
-        <Flex alignItems="flex-end" justifyContent="space-around">
+        <Flex alignItems="center" justifyContent="space-between" mt="5px">
           <StyledInput onChange={onChange} placeholder="0" value={value} />
-          <StyledButton size="sm" onClick={onSelectMax} mr="8px">
+          <StyledButton size="sm" onClick={onSelectMax} ml="1px">
             {t('Max')}
           </StyledButton>
-          <Text fontSize="16px" fontWeight={600}>
-            {symbol}
-          </Text>
         </Flex>
       </StyledTokenInput>
     </div>

@@ -8,7 +8,6 @@ export const StyledButton = styled(Button)`
   padding: 10px 20px;
   min-width: 227px;
   height: 44px;
-  width: 100%;
 `
 
 export const SmallButton = styled(Button)`

@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
-import { Modal, ModalProvider } from '@ape.swap/uikit'
+import { Flex, Modal, ModalProvider } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import DualCurrencyPanel from 'components/DualCurrencyPanel/DualCurrencyPanel'
 import { Field } from 'state/swap/actions'
@@ -22,6 +22,7 @@ import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useMiniChefAddress } from 'hooks/useAddress'
 import DualActions from './DualActions'
 import { TransactionSubmittedContent } from '../TransactionConfirmationModal'
+import DistributionPanel from '../../views/Dex/Zap/components/DistributionPanel/DistributionPanel'
 
 interface DualDepositModalProps {
   onDismiss?: () => void
@@ -180,6 +181,11 @@ const Index: React.FC<DualDepositModalProps> = ({
                 lpList={[lpCurrencies]}
               />
             </Box>
+            {!currencyB && typedValue && parseFloat(typedValue) > 0 && zap?.pairOut?.liquidityMinted && (
+              <Flex sx={{ margin: '15px 0' }}>
+                <DistributionPanel zap={zap} hideTitle />
+              </Flex>
+            )}
             <DualActions
               lpToApprove={lpAddress}
               showApproveLpFlow={showApproveContract}
