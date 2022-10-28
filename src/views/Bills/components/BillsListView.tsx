@@ -26,7 +26,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
       ?.minus(new BigNumber(totalPayoutGiven))
       ?.div(new BigNumber(10).pow(earnToken.decimals))
 
-    const threshold = new BigNumber(5).div(earnTokenPrice)
+    const threshold = new BigNumber(11).div(earnTokenPrice)
     const disabled = available.lte(threshold)
 
     return {

@@ -8,7 +8,7 @@ export const defaultValues: (t: ContextApi['t']) => Values[] = (t) => [
       'We create tools for users to leverage DeFi opportunities, regardless of location, background, wealth, or experience.',
     ),
     logoImg: 'images/accessibility.png',
-    link: 'https://apeswap.gitbook.io/apeswap-finance/welcome/master',
+    link: 'https://apeswap.gitbook.io/apeswap-finance/welcome/im-new-here',
   },
   {
     title: t('Transparency'),
