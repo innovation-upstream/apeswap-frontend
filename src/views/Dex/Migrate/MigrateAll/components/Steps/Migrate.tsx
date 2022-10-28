@@ -9,7 +9,7 @@ import { wrappedToNative } from 'utils'
 import React from 'react'
 import { Pair, TokenAmount } from '@ape.swap/sdk'
 import StatusIcons from '../StatusIcons'
-import { useMigrateAll } from '../../provider'
+import { MigrateStatus, useMigrateAll } from '../../provider'
 import useMigrateAllLps from '../../hooks/useMigrateAll'
 import useIsMobile from 'hooks/useIsMobile'
 
@@ -21,12 +21,18 @@ const Migrate: React.FC<{ migrateList: MigrateResult[]; apeswapWalletLps: { pair
   const { migrateLpStatus } = useMigrateAll()
   const isMobile = useIsMobile()
   const handleMigrateAll = useMigrateAllLps()
-  const listView = migrateList?.map((migrate) => {
+  const filteredLps = migrateList?.filter(
+    (lp) =>
+      migrateLpStatus?.find((status) => status.lpAddress === lp.lpAddress)?.status.approveMigrate ===
+      MigrateStatus.COMPLETE,
+  )
+  const listView = filteredLps?.map((migrate) => {
     const { token0, token1, lpAddress, walletBalance, id } = migrate
     const status = migrateLpStatus?.find((status) => status.id === id)
     const matchedApeLps = apeswapWalletLps?.find(
       ({ pair }) => pair.token0.address === token0.address && pair.token1.address === token1.address,
     )
+    const formattedWalletBalance = walletBalance?.substring(0, 8)
     return {
       beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
@@ -40,7 +46,7 @@ const Migrate: React.FC<{ migrateList: MigrateResult[]; apeswapWalletLps: { pair
       id: lpAddress,
       cardContent: !isMobile ? (
         <>
-          <ListViewContent title={t('LP To Maigrate')} value={walletBalance} ml={20} />
+          <ListViewContent title={t('LP To Maigrate')} value={formattedWalletBalance} ml={20} />
           <ListViewContent title={t('Ape LP')} value={matchedApeLps?.balance?.toSignificant(6) || '0'} ml={20} />
           <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={250} />
         </>
@@ -53,7 +59,7 @@ const Migrate: React.FC<{ migrateList: MigrateResult[]; apeswapWalletLps: { pair
       ),
       expandedContent: isMobile && (
         <>
-          <ListViewContent title={t('LP To Maigrate')} value={walletBalance} ml={20} />
+          <ListViewContent title={t('LP To Maigrate')} value={formattedWalletBalance} ml={20} />
           <ListViewContent title={t('Ape LP')} value={matchedApeLps?.balance?.toSignificant(6) || '0'} ml={20} />
         </>
       ),

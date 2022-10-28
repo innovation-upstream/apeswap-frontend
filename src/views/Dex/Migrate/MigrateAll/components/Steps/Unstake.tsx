@@ -20,6 +20,9 @@ const Unstake: React.FC<{ migrateList: MigrateResult[] }> = ({ migrateList }) =>
   const listView = migrateList?.map((migrate) => {
     const { token0, token1, lpAddress, stakedBalance, walletBalance, id } = migrate
     const status = migrateLpStatus?.find((status) => status.id === id)
+    const formattedWalletBalance = walletBalance?.substring(0, 8)
+    const formattedStakedBalanceBalance = stakedBalance?.substring(0, 8)
+
     return {
       beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
@@ -33,8 +36,8 @@ const Unstake: React.FC<{ migrateList: MigrateResult[] }> = ({ migrateList }) =>
       id: lpAddress,
       cardContent: !isMobile ? (
         <>
-          <ListViewContent title={t('Staked')} value={stakedBalance || '0'} ml={20} width={130} />
-          <ListViewContent title={t('Wallet')} value={walletBalance || '0'} ml={20} width={170} />
+          <ListViewContent title={t('Staked')} value={formattedStakedBalanceBalance || '0'} ml={20} width={130} />
+          <ListViewContent title={t('Wallet')} value={formattedWalletBalance || '0'} ml={20} width={170} />
           <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={225} />
         </>
       ) : (
@@ -46,8 +49,8 @@ const Unstake: React.FC<{ migrateList: MigrateResult[] }> = ({ migrateList }) =>
       ),
       expandedContent: isMobile && (
         <>
-          <ListViewContent title={t('Staked')} value={stakedBalance || '0'} ml={20} />
-          <ListViewContent title={t('Wallet')} value={walletBalance || '0'} ml={20} width={125} />
+          <ListViewContent title={t('Staked')} value={formattedStakedBalanceBalance || '0'} ml={20} />
+          <ListViewContent title={t('Wallet')} value={formattedWalletBalance || '0'} ml={20} width={125} />
         </>
       ),
     } as ExtendedListViewProps

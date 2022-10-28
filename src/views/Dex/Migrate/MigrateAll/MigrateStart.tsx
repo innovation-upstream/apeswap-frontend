@@ -1,40 +1,47 @@
-import { useModal } from '@ape.swap/uikit'
-import React, { useEffect, useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Flex, Text, useModal } from '@ape.swap/uikit'
+import React, { useEffect } from 'react'
 import LoadingYourMigration from './components/LoadingYourMigration'
 import MigrateProgress from './components/MigrateProgress'
 import Steps from './components/Steps'
 import SuccessfulMigrationModal from './components/SuccessfulMigrationModal'
-import { useMigrateAll } from './provider'
+import { MigrateStatus, useMigrateAll } from './provider'
 
 const MigrateStart: React.FC = () => {
-  const { migrationLoading, migrationCompleteLog } = useMigrateAll()
-  console.log(migrationCompleteLog)
-  const [showModal, setShowModal] = useState(false)
+  const { migrationLoading, migrationCompleteLog, migrateLpStatus } = useMigrateAll()
+  const allStepsComplete =
+    migrateLpStatus?.flatMap((item) =>
+      Object.entries(item.status).filter(([, status]) => {
+        return status !== MigrateStatus.COMPLETE
+      }),
+    ).length === 0
+
   const [onPresentSuccessfulMigrationModal] = useModal(
-    <SuccessfulMigrationModal />,
+    <SuccessfulMigrationModal migrationCompleteLog={migrationCompleteLog} />,
     true,
     true,
     'SuccessfulMigrationModal',
   )
   useEffect(() => {
-    if (showModal) {
-      setShowModal(false)
-    } else {
-      setShowModal(true)
+    if (allStepsComplete && migrationCompleteLog.length > 0) {
+      onPresentSuccessfulMigrationModal()
     }
-  }, [migrationLoading])
+  }, [allStepsComplete, migrationCompleteLog.length])
   return (
     <>
       {migrationLoading ? (
         <LoadingYourMigration />
-      ) : (
+      ) : migrateLpStatus.length !== 0 ? (
         <MigrateProgress>
-          {migrationCompleteLog.length > 0 && <SuccessfulMigrationModal />}
           <Steps />
         </MigrateProgress>
+      ) : (
+        <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
+          <Text> You have nothing to migrate</Text>
+        </Flex>
       )}
     </>
   )
 }
 
-export default MigrateStart
+export default React.memo(MigrateStart)

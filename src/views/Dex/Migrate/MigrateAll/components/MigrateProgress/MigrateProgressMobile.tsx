@@ -1,8 +1,7 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
-import React, { ReactNode, useState } from 'react'
+import { Flex, Svg, Text } from '@ape.swap/uikit'
+import React, { ReactNode } from 'react'
 import { MigrateStatus, MIGRATION_STEPS, useMigrateAll } from '../../provider'
-import { styles } from './styles'
 
 interface MigrateProcessBarInterface {
   activeLineMargin?: number

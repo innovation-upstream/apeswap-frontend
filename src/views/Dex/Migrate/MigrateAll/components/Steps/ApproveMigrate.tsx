@@ -27,6 +27,7 @@ const ApproveMigrate: React.FC<{
   const listView = filteredLps?.map((migrate) => {
     const { token0, token1, lpAddress, walletBalance, id } = migrate
     const status = migrateLpStatus?.find((status) => status.id === id)
+    const formattedWalletBalance = walletBalance?.substring(0, 8)
     return {
       beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
@@ -40,9 +41,9 @@ const ApproveMigrate: React.FC<{
       id: lpAddress,
       cardContent: !isMobile ? (
         <>
-          <ListViewContent title={t('LP To Maigrate')} value={walletBalance} ml={20} />
+          <ListViewContent title={t('LP To Maigrate')} value={formattedWalletBalance} ml={20} />
           {/* <ListViewContent title={t('Ape LP')} value={matchedApeLps?.balance?.toSignificant(6) || '0'} ml={20} /> */}
-          <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={225} />
+          <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={300} />
         </>
       ) : (
         <Flex sx={{ width: '100%', height: '30px', alignItems: 'flex-end', justifyContent: 'flex-start' }}>
@@ -53,7 +54,7 @@ const ApproveMigrate: React.FC<{
       ),
       expandedContent: isMobile && (
         <>
-          <ListViewContent title={t('LP To Maigrate')} value={walletBalance} ml={20} />
+          <ListViewContent title={t('LP To Maigrate')} value={formattedWalletBalance} ml={20} />
           {/* <ListViewContent title={t('Ape LP')} value={matchedApeLps?.balance?.toSignificant(6) || '0'} ml={20} /> */}
         </>
       ),

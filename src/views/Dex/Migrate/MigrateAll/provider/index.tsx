@@ -104,12 +104,20 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   const { results: migrateLpBalances, syncing, loading, valid } = useMigratorBalances(1)
   const [activeIndex, setActiveIndex] = useState(0)
   // TODO: Clean useLpBalances to be specific for the migration
-  const { allPairs: liquidityTokens, pairAndBalances: userApeswapLpBalances } = useLpBalances()
+  const { allPairs: liquidityTokens, pairAndBalances: userApeswapLpBalances, apeBalancesLoading } = useLpBalances()
   // Since we already need to pull farm and vault data for this page we can use the already fetched approved data
   const farms = useFarms(account)
   const { vaults: fetchedVaults } = useVaults()
   // Filter out innactive vaults and farms
   const vaults = fetchedVaults.filter((vault) => !vault.inactive)
+
+  // There is an edgecase of multiple protocols with the same LP need to be migrated which causes duplicate entries.
+  // If a duplicate is identified we filter it out
+  // We wont need this for migrationV2
+  const duplicateStatusIds = new Set(lpStatus.map(({ id }) => id)).size !== lpStatus.length
+  useMemo(() => {
+    setLpStatus([...[...new Map(lpStatus.map((v) => [v.id, v])).values()]])
+  }, [duplicateStatusIds, setLpStatus])
 
   // Since each vault needs a farm we can filter by just farms
   const filteredLpsForStake = apeswapLpBalances?.filter((lp) =>
@@ -118,9 +126,9 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   const farmAndVaultUserDataLoaded = farms?.[0]?.userData !== undefined && vaults?.[0]?.userData !== undefined
   timer.current = setTimeout(() => {
     setTimeReady(true)
-  }, 3500)
+  }, 4000)
 
-  if (!loading && valid && liquidityTokens.length > 0 && timeReady) {
+  if (!loading && !apeBalancesLoading && valid && liquidityTokens.length > 0 && timeReady) {
     if (migrationLoading) {
       setMigrationLoading(false)
     }
@@ -138,7 +146,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   // Set the initial statuses for each LP
   // TODO: Make this better
   useEffect(() => {
-    console.log('run it')
     setMigrateLpStatus(
       migrateLpBalances,
       filteredLpsForStake,
@@ -149,8 +156,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
       account,
       chainId,
     )
-  }, [valid, account, setLpStatus, farmAndVaultUserDataLoaded, chainId])
-  console.log(valid, account, farmAndVaultUserDataLoaded, chainId)
+  }, [valid, apeBalancesLoading, account, setLpStatus, farmAndVaultUserDataLoaded, chainId])
 
   // Monitor is status change for active index
   useMemo(() => {
@@ -161,7 +167,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
 
   const handleAddMigrationCompleteLog = useCallback(
     (migrationLog: MigrationCompleteLog) => {
-      console.log(migrationLog)
       setMigrationCompleteLog((prev) => [...prev, migrationLog])
     },
     [setMigrationCompleteLog],
@@ -209,12 +214,8 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
               : MigrateStatus.INCOMPLETE,
           },
         }
-        console.log(new BigNumber(matchedFarm?.userData?.allowance).gt(0))
         updatedMigrateLpStatus[lpToUpdateIndex] = lpToUpdate
-        console.log(migrateVaultAvailable)
       })
-      console.log(migrateMaximizers)
-      console.log(updatedMigrateLpStatus)
       setLpStatus([...updatedMigrateLpStatus])
     },
     [vaults, farms, lpStatus, setMigrateMaximizers],
@@ -279,6 +280,8 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     (id: number, newId: number) => {
       const updatedMigrateLpStatus = lpStatus
       const lpToUpdateIndex = lpStatus.findIndex((migrateLp) => migrateLp.id === id)
+      // This is to handle the edge case of the same pair being migrated from two different protocols
+      const doesNewIdExist = lpStatus.findIndex((migrateLp) => migrateLp.id === newId)
       const lpToUpdate = {
         ...lpStatus[lpToUpdateIndex],
         id: newId,
@@ -327,7 +330,9 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     [chainId, library, account, liquidityTokens, apeswapLpBalances, updateStatusId, setApeswapLpBalances],
   )
 
-  console.log(lpStatus)
+  // const handleMergeDuplicateIds = useCallback(() => {
+
+  // }, [])
 
   return (
     <MigrateContext.Provider

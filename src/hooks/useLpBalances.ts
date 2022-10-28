@@ -1,7 +1,7 @@
 import { Pair } from '@ape.swap/sdk'
 import { useMemo, useState } from 'react'
 import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
-import { useTokenBalances } from 'state/wallet/hooks'
+import { useTokenBalances, useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import useActiveWeb3React from './useActiveWeb3React'
 import { usePairs } from './usePairs'
 
@@ -20,7 +20,10 @@ const useLpBalances = () => {
 
   const allPairs = usePairs(tokenPairsWithLiquidityTokens.map(({ tokens }) => tokens))
 
-  const v2PairsBalances = useTokenBalances(account ?? undefined, liquidityTokens)
+  const [v2PairsBalances, apeBalancesLoading] = useTokenBalancesWithLoadingIndicator(
+    account ?? undefined,
+    liquidityTokens,
+  )
 
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
@@ -39,7 +42,7 @@ const useLpBalances = () => {
     return { id: parseInt(pair.liquidityToken.address), pair, balance: v2PairsBalances[pair.liquidityToken.address] }
   })
 
-  return { allPairs, pairAndBalances }
+  return { allPairs, pairAndBalances, apeBalancesLoading }
 }
 
 export default useLpBalances

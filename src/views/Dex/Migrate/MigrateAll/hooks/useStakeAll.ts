@@ -1,10 +1,10 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
-import { stake, stakeVaultV2 } from 'utils/callHelpers'
 import { ApeswapWalletLpInterface, MigrateStatus, useMigrateAll } from '../provider'
 import { useVaults } from 'state/vaults/hooks'
 import { useMasterchef, useVaultApeV2 } from 'hooks/useContract'
 import { useFarms } from 'state/farms/hooks'
+import { calculateGasMargin } from 'utils'
 
 const useStakeAll = () => {
   const { account, chainId, library } = useActiveWeb3React()
@@ -25,10 +25,19 @@ const useStakeAll = () => {
           (vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddress.toLowerCase(),
         )
         const matchedFarm = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lpAddress.toLowerCase())
+        // Estimate gas to make sure transactions dont fail
+        const gasEstimate =
+          migrateMaximizers && matchedVault
+            ? vaultApeV2Contract.estimateGas.deposit(matchedVault.pid, balance.raw.toString())
+            : masterChefContract.estimateGas.deposit(matchedFarm.pid, balance.raw.toString())
         const call =
           migrateMaximizers && matchedVault
-            ? vaultApeV2Contract.deposit(matchedVault.pid, balance.raw.toString())
-            : masterChefContract.deposit(matchedFarm.pid, balance.raw.toString())
+            ? vaultApeV2Contract.deposit(matchedVault.pid, balance.raw.toString(), {
+                gasLimit: calculateGasMargin(await gasEstimate),
+              })
+            : masterChefContract.deposit(matchedFarm.pid, balance.raw.toString(), {
+                gasLimit: calculateGasMargin(await gasEstimate),
+              })
         handleUpdateMigrateLp(id, 'stake', MigrateStatus.PENDING, 'Staking in progress')
         call
           .then((tx) =>
@@ -37,8 +46,8 @@ const useStakeAll = () => {
               .then(() => {
                 handleUpdateMigrateLp(id, 'stake', MigrateStatus.COMPLETE, 'Stake complete')
                 handleAddMigrationCompleteLog({
-                  lpSymbol: pair.liquidityToken.getSymbol(chainId),
-                  location: migrateMaximizers && matchedVault ? 'maximizer' : 'farm',
+                  lpSymbol: `${pair.token0.getSymbol(chainId)} - ${pair.token1.getSymbol(chainId)}`,
+                  location: migrateMaximizers && matchedVault ? 'max' : 'farm',
                   stakeAmount: balance.toExact(),
                 })
               })
