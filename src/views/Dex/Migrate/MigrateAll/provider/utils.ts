@@ -40,6 +40,7 @@ export const setMigrateLpStatus = async (
     })
   }
   const getApeswapLpStatus = async () => {
+    console.log(apeswapLps)
     return apeswapLps?.map(({ pair, id }) => {
       const matchedVault = vaults.find(
         (vault) => vault.stakeToken.address[chainId].toLowerCase() === pair.liquidityToken.address.toLowerCase(),

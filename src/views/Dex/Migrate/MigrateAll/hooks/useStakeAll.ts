@@ -8,10 +8,12 @@ import { useFarms } from 'state/farms/hooks'
 
 const useStakeAll = () => {
   const { account, chainId, library } = useActiveWeb3React()
-  const { handleUpdateMigrateLp, migrateMaximizers } = useMigrateAll()
+  const { handleUpdateMigrateLp, migrateMaximizers, handleAddMigrationCompleteLog } = useMigrateAll()
   const masterChefContract = useMasterchef()
   const vaultApeV2Contract = useVaultApeV2()
-  const { vaults } = useVaults()
+  const { vaults: fetchedVaults } = useVaults()
+  // We need to filter out the innactive vaults
+  const vaults = fetchedVaults.filter((vault) => !vault.inactive)
   const farms = useFarms(account)
 
   const handleStakeAll = useCallback(
@@ -23,16 +25,23 @@ const useStakeAll = () => {
           (vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddress.toLowerCase(),
         )
         const matchedFarm = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lpAddress.toLowerCase())
-        const txResponse =
+        const call =
           migrateMaximizers && matchedVault
-            ? stakeVaultV2(vaultApeV2Contract, matchedVault.pid, balance.toExact())
-            : stake(masterChefContract, matchedFarm.pid, balance.toExact())
+            ? vaultApeV2Contract.deposit(matchedVault.pid, balance.raw.toString())
+            : masterChefContract.deposit(matchedFarm.pid, balance.raw.toString())
         handleUpdateMigrateLp(id, 'stake', MigrateStatus.PENDING, 'Staking in progress')
-        txResponse
+        call
           .then((tx) =>
             library
-              .waitForTransaction(tx.transactionHash)
-              .then(() => handleUpdateMigrateLp(id, 'stake', MigrateStatus.COMPLETE, 'Stake complete'))
+              .waitForTransaction(tx.hash)
+              .then(() => {
+                handleUpdateMigrateLp(id, 'stake', MigrateStatus.COMPLETE, 'Stake complete')
+                handleAddMigrationCompleteLog({
+                  lpSymbol: pair.liquidityToken.getSymbol(chainId),
+                  location: migrateMaximizers && matchedVault ? 'maximizer' : 'farm',
+                  stakeAmount: balance.toExact(),
+                })
+              })
               .catch(() => handleUpdateMigrateLp(id, 'stake', MigrateStatus.INVALID, 'Stake failed')),
           )
           .catch(() => {
@@ -40,7 +49,17 @@ const useStakeAll = () => {
           })
       })
     },
-    [handleUpdateMigrateLp, chainId, masterChefContract, vaultApeV2Contract, migrateMaximizers, farms, library, vaults],
+    [
+      handleUpdateMigrateLp,
+      handleAddMigrationCompleteLog,
+      chainId,
+      masterChefContract,
+      vaultApeV2Contract,
+      migrateMaximizers,
+      farms,
+      library,
+      vaults,
+    ],
   )
   return handleStakeAll
 }

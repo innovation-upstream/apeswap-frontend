@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useCallback, useContext, useMemo, useRef, useState } from 'react'
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MigrateResult, useMigratorBalances } from 'state/zapMigrator/hooks'
 import useLpBalances from 'hooks/useLpBalances'
@@ -58,10 +58,17 @@ export interface ApeswapWalletLpInterface {
   balance: TokenAmount
 }
 
+export interface MigrationCompleteLog {
+  lpSymbol: string
+  location: string
+  stakeAmount: string
+}
+
 interface MigrateContextData {
   activeIndex: number
   setActiveIndexCallback: (activeIndex: number) => void
-  setMigrateMaximizersCallback: (migrateMaximizers: boolean) => void
+  handleMaximizerApprovalToggle: (apeswapLps: ApeswapWalletLpInterface[], migrateMaximizers: boolean) => void
+  handleAddMigrationCompleteLog: (migrationLog: MigrationCompleteLog) => void
   handleUpdateMigratorResults: () => void
   handleUpdateOfApeswapLpBalance: (id: number, token0: string, token1: string) => void
   handleUpdateMigrateLp: (
@@ -75,6 +82,7 @@ interface MigrateContextData {
   migrateWalletLps: MigrateResult[]
   apeswapWalletLps: ApeswapWalletLpInterface[]
   migrateLpStatus: MigrateLpStatus[]
+  migrationCompleteLog: MigrationCompleteLog[]
   migrationLoading: boolean
 }
 
@@ -88,17 +96,21 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   const [migrateWalletBalances, setMigrateWalletBalances] = useState<MigrateResult[]>([])
   const [migrateStakedBalances, setMigrateStakedBalances] = useState<MigrateResult[]>([])
   const [apeswapLpBalances, setApeswapLpBalances] = useState<ApeswapWalletLpInterface[]>([])
+  const [migrationCompleteLog, setMigrationCompleteLog] = useState<MigrationCompleteLog[]>([])
   const [lpStatus, setLpStatus] = useState<MigrateLpStatus[]>([])
   // Making the load time minimum 3.5 seconds
   const timer = useRef(null)
   const [timeReady, setTimeReady] = useState<boolean>(false)
-  const { results: migrateLpBalances, syncing, loading, valid } = useMigratorBalances(5)
+  const { results: migrateLpBalances, syncing, loading, valid } = useMigratorBalances(1)
   const [activeIndex, setActiveIndex] = useState(0)
   // TODO: Clean useLpBalances to be specific for the migration
   const { allPairs: liquidityTokens, pairAndBalances: userApeswapLpBalances } = useLpBalances()
   // Since we already need to pull farm and vault data for this page we can use the already fetched approved data
   const farms = useFarms(account)
-  const { vaults } = useVaults()
+  const { vaults: fetchedVaults } = useVaults()
+  // Filter out innactive vaults and farms
+  const vaults = fetchedVaults.filter((vault) => !vault.inactive)
+
   // Since each vault needs a farm we can filter by just farms
   const filteredLpsForStake = apeswapLpBalances?.filter((lp) =>
     farms?.find((farm) => lp.pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
@@ -125,7 +137,8 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
 
   // Set the initial statuses for each LP
   // TODO: Make this better
-  useMemo(() => {
+  useEffect(() => {
+    console.log('run it')
     setMigrateLpStatus(
       migrateLpBalances,
       filteredLpsForStake,
@@ -136,15 +149,8 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
       account,
       chainId,
     )
-  }, [
-    loading,
-    userApeswapLpBalances.length,
-    account,
-    setLpStatus,
-    migrateMaximizers,
-    farmAndVaultUserDataLoaded,
-    chainId,
-  ])
+  }, [valid, account, setLpStatus, farmAndVaultUserDataLoaded, chainId])
+  console.log(valid, account, farmAndVaultUserDataLoaded, chainId)
 
   // Monitor is status change for active index
   useMemo(() => {
@@ -152,10 +158,15 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   }, [lpStatus])
 
   const setActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
-  const setMigrateMaximizersCallback = useCallback(
-    (migrateMaximizers: boolean) => setMigrateMaximizers(migrateMaximizers),
-    [],
+
+  const handleAddMigrationCompleteLog = useCallback(
+    (migrationLog: MigrationCompleteLog) => {
+      console.log(migrationLog)
+      setMigrationCompleteLog((prev) => [...prev, migrationLog])
+    },
+    [setMigrationCompleteLog],
   )
+
   // TODO: Move to callbacks
   const handleUpdateMigrateLp = useCallback(
     (id, type, status, statusText) => {
@@ -170,6 +181,43 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
       setLpStatus([...updatedMigrateLpStatus])
     },
     [setLpStatus, lpStatus],
+  )
+
+  const handleMaximizerApprovalToggle = useCallback(
+    (apeswapLps, migrateMaximizers) => {
+      const updatedMigrateLpStatus = lpStatus
+      setMigrateMaximizers(migrateMaximizers)
+      apeswapLps.forEach(({ pair, id }) => {
+        const matchedVault = vaults.find(
+          (vault) => vault.stakeToken.address[chainId].toLowerCase() === pair.liquidityToken.address.toLowerCase(),
+        )
+        const matchedFarm = farms.find(
+          (farm) => farm.lpAddresses[chainId].toLowerCase() === pair.liquidityToken.address.toLowerCase(),
+        )
+        const migrateVaultAvailable = migrateMaximizers && matchedVault
+        const lpToUpdateIndex = lpStatus.findIndex((migrateLp) => migrateLp.id === id)
+        const lpToUpdate = {
+          ...lpStatus[lpToUpdateIndex],
+          status: {
+            ...lpStatus[lpToUpdateIndex].status,
+            approveStake: migrateVaultAvailable
+              ? new BigNumber(matchedVault?.userData?.allowance).gt(0)
+                ? MigrateStatus.COMPLETE
+                : MigrateStatus.INCOMPLETE
+              : new BigNumber(matchedFarm?.userData?.allowance).gt(0)
+              ? MigrateStatus.COMPLETE
+              : MigrateStatus.INCOMPLETE,
+          },
+        }
+        console.log(new BigNumber(matchedFarm?.userData?.allowance).gt(0))
+        updatedMigrateLpStatus[lpToUpdateIndex] = lpToUpdate
+        console.log(migrateVaultAvailable)
+      })
+      console.log(migrateMaximizers)
+      console.log(updatedMigrateLpStatus)
+      setLpStatus([...updatedMigrateLpStatus])
+    },
+    [vaults, farms, lpStatus, setMigrateMaximizers],
   )
 
   // TODO: Move to callbacks
@@ -279,20 +327,24 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     [chainId, library, account, liquidityTokens, apeswapLpBalances, updateStatusId, setApeswapLpBalances],
   )
 
+  console.log(lpStatus)
+
   return (
     <MigrateContext.Provider
       value={{
         setActiveIndexCallback,
         handleUpdateMigrateLp,
         handleUpdateMigratorResults,
-        setMigrateMaximizersCallback,
         handleUpdateOfApeswapLpBalance,
+        handleMaximizerApprovalToggle,
+        handleAddMigrationCompleteLog,
         activeIndex,
         migrateMaximizers,
         migrateWalletLps: migrateWalletBalances,
         migrateStakeLps: migrateStakedBalances,
         apeswapWalletLps: apeswapLpBalances,
         migrateLpStatus: lpStatus,
+        migrationCompleteLog,
         migrationLoading,
       }}
     >

@@ -26,9 +26,7 @@ const Stake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ ape
 
   // Filter LPs that have been approved
   const filteredLpsForStake = filteredLps?.filter(
-    ({ pair }) =>
-      migrateLpStatus?.find((status) => status.lpAddress.toLowerCase() === pair.liquidityToken.address.toLowerCase())
-        ?.status.approveStake === MigrateStatus.COMPLETE,
+    ({ id }) => migrateLpStatus?.find((status) => status.id === id)?.status.approveStake === MigrateStatus.COMPLETE,
   )
 
   const listView = filteredLpsForStake?.map((apeLp) => {

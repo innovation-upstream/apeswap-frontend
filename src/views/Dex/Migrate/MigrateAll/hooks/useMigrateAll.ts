@@ -39,7 +39,6 @@ const useMigrateAllLps = () => {
           JSBI.divide(JSBI.multiply(token0MinOut, JSBI.BigInt(10000 - allowedSlippage)), JSBI.BigInt(10000)),
           JSBI.divide(JSBI.multiply(token1MinOut, JSBI.BigInt(10000 - allowedSlippage)), JSBI.BigInt(10000)),
         ]
-        console.warn(id)
         handleUpdateMigrateLp(id, 'migrate', MigrateStatus.PENDING, 'Migrate in progress')
         const gasEstimate = await zapContract.estimateGas.zapLPMigrator(
           SMART_ROUTER_ADDRESS[chainId][smartRouter],

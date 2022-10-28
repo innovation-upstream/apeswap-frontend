@@ -13,7 +13,8 @@ const useStakeApproveAll = () => {
   const { handleUpdateMigrateLp, migrateMaximizers } = useMigrateAll()
   const masterChefAddress = useMasterChefAddress()
   const vaultAddress = useVaultApeAddressV2()
-  const { vaults } = useVaults()
+  const { vaults: fetchedVaults } = useVaults()
+  const vaults = fetchedVaults.filter((vault) => !vault.inactive)
 
   const handleApproveAll = useCallback(
     (apeswapWalletLps: ApeswapWalletLpInterface[]) => {
