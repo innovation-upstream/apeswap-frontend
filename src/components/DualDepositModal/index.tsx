@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState } from 'react'
-import { Flex, Modal, ModalProvider } from '@ape.swap/uikit'
+import { Button, Flex, Modal, ModalProvider, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import DualCurrencyPanel from 'components/DualCurrencyPanel/DualCurrencyPanel'
 import { Field } from 'state/swap/actions'
@@ -22,7 +22,7 @@ import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useMiniChefAddress } from 'hooks/useAddress'
 import DualActions from './DualActions'
 import { TransactionSubmittedContent } from '../TransactionConfirmationModal'
-import DistributionPanel from '../../views/Dex/Zap/components/DistributionPanel/DistributionPanel'
+import DistributionPanel from 'views/Dex/Zap/components/DistributionPanel/DistributionPanel'
 
 interface DualDepositModalProps {
   onDismiss?: () => void
@@ -182,10 +182,17 @@ const Index: React.FC<DualDepositModalProps> = ({
               />
             </Box>
             {!currencyB && typedValue && parseFloat(typedValue) > 0 && zap?.pairOut?.liquidityMinted && (
-              <Flex sx={{ margin: '15px 0' }}>
+              <Flex sx={{ margin: '15px 0', fontWeight: 600 }}>
                 <DistributionPanel zap={zap} hideTitle />
               </Flex>
             )}
+            <Flex sx={{ margin: '15px 0', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Flex sx={{ flexDirection: 'column' }}>
+                <Text>User zap slippage: {zapSlippage}</Text>
+                <Text>Required slippage: ?</Text>
+              </Flex>
+              <Button>Magic Slippage</Button>
+            </Flex>
             <DualActions
               lpToApprove={lpAddress}
               showApproveLpFlow={showApproveContract}
