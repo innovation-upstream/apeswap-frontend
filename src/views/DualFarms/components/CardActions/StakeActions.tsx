@@ -59,12 +59,10 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
         await onUnstake(val)
           .then((resp) => {
             const trxHash = resp.transactionHash
-            toastSuccess(
-              t('Withdraw Successful'),
-              <LinkExternal href={getEtherscanLink(trxHash, 'transaction', chainId)}>
-                <Text> {t('View Transaction')} </Text>
-              </LinkExternal>,
-            )
+            toastSuccess(t('Withdraw Successful'), {
+              text: t('View Transaction'),
+              url: getEtherscanLink(trxHash, 'transaction', chainId),
+            })
           })
           .catch((e) => {
             console.error(e)

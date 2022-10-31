@@ -133,7 +133,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
               {t('Stake in')}{' '}
               {`${wrappedToNative(zap?.pairOut?.pair?.token0?.getSymbol(chainId))} - ${wrappedToNative(
                 zap?.pairOut?.pair?.token1?.getSymbol(chainId),
-              )}`}
+              )} ${zapIntoProductType === ZapType.ZAP_MINI_APE ? t('Farm') : null}`}
             </Text>
             <Box sx={{ width: '50px', marginLeft: '10px' }}>
               <Switch

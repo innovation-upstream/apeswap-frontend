@@ -166,7 +166,7 @@ const Index: React.FC<DualDepositModalProps> = ({
 
   const updateSlippage = () => {
     if (localZapSlippage + 1 < priceImpact) {
-      setLocalZapSlippage(priceImpact + 1)
+      setLocalZapSlippage(priceImpact + 5)
     }
   }
 
@@ -194,27 +194,29 @@ const Index: React.FC<DualDepositModalProps> = ({
                 <DistributionPanel zap={zap} hideTitle />
               </Flex>
             )}
-            {localZapSlippage < priceImpact && (
-              <Flex
-                sx={{
-                  margin: '15px 0',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Flex>
-                  <Text size="12px" sx={{ lineHeight: '18px' }}>
-                    {t('This transaction requires a slippage tolerance of ')}
-                    {(priceImpact + 1) / 100} {' %.'}
-                    {t('After this transaction, slippage tolerance will be reset to ')}
-                    {zapSlippage / 100} {' %.'}
-                  </Text>
+            {localZapSlippage < priceImpact &&
+              !currencyB &&
+              parseFloat(selectedCurrencyBalance?.toExact()) > parseFloat(typedValue) && (
+                <Flex
+                  sx={{
+                    margin: '15px 0',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Flex>
+                    <Text size="12px" sx={{ lineHeight: '18px' }}>
+                      {t('This transaction requires a slippage tolerance of ')}
+                      {(priceImpact + 5) / 100} {' %.'}
+                      {t('After this transaction, slippage tolerance will be reset to ')}
+                      {zapSlippage / 100} {' %.'}
+                    </Text>
+                  </Flex>
+                  <Button onClick={updateSlippage} sx={{ minWidth: '100px', marginLeft: '5px' }}>
+                    {t('Update')}
+                  </Button>
                 </Flex>
-                <Button onClick={updateSlippage} sx={{ minWidth: '100px', marginLeft: '5px' }}>
-                  {t('Update')}
-                </Button>
-              </Flex>
-            )}
+              )}
             <DualActions
               lpToApprove={lpAddress}
               showApproveLpFlow={showApproveContract}
@@ -224,7 +226,7 @@ const Index: React.FC<DualDepositModalProps> = ({
                 parseFloat(typedValue) === 0 || !typedValue
                   ? 'Enter an amount'
                   : parseFloat(selectedCurrencyBalance?.toExact()) < parseFloat(typedValue)
-                  ? 'Insufficient LP balance'
+                  ? 'Insufficient balance'
                   : localZapSlippage < priceImpact
                   ? 'Change Slippage'
                   : txErrorMessage
