@@ -1,35 +1,26 @@
 import React, { useState } from 'react'
-import {
-  Flex,
-  AddIcon,
-  MinusIcon,
-  useModal,
-  AutoRenewIcon,
-  LinkExternal,
-  Text,
-  useMatchBreakpoints,
-} from '@apeswapfinance/uikit'
+import { Flex, AddIcon, MinusIcon, AutoRenewIcon, LinkExternal, Text, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useDualFarmStake } from 'hooks/useStake'
 import { useMiniChefUnstake } from 'hooks/useUnstake'
 import { useToast } from 'state/hooks'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
-import DepositModal from '../Modals/DepositModal'
-import WithdrawModal from '../Modals/WithdrawModal'
+import DualDepositModal from 'components/DualDepositModal'
+import WithdrawModal from '../../../../components/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButton, StyledButton } from './styles'
+import { DualFarm } from 'state/types'
+import { useModal } from '@ape.swap/uikit'
 
 interface StakeActionsProps {
-  stakingTokenBalance: string
-  stakedBalance: string
   lpValueUsd: number
-  pid: number
+  farm: DualFarm
 }
 
-const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedBalance, lpValueUsd, pid }) => {
+const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
+  const stakedBalance = farm?.userData?.stakedBalance?.toString()
   const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -43,29 +34,21 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
   const isMobile = !isLg && !isXl && !isXxl
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
 
-  const { onStake } = useDualFarmStake(pid)
-  const { onUnstake } = useMiniChefUnstake(pid)
+  const { onUnstake } = useMiniChefUnstake(farm?.pid)
 
   const [onPresentDeposit] = useModal(
-    <DepositModal
-      max={stakingTokenBalance}
-      onConfirm={async (val) => {
-        setPendingDepositTrx(true)
-        await onStake(val)
-          .then((resp) => {
-            const trxHash = resp.transactionHash
-            toastSuccess(t('Deposit Successful'), {
-              text: t('View Transaction'),
-              url: getEtherscanLink(trxHash, 'transaction', chainId),
-            })
-          })
-          .catch((e) => {
-            console.error(e)
-            setPendingDepositTrx(false)
-          })
-        setPendingDepositTrx(false)
-      }}
+    <DualDepositModal
+      setPendingDepositTrx={setPendingDepositTrx}
+      pendingTx={pendingDepositTrx}
+      pid={farm?.pid}
+      allowance={farm?.userData?.allowance?.toString()}
+      token0={farm?.stakeTokens?.token0?.address[chainId]}
+      token1={farm?.stakeTokens?.token1?.address[chainId]}
+      lpAddress={farm?.stakeTokenAddress}
     />,
+    true,
+    true,
+    `depositModal-${farm.pid}`,
   )
 
   const [onPresentWithdraw] = useModal(
@@ -89,7 +72,11 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
           })
         setPendingWithdrawTrx(false)
       }}
+      title={t('Unstake LP tokens')}
     />,
+    true,
+    true,
+    `withdrawModal-${farm.pid}`,
   )
 
   const renderStakingButtons = () => {
@@ -132,9 +119,9 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
           <SmallButton
             onClick={onPresentDeposit}
             endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
-            disabled={pendingDepositTrx || !new BigNumber(stakingTokenBalance)?.gt(0)}
+            disabled={pendingDepositTrx}
           >
-            <AddIcon color="white" width="20px" height="20px" fontWeight={700} />
+            {!pendingDepositTrx && <AddIcon color="white" width="20px" height="20px" fontWeight={700} />}
           </SmallButton>
         </Flex>
         {!isMobile && (

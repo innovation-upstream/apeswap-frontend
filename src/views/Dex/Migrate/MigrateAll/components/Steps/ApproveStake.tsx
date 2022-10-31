@@ -6,8 +6,6 @@ import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import { wrappedToNative } from 'utils'
 import React from 'react'
-import { useFarms } from 'state/farms/hooks'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Switch } from 'theme-ui'
 import StatusIcons from '../StatusIcons'
 import { ApeswapWalletLpInterface, MigrateStatus, useMigrateAll } from '../../provider'
@@ -15,19 +13,14 @@ import useStakeApproveAll from '../../hooks/useStakeApproveAll'
 import useIsMobile from 'hooks/useIsMobile'
 
 const ApproveStake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ apeswapWalletLps }) => {
-  const { chainId, account } = useActiveWeb3React()
-  const farms = useFarms(account)
   const { t } = useTranslation()
   const isMobile = useIsMobile()
 
   const { migrateLpStatus, migrateMaximizers, handleMaximizerApprovalToggle } = useMigrateAll()
   const handleApproveAll = useStakeApproveAll()
-  // Since each vault needs a farm we can filter by just farms
-  const filteredLps = apeswapWalletLps.filter(({ pair }) =>
-    farms.find((farm) => pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
-  )
+
   // Filter LPs that have been approved
-  const filteredLpsForStake = filteredLps?.filter(
+  const filteredLpsForStake = apeswapWalletLps?.filter(
     ({ id }) => migrateLpStatus?.find((status) => status.id === id)?.status.approveStake !== MigrateStatus.COMPLETE,
   )
 
@@ -98,7 +91,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> =
               },
             }}
             checked={migrateMaximizers}
-            onChange={() => handleMaximizerApprovalToggle(filteredLps, !migrateMaximizers)}
+            onChange={() => handleMaximizerApprovalToggle(apeswapWalletLps, !migrateMaximizers)}
           />
         </Flex>
       </Flex>

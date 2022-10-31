@@ -27,7 +27,7 @@ import useIsMobile from 'hooks/useIsMobile'
  */
 
 interface DualCurrencyPanelProps {
-  handleMaxInput: (field: any) => void
+  handleMaxInput: () => void
   onUserInput: (val: string) => void
   value: string
   onCurrencySelect: (currency: DualCurrencySelector) => void

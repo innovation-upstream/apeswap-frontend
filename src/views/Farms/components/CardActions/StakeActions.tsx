@@ -21,10 +21,10 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import ListViewContent from 'components/ListViewContent'
 import DepositModal from '../Modals/DepositModal'
-import WithdrawModal from '../Modals/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButton, StyledButton } from './styles'
 import { useHistory } from 'react-router-dom'
 import { useIsModalShown } from 'state/user/hooks'
+import WithdrawModal from '../../../../components/WithdrawModal'
 
 interface StakeActionsProps {
   stakingTokenBalance: string
@@ -100,6 +100,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
         dispatch(fetchFarmUserDataAsync(chainId, account))
         setPendingWithdrawTrx(false)
       }}
+      title={'Unstake LP tokens'}
     />,
   )
 

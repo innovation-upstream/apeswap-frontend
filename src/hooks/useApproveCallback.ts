@@ -22,7 +22,7 @@ import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
-import { parseAddress, parseSmartAddress } from './useAddress'
+import { NEW_ZAP_ADDRESS, parseAddress, parseSmartAddress } from './useAddress'
 import { MergedZap } from 'state/zap/actions'
 
 export enum ApprovalState {
@@ -149,5 +149,6 @@ export function useApproveCallbackFromZap(zap?: MergedZap) {
     ? new TokenAmount(zap.currencyIn.currency as Token, zap.currencyIn?.inputAmount)
     : undefined
 
-  return useApproveCallback(inAmount as CurrencyAmount, parseAddress(ZAP_ADDRESS, chainId))
+  // TODO update SDK & replace this variable
+  return useApproveCallback(inAmount as CurrencyAmount, parseAddress(NEW_ZAP_ADDRESS, chainId))
 }

@@ -135,9 +135,20 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   }
 
   useMemo(() => {
-    setMigrateWalletBalances(migrateLpBalances?.filter((bal) => parseFloat(bal.walletBalance) > 0.0))
-    setMigrateStakedBalances(migrateLpBalances?.filter((bal) => parseFloat(bal.stakedBalance) > 0.0))
-  }, [migrateLpBalances.length, loading, syncing])
+    const filterMigrateLps = migrateLpBalances?.filter((lp) =>
+      farms?.find(
+        (farm) =>
+          (farm.tokenAddresses[chainId].toLowerCase() === lp.token0.address.toLowerCase() ||
+            farm.tokenAddresses[chainId].toLowerCase() === lp.token1.address.toLowerCase()) &&
+          (farm.quoteTokenAdresses[chainId].toLowerCase() === lp.token0.address.toLowerCase() ||
+            farm.quoteTokenAdresses[chainId].toLowerCase() === lp.token1.address.toLowerCase()),
+      ),
+    )
+    setMigrateWalletBalances(filterMigrateLps?.filter((bal) => parseFloat(bal.walletBalance) > 0.0))
+    setMigrateStakedBalances(filterMigrateLps?.filter((bal) => parseFloat(bal.stakedBalance) > 0.0))
+  }, [migrateLpBalances.length, loading, chainId, farms.length, syncing])
+
+  console.log(lpStatus)
 
   useMemo(() => {
     setApeswapLpBalances(userApeswapLpBalances)
@@ -147,7 +158,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   // TODO: Make this better
   useEffect(() => {
     setMigrateLpStatus(
-      migrateLpBalances,
+      [...migrateWalletBalances, ...migrateStakedBalances],
       filteredLpsForStake,
       farms,
       vaults,
@@ -271,9 +282,32 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     })
     const updatedMigrateWalletBalances = balanceData.filter((bal) => parseFloat(bal.walletBalance) > 0.0)
     const updatedMigrateStakedBalances = balanceData.filter((bal) => parseFloat(bal.stakedBalance) > 0.0)
-    setMigrateWalletBalances(updatedMigrateWalletBalances)
-    setMigrateStakedBalances(updatedMigrateStakedBalances)
-  }, [chainId, account, library, migrateLpBalances])
+
+    // We need to filter the results to remove non farms
+    // TODO: Make this cleaner
+    const filterMigrateWalletBalances = updatedMigrateWalletBalances?.filter((lp) =>
+      farms?.find(
+        (farm) =>
+          (farm.tokenAddresses[chainId].toLowerCase() === lp.token0.address.toLowerCase() ||
+            farm.tokenAddresses[chainId].toLowerCase() === lp.token1.address.toLowerCase()) &&
+          (farm.quoteTokenAdresses[chainId].toLowerCase() === lp.token0.address.toLowerCase() ||
+            farm.quoteTokenAdresses[chainId].toLowerCase() === lp.token1.address.toLowerCase()),
+      ),
+    )
+
+    const filterMigrateStakeBalances = updatedMigrateStakedBalances?.filter((lp) =>
+      farms?.find(
+        (farm) =>
+          (farm.tokenAddresses[chainId].toLowerCase() === lp.token0.address.toLowerCase() ||
+            farm.tokenAddresses[chainId].toLowerCase() === lp.token1.address.toLowerCase()) &&
+          (farm.quoteTokenAdresses[chainId].toLowerCase() === lp.token0.address.toLowerCase() ||
+            farm.quoteTokenAdresses[chainId].toLowerCase() === lp.token1.address.toLowerCase()),
+      ),
+    )
+
+    setMigrateWalletBalances(filterMigrateWalletBalances)
+    setMigrateStakedBalances(filterMigrateStakeBalances)
+  }, [chainId, account, library, migrateLpBalances, farms])
 
   // TODO: Move to utils
   const updateStatusId = useCallback(

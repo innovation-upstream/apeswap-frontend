@@ -19,6 +19,7 @@ const ApproveMigrate: React.FC<{
   const { migrateLpStatus } = useMigrateAll()
   const isMobile = useIsMobile()
   const handleApproveAll = useMigrateApproveAll()
+  console.log(migrateList)
   const filteredLps = migrateList?.filter(
     (lp) =>
       migrateLpStatus?.find((status) => status.lpAddress === lp.lpAddress)?.status.approveMigrate !==

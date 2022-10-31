@@ -98,7 +98,6 @@ const PoolCard: React.FC<HarvestProps> = ({ pool, removed }) => {
         poolAPR={apr?.toFixed(2)}
         showExpandableSection={showExpandableSection}
         removed={removed}
-        rewardTokenPrice={rewardToken?.price}
       />
       <ExpandingWrapper expanded={showExpandableSection}>
         <StyledFlex>
