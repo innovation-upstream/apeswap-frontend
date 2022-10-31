@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Flex, Modal, ModalProvider, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import DualCurrencyPanel from 'components/DualCurrencyPanel/DualCurrencyPanel'
@@ -17,12 +17,19 @@ import { useToast } from 'state/hooks'
 import { getEtherscanLink, wrappedToNative } from 'utils'
 import { useDualFarmStake } from 'hooks/useStake'
 import { useZapCallback } from 'hooks/useZapCallback'
-import { ZapType } from '@ape.swap/sdk'
+import { JSBI, Percent, ZapType } from '@ape.swap/sdk'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useMiniChefAddress } from 'hooks/useAddress'
 import DualActions from './DualActions'
 import { TransactionSubmittedContent } from '../TransactionConfirmationModal'
 import DistributionPanel from 'views/Dex/Zap/components/DistributionPanel/DistributionPanel'
+import FormattedPriceImpact from '../../views/Dex/components/FormattedPriceImpact'
+import {
+  updateDualFarmUserEarnings,
+  updateDualFarmUserStakedBalances,
+  updateDualFarmUserTokenBalances,
+} from '../../state/dualFarms'
+import { useDispatch } from 'react-redux'
 
 interface DualDepositModalProps {
   onDismiss?: () => void
@@ -59,6 +66,7 @@ const Index: React.FC<DualDepositModalProps> = ({
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
+  const dispatch = useDispatch()
   const showApproveContract = !new BigNumber(allowance).gt(0)
   const [txHash, setTxHash] = useState('')
   const [txErrorMessage, setTxErrorMessage] = useState<string>(null)
@@ -74,8 +82,8 @@ const Index: React.FC<DualDepositModalProps> = ({
   )
 
   const lpCurrencies: DualCurrencySelector = {
-    currencyA: useCurrency(token0),
-    currencyB: useCurrency(token1),
+    currencyA: useCurrency(token1),
+    currencyB: useCurrency(token0),
   }
   const [currencyA, setCurrencyA] = useState(lpCurrencies.currencyA)
   const [currencyB, setCurrencyB] = useState(lpCurrencies.currencyB)
@@ -99,13 +107,16 @@ const Index: React.FC<DualDepositModalProps> = ({
   const [, pair] = usePair(inputCurrencies[0], inputCurrencies[1])
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, pair?.liquidityToken ?? currencyA)
   const { zap } = useDerivedZapInfo()
-  const [zapSlippage] = useUserSlippageTolerance(true)
-  const [localZapSlippage, setLocalZapSlippage] = useState(zapSlippage)
+  const [zapSlippage, setZapSlippage] = useUserSlippageTolerance(true)
+  const originalSlippage = useMemo(() => {
+    return zapSlippage
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const priceImpact = parseFloat(zap?.totalPriceImpact?.toFixed(2)) * 100
   const { callback: zapCallback } = useZapCallback(
     zap,
     ZapType.ZAP_MINI_APE,
-    localZapSlippage,
+    zapSlippage,
     recipient,
     miniApeAddress,
     null,
@@ -149,14 +160,30 @@ const Index: React.FC<DualDepositModalProps> = ({
         .then((hash) => {
           handlePendingTx(false)
           setTxHash(hash)
+          setZapSlippage(originalSlippage)
+          dispatch(updateDualFarmUserStakedBalances(chainId, pid, account))
+          dispatch(updateDualFarmUserEarnings(chainId, pid, account))
+          dispatch(updateDualFarmUserTokenBalances(chainId, pid, account))
         })
         .catch((error) => {
           console.error(error)
           setTxErrorMessage(error.message)
           handlePendingTx(false)
+          setZapSlippage(originalSlippage)
         })
     }
-  }, [chainId, currencyB, handlePendingTx, onStake, t, toastSuccess, typedValue, zapCallback])
+  }, [
+    chainId,
+    currencyB,
+    handlePendingTx,
+    onStake,
+    originalSlippage,
+    setZapSlippage,
+    t,
+    toastSuccess,
+    typedValue,
+    zapCallback,
+  ])
 
   const handleDismissConfirmation = useCallback(() => {
     // clear zapErrorMessage if user closes the error modal
@@ -165,8 +192,8 @@ const Index: React.FC<DualDepositModalProps> = ({
   }, [setPendingDepositTrx])
 
   const updateSlippage = () => {
-    if (localZapSlippage + 1 < priceImpact) {
-      setLocalZapSlippage(priceImpact + 5)
+    if (zapSlippage < priceImpact) {
+      setZapSlippage(priceImpact + 5)
     }
   }
 
@@ -194,9 +221,9 @@ const Index: React.FC<DualDepositModalProps> = ({
                 <DistributionPanel zap={zap} hideTitle />
               </Flex>
             )}
-            {localZapSlippage < priceImpact &&
+            {zapSlippage < priceImpact &&
               !currencyB &&
-              parseFloat(selectedCurrencyBalance?.toExact()) > parseFloat(typedValue) && (
+              parseFloat(selectedCurrencyBalance?.toExact()) >= parseFloat(typedValue) && (
                 <Flex
                   sx={{
                     margin: '15px 0',
@@ -204,13 +231,21 @@ const Index: React.FC<DualDepositModalProps> = ({
                     alignItems: 'center',
                   }}
                 >
-                  <Flex>
+                  <Flex sx={{ flexDirection: 'column' }}>
                     <Text size="12px" sx={{ lineHeight: '18px' }}>
                       {t('This transaction requires a slippage tolerance of ')}
-                      {(priceImpact + 5) / 100} {' %.'}
+                      <FormattedPriceImpact
+                        priceImpact={new Percent(JSBI.BigInt(priceImpact + 5), JSBI.BigInt(10000))}
+                      />
+                      {'. '}
                       {t('After this transaction, slippage tolerance will be reset to ')}
-                      {zapSlippage / 100} {' %.'}
+                      {zapSlippage / 100} {'%.'}
                     </Text>
+                    {priceImpact + 5 > 500 && (
+                      <Text color="error" size="12px">
+                        {t('Beware: your transaction may be frontrun')}
+                      </Text>
+                    )}
                   </Flex>
                   <Button onClick={updateSlippage} sx={{ minWidth: '100px', marginLeft: '5px' }}>
                     {t('Update')}
@@ -227,10 +262,11 @@ const Index: React.FC<DualDepositModalProps> = ({
                   ? 'Enter an amount'
                   : parseFloat(selectedCurrencyBalance?.toExact()) < parseFloat(typedValue)
                   ? 'Insufficient balance'
-                  : localZapSlippage < priceImpact
+                  : zapSlippage < priceImpact
                   ? 'Change Slippage'
-                  : txErrorMessage
+                  : null
               }
+              txError={txErrorMessage}
               disabled={pendingTx || selectedCurrencyBalance?.toExact() === '0'}
               pendingTrx={pendingTx}
               handleAction={handleDeposit}

@@ -41,6 +41,7 @@ interface DualActionsProps {
   handleDismissConfirmation: () => void
   txHash: string
   lpName: string
+  txError: string
 }
 
 const DualActions: React.FC<DualActionsProps> = ({
@@ -55,6 +56,7 @@ const DualActions: React.FC<DualActionsProps> = ({
   handleDismissConfirmation,
   txHash,
   lpName,
+  txError,
 }) => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -72,7 +74,7 @@ const DualActions: React.FC<DualActionsProps> = ({
       isZapSelected={isZapSelected}
       onDismiss={handleDismissConfirmation}
       txHash={txHash}
-      errorMessage={inputError}
+      errorMessage={txError}
       lpName={lpName}
     />,
     true,
