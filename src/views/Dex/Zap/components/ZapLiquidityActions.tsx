@@ -29,7 +29,6 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [pendingTx, setPendingTx] = useState<boolean>(false)
-  const [recentlyApproved, setRecentlyApproved] = useState<boolean>(false)
 
   const [onPresentAddLiquidityModal] = useModal(
     <ZapConfirmationModal
@@ -55,12 +54,7 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
 
   const aproveZap = () => {
     setPendingTx(true)
-    approveCallback()
-      .then(() => {
-        setPendingTx(false)
-        setRecentlyApproved(true)
-      })
-      .catch(() => setPendingTx(false))
+    approveCallback().finally(() => setPendingTx(false))
   }
 
   const renderAction = () => {
@@ -74,7 +68,7 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
         </Button>
       )
     }
-    if (showApproveFlow && !recentlyApproved) {
+    if (showApproveFlow) {
       return (
         <Flex sx={{ width: '100%' }}>
           <>
