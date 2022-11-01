@@ -19,7 +19,6 @@ import { useDualFarmStake } from 'hooks/useStake'
 import { useZapCallback } from 'hooks/useZapCallback'
 import { JSBI, Percent, ZapType } from '@ape.swap/sdk'
 import { useUserSlippageTolerance } from 'state/user/hooks'
-import { useMiniChefAddress } from 'hooks/useAddress'
 import DualActions from './DualActions'
 import { TransactionSubmittedContent } from '../TransactionConfirmationModal'
 import DistributionPanel from 'views/Dex/Zap/components/DistributionPanel/DistributionPanel'
@@ -103,7 +102,6 @@ const Index: React.FC<DualDepositModalProps> = ({
     [lpCurrencies.currencyA, lpCurrencies.currencyB, onCurrencySelection, onHandleValueChange],
   )
 
-  const miniApeAddress = useMiniChefAddress()
   const [, pair] = usePair(inputCurrencies[0], inputCurrencies[1])
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, pair?.liquidityToken ?? currencyA)
   const { zap } = useDerivedZapInfo()
@@ -118,9 +116,9 @@ const Index: React.FC<DualDepositModalProps> = ({
     ZapType.ZAP_MINI_APE,
     zapSlippage,
     recipient,
-    miniApeAddress,
     null,
-    pid,
+    null,
+    pid.toString(),
   )
 
   const handleMaxInput = useCallback(() => {
@@ -183,6 +181,9 @@ const Index: React.FC<DualDepositModalProps> = ({
     toastSuccess,
     typedValue,
     zapCallback,
+    account,
+    dispatch,
+    pid,
   ])
 
   const handleDismissConfirmation = useCallback(() => {
@@ -255,14 +256,14 @@ const Index: React.FC<DualDepositModalProps> = ({
             <DualActions
               lpToApprove={lpAddress}
               showApproveLpFlow={showApproveContract}
-              pid={pid}
+              pid={pid.toString()}
               isZapSelected={!currencyB}
               inputError={
                 parseFloat(typedValue) === 0 || !typedValue
                   ? 'Enter an amount'
                   : parseFloat(selectedCurrencyBalance?.toExact()) < parseFloat(typedValue)
                   ? 'Insufficient balance'
-                  : zapSlippage < priceImpact
+                  : zapSlippage < priceImpact && !currencyB
                   ? 'Change Slippage'
                   : null
               }

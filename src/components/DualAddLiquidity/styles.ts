@@ -121,6 +121,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     alignItems: 'center',
     height: '20px',
     width: '40px',
+    backgroundColor: 'white3',
     '& div': {
       width: '15px',
       height: '15px',

@@ -32,7 +32,7 @@ import DualConfirmationModal from './DualConfirmationModal'
 interface DualActionsProps {
   lpToApprove: string
   showApproveLpFlow: boolean
-  pid?: number
+  pid?: string
   isZapSelected?: boolean
   inputError?: string
   disabled: boolean
@@ -67,7 +67,7 @@ const DualActions: React.FC<DualActionsProps> = ({
   const stakingTokenContract = useERC20(lpToApprove)
 
   //this might have to be changed to adapt it for jungle farms too
-  const { onApprove } = useDualFarmApprove(stakingTokenContract, pid)
+  const { onApprove } = useDualFarmApprove(stakingTokenContract, parseFloat(pid))
 
   const [openConfirmationModal] = useModal(
     <DualConfirmationModal

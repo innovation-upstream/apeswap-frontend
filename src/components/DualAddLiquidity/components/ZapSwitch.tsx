@@ -9,7 +9,6 @@ import MoonPayModal from 'views/Topup/MoonpayModal'
 import { styles } from '../styles'
 import SettingsModal from 'components/Menu/GlobalSettings/SettingsModal'
 import { TitleText } from '../../ListViewContent/styles'
-import useTheme from '../../../hooks/useTheme'
 
 interface ZapSwitchProps {
   handleZapSwitch?: () => void
@@ -19,7 +18,6 @@ interface ZapSwitchProps {
 const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-  const { isDark } = useTheme()
 
   const [onPresentModal] = useModal(<MoonPayModal />)
   const [onPresentSettingsModal] = useModal(<SettingsModal zapSettings={goZap} />)
@@ -34,14 +32,7 @@ const ZapSwitch: React.FC<ZapSwitchProps> = ({ handleZapSwitch, goZap }) => {
           {t('ZAP')}
         </Text>
         <Box sx={{ width: '50px' }}>
-          <Switch
-            checked={goZap}
-            onChange={handleZapSwitch}
-            sx={{
-              ...styles.switchStyles,
-              backgroundColor: isDark ? 'rgba(56, 56, 56, 1)' : 'rgba(241, 234, 218, 1)',
-            }}
-          />
+          <Switch checked={goZap} onChange={handleZapSwitch} sx={styles.switchStyles} />
         </Box>
         <TooltipBubble
           placement={'bottomLeft'}

@@ -14,7 +14,6 @@ import DistributionPanel from 'views/Dex/Zap/components/DistributionPanel/Distri
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { Box, Switch } from 'theme-ui'
-import useTheme from 'hooks/useTheme'
 import { wrappedToNative } from '../../utils'
 import track from 'utils/track'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -24,7 +23,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 interface ZapLiquidityProps {
   handleConfirmedTx: (hash: string, pairOut: Pair) => void
   poolAddress: string
-  pid: number
+  pid: string
   zapIntoProductType: ZapType
 }
 
@@ -36,7 +35,6 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
 
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-  const { isDark } = useTheme()
 
   const { INPUT, typedValue, recipient, zapType } = useZapState()
   const [zapSlippage] = useUserSlippageTolerance(true)
@@ -127,7 +125,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
-        {!!poolAddress && zap?.pairOut?.pair?.token0?.getSymbol(chainId) && (
+        {!!pid && zap?.pairOut?.pair?.token0?.getSymbol(chainId) && (
           <Flex sx={{ marginBottom: '10px', fontSize: '12px', alignItems: 'center' }}>
             <Text>
               {t('Stake in')}{' '}
@@ -139,10 +137,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
               <Switch
                 checked={stakeIntoProduct}
                 onChange={() => handleStakeIntoProduct(!stakeIntoProduct)}
-                sx={{
-                  ...styles.switchStyles,
-                  backgroundColor: isDark ? 'rgba(56, 56, 56, 1)' : 'rgba(241, 234, 218, 1)',
-                }}
+                sx={styles.switchStyles}
                 disabled={disableZap}
               />
             </Box>

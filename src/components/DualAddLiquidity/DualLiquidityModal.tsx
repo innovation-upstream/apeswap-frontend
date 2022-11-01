@@ -13,7 +13,7 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 interface DualLiquidityModalProps {
   onDismiss?: () => void
   poolAddress?: string
-  pid?: number
+  pid?: string
   zapIntoProductType?: ZapType
 }
 

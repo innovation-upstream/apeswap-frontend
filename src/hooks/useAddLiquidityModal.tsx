@@ -8,7 +8,7 @@ import { ZapType } from '@ape.swap/sdk'
 
 const useAddLiquidityModal = (zapIntoProductType?: ZapType) => {
   const [poolAddress, setPoolAddress] = useState('')
-  const [pid, setPid] = useState(null)
+  const [pid, setPid] = useState('')
   const dispatch = useDispatch()
   const [onPresentAddLiquidityWidgetModal] = useModal(
     <DualLiquidityModal poolAddress={poolAddress} pid={pid} zapIntoProductType={zapIntoProductType} />,
@@ -17,7 +17,7 @@ const useAddLiquidityModal = (zapIntoProductType?: ZapType) => {
     'dualLiquidityModal',
   )
   return useCallback(
-    (token: string, quoteToken: string, poolAddress?: string, pid?: number, zapType = ZapType.ZAP) => {
+    (token: string, quoteToken: string, poolAddress?: string, pid?: string, zapType = ZapType.ZAP) => {
       dispatch(
         selectCurrency({
           field: Field.INPUT,
@@ -36,7 +36,7 @@ const useAddLiquidityModal = (zapIntoProductType?: ZapType) => {
           currency2: quoteToken,
         }),
       )
-      setPoolAddress(poolAddress || '')
+      setPoolAddress(poolAddress)
       setPid(pid)
       onPresentAddLiquidityWidgetModal()
     },
