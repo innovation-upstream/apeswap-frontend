@@ -134,22 +134,17 @@ export const useDualFarmApprove = (lpContract, pid: number) => {
   const miniChefContract = useMiniChefContract()
 
   const handleApprove = useCallback(async () => {
-    try {
-      const tx = await approve(lpContract, miniChefContract)
-      track({
-        event: 'dualFarm',
-        chain: chainId,
-        data: {
-          token: tx.to,
-          cat: 'enable',
-        },
-      })
-      dispatch(updateDualFarmUserAllowances(chainId, pid, account))
-      return tx
-    } catch (e) {
-      console.warn(e)
-      return false
-    }
+    const tx = await approve(lpContract, miniChefContract)
+    track({
+      event: 'dualFarm',
+      chain: chainId,
+      data: {
+        token: tx.to,
+        cat: 'enable',
+      },
+    })
+    dispatch(updateDualFarmUserAllowances(chainId, pid, account))
+    return tx
   }, [account, dispatch, lpContract, miniChefContract, pid, chainId])
 
   return { onApprove: handleApprove }

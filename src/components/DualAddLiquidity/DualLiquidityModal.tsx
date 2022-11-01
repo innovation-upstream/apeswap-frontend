@@ -7,11 +7,14 @@ import RegularLiquidity from './RegularLiquidity'
 import ZapLiquidity from './ZapLiquidity'
 import ZapSwitch from './components/ZapSwitch'
 import { TransactionSubmittedContent } from '../TransactionConfirmationModal'
-import { Pair } from '@ape.swap/sdk'
+import { Pair, ZapType } from '@ape.swap/sdk'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
 interface DualLiquidityModalProps {
   onDismiss?: () => void
+  poolAddress?: string
+  pid?: number
+  zapIntoProductType?: ZapType
 }
 
 const modalProps = {
@@ -25,7 +28,12 @@ const modalProps = {
   },
 }
 
-const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ onDismiss = () => null }) => {
+const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({
+  onDismiss = () => null,
+  poolAddress,
+  pid,
+  zapIntoProductType,
+}) => {
   const { t } = useTranslation()
   const [goZap, setGoZap] = useState(true)
   const [{ txHash, pairOut }, setTxHash] = useState({
@@ -53,7 +61,16 @@ const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({ onDismiss = () 
           <Modal open {...modalProps} title={t('Liquidity')} onDismiss={onDismiss}>
             <Box>
               <ZapSwitch goZap={goZap} handleZapSwitch={handleZapSwitch} />
-              {goZap ? <ZapLiquidity handleConfirmedTx={handleConfirmedTx} /> : <RegularLiquidity />}
+              {goZap ? (
+                <ZapLiquidity
+                  handleConfirmedTx={handleConfirmedTx}
+                  poolAddress={poolAddress}
+                  pid={pid}
+                  zapIntoProductType={zapIntoProductType}
+                />
+              ) : (
+                <RegularLiquidity />
+              )}
             </Box>
           </Modal>
         </ModalProvider>

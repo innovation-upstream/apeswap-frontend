@@ -2,9 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Address } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
-import { Flex } from '@apeswapfinance/uikit'
-
-import ApyButton from '../../../../components/ApyCalculator/ApyButton'
+import { CalculateIcon, Flex } from '@apeswapfinance/uikit'
 import { useTranslation } from '../../../../contexts/Localization'
 
 export interface AprProps {
@@ -45,6 +43,16 @@ const AprWrapper = styled.div`
   font-weight: 800;
 `
 
+const StyledCalculateIcon = styled(CalculateIcon)`
+  width: 13px;
+  height: 13px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    width: 15px;
+    height: 15px;
+  }
+`
+
 const Apr: React.FC<AprProps> = ({ hideButton = false, poolApr, earnToken, rewardTokenPrice, apr }) => {
   const { t } = useTranslation()
 
@@ -53,15 +61,7 @@ const Apr: React.FC<AprProps> = ({ hideButton = false, poolApr, earnToken, rewar
       {poolApr ? (
         <Flex justifyContent="center" className="noClick">
           <AprWrapper>{poolApr}%</AprWrapper>
-          {!hideButton && (
-            <ApyButton
-              lpLabel={earnToken}
-              rewardTokenName={earnToken}
-              addLiquidityUrl="https://apeswap.finance/swap"
-              rewardTokenPrice={rewardTokenPrice}
-              apy={apr.div(100)?.toNumber()}
-            />
-          )}
+          {!hideButton && <StyledCalculateIcon />}
         </Flex>
       ) : (
         <AprWrapper>{t('Loading...')}</AprWrapper>
