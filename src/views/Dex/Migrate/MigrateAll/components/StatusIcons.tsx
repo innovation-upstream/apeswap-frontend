@@ -3,7 +3,8 @@ import { Flex, Svg, Text } from '@ape.swap/uikit'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import { Spinner } from 'theme-ui'
-import { MigrateStatus, useMigrateAll } from '../provider'
+import { useMigrateAll } from '../provider'
+import { MigrateStatus } from '../provider/types'
 
 const StatusIcons: React.FC<{ id: number }> = ({ id }) => {
   const { migrateLpStatus } = useMigrateAll()

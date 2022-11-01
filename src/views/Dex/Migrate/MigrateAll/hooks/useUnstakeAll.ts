@@ -6,7 +6,8 @@ import { useCallback } from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { getProviderOrSigner } from 'utils'
 import { unstake } from 'utils/callHelpers'
-import { MigrateStatus, useMigrateAll } from '../provider'
+import { MigrateStatus } from '../provider/types'
+import { useMigrateAll } from '../provider'
 
 const useUnstakeAll = () => {
   const { library, account } = useActiveWeb3React()

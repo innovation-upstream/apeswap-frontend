@@ -9,9 +9,10 @@ import { wrappedToNative } from 'utils'
 import React from 'react'
 import { Pair, TokenAmount } from '@ape.swap/sdk'
 import StatusIcons from '../StatusIcons'
-import { MigrateStatus, useMigrateAll } from '../../provider'
+import { useMigrateAll } from '../../provider'
 import useMigrateAllLps from '../../hooks/useMigrateAll'
 import useIsMobile from 'hooks/useIsMobile'
+import { MigrateStatus } from '../../provider/types'
 
 const Migrate: React.FC<{ migrateList: MigrateResult[]; apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({
   migrateList,

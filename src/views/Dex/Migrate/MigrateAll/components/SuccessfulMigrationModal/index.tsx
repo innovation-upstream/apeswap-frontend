@@ -1,6 +1,6 @@
 import { Flex, Modal, Svg, Text } from '@ape.swap/uikit'
 import React from 'react'
-import { MigrationCompleteLog } from '../../provider'
+import { MigrationCompleteLog } from '../../provider/types'
 
 const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationCompleteLog[] }> = ({
   migrationCompleteLog,

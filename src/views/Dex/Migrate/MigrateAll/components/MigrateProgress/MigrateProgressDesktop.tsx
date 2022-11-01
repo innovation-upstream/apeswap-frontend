@@ -1,7 +1,9 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import React, { ReactNode } from 'react'
-import { MigrateStatus, MIGRATION_STEPS, useMigrateAll } from '../../provider'
+import { useMigrateAll } from '../../provider'
+import { MIGRATION_STEPS } from '../../provider/constants'
+import { MigrateStatus } from '../../provider/types'
 import { styles } from './styles'
 
 interface MigrateProcessBarInterface {

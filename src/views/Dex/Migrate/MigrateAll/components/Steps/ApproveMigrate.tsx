@@ -8,9 +8,10 @@ import { MigrateResult } from 'state/zapMigrator/hooks'
 import { wrappedToNative } from 'utils'
 import React from 'react'
 import StatusIcons from '../StatusIcons'
-import { MigrateStatus, useMigrateAll } from '../../provider'
+import { useMigrateAll } from '../../provider'
 import useMigrateApproveAll from '../../hooks/useMigrateApproveAll'
 import useIsMobile from 'hooks/useIsMobile'
+import { MigrateStatus } from '../../provider/types'
 
 const ApproveMigrate: React.FC<{
   migrateList: MigrateResult[]
@@ -19,7 +20,6 @@ const ApproveMigrate: React.FC<{
   const { migrateLpStatus } = useMigrateAll()
   const isMobile = useIsMobile()
   const handleApproveAll = useMigrateApproveAll()
-  console.log(migrateList)
   const filteredLps = migrateList?.filter(
     (lp) =>
       migrateLpStatus?.find((status) => status.lpAddress === lp.lpAddress)?.status.approveMigrate !==

@@ -7,9 +7,10 @@ import { useTranslation } from 'contexts/Localization'
 import { wrappedToNative } from 'utils'
 import React from 'react'
 import StatusIcons from '../StatusIcons'
-import { ApeswapWalletLpInterface, MigrateStatus, useMigrateAll } from '../../provider'
+import { useMigrateAll } from '../../provider'
 import useStakeAll from '../../hooks/useStakeAll'
 import useIsMobile from 'hooks/useIsMobile'
+import { ApeswapWalletLpInterface, MigrateStatus } from '../../provider/types'
 const Stake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ apeswapWalletLps }) => {
   const { migrateLpStatus } = useMigrateAll()
   const isMobile = useIsMobile()

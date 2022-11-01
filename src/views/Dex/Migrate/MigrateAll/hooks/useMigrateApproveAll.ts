@@ -5,7 +5,8 @@ import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.
 import { useCallback } from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { getProviderOrSigner } from 'utils'
-import { MigrateStatus, useMigrateAll } from '../provider'
+import { MigrateStatus } from '../provider/types'
+import { useMigrateAll } from '../provider'
 import { ZAP_ADDRESS } from '@ape.swap/sdk'
 
 const useMigrateApproveAll = () => {

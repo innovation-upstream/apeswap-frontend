@@ -4,8 +4,9 @@ import { ZAP_ADDRESS } from '@ape.swap/sdk'
 import erc20ABI from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import BigNumber from 'bignumber.js'
-import { ApeswapWalletLpInterface, MigrateLpStatus, MigrateStatus, MIGRATION_STEPS } from '.'
+import { ApeswapWalletLpInterface, MigrateLpStatus, MigrateStatus } from './types'
 import { Farm, Vault } from 'state/types'
+import { MIGRATION_STEPS } from './constants'
 
 export const setMigrateLpStatus = async (
   migrateLps: MigrateResult[],
@@ -82,4 +83,19 @@ export const activeIndexHelper = (migrateLpStatus: MigrateLpStatus[]) => {
     }
   }
   return 0
+}
+
+export const filterCurrentFarms = (farms: Farm[], migrateLps: MigrateResult[], chainId: number) => {
+  console.log(farms, migrateLps, chainId)
+  const filteredLps = migrateLps?.filter((lp) => {
+    return farms?.find(
+      (farm) =>
+        (farm.tokenAddresses[chainId].toLowerCase() === lp.token0.address.toLowerCase() ||
+          farm.tokenAddresses[chainId].toLowerCase() === lp.token1.address.toLowerCase()) &&
+        (farm.quoteTokenAdresses[chainId].toLowerCase() === lp.token0.address.toLowerCase() ||
+          farm.quoteTokenAdresses[chainId].toLowerCase() === lp.token1.address.toLowerCase()),
+    )
+  })
+  console.log(filteredLps)
+  return filteredLps
 }

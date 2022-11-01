@@ -8,9 +8,10 @@ import { wrappedToNative } from 'utils'
 import React from 'react'
 import { Switch } from 'theme-ui'
 import StatusIcons from '../StatusIcons'
-import { ApeswapWalletLpInterface, MigrateStatus, useMigrateAll } from '../../provider'
+import { useMigrateAll } from '../../provider'
 import useStakeApproveAll from '../../hooks/useStakeApproveAll'
 import useIsMobile from 'hooks/useIsMobile'
+import { ApeswapWalletLpInterface, MigrateStatus } from '../../provider/types'
 
 const ApproveStake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ apeswapWalletLps }) => {
   const { t } = useTranslation()

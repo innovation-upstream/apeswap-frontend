@@ -504,7 +504,7 @@ const App: React.FC = () => {
             <Route exact strict path="/liquidity" component={Pool} />
             <Route exact strict path="/create" component={RedirectToAddLiquidity} />
             <Route exact strict path="/migrate" component={Migrate} />
-            <Route exact strict path="/migrate/all" component={MigrateAll} />
+            <Route path="/migrate/all" component={MigrateAll} />
             <Route exact strict path="/migrate/:currencyIdA/:currencyIdB" component={MigrateLiquidity} />
             <Route exact strict path="/unstake/:currencyIdA/:currencyIdB" component={UnstakeLiquidity} />
             <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />

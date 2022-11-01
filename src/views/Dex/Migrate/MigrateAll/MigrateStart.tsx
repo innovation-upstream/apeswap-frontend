@@ -5,7 +5,8 @@ import LoadingYourMigration from './components/LoadingYourMigration'
 import MigrateProgress from './components/MigrateProgress'
 import Steps from './components/Steps'
 import SuccessfulMigrationModal from './components/SuccessfulMigrationModal'
-import { MigrateStatus, useMigrateAll } from './provider'
+import { useMigrateAll } from './provider'
+import { MigrateStatus } from './provider/types'
 
 const MigrateStart: React.FC = () => {
   const { migrationLoading, migrationCompleteLog, migrateLpStatus } = useMigrateAll()

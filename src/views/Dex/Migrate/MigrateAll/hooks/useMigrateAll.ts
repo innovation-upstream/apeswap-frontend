@@ -1,13 +1,14 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
-import { MigrateStatus, useMigrateAll } from '../provider'
+import { MigrateStatus } from '../provider/types'
 import { useZapContract } from 'hooks/useContract'
 import { JSBI, SMART_ROUTER_ADDRESS } from '@ape.swap/sdk'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import BigNumber from 'bignumber.js'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { calculateGasMargin } from 'utils'
+import { useMigrateAll } from '../provider'
 
 const useMigrateAllLps = () => {
   const { library, chainId } = useActiveWeb3React()

@@ -1,6 +1,7 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
-import { ApeswapWalletLpInterface, MigrateStatus, useMigrateAll } from '../provider'
+import { ApeswapWalletLpInterface, MigrateStatus } from '../provider/types'
+import { useMigrateAll } from '../provider'
 import { useVaults } from 'state/vaults/hooks'
 import { useMasterchef, useVaultApeV2 } from 'hooks/useContract'
 import { useFarms } from 'state/farms/hooks'
