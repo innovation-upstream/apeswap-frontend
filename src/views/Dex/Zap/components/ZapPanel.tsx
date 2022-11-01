@@ -33,7 +33,7 @@ const ZapPanel: React.FC<ZapPanelProps> = ({ value, onSelect, lpPair }) => {
   return (
     <Flex sx={styles.dexPanelContainer}>
       <Flex sx={styles.panelTopContainer}>
-        <Text sx={styles.swapDirectionText}>{t('To')}</Text>
+        <Text sx={styles.swapDirectionText}>{t('To')}:</Text>
         <NumericalInput value={value} onUserInput={null} align="left" id="token-amount-input" readOnly />
         <LPSelector lpPair={lpPair} onSelect={onSelect} />
       </Flex>

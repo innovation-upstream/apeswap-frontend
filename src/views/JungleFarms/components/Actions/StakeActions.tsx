@@ -13,8 +13,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import DepositModal from '../Modals/DepositModal'
-import WithdrawModal from '../Modals/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButtonSquare, StyledButtonSquare } from './styles'
+import WithdrawModal from '../../../../components/WithdrawModal'
 
 interface StakeActionsProps {
   stakingTokenBalance: string
@@ -89,6 +89,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
         dispatch(fetchJungleFarmsUserDataAsync(chainId, account))
         setPendingWithdrawTrx(false)
       }}
+      title={'Unstake LP tokens'}
     />,
   )
 
@@ -124,7 +125,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             mr="6px"
             size="sm"
           >
-            <MinusIcon color="white" width="20px" height="20px" fontWeight={700} />
+            {!pendingWithdrawTrx && <MinusIcon color="white" width="20px" height="20px" fontWeight={700} />}
           </SmallButtonSquare>
           <SmallButtonSquare
             onClick={onPresentDeposit}
@@ -132,7 +133,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             disabled={pendingDepositTrx || !new BigNumber(stakingTokenBalance)?.gt(0)}
             size="sm"
           >
-            <AddIcon color="white" width="25px" height="25px" fontWeight={700} />
+            {!pendingDepositTrx && <AddIcon color="white" width="25px" height="25px" fontWeight={700} />}
           </SmallButtonSquare>
         </Flex>
         {!isMobile && (
