@@ -96,6 +96,5 @@ export const filterCurrentFarms = (farms: Farm[], migrateLps: MigrateResult[], c
           farm.quoteTokenAdresses[chainId].toLowerCase() === lp.token1.address.toLowerCase()),
     )
   })
-  console.log(filteredLps)
   return filteredLps
 }
