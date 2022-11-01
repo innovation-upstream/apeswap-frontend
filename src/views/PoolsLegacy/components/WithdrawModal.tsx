@@ -35,13 +35,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
 
   return (
     <Modal title={`${t('Withdraw')} ${tokenName}`} onDismiss={onDismiss}>
-      <ModalInput
-        onSelectMax={handleSelectMax}
-        onChange={handleChange}
-        value={val}
-        max={fullBalance}
-        symbol={tokenName}
-      />
+      <ModalInput onSelectMax={handleSelectMax} onChange={handleChange} value={val} max={fullBalance} />
       <ModalActions>
         <Button
           disabled={pendingTx}

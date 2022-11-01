@@ -10,22 +10,25 @@ import { AnimatePresence, motion } from 'framer-motion'
 
 interface DistributionPanelProps {
   zap: MergedZap
+  hideTitle?: boolean
 }
 
-const DistributionPanel: React.FC<DistributionPanelProps> = ({ zap }) => {
+const DistributionPanel: React.FC<DistributionPanelProps> = ({ zap, hideTitle }) => {
   const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
   const { currencyOut1, currencyOut2, pairOut } = zap
 
   // This is the true value out as this is the estimated LP pair values
-  const currencyOneOut = pairOut?.inAmount.token1.toSignificant(6)
-  const currencyTwoOut = pairOut?.inAmount.token2.toSignificant(6)
+  const currencyOneOut = pairOut?.inAmount?.token1?.toSignificant(6)
+  const currencyTwoOut = pairOut?.inAmount?.token2?.toSignificant(6)
 
   return (
     <Flex sx={styles.distributionPanelContainer}>
-      <Flex sx={styles.panelTopContainer}>
-        <Text sx={styles.swapDirectionText}>{t('Distribution')}:</Text>
-      </Flex>
+      {!hideTitle && (
+        <Flex sx={styles.panelTopContainer}>
+          <Text sx={styles.swapDirectionText}>{t('Distribution')}:</Text>
+        </Flex>
+      )}
       <Flex sx={styles.pooledText} onClick={() => setExpanded(!expanded)}>
         {currencyOneOut} {currencyOut1?.outputCurrency?.symbol} & {currencyTwoOut}{' '}
         {currencyOut2?.outputCurrency?.symbol} Pooled

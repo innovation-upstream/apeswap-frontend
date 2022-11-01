@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { useCurrency } from 'hooks/Tokens'
-import { Currency, CurrencyAmount, Pair } from '@ape.swap/sdk'
+import { Currency, CurrencyAmount, Pair, ZapType } from '@ape.swap/sdk'
 import maxAmountSpend from 'utils/maxAmountSpend'
 import ZapPanel from 'views/Dex/Zap/components/ZapPanel'
 import { Field } from 'state/zap/actions'
@@ -12,6 +12,9 @@ import { styles } from './styles'
 import { useZapCallback } from 'hooks/useZapCallback'
 import DistributionPanel from 'views/Dex/Zap/components/DistributionPanel/DistributionPanel'
 import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useTranslation } from 'contexts/Localization'
+import { Box, Switch } from 'theme-ui'
+import { wrappedToNative } from '../../utils'
 import track from 'utils/track'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
@@ -19,11 +22,18 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 interface ZapLiquidityProps {
   handleConfirmedTx: (hash: string, pairOut: Pair) => void
+  poolAddress: string
+  pid: string
+  zapIntoProductType: ZapType
 }
 
-const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
+const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddress, pid, zapIntoProductType }) => {
   useSetZapInputList()
   const [zapErrorMessage, setZapErrorMessage] = useState<string>(null)
+  const [stakeIntoProduct, setStakeIntoProduct] = useState<boolean>(true)
+  const [disableZap, setDisableZap] = useState<boolean>(false)
+
+  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
 
   const { INPUT, typedValue, recipient, zapType } = useZapState()
@@ -34,7 +44,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
   const inputCurrency = useCurrency(currencyA)
 
   const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
-  const { onUserInput, onInputSelect, onCurrencySelection } = useZapActionHandlers()
+  const { onUserInput, onInputSelect, onCurrencySelection, onSetZapType } = useZapActionHandlers()
 
   const handleInputSelect = useCallback(
     (field: Field, currency: Currency) => {
@@ -46,11 +56,23 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
   const handleOutputSelect = useCallback(
     (currencyIdA: Currency, currencyIdB: Currency) => {
       onCurrencySelection(Field.OUTPUT, [currencyIdA, currencyIdB])
+      setDisableZap(true)
+      onSetZapType(ZapType.ZAP)
+      setStakeIntoProduct(false)
     },
-    [onCurrencySelection],
+    [onCurrencySelection, onSetZapType],
   )
 
-  const { callback: zapCallback } = useZapCallback(zap, zapType, zapSlippage, recipient, '', null)
+  const handleStakeIntoProduct = (value: boolean) => {
+    setStakeIntoProduct(value)
+    if (value) {
+      onSetZapType(zapIntoProductType)
+    } else {
+      onSetZapType(ZapType.ZAP)
+    }
+  }
+
+  const { callback: zapCallback } = useZapCallback(zap, zapType, zapSlippage, recipient, poolAddress, null, pid)
 
   const handleZap = useCallback(() => {
     setZapErrorMessage(null)
@@ -96,12 +118,31 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx }) => {
   // reset input value to zero on first render
   useEffect(() => {
     onUserInput(Field.INPUT, '')
+    onSetZapType(zapIntoProductType ? zapIntoProductType : ZapType.ZAP)
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [])
 
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
+        {!!pid && zap?.pairOut?.pair?.token0?.getSymbol(chainId) && (
+          <Flex sx={{ marginBottom: '10px', fontSize: '12px', alignItems: 'center' }}>
+            <Text>
+              {t('Stake in')}{' '}
+              {`${wrappedToNative(zap?.pairOut?.pair?.token0?.getSymbol(chainId))} - ${wrappedToNative(
+                zap?.pairOut?.pair?.token1?.getSymbol(chainId),
+              )} ${zapIntoProductType === ZapType.ZAP_MINI_APE ? t('Farm') : null}`}
+            </Text>
+            <Box sx={{ width: '50px', marginLeft: '10px' }}>
+              <Switch
+                checked={stakeIntoProduct}
+                onChange={() => handleStakeIntoProduct(!stakeIntoProduct)}
+                sx={styles.switchStyles}
+                disabled={disableZap}
+              />
+            </Box>
+          </Flex>
+        )}
         <Flex sx={{ marginTop: '30px' }}>
           <DexPanel
             value={typedValue}

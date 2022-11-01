@@ -1,19 +1,30 @@
+/** @jsxImportSource theme-ui */
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal, AutoRenewIcon } from '@apeswapfinance/uikit'
+import { Button, Modal, AutoRenewIcon, Text, Flex } from '@ape.swap/uikit'
 import ModalInput from 'components/ModalInput'
-import { getFullDisplayBalance } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 
-interface DepositModalProps {
+interface WithdrawModalProps {
   max: string
   onConfirm: (amount: string) => void
   onDismiss?: () => void
-  tokenName?: string
-  addLiquidityUrl?: string
+  title: string
+  withdrawFee?: string
 }
 
-const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, tokenName = '', addLiquidityUrl }) => {
+const modalProps = {
+  sx: {
+    zIndex: 11,
+    maxHeight: 'calc(100% - 30px)',
+    minWidth: ['90%', '400px'],
+    width: '200px',
+    maxWidth: '425px',
+  },
+}
+
+const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, title, withdrawFee }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
@@ -33,18 +44,21 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={`${t('Stake')} ${tokenName}`} onDismiss={onDismiss}>
+    <Modal title={title} onDismiss={onDismiss} {...modalProps}>
       <ModalInput
-        value={val}
         onSelectMax={handleSelectMax}
         onChange={handleChange}
+        value={val}
         max={fullBalance}
-        addLiquidityUrl={addLiquidityUrl}
-        inputTitle={t('Stake')}
+        inputTitle={t('Unstake')}
       />
+      {withdrawFee && (
+        <Flex sx={{ padding: '20px 0 10px 0', justifyContent: 'center' }}>
+          <Text>{t(`Withdrawing will have a %withdrawFee%% fee`, { withdrawFee })}</Text>
+        </Flex>
+      )}
       <Button
-        fullWidth
-        disabled={pendingTx || fullBalance === '0' || val === '0'}
+        disabled={pendingTx || parseFloat(fullBalance) < parseFloat(val)}
         onClick={async () => {
           setPendingTx(true)
           try {
@@ -56,6 +70,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
             setPendingTx(false)
           }
         }}
+        fullWidth
         endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
         style={{
           borderRadius: '10px',
@@ -68,4 +83,4 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
   )
 }
 
-export default React.memo(DepositModal)
+export default React.memo(WithdrawModal)
