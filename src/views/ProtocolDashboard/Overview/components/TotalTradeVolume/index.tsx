@@ -15,11 +15,13 @@ const BACKGROUND_COLORS = {
   Ethereum: 'rgba(98, 126, 234, .8)',
   Polygon: 'rgba(130, 71, 229, .8)',
   'BNB Chain': 'rgba(243, 186, 47, .8)',
+  Telos: 'green',
 }
 const BORDER_COLORS = {
   Ethereum: 'rgba(98, 126, 234, 1)',
   Polygon: 'rgba(130, 71, 229, 1)',
   'BNB Chain': 'rgba(243, 186, 47, 1)',
+  Telos: 'green',
 }
 
 const setData = (tradeVolume: OverviewVolumeInterface[]) => {
