@@ -28,6 +28,8 @@ const QuestSlide2 = () => {
           {' '}
           {t('and connect your wallet to access the newly available Quests we have for you.')}
         </Text>
+        <br />
+        <br />
       </Box>
     </>
   )
