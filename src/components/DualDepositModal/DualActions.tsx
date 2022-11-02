@@ -2,7 +2,7 @@
 import React from 'react'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Button, useModal } from '@ape.swap/uikit'
+import { Button } from '@ape.swap/uikit'
 import { ApprovalState, useApproveCallbackFromZap } from 'hooks/useApproveCallback'
 import ApprovalAction from './ApprovalAction'
 import { useTranslation } from 'contexts/Localization'
@@ -10,7 +10,6 @@ import { AutoRenewIcon } from '@apeswapfinance/uikit'
 import { useDerivedZapInfo } from 'state/zap/hooks'
 import { useDualFarmApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
-import DualConfirmationModal from './DualConfirmationModal'
 
 /**
  * Component's goal is to handle actions for DualDepositModal component which, in turn, aims to handle deposit/zap flow
@@ -24,9 +23,6 @@ import DualConfirmationModal from './DualConfirmationModal'
  * @disabled Sets disable state for button
  * @pendingTrx Sets pending trx state
  * @handleAction deposit/zap handler
- * @handleDismissConfirmation on close modal function
- * @txHash tx hash used to display confirmed transaction modal
- * @lpName pair symbols (e.g. BANANA-MATIC)
  */
 
 interface DualActionsProps {
@@ -38,10 +34,6 @@ interface DualActionsProps {
   disabled: boolean
   pendingTrx: boolean
   handleAction: () => void
-  handleDismissConfirmation: () => void
-  txHash: string
-  lpName: string
-  txError: string
 }
 
 const DualActions: React.FC<DualActionsProps> = ({
@@ -53,10 +45,6 @@ const DualActions: React.FC<DualActionsProps> = ({
   disabled,
   pendingTrx,
   handleAction,
-  handleDismissConfirmation,
-  txHash,
-  lpName,
-  txError,
 }) => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -68,24 +56,6 @@ const DualActions: React.FC<DualActionsProps> = ({
 
   //this might have to be changed to adapt it for jungle farms too
   const { onApprove } = useDualFarmApprove(stakingTokenContract, parseFloat(pid))
-
-  const [openConfirmationModal] = useModal(
-    <DualConfirmationModal
-      isZapSelected={isZapSelected}
-      onDismiss={handleDismissConfirmation}
-      txHash={txHash}
-      errorMessage={txError}
-      lpName={lpName}
-    />,
-    true,
-    true,
-    'dualConfirmationModal',
-  )
-
-  const handleConfirmTx = () => {
-    openConfirmationModal()
-    handleAction()
-  }
 
   const renderAction = () => {
     if (!account) {
@@ -108,7 +78,7 @@ const DualActions: React.FC<DualActionsProps> = ({
       return (
         <Button
           fullWidth
-          onClick={handleConfirmTx}
+          onClick={handleAction}
           endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
           disabled={disabled}
         >

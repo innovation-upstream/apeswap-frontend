@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Flex, AddIcon, MinusIcon, AutoRenewIcon, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -36,9 +36,13 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
 
   const { onUnstake } = useMiniChefUnstake(farm?.pid)
 
+  const handlePendingDepositTx = useCallback((value: boolean) => {
+    setPendingDepositTrx(value)
+  }, [])
+
   const [onPresentDeposit] = useModal(
     <DualDepositModal
-      setPendingDepositTrx={setPendingDepositTrx}
+      setPendingDepositTrx={handlePendingDepositTx}
       pendingTx={pendingDepositTrx}
       pid={farm?.pid}
       allowance={farm?.userData?.allowance?.toString()}
@@ -112,7 +116,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
             disabled={pendingWithdrawTrx}
             mr="6px"
           >
-            <MinusIcon color="white" width="16px" height="20px" fontWeight={700} />
+            {!pendingWithdrawTrx && <MinusIcon color="white" width="16px" height="20px" fontWeight={700} />}
           </SmallButton>
           <SmallButton
             onClick={onPresentDeposit}
