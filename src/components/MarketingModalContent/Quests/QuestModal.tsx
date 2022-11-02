@@ -2,8 +2,8 @@
 import React, { useState } from 'react'
 import { SET_DEFAULT_MODAL_KEY, SHOW_DEFAULT_MODAL_KEY } from 'config/constants'
 import useIsMobile from 'hooks/useIsMobile'
-import MarketingSwipper from './MarketingSwipper'
-import CardView from './CardView'
+import MobileModal from './Mobile'
+import DesktopModal from './Desktop'
 
 const QuestModal: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
   const isMobile = useIsMobile()
@@ -25,14 +25,14 @@ const QuestModal: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
   }
 
   return isMobile ? (
-    <MarketingSwipper
+    <MobileModal
       onDismiss={onDismiss}
       setDefaultNoShow={setDefaultNoShow}
       hideDefault={hideDefault}
       alreadySet={alreadySet}
     />
   ) : (
-    <CardView
+    <DesktopModal
       onDismiss={onDismiss}
       setDefaultNoShow={setDefaultNoShow}
       hideDefault={hideDefault}
