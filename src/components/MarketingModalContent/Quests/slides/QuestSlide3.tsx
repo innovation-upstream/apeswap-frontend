@@ -16,7 +16,19 @@ const QuestSlide3 = () => {
       <Box sx={styles.thirdWrapper}>
         <Text sx={styles.third}>{t('Every week, rewards will be given away to 10 lucky participants.')}</Text>
         <br />
-        <Text sx={styles.third}> {t('The more quests you complete, the more chances you get!')}</Text>
+        <Text sx={styles.third}> {t('The more')}</Text>
+        <Text color="yellow" sx={styles.third}>
+          {' '}
+          <a
+            href="https://box.genki.io/FZSY2H"
+            style={{ textDecoration: 'underline' }}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {t('quests')}
+          </a>
+        </Text>{' '}
+        <Text sx={styles.third}> {t('you complete, the more chances you get!')}</Text>
       </Box>
     </>
   )
