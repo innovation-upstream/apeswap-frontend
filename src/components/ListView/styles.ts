@@ -1,6 +1,6 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 import { ArrowDropDownIcon, Flex, Text } from '@apeswapfinance/uikit'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 // TODO: Change everything to theme ui
 

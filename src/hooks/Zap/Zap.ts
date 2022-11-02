@@ -283,7 +283,6 @@ export function mergeBestZaps(
       ? new Percent(liquidityMinted.raw, totalPairSupply.add(liquidityMinted).raw)
       : null
 
-  console.log(minSwapOutOne?.raw.toString())
   return {
     currencyIn: {
       currency: currencyIn,

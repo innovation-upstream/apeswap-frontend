@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /** @jsxImportSource theme-ui */
-import { Flex, Text, useModal } from '@ape.swap/uikit'
+import { Button, Flex, Text, useModal } from '@ape.swap/uikit'
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import LoadingYourMigration from './components/LoadingYourMigration'
 import MigrateProgress from './components/MigrateProgress'
 import Steps from './components/Steps'
@@ -38,8 +39,13 @@ const MigrateStart: React.FC = () => {
           <Steps />
         </MigrateProgress>
       ) : (
-        <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Text> You have nothing to migrate</Text>
+        <Flex sx={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+          <Text size="26px" weight={700}>
+            You have nothing to migrate
+          </Text>
+          <Button to="/swap" as={Link} mt="20px">
+            Return Back To Swap
+          </Button>
         </Flex>
       )}
     </>

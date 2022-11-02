@@ -51,6 +51,7 @@ export const setMigrateLpStatus = async (
           approveStake: MigrateStatus.INCOMPLETE,
           stake: MigrateStatus.INCOMPLETE,
         },
+        statusText: 'Migration Initialized',
       }
     })
   }
@@ -79,6 +80,7 @@ export const setMigrateLpStatus = async (
             : MigrateStatus.INCOMPLETE,
           stake: MigrateStatus.INCOMPLETE,
         },
+        statusText: 'Migration Initialized',
       }
     })
   }

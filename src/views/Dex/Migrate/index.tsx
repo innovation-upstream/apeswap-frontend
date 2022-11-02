@@ -82,9 +82,11 @@ export default function Migrate() {
               {!account ? (
                 <UnlockButton fullWidth />
               ) : (
-                <Button fullWidth as={Link} to="/migrate/all">
-                  Migrate All
-                </Button>
+                (walletBalances?.length > 0 || stakedBalances?.length > 0) && (
+                  <Button fullWidth as={Link} to="/migrate/all">
+                    Migrate All
+                  </Button>
+                )
               )}
             </Flex>
             {(loading || !valid) && account ? (

@@ -1,7 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MigrateResult, useMigratorBalances } from 'state/zapMigrator/hooks'
-import useLpBalances from 'hooks/useLpBalances'
 import { activeIndexHelper, filterCurrentFarms, setMigrateLpStatus } from './utils'
 import { useFarms } from 'state/farms/hooks'
 import { useVaults } from 'state/vaults/hooks'
@@ -11,6 +10,7 @@ import {
   useHandleUpdateMigrateLp,
   useHandleUpdateMigratorResults,
   useHandleUpdateOfApeswapLpBalance,
+  useLpBalances,
 } from './hooks'
 import {
   ApeswapWalletLpInterface,
@@ -41,7 +41,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   const timer = useRef(null)
   const { account, chainId } = useActiveWeb3React()
   const { results: migrateLpBalances, syncing, loading, valid } = useMigratorBalances(1)
-  // TODO: Clean useLpBalances to be specific for the migration
   const { allPairs: liquidityTokens, pairAndBalances: userApeswapLpBalances, apeBalancesLoading } = useLpBalances()
   const farms = useFarms(account)
   const { vaults: fetchedVaults } = useVaults()

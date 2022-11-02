@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { ERC20_ABI } from 'config/abi/erc20'
 import { Erc20, MigratorBalanceChecker } from 'config/abi/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Farm, Vault } from 'state/types'
 import { getContract } from 'utils'
 import { getMigratorBalanceCheckerAddress } from 'utils/addressHelper'
@@ -13,7 +13,9 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { CHEF_ADDRESSES } from 'config/constants/chains'
 import { filterCurrentFarms, useUpdateApproveStakeStatus, useUpdateStatusId } from './utils'
-import { PairState } from 'hooks/usePairs'
+import { PairState, usePairs } from 'hooks/usePairs'
+import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
+import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 
 /**
  * Hook to use handleMaximizerApprovalToggle callback which checks the allowance for each farm/vault and status state
@@ -257,4 +259,46 @@ export const useHandleAddMigrationCompleteLog = (
   )
 
   return handleAddMigrationCompleteLog
+}
+
+/**
+ * Hook to get the users ApeSwap LPs for the migration
+ */
+export const useLpBalances = () => {
+  const { account } = useActiveWeb3React()
+  // fetch the user's balances of all tracked V2 LP tokens
+  const trackedTokenPairs = useTrackedTokenPairs()
+  const tokenPairsWithLiquidityTokens = useMemo(
+    () => trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
+    [trackedTokenPairs],
+  )
+  const liquidityTokens = useMemo(
+    () => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken),
+    [tokenPairsWithLiquidityTokens],
+  )
+
+  const allPairs = usePairs(tokenPairsWithLiquidityTokens.map(({ tokens }) => tokens))
+
+  const [v2PairsBalances, apeBalancesLoading] = useTokenBalancesWithLoadingIndicator(
+    account ?? undefined,
+    liquidityTokens,
+  )
+
+  // fetch the reserves for all V2 pools in which the user has a balance
+  const liquidityTokensWithBalances = useMemo(
+    () =>
+      tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
+        v2PairsBalances[liquidityToken.address]?.greaterThan('0'),
+      ),
+    [tokenPairsWithLiquidityTokens, v2PairsBalances],
+  )
+
+  const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
+
+  const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
+  const pairAndBalances = allV2PairsWithLiquidity.map((pair) => {
+    return { id: parseInt(pair.liquidityToken.address), pair, balance: v2PairsBalances[pair.liquidityToken.address] }
+  })
+
+  return { allPairs, pairAndBalances, apeBalancesLoading }
 }
