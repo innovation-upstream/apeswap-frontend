@@ -13,7 +13,13 @@ import GnanaModal from 'components/GnanaModal'
 import NewsletterModal from 'components/NewsletterModal'
 import SwiperProvider from 'contexts/SwiperProvider'
 import QuestModal from '../MarketingModalContent/Quests/QuestModal'
-import { MODAL_TYPE, SET_DEFAULT_MODAL_KEY, SHOW_DEFAULT_MODAL_KEY } from 'config/constants'
+import {
+  MODAL_TYPE,
+  SET_DEFAULT_MODAL_KEY,
+  SHOW_DEFAULT_MODAL_KEY,
+  SET_DEF_MOD_KEY,
+  SHOW_DEF_MOD_KEY,
+} from 'config/constants'
 import { circularRoute } from 'utils'
 
 const MarketingModalCheck = () => {
@@ -22,10 +28,17 @@ const MarketingModalCheck = () => {
   const history = useHistory()
   const { t } = useTranslation()
 
+  // everywhere the old keys are set, remove them and set the new keys
+  // everywhere you get the old keys, get the new keys
+
+  // SET_DEF_MOD_KEY
+  // SHOW_DEF_MOD_KEY
   useMemo(() => {
+    localStorage.removeItem(SHOW_DEFAULT_MODAL_KEY) // remove old key
+    localStorage.removeItem(SET_DEFAULT_MODAL_KEY) // remove old key
     const onHomepage = history.location.pathname === '/'
-    const sdmk = localStorage.getItem(SET_DEFAULT_MODAL_KEY)
-    const isdm = localStorage.getItem(SHOW_DEFAULT_MODAL_KEY)
+    const sdmk = localStorage.getItem(SET_DEF_MOD_KEY)
+    const isdm = localStorage.getItem(SHOW_DEF_MOD_KEY)
 
     // This needs to be fixed but I didnt want to reset users local storage keys
     // Basically first land users wont get the modal until they refresh so I added a showDefaultModalFlag variable
@@ -34,7 +47,7 @@ const MarketingModalCheck = () => {
     const showDefaultModalFlag = isShowDefaultModal || (!isShowDefaultModal && !isDefaultModalSet)
 
     if (!isDefaultModalSet) {
-      localStorage.setItem(SHOW_DEFAULT_MODAL_KEY, JSON.stringify('SHOW'))
+      localStorage.setItem(SHOW_DEF_MOD_KEY, JSON.stringify('SHOW'))
     }
 
     if (showDefaultModalFlag && onHomepage) {

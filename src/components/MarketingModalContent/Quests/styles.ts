@@ -12,7 +12,7 @@ export const Bubble = styled.div<{ isActive?: boolean }>`
   cursor: pointer;
 `
 export const showApe = (slide, isDark): ThemeUIStyleObject => ({
-  width: '100%',
+  width: '85%',
   height: '230px',
   '@media screen and (min-width: 853px)': {
     height: '500px',
