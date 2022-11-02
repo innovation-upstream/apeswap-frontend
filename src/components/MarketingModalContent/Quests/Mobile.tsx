@@ -49,7 +49,7 @@ const MobileModal: React.FC<SwiperProps> = ({ onDismiss, setDefaultNoShow, hideD
           <IconButton width="15px" icon="close" color="text" variant="transparent" onClick={onDismiss} />
         </Box>
         <Flex sx={styles.imagesWrapper}>
-          <Box sx={showApe(activeSlide, isDark)} />
+          <Box sx={showApe(activeSlide, isDark, true)} />
         </Flex>
         <Flex sx={styles.textWrapper}>
           <Box sx={{ width: '100%', textAlign: 'left', marginLeft: '30px' }}>
