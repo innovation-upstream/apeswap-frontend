@@ -44,7 +44,7 @@ const sortAndAddAssets = (assets: TreasuryAssetOverviewInterface[]) => {
 
 const getMergedAssets = (assets: TreasuryAssetOverviewInterface[]) => {
   const assetTracker: TreasuryAssetOverviewInterface[] = []
-  const mergedAssets = assets.map((asset: TreasuryAssetOverviewInterface) => {
+  const mergedAssets = assets?.map((asset: TreasuryAssetOverviewInterface) => {
     const searchAsset = assetTracker.find((searchAsset) => asset.symbol === searchAsset.symbol)
     if (searchAsset) {
       const newAsset = {

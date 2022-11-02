@@ -12,10 +12,11 @@ import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
 import DepositModal from '../Modals/DepositModal'
-import WithdrawModal from '../Modals/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButtonSquare, StyledButtonSquare } from './styles'
 import { useIsModalShown } from 'state/user/hooks'
 import { useHistory } from 'react-router-dom'
+import WithdrawModal from '../../../../components/WithdrawModal'
+import { useTranslation } from '../../../../contexts/Localization'
 
 interface StakeActionsProps {
   stakingTokenBalance: string
@@ -46,6 +47,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   ).toFixed(2)}`
   const [pendingDepositTrx, setPendingDepositTrx] = useState(false)
   const [pendingWithdrawTrx, setPendingWithdrawTrx] = useState(false)
+  const { t } = useTranslation()
 
   const { toastSuccess } = useToast()
   const isMobile = useIsMobile()
@@ -82,7 +84,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
       max={stakedBalance}
-      tokenName={stakedTokenSymbol}
+      title={t('Unstake LP tokens')}
       withdrawFee={withdrawFee}
       onConfirm={async (val) => {
         setPendingWithdrawTrx(true)

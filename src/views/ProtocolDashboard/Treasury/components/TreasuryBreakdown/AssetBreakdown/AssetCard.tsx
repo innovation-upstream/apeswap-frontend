@@ -36,7 +36,7 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
             ) : (
               <ServiceTokenDisplay token1={token?.symbol} size={40} />
             )}
-            <Flex sx={{ alignItems: 'flex-start', transform: 'translate(-10px, 0px)' }}>
+            <Flex sx={{ alignItems: 'flex-start', transform: 'translate(-10px, 0px)', zIndex: 101 }}>
               <ServiceTokenDisplay token1={CHAIN_PARAMS?.[token?.chainId]?.nativeCurrency?.symbol} size={13.5} />
             </Flex>
           </Flex>
