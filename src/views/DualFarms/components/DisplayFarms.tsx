@@ -18,7 +18,6 @@ import { ActionContainer } from './CardActions/styles'
 import useIsMobile from 'hooks/useIsMobile'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import useAddLiquidityModal from 'hooks/useAddLiquidityModal'
-import { useMiniChefAddress } from 'hooks/useAddress'
 import { ZapType } from '@ape.swap/sdk'
 
 const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags: Tag[] }> = ({
@@ -30,7 +29,6 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
   const { t } = useTranslation()
   const isMobile = useIsMobile()
   const onAddLiquidityModal = useAddLiquidityModal(ZapType.ZAP_MINI_APE)
-  const miniApeAddress = useMiniChefAddress()
 
   const farmsListView = farms.map((farm, i) => {
     const polygonScanUrl = `https://polygonscan.com/address/${farm.stakeTokenAddress}`
@@ -210,8 +208,8 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 onAddLiquidityModal(
                   farm?.stakeTokens?.token1?.address[chainId],
                   farm?.stakeTokens?.token0?.symbol === 'MATIC' ? 'ETH' : farm?.stakeTokens?.token0?.address[chainId],
-                  miniApeAddress,
-                  farm.pid,
+                  null,
+                  farm.pid.toString(),
                 )
               }
             >

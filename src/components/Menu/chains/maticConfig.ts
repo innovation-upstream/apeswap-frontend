@@ -49,7 +49,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Dashboard'),
         href: 'protocol-dashboard',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Documentation'),

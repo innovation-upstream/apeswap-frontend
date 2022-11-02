@@ -143,7 +143,7 @@ const contracts = {
     [ChainId.BSC_TESTNET]: '0x954c20D203e46e1e947079D5c7a265aFc52F0Efc',
   },
   migratorBalanceChecker: {
-    [ChainId.BSC]: '0x353045418118965FB2e2EF4637143776Cd98d5ce',
+    [ChainId.BSC]: '0x38de6a9D2FaD1bfb942749587509803C09FdfABa',
   },
 }
 

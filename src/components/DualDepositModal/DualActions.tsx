@@ -32,7 +32,7 @@ import DualConfirmationModal from './DualConfirmationModal'
 interface DualActionsProps {
   lpToApprove: string
   showApproveLpFlow: boolean
-  pid?: number
+  pid?: string
   isZapSelected?: boolean
   inputError?: string
   disabled: boolean
@@ -41,6 +41,7 @@ interface DualActionsProps {
   handleDismissConfirmation: () => void
   txHash: string
   lpName: string
+  txError: string
 }
 
 const DualActions: React.FC<DualActionsProps> = ({
@@ -55,6 +56,7 @@ const DualActions: React.FC<DualActionsProps> = ({
   handleDismissConfirmation,
   txHash,
   lpName,
+  txError,
 }) => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -65,14 +67,14 @@ const DualActions: React.FC<DualActionsProps> = ({
   const stakingTokenContract = useERC20(lpToApprove)
 
   //this might have to be changed to adapt it for jungle farms too
-  const { onApprove } = useDualFarmApprove(stakingTokenContract, pid)
+  const { onApprove } = useDualFarmApprove(stakingTokenContract, parseFloat(pid))
 
   const [openConfirmationModal] = useModal(
     <DualConfirmationModal
       isZapSelected={isZapSelected}
       onDismiss={handleDismissConfirmation}
       txHash={txHash}
-      errorMessage={inputError}
+      errorMessage={txError}
       lpName={lpName}
     />,
     true,

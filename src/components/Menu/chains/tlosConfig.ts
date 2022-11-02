@@ -1,6 +1,6 @@
 import { MenuEntry } from '@ape.swap/uikit'
-//import { ChainId } from '@ape.swap/sdk'
-//import { NETWORK_INFO_LINK } from 'config/constants/chains'
+import { ChainId } from '@ape.swap/sdk'
+import { NETWORK_INFO_LINK } from 'config/constants/chains'
 import { ContextApi } from '../../../contexts/Localization/types'
 
 const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
@@ -49,23 +49,27 @@ const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Dashboard'),
         href: 'protocol-dashboard',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Documentation'),
         href: 'https://apeswap.gitbook.io/apeswap-finance/',
         isNew: false,
       },
-      // Info page is not completely ready yet
-      // {
-      //   label: t('Charts'),
-      //   href: NETWORK_INFO_LINK[ChainId.TLOS],
-      //   isNew: false,
-      // },
+      {
+        label: t('Charts'),
+        href: NETWORK_INFO_LINK[ChainId.TLOS],
+        isNew: false,
+      },
       {
         label: t('Governance'),
         href: 'https://discuss.apeswap.finance',
         isNew: false,
+      },
+      {
+        label: t('Newsletter'),
+        href: '?modal=newsletter',
+        isNew: true,
       },
     ],
   },

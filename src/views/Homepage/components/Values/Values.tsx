@@ -8,6 +8,7 @@ import { useTranslation } from 'contexts/Localization'
 import { getDotPos } from 'utils/getDotPos'
 import { Bubble, ValueCard, ValueImage, ValuesWrapper, ValueText } from './styles'
 import { defaultValues } from './defaultValues'
+import { Link } from '@ape.swap/uikit'
 
 const SLIDE_DELAY = 5000
 SwiperCore.use([Autoplay])
@@ -69,9 +70,9 @@ const Values: React.FC = () => {
                       ) : (
                         <Skeleton animation="waves" variant="circle" height="200px" width="200px" />
                       )}
-                      <Text fontSize="25px" bold>
+                      <Link target="_blank" href={value.link} style={{ fontSize: '25px' }} bold>
                         {value.title}
-                      </Text>
+                      </Link>
                       <Text textAlign="center">{value.description}</Text>
                     </ValueCard>
                   </SwiperSlide>
@@ -87,9 +88,9 @@ const Values: React.FC = () => {
                   ) : (
                     <Skeleton animation="waves" variant="circle" height="200px" width="200px" />
                   )}
-                  <Text fontSize="25px" bold>
+                  <Link target="_blank" href={value.link} style={{ fontSize: '25px' }} bold>
                     {value.title}
-                  </Text>
+                  </Link>
                   <Text textAlign="center">{value.description}</Text>
                 </ValueCard>
               )
