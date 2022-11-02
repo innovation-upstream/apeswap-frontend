@@ -19,7 +19,7 @@ const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingT
   const { toastSuccess, toastError } = useToast()
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, library } = useActiveWeb3React()
   const [, currencyB] = inputCurrencies
   const { recipient, typedValue } = useZapState()
   const { zap } = useDerivedZapInfo()
@@ -60,17 +60,15 @@ const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingT
           toastError(error?.message || t('Error: Please try again.'))
         })
     } else {
-      zapCallback()
+      await zapCallback()
         .then((hash) => {
-          handlePendingTx(false)
-          toastSuccess(t('Deposit Successful'), {
-            text: t('View Transaction'),
-            url: getEtherscanLink(hash, 'transaction', chainId),
+          library.waitForTransaction(hash).then(() => {
+            handlePendingTx(false)
+            setZapSlippage(originalSlippage)
+            dispatch(updateDualFarmUserStakedBalances(chainId, pid, account))
+            dispatch(updateDualFarmUserEarnings(chainId, pid, account))
+            dispatch(updateDualFarmUserTokenBalances(chainId, pid, account))
           })
-          setZapSlippage(originalSlippage)
-          dispatch(updateDualFarmUserStakedBalances(chainId, pid, account))
-          dispatch(updateDualFarmUserEarnings(chainId, pid, account))
-          dispatch(updateDualFarmUserTokenBalances(chainId, pid, account))
         })
         .catch((error) => {
           console.error(error)
@@ -98,6 +96,7 @@ const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingT
     dispatch,
     pid,
     account,
+    library,
   ])
 }
 
