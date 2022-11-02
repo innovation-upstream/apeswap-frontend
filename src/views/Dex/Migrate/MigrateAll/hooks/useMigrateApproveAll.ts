@@ -16,24 +16,31 @@ const useMigrateApproveAll = () => {
   const handleApproveAll = useCallback(
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
-        const { lpAddress, id } = migrateLp
-        const lpContract = new Contract(lpAddress, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
-        handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.PENDING, 'Migrate approval in progress')
-        lpContract
-          .approve(ZAP_ADDRESS[chainId], ethers.constants.MaxUint256)
-          .then((tx) =>
-            library
-              .waitForTransaction(tx.hash)
-              .then(() => {
-                handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.COMPLETE, 'Migrate approval complete')
-              })
-              .catch(() =>
-                handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.INVALID, 'Migrate approval failed'),
-              ),
+        try {
+          const { lpAddress, id } = migrateLp
+          const lpContract = new Contract(lpAddress, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
+          handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.PENDING, 'Migrate approval in progress')
+          lpContract
+            .approve(ZAP_ADDRESS[chainId], ethers.constants.MaxUint256)
+            .then((tx) =>
+              library
+                .waitForTransaction(tx.hash)
+                .then(() => {
+                  handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.COMPLETE, 'Migrate approval complete')
+                })
+                .catch((e) => handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.INVALID, e.message)),
+            )
+            .catch((e) => {
+              handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.INVALID, e.message)
+            })
+        } catch {
+          handleUpdateMigrateLp(
+            migrateLp.id,
+            'approveMigrate',
+            MigrateStatus.INVALID,
+            'Something went wrong please try refreshing',
           )
-          .catch(() => {
-            handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.INVALID, 'Migrate approval failed')
-          })
+        }
       })
     },
     [account, handleUpdateMigrateLp, library, chainId],

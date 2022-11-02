@@ -109,7 +109,7 @@ export const activeIndexHelper = (migrateLpStatus: MigrateLpStatus[]) => {
  * @param migrateLps List of Migrate LPs that will be filtered and returned
  * @param chainId Current chain id the user is on
  */
-export const filterCurrentFarms = (farms: Farm[], migrateLps: MigrateResult[], chainId: number): MigrateResult[] => {
+export const filterCurrentFarms = (farms: Farm[], migrateLps: MigrateResult[], chainId: number) => {
   const filteredLps = migrateLps?.filter((lp) => {
     return farms?.find(
       (farm) =>

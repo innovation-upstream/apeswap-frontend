@@ -20,43 +20,47 @@ const useStakeAll = () => {
   const handleStakeAll = useCallback(
     (apeswapWalletLps: ApeswapWalletLpInterface[]) => {
       apeswapWalletLps.map(async ({ pair, balance, id }) => {
-        const { address: lpAddress } = pair.liquidityToken
-        // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
-        const matchedVault = vaults.find(
-          (vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddress.toLowerCase(),
-        )
-        const matchedFarm = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lpAddress.toLowerCase())
-        // Estimate gas to make sure transactions dont fail
-        const gasEstimate =
-          migrateMaximizers && matchedVault
-            ? vaultApeV2Contract.estimateGas.deposit(matchedVault.pid, balance.raw.toString())
-            : masterChefContract.estimateGas.deposit(matchedFarm.pid, balance.raw.toString())
-        const call =
-          migrateMaximizers && matchedVault
-            ? vaultApeV2Contract.deposit(matchedVault.pid, balance.raw.toString(), {
-                gasLimit: calculateGasMargin(await gasEstimate),
-              })
-            : masterChefContract.deposit(matchedFarm.pid, balance.raw.toString(), {
-                gasLimit: calculateGasMargin(await gasEstimate),
-              })
-        handleUpdateMigrateLp(id, 'stake', MigrateStatus.PENDING, 'Staking in progress')
-        call
-          .then((tx) =>
-            library
-              .waitForTransaction(tx.hash)
-              .then(() => {
-                handleUpdateMigrateLp(id, 'stake', MigrateStatus.COMPLETE, 'Stake complete')
-                handleAddMigrationCompleteLog({
-                  lpSymbol: `${pair.token0.getSymbol(chainId)} - ${pair.token1.getSymbol(chainId)}`,
-                  location: migrateMaximizers && matchedVault ? 'max' : 'farm',
-                  stakeAmount: balance.toExact(),
-                })
-              })
-              .catch(() => handleUpdateMigrateLp(id, 'stake', MigrateStatus.INVALID, 'Stake failed')),
+        try {
+          const { address: lpAddress } = pair.liquidityToken
+          // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
+          const matchedVault = vaults.find(
+            (vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddress.toLowerCase(),
           )
-          .catch(() => {
-            handleUpdateMigrateLp(id, 'stake', MigrateStatus.INVALID, 'Stake failed')
-          })
+          const matchedFarm = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lpAddress.toLowerCase())
+          // Estimate gas to make sure transactions dont fail
+          const gasEstimate =
+            migrateMaximizers && matchedVault
+              ? vaultApeV2Contract.estimateGas.deposit(matchedVault.pid, balance.raw.toString())
+              : masterChefContract.estimateGas.deposit(matchedFarm.pid, balance.raw.toString())
+          const call =
+            migrateMaximizers && matchedVault
+              ? vaultApeV2Contract.deposit(matchedVault.pid, balance.raw.toString(), {
+                  gasLimit: calculateGasMargin(await gasEstimate),
+                })
+              : masterChefContract.deposit(matchedFarm.pid, balance.raw.toString(), {
+                  gasLimit: calculateGasMargin(await gasEstimate),
+                })
+          handleUpdateMigrateLp(id, 'stake', MigrateStatus.PENDING, 'Staking in progress')
+          call
+            .then((tx) =>
+              library
+                .waitForTransaction(tx.hash)
+                .then(() => {
+                  handleUpdateMigrateLp(id, 'stake', MigrateStatus.COMPLETE, 'Stake complete')
+                  handleAddMigrationCompleteLog({
+                    lpSymbol: `${pair.token0.getSymbol(chainId)} - ${pair.token1.getSymbol(chainId)}`,
+                    location: migrateMaximizers && matchedVault ? 'max' : 'farm',
+                    stakeAmount: balance.toExact(),
+                  })
+                })
+                .catch((e) => handleUpdateMigrateLp(id, 'stake', MigrateStatus.INVALID, e.message)),
+            )
+            .catch((e) => {
+              handleUpdateMigrateLp(id, 'stake', MigrateStatus.INVALID, e.message)
+            })
+        } catch {
+          handleUpdateMigrateLp(id, 'stake', MigrateStatus.INVALID, 'Something went wrong please try refreshing')
+        }
       })
     },
     [

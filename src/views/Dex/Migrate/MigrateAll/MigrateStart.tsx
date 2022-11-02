@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+/** @jsxImportSource theme-ui */
 import { Flex, Text, useModal } from '@ape.swap/uikit'
 import React, { useEffect } from 'react'
 import LoadingYourMigration from './components/LoadingYourMigration'

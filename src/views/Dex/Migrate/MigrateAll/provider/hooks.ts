@@ -177,16 +177,22 @@ export const useHandleUpdateMigratorResults = (
             symbol: migrateLpBalances.find((b) => b.token0.address.toLowerCase() === token0.toLowerCase())?.token0
               .symbol,
             decimals: null,
-            reserves: migrateLpBalances.find((b) => b.token0.address.toLowerCase() === token0.toLowerCase())?.token0
-              .reserves,
+            reserves: migrateLpBalances.find(
+              (b) =>
+                b.token0.address.toLowerCase() === token0.toLowerCase() &&
+                b.lpAddress.toLowerCase() === lp.toLowerCase(),
+            )?.token0.reserves,
           },
           token1: {
             address: token1,
             symbol: migrateLpBalances.find((b) => b.token1.address.toLowerCase() === token1.toLowerCase())?.token1
               .symbol,
             decimals: null,
-            reserves: migrateLpBalances.find((b) => b.token1.address.toLowerCase() === token1.toLowerCase())?.token1
-              .reserves,
+            reserves: migrateLpBalances.find(
+              (b) =>
+                b.token1.address.toLowerCase() === token1.toLowerCase() &&
+                b.lpAddress.toLowerCase() === lp.toLowerCase(),
+            )?.token1.reserves,
           },
           pid: parseInt(pid.toString()),
           walletBalance: getFullDisplayBalance(new BigNumber(wallet.toString())),

@@ -20,29 +20,33 @@ const useStakeApproveAll = () => {
   const handleApproveAll = useCallback(
     (apeswapWalletLps: ApeswapWalletLpInterface[]) => {
       apeswapWalletLps.map(async ({ pair, id }) => {
-        const { address: lpAddress } = pair.liquidityToken
-        // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
-        const matchedVault = vaults.find(
-          (vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddress.toLowerCase(),
-        )
-        const lpContract = new Contract(lpAddress, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
-        handleUpdateMigrateLp(
-          id,
-          'approveStake',
-          MigrateStatus.PENDING,
-          `Pending ${migrateMaximizers && matchedVault ? 'Maximizer' : 'Farm'} Approval`,
-        )
-        lpContract
-          .approve(migrateMaximizers && matchedVault ? vaultAddress : masterChefAddress, ethers.constants.MaxUint256)
-          .then((tx) =>
-            library
-              .waitForTransaction(tx.hash)
-              .then(() => handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.COMPLETE, 'Approval complete'))
-              .catch(() => handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.INVALID, 'Approval failed')),
+        try {
+          const { address: lpAddress } = pair.liquidityToken
+          // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
+          const matchedVault = vaults.find(
+            (vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddress.toLowerCase(),
           )
-          .catch(() => {
-            handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.INVALID, 'Approval failed')
-          })
+          const lpContract = new Contract(lpAddress, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
+          handleUpdateMigrateLp(
+            id,
+            'approveStake',
+            MigrateStatus.PENDING,
+            `Pending ${migrateMaximizers && matchedVault ? 'Maximizer' : 'Farm'} Approval`,
+          )
+          lpContract
+            .approve(migrateMaximizers && matchedVault ? vaultAddress : masterChefAddress, ethers.constants.MaxUint256)
+            .then((tx) =>
+              library
+                .waitForTransaction(tx.hash)
+                .then(() => handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.COMPLETE, 'Approval complete'))
+                .catch((e) => handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.INVALID, e.message)),
+            )
+            .catch((e) => {
+              handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.INVALID, e.message)
+            })
+        } catch {
+          handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.INVALID, 'Something went wrong please try refreshing')
+        }
       })
     },
     [account, handleUpdateMigrateLp, library, chainId, masterChefAddress, vaults, vaultAddress, migrateMaximizers],

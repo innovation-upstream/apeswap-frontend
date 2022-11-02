@@ -15,26 +15,35 @@ const useUnstakeAll = () => {
   const handleUnstakeAll = useCallback(
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
-        const { pid, chefAddress, stakedBalance, id } = migrateLp
-        const masterChefContract = new Contract(
-          chefAddress,
-          masterChefAbi,
-          getProviderOrSigner(library, account),
-        ) as Masterchef
-        handleUpdateMigrateLp(id, 'unstake', MigrateStatus.PENDING, 'Unstake in progress')
-        unstake(masterChefContract, pid, stakedBalance)
-          .then((tx) =>
-            library
-              .waitForTransaction(tx.transactionHash)
-              .then(() => {
-                handleUpdateMigrateLp(id, 'unstake', MigrateStatus.COMPLETE, 'Unstake complete')
-                handleUpdateMigratorResults()
-              })
-              .catch(() => handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, 'Unstake failed')),
+        try {
+          const { pid, chefAddress, stakedBalance, id } = migrateLp
+          const masterChefContract = new Contract(
+            chefAddress,
+            masterChefAbi,
+            getProviderOrSigner(library, account),
+          ) as Masterchef
+          handleUpdateMigrateLp(id, 'unstake', MigrateStatus.PENDING, 'Unstake in progress')
+          unstake(masterChefContract, pid, stakedBalance)
+            .then((tx) =>
+              library
+                .waitForTransaction(tx.transactionHash)
+                .then(() => {
+                  handleUpdateMigratorResults()
+                  handleUpdateMigrateLp(id, 'unstake', MigrateStatus.COMPLETE, 'Unstake complete')
+                })
+                .catch((e) => handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, e.message)),
+            )
+            .catch((e) => {
+              handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, e.message)
+            })
+        } catch {
+          handleUpdateMigrateLp(
+            migrateLp.id,
+            'unstake',
+            MigrateStatus.INVALID,
+            'Something went wrong please try refreshing',
           )
-          .catch(() => {
-            handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, 'Unstake failed')
-          })
+        }
       })
     },
     [account, handleUpdateMigrateLp, handleUpdateMigratorResults, library],
