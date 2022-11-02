@@ -12,60 +12,17 @@ import { ApeswapWalletLpInterface, MigrateLpStatus, MigrateStatus, MigrationComp
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { CHEF_ADDRESSES } from 'config/constants/chains'
-import { filterCurrentFarms } from './utils'
-import { useFarms } from 'state/farms/hooks'
+import { filterCurrentFarms, useUpdateApproveStakeStatus, useUpdateStatusId } from './utils'
+import { PairState } from 'hooks/usePairs'
 
-const useUpdateStatusId = (
-  lpStatus: MigrateLpStatus[],
-  setLpStatus: React.Dispatch<React.SetStateAction<MigrateLpStatus[]>>,
-) => {
-  const updateStatusId = useCallback(
-    (id: number, newId: number) => {
-      const updatedMigrateLpStatus = lpStatus
-      const lpToUpdateIndex = lpStatus.findIndex((migrateLp) => migrateLp.id === id)
-      const lpToUpdate = {
-        ...lpStatus[lpToUpdateIndex],
-        id: newId,
-      }
-      updatedMigrateLpStatus[lpToUpdateIndex] = lpToUpdate
-      setLpStatus([...updatedMigrateLpStatus])
-    },
-    [setLpStatus, lpStatus],
-  )
-  return updateStatusId
-}
-
-const useUpdateApproveStakeStatus = (
-  lpStatus: MigrateLpStatus[],
-  setLpStatus: React.Dispatch<React.SetStateAction<MigrateLpStatus[]>>,
-) => {
-  const farms = useFarms(null)
-  const { chainId } = useActiveWeb3React()
-  const updateApproveStakeStatus = useCallback(
-    (apeswapLp: ApeswapWalletLpInterface) => {
-      const updatedMigrateLpStatus = lpStatus
-      const { pair, id } = apeswapLp
-      const matchedFarm = farms.find(
-        (farm) => farm.lpAddresses[chainId].toLowerCase() === pair.liquidityToken.address.toLowerCase(),
-      )
-      const lpToUpdateIndex = lpStatus.findIndex((migrateLp) => migrateLp.id === id)
-      const lpToUpdate = {
-        ...lpStatus[lpToUpdateIndex],
-        status: {
-          ...lpStatus[lpToUpdateIndex].status,
-          approveStake: new BigNumber(matchedFarm?.userData?.allowance).gt(0)
-            ? MigrateStatus.COMPLETE
-            : MigrateStatus.INCOMPLETE,
-        },
-      }
-      updatedMigrateLpStatus[lpToUpdateIndex] = lpToUpdate
-      setLpStatus([...updatedMigrateLpStatus])
-    },
-    [setLpStatus, lpStatus, farms, chainId],
-  )
-  return updateApproveStakeStatus
-}
-
+/**
+ * Hook to use handleMaximizerApprovalToggle callback which checks the allowance for each farm/vault and status state
+ * @param farms List of ApeSwap farms
+ * @param vaults List of ApeSwap vaults
+ * @param lpStatus List of Migrate LPs status
+ * @param setLpStatus Action to set the Migrate Lp Status state
+ * @param setMigrateMaximizers Action to set the migrate maximizer flag state
+ */
 export const useHandleMaximizerApprovalToggle = (
   farms: Farm[],
   vaults: Vault[],
@@ -109,10 +66,18 @@ export const useHandleMaximizerApprovalToggle = (
   return handleMaximizerApprovalToggle
 }
 
+/**
+ * Hook to set a callback to update the users ApeSwap LP balances after compelting a migrate
+ * @param apeswapLpBalances List of ApeSwap LP balances
+ * @param lpStatus List of Migrate LPs status
+ * @param liquidityTokens List of Pair and PairStates
+ * @param setLpStatus Action to set the Migrate LP Status state
+ * @param setApeswapLpBalances Action to set the ApeSwap LP Balances
+ */
 export const useHandleUpdateOfApeswapLpBalance = (
   apeswapLpBalances: ApeswapWalletLpInterface[],
   lpStatus: MigrateLpStatus[],
-  liquidityTokens,
+  liquidityTokens: [PairState, Pair][],
   setLpStatus: React.Dispatch<React.SetStateAction<MigrateLpStatus[]>>,
   setApeswapLpBalances: React.Dispatch<React.SetStateAction<ApeswapWalletLpInterface[]>>,
 ) => {
@@ -168,6 +133,14 @@ export const useHandleUpdateOfApeswapLpBalance = (
   return handleUpdateOfApeswapLpBalance
 }
 
+/**
+ * Hook to set a callback to update the users migrate balances
+ * This is used after a migration action has been completed
+ * @param farms List of ApeSwap farms
+ * @param migrateLpBalances List of Migrate LPs balances
+ * @param setMigrateWalletBalances Action to set the migrate wallet balances
+ * @param setMigrateStakedBalances Action to set the migrate staked balances
+ */
 export const useHandleUpdateMigratorResults = (
   farms: Farm[],
   migrateLpBalances: MigrateResult[],
@@ -236,6 +209,11 @@ export const useHandleUpdateMigratorResults = (
   return handleUpdateMigratorResults
 }
 
+/**
+ * Hook the set a callback to handle updating lp status state
+ * @param lpStatus List of Migrate LP status
+ * @param setLpStatus Action to set the state of LP Status
+ */
 export const useHandleUpdateMigrateLp = (
   lpStatus: MigrateLpStatus[],
   setLpStatus: React.Dispatch<React.SetStateAction<MigrateLpStatus[]>>,
@@ -258,6 +236,10 @@ export const useHandleUpdateMigrateLp = (
   return handleUpdateMigrateLp
 }
 
+/**
+ * Hook the set a callback to handle updating the migration completion state
+ * @param setMigrationCompleteLog Action to add a completed migration to the completion state
+ */
 export const useHandleAddMigrationCompleteLog = (
   setMigrationCompleteLog: React.Dispatch<React.SetStateAction<MigrationCompleteLog[]>>,
 ) => {

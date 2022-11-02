@@ -233,11 +233,7 @@ export const useMigratorBalances = (
   const migratorBalanceCheckerContract = useMigratorBalanceCheckerContract()
   // The default gasRequired is too small for this call so we have to up the limit.
   // default variables can be seen here https://github.com/Uniswap/redux-multicall/blob/96dde8853e4990d06735c29e1eb1a76f748c5258/src/constants.ts
-<<<<<<< HEAD
-  const options = { gasRequired: 10000000, blocksPerFetch }
-=======
-  const options = { gasRequired: 100000000 }
->>>>>>> dfb9ac00b7028559e750b36f81946a2940ed3d41
+  const options = { gasRequired: 100000000, blocksPerFetch }
   const callResult = useSingleCallResult(migratorBalanceCheckerContract, 'getBalance', [account], options)
   const { result, valid, loading: balanceLoading, syncing } = callResult
   // List of LP addresses

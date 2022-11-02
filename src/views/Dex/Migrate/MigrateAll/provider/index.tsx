@@ -11,7 +11,7 @@ import {
   useHandleUpdateMigrateLp,
   useHandleUpdateMigratorResults,
   useHandleUpdateOfApeswapLpBalance,
-} from './callbacks'
+} from './hooks'
 import {
   ApeswapWalletLpInterface,
   MigrateLpStatus,
@@ -24,7 +24,8 @@ const MigrateContext = createContext<MigrateContextData>({} as MigrateContextDat
 
 /* eslint-disable react-hooks/exhaustive-deps */
 export function MigrateProvider({ children }: MigrateProviderProps) {
-  const { account, chainId } = useActiveWeb3React()
+  // Initial states
+
   const [migrationLoading, setMigrationLoading] = useState<boolean>(true)
   const [migrateMaximizers, setMigrateMaximizers] = useState<boolean>(false)
   const [migrateWalletBalances, setMigrateWalletBalances] = useState<MigrateResult[]>([])
@@ -32,21 +33,35 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   const [apeswapLpBalances, setApeswapLpBalances] = useState<ApeswapWalletLpInterface[]>([])
   const [migrationCompleteLog, setMigrationCompleteLog] = useState<MigrationCompleteLog[]>([])
   const [lpStatus, setLpStatus] = useState<MigrateLpStatus[]>([])
-
-  // Making the load time minimum 3.5 seconds
-  const timer = useRef(null)
-  const [timeReady, setTimeReady] = useState<boolean>(false)
-  const { results: migrateLpBalances, syncing, loading, valid } = useMigratorBalances(1)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [timeReady, setTimeReady] = useState<boolean>(false)
+
+  // Helpful hooks used
+
+  const timer = useRef(null)
+  const { account, chainId } = useActiveWeb3React()
+  const { results: migrateLpBalances, syncing, loading, valid } = useMigratorBalances(1)
   // TODO: Clean useLpBalances to be specific for the migration
   const { allPairs: liquidityTokens, pairAndBalances: userApeswapLpBalances, apeBalancesLoading } = useLpBalances()
-  // Since we already need to pull farm and vault data for this page we can use the already fetched approved data
   const farms = useFarms(account)
   const { vaults: fetchedVaults } = useVaults()
+
+  // Value filters and needed variables
+
+  // Since each vault needs a farm we can filter by just farms
+  const filteredLpsForStake = apeswapLpBalances?.filter((lp) =>
+    farms?.find((farm) => lp.pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
+  )
   // Filter out innactive vaults and farms
   const vaults = fetchedVaults.filter((vault) => !vault.inactive)
+  // There is an edgecase of multiple protocols with the same LP that need to be migrated which causes duplicate entries.
+  // If a duplicate is identified we filter it out
+  // We wont need this for migrationV2
+  const duplicateStatusIds = new Set(lpStatus.map(({ id }) => id)).size !== lpStatus.length
+  // Flag to run a hook when finished loading
+  const farmAndVaultUserDataLoaded = farms?.[0]?.userData !== undefined && vaults?.[0]?.userData !== undefined
 
-  // Start of callbacks
+  // Callbacks that are used on user actions
 
   const handleUpdateOfApeswapLpBalance = useHandleUpdateOfApeswapLpBalance(
     apeswapLpBalances,
@@ -55,7 +70,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     setLpStatus,
     setApeswapLpBalances,
   )
-
   const handleMaximizerApprovalToggle = useHandleMaximizerApprovalToggle(
     farms,
     vaults,
@@ -63,55 +77,41 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     setLpStatus,
     setMigrateMaximizers,
   )
-
   const handleUpdateMigratorResults = useHandleUpdateMigratorResults(
     farms,
     migrateLpBalances,
     setMigrateWalletBalances,
     setMigrateStakedBalances,
   )
-
   const handleUpdateMigrateLp = useHandleUpdateMigrateLp(lpStatus, setLpStatus)
-
   const handleAddMigrationCompleteLog = useHandleAddMigrationCompleteLog(setMigrationCompleteLog)
+  const handleActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
 
-  // End of callbacks
+  // On load and value change hooks
 
-  // There is an edgecase of multiple protocols with the same LP need to be migrated which causes duplicate entries.
-  // If a duplicate is identified we filter it out
-  // We wont need this for migrationV2
-  const duplicateStatusIds = new Set(lpStatus.map(({ id }) => id)).size !== lpStatus.length
+  // If there is a duplicate filter it out
   useMemo(() => {
     setLpStatus([...[...new Map(lpStatus.map((v) => [v.id, v])).values()]])
   }, [duplicateStatusIds, setLpStatus])
 
-  // Since each vault needs a farm we can filter by just farms
-  const filteredLpsForStake = apeswapLpBalances?.filter((lp) =>
-    farms?.find((farm) => lp.pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
-  )
-  const farmAndVaultUserDataLoaded = farms?.[0]?.userData !== undefined && vaults?.[0]?.userData !== undefined
-  timer.current = setTimeout(() => {
-    setTimeReady(true)
-  }, 4000)
-
-  if (!loading && !apeBalancesLoading && valid && liquidityTokens.length > 0 && timeReady) {
-    if (migrationLoading) {
-      setMigrationLoading(false)
-    }
-  }
-
+  // Set the initial migrate lp states
   useMemo(() => {
     const filterMigrateLps = filterCurrentFarms(farms, migrateLpBalances, chainId)
     setMigrateWalletBalances(filterMigrateLps?.filter((bal) => parseFloat(bal.walletBalance) > 0.0))
     setMigrateStakedBalances(filterMigrateLps?.filter((bal) => parseFloat(bal.stakedBalance) > 0.0))
   }, [migrateLpBalances.length, loading, chainId, farms.length, syncing])
 
+  // Set the initial apeswap lp state
   useMemo(() => {
     setApeswapLpBalances(userApeswapLpBalances)
   }, [userApeswapLpBalances.length])
 
-  // Set the initial statuses for each LP
-  // TODO: Make this better
+  // Monitor is status change for active index
+  useMemo(() => {
+    setActiveIndex(activeIndexHelper(lpStatus))
+  }, [lpStatus])
+
+  // Set the initial status for each LP
   useEffect(() => {
     setMigrateLpStatus(
       [...migrateWalletBalances, ...migrateStakedBalances],
@@ -125,12 +125,17 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     )
   }, [valid, apeBalancesLoading, account, setLpStatus, farmAndVaultUserDataLoaded, chainId])
 
-  // Monitor is status change for active index
-  useMemo(() => {
-    setActiveIndex(activeIndexHelper(lpStatus))
-  }, [lpStatus])
+  // Migration loading logic
 
-  const setActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
+  timer.current = setTimeout(() => {
+    setTimeReady(true)
+  }, 4000)
+
+  if (!loading && !apeBalancesLoading && valid && liquidityTokens.length > 0 && timeReady) {
+    if (migrationLoading) {
+      setMigrationLoading(false)
+    }
+  }
 
   return (
     <MigrateContext.Provider
@@ -143,7 +148,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
         migrateLpStatus: lpStatus,
         migrationCompleteLog,
         migrationLoading,
-        setActiveIndexCallback,
+        handleActiveIndexCallback,
         handleUpdateMigrateLp,
         handleUpdateMigratorResults,
         handleUpdateOfApeswapLpBalance,

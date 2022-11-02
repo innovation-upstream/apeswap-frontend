@@ -11,7 +11,7 @@ interface MigrateProcessBarInterface {
 }
 
 const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargin, children }) => {
-  const { activeIndex, migrateLpStatus, setActiveIndexCallback } = useMigrateAll()
+  const { activeIndex, migrateLpStatus, handleActiveIndexCallback } = useMigrateAll()
   const isComplete = migrateLpStatus?.map((item) =>
     Object.entries(item.status).map((each) => each[1] === MigrateStatus.COMPLETE),
   )
@@ -24,7 +24,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
             <>
               <Flex
                 key={title}
-                onClick={() => setActiveIndexCallback(i)}
+                onClick={() => handleActiveIndexCallback(i)}
                 sx={{
                   flexDirection: 'column',
                   alignItems: 'center',

@@ -4,7 +4,7 @@ import { MigrateResult } from 'state/zapMigrator/hooks'
 
 export interface MigrateContextData {
   activeIndex: number
-  setActiveIndexCallback: (activeIndex: number) => void
+  handleActiveIndexCallback: (activeIndex: number) => void
   handleMaximizerApprovalToggle: (apeswapLps: ApeswapWalletLpInterface[], migrateMaximizers: boolean) => void
   handleAddMigrationCompleteLog: (migrationLog: MigrationCompleteLog) => void
   handleUpdateMigratorResults: () => void
