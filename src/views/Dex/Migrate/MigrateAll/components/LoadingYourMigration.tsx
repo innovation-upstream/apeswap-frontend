@@ -16,6 +16,7 @@ const LoadingYourMigration: React.FC = () => {
         borderRadius: '10px',
         alignItems: 'center',
         flexDirection: 'column',
+        textAlign: 'center',
         mt: isMobile ? '0px' : '20px',
       }}
     >

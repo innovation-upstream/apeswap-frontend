@@ -4,6 +4,7 @@ import React, { ReactNode } from 'react'
 import { useMigrateAll } from '../../provider'
 import { MIGRATION_STEPS } from '../../provider/constants'
 import { MigrateStatus } from '../../provider/types'
+import { styles } from './styles'
 
 interface MigrateProcessBarInterface {
   activeLineMargin?: number
@@ -18,35 +19,16 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
   return (
     <Flex sx={{ flexDirection: 'column' }}>
       <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
-        {MIGRATION_STEPS.map(({ title, description }, i) => {
+        {MIGRATION_STEPS.map(({ title }, i) => {
           const isIndexComplete = isComplete.filter((loFlag) => !loFlag[i]).length === 0
           return (
             <>
-              <Flex
-                key={title}
-                onClick={() => handleActiveIndexCallback(i)}
-                sx={{
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '28px',
-                  zIndex: 2,
-                }}
-              >
+              <Flex key={title} onClick={() => handleActiveIndexCallback(i)} sx={styles.mobileContainer}>
                 <Flex sx={{ width: '30px', background: 'primaryBright', borderRadius: '15px' }}>
                   {isIndexComplete ? (
                     <Svg icon="success" width="100%" />
                   ) : (
-                    <Flex
-                      sx={{
-                        width: '30px',
-                        borderRadius: '15px',
-                        background: 'gradient',
-                        height: '30px',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
+                    <Flex sx={styles.mobileProgressCircleContainer}>
                       <Text size="18px" color="primaryBright" weight={700} sx={{ transform: 'translate(-.5px, 1px)' }}>
                         {i + 1}
                       </Text>
@@ -81,19 +63,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
         </Text>
       </Flex>
       <Flex sx={{ flexDirection: 'column', margin: '0 10px' }}>
-        <Flex
-          sx={{
-            width: '100%',
-            height: 'fit-content',
-            padding: '5px',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1,
-            background: 'gradient',
-            borderRadius: '10px',
-            mt: '35px',
-          }}
-        >
+        <Flex sx={styles.mobileChildContainer}>
           <Flex
             sx={{ height: '100%', width: '100%', background: 'white2', borderRadius: '10px', padding: '20px 10px' }}
           >

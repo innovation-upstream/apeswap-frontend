@@ -30,9 +30,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
               >
                 <Flex sx={styles.desktopProgressCircleContainer}>
                   {isIndexComplete ? (
-                    <Flex
-                      sx={{ backgroundColor: 'primaryBright', height: 'auto', width: '60px', borderRadius: '30px' }}
-                    >
+                    <Flex sx={{ backgroundColor: 'primaryBright', borderRadius: '30px', maxWidth: '60px' }}>
                       <Svg icon="success" width="100%" />
                     </Flex>
                   ) : (
