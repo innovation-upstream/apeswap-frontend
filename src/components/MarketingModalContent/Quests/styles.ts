@@ -20,7 +20,7 @@ export const showApe = (slide, isDark, isMobile): ThemeUIStyleObject => ({
   },
   background: `url(images/marketing-modals/questApe-${isDark ? 'dark-' : 'light-'}${slide}.svg)`,
   backgroundRepeat: 'no-repeat',
-  backgroundPosition: ((slide === 2 || slide === 3) && 'bottom') || 'center',
+  backgroundPosition: (isMobile && (slide === 2 || slide === 3) && 'bottom') || 'center',
   backgroundSize: 'contain',
 })
 
