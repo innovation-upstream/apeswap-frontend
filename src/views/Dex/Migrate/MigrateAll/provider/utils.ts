@@ -95,14 +95,14 @@ export const setMigrateLpStatus = async (
  */
 export const activeIndexHelper = (migrateLpStatus: MigrateLpStatus[]) => {
   const isComplete = migrateLpStatus?.map((item) =>
-    Object.entries(item.status).map((each) => each[1] === MigrateStatus.COMPLETE),
+    Object.entries(item.status).map(([, status]) => status === MigrateStatus.COMPLETE),
   )
   for (let i = 0; i < MIGRATION_STEPS.length; i++) {
     if (isComplete.filter((loFlag) => !loFlag[i]).length !== 0) {
       return i
     }
   }
-  return 0
+  return MIGRATION_STEPS.length - 1
 }
 
 /**

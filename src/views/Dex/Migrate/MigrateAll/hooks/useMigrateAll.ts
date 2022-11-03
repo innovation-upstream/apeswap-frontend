@@ -4,7 +4,6 @@ import { MigrateResult } from 'state/zapMigrator/hooks'
 import { MigrateStatus } from '../provider/types'
 import { useZapContract } from 'hooks/useContract'
 import { JSBI, SMART_ROUTER_ADDRESS } from '@ape.swap/sdk'
-import { useUserSlippageTolerance } from 'state/user/hooks'
 import BigNumber from 'bignumber.js'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { calculateGasMargin } from 'utils'
@@ -14,8 +13,9 @@ const useMigrateAllLps = () => {
   const { library, chainId } = useActiveWeb3React()
   const { handleUpdateMigrateLp, handleUpdateOfApeswapLpBalance, handleUpdateMigratorResults } = useMigrateAll()
   const zapContract = useZapContract()
-  const [allowedSlippage] = useUserSlippageTolerance(true)
   const deadline = useTransactionDeadline()
+  // default slippage to 5%
+  const slippage = 500
   const handleMigrateAll = useCallback(
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
@@ -28,18 +28,12 @@ const useMigrateAllLps = () => {
             parseInt((poolTokenPercentage * token1.reserves).toString()),
           ]
           const [token0MinOut, token1MinOut] = [
-            JSBI.divide(
-              JSBI.multiply(JSBI.BigInt(token0Deposited), JSBI.BigInt(10000 - allowedSlippage)),
-              JSBI.BigInt(10000),
-            ),
-            JSBI.divide(
-              JSBI.multiply(JSBI.BigInt(token1Deposited), JSBI.BigInt(10000 - allowedSlippage)),
-              JSBI.BigInt(10000),
-            ),
+            JSBI.divide(JSBI.multiply(JSBI.BigInt(token0Deposited), JSBI.BigInt(10000 - slippage)), JSBI.BigInt(10000)),
+            JSBI.divide(JSBI.multiply(JSBI.BigInt(token1Deposited), JSBI.BigInt(10000 - slippage)), JSBI.BigInt(10000)),
           ]
           const [token0MinIn, token1MinIn] = [
-            JSBI.divide(JSBI.multiply(token0MinOut, JSBI.BigInt(10000 - allowedSlippage)), JSBI.BigInt(10000)),
-            JSBI.divide(JSBI.multiply(token1MinOut, JSBI.BigInt(10000 - allowedSlippage)), JSBI.BigInt(10000)),
+            JSBI.divide(JSBI.multiply(token0MinOut, JSBI.BigInt(10000 - slippage)), JSBI.BigInt(10000)),
+            JSBI.divide(JSBI.multiply(token1MinOut, JSBI.BigInt(10000 - slippage)), JSBI.BigInt(10000)),
           ]
           handleUpdateMigrateLp(id, 'migrate', MigrateStatus.PENDING, 'Migrate in progress')
           const gasEstimate = await zapContract.estimateGas.zapLPMigrator(
@@ -94,7 +88,7 @@ const useMigrateAllLps = () => {
     [
       library,
       deadline,
-      allowedSlippage,
+      slippage,
       zapContract,
       chainId,
       handleUpdateMigrateLp,
