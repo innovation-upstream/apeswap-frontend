@@ -67,7 +67,7 @@ const DualDepositModal: React.FC<DualDepositModalProps> = ({
   const { zap } = useDerivedZapInfo()
   const [zapSlippage, setZapSlippage] = useUserSlippageTolerance(true)
   const priceImpact = new BigNumber(zap?.totalPriceImpact?.toFixed(2)).times(100).toNumber()
-  const handleDeposit = useDualDeposit(inputCurrencies, pid, setPendingDepositTrx)
+  const handleDeposit = useDualDeposit(inputCurrencies, pid, setPendingDepositTrx, onDismiss)
 
   const onHandleValueChange = useCallback(
     (val: string) => {
@@ -112,7 +112,7 @@ const DualDepositModal: React.FC<DualDepositModalProps> = ({
 
   return (
     <ModalProvider>
-      <Modal title={t('Stake LP')} onDismiss={onDismiss} {...modalProps}>
+      <Modal title={t('Stake LP tokens')} onDismiss={onDismiss} {...modalProps}>
         <Box sx={{ margin: '15px 0' }}>
           <DualCurrencyPanel
             handleMaxInput={handleMaxInput}

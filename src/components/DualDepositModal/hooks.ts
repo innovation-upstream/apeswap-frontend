@@ -15,7 +15,12 @@ import { useDerivedZapInfo, useZapState } from '../../state/zap/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
-const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingTx: (value: boolean) => void) => {
+const useDualDeposit = (
+  inputCurrencies: Currency[],
+  pid: number,
+  handlePendingTx: (value: boolean) => void,
+  onDismiss: () => void,
+) => {
   const { toastSuccess, toastError } = useToast()
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -52,6 +57,7 @@ const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingT
               text: t('View Transaction'),
               url: getEtherscanLink(resp.hash, 'transaction', chainId),
             })
+            onDismiss()
           })
         })
         .catch((error) => {
@@ -68,6 +74,7 @@ const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingT
             dispatch(updateDualFarmUserStakedBalances(chainId, pid, account))
             dispatch(updateDualFarmUserEarnings(chainId, pid, account))
             dispatch(updateDualFarmUserTokenBalances(chainId, pid, account))
+            onDismiss()
           })
         })
         .catch((error) => {
