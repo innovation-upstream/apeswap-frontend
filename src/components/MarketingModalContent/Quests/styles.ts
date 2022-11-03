@@ -11,15 +11,16 @@ export const Bubble = styled.div<{ isActive?: boolean }>`
   margin: 0px 2.5px 0px 2.5px;
   cursor: pointer;
 `
+
 export const showApe = (slide, isDark, isMobile): ThemeUIStyleObject => ({
-  width: isMobile ? '75%' : '85%',
+  width: (isMobile && (((slide === 2 || slide === 3) && '72%') || '75%')) || '85%',
   height: '230px',
   '@media screen and (min-width: 853px)': {
     height: '500px',
   },
   background: `url(images/marketing-modals/questApe-${isDark ? 'dark-' : 'light-'}${slide}.svg)`,
   backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center',
+  backgroundPosition: ((slide === 2 || slide === 3) && 'bottom') || 'center',
   backgroundSize: 'contain',
 })
 

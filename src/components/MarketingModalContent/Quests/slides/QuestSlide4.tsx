@@ -26,7 +26,6 @@ const QuestSlide4 = () => {
             {t('enter Genki!')}
           </a>
         </Text>{' '}
-        <br />
         <Text sx={styles.third}>{t('Just remember to always keep spare $TLOS in your backpack!')}</Text>
       </Box>
     </>

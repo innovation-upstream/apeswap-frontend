@@ -15,7 +15,6 @@ const QuestSlide3 = () => {
       </Box>
       <Box sx={styles.thirdWrapper}>
         <Text sx={styles.third}>{t('Every week, rewards will be given away to 10 lucky participants.')}</Text>
-        <br />
         <Text sx={styles.third}> {t('The more')}</Text>
         <Text color="yellow" sx={styles.third}>
           {' '}

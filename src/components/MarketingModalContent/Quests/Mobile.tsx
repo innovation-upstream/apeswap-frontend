@@ -53,7 +53,7 @@ const MobileModal: React.FC<SwiperProps> = ({ onDismiss, setDefaultNoShow, hideD
         </Flex>
         <Flex sx={styles.textWrapper}>
           <Box sx={{ width: '100%', textAlign: 'left', marginLeft: '30px' }}>
-            <Heading sx={styles.title}>{t('TELOS JUNGLE QUESTS')}</Heading>
+            <Heading sx={{ ...styles.title, fontStyle: 'capitalize' }}>{t('Telos Jungle Quests')}</Heading>
             <Text sx={subtitle(isDark)}>{t('Would you dare explore it?')}</Text>
           </Box>
           <Swiper
