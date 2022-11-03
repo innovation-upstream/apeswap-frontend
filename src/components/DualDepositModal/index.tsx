@@ -28,6 +28,8 @@ interface DualDepositModalProps {
   token0?: string
   token1?: string
   lpAddress?: string
+  onStakeLp?: (value: string) => void
+  enableZap?: boolean
 }
 
 const modalProps = {
@@ -49,6 +51,8 @@ const DualDepositModal: React.FC<DualDepositModalProps> = ({
   token0,
   token1,
   lpAddress,
+  onStakeLp,
+  enableZap,
 }) => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -67,7 +71,7 @@ const DualDepositModal: React.FC<DualDepositModalProps> = ({
   const { zap } = useDerivedZapInfo()
   const [zapSlippage, setZapSlippage] = useUserSlippageTolerance(true)
   const priceImpact = new BigNumber(zap?.totalPriceImpact?.toFixed(2)).times(100).toNumber()
-  const handleDeposit = useDualDeposit(inputCurrencies, pid, setPendingDepositTrx)
+  const handleDeposit = useDualDeposit(!!currencyB, onStakeLp, pid, setPendingDepositTrx)
 
   const onHandleValueChange = useCallback(
     (val: string) => {
@@ -121,6 +125,7 @@ const DualDepositModal: React.FC<DualDepositModalProps> = ({
             onCurrencySelect={handleCurrencySelect}
             inputCurrencies={inputCurrencies}
             lpList={[lpCurrencies]}
+            enableZap={enableZap}
           />
         </Box>
         {!currencyB && typedValue && parseFloat(typedValue) > 0 && zap?.pairOut?.liquidityMinted && (

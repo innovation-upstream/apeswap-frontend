@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { Currency, ZapType } from '@ape.swap/sdk'
-import { getEtherscanLink } from '../../utils'
+import { ZapType } from '@ape.swap/sdk'
 import {
   updateDualFarmUserEarnings,
   updateDualFarmUserStakedBalances,
@@ -9,18 +8,21 @@ import {
 } from '../../state/dualFarms'
 import { useToast } from '../../state/hooks'
 import { useTranslation } from '../../contexts/Localization'
-import { useDualFarmStake } from '../../hooks/useStake'
 import { useZapCallback } from '../../hooks/useZapCallback'
 import { useDerivedZapInfo, useZapState } from '../../state/zap/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
-const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingTx: (value: boolean) => void) => {
-  const { toastSuccess, toastError } = useToast()
+const useDualDeposit = (
+  isZapSelected: boolean,
+  onStakeLp: (value: string) => void,
+  pid: number,
+  handlePendingTx: (value: boolean) => void,
+) => {
+  const { toastError } = useToast()
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { account, chainId, library } = useActiveWeb3React()
-  const [, currencyB] = inputCurrencies
   const { recipient, typedValue } = useZapState()
   const { zap } = useDerivedZapInfo()
   const [zapSlippage, setZapSlippage] = useUserSlippageTolerance(true)
@@ -29,7 +31,6 @@ const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingT
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const { onStake } = useDualFarmStake(pid)
   const { callback: zapCallback } = useZapCallback(
     zap,
     ZapType.ZAP_MINI_APE,
@@ -42,23 +43,8 @@ const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingT
 
   return useCallback(async () => {
     handlePendingTx(true)
-    // if there's currencyB use deposit LP logic, otherwise use zapcallback
-    if (currencyB) {
-      await onStake(typedValue)
-        .then((resp) => {
-          resp.wait().then(() => {
-            handlePendingTx(false)
-            toastSuccess(t('Deposit Successful'), {
-              text: t('View Transaction'),
-              url: getEtherscanLink(resp.hash, 'transaction', chainId),
-            })
-          })
-        })
-        .catch((error) => {
-          console.error(error)
-          handlePendingTx(false)
-          toastError(error?.message || t('Error: Please try again.'))
-        })
+    if (isZapSelected) {
+      await onStakeLp(typedValue)
     } else {
       await zapCallback()
         .then((hash) => {
@@ -83,10 +69,8 @@ const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingT
     }
   }, [
     handlePendingTx,
-    currencyB,
-    onStake,
+    isZapSelected,
     typedValue,
-    toastSuccess,
     t,
     chainId,
     toastError,
@@ -97,6 +81,7 @@ const useDualDeposit = (inputCurrencies: Currency[], pid: number, handlePendingT
     pid,
     account,
     library,
+    onStakeLp,
   ])
 }
 

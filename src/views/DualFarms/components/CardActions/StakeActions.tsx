@@ -13,6 +13,7 @@ import WithdrawModal from '../../../../components/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButton, StyledButton } from './styles'
 import { DualFarm } from 'state/types'
 import { useModal } from '@ape.swap/uikit'
+import { useDualFarmStake } from '../../../../hooks/useStake'
 
 interface StakeActionsProps {
   lpValueUsd: number
@@ -29,11 +30,12 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
   ).toFixed(2)}`
   const [pendingDepositTrx, setPendingDepositTrx] = useState(false)
   const [pendingWithdrawTrx, setPendingWithdrawTrx] = useState(false)
-  const { toastSuccess } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
   const isMobile = !isLg && !isXl && !isXxl
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
 
+  const { onStake } = useDualFarmStake(farm?.pid)
   const { onUnstake } = useMiniChefUnstake(farm?.pid)
 
   const handlePendingDepositTx = useCallback((value: boolean) => {
@@ -49,6 +51,24 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
       token0={farm?.stakeTokens?.token0?.address[chainId]}
       token1={farm?.stakeTokens?.token1?.address[chainId]}
       lpAddress={farm?.stakeTokenAddress}
+      onStakeLp={async (val: string) => {
+        setPendingDepositTrx(true)
+        await onStake(val)
+          .then((resp) => {
+            resp.wait().then(() => {
+              setPendingDepositTrx(false)
+              toastSuccess(t('Deposit Successful'), {
+                text: t('View Transaction'),
+                url: getEtherscanLink(resp.hash, 'transaction', chainId),
+              })
+            })
+          })
+          .catch((error) => {
+            console.error(error)
+            setPendingDepositTrx(false)
+            toastError(error?.message || t('Error: Please try again.'))
+          })
+      }}
     />,
     true,
     true,

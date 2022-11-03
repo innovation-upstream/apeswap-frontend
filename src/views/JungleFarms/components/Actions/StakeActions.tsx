@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Flex, AddIcon, MinusIcon, useModal } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -12,44 +12,47 @@ import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
-import DepositModal from '../Modals/DepositModal'
 import { ActionContainer, CenterContainer, SmallButtonSquare, StyledButtonSquare } from './styles'
 import WithdrawModal from '../../../../components/WithdrawModal'
+import DualDepositModal from '../../../../components/DualDepositModal'
+import { JungleFarm } from 'state/types'
 
 interface StakeActionsProps {
-  stakingTokenBalance: string
-  stakedBalance: string
-  stakeTokenValueUsd: number
-  jungleId: number
+  farm: JungleFarm
 }
 
-const StakeAction: React.FC<StakeActionsProps> = ({
-  stakingTokenBalance,
-  stakedBalance,
-  stakeTokenValueUsd,
-  jungleId,
-}) => {
-  const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
+const StakeAction: React.FC<StakeActionsProps> = ({ farm }) => {
+  const rawStakedBalance = getBalanceNumber(farm?.userData?.stakedBalance)
   const dispatch = useAppDispatch()
   const { chainId, account } = useActiveWeb3React()
   const userStakedBalanceUsd = `$${(
-    getBalanceNumber(new BigNumber(stakedBalance) || new BigNumber(0)) * stakeTokenValueUsd
+    getBalanceNumber(farm?.userData?.stakedBalance || new BigNumber(0)) * farm?.stakingToken?.price
   ).toFixed(2)}`
   const [pendingDepositTrx, setPendingDepositTrx] = useState(false)
   const [pendingWithdrawTrx, setPendingWithdrawTrx] = useState(false)
 
   const { toastSuccess } = useToast()
   const isMobile = useIsMobile()
-  const firstStake = !new BigNumber(stakedBalance)?.gt(0)
+  const firstStake = !new BigNumber(farm?.userData?.stakedBalance)?.gt(0)
 
-  const { onStake } = useJungleStake(jungleId)
-  const { onUnstake } = useJungleUnstake(jungleId)
+  const { onStake } = useJungleStake(farm?.jungleId)
+  const { onUnstake } = useJungleUnstake(farm?.jungleId)
   const { t } = useTranslation()
 
+  const handlePendingDepositTx = useCallback((value: boolean) => {
+    setPendingDepositTrx(value)
+  }, [])
+
   const [onPresentDeposit] = useModal(
-    <DepositModal
-      max={stakingTokenBalance}
-      onConfirm={async (val) => {
+    <DualDepositModal
+      setPendingDepositTrx={handlePendingDepositTx}
+      pendingTx={pendingDepositTrx}
+      pid={farm?.jungleId}
+      allowance={farm?.userData?.allowance?.toString()}
+      token0={farm?.lpTokens?.quoteToken.address[chainId]}
+      token1={farm?.lpTokens?.token.address[chainId]}
+      lpAddress={farm?.stakingToken.address[chainId]}
+      onStakeLp={async (val: string) => {
         setPendingDepositTrx(true)
         await onStake(val, chainId)
           .then((resp) => {
@@ -66,12 +69,16 @@ const StakeAction: React.FC<StakeActionsProps> = ({
         dispatch(fetchJungleFarmsUserDataAsync(chainId, account))
         setPendingDepositTrx(false)
       }}
+      enableZap={farm?.zapable}
     />,
+    true,
+    true,
+    `depositModal-${farm?.jungleId}`,
   )
 
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
-      max={stakedBalance}
+      max={farm?.userData?.stakedBalance?.toString()}
       onConfirm={async (val) => {
         setPendingWithdrawTrx(true)
         await onUnstake(val)
@@ -127,12 +134,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
           >
             {!pendingWithdrawTrx && <MinusIcon color="white" width="20px" height="20px" fontWeight={700} />}
           </SmallButtonSquare>
-          <SmallButtonSquare
-            onClick={onPresentDeposit}
-            load={pendingDepositTrx}
-            disabled={pendingDepositTrx || !new BigNumber(stakingTokenBalance)?.gt(0)}
-            size="sm"
-          >
+          <SmallButtonSquare onClick={onPresentDeposit} load={pendingDepositTrx} disabled={pendingDepositTrx} size="sm">
             {!pendingDepositTrx && <AddIcon color="white" width="25px" height="25px" fontWeight={700} />}
           </SmallButtonSquare>
         </Flex>
