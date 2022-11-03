@@ -26,8 +26,8 @@ const DesktopModal: React.FC<SwiperProps> = ({ onDismiss, setDefaultNoShow, hide
   }
 
   const modalProps = {
-    minWidth: 'unset',
-    maxWidth: 'none',
+    minWidth: '800px',
+    maxWidth: '800px',
     sx: {
       padding: '0',
     },

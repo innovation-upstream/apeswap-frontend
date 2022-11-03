@@ -13,7 +13,13 @@ export const Bubble = styled.div<{ isActive?: boolean }>`
 `
 
 export const showApe = (slide, isDark, isMobile): ThemeUIStyleObject => ({
-  width: (isMobile && (((slide === 2 || slide === 3) && '72%') || '75%')) || '85%',
+  width:
+    (isMobile && (((slide === 2 || slide === 3) && '72%') || '75%')) ||
+    (slide === (0 || 2) && '75%') ||
+    (slide === 1 && '90%') ||
+    '80%',
+  mt: !isMobile && ((slide === (2 || 3) && '-5px') || (slide === 1 && '-20px') || '-30px'),
+  ml: !isMobile && slide === 1 && '50px',
   height: '230px',
   '@media screen and (min-width: 853px)': {
     height: '500px',
@@ -24,6 +30,26 @@ export const showApe = (slide, isDark, isMobile): ThemeUIStyleObject => ({
   backgroundSize: 'contain',
 })
 
+// width:(isMobile && (((slide === 2 || slide === 3) && '72%') || '75%')) || ((slide === (0 || 2)) && '75%') || ((slide === 1) && '90%') || '80%',
+// mt: !isMobile && ((slide === (2 || 3)) && '-5px') || ((slide === 1) && '-20px') || '-30px',
+// ml: !isMobile && slide === 1 && '50px',
+
+// slide 0
+// // -> width -> (75%)
+// // -> mt -> (-30px)
+
+// slide 1
+// // -> width -> (90%)
+// // -> mt -> (-20px)
+// -> ml -> (50px)
+
+// slide 2
+// // -> width -> (75%)
+// // -> mt -> (-5px)
+
+// slide 3
+// // -> width -> (80%)
+// // -> mt -> (-5px)
 export const subtitle = (isDark): ThemeUIStyleObject => ({
   '@media screen and (max-width: 853px)': {
     fontSize: '12px',
@@ -59,15 +85,16 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   imagesWrapper: {
     width: '100%',
     '@media screen and (min-width: 853px)': {
-      width: '380px',
+      width: '50%',
     },
     justifyContent: 'center',
   },
   textWrapper: {
-    width: ['100%', '100%', '420px', '420px'],
+    width: ['100%', '100%', '50%', '50%'],
+    alignSelf: ['', '', 'center'],
     textAlign: ['center', 'center', 'start'],
     justifyContent: ['center', 'center', 'flex-start'],
-    padding: ['', '', '110px 20px 0 30px'],
+    padding: ['', '', '0px 20px 0 0'],
     flexWrap: 'wrap',
   },
   bubbleWrapper: {
