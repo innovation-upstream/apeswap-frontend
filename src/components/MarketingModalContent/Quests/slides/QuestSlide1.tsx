@@ -14,8 +14,7 @@ const QuestSlide1 = () => {
         <Heading sx={styles.second}>{t('Hello Again, Adventurer')}</Heading>
       </Box>
       <Box sx={styles.thirdWrapper}>
-        <Text sx={styles.third}>{t('This time we’re getting deep into the Telos Jungle. Will you join us?')}</Text>
-        <br />
+        <Text sx={styles.third}>{t('This time we’re getting deep into the Telos Jungle. Will you join us?')}</Text>{' '}
         <Text sx={styles.third}>{t('Complete')}</Text>
         <Text color="yellow" sx={styles.third}>
           {' '}

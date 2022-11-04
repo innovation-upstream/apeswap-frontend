@@ -18,7 +18,7 @@ export const showApe = (slide, isDark, isMobile): ThemeUIStyleObject => ({
     (slide === (0 || 2) && '75%') ||
     (slide === 1 && '90%') ||
     '80%',
-  mt: !isMobile && ((slide === (2 || 3) && '-5px') || (slide === 1 && '-20px') || '-30px'),
+  mt: !isMobile && ((slide === (2 || 3) && '-5px') || (slide === 1 && '-20px') || (slide === 0 && '-30px') || 0),
   ml: !isMobile && slide === 1 && '50px',
   height: '230px',
   '@media screen and (min-width: 853px)': {
@@ -155,7 +155,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
       textAlign: 'left',
     },
     marginTop: '15px',
-    width: '275px',
+    width: '350px',
   },
   button: {
     fontWeight: 700,
