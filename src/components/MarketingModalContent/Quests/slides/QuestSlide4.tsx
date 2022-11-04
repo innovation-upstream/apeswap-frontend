@@ -23,9 +23,10 @@ const QuestSlide4 = () => {
             rel="noreferrer noopener"
           >
             {' '}
-            {t('enter Genki!')}
+            {t('enter Genki')}
           </a>
-        </Text>{' '}
+        </Text>
+        {'! '}
         <Text sx={styles.third}>{t('Just remember to always keep spare $TLOS in your backpack!')}</Text>
       </Box>
     </>
