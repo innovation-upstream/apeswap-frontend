@@ -10,22 +10,23 @@ const QuestSlide4 = () => {
   return (
     <>
       <Box sx={styles.text}>
-        <Heading sx={styles.first}>{t('Ready, steady, go').toUpperCase()}</Heading>
-        <Heading sx={styles.second}>{t('Congratulations!')}</Heading>
+        <Heading sx={styles.first}>{t('Are you ready?').toUpperCase()}</Heading>
+        <Heading sx={styles.second}>{t('Good Luck!')}</Heading>
       </Box>
       <Box sx={styles.thirdWrapper}>
-        <Text sx={styles.third}>{t('You are officially ready to begin your')}</Text>{' '}
+        <Text sx={styles.third}>{t('The Telos Jungle is full of opportunities awaiting for you,')}</Text>{' '}
         <Text color="yellow" sx={styles.third}>
           <a
-            href="https://box.genki.io/RJ4LP3"
+            href="https://box.genki.io/FZSY2H"
             style={{ textDecoration: 'underline' }}
             target="_blank"
             rel="noreferrer noopener"
           >
-            {t('DeFi journey')}
+            {' '}
+            {t('enter Genki!')}
           </a>
         </Text>{' '}
-        <Text sx={styles.third}>{t('with ApeSwap. Good luck!')}</Text>
+        <Text sx={styles.third}>{t('Just remember to always keep spare $TLOS in your backpack!')}</Text>
       </Box>
     </>
   )

@@ -10,22 +10,24 @@ const QuestSlide3 = () => {
   return (
     <>
       <Box sx={styles.text}>
-        <Heading sx={styles.first}>{t('Get it done').toUpperCase()}</Heading>
+        <Heading sx={styles.first}>{t('Earn points').toUpperCase()}</Heading>
         <Heading sx={styles.second}>{t('Can You Complete Them All?')}</Heading>
       </Box>
       <Box sx={styles.thirdWrapper}>
-        <Text sx={styles.third}>{t('Complete the')}</Text>{' '}
+        <Text sx={styles.third}>{t('Every week, rewards will be given away to 10 lucky participants.')}</Text>
+        <Text sx={styles.third}> {t('The more')}</Text>
         <Text color="yellow" sx={styles.third}>
+          {' '}
           <a
-            href="https://box.genki.io/RJ4LP3"
+            href="https://box.genki.io/FZSY2H"
             style={{ textDecoration: 'underline' }}
             target="_blank"
             rel="noreferrer noopener"
           >
-            {t('Quests')}
+            {t('quests')}
           </a>
         </Text>{' '}
-        <Text sx={styles.third}>{t('- the more you complete, the more chances you get!')}</Text>
+        <Text sx={styles.third}> {t('you complete, the more chances you get!')}</Text>
       </Box>
     </>
   )
