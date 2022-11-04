@@ -27,7 +27,7 @@ const QuestSlide1 = () => {
             {t('simple tasks')}
           </a>
         </Text>{' '}
-        <Text sx={styles.third}>{t('to earn amazing rewards!')}</Text>
+        <Text sx={styles.third}>{t('to participate in 4000 $TLOS giveaways!')}</Text>
       </Box>
     </>
   )
