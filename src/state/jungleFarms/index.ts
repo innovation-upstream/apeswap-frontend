@@ -58,7 +58,6 @@ export const setInitialJungleFarmDataAsync = (chainId: number) => async (dispatc
         farm.contractAddress?.[chainId] !== null &&
         farm.contractAddress?.[chainId] !== undefined,
     )
-    console.log(filterJungleFarmsByChainId)
     dispatch(setInitialJungleFarmData(filterJungleFarmsByChainId || []))
   } catch (error) {
     console.error(error)

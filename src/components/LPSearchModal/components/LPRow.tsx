@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { CSSProperties } from 'react'
 import { Flex, Text } from '@ape.swap/uikit'
-import { ParsedFarm } from 'state/zap/reducer'
 import { styles } from '../styles'
 import { CurrencyAmount, Token } from '@ape.swap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -29,7 +28,7 @@ export function Balance({ balance }: { balance: CurrencyAmount }) {
 
 interface LPRowProps {
   tokens?: { currencyA: Token; currencyB: Token }
-  onLpSelect?: (farm: ParsedFarm) => void
+  onLpSelect?: (currencyA: Token, currencyB: Token) => void
   style: CSSProperties
 }
 

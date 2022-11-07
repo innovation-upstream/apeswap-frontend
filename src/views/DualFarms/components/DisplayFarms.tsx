@@ -17,7 +17,7 @@ import HarvestAction from './CardActions/HarvestAction'
 import { ActionContainer } from './CardActions/styles'
 import useIsMobile from 'hooks/useIsMobile'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
-import useAddLiquidityModal from 'hooks/useAddLiquidityModal'
+import useAddLiquidityModal from 'components/DualAddLiquidity/hooks/useAddLiquidityModal'
 import { ZapType } from '@ape.swap/sdk'
 
 const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags: Tag[] }> = ({
@@ -206,8 +206,8 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
             <FarmButton
               onClick={() =>
                 onAddLiquidityModal(
-                  farm?.stakeTokens?.token1?.address[chainId],
-                  farm?.stakeTokens?.token0?.symbol === 'MATIC' ? 'ETH' : farm?.stakeTokens?.token0?.address[chainId],
+                  farm?.stakeTokens?.token1,
+                  farm?.stakeTokens?.token0,
                   null,
                   farm.pid.toString(),
                   true,

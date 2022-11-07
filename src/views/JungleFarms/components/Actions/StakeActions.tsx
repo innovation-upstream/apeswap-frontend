@@ -1,21 +1,13 @@
 import React, { useCallback, useState } from 'react'
-import { Flex, AddIcon, MinusIcon, useModal } from '@apeswapfinance/uikit'
+import { AddIcon, Flex, MinusIcon } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useJungleStake } from 'hooks/useStake'
-import { fetchJungleFarmsUserDataAsync } from 'state/jungleFarms'
-import { useJungleUnstake } from 'hooks/useUnstake'
 import useIsMobile from 'hooks/useIsMobile'
-import { useToast } from 'state/hooks'
-import { useAppDispatch } from 'state'
-import { getEtherscanLink } from 'utils'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import { ActionContainer, CenterContainer, SmallButtonSquare, StyledButtonSquare } from './styles'
-import WithdrawModal from '../../../../components/WithdrawModal'
-import DualDepositModal from '../../../../components/DualDepositModal'
 import { JungleFarm } from 'state/types'
+import useStakeModals from './useStakeModals'
 
 interface StakeActionsProps {
   farm: JungleFarm
@@ -23,82 +15,23 @@ interface StakeActionsProps {
 
 const StakeAction: React.FC<StakeActionsProps> = ({ farm }) => {
   const rawStakedBalance = getBalanceNumber(farm?.userData?.stakedBalance)
-  const dispatch = useAppDispatch()
-  const { chainId, account } = useActiveWeb3React()
   const userStakedBalanceUsd = `$${(
     getBalanceNumber(farm?.userData?.stakedBalance || new BigNumber(0)) * farm?.stakingToken?.price
   ).toFixed(2)}`
   const [pendingDepositTrx, setPendingDepositTrx] = useState(false)
   const [pendingWithdrawTrx, setPendingWithdrawTrx] = useState(false)
 
-  const { toastSuccess } = useToast()
   const isMobile = useIsMobile()
   const firstStake = !new BigNumber(farm?.userData?.stakedBalance)?.gt(0)
 
-  const { onStake } = useJungleStake(farm?.jungleId)
-  const { onUnstake } = useJungleUnstake(farm?.jungleId)
   const { t } = useTranslation()
 
-  const handlePendingDepositTx = useCallback((value: boolean) => {
-    setPendingDepositTrx(value)
+  const handlePendingTx = useCallback((value: boolean, type: string) => {
+    if (type === 'deposit') setPendingDepositTrx(value)
+    if (type === 'withdraw') setPendingWithdrawTrx(value)
   }, [])
 
-  const [onPresentDeposit] = useModal(
-    <DualDepositModal
-      setPendingDepositTrx={handlePendingDepositTx}
-      pendingTx={pendingDepositTrx}
-      pid={farm?.jungleId}
-      allowance={farm?.userData?.allowance?.toString()}
-      token0={farm?.lpTokens?.quoteToken.address[chainId]}
-      token1={farm?.lpTokens?.token.address[chainId]}
-      lpAddress={farm?.stakingToken.address[chainId]}
-      onStakeLp={async (val: string) => {
-        setPendingDepositTrx(true)
-        await onStake(val, chainId)
-          .then((resp) => {
-            const trxHash = resp.transactionHash
-            toastSuccess(t('Deposit Successful'), {
-              text: t('View Transaction'),
-              url: getEtherscanLink(trxHash, 'transaction', chainId),
-            })
-          })
-          .catch((e) => {
-            console.error(e)
-            setPendingDepositTrx(false)
-          })
-        dispatch(fetchJungleFarmsUserDataAsync(chainId, account))
-        setPendingDepositTrx(false)
-      }}
-      enableZap={farm?.zapable}
-    />,
-    true,
-    true,
-    `depositModal-${farm?.jungleId}`,
-  )
-
-  const [onPresentWithdraw] = useModal(
-    <WithdrawModal
-      max={farm?.userData?.stakedBalance?.toString()}
-      onConfirm={async (val) => {
-        setPendingWithdrawTrx(true)
-        await onUnstake(val)
-          .then((resp) => {
-            const trxHash = resp.transactionHash
-            toastSuccess(t('Withdraw Successful'), {
-              text: t('View Transaction'),
-              url: getEtherscanLink(trxHash, 'transaction', chainId),
-            })
-          })
-          .catch((e) => {
-            console.error(e)
-            setPendingWithdrawTrx(false)
-          })
-        dispatch(fetchJungleFarmsUserDataAsync(chainId, account))
-        setPendingWithdrawTrx(false)
-      }}
-      title={'Unstake LP tokens'}
-    />,
-  )
+  const { onPresentDeposit, openWithdrawModal } = useStakeModals(farm, pendingDepositTrx, handlePendingTx)
 
   const renderStakingButtons = () => {
     if (firstStake) {
@@ -126,7 +59,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ farm }) => {
         )}
         <Flex>
           <SmallButtonSquare
-            onClick={onPresentWithdraw}
+            onClick={openWithdrawModal}
             load={pendingWithdrawTrx}
             disabled={pendingWithdrawTrx}
             mr="6px"

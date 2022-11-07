@@ -13,7 +13,8 @@ import WithdrawModal from '../../../../components/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButton, StyledButton } from './styles'
 import { DualFarm } from 'state/types'
 import { useModal } from '@ape.swap/uikit'
-import { useDualFarmStake } from '../../../../hooks/useStake'
+import { useDualFarmStake } from 'hooks/useStake'
+import { PRODUCT } from '../../../../config/constants'
 
 interface StakeActionsProps {
   lpValueUsd: number
@@ -51,6 +52,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
       token0={farm?.stakeTokens?.token0?.address[chainId]}
       token1={farm?.stakeTokens?.token1?.address[chainId]}
       lpAddress={farm?.stakeTokenAddress}
+      poolAddress={farm?.stakeTokenAddress}
       onStakeLp={async (val: string) => {
         setPendingDepositTrx(true)
         await onStake(val)
@@ -69,6 +71,8 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
             toastError(error?.message || t('Error: Please try again.'))
           })
       }}
+      enableZap={true}
+      product={PRODUCT.DUAL_FARM}
     />,
     true,
     true,

@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { ZapType } from '@ape.swap/sdk'
 import {
   updateDualFarmUserEarnings,
   updateDualFarmUserStakedBalances,
@@ -18,12 +17,14 @@ const useDualDeposit = (
   onStakeLp: (value: string) => void,
   pid: number,
   handlePendingTx: (value: boolean) => void,
+  poolAddress: string,
+  onDismiss: () => void,
 ) => {
   const { toastError } = useToast()
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { account, chainId, library } = useActiveWeb3React()
-  const { recipient, typedValue } = useZapState()
+  const { recipient, typedValue, zapType } = useZapState()
   const { zap } = useDerivedZapInfo()
   const [zapSlippage, setZapSlippage] = useUserSlippageTolerance(true)
   const originalSlippage = useMemo(() => {
@@ -33,10 +34,10 @@ const useDualDeposit = (
 
   const { callback: zapCallback } = useZapCallback(
     zap,
-    ZapType.ZAP_MINI_APE,
+    zapType,
     Math.round(zapSlippage),
     recipient,
-    null,
+    poolAddress,
     null,
     pid.toString(),
   )
@@ -54,6 +55,7 @@ const useDualDeposit = (
             dispatch(updateDualFarmUserStakedBalances(chainId, pid, account))
             dispatch(updateDualFarmUserEarnings(chainId, pid, account))
             dispatch(updateDualFarmUserTokenBalances(chainId, pid, account))
+            onDismiss()
           })
         })
         .catch((error) => {
@@ -82,6 +84,7 @@ const useDualDeposit = (
     account,
     library,
     onStakeLp,
+    onDismiss,
   ])
 }
 

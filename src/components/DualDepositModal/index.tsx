@@ -18,6 +18,8 @@ import DualActions from './DualActions'
 import DistributionPanel from 'views/Dex/Zap/components/DistributionPanel/DistributionPanel'
 import useDualDeposit from './hooks'
 import UpdateSlippage from './UpdateSlippage'
+import { PRODUCT } from '../../config/constants'
+import { ZapType } from '@ape.swap/sdk'
 
 interface DualDepositModalProps {
   onDismiss?: () => void
@@ -27,9 +29,11 @@ interface DualDepositModalProps {
   allowance?: string
   token0?: string
   token1?: string
-  lpAddress?: string
+  lpAddress: string
+  poolAddress: string
   onStakeLp?: (value: string) => void
   enableZap?: boolean
+  product: PRODUCT
 }
 
 const modalProps = {
@@ -51,14 +55,16 @@ const DualDepositModal: React.FC<DualDepositModalProps> = ({
   token0,
   token1,
   lpAddress,
+  poolAddress,
   onStakeLp,
   enableZap,
+  product,
 }) => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const { typedValue } = useZapState()
   const showApproveContract = !new BigNumber(allowance).gt(0)
-  const { onCurrencySelection, onUserInput } = useZapActionHandlers()
+  const { onCurrencySelection, onUserInput, onSetZapType } = useZapActionHandlers()
   const lpCurrencies: DualCurrencySelector = {
     currencyA: useCurrency(token1),
     currencyB: useCurrency(token0),
@@ -71,7 +77,7 @@ const DualDepositModal: React.FC<DualDepositModalProps> = ({
   const { zap } = useDerivedZapInfo()
   const [zapSlippage, setZapSlippage] = useUserSlippageTolerance(true)
   const priceImpact = new BigNumber(zap?.totalPriceImpact?.toFixed(2)).times(100).toNumber()
-  const handleDeposit = useDualDeposit(!!currencyB, onStakeLp, pid, setPendingDepositTrx)
+  const handleDeposit = useDualDeposit(!!currencyB, onStakeLp, pid, setPendingDepositTrx, poolAddress, onDismiss)
 
   const onHandleValueChange = useCallback(
     (val: string) => {
@@ -111,12 +117,13 @@ const DualDepositModal: React.FC<DualDepositModalProps> = ({
   // reset input value to zero on first render
   useEffect(() => {
     onUserInput(Field.INPUT, '')
+    onSetZapType(product === PRODUCT.DUAL_FARM ? ZapType.ZAP_MINI_APE : ZapType.ZAP_LP_POOL)
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [])
 
   return (
     <ModalProvider>
-      <Modal title={t('Stake LP')} onDismiss={onDismiss} {...modalProps}>
+      <Modal title={t('Stake LP tokens')} onDismiss={onDismiss} {...modalProps}>
         <Box sx={{ margin: '15px 0' }}>
           <DualCurrencyPanel
             handleMaxInput={handleMaxInput}
@@ -151,6 +158,7 @@ const DualDepositModal: React.FC<DualDepositModalProps> = ({
           disabled={pendingTx || selectedCurrencyBalance?.toExact() === '0'}
           pendingTrx={pendingTx}
           handleAction={handleDeposit}
+          product={product}
         />
       </Modal>
     </ModalProvider>

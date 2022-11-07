@@ -18,8 +18,8 @@ import InfoContent from '../InfoContent'
 import { Container, StyledButton, ActionContainer } from './styles'
 import { StyledTag } from '../../Pools/components/styles'
 import CalcButton from 'components/RoiCalculator/CalcButton'
-import useAddLiquidityModal from '../../../hooks/useAddLiquidityModal'
-import { ZapType } from '@ape.swap/sdk'
+import useAddLiquidityModal from '../../../components/DualAddLiquidity/hooks/useAddLiquidityModal'
+import { ChainId, ZapType } from '@ape.swap/sdk'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
   jungleFarms,
@@ -35,10 +35,10 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
   const onAddLiquidityModal = useAddLiquidityModal(ZapType.ZAP_LP_POOL)
 
   const jungleFarmsListView = jungleFarms.map((farm) => {
+    const isZapable = farm?.zapable || chainId !== ChainId.BSC
     const [token1, token2] = farm.tokenName.split('-')
     const totalDollarAmountStaked = Math.round(getBalanceNumber(farm?.totalStaked) * farm?.stakingToken?.price)
 
-    const userAllowance = farm?.userData?.allowance
     const userEarnings = getBalanceNumber(
       farm?.userData?.pendingReward || new BigNumber(0),
       farm?.rewardToken?.decimals,
@@ -156,11 +156,11 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
             <StyledButton
               onClick={() =>
                 onAddLiquidityModal(
-                  farm?.lpTokens?.token?.address[chainId],
-                  farm?.lpTokens?.quoteToken?.symbol === 'BNB' ? 'ETH' : farm?.lpTokens?.quoteToken?.address[chainId],
-                  farm.contractAddress[chainId],
-                  farm.jungleId.toString(),
-                  farm.zapable,
+                  farm?.lpTokens?.token,
+                  farm?.lpTokens?.quoteToken,
+                  farm?.contractAddress[chainId],
+                  farm?.jungleId?.toString(),
+                  isZapable,
                 )
               }
             >
