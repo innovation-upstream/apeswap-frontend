@@ -6,6 +6,7 @@ import { useVaults } from 'state/vaults/hooks'
 import { useMasterchef, useVaultApeV2 } from 'hooks/useContract'
 import { useFarms } from 'state/farms/hooks'
 import { calculateGasMargin } from 'utils'
+import track from 'utils/track'
 
 const useStakeAll = () => {
   const { account, chainId, library } = useActiveWeb3React()
@@ -51,6 +52,15 @@ const useStakeAll = () => {
                     lpSymbol: `${pair.token0.getSymbol(chainId)} - ${pair.token1.getSymbol(chainId)}`,
                     location: migrateMaximizers && matchedVault ? 'max' : 'farm',
                     stakeAmount: balance.toExact(),
+                  })
+                  track({
+                    event: 'migrate_stake',
+                    chain: chainId,
+                    data: {
+                      cat: migrateMaximizers && matchedVault ? 'max' : 'farm',
+                      symbol: matchedFarm.lpSymbol,
+                      amount: balance.toExact(),
+                    },
                   })
                 })
                 .catch((e) => handleUpdateMigrateLp(id, 'stake', MigrateStatus.INVALID, e.message)),

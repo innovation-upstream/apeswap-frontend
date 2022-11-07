@@ -8,15 +8,16 @@ import { getProviderOrSigner } from 'utils'
 import { unstake } from 'utils/callHelpers'
 import { MigrateStatus } from '../provider/types'
 import { useMigrateAll } from '../provider'
+import track from 'utils/track'
 
 const useUnstakeAll = () => {
-  const { library, account } = useActiveWeb3React()
+  const { library, account, chainId } = useActiveWeb3React()
   const { handleUpdateMigrateLp, handleUpdateMigratorResults } = useMigrateAll()
   const handleUnstakeAll = useCallback(
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
         try {
-          const { pid, chefAddress, stakedBalance, id } = migrateLp
+          const { pid, chefAddress, stakedBalance, id, smartRouter, token0, token1 } = migrateLp
           const masterChefContract = new Contract(
             chefAddress,
             masterChefAbi,
@@ -30,6 +31,16 @@ const useUnstakeAll = () => {
                 .then(() => {
                   handleUpdateMigratorResults()
                   handleUpdateMigrateLp(id, 'unstake', MigrateStatus.COMPLETE, 'Unstake complete')
+                  track({
+                    event: 'migrate_unstake',
+                    chain: chainId,
+                    data: {
+                      cat: smartRouter,
+                      token1: token0.symbol,
+                      token2: token1.symbol,
+                      amount: stakedBalance,
+                    },
+                  })
                 })
                 .catch((e) => handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, e.message)),
             )
@@ -46,7 +57,7 @@ const useUnstakeAll = () => {
         }
       })
     },
-    [account, handleUpdateMigrateLp, handleUpdateMigratorResults, library],
+    [account, handleUpdateMigrateLp, handleUpdateMigratorResults, library, chainId],
   )
   return handleUnstakeAll
 }

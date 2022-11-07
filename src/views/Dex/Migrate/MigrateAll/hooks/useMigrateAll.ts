@@ -8,6 +8,7 @@ import BigNumber from 'bignumber.js'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { calculateGasMargin } from 'utils'
 import { useMigrateAll } from '../provider'
+import track from 'utils/track'
 
 const useMigrateAllLps = () => {
   const { library, chainId } = useActiveWeb3React()
@@ -66,6 +67,16 @@ const useMigrateAllLps = () => {
                   handleUpdateMigrateLp(id, 'migrate', MigrateStatus.COMPLETE, 'Migrate complete')
                   handleUpdateOfApeswapLpBalance(id, token0.address, token1.address)
                   handleUpdateMigratorResults()
+                  track({
+                    event: 'migrate_liq',
+                    chain: chainId,
+                    data: {
+                      cat: smartRouter,
+                      token1: token0.symbol,
+                      token2: token1.symbol,
+                      amount: walletBalance,
+                    },
+                  })
                 })
                 .catch((e) => {
                   console.error(e)

@@ -8,6 +8,7 @@ import { ApeswapWalletLpInterface, MigrateStatus } from '../provider/types'
 import { useMigrateAll } from '../provider'
 import { useVaults } from 'state/vaults/hooks'
 import { useMasterChefAddress, useVaultApeAddressV2 } from 'hooks/useAddress'
+import track from 'utils/track'
 
 const useStakeApproveAll = () => {
   const { library, account, chainId } = useActiveWeb3React()
@@ -38,7 +39,16 @@ const useStakeApproveAll = () => {
             .then((tx) =>
               library
                 .waitForTransaction(tx.hash)
-                .then(() => handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.COMPLETE, 'Approval complete'))
+                .then(() => {
+                  handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.COMPLETE, 'Approval complete')
+                  track({
+                    event: 'migrate_stake_approve',
+                    chain: chainId,
+                    data: {
+                      cat: migrateMaximizers && matchedVault ? 'max' : 'farm',
+                    },
+                  })
+                })
                 .catch((e) => handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.INVALID, e.message)),
             )
             .catch((e) => {

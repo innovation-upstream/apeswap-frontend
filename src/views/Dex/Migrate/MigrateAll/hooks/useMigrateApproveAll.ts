@@ -8,6 +8,7 @@ import { getProviderOrSigner } from 'utils'
 import { MigrateStatus } from '../provider/types'
 import { useMigrateAll } from '../provider'
 import { ZAP_ADDRESS } from '@ape.swap/sdk'
+import track from 'utils/track'
 
 const useMigrateApproveAll = () => {
   const { library, account, chainId } = useActiveWeb3React()
@@ -17,7 +18,7 @@ const useMigrateApproveAll = () => {
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
         try {
-          const { lpAddress, id } = migrateLp
+          const { lpAddress, id, smartRouter, token0, token1 } = migrateLp
           const lpContract = new Contract(lpAddress, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
           handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.PENDING, 'Migrate approval in progress')
           lpContract
@@ -27,6 +28,15 @@ const useMigrateApproveAll = () => {
                 .waitForTransaction(tx.hash)
                 .then(() => {
                   handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.COMPLETE, 'Migrate approval complete')
+                  track({
+                    event: 'migrate_approve',
+                    chain: chainId,
+                    data: {
+                      cat: smartRouter,
+                      token1: token0.symbol,
+                      token2: token1.symbol,
+                    },
+                  })
                 })
                 .catch((e) => handleUpdateMigrateLp(id, 'approveMigrate', MigrateStatus.INVALID, e.message)),
             )
