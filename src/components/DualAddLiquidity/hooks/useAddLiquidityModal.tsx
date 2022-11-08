@@ -11,7 +11,7 @@ import { Token } from 'config/constants/types'
 
 const useAddLiquidityModal = (zapIntoProductType?: ZapType) => {
   const { chainId } = useActiveWeb3React()
-  const [poolAddress, setPoolAddress] = useState('')
+  const [poolAddress, setPoolAddress] = useState(' ')
   const [pid, setPid] = useState('')
   const [zapable, setZapable] = useState(false)
   const dispatch = useDispatch()
