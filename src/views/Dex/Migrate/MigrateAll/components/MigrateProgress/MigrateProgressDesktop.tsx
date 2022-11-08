@@ -1,7 +1,10 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import React, { ReactNode } from 'react'
-import { MigrateStatus, MIGRATION_STEPS, useMigrateAll } from '../provider'
+import { useMigrateAll } from '../../provider'
+import { MIGRATION_STEPS } from '../../provider/constants'
+import { MigrateStatus } from '../../provider/types'
+import { styles } from './styles'
 
 interface MigrateProcessBarInterface {
   activeLineMargin?: number
@@ -9,7 +12,7 @@ interface MigrateProcessBarInterface {
 }
 
 const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargin, children }) => {
-  const { activeIndex, migrateLpStatus, setActiveIndexCallback } = useMigrateAll()
+  const { activeIndex, migrateLpStatus, handleActiveIndexCallback } = useMigrateAll()
   const isComplete = migrateLpStatus?.map((item) =>
     Object.entries(item.status).map((each) => each[1] === MigrateStatus.COMPLETE),
   )
@@ -22,43 +25,20 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
             <>
               <Flex
                 key={title}
-                onClick={() => setActiveIndexCallback(i)}
-                sx={{
-                  background: activeIndex >= i ? 'gradient' : 'white2',
-                  height: '100px',
-                  width: '100%',
-                  alignItems: 'center',
-                  padding: '10px',
-                  borderRadius: '10px',
-                  cursor: 'pointer',
-                }}
+                onClick={() => handleActiveIndexCallback(i)}
+                sx={{ ...styles.desktopStepContainer, background: activeIndex >= i ? 'gradient' : 'white2' }}
               >
-                <Flex
-                  sx={{
-                    height: '60px',
-                    width: '60px',
-                    borderRadius: '30px',
-                    background: 'white3',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    mr: '15px',
-                    ml: '5px',
-                  }}
-                >
+                <Flex sx={styles.desktopProgressCircleContainer}>
                   {isIndexComplete ? (
-                    <Svg icon="success" width="100%" />
+                    <Flex sx={{ backgroundColor: 'primaryBright', borderRadius: '30px', maxWidth: '60px' }}>
+                      <Svg icon="success" width="100%" />
+                    </Flex>
                   ) : (
                     <Text
                       size="35px"
                       color={activeIndex === i ? 'smartGradient' : 'text'}
                       weight={700}
-                      sx={{
-                        lineHeight: '2.5px',
-                        width: '100%',
-                        height: '0px',
-                        textAlign: 'center',
-                        opacity: '.6',
-                      }}
+                      sx={styles.migrateText}
                     >
                       {i + 1}
                     </Text>
@@ -96,27 +76,11 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
       <Flex sx={{ width: '100%', position: 'relative', flexDirection: 'column' }}>
         <Flex
           sx={{
-            background: 'gradient',
-            height: '75px',
-            width: '10px',
+            ...styles.desktopStepLineIndicator,
             left: `${(activeIndex / MIGRATION_STEPS.length) * 100 + activeIndex + activeLineMargin || 15}%`,
-            position: 'absolute',
-            zindex: -1,
           }}
         />
-        <Flex
-          sx={{
-            width: '100%',
-            height: 'fit-content',
-            padding: '10px',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1,
-            background: 'gradient',
-            borderRadius: '10px',
-            mt: '70px',
-          }}
-        >
+        <Flex sx={styles.desktopChildContainer}>
           <Flex sx={{ height: '100%', width: '100%', background: 'white2', borderRadius: '10px', padding: '50px' }}>
             {children}
           </Flex>

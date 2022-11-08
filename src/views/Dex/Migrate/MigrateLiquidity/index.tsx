@@ -25,6 +25,7 @@ import { parseAddress } from 'hooks/useAddress'
 import UnlockButton from 'components/UnlockButton'
 import { useToast } from 'state/hooks'
 import { useFarms } from 'state/farms/hooks'
+import track from 'utils/track'
 
 function MigrateLiquidity({
   match: {
@@ -139,6 +140,16 @@ function MigrateLiquidity({
             .then((txHash) =>
               library.waitForTransaction(txHash).then(() => {
                 setPendingTx(false)
+                track({
+                  event: 'migrate_liq',
+                  chain: chainId,
+                  data: {
+                    cat: pair.router,
+                    token1: pair.token0.getSymbol(chainId),
+                    token2: pair.token1.getSymbol(chainId),
+                    amount: zapMigrate.amount,
+                  },
+                })
                 toastSuccess(t('Migrate Successful'), {
                   text: t('Go To Farm'),
                   url: `/banana-farms?pid=${matchingFarm.pid}`,
