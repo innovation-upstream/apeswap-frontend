@@ -66,7 +66,7 @@ const Stake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ ape
         {t('Stake All LPs')}
       </Text>
       <Text size="12px" weight={500} mb="15px">
-        {t('Stake all your current LPs to migrate')}
+        {t('Stake your new ApeSwap LPs into Yield Farms and BANANA Maximizers.')}
       </Text>
       <Button mb="20px" onClick={() => handleStakeAll(filteredLpsForStake)}>
         Stake All

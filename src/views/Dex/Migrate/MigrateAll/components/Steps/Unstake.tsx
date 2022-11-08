@@ -62,7 +62,7 @@ const Unstake: React.FC<{ migrateList: MigrateResult[] }> = ({ migrateList }) =>
         {t('Unstake All LPs')}
       </Text>
       <Text size="12px" weight={500} mb="15px">
-        {t('Unstake all your current LPs to migrate')}
+        {t('Unstake LPs currently held in other protocols to free them up for staking at ApeSwap.')}
       </Text>
       <Button mb="20px" onClick={() => handleUnstakeAll(migrateList)}>
         Unstake All

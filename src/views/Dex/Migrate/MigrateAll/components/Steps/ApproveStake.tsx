@@ -69,7 +69,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> =
         {t('Approve All LPs')}
       </Text>
       <Text size="12px" weight={500} mb="15px">
-        {t('Unstake all your current LPs to migrate')}
+        {t('Approve the contracts of the ApeSwap products that will accept your migrated LPs.')}
       </Text>
       <Flex
         sx={{

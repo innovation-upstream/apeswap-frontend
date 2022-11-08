@@ -72,11 +72,10 @@ const Migrate: React.FC<{ migrateList: MigrateResult[]; apeswapWalletLps: { pair
       <Text size="22px" weight={700} mb="15px">
         {t('Migrate All LPs')}
       </Text>
-      <Text size="12px" weight={500}>
-        {t('Migrate all your current LPs to migrate')}
-      </Text>
       <Text size="12px" weight={500} mb="15px">
-        {t('By default slippage will be set to 5%')}
+        {t(
+          'Migrate all of your newly unstaked LPs from other protocols over to ApeSwap. By default, slippage is set to 5%',
+        )}
       </Text>
       <Button mb="20px" onClick={() => handleMigrateAll(migrateList)}>
         Migrate All

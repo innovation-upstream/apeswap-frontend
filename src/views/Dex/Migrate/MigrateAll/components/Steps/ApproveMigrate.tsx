@@ -43,7 +43,6 @@ const ApproveMigrate: React.FC<{
       cardContent: !isMobile ? (
         <>
           <ListViewContent title={t('LP To Maigrate')} value={formattedWalletBalance} ml={20} />
-          {/* <ListViewContent title={t('Ape LP')} value={matchedApeLps?.balance?.toSignificant(6) || '0'} ml={20} /> */}
           <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={300} />
         </>
       ) : (
@@ -56,7 +55,6 @@ const ApproveMigrate: React.FC<{
       expandedContent: isMobile && (
         <>
           <ListViewContent title={t('LP To Maigrate')} value={formattedWalletBalance} ml={20} />
-          {/* <ListViewContent title={t('Ape LP')} value={matchedApeLps?.balance?.toSignificant(6) || '0'} ml={20} /> */}
         </>
       ),
     } as ExtendedListViewProps
@@ -68,7 +66,7 @@ const ApproveMigrate: React.FC<{
         {t('Approve All LPs to Migrate')}
       </Text>
       <Text size="12px" weight={500} mb="15px">
-        {t('Approve all your current LPs to migrate')}
+        {t('Approve the migration contract to allow ApeSwap to zap your LPs into ApeSwap LPs.')}
       </Text>
       <Button mb="20px" onClick={() => handleApproveAll(filteredLps)}>
         Approve All
