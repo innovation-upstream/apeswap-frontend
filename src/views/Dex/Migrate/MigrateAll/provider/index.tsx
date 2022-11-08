@@ -19,6 +19,7 @@ import {
   MigrateContextData,
   MigrationCompleteLog,
 } from './types'
+import track from 'utils/track'
 
 const MigrateContext = createContext<MigrateContextData>({} as MigrateContextData)
 
@@ -107,7 +108,17 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
 
   // Monitor is status change for active index
   useMemo(() => {
-    setActiveIndex(activeIndexHelper(lpStatus))
+    const newActiveIndex = activeIndexHelper(lpStatus)
+    if (newActiveIndex !== activeIndex && !migrationLoading) {
+      track({
+        event: 'migrate_liq',
+        chain: chainId,
+        data: {
+          cat: newActiveIndex,
+        },
+      })
+    }
+    setActiveIndex(newActiveIndex)
   }, [lpStatus])
 
   // Set the initial status for each LP
