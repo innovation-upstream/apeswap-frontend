@@ -1,6 +1,4 @@
 /** @jsxImportSource theme-ui */
-import { Pair, TokenAmount } from '@ape.swap/sdk'
-import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import React from 'react'
 import { useMigrateAll } from '../../provider'
 import ApproveStake from './ApproveStake'
@@ -8,22 +6,23 @@ import ApproveMigrate from './ApproveMigrate'
 import Migrate from './Migrate'
 import Stake from './Stake'
 import Unstake from './Unstake'
-
-export const STEP_STATUS = {
-  0: 'dsdasd',
-  1: 'asdasd',
-  2: 'gdfgdfg',
-  3: 'asdasd',
-}
+import { useFarms } from 'state/farms/hooks'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const Steps: React.FC = () => {
-  const { activeIndex, migrateStakeLps, migrateWalletLps, apeswapWalletLps, migrateLpStatus } = useMigrateAll()
+  const { chainId } = useActiveWeb3React()
+  const { activeIndex, migrateStakeLps, migrateWalletLps, apeswapWalletLps } = useMigrateAll()
+  const farms = useFarms(null)
+  const filteredApeLps = apeswapWalletLps.filter(({ pair }) =>
+    farms.find((farm) => pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
+  )
+
   const stepList = [
     <Unstake migrateList={migrateStakeLps} key="unstake" />,
     <ApproveMigrate migrateList={migrateWalletLps} key="approveMigrate" />,
-    <Migrate migrateList={migrateWalletLps} apeswapWalletLps={apeswapWalletLps} key="migrate" />,
-    <ApproveStake apeswapWalletLps={apeswapWalletLps} key="approveStake" />,
-    <Stake apeswapWalletLps={apeswapWalletLps} key="stake" />,
+    <Migrate migrateList={migrateWalletLps} apeswapWalletLps={filteredApeLps} key="migrate" />,
+    <ApproveStake apeswapWalletLps={filteredApeLps} key="approveStake" />,
+    <Stake apeswapWalletLps={filteredApeLps} key="stake" />,
   ]
   return stepList[activeIndex]
 }

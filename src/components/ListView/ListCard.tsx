@@ -2,7 +2,8 @@
 import { Flex, Svg, TooltipBubble } from '@ape.swap/uikit'
 import { InfoIcon } from '@apeswapfinance/uikit'
 import React, { useState } from 'react'
-import { ContentContainer, ListCardContainer, ListExpandedContainer, styles } from './styles'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ContentContainer, ListCardContainer, styles } from './styles'
 import { ListCardProps } from './types'
 
 const ListCard: React.FC<ListCardProps> = ({
@@ -59,9 +60,32 @@ const ListCard: React.FC<ListCardProps> = ({
           </div>
         )}
       </ListCardContainer>
-      {expandedContent && expanded && (
-        <ListExpandedContainer justifyContent={expandedContentJustified}>{expandedContent}</ListExpandedContainer>
-      )}
+      <AnimatePresence>
+        {expandedContent && expanded && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: 'fit-content' }}
+            transition={{ opacity: { duration: 0.2 } }}
+            exit={{ height: 0 }}
+            sx={{ position: 'relative', width: '100%', overflow: 'hidden' }}
+          >
+            <Flex
+              sx={{
+                background: 'white3',
+                flexDirection: 'row',
+                height: '100px',
+                width: '100%',
+                justifyContent: expandedContentJustified || 'space-between',
+                padding: '0px 30px 0px 30px',
+                flexWrap: 'no-wrap',
+                alignItems: 'center',
+              }}
+            >
+              {expandedContent}
+            </Flex>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }
