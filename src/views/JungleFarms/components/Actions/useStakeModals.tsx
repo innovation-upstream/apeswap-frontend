@@ -3,7 +3,7 @@ import { useModal } from '@apeswapfinance/uikit'
 import { Field, selectCurrency } from 'state/swap/actions'
 import { selectOutputCurrency } from 'state/zap/actions'
 import { useDispatch } from 'react-redux'
-import { ChainId, ZapType } from '@ape.swap/sdk'
+import { ZapType } from '@ape.swap/sdk'
 import { CHAIN_PARAMS } from 'config/constants/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Token } from 'config/constants/types'
@@ -25,7 +25,7 @@ const useStakeModals = (
   handlePendingTx: (value: boolean, type: string) => void,
 ) => {
   const { chainId, account } = useActiveWeb3React()
-  const isZapable = farm?.zapable || chainId !== ChainId.BSC
+  const isZapable = !farm?.unZapable
   const { onStake } = useJungleStake(farm?.jungleId)
   const { onUnstake } = useJungleUnstake(farm?.jungleId)
   const { toastSuccess } = useToast()

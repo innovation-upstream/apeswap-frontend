@@ -19,7 +19,7 @@ import { Container, StyledButton, ActionContainer } from './styles'
 import { StyledTag } from '../../Pools/components/styles'
 import CalcButton from 'components/RoiCalculator/CalcButton'
 import useAddLiquidityModal from '../../../components/DualAddLiquidity/hooks/useAddLiquidityModal'
-import { ChainId, ZapType } from '@ape.swap/sdk'
+import { ZapType } from '@ape.swap/sdk'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
   jungleFarms,
@@ -35,7 +35,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
   const onAddLiquidityModal = useAddLiquidityModal(ZapType.ZAP_LP_POOL)
 
   const jungleFarmsListView = jungleFarms.map((farm) => {
-    const isZapable = farm?.zapable || chainId !== ChainId.BSC
+    const isZapable = !farm?.unZapable
     const [token1, token2] = farm.tokenName.split('-')
     const totalDollarAmountStaked = Math.round(getBalanceNumber(farm?.totalStaked) * farm?.stakingToken?.price)
 
