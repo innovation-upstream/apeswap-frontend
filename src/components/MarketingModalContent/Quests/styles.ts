@@ -11,15 +11,22 @@ export const Bubble = styled.div<{ isActive?: boolean }>`
   margin: 0px 2.5px 0px 2.5px;
   cursor: pointer;
 `
-export const showApe = (slide, isDark): ThemeUIStyleObject => ({
-  width: '100%',
+
+export const showApe = (slide, isDark, isMobile): ThemeUIStyleObject => ({
+  width:
+    (isMobile && (((slide === 2 || slide === 3) && '72%') || '75%')) ||
+    (slide === (0 || 2) && '75%') ||
+    (slide === 1 && '90%') ||
+    '80%',
+  mt: !isMobile && ((slide === (2 || 3) && '-5px') || (slide === 1 && '-20px') || (slide === 0 && '-30px') || 0),
+  ml: !isMobile && slide === 1 && '50px',
   height: '230px',
   '@media screen and (min-width: 853px)': {
     height: '500px',
   },
   background: `url(images/marketing-modals/questApe-${isDark ? 'dark-' : 'light-'}${slide}.svg)`,
   backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center',
+  backgroundPosition: (isMobile && (slide === 2 || slide === 3) && 'bottom') || 'center',
   backgroundSize: 'contain',
 })
 
@@ -58,15 +65,16 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   imagesWrapper: {
     width: '100%',
     '@media screen and (min-width: 853px)': {
-      width: '380px',
+      width: '50%',
     },
     justifyContent: 'center',
   },
   textWrapper: {
-    width: ['100%', '100%', '420px', '420px'],
+    width: ['100%', '100%', '50%', '50%'],
+    alignSelf: ['', '', 'center'],
     textAlign: ['center', 'center', 'start'],
     justifyContent: ['center', 'center', 'flex-start'],
-    padding: ['', '', '110px 20px 0 30px'],
+    padding: ['', '', '0px 20px 0 0'],
     flexWrap: 'wrap',
   },
   bubbleWrapper: {
@@ -147,7 +155,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
       textAlign: 'left',
     },
     marginTop: '15px',
-    width: '275px',
+    width: '350px',
   },
   button: {
     fontWeight: 700,
