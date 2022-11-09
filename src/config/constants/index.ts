@@ -259,3 +259,10 @@ export enum SHOW_MODAL_TYPES {
   poolHarvestModal = 'showPoolHarvestModal',
   generalHarvestModal = 'showGeneralHarvestModal',
 }
+
+export enum METAMASK_LINKS {
+  BNB = '',
+  Polygon = '',
+  Ethereum = '',
+  Telos = '',
+}

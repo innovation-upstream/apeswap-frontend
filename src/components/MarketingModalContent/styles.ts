@@ -1,4 +1,7 @@
+/** @jsxImportSource theme-ui */
 import styled from 'styled-components'
+import { ThemeUIStyleObject } from 'theme-ui'
+
 import {
   FarmsM1Icon,
   FarmsM2Icon,
@@ -212,3 +215,41 @@ export const StyledPoolsM4Icon = styled(PoolsM4Icon)`
     height: 201px;
   }
 `
+export const styles: Record<string, ThemeUIStyleObject> = {
+  container: {
+    flexDirection: 'column',
+    mt: '15px',
+    gap: '5px',
+    height: '142px',
+  },
+  step: {
+    fontSize: '10px',
+    lineHeight: '14px',
+    fontWeight: 700,
+    color: 'yellow',
+    textTransform: 'uppercase',
+  },
+  head: {
+    fontSize: '12px',
+    lineHeight: '14px',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+  },
+  yellow: {
+    color: 'yellow',
+    lineHeight: '18px',
+    textDecoration: 'underline',
+  },
+  content: {
+    fontSize: '12px',
+    fontWeight: 400,
+    lineHeight: '18px',
+  },
+  tipTitle: {
+    fontWeight: 700,
+  },
+  tipBody: {
+    fontWeight: 500,
+    fontStyle: 'normal',
+  },
+}

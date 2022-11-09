@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import { MarketingModal } from '@ape.swap/uikit'
+import { MarketingModal, TutorialModal } from '@ape.swap/uikit'
 import { LendingBodies } from 'components/MarketingModalContent/Lending/'
 import { FarmsBodies } from 'components/MarketingModalContent/Farms/'
 import { PoolsBodies } from 'components/MarketingModalContent/Pools/'
@@ -21,18 +21,17 @@ import {
   SHOW_DEF_MOD_KEY,
 } from 'config/constants'
 import { circularRoute } from 'utils'
+import { DexSlides } from 'components/MarketingModalContent/Dex'
+import { NETWORK_LABEL } from 'config/constants/chains'
 
 const MarketingModalCheck = () => {
   const { chainId } = useActiveWeb3React()
   const location = useLocation()
   const history = useHistory()
   const { t } = useTranslation()
+  const networkLabel = NETWORK_LABEL[chainId]
+  const dex = `${networkLabel}-dex`
 
-  // everywhere the old keys are set, remove them and set the new keys
-  // everywhere you get the old keys, get the new keys
-
-  // SET_DEF_MOD_KEY
-  // SHOW_DEF_MOD_KEY
   useMemo(() => {
     localStorage.removeItem(SHOW_DEFAULT_MODAL_KEY) // remove old key
     localStorage.removeItem(SET_DEFAULT_MODAL_KEY) // remove old key
@@ -55,6 +54,7 @@ const MarketingModalCheck = () => {
     }
   }, [history])
 
+  const dexRoute = location.search.includes('modal=dex')
   const farmsRoute = location.search.includes('modal=1')
   const poolsRoute = location.search.includes('modal=2')
   const lendingRoute = location.search.includes('modal=3')
@@ -100,7 +100,19 @@ const MarketingModalCheck = () => {
   ]
   const bills = [<BillsBody1 key="bill1" />]
 
-  return lendingRoute ? (
+  return dexRoute ? (
+    <TutorialModal
+      type={dex}
+      title={t("Welcome to ApeSwap's Dex")}
+      description={t(`Easily trade ANY token on ${networkLabel} Chain!`)}
+      t={t}
+      onDismiss={onDismiss}
+      onReady={onDismiss}
+      readyText={t("I'm Ready")}
+    >
+      {DexSlides}
+    </TutorialModal>
+  ) : lendingRoute ? (
     <MarketingModal
       title={t("Welcome to ApeSwap's Lending Network")}
       description={t('How does it work?')}
