@@ -21,10 +21,9 @@ export const styles: Record<string, ThemeUIStyleObject> = {
 
   navIconContainer: {
     width: '100%',
-    maxWidth: '60px',
+    maxWidth: ['80px', '', 'none'],
     justifyContent: 'flex-end',
     alignItems: 'center',
-    // gap: '10px',
   },
   underline: {
     display: 'inline-block',
@@ -40,7 +39,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     ...textUnderlineHover,
   },
   iconCover: {
-    pr: '10px',
+    mr: ['6px', '6px', '10px'],
     cursor: 'pointer',
     alignItems: 'center',
     justifyContent: 'center',

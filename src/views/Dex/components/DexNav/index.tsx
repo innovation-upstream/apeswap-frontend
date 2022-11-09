@@ -76,12 +76,12 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
       </Flex>
       <Flex sx={{ ...styles.navIconContainer }}>
         <Flex sx={styles.iconCover} onClick={() => history.push({ search: '?modal=dex' })}>
-          <Svg width="24px" icon="quiz" />
+          <Svg icon="quiz" />
         </Flex>
         <Flex sx={styles.iconCover} onClick={() => window.open('https://app.multichain.org/#/router', '_blank')}>
-          <Svg width="24px" icon="bridge" />
+          <Svg icon="bridge" />
         </Flex>
-        <CogIcon sx={{ cursor: 'pointer', width: '24px' }} onClick={onPresentSettingsModal} />
+        <CogIcon sx={{ cursor: 'pointer' }} width={24} onClick={onPresentSettingsModal} />
       </Flex>
     </Flex>
   )
