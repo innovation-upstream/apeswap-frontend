@@ -32,7 +32,7 @@ const LiquiditySelector: React.FC = () => {
         </Flex>
         <Text color={pathname.includes('/liquidity') ? 'text' : 'textDisabled'}>{t('Positions')}</Text>
       </Flex>
-      {chainId !== ChainId.BSC && (
+      {chainId !== ChainId.BSC && chainId !== ChainId.MAINNET && (
         <Flex as={Link} to="/zap" id="zap-link" sx={styles.liquiditySelector}>
           <Flex sx={{ marginRight: '5px' }}>
             <Svg color={pathname.includes('zap') ? 'text' : 'textDisabled'} icon="ZapIcon" />

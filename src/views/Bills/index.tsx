@@ -14,7 +14,7 @@ import { BannerTypes } from 'components/Banner/types'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListView404 from 'components/ListView404'
-import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
+import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 
 const Bills: React.FC = () => {
   useSetBills()
@@ -96,9 +96,9 @@ const Bills: React.FC = () => {
             activeOption={sortOption}
             query={query}
           />
-          {!AVAILABLE_CHAINS_ON_PRODUCTS['bills'].includes(chainId) ? (
+          {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS].includes(chainId) ? (
             <Flex sx={{ mt: '20px' }}>
-              <ListView404 product="bills" />
+              <ListView404 product={LIST_VIEW_PRODUCTS.BILLS} />
             </Flex>
           ) : (
             <>
