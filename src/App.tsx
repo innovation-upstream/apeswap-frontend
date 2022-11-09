@@ -1,10 +1,10 @@
-import React, { useState, useEffect, Suspense, lazy, useCallback } from 'react'
+import React, { useEffect, Suspense, lazy } from 'react'
 import { ChainId } from '@ape.swap/sdk'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { ResetCSS, ApeSwapTheme } from '@apeswapfinance/uikit'
-import { ScrollToTop } from '@ape.swap/uikit'
+import { FloatingDocs } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import MarketingModalCheck from 'components/MarketingModalCheck'
 import { useFetchBananaPrice } from 'state/tokenPrices/hooks'
@@ -115,29 +115,12 @@ const App: React.FC = () => {
   useCircularStaking()
 
   const { account, chainId } = useActiveWeb3React()
-  const [showScrollIcon, setShowScrollIcon] = useState(false)
-
-  const showScroll = useCallback(() => {
-    if (window.location.pathname === '/') {
-      setShowScrollIcon(false)
-    } else if (
-      window.location.pathname === '/banana-farms' ||
-      window.location.pathname === '/pools' ||
-      window.location.pathname === '/maximizers' ||
-      window.location.pathname === '/iazos'
-    ) {
-      setShowScrollIcon(true)
-    } else {
-      setShowScrollIcon(false)
-    }
-  }, [])
 
   useEffect(() => {
-    showScroll()
     if (account) dataLayer?.push({ event: 'wallet_connect', chain: chainId, user_id: account })
     // if chainId is added to deps, it will be triggered each time users switch chain
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, showScroll])
+  }, [account])
 
   const loadMenu = () => {
     if (chainId === ChainId.TLOS) {
@@ -531,7 +514,7 @@ const App: React.FC = () => {
       <ResetCSS />
       <GlobalStyle />
       <MarketingModalCheck />
-      {showScrollIcon && <ScrollToTop />}
+      <FloatingDocs link="https://apeswap.gitbook.io/apeswap-finance/welcome/master" />
       {loadMenu()}
       <ToastListener />
     </Router>
