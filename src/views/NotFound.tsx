@@ -20,7 +20,7 @@ const NotFound = () => {
   return (
     <Page>
       <StyledNotFound>
-        <Flex sx={{ maxWidth: '800px', widht: '100%' }}>
+        <Flex sx={{ maxWidth: '600px', widht: '100%' }}>
           <Lottie animationData={notFoundLottie} loop />
         </Flex>
         <Heading>404</Heading>
