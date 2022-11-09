@@ -1,12 +1,10 @@
 /** @jsxImportSource theme-ui */
 import { Link, useHistory } from 'react-router-dom'
-import { CogIcon, Flex, Text, useModal, RunFiatButton } from '@ape.swap/uikit'
-import track from 'utils/track'
+import { CogIcon, Flex, Text, useModal, Svg } from '@ape.swap/uikit'
 import { ChainId } from '@ape.swap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import MoonPayModal from 'views/Topup/MoonpayModal'
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
 
@@ -15,9 +13,10 @@ interface DexNavProps {
 }
 
 const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
+  const history = useHistory()
   const { t } = useTranslation()
-  const { pathname } = useHistory().location
   const { chainId } = useActiveWeb3React()
+  const { pathname } = history.location
 
   const onLiquidity =
     pathname?.includes('add-liquidity') ||
@@ -29,7 +28,6 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
     pathname?.includes('unstake')
 
   const [onPresentSettingsModal] = useModal(<SettingsModal zapSettings={zapSettings} />)
-  const [onPresentModal] = useModal(<MoonPayModal />)
 
   return (
     <Flex sx={styles.dexNavContainer}>
@@ -77,16 +75,13 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
         </Text>
       </Flex>
       <Flex sx={{ ...styles.navIconContainer }}>
-        <RunFiatButton
-          sx={{ marginRight: '2px', width: '20px' }}
-          mini
-          t={t}
-          runFiat={onPresentModal}
-          track={track}
-          position="DEX"
-          chainId={chainId}
-        />
-        <CogIcon sx={{ cursor: 'pointer' }} onClick={onPresentSettingsModal} />
+        <Flex sx={styles.iconCover} onClick={() => history.push({ search: '?modal=dex' })}>
+          <Svg width="24px" icon="quiz" />
+        </Flex>
+        <Flex sx={styles.iconCover} onClick={() => window.open('https://app.multichain.org/#/router', '_blank')}>
+          <Svg width="24px" icon="bridge" />
+        </Flex>
+        <CogIcon sx={{ cursor: 'pointer', width: '24px' }} onClick={onPresentSettingsModal} />
       </Flex>
     </Flex>
   )

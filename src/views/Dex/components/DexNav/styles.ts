@@ -24,6 +24,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     maxWidth: '60px',
     justifyContent: 'flex-end',
     alignItems: 'center',
+    // gap: '10px',
   },
   underline: {
     display: 'inline-block',
@@ -37,5 +38,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     position: 'relative',
     cursor: 'pointer',
     ...textUnderlineHover,
+  },
+  iconCover: {
+    pr: '10px',
+    cursor: 'pointer',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }

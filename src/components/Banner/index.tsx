@@ -66,7 +66,7 @@ const Banner: React.FC<{
             },
           }}
         >
-          {t('Learn More')} <LearnMoreArrow color={titleColor || 'text'} />
+          {t('Tutorial')} <LearnMoreArrow color={titleColor || 'text'} />
         </Button>
       </Flex>
       {children}

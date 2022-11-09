@@ -218,9 +218,9 @@ export const StyledPoolsM4Icon = styled(PoolsM4Icon)`
 export const styles: Record<string, ThemeUIStyleObject> = {
   container: {
     flexDirection: 'column',
-    mt: '15px',
+    mt: ['15px', '15px', '30px'],
     gap: '5px',
-    height: '142px',
+    height: ['142px', '142px', '200px'],
   },
   step: {
     fontSize: '10px',
@@ -230,10 +230,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     textTransform: 'uppercase',
   },
   head: {
-    fontSize: '12px',
+    fontSize: ['12px', '12px', '22px'],
     lineHeight: '14px',
     fontWeight: 700,
-    textTransform: 'uppercase',
+    textTransform: ['uppercase', 'uppercase', 'capitalize'],
+    mb: [0, 0, '10px'],
   },
   yellow: {
     color: 'yellow',
@@ -241,9 +242,9 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     textDecoration: 'underline',
   },
   content: {
-    fontSize: '12px',
-    fontWeight: 400,
-    lineHeight: '18px',
+    fontSize: ['12px', '12px', '14px'],
+    fontWeight: [400, 400, 500],
+    lineHeight: ['18px', '18px', '21px'],
   },
   tipTitle: {
     fontWeight: 700,

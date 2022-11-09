@@ -70,7 +70,7 @@ const SettingsModal: React.FC<Props> = ({ onDismiss, zapSettings }) => {
         <TransactionSettings zapSettings={zapSettings} />
       ) : (
         <ScrollableContainer>
-          <Flex sx={{ justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
+          {/* <Flex sx={{ justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
             <Text
               as={Link}
               href="https://app.multichain.org/#/router"
@@ -81,7 +81,7 @@ const SettingsModal: React.FC<Props> = ({ onDismiss, zapSettings }) => {
               {t('Bridge')}
             </Text>
             <LinkExternal href="https://app.multichain.org/#/router" />
-          </Flex>
+          </Flex> */}
           <Text size="18px" weight={700} margin="10px 0px">
             {t('Swap')}
           </Text>
