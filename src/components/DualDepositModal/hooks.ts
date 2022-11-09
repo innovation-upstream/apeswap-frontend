@@ -63,7 +63,7 @@ const useDualDeposit = (
           handlePendingTx(false)
           toastError(
             error?.message.includes('INSUFFICIENT')
-              ? t('Slippage Error: Please check your slippage using the ⚙️ icon & try again!')
+              ? t('Slippage Error: Please go to the GET LP modal and check your slippage using the ⚙️ icon')
               : error?.message || t('Error: Please try again.'),
           )
           setZapSlippage(originalSlippage)
