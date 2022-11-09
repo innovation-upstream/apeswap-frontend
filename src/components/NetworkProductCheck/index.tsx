@@ -1,5 +1,4 @@
 /** @jsxImportSource theme-ui */
-
 import React from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Link, useLocation } from 'react-router-dom'
@@ -37,7 +36,7 @@ const NetworkProductCheck = () => {
           sx={{
             width: '100%',
             maxWidth: '500px',
-            maxHeight: '400px',
+            maxHeight: '500px',
             background: 'white2',
             alignItems: 'center',
             justifyContent: 'space-around',
