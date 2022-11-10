@@ -1,8 +1,8 @@
 /** @jsxImportSource theme-ui */
-import React from 'react'
-import { Flex, TooltipBubble, Text, InfoIcon, useMatchBreakpoints } from '@ape.swap/uikit'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Flex, InfoIcon, TooltipBubble, useMatchBreakpoints } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
-import { Bills } from 'state/types'
+import { Bills as BillType, Bills } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ExtendedListViewProps } from 'components/ListView/types'
@@ -10,16 +10,58 @@ import ListViewContent from 'components/ListViewContent'
 import getTimePeriods from 'utils/getTimePeriods'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
-import { Container } from './styles'
-import BillModal from './Modals'
-import ProjectLinks from './UserBillViews/ProjectLinks'
+import { MainContainer } from './styles'
+import BillModal from '../Modals'
+import ProjectLinks from '../UserBillViews/ProjectLinks'
+import BillsListMenu from './BillsListMenu'
+import { useBills } from '../../../../state/bills/hooks'
+import { useSetZapOutputList } from '../../../../state/zap/hooks'
 
-const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
-  const { account } = useActiveWeb3React()
+const BillsListView: React.FC = () => {
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isXl && !isXxl
-  const billsListView = bills.map((bill) => {
+  const [query, setQuery] = useState('')
+  const [sortOption, setSortOption] = useState('all')
+  const [showOnlyDiscount, setShowOnlyDiscount] = useState(false)
+  const [showAvailable, setShowAvailable] = useState(true)
+  const bills = useBills()
+
+  const isSoldOut = useCallback((bill: Bills) => {
+    const { earnToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
+    const available = new BigNumber(maxTotalPayOut)
+      ?.minus(new BigNumber(totalPayoutGiven))
+      ?.div(new BigNumber(10).pow(earnToken.decimals))
+
+    const threshold = new BigNumber(11).div(earnTokenPrice)
+    return available.lte(threshold)
+  }, [])
+
+  const billsToRender = useMemo((): BillType[] => {
+    let billsToReturn = []
+    bills?.forEach((bill) => {
+      if (bill.inactive) return
+      const disabled = isSoldOut(bill)
+      if (showAvailable && disabled) return
+      if (!showAvailable && !disabled) return
+      billsToReturn.push(bill)
+    })
+    if (query) {
+      billsToReturn = billsToReturn?.filter((bill) => {
+        return bill.lpToken.symbol.toUpperCase().includes(query.toUpperCase())
+      })
+    }
+    if (sortOption === 'bananaBill') {
+      billsToReturn = billsToReturn?.filter((bill) => bill.billType === 'BANANA Bill')
+    }
+    if (sortOption === 'jungleBill') {
+      billsToReturn = billsToReturn?.filter((bill) => bill.billType === 'JUNGLE Bill')
+    }
+    return billsToReturn
+  }, [bills, isSoldOut, query, showAvailable, sortOption])
+
+  const billsListView = billsToRender.map((bill) => {
     const { earnToken, token, quoteToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
     const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
     const available = new BigNumber(maxTotalPayOut)
@@ -76,7 +118,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
           />
           <ListViewContent
             title={t('Vesting Term')}
-            value={`${vestingTime.days}d, ${vestingTime.minutes}h, ${vestingTime.seconds}m`}
+            value={`${vestingTime.days}d`}
             width={isMobile ? 120 : 120}
             height={52.5}
             toolTip={t('This is how long it will take for all tokens in the Bill to fully vest.')}
@@ -134,11 +176,37 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
     } as ExtendedListViewProps
   })
 
+  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value)
+  }
+
+  // Set zap output list to match dual farms
+  useSetZapOutputList(
+    billsToRender.map((bill) => {
+      return {
+        currencyIdA: bill?.token.address[chainId],
+        currencyIdB: bill?.quoteToken.address[chainId],
+      }
+    }),
+  )
+
   return (
-    <Container>
-      <Text margin="20px 10px">{t('Available Treasury Bills')}</Text>
-      <ListView listViews={billsListView} />
-    </Container>
+    <MainContainer>
+      <BillsListMenu
+        bills={bills}
+        onHandleQueryChange={handleChangeQuery}
+        onSetSortOption={setSortOption}
+        activeOption={sortOption}
+        query={query}
+        showOnlyDiscount={showOnlyDiscount}
+        setShowOnlyDiscount={setShowOnlyDiscount}
+        showAvailable={showAvailable}
+        setShowAvailable={setShowAvailable}
+      />
+      <Flex flexDirection="column" sx={{ padding: '20px 0 50px 0' }}>
+        <ListView listViews={billsListView} />
+      </Flex>
+    </MainContainer>
   )
 }
 

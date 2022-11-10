@@ -1,4 +1,4 @@
-import { Card, Flex } from '@apeswapfinance/uikit'
+import { Card, Flex, Text, Input } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
 import { ThemeUIStyleObject } from 'theme-ui'
 
@@ -97,24 +97,77 @@ export const BillDiagramContainer = styled(Flex)`
   margin-top: 10px;
 `
 
-export const HeadingContainer = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: 2fr 1fr;
-  grid-template-areas: 'back expired' 'all-bills all-bills';
+export const ControlContainer = styled(Flex)`
+  align-items: center;
+  position: relative;
   flex-wrap: wrap;
+  border-radius: 10px;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 15px;
+  z-index: 2;
+  background-color: ${({ theme }) => theme.colors.white2};
+  min-width: 300px;
   max-width: 500px;
-  order: 0;
   width: 100%;
   align-self: center;
-  justify-content: space-between;
-  margin: 15px 10px;
+  height: 225px;
+  margin-top: 20px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    height: 180px;
+  }
   ${({ theme }) => theme.mediaQueries.md} {
-    grid-template-columns: auto auto auto;
-    grid-template-rows: auto;
-    grid-template-areas: 'back all-bills expired';
-    align-self: auto;
+    flex-direction: row;
+    min-height: 59px;
+    height: 100%;
+    padding: 0px 50px 0px 30px;
+    align-items: center;
     max-width: 100%;
+    height: auto;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding: 0px 50px 0px 30px;
+  }
+`
+
+export const LabelWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+  }
+`
+
+export const StyledText = styled(Text)`
+  font-weight: 700;
+  font-size: 16px !important;
+`
+
+export const ClaimAllWrapper = styled(Flex)`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
+  }
+`
+
+export const Container = styled.div<{ toggled: boolean }>``
+
+export const StyledInput = styled(Input)`
+  border-radius: 10px;
+  background: ${({ theme }) => theme.colors.white3};
+  font-weight: 800;
+  border: none;
+  width: 100%;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 180px;
+  }
+  @media screen and (min-width: 900px) {
+    width: 200px;
+  }
+  @media screen and (min-width: 1000px) {
+    width: 300px;
   }
 `

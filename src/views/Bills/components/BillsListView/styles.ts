@@ -1,6 +1,19 @@
-import { Text, Flex } from '@apeswapfinance/uikit'
-import { Button } from '@ape.swap/uikit'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
+import { Flex, Input, Text } from '@apeswapfinance/uikit'
+
+export const MainContainer = styled(Flex)`
+  position: relative;
+  flex-direction: column;
+`
+
+export const ClaimAllWrapper = styled(Flex)`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: auto;
+  }
+`
 
 export const ControlContainer = styled(Flex)`
   align-items: center;
@@ -49,20 +62,21 @@ export const StyledText = styled(Text)`
   font-size: 16px !important;
 `
 
-export const LearnMoreButton = styled(Button)`
-  height: 36px;
-  width: auto;
-  min-width: 192px;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.yellow};
-  border: 2px solid ${({ theme }) => theme.colors.yellow};
-`
+export const Container = styled.div<{ toggled: boolean }>``
 
-export const ClaimAllWrapper = styled(Flex)`
+export const StyledInput = styled(Input)`
+  border-radius: 10px;
+  background: ${({ theme }) => theme.colors.white3};
+  font-weight: 800;
+  border: none;
   width: 100%;
-  align-items: center;
-  justify-content: center;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: auto;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 180px;
+  }
+  @media screen and (min-width: 900px) {
+    width: 200px;
+  }
+  @media screen and (min-width: 1000px) {
+    width: 300px;
   }
 `
