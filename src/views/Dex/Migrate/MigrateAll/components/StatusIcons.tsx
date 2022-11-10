@@ -1,24 +1,41 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Svg, Text } from '@ape.swap/uikit'
+import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import { Spinner } from 'theme-ui'
-import { MigrateStatus, useMigrateAll } from '../provider'
+import { useMigrateAll } from '../provider'
+import { MigrateStatus } from '../provider/types'
 
-const StatusIcons: React.FC<{ lpAddress: string }> = ({ lpAddress }) => {
+const StatusIcons: React.FC<{ id: number }> = ({ id }) => {
   const { migrateLpStatus } = useMigrateAll()
-  const status = migrateLpStatus.find((status) => status.lpAddress === lpAddress)
+  const status = migrateLpStatus.find((status) => status.id === id)
+  const isMobile = useIsMobile()
   return (
-    <Flex sx={{ width: '100px', transform: 'translate(-15px, 0px)' }}>
+    <Flex
+      sx={{
+        width: '120px',
+        transform: isMobile ? 'translate(-5px, 0px)' : 'translate(-15px, 0px)',
+        alignItems: 'center',
+      }}
+    >
       {status &&
         Object.values(status.status).map((val, i) =>
           val === MigrateStatus.COMPLETE ? (
-            <Flex sx={{ width: '25px', mr: '3px' }}>
+            <Flex
+              sx={{
+                width: isMobile ? '15px' : '25px',
+                mr: '3px',
+                background: 'primaryBright',
+                borderRadius: isMobile ? '7.5px' : '12.5px',
+              }}
+            >
               <Svg icon="success" width="100%" />
             </Flex>
           ) : val === MigrateStatus.INCOMPLETE ? (
             <Flex
               sx={{
-                width: '25px',
+                width: isMobile ? '15px' : '25px',
+                height: isMobile ? '15px' : '25px',
                 mr: '3px',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -26,14 +43,14 @@ const StatusIcons: React.FC<{ lpAddress: string }> = ({ lpAddress }) => {
                 borderRadius: '15px',
               }}
             >
-              <Text size="14px">{i + 1}</Text>
+              <Text size={isMobile ? '10px' : '14px'}>{i + 1}</Text>
             </Flex>
           ) : val === MigrateStatus.PENDING ? (
-            <Flex sx={{ width: '25px', mr: '3px' }}>
-              <Spinner width="25px" height="25px" />
+            <Flex sx={{ width: isMobile ? '15px' : '25px', mr: '3px' }}>
+              <Spinner width={isMobile ? '15px' : '25px'} height={isMobile ? '15px' : '25px'} />
             </Flex>
           ) : (
-            <Flex sx={{ width: '25px', mr: '3px' }}>
+            <Flex sx={{ width: isMobile ? '15px' : '25px', mr: '3px' }}>
               <Svg icon="error" width="100%" />
             </Flex>
           ),

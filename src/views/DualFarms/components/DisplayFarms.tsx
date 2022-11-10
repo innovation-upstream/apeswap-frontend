@@ -1,6 +1,6 @@
 import React from 'react'
-import { Flex, Text, LinkExternal, Svg, useModal } from '@apeswapfinance/uikit'
-import { TagVariants } from '@ape.swap/uikit'
+import { Flex, LinkExternal, Svg, Text } from '@apeswapfinance/uikit'
+import { Svg as Icon, TagVariants } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
@@ -15,14 +15,10 @@ import CardActions from './CardActions'
 import { Container, FarmButton, NextArrow, ServiceTokenDisplayContainer, StyledTag } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
 import { ActionContainer } from './CardActions/styles'
-import useIsMobile from '../../../hooks/useIsMobile'
-import ServiceTokenDisplay from '../../../components/ServiceTokenDisplay'
-import { Field, selectCurrency } from 'state/swap/actions'
-import { useAppDispatch } from 'state'
-import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { ChainId } from '@ape.swap/sdk'
-import { Svg as Icon } from '@ape.swap/uikit'
-import { selectOutputCurrency } from 'state/zap/actions'
+import useIsMobile from 'hooks/useIsMobile'
+import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
+import useAddLiquidityModal from 'hooks/useAddLiquidityModal'
+import { ZapType } from '@ape.swap/sdk'
 
 const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags: Tag[] }> = ({
   farms,
@@ -32,35 +28,10 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const isMobile = useIsMobile()
-  const dispatch = useAppDispatch()
-
-  const [onPresentAddLiquidityWidgetModal] = useModal(<DualLiquidityModal />, true, true, 'liquidityWidgetModal')
-
-  const showLiquidity = (token, quoteToken, farm) => {
-    dispatch(
-      selectCurrency({
-        field: Field.INPUT,
-        currencyId: token,
-      }),
-    )
-    dispatch(
-      selectCurrency({
-        field: Field.OUTPUT,
-        currencyId: quoteToken,
-      }),
-    )
-    dispatch(
-      selectOutputCurrency({
-        currency1: farm.stakeTokens.token1.address[ChainId.MATIC],
-        currency2: farm.stakeTokens.token0.address[ChainId.MATIC],
-      }),
-    )
-    onPresentAddLiquidityWidgetModal()
-  }
+  const onAddLiquidityModal = useAddLiquidityModal(ZapType.ZAP_MINI_APE)
 
   const farmsListView = farms.map((farm, i) => {
     const polygonScanUrl = `https://polygonscan.com/address/${farm.stakeTokenAddress}`
-    const userAllowance = farm?.userData?.allowance
     const userEarningsMiniChef = getBalanceNumber(farm?.userData?.miniChefEarnings || new BigNumber(0)).toFixed(2)
     const userEarningsRewarder = getBalanceNumber(farm?.userData?.rewarderEarnings || new BigNumber(0)).toFixed(2)
     const userEarningsUsd = `$${(
@@ -181,7 +152,8 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                   farm?.stakeTokens?.token0?.symbol === 'MATIC' ? 'ETH' : farm?.stakeTokens?.token0?.address[chainId]
                 }
                 lpPrice={farm.stakeTokenPrice}
-                dualFarm={farm}
+                lpCurr1={farm.stakeTokens.token1.address[chainId]}
+                lpCurr2={farm.stakeTokens.token0.address[chainId]}
               />
             }
           />
@@ -233,10 +205,11 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
             )}
             <FarmButton
               onClick={() =>
-                showLiquidity(
+                onAddLiquidityModal(
                   farm?.stakeTokens?.token1?.address[chainId],
                   farm?.stakeTokens?.token0?.symbol === 'MATIC' ? 'ETH' : farm?.stakeTokens?.token0?.address[chainId],
-                  farm,
+                  null,
+                  farm.pid.toString(),
                 )
               }
             >
@@ -256,16 +229,13 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
             )}
           </ActionContainer>
           {!isMobile && <NextArrow />}
-          <CardActions
-            allowance={userAllowance?.toString()}
-            stakedBalance={farm?.userData?.stakedBalance?.toString()}
-            stakingTokenBalance={farm?.userData?.tokenBalance?.toString()}
-            stakeLpAddress={farm?.stakeTokenAddress}
-            lpValueUsd={lpValueUsd}
-            pid={farm.pid}
-          />
+          <CardActions lpValueUsd={lpValueUsd} farm={farm} />
           {!isMobile && <NextArrow />}
-          <HarvestAction pid={farm.pid} disabled={userEarningsMiniChef === '0.00'} userEarningsUsd={userEarningsUsd} />
+          <HarvestAction
+            pid={farm.pid}
+            disabled={userEarningsMiniChef === '0.00' && userEarningsRewarder === '0.00'}
+            userEarningsUsd={userEarningsUsd}
+          />
         </>
       ),
     } as ExtendedListViewProps

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Flex, Svg, Text } from '@apeswapfinance/uikit'
+import { BinanceIcon } from '@ape.swap/uikit'
+import { Flex, POLYGON, Svg, Text } from '@apeswapfinance/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import { useStats } from 'state/statsPage/hooks'
@@ -10,22 +11,24 @@ import getTimePeriods from 'utils/getTimePeriods'
 import { Tooltip } from '../../../Tooltip'
 import CardValue from '../../../CardValue'
 import { NoContentPlaceholder } from 'views/Stats/components/NoContentPlaceholder'
+import { Chain } from 'state/statsPage/types'
 
-import { StyledTable, TableContainer, TableHeading } from '../../styles'
+import { ChainIndicator, StyledTable, TableContainer, TableHeading } from '../../styles'
 
 export const VestedEarnings: React.FC = () => {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
-  const { stats } = useStats()
+  const { vestedProducts } = useStats()
 
-  const vestedProducts = stats.userStats
-    .reduce((acc, curr) => {
-      curr?.bills && acc.push(...curr.bills)
-      curr?.iaos && acc.push(...curr.iaos)
+  const renderChain = (chain: Chain) => {
+    switch (chain) {
+      case 56:
+        return <BinanceIcon width={isMobile ? 12 : 14} />
 
-      return acc
-    }, [])
-    .sort((a, b) => (a.vestingTimeRemaining > b.vestingTimeRemaining ? -1 : 1))
+      case 137:
+        return <POLYGON width={isMobile ? 12 : 14} />
+    }
+  }
 
   return vestedProducts?.length ? (
     <>
@@ -48,8 +51,9 @@ export const VestedEarnings: React.FC = () => {
                 vesting.vestingTimeRemaining > 0 ? getTimePeriods(vesting.vestingTimeRemaining, true) : null
 
               return (
-                <tr key={'billId' in vesting ? vesting.billId : vesting.id}>
+                <tr key={`${vesting.chain}-${'billId' in vesting ? vesting.billId : vesting.id}`}>
                   <td>
+                    <ChainIndicator>{renderChain(vesting.chain)}</ChainIndicator>
                     {'billId' in vesting
                       ? `${vesting.type} Bill #${vesting.billId}`
                       : `${vesting.earnToken?.symbol} IAO (${vesting.type})`}

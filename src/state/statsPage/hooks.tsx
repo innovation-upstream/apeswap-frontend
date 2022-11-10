@@ -5,6 +5,7 @@ import { ApiResponse, ChainOption } from './types'
 import { mapChain, rawToPortfolio, PortfolioData, rawToProjected, ProjectedData } from './mappings'
 import { NftInfo, rawToNfts } from './mappings/rawToNfts'
 import { fetchStatsData } from './api'
+import { rawToVested, Vested } from './mappings/rawToVested'
 
 interface StatsProviderProps {
   children: ReactNode
@@ -15,6 +16,7 @@ interface StatsContextData {
   portfolioData: PortfolioData[]
   projectedData: ProjectedData[]
   nfts: NftInfo[]
+  vestedProducts: Vested[]
   selectedChain: ChainOption
   handleChangeSelectedChain: (option: ChainOption) => void
   loading: boolean
@@ -28,6 +30,7 @@ export function StatsProvider({ children }: StatsProviderProps) {
   const [portfolioData, setPortfolioData] = useState<PortfolioData[]>([])
   const [projectedData, setProjectedData] = useState<ProjectedData[]>([])
   const [nfts, setNfts] = useState<NftInfo[]>([])
+  const [vestedProducts, setVestedProducts] = useState<Vested[]>([])
   const [selectedChain, setSelectedChain] = useState<ChainOption>('all')
   const [loading, setLoading] = useState<boolean>(true)
 
@@ -42,6 +45,7 @@ export function StatsProvider({ children }: StatsProviderProps) {
       setStats(statsData)
       setPortfolioData(rawToPortfolio(statsData))
       setProjectedData(rawToProjected(statsData))
+      setVestedProducts(rawToVested(statsData))
       setNfts(rawToNfts(statsData))
 
       setLoading(false)
@@ -58,7 +62,16 @@ export function StatsProvider({ children }: StatsProviderProps) {
 
   return (
     <StatsContext.Provider
-      value={{ stats, portfolioData, selectedChain, handleChangeSelectedChain, loading, projectedData, nfts }}
+      value={{
+        stats,
+        portfolioData,
+        selectedChain,
+        handleChangeSelectedChain,
+        loading,
+        projectedData,
+        nfts,
+        vestedProducts,
+      }}
     >
       {children}
     </StatsContext.Provider>

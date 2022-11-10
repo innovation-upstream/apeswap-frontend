@@ -22,7 +22,7 @@ const DetailsPanel: React.FC<DetailsPanelProps> = ({ zap }) => {
       <Row>
         <StyledText>{t('Liquidity Provider Fee')}</StyledText>
         <StyledText>
-          {liquidityProviderFee.toSignificant(3)} {currencyIn.currency.getSymbol(chainId)}
+          {liquidityProviderFee?.toSignificant(3)} {currencyIn?.currency?.getSymbol(chainId)}
         </StyledText>
       </Row>
       <Row>
@@ -35,11 +35,11 @@ const DetailsPanel: React.FC<DetailsPanelProps> = ({ zap }) => {
       </Row>
       <Row>
         <StyledText>{`${currencyOut1?.outputCurrency?.symbol} per ${currencyOut2?.outputCurrency?.symbol}`}</StyledText>
-        <StyledText>{currencyOut1?.outputAmount?.divide(currencyOut2?.outputAmount).toSignificant(5)}</StyledText>
+        <StyledText>{currencyOut1?.outputAmount?.divide(currencyOut2?.outputAmount)?.toSignificant(5)}</StyledText>
       </Row>
       <Row>
-        <StyledText>{`${currencyOut2?.outputCurrency?.symbol} per ${currencyOut1.outputCurrency.symbol}`}</StyledText>
-        <StyledText>{currencyOut2?.outputAmount?.divide(currencyOut1?.outputAmount).toSignificant(5)}</StyledText>
+        <StyledText>{`${currencyOut2?.outputCurrency?.symbol} per ${currencyOut1?.outputCurrency?.symbol}`}</StyledText>
+        <StyledText>{currencyOut2?.outputAmount?.divide(currencyOut1?.outputAmount)?.toSignificant(5)}</StyledText>
       </Row>
     </Flex>
   )

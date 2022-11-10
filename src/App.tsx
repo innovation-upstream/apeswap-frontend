@@ -64,7 +64,7 @@ const ProtocolDashboard = lazy(() => import('./views/ProtocolDashboard'))
 const Migrate = lazy(() => import('./views/Dex/Migrate'))
 const MigrateLiquidity = lazy(() => import('./views/Dex/Migrate/MigrateLiquidity'))
 // In development
-// const MigrateAll = lazy(() => import('./views/Dex/Migrate/MigrateAll'))
+const MigrateAll = lazy(() => import('./views/Dex/Migrate/MigrateAll'))
 const UnstakeLiquidity = lazy(() => import('./views/Dex/Migrate/UnstakeLiquidity'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
@@ -134,10 +134,101 @@ const App: React.FC = () => {
 
   useEffect(() => {
     showScroll()
-    if (account) dataLayer?.push({ event: 'wallet_connect', user_id: account })
+    if (account) dataLayer?.push({ event: 'wallet_connect', chain: chainId, user_id: account })
+    // if chainId is added to deps, it will be triggered each time users switch chain
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, showScroll])
 
   const loadMenu = () => {
+    if (chainId === ChainId.TLOS) {
+      return (
+        <Menu>
+          <Suspense fallback={<PageLoader />}>
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/protocol-dashboard">
+                <ProtocolDashboard />
+              </Route>
+              <Route path="/farms">
+                <JungleFarms />
+              </Route>
+              <Route path="/treasury-bills">
+                <Bills />
+              </Route>
+              <Route path="/apestats">
+                <Stats />
+              </Route>
+              <Route path="/terms">
+                <TermsOfUse />
+              </Route>
+              <Route path="/privacy">
+                <PrivacyPolicy />
+              </Route>
+              <Route path="/pools">
+                <Pools />
+              </Route>
+              <Route path="/maximizers">
+                <Vaults />
+              </Route>
+              <Route path="/jungle-farms">
+                <JungleFarms />
+              </Route>
+              {/* Redirects */}
+              <Route path="/vaults">
+                <Redirect to="/" />
+              </Route>
+              <Route path="/banana-farms">
+                <Redirect to="/farms" />
+              </Route>
+              <Route exact path="/nft">
+                <Redirect to="/" />
+              </Route>
+              <Route path="/admin-pools">
+                <Redirect to="/" />
+              </Route>
+              <Route path="/iao">
+                <Redirect to="/" />
+              </Route>
+              <Route path="/auction">
+                <Redirect to="/" />
+              </Route>
+              <Route exact path="/nft">
+                <Redirect to="/" />
+              </Route>
+              <Route path="/nft/:id">
+                <Redirect to="/" />
+              </Route>
+              <Route path="/gnana">
+                <Redirect to="/" />
+              </Route>
+              {/* SWAP ROUTES */}
+              <Route path="/swap" component={Swap} />
+              <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
+              <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+              <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
+              <Route exact strict path="/find" component={PoolFinder} />
+              <Route exact strict path="/liquidity" component={Pool} />
+              <Route exact strict path="/create" component={RedirectToAddLiquidity} />
+              {/* clean these three components before merging */}
+              <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              <Route exact path="/add-liquidity" component={AddLiquidity} />
+              <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+              <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+              <Route exact path="/zap" component={Zap} />
+              <Route exact strict path="/zap/:currencyIdA" component={Zap} />
+              <Route exact strict path="/zap/:currencyIdA/:currencyIdB/:currencyIdC" component={Zap} />
+              <Route path="/migrate">
+                <Redirect to={'/swap'} />
+              </Route>
+              {/* SWAP ROUTES */}
+              <Route component={NotFound} />
+            </Switch>
+          </Suspense>
+        </Menu>
+      )
+    }
     // ETH routes
     if (chainId === ChainId.MAINNET) {
       return (
@@ -154,6 +245,24 @@ const App: React.FC = () => {
               <Route path="/protocol-dashboard">
                 <ProtocolDashboard />
               </Route>
+              <Route path="/treasury-bills">
+                <Bills />
+              </Route>
+              <Route path="/pools">
+                <Pools />
+              </Route>
+              <Route path="/jungle-farms">
+                <JungleFarms />
+              </Route>
+              <Route path="/maximizers">
+                <Vaults />
+              </Route>
+              <Route path="/farms">
+                <Farms />
+              </Route>
+              <Route path="/banana-farms">
+                <Farms />
+              </Route>
               {/* Redirects */}
               <Route path="/admin-pools">
                 <Redirect to="/" />
@@ -161,19 +270,7 @@ const App: React.FC = () => {
               <Route path="/banana-farms">
                 <Redirect to="/" />
               </Route>
-              <Route path="/maximizers">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/treasury-bills">
-                <Redirect to="/" />
-              </Route>
               <Route exact path="/nft">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/pools">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/jungle-farms">
                 <Redirect to="/" />
               </Route>
               <Route path="/admin-pools">
@@ -255,20 +352,26 @@ const App: React.FC = () => {
               <Route path="/privacy">
                 <PrivacyPolicy />
               </Route>
-              {/* Redirects */}
-              <Route path="/vaults">
-                <Redirect to="/" />
+              <Route path="/pools">
+                <Pools />
+              </Route>
+              <Route path="/maximizers">
+                <Vaults />
+              </Route>
+              <Route path="/jungle-farms">
+                <JungleFarms />
               </Route>
               <Route path="/treasury-bills">
                 <Bills />
               </Route>
+              {/* Redirects */}
+              <Route path="/vaults">
+                <Redirect to="/" />
+              </Route>
+              <Route path="/farms">
+                <Redirect to="/banana-farms" />
+              </Route>
               <Route exact path="/nft">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/pools">
-                <Redirect to="/" />
-              </Route>
-              <Route path="/jungle-farms">
                 <Redirect to="/" />
               </Route>
               <Route path="/admin-pools">
@@ -389,6 +492,9 @@ const App: React.FC = () => {
             <Route path="/syrup">
               <Redirect to="/pools" />
             </Route>
+            <Route path="/farms">
+              <Redirect to="/banana-farms" />
+            </Route>
             {/* SWAP ROUTES */}
             <Route path="/swap" component={Swap} />
             <Route exact strict path="/limit-orders" component={Orders} />
@@ -398,7 +504,6 @@ const App: React.FC = () => {
             <Route exact strict path="/liquidity" component={Pool} />
             <Route exact strict path="/create" component={RedirectToAddLiquidity} />
             <Route exact strict path="/migrate" component={Migrate} />
-            {/* <Route exact strict path="/migrate/all" component={MigrateAll} /> */}
             <Route exact strict path="/migrate/:currencyIdA/:currencyIdB" component={MigrateLiquidity} />
             <Route exact strict path="/unstake/:currencyIdA/:currencyIdB" component={UnstakeLiquidity} />
             <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
@@ -407,6 +512,7 @@ const App: React.FC = () => {
             <Route exact path="/add-liquidity/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
             <Route exact path="/add-liquidity/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
             <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+            <Route exact path="/migrate/all" component={MigrateAll} />
             <Route exact path="/zap" component={Zap} />
             <Route exact strict path="/zap/:currencyIdA" component={Zap} />
             <Route exact strict path="/zap/:currencyIdA/:currencyIdB/:currencyIdC" component={Zap} />

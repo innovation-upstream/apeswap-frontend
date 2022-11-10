@@ -13,6 +13,7 @@ import { Currency } from '@ape.swap/sdk'
 import DualCurrencyDropdown from './DualCurrencyDropdown'
 import { PairState, usePair } from 'hooks/usePairs'
 import { DualCurrencySelector } from 'views/Bills/components/Actions/types'
+import useIsMobile from 'hooks/useIsMobile'
 
 /**
  * Dropdown component that supports both single currencies and currency pairs. An array of pairs is passed as lpList,
@@ -26,7 +27,7 @@ import { DualCurrencySelector } from 'views/Bills/components/Actions/types'
  */
 
 interface DualCurrencyPanelProps {
-  handleMaxInput: (field: any) => void
+  handleMaxInput: () => void
   onUserInput: (val: string) => void
   value: string
   onCurrencySelect: (currency: DualCurrencySelector) => void
@@ -45,6 +46,7 @@ const DualCurrencyPanel: React.FC<DualCurrencyPanelProps> = ({
   const [usdVal, setUsdVal] = useState(null)
   const { chainId, account } = useActiveWeb3React()
   const [pairState, pair] = usePair(inputCurrencies[0], inputCurrencies[1])
+  const isMobile = useIsMobile()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, pair?.liquidityToken ?? inputCurrencies[0])
   const currencyBalance = selectedCurrencyBalance?.toSignificant(6)
   const { t } = useTranslation()
@@ -62,7 +64,14 @@ const DualCurrencyPanel: React.FC<DualCurrencyPanelProps> = ({
   return (
     <Flex sx={styles.dexPanelContainer}>
       <Flex sx={styles.panelTopContainer}>
-        <NumericalInput value={value} onUserInput={(val) => onUserInput(val)} align="left" id="bill-amount-input" />
+        <NumericalInput
+          value={value}
+          onUserInput={(val) => onUserInput(val)}
+          fontSize={isMobile ? '15px' : '22px'}
+          removeLiquidity={isMobile}
+          align="left"
+          id="bill-amount-input"
+        />
         <DualCurrencyDropdown inputCurrencies={inputCurrencies} onCurrencySelect={onCurrencySelect} lpList={lpList} />
       </Flex>
       <Flex sx={styles.panelBottomContainer}>

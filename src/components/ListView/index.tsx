@@ -9,7 +9,7 @@ import { ExtendedListViewProps } from './types'
 
 const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews }) => {
   const isMobile = useIsMobile()
-
+  // TODO: This file needs to be refactored. Too many props got added
   return (
     <ListViewContainer>
       {listViews.map((view) => {
@@ -43,6 +43,7 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
             ttWidth={view?.ttWidth}
             backgroundColor={view?.backgroundColor}
             beforeTokenContent={view?.beforeTokenContent}
+            forMigratonList={view?.forMigratonList}
           />
         ) : (
           <ListCard
