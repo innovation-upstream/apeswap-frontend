@@ -35,7 +35,7 @@ const useDualDeposit = (
   const { callback: zapCallback } = useZapCallback(
     zap,
     zapType,
-    Math.round(zapSlippage),
+    zapSlippage,
     recipient,
     poolAddress,
     null,
