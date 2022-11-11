@@ -39,22 +39,22 @@ export default function Migrate() {
     ...farms.flatMap((farm) => {
       const { tokenAddresses, quoteTokenAdresses } = farm
       return [
-        [quoteTokenAdresses[chainId].toLowerCase(), tokenAddresses[chainId].toLowerCase()],
-        [tokenAddresses[chainId].toLowerCase(), quoteTokenAdresses[chainId].toLowerCase()],
+        [quoteTokenAdresses[chainId]?.toLowerCase(), tokenAddresses[chainId]?.toLowerCase()],
+        [tokenAddresses[chainId]?.toLowerCase(), quoteTokenAdresses[chainId]?.toLowerCase()],
       ]
     }),
     ...bills.flatMap((bill) => {
       const { token, quoteToken } = bill
       return [
-        [quoteToken.address[chainId].toLowerCase(), token.address[chainId].toLowerCase()],
-        [token.address[chainId].toLowerCase(), quoteToken.address[chainId].toLowerCase()],
+        [quoteToken.address[chainId]?.toLowerCase(), token.address[chainId]?.toLowerCase()],
+        [token.address[chainId]?.toLowerCase(), quoteToken.address[chainId]?.toLowerCase()],
       ]
     }),
     ...jungleFarms.flatMap((farm) => {
       const { token, quoteToken } = farm.lpTokens
       return [
-        [quoteToken.address[chainId].toLowerCase(), token.address[chainId].toLowerCase()],
-        [token.address[chainId].toLowerCase(), quoteToken.address[chainId].toLowerCase()],
+        [quoteToken.address[chainId]?.toLowerCase(), token.address[chainId]?.toLowerCase()],
+        [token.address[chainId]?.toLowerCase(), quoteToken.address[chainId]?.toLowerCase()],
       ]
     }),
   ]
