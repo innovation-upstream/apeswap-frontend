@@ -61,7 +61,6 @@ const Menu = (props) => {
     return bscConfig(translate)
   }
 
-  // SID TESTING
   const getSidOwner = useCallback(async () => {
     const sid = await getSidContract(chainId)
     const { name } = await sid.getName(account)
