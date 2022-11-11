@@ -220,7 +220,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     flexDirection: 'column',
     mt: ['15px', '15px', '30px'],
     gap: '5px',
-    height: ['142px', '142px', '200px'],
+    height: ['150px', '150px', '200px'],
   },
   step: {
     fontSize: '10px',

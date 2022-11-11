@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { MarketingModal, TutorialModal } from '@ape.swap/uikit'
 import { LendingBodies } from 'components/MarketingModalContent/Lending/'
-import { FarmsBodies } from 'components/MarketingModalContent/Farms/'
 import { PoolsBodies } from 'components/MarketingModalContent/Pools/'
 import { BillsBodies } from 'components/MarketingModalContent/Bills/'
 import CircularModal from 'components/CircularModal'
@@ -21,8 +20,9 @@ import {
   SHOW_DEF_MOD_KEY,
 } from 'config/constants'
 import { circularRoute } from 'utils'
-import { DexSlides } from 'components/MarketingModalContent/Dex'
 import { NETWORK_LABEL } from 'config/constants/chains'
+import { DexSlides } from 'components/MarketingModalContent/Dex'
+import { FarmSlides } from 'components/MarketingModalContent/Farm'
 
 const MarketingModalCheck = () => {
   const { chainId } = useActiveWeb3React()
@@ -30,7 +30,11 @@ const MarketingModalCheck = () => {
   const history = useHistory()
   const { t } = useTranslation()
   const networkLabel = NETWORK_LABEL[chainId]
+  const jungleFarmRoute = location.pathname.includes('jungle-farms')
+  const farmType =
+    networkLabel === 'Telos' || networkLabel === 'Polygon' ? networkLabel : jungleFarmRoute ? 'jungle' : 'banana'
   const dex = `${networkLabel}-dex`
+  const farm = `${farmType}-farms`
 
   useMemo(() => {
     localStorage.removeItem(SHOW_DEFAULT_MODAL_KEY) // remove old key
@@ -55,7 +59,8 @@ const MarketingModalCheck = () => {
   }, [history])
 
   const dexRoute = location.search.includes('modal=dex')
-  const farmsRoute = location.search.includes('modal=1')
+  const farmsRoute = location.search.includes('modal=farms')
+
   const poolsRoute = location.search.includes('modal=2')
   const lendingRoute = location.search.includes('modal=3')
   const billsRoute = location.search.includes('modal=bills')
@@ -69,7 +74,6 @@ const MarketingModalCheck = () => {
   const newsletterRoute = location.search.includes('modal=newsletter')
 
   const { LendingBody1, LendingBody2, LendingBody3, LendingBody4, LendingBody5 } = LendingBodies
-  const { FarmsBody1, FarmsBody2, FarmsBody3, FarmsBody4 } = FarmsBodies
   const { PoolsBody1, PoolsBody2, PoolsBody3, PoolsBody4 } = PoolsBodies
   const { BillsBody1 } = BillsBodies
 
@@ -86,12 +90,6 @@ const MarketingModalCheck = () => {
     <LendingBody4 key="lend4" />,
     <LendingBody5 key="lend5" />,
   ]
-  const farms = [
-    <FarmsBody1 key="farm1" />,
-    <FarmsBody2 key="farm2" />,
-    <FarmsBody3 key="farm3" />,
-    <FarmsBody4 key="farm4" />,
-  ]
   const pools = [
     <PoolsBody1 key="pool1" />,
     <PoolsBody2 key="pool2" />,
@@ -100,7 +98,27 @@ const MarketingModalCheck = () => {
   ]
   const bills = [<BillsBody1 key="bill1" />]
 
-  return dexRoute ? (
+  return farmsRoute ? (
+    <TutorialModal
+      type={farm}
+      title={t(`Welcome to ${farmType} Farms`)}
+      description={t(
+        `Earn ${
+          jungleFarmRoute
+            ? 'Partner Tokens by Staking Liquidity!'
+            : `${
+                networkLabel === 'Polygon' ? 'rewards' : networkLabel === 'Telos' ? 'TLOS' : 'BANANA'
+              } by staking liquidity provider (LP) tokens!`
+        }`,
+      )}
+      t={t}
+      onDismiss={onDismiss}
+      onReady={onDismiss}
+      readyText={t("I'm Ready")}
+    >
+      {FarmSlides}
+    </TutorialModal>
+  ) : dexRoute ? (
     <TutorialModal
       type={dex}
       title={t("Welcome to ApeSwap's Dex")}
@@ -121,16 +139,6 @@ const MarketingModalCheck = () => {
       startEarningText={t('Start Earning')}
     >
       {lending}
-    </MarketingModal>
-  ) : farmsRoute ? (
-    <MarketingModal
-      title={t("Welcome to ApeSwap's Farms")}
-      description={t('Start earning passive income with your cryptocurrency!')}
-      onDismiss={onDismiss}
-      startEarning={onDismiss}
-      startEarningText={t('Start Earning')}
-    >
-      {farms}
     </MarketingModal>
   ) : poolsRoute ? (
     <MarketingModal
