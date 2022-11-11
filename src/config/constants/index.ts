@@ -259,3 +259,9 @@ export enum SHOW_MODAL_TYPES {
   poolHarvestModal = 'showPoolHarvestModal',
   generalHarvestModal = 'showGeneralHarvestModal',
 }
+
+export enum PRODUCT {
+  FARM,
+  JUNGLE_FARM,
+  DUAL_FARM,
+}

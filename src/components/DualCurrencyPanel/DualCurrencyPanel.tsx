@@ -24,6 +24,7 @@ import useIsMobile from 'hooks/useIsMobile'
  * @param onCurrencySelect function to select the input's currency (both single and pairs)
  * @param inputCurrencies selected currencies for the input
  * @param lpList param to define the list of pairs to be used by the component
+ * @param enableZap determines whether zap functionality is enabled for the selected product
  */
 
 interface DualCurrencyPanelProps {
@@ -33,6 +34,7 @@ interface DualCurrencyPanelProps {
   onCurrencySelect: (currency: DualCurrencySelector) => void
   inputCurrencies: Currency[]
   lpList: DualCurrencySelector[]
+  enableZap?: boolean
 }
 
 const DualCurrencyPanel: React.FC<DualCurrencyPanelProps> = ({
@@ -42,6 +44,7 @@ const DualCurrencyPanel: React.FC<DualCurrencyPanelProps> = ({
   onCurrencySelect,
   inputCurrencies,
   lpList,
+  enableZap,
 }) => {
   const [usdVal, setUsdVal] = useState(null)
   const { chainId, account } = useActiveWeb3React()
@@ -72,7 +75,12 @@ const DualCurrencyPanel: React.FC<DualCurrencyPanelProps> = ({
           align="left"
           id="bill-amount-input"
         />
-        <DualCurrencyDropdown inputCurrencies={inputCurrencies} onCurrencySelect={onCurrencySelect} lpList={lpList} />
+        <DualCurrencyDropdown
+          inputCurrencies={inputCurrencies}
+          onCurrencySelect={onCurrencySelect}
+          lpList={lpList}
+          enableZap={enableZap}
+        />
       </Flex>
       <Flex sx={styles.panelBottomContainer}>
         <Flex

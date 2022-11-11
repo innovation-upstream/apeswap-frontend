@@ -6,18 +6,23 @@ import { MigrateProvider } from './provider'
 import { useSetFarms } from 'state/farms/hooks'
 import { usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
 import MigrateStart from './MigrateStart'
+import { ChainId } from '@ape.swap/sdk'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const MigrateAll: React.FC = () => {
   // Fetch farms to filter lps on steps
+  const { chainId } = useActiveWeb3React()
   useSetFarms()
   useSetVaults()
   usePollVaultUserData()
   return (
     <Flex sx={dexStyles.pageContainer}>
       <Flex sx={{ flexDirection: 'column', width: '1200px' }}>
-        <MigrateProvider>
-          <MigrateStart />
-        </MigrateProvider>
+        {chainId === ChainId.BSC && (
+          <MigrateProvider>
+            <MigrateStart />
+          </MigrateProvider>
+        )}
       </Flex>
     </Flex>
   )

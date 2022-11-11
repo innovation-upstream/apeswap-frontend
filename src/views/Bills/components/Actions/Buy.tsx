@@ -251,6 +251,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
           onCurrencySelect={handleCurrencySelect}
           inputCurrencies={inputCurrencies}
           lpList={[billsCurrencies]}
+          enableZap={true}
         />
       </Flex>
       <Flex sx={styles.detailsContainer}>

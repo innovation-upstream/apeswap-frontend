@@ -25,9 +25,16 @@ interface ZapLiquidityProps {
   poolAddress: string
   pid: string
   zapIntoProductType: ZapType
+  zapable: boolean
 }
 
-const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddress, pid, zapIntoProductType }) => {
+const ZapLiquidity: React.FC<ZapLiquidityProps> = ({
+  handleConfirmedTx,
+  poolAddress,
+  pid,
+  zapIntoProductType,
+  zapable,
+}) => {
   useSetZapInputList()
   const [zapErrorMessage, setZapErrorMessage] = useState<string>(null)
   const [stakeIntoProduct, setStakeIntoProduct] = useState<boolean>(true)
@@ -118,20 +125,20 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({ handleConfirmedTx, poolAddr
   // reset input value to zero on first render
   useEffect(() => {
     onUserInput(Field.INPUT, '')
-    onSetZapType(zapIntoProductType ? zapIntoProductType : ZapType.ZAP)
+    onSetZapType(zapable ? zapIntoProductType : ZapType.ZAP)
     /* eslint-disable react-hooks/exhaustive-deps */
-  }, [])
+  }, [zapable])
 
   return (
     <div>
       <Flex sx={styles.liquidityContainer}>
-        {!!pid && zap?.pairOut?.pair?.token0?.getSymbol(chainId) && (
+        {zapable && zap?.pairOut?.pair?.token0?.getSymbol(chainId) && (
           <Flex sx={{ marginBottom: '10px', fontSize: '12px', alignItems: 'center' }}>
             <Text>
               {t('Stake in')}{' '}
               {`${wrappedToNative(zap?.pairOut?.pair?.token0?.getSymbol(chainId))} - ${wrappedToNative(
                 zap?.pairOut?.pair?.token1?.getSymbol(chainId),
-              )} ${zapIntoProductType === ZapType.ZAP_MINI_APE ? t('Farm') : null}`}
+              )} ${t('Farm')}`}
             </Text>
             <Box sx={{ width: '50px', marginLeft: '10px' }}>
               <Switch

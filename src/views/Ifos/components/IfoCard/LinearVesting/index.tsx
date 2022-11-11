@@ -19,6 +19,7 @@ import IfoCardDetails from '../CardDetails/IfoCardDetails'
 import IfoCardContribute from './IfoCardContribute'
 import useUserInfo from './useUserInfo'
 import { Container, styles, SubContainer, UnlockButton, Wrapper } from './styles'
+import { ChainId } from '@ape.swap/sdk'
 
 export interface IfoCardProps {
   ifo: Ifo
@@ -136,7 +137,7 @@ const IfoCard: React.FC<IfoCardProps> = ({ ifo, gnana }) => {
       })
     }
 
-    fetchProgress()
+    chainId === ChainId.BSC && fetchProgress()
   }, [currentBlock, contract, releaseBlockNumber, start, address, chainId])
 
   const {
