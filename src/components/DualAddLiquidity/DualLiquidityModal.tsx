@@ -15,6 +15,7 @@ interface DualLiquidityModalProps {
   poolAddress?: string
   pid?: string
   zapIntoProductType?: ZapType
+  zapable?: boolean
 }
 
 const modalProps = {
@@ -33,6 +34,7 @@ const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({
   poolAddress,
   pid,
   zapIntoProductType,
+  zapable,
 }) => {
   const { t } = useTranslation()
   const [goZap, setGoZap] = useState(true)
@@ -67,6 +69,7 @@ const DualLiquidityModal: React.FC<DualLiquidityModalProps> = ({
                   poolAddress={poolAddress}
                   pid={pid}
                   zapIntoProductType={zapIntoProductType}
+                  zapable={zapable}
                 />
               ) : (
                 <RegularLiquidity />

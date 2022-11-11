@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
-import React, { useState } from 'react'
-import { AutoRenewIcon, Button, Flex, useModal } from '@ape.swap/uikit'
+import React from 'react'
+import { Button, Flex, useModal } from '@ape.swap/uikit'
 import UnlockButton from 'components/UnlockButton'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -28,7 +28,6 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
 }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
-  const [pendingTx, setPendingTx] = useState<boolean>(false)
 
   const [onPresentAddLiquidityModal] = useModal(
     <ZapConfirmationModal
@@ -52,11 +51,6 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
   const showApproveFlow =
     !zapInputError && (approval === ApprovalState.NOT_APPROVED || approval === ApprovalState.PENDING)
 
-  const aproveZap = () => {
-    setPendingTx(true)
-    approveCallback().finally(() => setPendingTx(false))
-  }
-
   const renderAction = () => {
     if (!account) {
       return <UnlockButton fullWidth />
@@ -73,10 +67,9 @@ const ZapLiquidityActions: React.FC<ZapLiquidityActionsProps> = ({
         <Flex sx={{ width: '100%' }}>
           <>
             <Button
-              onClick={aproveZap}
-              disabled={approval !== ApprovalState.NOT_APPROVED || pendingTx}
+              onClick={approveCallback}
+              disabled={approval !== ApprovalState.NOT_APPROVED}
               load={approval === ApprovalState.PENDING}
-              endIcon={pendingTx && <AutoRenewIcon spin color="currentColor" />}
               fullWidth
               sx={{ padding: '10px 2px' }}
             >
