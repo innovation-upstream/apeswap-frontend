@@ -1,5 +1,4 @@
 declare const dataLayer: Array<any>
-declare module '@siddomains/sidjs'
 /// <reference types="react-scripts" />
 
 interface WindowChain {
