@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { ResetCSS, ApeSwapTheme } from '@apeswapfinance/uikit'
-import { FloatingDocs } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import MarketingModalCheck from 'components/MarketingModalCheck'
 import { useFetchBananaPrice } from 'state/tokenPrices/hooks'
@@ -19,6 +18,7 @@ import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
 import PoolFinder from './views/Dex/PoolFinder'
 import ResetScroll from './utils/resetScroll'
+import FloatingDocs from 'components/FloatingDocs'
 // Most used routes get loaded directly
 import Pool from './views/Dex/Pool'
 import Swap from './views/Dex/Swap'
@@ -514,7 +514,7 @@ const App: React.FC = () => {
       <ResetCSS />
       <GlobalStyle />
       <MarketingModalCheck />
-      <FloatingDocs link="https://apeswap.gitbook.io/apeswap-finance/welcome/master" />
+      <FloatingDocs />
       {loadMenu()}
       <ToastListener />
     </Router>
