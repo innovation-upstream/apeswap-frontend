@@ -16,7 +16,7 @@ const QuestSlide2 = () => {
       <Box sx={styles.thirdWrapper}>
         <Text color="yellow" sx={styles.third}>
           <a
-            href="https://box.genki.io/RJ4LP3"
+            href="https://box.genki.io/FZSY2H"
             style={{ textDecoration: 'underline' }}
             target="_blank"
             rel="noreferrer noopener"
@@ -24,7 +24,12 @@ const QuestSlide2 = () => {
             {t('Visit GENKI')}
           </a>
         </Text>{' '}
-        <Text sx={styles.third}> {t('and connect your Wallet to access your available Quests.')}</Text>
+        <Text sx={styles.third}>
+          {' '}
+          {t('and connect your wallet to access the newly available Quests we have for you.')}
+        </Text>
+        <br />
+        <br />
       </Box>
     </>
   )

@@ -3,7 +3,7 @@ import { Dropdown, DropdownItem, Flex, Text, useModal } from '@ape.swap/uikit'
 import { Currency } from '@ape.swap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Spinner } from 'theme-ui'
+import { Box, Spinner } from 'theme-ui'
 import DualCurrencySearchModal from './DualCurrencySearchModal'
 import { useAllTokens } from 'hooks/Tokens'
 import { useSetZapInputList, useZapInputList } from 'state/zap/hooks'
@@ -16,7 +16,8 @@ const DualCurrencyDropdown: React.FC<{
   inputCurrencies: Currency[]
   onCurrencySelect?: (currency: DualCurrencySelector) => void
   lpList: DualCurrencySelector[]
-}> = ({ inputCurrencies, onCurrencySelect, lpList }) => {
+  enableZap: boolean
+}> = ({ inputCurrencies, onCurrencySelect, lpList, enableZap }) => {
   useSetZapInputList()
   const allTokens = useAllTokens()
   const rawZapInputList = useZapInputList()
@@ -45,7 +46,7 @@ const DualCurrencyDropdown: React.FC<{
   }, [allTokens, chainId, rawZapInputList])
 
   const quickSorting = (token1, token2) => {
-    // we might want to make this more involved. Sorting logic is as follows: 1 WETH, 2 BUSD, 3 DAI, 4 USDC
+    // we might want to make this more involved. Sorting order is as follows: 1 WETH, 2 BUSD, 3 DAI, 4 USDC
     if (token1.symbol === 'WETH') {
       return -1
     }
@@ -120,18 +121,42 @@ const DualCurrencyDropdown: React.FC<{
     <Flex sx={{ minWidth: 'max-content' }}>
       {inputCurrencies[0] ? (
         <Flex>
-          <Dropdown
-            size="sm"
-            component={<DropdownDisplay inputCurrencies={inputCurrencies} active />}
-            sx={{ width: '190px', zIndex: 500, background: 'white4' }}
-          >
-            {currenciesList.slice(0, 4).map((item, index) => {
-              return Item([item.currencyA, item.currencyB], index)
-            })}
-            <DropdownItem size="sm" sx={{ textAlign: 'center' }} onClick={onPresentCurrencyModal}>
-              <Text sx={{ '&:hover': { textDecoration: 'underline' } }}>{t('See all')} &gt;</Text>
-            </DropdownItem>
-          </Dropdown>
+          {enableZap ? (
+            <Dropdown
+              size="sm"
+              component={<DropdownDisplay inputCurrencies={inputCurrencies} active />}
+              sx={{ width: '190px', zIndex: 500, background: 'white4' }}
+            >
+              {currenciesList.slice(0, 4).map((item, index) => {
+                return Item([item.currencyA, item.currencyB], index)
+              })}
+              <DropdownItem size="sm" sx={{ textAlign: 'center' }} onClick={onPresentCurrencyModal}>
+                <Text sx={{ '&:hover': { textDecoration: 'underline' } }}>{t('See all')} &gt;</Text>
+              </DropdownItem>
+            </Dropdown>
+          ) : (
+            <Box
+              sx={{
+                background: 'white4',
+                borderRadius: '10px',
+                position: 'relative',
+                width: '190px',
+              }}
+            >
+              <Flex
+                sx={{
+                  padding: '5px 4px',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  span: {
+                    fontSize: 3,
+                  },
+                }}
+              >
+                <DropdownDisplay inputCurrencies={inputCurrencies} active />
+              </Flex>
+            </Box>
+          )}
         </Flex>
       ) : (
         <Spinner width="15px" height="15px" sx={{ marginRight: '10px' }} />

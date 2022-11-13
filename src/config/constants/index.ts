@@ -179,6 +179,8 @@ export { default as ifosConfig } from './ifo'
 // DEFAULT MODAL CONSTANTS
 export const SHOW_DEFAULT_MODAL_KEY = 'SHOW_DEFAULT_MODAL'
 export const SET_DEFAULT_MODAL_KEY = 'SET_DEFAULT_MODAL'
+export const SET_DEF_MOD_KEY = 'SET_DEF_MOD_KEY'
+export const SHOW_DEF_MOD_KEY = 'SHOW_DEF_MOD_KEY'
 
 // MODALS CONSTANTS
 export const MODAL_INFO = {
@@ -256,4 +258,10 @@ export enum SHOW_MODAL_TYPES {
   buyModal = 'showBuyModal',
   poolHarvestModal = 'showPoolHarvestModal',
   generalHarvestModal = 'showGeneralHarvestModal',
+}
+
+export enum PRODUCT {
+  FARM,
+  JUNGLE_FARM,
+  DUAL_FARM,
 }

@@ -1,38 +1,38 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { SET_DEFAULT_MODAL_KEY, SHOW_DEFAULT_MODAL_KEY } from 'config/constants'
+import { SET_DEF_MOD_KEY, SHOW_DEF_MOD_KEY } from 'config/constants'
 import useIsMobile from 'hooks/useIsMobile'
-import MarketingSwipper from './MarketingSwipper'
-import CardView from './CardView'
+import MobileModal from './Mobile'
+import DesktopModal from './Desktop'
 
 const QuestModal: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
   const isMobile = useIsMobile()
   const [hideDefault, setHideDefault] = useState(false)
 
-  const sdmk = localStorage.getItem(SET_DEFAULT_MODAL_KEY)
+  const sdmk = localStorage.getItem(SET_DEF_MOD_KEY)
 
   const alreadySet = JSON.parse(sdmk)
 
   const setDefaultNoShow = () => {
     if (hideDefault) {
       setHideDefault(false)
-      localStorage.removeItem(SET_DEFAULT_MODAL_KEY)
+      localStorage.removeItem(SET_DEF_MOD_KEY)
     } else {
-      localStorage.setItem(SET_DEFAULT_MODAL_KEY, JSON.stringify('TRUE'))
-      localStorage.removeItem(SHOW_DEFAULT_MODAL_KEY)
+      localStorage.setItem(SET_DEF_MOD_KEY, JSON.stringify('TRUE'))
+      localStorage.removeItem(SHOW_DEF_MOD_KEY)
       setHideDefault(!hideDefault)
     }
   }
 
   return isMobile ? (
-    <MarketingSwipper
+    <MobileModal
       onDismiss={onDismiss}
       setDefaultNoShow={setDefaultNoShow}
       hideDefault={hideDefault}
       alreadySet={alreadySet}
     />
   ) : (
-    <CardView
+    <DesktopModal
       onDismiss={onDismiss}
       setDefaultNoShow={setDefaultNoShow}
       hideDefault={hideDefault}
