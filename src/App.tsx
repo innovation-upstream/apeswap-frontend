@@ -66,6 +66,9 @@ const MigrateLiquidity = lazy(() => import('./views/Dex/Migrate/MigrateLiquidity
 // In development
 // const MigrateAll = lazy(() => import('./views/Dex/Migrate/MigrateAll'))
 const UnstakeLiquidity = lazy(() => import('./views/Dex/Migrate/UnstakeLiquidity'))
+const Info = lazy(() => import('./views/Info'))
+const TokensPage = lazy(() => import('./views/Info/views/Tokens'))
+const TransactionsPage = lazy(() => import('./views/Info/views/Transactions'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 
@@ -201,6 +204,15 @@ const App: React.FC = () => {
               <Route path="/gnana">
                 <Redirect to="/" />
               </Route>
+              <Route exact path="/info">
+                <Info />
+              </Route>
+              <Route exact path="/info/tokens">
+                <TokensPage />
+              </Route>
+              <Route exact path="/info/transactions">
+                <TransactionsPage />
+              </Route>
               {/* SWAP ROUTES */}
               <Route path="/swap" component={Swap} />
               <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
@@ -222,6 +234,7 @@ const App: React.FC = () => {
               <Route path="/migrate">
                 <Redirect to={'/swap'} />
               </Route>
+
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
             </Switch>
@@ -297,6 +310,15 @@ const App: React.FC = () => {
               <Route path="/apestats">
                 <Stats />
               </Route>
+              <Route exact path="/info">
+                <Info />
+              </Route>
+              <Route exact path="/info/tokens">
+                <TokensPage />
+              </Route>
+              <Route exact path="/info/transactions">
+                <TransactionsPage />
+              </Route>
               {/* SWAP ROUTES */}
               <Route path="/swap" component={Swap} />
               <Route exact strict path="/limit-orders" component={RedirectPathToSwapOnly} />
@@ -364,6 +386,15 @@ const App: React.FC = () => {
               <Route path="/treasury-bills">
                 <Bills />
               </Route>
+              <Route exact path="/info">
+                <Info />
+              </Route>
+              <Route exact path="/info/tokens">
+                <TokensPage />
+              </Route>
+              <Route exact path="/info/transactions">
+                <TransactionsPage />
+              </Route>
               {/* Redirects */}
               <Route path="/vaults">
                 <Redirect to="/" />
@@ -412,6 +443,7 @@ const App: React.FC = () => {
               <Route path="/migrate">
                 <Redirect to={'/swap'} />
               </Route>
+
               {/* SWAP ROUTES */}
               <Route component={NotFound} />
             </Switch>
@@ -484,6 +516,15 @@ const App: React.FC = () => {
             </Route>
             <Route path="/privacy">
               <PrivacyPolicy />
+            </Route>
+            <Route exact path="/info">
+              <Info />
+            </Route>
+            <Route exact path="/info/tokens">
+              <TokensPage />
+            </Route>
+            <Route exact path="/info/transactions">
+              <TransactionsPage />
             </Route>
             {/* Redirect */}
             <Route path="/staking">
