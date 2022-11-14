@@ -24,6 +24,7 @@ import { DexSlides } from 'components/MarketingModalContent/Dex'
 import { FarmSlides } from 'components/MarketingModalContent/Farm'
 import { PoolSlides } from 'components/MarketingModalContent/Pool'
 import { MaximizerSlides } from 'components/MarketingModalContent/Maximizers'
+import { GnanaSlides } from 'components/MarketingModalContent/Gnana'
 
 const MarketingModalCheck = () => {
   const { chainId } = useActiveWeb3React()
@@ -63,6 +64,7 @@ const MarketingModalCheck = () => {
   const farmsRoute = location.search.includes('modal=farms')
   const poolsRoute = location.search.includes('modal=pools')
   const maximizersRoute = location.search.includes('modal=maximizers')
+  const gnanaTutorialRoute = location.search.includes('modal=gnana-tutorial')
 
   const lendingRoute = location.search.includes('modal=3')
   const billsRoute = location.search.includes('modal=bills')
@@ -94,6 +96,7 @@ const MarketingModalCheck = () => {
   const bills = [<BillsBody1 key="bill1" />]
   // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
   // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/vaults"
+  // link="https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/gnana"
 
   return farmsRoute ? (
     <TutorialModal
@@ -150,6 +153,18 @@ const MarketingModalCheck = () => {
       readyText={t("I'm Ready")}
     >
       {MaximizerSlides}
+    </TutorialModal>
+  ) : gnanaTutorialRoute ? (
+    <TutorialModal
+      type="gnana"
+      title={t('Welcome to Golden Banana')}
+      description={t('Unlock the exclusive benefits of GNANA!')}
+      t={t}
+      onDismiss={onDismiss}
+      onReady={onDismiss}
+      readyText={t("I'm Ready")}
+    >
+      {GnanaSlides}
     </TutorialModal>
   ) : lendingRoute ? (
     <MarketingModal

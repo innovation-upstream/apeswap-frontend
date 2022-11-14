@@ -15,7 +15,7 @@ const Slide2 = () => {
         <Text sx={styles.content}>{t('Select GET BANANA or GET GNANA to acquire tokens to stake.')}</Text>
       </Text>
       <Text sx={{ ...styles.content, fontStyle: 'italic' }}>
-        <Text sx={{ ...styles.content }}>{t('If you want to stake')}</Text>{' '}
+        <Text sx={styles.content}>{t('If you want to stake')}</Text>{' '}
         <TooltipBubble
           placement={'topRight'}
           transformTip={`translate(3%, 2%)`}
@@ -28,7 +28,7 @@ const Slide2 = () => {
         >
           <Text sx={{ ...styles.content, ...styles.tipTitle }}>GNANA,</Text>
         </TooltipBubble>{' '}
-        <Text sx={{ ...styles.content }}> {t("you'll need to get BANANA First!")}</Text>
+        <Text sx={styles.content}> {t("you'll need to get BANANA First!")}</Text>
       </Text>
     </Flex>
   )
