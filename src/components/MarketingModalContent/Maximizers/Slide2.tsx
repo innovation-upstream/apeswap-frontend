@@ -12,23 +12,14 @@ const Slide2 = () => {
   return (
     <Flex sx={styles.container}>
       <Text sx={styles.step}>{t('Step 2')}</Text>
-      <Text sx={styles.head}>{t('Add Liquidity')}</Text>
+      <Text sx={styles.head}>{t('Get Tokens')}</Text>
 
       <Text sx={styles.content}>
-        <Text sx={styles.content}>{t('Select the desired farm and click GET LP. This will allow you to easily')}</Text>{' '}
-        <TooltipBubble
-          placement={'topRight'}
-          transformTip="translate(0%, 2%)"
-          body={
-            <Flex sx={styles.tipBody}>
-              {t('Contribute equal amounts of two tokens to the DEX to facilitate swaps between them.')}
-            </Flex>
-          }
-          sx={{ width: ['250px', '250px', '350px'] }}
-        >
-          <Text sx={{ ...styles.content, ...styles.tipTitle }}>add liquidity</Text>
-        </TooltipBubble>{' '}
-        <Text sx={styles.content}> {t('and obtain liquidity provider (LP) tokens in exchange.')}</Text>
+        <Text sx={styles.content}>
+          {t(
+            'Open the desired Maximizer and click GET LP or GET BANANA. This will allow you to easily obtain tokens to stake.',
+          )}
+        </Text>
       </Text>
 
       <Text sx={{ ...styles.content, fontStyle: 'italic' }}>
@@ -45,7 +36,20 @@ const Slide2 = () => {
         >
           <Text sx={{ ...styles.content, ...styles.tipTitle }}>ZAP</Text>
         </TooltipBubble>{' '}
-        <Text sx={{ ...styles.content, fontWeight: 300 }}> {t('to add liquidity with single tokens!')}</Text>
+        <Text sx={{ ...styles.content, fontWeight: 300 }}> {t('to')}</Text>{' '}
+        <TooltipBubble
+          placement={'topLeft'}
+          transformTip={`translate(${isMobile ? '10%' : '0'}, 2%)`}
+          body={
+            <Flex sx={styles.tipBody}>
+              {t('Contribute equal amounts of two tokens to the DEX to facilitate swaps between them.')}
+            </Flex>
+          }
+          sx={{ width: ['240px', '240px', '350px'] }}
+        >
+          <Text sx={{ ...styles.content, ...styles.tipTitle }}>add liquidity</Text>
+        </TooltipBubble>{' '}
+        <Text sx={{ ...styles.content, fontWeight: 300 }}> {t('with single tokens!')}</Text>
       </Text>
     </Flex>
   )

@@ -23,6 +23,7 @@ import { NETWORK_LABEL } from 'config/constants/chains'
 import { DexSlides } from 'components/MarketingModalContent/Dex'
 import { FarmSlides } from 'components/MarketingModalContent/Farm'
 import { PoolSlides } from 'components/MarketingModalContent/Pool'
+import { MaximizerSlides } from 'components/MarketingModalContent/Maximizers'
 
 const MarketingModalCheck = () => {
   const { chainId } = useActiveWeb3React()
@@ -61,6 +62,7 @@ const MarketingModalCheck = () => {
   const dexRoute = location.search.includes('modal=dex')
   const farmsRoute = location.search.includes('modal=farms')
   const poolsRoute = location.search.includes('modal=pools')
+  const maximizersRoute = location.search.includes('modal=maximizers')
 
   const lendingRoute = location.search.includes('modal=3')
   const billsRoute = location.search.includes('modal=bills')
@@ -74,7 +76,6 @@ const MarketingModalCheck = () => {
   const newsletterRoute = location.search.includes('modal=newsletter')
 
   const { LendingBody1, LendingBody2, LendingBody3, LendingBody4, LendingBody5 } = LendingBodies
-  // const { PoolsBody1, PoolsBody2, PoolsBody3, PoolsBody4 } = PoolsBodies
   const { BillsBody1 } = BillsBodies
 
   const onDismiss = () => {
@@ -90,14 +91,9 @@ const MarketingModalCheck = () => {
     <LendingBody4 key="lend4" />,
     <LendingBody5 key="lend5" />,
   ]
-  // const pools = [
-  //   <PoolsBody1 key="pool1" />,
-  //   <PoolsBody2 key="pool2" />,
-  //   <PoolsBody3 key="pool3" />,
-  //   <PoolsBody4 key="pool4" />,
-  // ]
   const bills = [<BillsBody1 key="bill1" />]
   // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
+  // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/vaults"
 
   return farmsRoute ? (
     <TutorialModal
@@ -143,6 +139,18 @@ const MarketingModalCheck = () => {
     >
       {PoolSlides}
     </TutorialModal>
+  ) : maximizersRoute ? (
+    <TutorialModal
+      type="maximizers-vaults"
+      title={t('Welcome to Banana Maximizers')}
+      description={t('Maximize your BANANA yields!')}
+      t={t}
+      onDismiss={onDismiss}
+      onReady={onDismiss}
+      readyText={t("I'm Ready")}
+    >
+      {MaximizerSlides}
+    </TutorialModal>
   ) : lendingRoute ? (
     <MarketingModal
       title={t("Welcome to ApeSwap's Lending Network")}
@@ -153,18 +161,7 @@ const MarketingModalCheck = () => {
     >
       {lending}
     </MarketingModal>
-  ) : // poolsRoute ? (
-  //   <MarketingModal
-  //     title={t("Welcome to ApeSwap's Pools")}
-  //     description={t('Earn tokens by staking BANANA or GNANA')}
-  //     onDismiss={onDismiss}
-  //     startEarning={onDismiss}
-  //     startEarningText={t('Start Earning')}
-  //   >
-  //     {pools}
-  //   </MarketingModal>
-  // ) :
-  billsRoute ? (
+  ) : billsRoute ? (
     <MarketingModal
       title={t('Welcome to ApeSwap Treasury Bills')}
       onDismiss={onDismiss}
