@@ -1,7 +1,6 @@
 import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Percent, Token, TokenAmount, ZapType } from '@ape.swap/sdk'
 import { createAction } from '@reduxjs/toolkit'
 import { PairState } from 'hooks/usePairs'
-import { ParsedFarm } from './reducer'
 
 export enum Field {
   INPUT = 'INPUT',
@@ -53,4 +52,3 @@ export const setInputList = createAction<{ zapInputList: { [symbol: string]: Tok
 export const setZapNewOutputList = createAction<{ zapNewOutputList: { currencyIdA: string; currencyIdB: string }[] }>(
   'zap/setZapNewOutputList',
 )
-export const setZapOutputList = createAction<{ zapOutputList: ParsedFarm[]; chainId: ChainId }>('zap/setOutputList')

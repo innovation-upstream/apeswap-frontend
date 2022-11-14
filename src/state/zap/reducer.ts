@@ -1,4 +1,4 @@
-import { ChainId, Token, ZapType } from '@ape.swap/sdk'
+import { Token, ZapType } from '@ape.swap/sdk'
 import { createReducer } from '@reduxjs/toolkit'
 import {
   Field,
@@ -8,19 +8,9 @@ import {
   setInputList,
   setRecipient,
   setZapNewOutputList,
-  setZapOutputList,
   setZapType,
   typeInput,
 } from './actions'
-
-export interface ParsedFarm {
-  lpSymbol: string
-  lpAddress: string
-  currency1: string
-  currency1Symbol: string
-  currency2: string
-  currency2Symbol: string
-}
 
 export interface ZapState {
   readonly independentField: Field
@@ -36,7 +26,6 @@ export interface ZapState {
   readonly recipient: string | null
   readonly zapInputList: { [symbol: string]: Token } | undefined
   readonly zapNewOutputList: { currencyIdA: string; currencyIdB: string }[]
-  readonly zapOutputList: { [chain: string]: ParsedFarm[] } | undefined
 }
 
 const initialState: ZapState = {
@@ -53,7 +42,6 @@ const initialState: ZapState = {
   recipient: null,
   zapInputList: null,
   zapNewOutputList: [],
-  zapOutputList: { [ChainId.BSC]: [], [ChainId.MATIC]: [] },
 }
 
 export default createReducer<ZapState>(initialState, (builder) =>
@@ -113,12 +101,6 @@ export default createReducer<ZapState>(initialState, (builder) =>
       return {
         ...state,
         zapNewOutputList,
-      }
-    })
-    .addCase(setZapOutputList, (state, { payload: { zapOutputList, chainId } }) => {
-      return {
-        ...state,
-        zapOutputList: { ...state.zapOutputList, [chainId]: zapOutputList },
       }
     }),
 )

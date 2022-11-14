@@ -3,30 +3,33 @@ import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useToast } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { ApprovalState } from 'hooks/useApproveCallback'
 import { Button, AutoRenewIcon } from '@ape.swap/uikit'
+import { useERC20 } from 'hooks/useContract'
+import { useJungleApprove } from 'hooks/useApprove'
 
 interface ApprovalActionProps {
-  action: () => Promise<any>
-  zapApprovalState?: ApprovalState
+  lpToApprove: string
+  pid: string
 }
 
-const ApprovalAction: React.FC<ApprovalActionProps> = ({ action, zapApprovalState }) => {
+const ApproveJungle: React.FC<ApprovalActionProps> = ({ lpToApprove, pid }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const [pendingTrx, setPendingTrx] = useState(false)
   const { toastSuccess } = useToast()
-  const zapPendingApproval = zapApprovalState ? zapApprovalState !== ApprovalState.NOT_APPROVED : false
+  const stakingTokenContract = useERC20(lpToApprove)
+
+  const { onApprove } = useJungleApprove(stakingTokenContract, parseFloat(pid))
 
   return (
     <Button
       className="noClick"
-      disabled={pendingTrx || zapPendingApproval}
+      disabled={pendingTrx}
       onClick={async () => {
         setPendingTrx(true)
-        await action()
+        await onApprove()
           .then((resp) => {
-            const trxHash = resp !== false ? resp.transactionHash : ''
+            const trxHash = resp.transactionHash
             toastSuccess(t('Approve Successful'), {
               text: t('View Transaction'),
               url: getEtherscanLink(trxHash, 'transaction', chainId),
@@ -39,7 +42,6 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ action, zapApprovalStat
         setPendingTrx(false)
       }}
       endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
-      load={zapApprovalState === ApprovalState.PENDING}
       fullWidth
     >
       {t('ENABLE')}
@@ -47,4 +49,4 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ action, zapApprovalStat
   )
 }
 
-export default React.memo(ApprovalAction)
+export default React.memo(ApproveJungle)
