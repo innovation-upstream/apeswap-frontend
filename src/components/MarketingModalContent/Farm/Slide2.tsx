@@ -32,7 +32,7 @@ const Slide2 = () => {
       </Text>
 
       <Text sx={{ ...styles.content, fontStyle: 'italic' }}>
-        <Text sx={{ ...styles.content, fontWeight: 300 }}>{t(`⚡NEW: You can also`)}</Text>{' '}
+        <Text sx={{ ...styles.content, fontWeight: 300 }}>{t('⚡NEW: You can also')}</Text>{' '}
         <TooltipBubble
           placement={'topRight'}
           transformTip={`translate(${isMobile ? '10%' : '6%'}, 2%)`}

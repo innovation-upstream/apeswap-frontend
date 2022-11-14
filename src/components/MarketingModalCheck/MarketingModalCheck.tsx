@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { MarketingModal, TutorialModal } from '@ape.swap/uikit'
 import { LendingBodies } from 'components/MarketingModalContent/Lending/'
-import { PoolsBodies } from 'components/MarketingModalContent/Pools/'
 import { BillsBodies } from 'components/MarketingModalContent/Bills/'
 import CircularModal from 'components/CircularModal'
 import { useTranslation } from 'contexts/Localization'
@@ -23,6 +22,7 @@ import { circularRoute } from 'utils'
 import { NETWORK_LABEL } from 'config/constants/chains'
 import { DexSlides } from 'components/MarketingModalContent/Dex'
 import { FarmSlides } from 'components/MarketingModalContent/Farm'
+import { PoolSlides } from 'components/MarketingModalContent/Pool'
 
 const MarketingModalCheck = () => {
   const { chainId } = useActiveWeb3React()
@@ -60,8 +60,8 @@ const MarketingModalCheck = () => {
 
   const dexRoute = location.search.includes('modal=dex')
   const farmsRoute = location.search.includes('modal=farms')
+  const poolsRoute = location.search.includes('modal=pools')
 
-  const poolsRoute = location.search.includes('modal=2')
   const lendingRoute = location.search.includes('modal=3')
   const billsRoute = location.search.includes('modal=bills')
   const questRoute = location.search.includes('modal=tutorial')
@@ -74,7 +74,7 @@ const MarketingModalCheck = () => {
   const newsletterRoute = location.search.includes('modal=newsletter')
 
   const { LendingBody1, LendingBody2, LendingBody3, LendingBody4, LendingBody5 } = LendingBodies
-  const { PoolsBody1, PoolsBody2, PoolsBody3, PoolsBody4 } = PoolsBodies
+  // const { PoolsBody1, PoolsBody2, PoolsBody3, PoolsBody4 } = PoolsBodies
   const { BillsBody1 } = BillsBodies
 
   const onDismiss = () => {
@@ -90,13 +90,14 @@ const MarketingModalCheck = () => {
     <LendingBody4 key="lend4" />,
     <LendingBody5 key="lend5" />,
   ]
-  const pools = [
-    <PoolsBody1 key="pool1" />,
-    <PoolsBody2 key="pool2" />,
-    <PoolsBody3 key="pool3" />,
-    <PoolsBody4 key="pool4" />,
-  ]
+  // const pools = [
+  //   <PoolsBody1 key="pool1" />,
+  //   <PoolsBody2 key="pool2" />,
+  //   <PoolsBody3 key="pool3" />,
+  //   <PoolsBody4 key="pool4" />,
+  // ]
   const bills = [<BillsBody1 key="bill1" />]
+  // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
 
   return farmsRoute ? (
     <TutorialModal
@@ -130,6 +131,18 @@ const MarketingModalCheck = () => {
     >
       {DexSlides}
     </TutorialModal>
+  ) : poolsRoute ? (
+    <TutorialModal
+      type="pools"
+      title={t('Welcome to Staking Pools')}
+      description={t('Earn tokens by staking BANANA or GNANA!')}
+      t={t}
+      onDismiss={onDismiss}
+      onReady={onDismiss}
+      readyText={t("I'm Ready")}
+    >
+      {PoolSlides}
+    </TutorialModal>
   ) : lendingRoute ? (
     <MarketingModal
       title={t("Welcome to ApeSwap's Lending Network")}
@@ -140,17 +153,18 @@ const MarketingModalCheck = () => {
     >
       {lending}
     </MarketingModal>
-  ) : poolsRoute ? (
-    <MarketingModal
-      title={t("Welcome to ApeSwap's Pools")}
-      description={t('Earn tokens by staking BANANA or GNANA')}
-      onDismiss={onDismiss}
-      startEarning={onDismiss}
-      startEarningText={t('Start Earning')}
-    >
-      {pools}
-    </MarketingModal>
-  ) : billsRoute ? (
+  ) : // poolsRoute ? (
+  //   <MarketingModal
+  //     title={t("Welcome to ApeSwap's Pools")}
+  //     description={t('Earn tokens by staking BANANA or GNANA')}
+  //     onDismiss={onDismiss}
+  //     startEarning={onDismiss}
+  //     startEarningText={t('Start Earning')}
+  //   >
+  //     {pools}
+  //   </MarketingModal>
+  // ) :
+  billsRoute ? (
     <MarketingModal
       title={t('Welcome to ApeSwap Treasury Bills')}
       onDismiss={onDismiss}

@@ -2,7 +2,7 @@
 import React from 'react'
 import { Flex, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { styles } from './styles'
+import { styles } from '../styles'
 
 const CollectSlide = () => {
   const { t } = useTranslation()
@@ -10,7 +10,7 @@ const CollectSlide = () => {
   return (
     <Flex sx={styles.container}>
       <Text sx={styles.step}>{t('Step 4')}</Text>
-      <Text sx={styles.head}>{t('Collect')}</Text>
+      <Text sx={styles.head}>{t('Collect!')}</Text>
 
       <Text sx={styles.content}>
         <Text sx={styles.content}>

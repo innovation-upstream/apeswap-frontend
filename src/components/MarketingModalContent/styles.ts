@@ -240,6 +240,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     color: 'yellow',
     lineHeight: '18px',
     textDecoration: 'underline',
+    cursor: 'pointer',
   },
   content: {
     fontSize: ['12px', '12px', '14px'],

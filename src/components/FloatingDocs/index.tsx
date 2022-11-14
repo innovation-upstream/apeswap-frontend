@@ -17,7 +17,6 @@ export const FloatingDocs: React.FC<FloatingDocsProps> = ({ iconProps, ...props 
   const TREASURY_BILL = window.location.pathname.includes('treasury-bills')
 
   // LENDING ROUTE isn't on this frontend project
-  // const LENDING = window.location.protocol.includes('lending')
   // console.log('lendingRoute:::', LENDING)
 
   const routes = [JUNGLE_FARMS, FARMS, DEX, POOLS, MAXIMIZERS_VAULTS, LIQUIDITY, ORDERS, IAO, GNANA, TREASURY_BILL]

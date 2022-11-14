@@ -6,7 +6,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { NETWORK_LABEL } from 'config/constants/chains'
 import { METAMASK_LINKS } from 'config/constants'
 import useAuth from 'hooks/useAuth'
-import { styles } from './styles'
+import { styles } from '../styles'
 
 const WelcomeSlide = () => {
   const { login, logout } = useAuth()

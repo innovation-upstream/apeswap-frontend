@@ -4,9 +4,9 @@ import StakeSlide from '../GeneralSlides/StakeSlide'
 import CollectSlide from '../GeneralSlides/CollectSlide'
 import Slide2 from './Slide2'
 
-export const FarmSlides = [
+export const PoolSlides = [
   <WelcomeSlide key="welcome" />,
-  <Slide2 key="farm2" />,
+  <Slide2 key="pool2" />,
   <StakeSlide key="stake" />,
   <CollectSlide key="collect" />,
 ]
