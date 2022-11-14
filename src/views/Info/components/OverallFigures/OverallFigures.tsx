@@ -100,7 +100,7 @@ export const Section = styled.div`
   }
 
   .graphFrame {
-    height: 388px;
+    height: 327px;
     width: 100%;
   }
 `
@@ -110,18 +110,14 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
     currentDayData: [],
     oneDayData: [],
     graphData: [],
+    displayedValue: 0,
+    displayedValueDate: '',
   })
 
   const [isLoading, setIsLoading] = useState(false)
 
   function getBarColor(bar: any) {
-    if (bar.id === 'bnb') return '#FAB701'
-
-    if (bar.id === 'polygon') return '#8C3EED'
-
-    if (bar.id === 'telos') return '#9D68E8'
-
-    return '#637DEA'
+    return CHAINS.filter((x) => x.chain === bar.id)[0].color
   }
 
   useEffect(() => {
@@ -161,6 +157,8 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
             currentDayData: temp,
             oneDayData: state.oneDayData,
             graphData: state.graphData,
+            displayedValue: state.displayedValue,
+            displayedValueDate: state.displayedValueDate,
           })
         })
 
@@ -175,6 +173,8 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
             currentDayData: state.currentDayData,
             oneDayData: temp,
             graphData: state.graphData,
+            displayedValue: state.displayedValue,
+            displayedValueDate: state.displayedValueDate,
           })
         })
 
@@ -196,6 +196,8 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
               graphData: temp,
               currentDayData: state.currentDayData,
               oneDayData: state.oneDayData,
+              displayedValue: state.displayedValue,
+              displayedValueDate: state.displayedValueDate,
             })
           } else {
             const temp = state.graphData
@@ -203,7 +205,13 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
               temp[j][chain] = result.data.uniswapDayDatas[j].dailyVolumeUSD
               //temp[j].data.push({ chain: chain, dailyVolumeUSD: result.data.uniswapDayDatas[j].dailyVolumeUSD })
             }
-            setState({ graphData: temp, currentDayData: state.currentDayData, oneDayData: state.oneDayData })
+            setState({
+              graphData: temp,
+              currentDayData: state.currentDayData,
+              oneDayData: state.oneDayData,
+              displayedValue: state.displayedValue,
+              displayedValueDate: state.displayedValueDate,
+            })
           }
         })
     }
@@ -282,6 +290,18 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
                 <img src="/images/info/maximizers-bg.png" className="showcase" />
               </Section>
               <Section>
+                <div className="figure">
+                  <Icon name="chart" />
+                  <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
+                  <Text fontSize="12px">
+                    Volume (
+                    {state.displayedValueDate
+                      ? moment.unix(Number(state.displayedValueDate)).format('MMM DD, YYYY').valueOf()
+                      : 'Last 24 hours'}
+                    )
+                  </Text>
+                </div>
+
                 <div className="graphFrame">
                   {state.graphData.length > 0 ? (
                     <ResponsiveBar
@@ -324,6 +344,15 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
                       animate={false}
                       tooltip={() => <></>}
                       margin={{ top: 0, right: 0, bottom: 25, left: 0 }}
+                      onMouseEnter={(data, event) => {
+                        setState({
+                          displayedValue: data.value,
+                          displayedValueDate: data.indexValue as string,
+                          graphData: state.graphData,
+                          currentDayData: state.currentDayData,
+                          oneDayData: state.oneDayData,
+                        })
+                      }}
                     />
                   ) : (
                     <div>Loading</div>

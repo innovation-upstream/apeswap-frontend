@@ -13,6 +13,7 @@ import styled from '@emotion/styled'
 import { IconBox } from './styles'
 import { Chain, CHAINS } from './config/config'
 import { CenteredImage } from '../Ifos/components/HowItWorks/styles'
+import PageLoader from '../../components/PageLoader'
 
 export const Container = styled.div`
   position: relative;
@@ -68,6 +69,11 @@ export const Section = styled.div`
     flex: 0 0 50px;
     padding: 10px 0px;
     margin-right: 0px;
+
+    img {
+      border: 2px solid #fff;
+      border-radius: 50%;
+    }
   }
 `
 
@@ -162,7 +168,7 @@ const Info: React.FC = () => {
         </div>
       ) : (
         <div>
-          <Loader />
+          <PageLoader />
         </div>
       )}
       <br />
