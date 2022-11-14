@@ -19,7 +19,7 @@ const Slide5 = () => {
           {t('Enjoy your new, shiny GNANA! You can now access exclusive pools, hold them to earn')}
         </Text>{' '}
         <TooltipBubble
-          placement={'topRight'}
+          placement={isMobile ? 'topLeft' : 'topRight'}
           transformTip="translate(0%, 2%)"
           body={
             <Flex sx={styles.tipBody}>
@@ -28,7 +28,7 @@ const Slide5 = () => {
               )}
             </Flex>
           }
-          sx={{ width: ['250px', '250px', '350px'] }}
+          sx={{ width: ['230px', '230px', '350px'] }}
         >
           <Text sx={{ ...styles.content, ...styles.tipTitle }}>reflect fees,</Text>
         </TooltipBubble>{' '}
@@ -38,14 +38,14 @@ const Slide5 = () => {
       <Text sx={{ ...styles.content, fontStyle: 'italic' }}>
         <Text sx={styles.content}>{t('Additionally, you can now vote in the')}</Text>{' '}
         <TooltipBubble
-          placement={'topRight'}
-          transformTip={`translate(${isMobile ? '10%' : '3%'}, 2%)`}
+          placement={isMobile ? 'topLeft' : 'topRight'}
+          transformTip={`translate(${isMobile ? '-3%' : '3%'}, 2%)`}
           body={
             <Flex sx={styles.tipBody}>
               {t('Convert one token directly into an LP token or other product in a single transaction.')}
             </Flex>
           }
-          sx={{ width: ['210px', '210px', '350px'] }}
+          sx={{ width: ['275px', '275px', '350px'] }}
         >
           <Text sx={{ ...styles.content, ...styles.tipTitle }}>DAO&apos;s</Text>
         </TooltipBubble>{' '}
