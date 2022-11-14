@@ -79,7 +79,8 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
             }
           }
           const temp = state.transactions
-          setState({ transactions: temp.concat(result.data.transactions) })
+          temp[chain] = result.data.transactions
+          setState({ transactions: temp })
         })
     }
     setIsLoading(false)
@@ -103,6 +104,19 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
     } else {
       return `${inSeconds} ${inSeconds === 1 ? 'second' : 'seconds'} ago`
     }
+  }
+
+  function processTransactions() {
+    let temp = []
+    for (let i = 0; i < CHAINS.length; i++) {
+      const chain = CHAINS[i].chain
+
+      temp = temp.concat(state.transactions[chain])
+    }
+    return temp
+      .sort((a: Transaction, b: Transaction) => a.swaps[0]?.transaction.timestamp - b.swaps[0]?.transaction.timestamp)
+      .reverse()
+      .slice(0, props.amount)
   }
 
   return (
@@ -130,39 +144,34 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
               <Column>{t('Account')}</Column>
               <Column>{t('Time')}</Column>
             </Row>
-            {state.transactions
-              .sort((a: Transaction, b: Transaction) =>
-                a.swaps[0]?.transaction.timestamp
-                  .toString()
-                  .localeCompare(b.swaps[0]?.transaction.timestamp.toString()),
-              )
-              .reverse()
-              .slice(0, props.amount)
-              .map((tran: Transaction, index) => {
+            {Object.keys(state.transactions).length === CHAINS.length &&
+              processTransactions().map((tran: Transaction, index) => {
                 return (
-                  <Row key={tran.swaps[0].transaction.id} background={index % 2 === 0}>
-                    <Column flex="2">
-                      <img src={`/images/chains/${tran.chain}.png`} width="24px" className="logo" />
-                      {`Swap ${tran.swaps[0]?.pair?.token0.symbol} for ${tran.swaps[0]?.pair?.token1.symbol}`}
-                    </Column>
-                    <Column>${(Math.round(tran.swaps[0]?.amountUSD * 100) / 100).toLocaleString()}</Column>
-                    <Column>{`${Math.abs(tran.swaps[0]?.amount0In - tran.swaps[0]?.amount0Out).toLocaleString()} ${
-                      tran.swaps[0]?.pair.token0.symbol
-                    }`}</Column>
-                    <Column>{`${Math.abs(tran.swaps[0]?.amount1In - tran.swaps[0]?.amount1Out).toLocaleString()} ${
-                      tran.swaps[0]?.pair.token1.symbol
-                    }`}</Column>
-                    <Column>
-                      <a
-                        href={`${CHAINS.find((x) => x.chain === tran.chain)?.explorer}address/${tran.swaps[0]?.to}`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {tran.swaps[0]?.to.slice(0, 6) + '...' + tran.swaps[0]?.to.slice(38, 42)}
-                      </a>
-                    </Column>
-                    <Column>{formatTime(tran.swaps[0]?.transaction.timestamp)}</Column>
-                  </Row>
+                  tran.swaps[0] && (
+                    <Row key={tran.swaps[0].transaction.id} background={index % 2 === 0}>
+                      <Column flex="2">
+                        <img src={`/images/chains/${tran.chain}.png`} width="24px" className="logo" />
+                        {`Swap ${tran.swaps[0]?.pair?.token0.symbol} for ${tran.swaps[0]?.pair?.token1.symbol}`}
+                      </Column>
+                      <Column>${(Math.round(tran.swaps[0]?.amountUSD * 100) / 100).toLocaleString()}</Column>
+                      <Column>{`${Math.abs(tran.swaps[0]?.amount0In - tran.swaps[0]?.amount0Out).toLocaleString()} ${
+                        tran.swaps[0]?.pair.token0.symbol
+                      }`}</Column>
+                      <Column>{`${Math.abs(tran.swaps[0]?.amount1In - tran.swaps[0]?.amount1Out).toLocaleString()} ${
+                        tran.swaps[0]?.pair.token1.symbol
+                      }`}</Column>
+                      <Column>
+                        <a
+                          href={`${CHAINS.find((x) => x.chain === tran.chain)?.explorer}address/${tran.swaps[0]?.to}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {tran.swaps[0]?.to.slice(0, 6) + '...' + tran.swaps[0]?.to.slice(38, 42)}
+                        </a>
+                      </Column>
+                      <Column>{formatTime(tran.swaps[0]?.transaction.timestamp)}</Column>
+                    </Row>
+                  )
                 )
               })}
           </BodyWrapper>

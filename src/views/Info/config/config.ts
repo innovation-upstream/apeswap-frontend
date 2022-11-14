@@ -1,3 +1,14 @@
+import flex from '../../../components/layout/Flex'
+
+export interface Chain {
+  chain: string
+  graphAddress: string
+  explorer: string
+  blockGraph: string
+  id: string
+  fee: number
+}
+
 export const CHAINS = [
   {
     chain: 'bnb',
@@ -5,6 +16,7 @@ export const CHAINS = [
     explorer: 'https://bscscan.com/',
     blockGraph: 'https://api.thegraph.com/subgraphs/name/matthewlilley/bsc-blocks',
     id: '0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6',
+    fee: 0.002,
   },
   {
     chain: 'polygon',
@@ -12,6 +24,7 @@ export const CHAINS = [
     explorer: 'https://polygonscan.com/',
     blockGraph: 'https://api.thegraph.com/subgraphs/name/matthewlilley/polygon-blocks',
     id: '0xcf083be4164828f00cae704ec15a36d711491284',
+    fee: 0.002,
   },
   {
     chain: 'ethereum',
@@ -19,5 +32,14 @@ export const CHAINS = [
     explorer: 'https://etherscan.com/',
     blockGraph: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
     id: '0xBAe5dc9B19004883d0377419FeF3c2C8832d7d7B',
+    fee: 0.002,
+  },
+  {
+    chain: 'telos',
+    graphAddress: 'https://telos.apeswapgraphs.com/subgraphs/name/ape-swap/apeswap-subgraph-telos',
+    explorer: 'https://teloscan.com/',
+    blockGraph: 'https://telos.apeswapgraphs.com/subgraphs/name/ape-swap/telos-blocks',
+    id: '0x411172Dfcd5f68307656A1ff35520841C2F7fAec',
+    fee: 0.002,
   },
 ]

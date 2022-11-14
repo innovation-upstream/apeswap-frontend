@@ -82,22 +82,53 @@ export const blocksQuery = (startTimestamp: number, currentTimestamp: number) =>
   }
 }
 
-// export const uniswapFactoriesQuery = (chainId: string, blockN: number) => {
-//   return {
-//     query:
-//       'query uniswapFactories { uniswapFactories(block: { number: ' +
-//       blockN +
-//       ' } where: {id: "' +
-//       chainId +
-//       '"}) { id totalVolumeUSD totalVolumeETH untrackedVolumeUSD totalLiquidityUSD totalLiquidityETH txCount pairCount } }',
-//   }
-// }
-
 export const uniswapFactoriesQuery = (chainId: string, block: string) => {
   return {
     query:
       'query uniswapFactories { uniswapFactories(block: { number:' +
       block +
-      '} where: {id: "0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6"}) { id totalVolumeUSD totalVolumeETH untrackedVolumeUSD totalLiquidityUSD totalLiquidityETH txCount pairCount } }',
+      '} where: {id: "' +
+      chainId +
+      '"}) { id totalVolumeUSD totalVolumeETH untrackedVolumeUSD totalLiquidityUSD totalLiquidityETH txCount pairCount } }',
+  }
+}
+
+export const pairsQuery = (amount: number) => {
+  return {
+    query:
+      'query pairs {\n' +
+      '  pairs(first: ' +
+      amount +
+      ' orderBy: trackedReserveETH, orderDirection: desc) {\n' +
+      '  id\n' +
+      '  token0 {\n' +
+      '    symbol\n' +
+      '    name\n' +
+      '  }\n' +
+      '  token1 {\n' +
+      '    symbol\n' +
+      '    name\n' +
+      '  }\n' +
+      '  reserveUSD\n' +
+      '  volumeUSD\n' +
+      '  }\n' +
+      '}\n',
+  }
+}
+
+export const graphQuery = () => {
+  return {
+    query:
+      'query uniswapDayDatas {\n' +
+      '    uniswapDayDatas(orderBy: date, orderDirection: desc first: 30) {\n' +
+      '      id\n' +
+      '      date\n' +
+      '      totalVolumeUSD\n' +
+      '      dailyVolumeUSD\n' +
+      '      dailyVolumeETH\n' +
+      '      totalLiquidityUSD\n' +
+      '      totalLiquidityETH\n' +
+      '    }\n' +
+      '  }',
   }
 }

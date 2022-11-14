@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Flex, Text, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { Text } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from '../../../../contexts/Localization'
 import { CHAINS } from '../../config/config'

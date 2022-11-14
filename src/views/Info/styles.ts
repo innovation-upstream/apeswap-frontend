@@ -43,6 +43,16 @@ export const FiguresWrapper = styled.div`
     flex-direction: row;
     padding: 10px 20px;
   }
+
+  .figure {
+    flex-grow: 1;
+    width: 33.33%;
+    padding: 10px 0px;
+
+    .figureValue {
+      font-weight: 600;
+    }
+  }
 `
 
 export const Row = styled.div<RowProps>`
@@ -85,7 +95,13 @@ export const Column = styled.div<ColumnProps>`
   color: ${(props) => props.theme.colors.text};
 
   .logo {
+    border: 2px solid #ffffff;
+    border-radius: 50%;
     margin-right: 12px;
+  }
+
+  .logo-right {
+    margin-left: -24px;
   }
 `
 
