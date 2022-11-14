@@ -4,12 +4,8 @@ import styled from '@emotion/styled'
 import { useTranslation } from '../../../../contexts/Localization'
 import { CHAINS } from '../../config/config'
 import { Row, Column, HeadingWrapper, LeftArrowIcon, RightArrowIcon, FiguresWrapper, BodyWrapper } from '../../styles'
-import { tokensQuery } from '../../queries'
+import { tokensOneDayQuery, tokensQuery } from '../../queries'
 import useTheme from '../../../../hooks/useTheme'
-
-interface RowProps {
-  background?: boolean
-}
 
 interface Token {
   id: string
@@ -23,6 +19,7 @@ interface Token {
 interface TokensProps {
   amount: number
   nativePrices?: any
+  oneDayBlocks?: any
 }
 
 export const HeadingContainer = styled.div`
@@ -52,6 +49,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
 
   const [state, setState] = useState({
     tokens: [],
+    oneDayTokens: [],
     nativePrice: 1,
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -59,7 +57,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
   useEffect(() => {
     setIsLoading(true)
 
-    const requestOptions = {
+    const currentTokensRequestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(tokensQuery(props.amount)),
@@ -67,10 +65,34 @@ const Tokens: React.FC<TokensProps> = (props) => {
 
     // Loop chains
     for (let i = 0; i < CHAINS.length; i++) {
-      fetch(CHAINS[i].graphAddress, requestOptions)
+      const chain = CHAINS[i].chain
+
+      const oneDayTokensRequestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tokensOneDayQuery(props.amount, props.oneDayBlocks[chain])),
+      }
+
+      fetch(CHAINS[i].graphAddress, currentTokensRequestOptions)
         .then((res) => res.json())
         .then(async (result) => {
-          setState({ tokens: result.data.tokens, nativePrice: props.nativePrices[CHAINS[i].chain] })
+          setState({
+            tokens: result.data.tokens,
+            nativePrice: props.nativePrices[CHAINS[i].chain],
+            oneDayTokens: state.oneDayTokens,
+          })
+        })
+
+      fetch(CHAINS[i].graphAddress, oneDayTokensRequestOptions)
+        .then((res) => res.json())
+        .then(async (result) => {
+          setState({
+            oneDayTokens: result.data.tokens,
+            tokens: state.tokens,
+            nativePrice: state.nativePrice,
+          })
+          console.log(result.data.tokens)
+          console.log(state.oneDayTokens)
         })
     }
     setIsLoading(false)
@@ -85,7 +107,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
           </Text>
           <Text style={{ float: 'right' }}>
             <a href="tokens">
-              See more <RightArrowIcon />
+              See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
             </a>
           </Text>
         </HeadingWrapper>
@@ -101,32 +123,40 @@ const Tokens: React.FC<TokensProps> = (props) => {
               <Column>{t('Liquidity')}</Column>
               <Column>{t('Volume (24h)')}</Column>
             </Row>
-            {state.tokens.map((token: Token, index: number) => {
-              return (
-                <Row key={token.id} background={index % 2 === 0}>
-                  <Column width="35px">
-                    <img width="16px" src={`/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`} />
-                  </Column>
-                  <Column width="18px">{index + 1}</Column>
-                  <Column flex="2">
-                    <img
-                      width="24px"
-                      className="logo"
-                      src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.svg`}
-                      onError={(e) => {
-                        e.currentTarget.src = `/images/info/unknownToken.svg`
-                      }}
-                    />
-                    {token.name} ({token.symbol})
-                  </Column>
-                  <Column>${(Math.round(token.derivedETH * state.nativePrice * 100) / 100).toLocaleString()}</Column>
-                  <Column>
-                    ${Math.round(token.totalLiquidity * state.nativePrice * token.derivedETH).toLocaleString()}
-                  </Column>
-                  <Column>${Math.round(token.tradeVolumeUSD).toLocaleString()}</Column>
-                </Row>
-              )
-            })}
+            {state.tokens.length > 0 &&
+              state.oneDayTokens.length > 0 &&
+              state.tokens.map((token: Token, index: number) => {
+                return (
+                  <Row key={token.id} background={index % 2 === 0}>
+                    <Column width="35px">
+                      <img width="16px" src={`/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`} />
+                    </Column>
+                    <Column width="18px">{index + 1}</Column>
+                    <Column flex="2">
+                      <img
+                        width="24px"
+                        className="logo"
+                        src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.svg`}
+                        onError={(e) => {
+                          e.currentTarget.src = `/images/info/unknownToken.svg`
+                        }}
+                      />
+                      {token.name} ({token.symbol})
+                    </Column>
+                    <Column>${(Math.round(token.derivedETH * state.nativePrice * 100) / 100).toLocaleString()}</Column>
+                    <Column>
+                      ${Math.round(token.totalLiquidity * state.nativePrice * token.derivedETH).toLocaleString()}
+                    </Column>
+                    <Column>
+                      $
+                      {Math.round(
+                        token.tradeVolumeUSD -
+                          (state.oneDayTokens[index] ? state.oneDayTokens[index].tradeVolumeUSD : token.tradeVolumeUSD),
+                      ).toLocaleString()}
+                    </Column>
+                  </Row>
+                )
+              })}
           </BodyWrapper>
         </FiguresWrapper>
       </Container>

@@ -7,6 +7,17 @@ export const tokensQuery = (amount: number) => {
   }
 }
 
+export const tokensOneDayQuery = (amount: number, block: number) => {
+  return {
+    query:
+      'query { tokens(block: { number:' +
+      block +
+      '} first: ' +
+      amount +
+      ', orderBy: tradeVolumeUSD orderDirection: desc) {  id name symbol tradeVolumeUSD totalLiquidity derivedETH }  }',
+  }
+}
+
 export const transactionsQuery = (amount: number) => {
   return {
     query:

@@ -7,6 +7,7 @@ import { CHAINS } from '../../config/config'
 import { Row, Column, HeadingWrapper, RightArrowIcon, FiguresWrapper, BodyWrapper } from '../../styles'
 import { transactionsQuery } from '../../queries'
 import { HeadingContainer } from '../Tokens/Tokens'
+import useTheme from '../../../../hooks/useTheme'
 
 interface Transaction {
   chain: string
@@ -50,6 +51,8 @@ export const Container = styled.div`
 
 const Transactions: React.FC<TransactionsProps> = (props) => {
   const { t } = useTranslation()
+  const { isDark } = useTheme()
+
   const [state, setState] = useState({
     transactions: [],
   })
@@ -128,7 +131,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
           </Text>
           <Text style={{ float: 'right' }}>
             <a href="transactions">
-              See more <RightArrowIcon />
+              See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
             </a>
           </Text>
         </HeadingWrapper>

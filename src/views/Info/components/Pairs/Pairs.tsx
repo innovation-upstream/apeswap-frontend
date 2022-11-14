@@ -85,7 +85,7 @@ const Tokens: React.FC<PairsProps> = (props) => {
           </Text>
           <Text style={{ float: 'right' }}>
             <a href="tokens">
-              See more <RightArrowIcon />
+              See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
             </a>
           </Text>
         </HeadingWrapper>
