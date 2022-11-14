@@ -274,14 +274,60 @@ export const SMART_ROUTER_FULL_NAME = {
   [SmartRouter.BISWAP]: 'Biswap',
 }
 
+// enum to corresponding url
+export enum LIST_VIEW_PRODUCTS {
+  BILLS = 'treasury-bills',
+  MAXIMIZERS = 'maximizers',
+  JUNGLE_FARMS = 'jungle-farms',
+  POOLS = 'pools',
+  FARMS = 'banana-farms',
+}
+
+export enum OTHER_PRODUCTS {
+  GNANA = 'gnana',
+  MIGRATE = 'migrate',
+  ZAP = 'zap',
+  IAO = 'iao',
+  NFA_COLLECTION = 'nft',
+  NFA_AUCTION = 'auction',
+  NFA_STAKING = 'staking',
+}
+
 // Products on different chains and their available chains
-export const AVAILABLE_CHAINS_ON_PRODUCTS: Record<
-  'bills' | 'maximizers' | 'jungleFarms' | 'pools' | 'farms',
-  ChainId[]
-> = {
-  bills: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
-  farms: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
-  maximizers: [ChainId.BSC],
-  jungleFarms: [ChainId.BSC],
-  pools: [ChainId.BSC],
+
+// These products are list view components that have a specific chain redirect component
+export const AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS: Record<LIST_VIEW_PRODUCTS, ChainId[]> = {
+  [LIST_VIEW_PRODUCTS.BILLS]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  [LIST_VIEW_PRODUCTS.FARMS]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  [LIST_VIEW_PRODUCTS.MAXIMIZERS]: [ChainId.BSC],
+  [LIST_VIEW_PRODUCTS.JUNGLE_FARMS]: [ChainId.BSC],
+  [LIST_VIEW_PRODUCTS.POOLS]: [ChainId.BSC],
+}
+
+// These products are specific products to certain chains like GNANA and Migrate
+// These products will be redirected a different way
+export const AVAILABLE_CHAINS_ON_PRODUCTS: Record<OTHER_PRODUCTS, ChainId[]> = {
+  [OTHER_PRODUCTS.GNANA]: [ChainId.BSC],
+  [OTHER_PRODUCTS.MIGRATE]: [ChainId.BSC],
+  [OTHER_PRODUCTS.ZAP]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  [OTHER_PRODUCTS.IAO]: [ChainId.BSC],
+  [OTHER_PRODUCTS.NFA_COLLECTION]: [ChainId.BSC],
+  [OTHER_PRODUCTS.NFA_AUCTION]: [ChainId.BSC],
+  [OTHER_PRODUCTS.NFA_STAKING]: [ChainId.BSC],
+}
+
+// Full product names for readability
+export const FULL_PRODUCT_NAMES: Record<LIST_VIEW_PRODUCTS | OTHER_PRODUCTS, string> = {
+  [LIST_VIEW_PRODUCTS.BILLS]: 'Treasury Bills',
+  [LIST_VIEW_PRODUCTS.MAXIMIZERS]: 'Banana Maximizers',
+  [LIST_VIEW_PRODUCTS.JUNGLE_FARMS]: 'Jungle Farms',
+  [LIST_VIEW_PRODUCTS.POOLS]: 'Pools',
+  [LIST_VIEW_PRODUCTS.FARMS]: 'Farms',
+  [OTHER_PRODUCTS.GNANA]: 'Golden Banana',
+  [OTHER_PRODUCTS.MIGRATE]: 'Migrate',
+  [OTHER_PRODUCTS.ZAP]: 'Zap',
+  [OTHER_PRODUCTS.IAO]: 'Official IAO',
+  [OTHER_PRODUCTS.NFA_COLLECTION]: 'Nfa Collection',
+  [OTHER_PRODUCTS.NFA_AUCTION]: 'Nfa Auction',
+  [OTHER_PRODUCTS.NFA_STAKING]: 'Nfa Staking',
 }

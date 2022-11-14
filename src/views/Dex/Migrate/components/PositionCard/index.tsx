@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { SmartRouter, Token } from '@ape.swap/sdk'
-import { Text, Flex, CardProps, Button, Svg, Link as UiLink } from '@ape.swap/uikit'
+import { Token } from '@ape.swap/sdk'
+import { Text, Flex, Button, Svg, Link as UiLink } from '@ape.swap/uikit'
 import { Divider } from 'theme-ui'
 import { AnimatePresence, motion } from 'framer-motion'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -9,7 +9,7 @@ import { useTranslation } from 'contexts/Localization'
 import useTotalSupply from '../../../../../hooks/useTotalSupply'
 import Dots from 'components/Loader/Dots'
 import { styles } from './styles'
-import { useZapMigratorActionHandlers } from 'state/zapMigrator/hooks'
+import { MigrateResult, useZapMigratorActionHandlers } from 'state/zapMigrator/hooks'
 import { useLastZapMigratorRouter } from 'state/user/hooks'
 import { useTokenPriceUsd } from 'hooks/useTokenPriceUsd'
 import { wrappedToNative } from 'utils'
@@ -19,15 +19,7 @@ import { Link } from 'react-router-dom'
 import { MigrateFarmIcon } from 'components/Icons'
 import useWindowSize from 'hooks/useDimensions'
 
-interface PositionCardProps extends CardProps {
-  smartRouter: SmartRouter
-  chefAddress: string
-  lpAddress: string
-  token0: { address: string; symbol: string; decimals: number; reserves: number }
-  token1: { address: string; symbol: string; decimals: number; reserves: number }
-  pid: number
-  walletBalance: string
-  stakedBalance: string
+interface PositionCardProps extends MigrateResult {
   inWallet?: boolean
   showUnwrapped?: boolean
 }

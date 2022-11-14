@@ -266,3 +266,9 @@ export enum METAMASK_LINKS {
   Ethereum = '',
   Telos = '',
 }
+
+export enum PRODUCT {
+  FARM,
+  JUNGLE_FARM,
+  DUAL_FARM,
+}

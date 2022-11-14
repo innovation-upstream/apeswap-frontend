@@ -16,7 +16,7 @@ import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import ListView404 from 'components/ListView404'
-import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
+import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 
 const Farms: React.FC = () => {
   useSetFarms()
@@ -187,9 +187,9 @@ const Farms: React.FC = () => {
               showMonkeyImage
             />
           </Flex>
-          {!AVAILABLE_CHAINS_ON_PRODUCTS['farms'].includes(chainId) ? (
+          {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.FARMS].includes(chainId) ? (
             <Flex mt="20px">
-              <ListView404 product="farms" />
+              <ListView404 product={LIST_VIEW_PRODUCTS.FARMS} />
             </Flex>
           ) : (
             <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} />

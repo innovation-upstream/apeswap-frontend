@@ -6,49 +6,58 @@ import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import { wrappedToNative } from 'utils'
 import React from 'react'
-import { Pair, TokenAmount } from '@ape.swap/sdk'
-import { useFarms } from 'state/farms/hooks'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Switch } from 'theme-ui'
 import StatusIcons from '../StatusIcons'
-import { MigrateStatus, useMigrateAll } from '../../provider'
+import { useMigrateAll } from '../../provider'
 import useStakeApproveAll from '../../hooks/useStakeApproveAll'
+import useIsMobile from 'hooks/useIsMobile'
+import { ApeswapWalletLpInterface, MigrateStatus } from '../../provider/types'
 
-const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmount }[] }> = ({ apeswapWalletLps }) => {
-  const { chainId, account } = useActiveWeb3React()
-  const farms = useFarms(account)
+const ApproveStake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ apeswapWalletLps }) => {
   const { t } = useTranslation()
-  const { migrateLpStatus, migrateMaximizers, setMigrateMaximizersCallback } = useMigrateAll()
+  const isMobile = useIsMobile()
+
+  const { migrateLpStatus, migrateMaximizers, handleMaximizerApprovalToggle } = useMigrateAll()
   const handleApproveAll = useStakeApproveAll()
-  // Since each vault needs a farm we can filter by just farms
-  const filteredLps = apeswapWalletLps.filter(({ pair }) =>
-    farms.find((farm) => pair.liquidityToken.address.toLowerCase() === farm.lpAddresses[chainId].toLowerCase()),
-  )
+
   // Filter LPs that have been approved
-  const filteredLpsForStake = filteredLps?.filter(
-    ({ pair }) =>
-      migrateLpStatus?.find((status) => status.lpAddress.toLowerCase() === pair.liquidityToken.address.toLowerCase())
-        ?.status.approveStake !== MigrateStatus.COMPLETE,
+  const filteredLpsForStake = apeswapWalletLps?.filter(
+    ({ id }) => migrateLpStatus?.find((status) => status.id === id)?.status.approveStake !== MigrateStatus.COMPLETE,
   )
 
   const listView = filteredLpsForStake?.map((apeLp) => {
-    const { pair, balance } = apeLp
+    const { pair, balance, id } = apeLp
     const { token0, token1, liquidityToken } = pair
     const { address: lpAddress } = liquidityToken
-    const status = migrateLpStatus.find((status) => status.lpAddress === lpAddress)
+    const status = migrateLpStatus?.find((status) => status.id === id)
     return {
-      beforeTokenContent: <StatusIcons lpAddress={lpAddress} />,
+      beforeTokenContent: <StatusIcons id={id} />,
       tokens: { token1: token0.symbol, token2: token1.symbol },
+      titleContainerWidth: 350,
       stakeLp: true,
       backgroundColor: 'white3',
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
+      expandedContentSize: 70,
       noEarnToken: true,
+      forMigratonList: true,
       id: lpAddress,
-      cardContent: (
+      cardContent: !isMobile ? (
         <>
           <ListViewContent title={t('Wallet')} value={balance?.toSignificant(6) || '0'} ml={20} />
           <ListViewContent title={t('Staked')} value="0" ml={20} />
           <ListViewContent title={t('Status')} value={status?.statusText || ''} ml={20} width={300} />
+        </>
+      ) : (
+        <Flex sx={{ width: '100%', height: '30px', alignItems: 'flex-end', justifyContent: 'flex-start' }}>
+          <Text size="11px" weight={500}>
+            <span sx={{ opacity: '.7' }}>Status:</span> {status?.statusText || ''}
+          </Text>
+        </Flex>
+      ),
+      expandedContent: isMobile && (
+        <>
+          <ListViewContent title={t('Wallet')} value={balance?.toSignificant(6) || '0'} ml={20} />
+          <ListViewContent title={t('Staked')} value="0" ml={20} />
         </>
       ),
     } as ExtendedListViewProps
@@ -60,7 +69,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmo
         {t('Approve All LPs')}
       </Text>
       <Text size="12px" weight={500} mb="15px">
-        {t('Unstake all your current LPs to migrate')}
+        {t('Approve the contracts of the ApeSwap products that will accept your migrated LPs.')}
       </Text>
       <Flex
         sx={{
@@ -83,7 +92,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: { pair: Pair; balance: TokenAmo
               },
             }}
             checked={migrateMaximizers}
-            onChange={() => setMigrateMaximizersCallback(!migrateMaximizers)}
+            onChange={() => handleMaximizerApprovalToggle(apeswapWalletLps, !migrateMaximizers)}
           />
         </Flex>
       </Flex>

@@ -16,7 +16,7 @@ import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from '../Farms/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useSetZapOutputList } from 'state/zap/hooks'
-import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
+import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import ListView404 from 'components/ListView404'
 
 const { search } = window.location
@@ -209,8 +209,8 @@ const DualFarms: React.FC = () => {
               showMonkeyImage
             />
           </Flex>
-          {!AVAILABLE_CHAINS_ON_PRODUCTS['farms'].includes(chainId) ? (
-            <ListView404 product="farms" />
+          {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.FARMS].includes(chainId) ? (
+            <ListView404 product={LIST_VIEW_PRODUCTS.FARMS} />
           ) : (
             <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} dualFarmTags={farmTags} />
           )}

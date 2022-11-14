@@ -2,15 +2,15 @@
 import React from 'react'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Button, useModal } from '@ape.swap/uikit'
+import { Button } from '@ape.swap/uikit'
 import { ApprovalState, useApproveCallbackFromZap } from 'hooks/useApproveCallback'
-import ApprovalAction from './ApprovalAction'
 import { useTranslation } from 'contexts/Localization'
 import { AutoRenewIcon } from '@apeswapfinance/uikit'
 import { useDerivedZapInfo } from 'state/zap/hooks'
-import { useDualFarmApprove } from 'hooks/useApprove'
-import { useERC20 } from 'hooks/useContract'
-import DualConfirmationModal from './DualConfirmationModal'
+import { PRODUCT } from '../../config/constants'
+import ApproveJungle from './components/ApproveJungle'
+import ApproveDual from './components/ApproveDual'
+import ApproveZap from './components/ApproveZap'
 
 /**
  * Component's goal is to handle actions for DualDepositModal component which, in turn, aims to handle deposit/zap flow
@@ -24,9 +24,7 @@ import DualConfirmationModal from './DualConfirmationModal'
  * @disabled Sets disable state for button
  * @pendingTrx Sets pending trx state
  * @handleAction deposit/zap handler
- * @handleDismissConfirmation on close modal function
- * @txHash tx hash used to display confirmed transaction modal
- * @lpName pair symbols (e.g. BANANA-MATIC)
+ * @product Determines where is the component being used. It is important to set ZapType and approve flow
  */
 
 interface DualActionsProps {
@@ -38,10 +36,7 @@ interface DualActionsProps {
   disabled: boolean
   pendingTrx: boolean
   handleAction: () => void
-  handleDismissConfirmation: () => void
-  txHash: string
-  lpName: string
-  txError: string
+  product: PRODUCT
 }
 
 const DualActions: React.FC<DualActionsProps> = ({
@@ -53,39 +48,13 @@ const DualActions: React.FC<DualActionsProps> = ({
   disabled,
   pendingTrx,
   handleAction,
-  handleDismissConfirmation,
-  txHash,
-  lpName,
-  txError,
+  product,
 }) => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const { zap } = useDerivedZapInfo()
   const [approval, approveZap] = useApproveCallbackFromZap(zap)
   const showApproveZapFlow = approval === ApprovalState.NOT_APPROVED || approval === ApprovalState.PENDING
-
-  const stakingTokenContract = useERC20(lpToApprove)
-
-  //this might have to be changed to adapt it for jungle farms too
-  const { onApprove } = useDualFarmApprove(stakingTokenContract, parseFloat(pid))
-
-  const [openConfirmationModal] = useModal(
-    <DualConfirmationModal
-      isZapSelected={isZapSelected}
-      onDismiss={handleDismissConfirmation}
-      txHash={txHash}
-      errorMessage={txError}
-      lpName={lpName}
-    />,
-    true,
-    true,
-    'dualConfirmationModal',
-  )
-
-  const handleConfirmTx = () => {
-    openConfirmationModal()
-    handleAction()
-  }
 
   const renderAction = () => {
     if (!account) {
@@ -98,17 +67,20 @@ const DualActions: React.FC<DualActionsProps> = ({
         </Button>
       )
     }
-    if (!isZapSelected && showApproveLpFlow) {
-      return <ApprovalAction action={onApprove} />
+    if (!isZapSelected && showApproveLpFlow && product === PRODUCT.JUNGLE_FARM) {
+      return <ApproveJungle lpToApprove={lpToApprove} pid={pid} />
+    }
+    if (!isZapSelected && showApproveLpFlow && product === PRODUCT.DUAL_FARM) {
+      return <ApproveDual lpToApprove={lpToApprove} pid={pid} />
     }
     if (isZapSelected && showApproveZapFlow) {
-      return <ApprovalAction action={approveZap} zapApprovalState={approval} />
+      return <ApproveZap action={approveZap} zapApprovalState={approval} />
     }
     if (!showApproveZapFlow || !showApproveLpFlow) {
       return (
         <Button
           fullWidth
-          onClick={handleConfirmTx}
+          onClick={handleAction}
           endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
           disabled={disabled}
         >

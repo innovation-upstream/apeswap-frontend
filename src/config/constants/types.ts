@@ -293,6 +293,7 @@ export interface JungleFarmConfig {
   // With the switching of rewards per block to seconds
   rewardsPerSecond?: string
   network: number
+  unZapable?: boolean
 }
 
 // Types used to check for live IAOs

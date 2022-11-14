@@ -12,17 +12,14 @@ import { JungleFarm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
-import { useModal } from '@apeswapfinance/uikit'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
 import { Container, StyledButton, ActionContainer } from './styles'
-import { Field, selectCurrency } from 'state/swap/actions'
-import { useAppDispatch } from 'state'
 import { StyledTag } from '../../Pools/components/styles'
-import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { selectOutputCurrency } from 'state/zap/actions'
 import CalcButton from 'components/RoiCalculator/CalcButton'
+import useAddLiquidityModal from '../../../components/DualAddLiquidity/hooks/useAddLiquidityModal'
+import { ZapType } from '@ape.swap/sdk'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
   jungleFarms,
@@ -34,37 +31,14 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
   const { pathname } = useLocation()
   const { t } = useTranslation()
   const isActive = !pathname.includes('history')
-  const dispatch = useAppDispatch()
 
-  const [onPresentAddLiquidityWidgetModal] = useModal(<DualLiquidityModal />, true, true, 'dualLiquidityModal')
-
-  const showLiquidity = (token, quoteToken, farm) => {
-    dispatch(
-      selectCurrency({
-        field: Field.INPUT,
-        currencyId: token,
-      }),
-    )
-    dispatch(
-      selectCurrency({
-        field: Field.OUTPUT,
-        currencyId: quoteToken,
-      }),
-    )
-    dispatch(
-      selectOutputCurrency({
-        currency1: farm.lpTokens.token.address[chainId],
-        currency2: farm.lpTokens.quoteToken.address[chainId],
-      }),
-    )
-    onPresentAddLiquidityWidgetModal()
-  }
+  const onAddLiquidityModal = useAddLiquidityModal(ZapType.ZAP_LP_POOL)
 
   const jungleFarmsListView = jungleFarms.map((farm) => {
+    const isZapable = !farm?.unZapable
     const [token1, token2] = farm.tokenName.split('-')
     const totalDollarAmountStaked = Math.round(getBalanceNumber(farm?.totalStaked) * farm?.stakingToken?.price)
 
-    const userAllowance = farm?.userData?.allowance
     const userEarnings = getBalanceNumber(
       farm?.userData?.pendingReward || new BigNumber(0),
       farm?.rewardToken?.decimals,
@@ -181,10 +155,12 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
 
             <StyledButton
               onClick={() =>
-                showLiquidity(
-                  farm?.lpTokens?.token?.address[chainId],
-                  farm?.lpTokens?.quoteToken?.symbol === 'BNB' ? 'ETH' : farm?.lpTokens?.quoteToken?.address[chainId],
-                  farm,
+                onAddLiquidityModal(
+                  farm?.lpTokens?.token,
+                  farm?.lpTokens?.quoteToken,
+                  farm?.contractAddress[chainId],
+                  farm?.jungleId?.toString(),
+                  isZapable,
                 )
               }
             >
@@ -205,15 +181,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
             )}
           </ActionContainer>
           {!isMobile && <NextArrow />}
-          <Actions
-            allowance={userAllowance?.toString()}
-            stakedBalance={farm?.userData?.stakedBalance?.toString()}
-            stakedTokenSymbol={farm?.stakingToken?.symbol}
-            stakingTokenBalance={farm?.userData?.stakingTokenBalance?.toString()}
-            stakeTokenAddress={farm?.stakingToken?.address[chainId]}
-            stakeTokenValueUsd={farm?.stakingToken?.price}
-            jungleId={farm?.jungleId}
-          />
+          <Actions farm={farm} />
           {!isMobile && <NextArrow />}
           <HarvestAction
             jungleId={farm?.jungleId}
