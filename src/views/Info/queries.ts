@@ -56,6 +56,25 @@ export const nativePricesQuery = {
   query: 'query bundles { bundles {id ethPrice }}',
 }
 
+// export const daysDataQuery = (oneDayBack: number) => {
+//   return {
+//     query:
+//       'query uniswapDayDatas {' +
+//       '    uniswapDayDatas(first: 1, skip: 0, where: { date_gt: ' +
+//       oneDayBack +
+//       ' }, orderBy: date, orderDirection: asc) {' +
+//       '      id' +
+//       '      date' +
+//       '      totalVolumeUSD' +
+//       '      dailyVolumeUSD' +
+//       '      dailyVolumeETH' +
+//       '      totalLiquidityUSD' +
+//       '      totalLiquidityETH' +
+//       '      txCount' +
+//       '    }' +
+//       '  }',
+//   }
+// }
 export const daysDataQuery = (oneDayBack: number) => {
   return {
     query:
@@ -96,9 +115,9 @@ export const blocksQuery = (startTimestamp: number, currentTimestamp: number) =>
 export const uniswapFactoriesQuery = (chainId: string, block: string) => {
   return {
     query:
-      'query uniswapFactories { uniswapFactories(block: { number:' +
-      block +
-      '} where: {id: "' +
+      'query uniswapFactories { uniswapFactories(' +
+      (block !== '0' ? 'block: { number:' + block + '}' : '') +
+      ' where: {id: "' +
       chainId +
       '"}) { id totalVolumeUSD totalVolumeETH untrackedVolumeUSD totalLiquidityUSD totalLiquidityETH txCount pairCount } }',
   }

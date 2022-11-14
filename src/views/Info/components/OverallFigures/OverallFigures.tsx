@@ -120,22 +120,51 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
     return CHAINS.filter((x) => x.chain === bar.id)[0].color
   }
 
+  function calculateFees() {
+    let fees = 0
+    for (let i = 0; i < CHAINS.length; i++) {
+      fees +=
+        (Number(state.currentDayData[CHAINS[i].chain]['totalVolumeUSD']) -
+          Number(state.oneDayData[CHAINS[i].chain]['totalVolumeUSD'])) *
+        CHAINS[i].fee
+    }
+    return fees
+  }
+
+  function calculate7DayVolume() {
+    // use graph data
+    let total = 0
+
+    //reverse array
+    //take first 7
+
+    state.graphData
+      .reverse()
+      .slice(0, 7)
+      .map((item: any) => {
+        console.log(item)
+        for (let i = 0; i < CHAINS.length; i++) {
+          total += item[CHAINS[i].chain] ? Number(item[CHAINS[i].chain]) : 0
+          console.log(total)
+        }
+      })
+
+    return total
+  }
+
   useEffect(() => {
     setIsLoading(true)
-
-    const currentTime = moment()
-    const oneDayBack = currentTime.subtract(2, 'day').unix()
 
     for (let i = 0; i < CHAINS.length; i++) {
       const chain = CHAINS[i].chain
 
-      const oneDayBackRequestOptions = {
+      const oneDayBackDataRequestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(daysDataQuery(oneDayBack)),
+        body: JSON.stringify(uniswapFactoriesQuery(CHAINS[i].id, '0')),
       }
 
-      const uniswapFactoriesRequestOptions = {
+      const currentDataRequestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(uniswapFactoriesQuery(CHAINS[i].id, props.oneDayBlocks[chain])),
@@ -147,12 +176,11 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
         body: JSON.stringify(graphQuery()),
       }
 
-      fetch(CHAINS[i].graphAddress, oneDayBackRequestOptions)
+      fetch(CHAINS[i].graphAddress, oneDayBackDataRequestOptions)
         .then((res) => res.json())
         .then(async (result) => {
           const temp = state.currentDayData
-          temp[chain] = result.data.uniswapDayDatas[0]
-
+          temp[chain] = result.data.uniswapFactories[0]
           setState({
             currentDayData: temp,
             oneDayData: state.oneDayData,
@@ -163,7 +191,7 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
         })
 
       //This gets the data 24 hours ago
-      fetch(CHAINS[i].graphAddress, uniswapFactoriesRequestOptions)
+      fetch(CHAINS[i].graphAddress, currentDataRequestOptions)
         .then((res) => res.json())
         .then(async (result) => {
           const temp = state.oneDayData
@@ -262,27 +290,27 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
                 <div className="figure">
                   <Icon name="dollar" />
                   <Text className="figureValue">
-                    {Math.round(calculateCurrentFigures('dailyVolumeUSD')).toLocaleString()}
+                    {Math.round(
+                      calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
+                    ).toLocaleString()}
                   </Text>
                   <Text fontSize="12px">Volume (24h)</Text>
                 </div>
                 <div className="figure">
                   <Icon name="dollar" />
                   <Text className="figureValue">
-                    {Math.round(calculateCurrentFigures('dailyVolumeUSD')).toLocaleString()}
+                    {Object.keys(state.graphData).length > 0 ? Math.round(calculate7DayVolume()).toLocaleString() : 0}
                   </Text>
                   <Text fontSize="12px">Volume (7d)</Text>
                 </div>
                 <div className="figure">
                   <Icon name="dollar" />
-                  <Text className="figureValue">
-                    ${(Math.round(calculateCurrentFigures('dailyVolumeUSD') * 0.002 * 100) / 100).toLocaleString()}
-                  </Text>
+                  <Text className="figureValue">${(Math.round(calculateFees() * 100) / 100).toLocaleString()}</Text>
                   <Text fontSize="12px">Fees (24h)</Text>
                 </div>
                 <div className="figure">
                   <Icon name="chart" />
-                  <Text className="figureValue">{calculateOneDayFigures('pairCount').toLocaleString()}</Text>
+                  <Text className="figureValue">{calculateCurrentFigures('pairCount').toLocaleString()}</Text>
                   <Text fontSize="12px">Pairs</Text>
                 </div>
                 {/*Placeholders for sizing*/}
