@@ -17,6 +17,7 @@ interface Token {
   symbol: string
   totalLiquidity: number
   derivedETH: number
+  tradeVolumeUSD: number
 }
 
 interface TokensProps {
@@ -53,8 +54,11 @@ const Tokens: React.FC<TokensProps> = (props) => {
     tokens: [],
     nativePrice: 1,
   })
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true)
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -69,7 +73,8 @@ const Tokens: React.FC<TokensProps> = (props) => {
           setState({ tokens: result.data.tokens, nativePrice: props.nativePrices[CHAINS[i].chain] })
         })
     }
-  }, [])
+    setIsLoading(false)
+  }, [isLoading])
 
   return (
     <div>
@@ -91,10 +96,10 @@ const Tokens: React.FC<TokensProps> = (props) => {
             <Row>
               <Column width="18px">&nbsp;&nbsp;</Column>
               <Column width="18px">{t('#')}</Column>
-              <Column>{t('Token Name')}</Column>
-              <Column>{t('Symbol')}</Column>
-              <Column>{t('Liquidity')}</Column>
+              <Column flex="2">{t('Token Name')}</Column>
               <Column>{t('Price')}</Column>
+              <Column>{t('Liquidity')}</Column>
+              <Column>{t('Volume (24h)')}</Column>
             </Row>
             {state.tokens.map((token: Token, index: number) => {
               return (
@@ -103,22 +108,22 @@ const Tokens: React.FC<TokensProps> = (props) => {
                     <img width="16px" src={`/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`} />
                   </Column>
                   <Column width="18px">{index + 1}</Column>
-                  <Column>
+                  <Column flex="2">
                     <img
                       width="24px"
                       className="logo"
                       src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.svg`}
                       onError={(e) => {
-                        e.currentTarget.src = `https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.png`
+                        e.currentTarget.src = `/images/info/unknownToken.svg`
                       }}
                     />
-                    {token.name}
+                    {token.name} ({token.symbol})
                   </Column>
-                  <Column>{token.symbol}</Column>
+                  <Column>${(Math.round(token.derivedETH * state.nativePrice * 100) / 100).toLocaleString()}</Column>
                   <Column>
                     ${Math.round(token.totalLiquidity * state.nativePrice * token.derivedETH).toLocaleString()}
                   </Column>
-                  <Column>${(Math.round(token.derivedETH * state.nativePrice * 100) / 100).toLocaleString()}</Column>
+                  <Column>${Math.round(token.tradeVolumeUSD).toLocaleString()}</Column>
                 </Row>
               )
             })}

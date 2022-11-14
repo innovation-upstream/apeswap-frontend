@@ -53,8 +53,11 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   const [state, setState] = useState({
     transactions: [],
   })
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
+    setIsLoading(true)
+
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -65,7 +68,6 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
     for (let i = 0; i < CHAINS.length; i++) {
       const chain = CHAINS[i].chain
 
-      console.log(CHAINS[i].graphAddress)
       fetch(CHAINS[i].graphAddress, requestOptions)
         .then((res) => res.json())
         .then(async (result) => {
@@ -76,11 +78,12 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
               result.data.transactions.splice(j, 1)
             }
           }
-          setState({ transactions: state.transactions.concat(result.data.transactions) })
-          console.log(state.transactions)
+          const temp = state.transactions
+          setState({ transactions: temp.concat(result.data.transactions) })
         })
     }
-  }, [])
+    setIsLoading(false)
+  }, [isLoading])
 
   function formatTime(unix: number) {
     const now = moment()
@@ -120,7 +123,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
         <FiguresWrapper>
           <BodyWrapper>
             <Row>
-              <Column>{t('Info')}</Column>
+              <Column flex="2">{t('Info')}</Column>
               <Column>{t('Total Value')}</Column>
               <Column>{t('Token Amount')}</Column>
               <Column>{t('Token Amount')}</Column>
@@ -138,7 +141,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
               .map((tran: Transaction, index) => {
                 return (
                   <Row key={tran.swaps[0].transaction.id} background={index % 2 === 0}>
-                    <Column>
+                    <Column flex="2">
                       <img src={`/images/chains/${tran.chain}.png`} width="24px" className="logo" />
                       {`Swap ${tran.swaps[0]?.pair?.token0.symbol} for ${tran.swaps[0]?.pair?.token1.symbol}`}
                     </Column>
