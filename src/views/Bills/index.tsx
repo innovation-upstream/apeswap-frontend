@@ -84,7 +84,7 @@ const Bills: React.FC = () => {
           <Banner
             banner={`${chainId}-treasury-bills` as BannerTypes}
             title={t('Treasury Bills')}
-            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills"
+            link="?modal=bills"
             listViewBreak
             maxWidth={1130}
             titleColor="primaryBright"

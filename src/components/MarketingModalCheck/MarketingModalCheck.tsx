@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { MarketingModal, TutorialModal } from '@ape.swap/uikit'
 import { LendingBodies } from 'components/MarketingModalContent/Lending/'
-import { BillsBodies } from 'components/MarketingModalContent/Bills/'
 import CircularModal from 'components/CircularModal'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -25,6 +24,8 @@ import { FarmSlides } from 'components/MarketingModalContent/Farm'
 import { PoolSlides } from 'components/MarketingModalContent/Pool'
 import { MaximizerSlides } from 'components/MarketingModalContent/Maximizers'
 import { GnanaSlides } from 'components/MarketingModalContent/Gnana'
+import { BillSlides } from 'components/MarketingModalContent/Bills'
+import { IaoSlides } from 'components/MarketingModalContent/Iao'
 
 const MarketingModalCheck = () => {
   const { chainId } = useActiveWeb3React()
@@ -65,9 +66,10 @@ const MarketingModalCheck = () => {
   const poolsRoute = location.search.includes('modal=pools')
   const maximizersRoute = location.search.includes('modal=maximizers')
   const gnanaTutorialRoute = location.search.includes('modal=gnana-tutorial')
+  const billsRoute = location.search.includes('modal=bills')
+  const iaoRoute = location.search.includes('modal=iao')
 
   const lendingRoute = location.search.includes('modal=3')
-  const billsRoute = location.search.includes('modal=bills')
   const questRoute = location.search.includes('modal=tutorial')
   const moonpayRoute = location.search.includes('modal=moonpay')
   const getGnanaRoute = location.search.includes('modal=gnana')
@@ -78,7 +80,6 @@ const MarketingModalCheck = () => {
   const newsletterRoute = location.search.includes('modal=newsletter')
 
   const { LendingBody1, LendingBody2, LendingBody3, LendingBody4, LendingBody5 } = LendingBodies
-  const { BillsBody1 } = BillsBodies
 
   const onDismiss = () => {
     history.push({
@@ -93,10 +94,11 @@ const MarketingModalCheck = () => {
     <LendingBody4 key="lend4" />,
     <LendingBody5 key="lend5" />,
   ]
-  const bills = [<BillsBody1 key="bill1" />]
   // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
   // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/vaults"
   // link="https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/gnana"
+  // https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills
+  // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/self-serve-iao-ss-iao"
 
   return farmsRoute ? (
     <TutorialModal
@@ -166,6 +168,30 @@ const MarketingModalCheck = () => {
     >
       {GnanaSlides}
     </TutorialModal>
+  ) : billsRoute ? (
+    <TutorialModal
+      type="treasury-bills"
+      title={t('Welcome to Treasury Bills')}
+      description={t('Buy tokens at a discount and obtain a unique NFT!')}
+      t={t}
+      onDismiss={onDismiss}
+      onReady={onDismiss}
+      readyText={t("I'm Ready")}
+    >
+      {BillSlides}
+    </TutorialModal>
+  ) : iaoRoute ? (
+    <TutorialModal
+      type="iao"
+      title={t('Welcome to Initial Ape Offerings')}
+      description={t('Contribute BNB or GNANA to obtain newly launched tokens!')}
+      t={t}
+      onDismiss={onDismiss}
+      onReady={onDismiss}
+      readyText={t("I'm Ready")}
+    >
+      {IaoSlides}
+    </TutorialModal>
   ) : lendingRoute ? (
     <MarketingModal
       title={t("Welcome to ApeSwap's Lending Network")}
@@ -175,15 +201,6 @@ const MarketingModalCheck = () => {
       startEarningText={t('Start Earning')}
     >
       {lending}
-    </MarketingModal>
-  ) : billsRoute ? (
-    <MarketingModal
-      title={t('Welcome to ApeSwap Treasury Bills')}
-      onDismiss={onDismiss}
-      startEarning={onDismiss}
-      startEarningText={t("I'M READY")}
-    >
-      {bills}
     </MarketingModal>
   ) : moonpayRoute ? (
     <MoonPayModal onDismiss={onDismiss} />

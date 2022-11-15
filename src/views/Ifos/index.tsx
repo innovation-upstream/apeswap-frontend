@@ -39,7 +39,7 @@ const Ifos = () => {
       <Container>
         <Banner
           banner="iao"
-          link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/initial-ape-offerings-iaos"
+          link="?modal=iao"
           title={t('Initial Ape Offerings')}
           maxWidth={992}
           margin="30px 0px 20px 0px"
