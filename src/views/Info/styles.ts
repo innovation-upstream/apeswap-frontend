@@ -47,7 +47,7 @@ export const Section = styled.div`
   z-index: 1;
   padding: 15px 20px 0px 20px;
   align-items: center;
-  :last-child {
+  &.right-section {
     margin-top: 20px;
   }
   .figure {
@@ -58,18 +58,37 @@ export const Section = styled.div`
       font-weight: 600;
     }
   }
+  .chain {
+    flex: 0 0 50px;
+    padding: 10px 0px;
+    margin-right: 0px;
+
+    img {
+      border: 2px solid #fff;
+      border-radius: 50%;
+    }
+  }
   @media screen and (min-width: 1200px) {
     width: 95vw;
     display: flex;
     flex-direction: row;
     padding: 10px 20px;
-    :first-child {
+
+    &.left-section {
       margin-right: 20px;
     }
-    :last-child {
+
+    &.right-section {
       margin-top: 0px;
       margin-left: 20px;
     }
+
+    //:first-child {
+    //
+    //}
+    //:last-child {
+
+    //}
 
     .figure {
       width: 33.33%;
@@ -179,6 +198,12 @@ export const Column = styled.div<ColumnProps>`
 
   .logo-right {
     margin-left: -24px;
+  }
+
+  @media screen and (max-width: 400px) {
+    &.mobile-hidden {
+      display: none;
+    }
   }
 `
 

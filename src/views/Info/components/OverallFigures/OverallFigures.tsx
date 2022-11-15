@@ -192,7 +192,7 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
       Object.keys(state.oneDayData).length === CHAINS.length ? (
         <Container>
           <SectionsWrapper>
-            <Section>
+            <Section className="left-section">
               <div className="figure">
                 <Icon name="chart" />
                 <Text className="figureValue">
@@ -237,7 +237,7 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
               <img src="/images/info/farms-bg.png" className="showcase" />
               <img src="/images/info/maximizers-bg.png" className="showcase" />
             </Section>
-            <Section>
+            <Section className="right-section">
               <div className="figure">
                 <Icon name="chart" />
                 <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>

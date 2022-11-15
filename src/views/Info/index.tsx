@@ -140,7 +140,7 @@ const Info: React.FC = () => {
               <Section>
                 {CHAINS.map((chain: Chain) => {
                   return (
-                    <div key={chain.id} className="figure">
+                    <div key={chain.id} className="chain">
                       <Icon name={chain.chain} />
                     </div>
                   )

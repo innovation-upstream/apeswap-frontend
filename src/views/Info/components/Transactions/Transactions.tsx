@@ -4,36 +4,11 @@ import styled from '@emotion/styled'
 import moment from 'moment/moment'
 import { useTranslation } from '../../../../contexts/Localization'
 import { CHAINS } from '../../config/config'
-import { Row, Column, HeadingWrapper, RightArrowIcon, FiguresWrapper, BodyWrapper } from '../../styles'
+import { Row, Column, HeadingWrapper, SectionsWrapper, Section } from '../../styles'
 import { transactionsQuery } from '../../queries'
 import { HeadingContainer } from '../Tokens/Tokens'
 import useTheme from '../../../../hooks/useTheme'
-
-interface Transaction {
-  chain: string
-  swaps: [
-    {
-      to: string
-      amountUSD: number
-      pair: {
-        token0: {
-          symbol: string
-        }
-        token1: {
-          symbol: string
-        }
-      }
-      amount0In: number
-      amount0Out: number
-      amount1In: number
-      amount1Out: number
-      transaction: {
-        id: any
-        timestamp: number
-      }
-    },
-  ]
-}
+import { InfoTransaction } from '../../types'
 
 interface TransactionsProps {
   amount: number
@@ -117,7 +92,10 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       temp = temp.concat(state.transactions[chain])
     }
     return temp
-      .sort((a: Transaction, b: Transaction) => a.swaps[0]?.transaction.timestamp - b.swaps[0]?.transaction.timestamp)
+      .sort(
+        (a: InfoTransaction, b: InfoTransaction) =>
+          a.swaps[0]?.transaction.timestamp - b.swaps[0]?.transaction.timestamp,
+      )
       .reverse()
       .slice(0, props.amount)
   }
@@ -137,18 +115,18 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
         </HeadingWrapper>
       </HeadingContainer>
       <Container>
-        <FiguresWrapper>
-          <BodyWrapper>
+        <SectionsWrapper>
+          <Section>
             <Row>
               <Column flex="2">{t('Info')}</Column>
               <Column>{t('Total Value')}</Column>
-              <Column>{t('Token Amount')}</Column>
-              <Column>{t('Token Amount')}</Column>
-              <Column>{t('Account')}</Column>
-              <Column>{t('Time')}</Column>
+              <Column className="mobile-hidden">{t('Token Amount')}</Column>
+              <Column className="mobile-hidden">{t('Token Amount')}</Column>
+              <Column className="mobile-hidden">{t('Account')}</Column>
+              <Column className="mobile-hidden">{t('Time')}</Column>
             </Row>
             {Object.keys(state.transactions).length === CHAINS.length &&
-              processTransactions().map((tran: Transaction, index) => {
+              processTransactions().map((tran: InfoTransaction, index) => {
                 return (
                   tran.swaps[0] && (
                     <Row key={tran.swaps[0].transaction.id} background={index % 2 === 0}>
@@ -157,13 +135,13 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
                         {`Swap ${tran.swaps[0]?.pair?.token0.symbol} for ${tran.swaps[0]?.pair?.token1.symbol}`}
                       </Column>
                       <Column>${(Math.round(tran.swaps[0]?.amountUSD * 100) / 100).toLocaleString()}</Column>
-                      <Column>{`${Math.abs(tran.swaps[0]?.amount0In - tran.swaps[0]?.amount0Out).toLocaleString()} ${
-                        tran.swaps[0]?.pair.token0.symbol
-                      }`}</Column>
-                      <Column>{`${Math.abs(tran.swaps[0]?.amount1In - tran.swaps[0]?.amount1Out).toLocaleString()} ${
-                        tran.swaps[0]?.pair.token1.symbol
-                      }`}</Column>
-                      <Column>
+                      <Column className="mobile-hidden">{`${Math.abs(
+                        tran.swaps[0]?.amount0In - tran.swaps[0]?.amount0Out,
+                      ).toLocaleString()} ${tran.swaps[0]?.pair.token0.symbol}`}</Column>
+                      <Column className="mobile-hidden">{`${Math.abs(
+                        tran.swaps[0]?.amount1In - tran.swaps[0]?.amount1Out,
+                      ).toLocaleString()} ${tran.swaps[0]?.pair.token1.symbol}`}</Column>
+                      <Column className="mobile-hidden">
                         <a
                           href={`${CHAINS.find((x) => x.chain === tran.chain)?.explorer}address/${tran.swaps[0]?.to}`}
                           target="_blank"
@@ -172,13 +150,13 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
                           {tran.swaps[0]?.to.slice(0, 6) + '...' + tran.swaps[0]?.to.slice(38, 42)}
                         </a>
                       </Column>
-                      <Column>{formatTime(tran.swaps[0]?.transaction.timestamp)}</Column>
+                      <Column className="mobile-hidden">{formatTime(tran.swaps[0]?.transaction.timestamp)}</Column>
                     </Row>
                   )
                 )
               })}
-          </BodyWrapper>
-        </FiguresWrapper>
+          </Section>
+        </SectionsWrapper>
       </Container>
     </div>
   )
