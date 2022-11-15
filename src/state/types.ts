@@ -19,6 +19,7 @@ import {
 } from 'config/constants/types'
 import { ProtocolDashboardState } from './protocolDashboard/types'
 import { ApiResponse } from './statsPage/types'
+import { InfoState } from './info/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -630,12 +631,6 @@ export interface TeamsState {
   isInitialized: boolean
   isLoading: boolean
   data: TeamsById
-}
-
-export interface InfoState {
-  isInitialized: boolean
-  isLoading: boolean
-  pairs: []
 }
 
 // Global state

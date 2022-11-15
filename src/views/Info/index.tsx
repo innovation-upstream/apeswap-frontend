@@ -14,6 +14,16 @@ import { IconBox, Container, SectionsWrapper, Section, SearchInput } from './sty
 import { Chain, CHAINS } from './config/config'
 import { CenteredImage } from '../Ifos/components/HowItWorks/styles'
 import PageLoader from '../../components/PageLoader'
+import { useSelector } from 'react-redux'
+import { State } from 'state/types'
+import {
+  useFetchInfoBlock,
+  useFetchInfoDaysData,
+  useFetchInfoNativePrice,
+  useFetchInfoPairs,
+  useFetchInfoTokensData,
+  useFetchInfoTransactions,
+} from 'state/info/hooks'
 import { StyledInput } from 'views/Bills/components/Actions/styles'
 
 let query = ''
@@ -41,6 +51,32 @@ const Info: React.FC = () => {
   })
 
   const [isLoading, setIsLoading] = useState(false)
+
+  // These return the data needed from the hook. Just adding the selector to show all state
+  useFetchInfoBlock()
+  useFetchInfoDaysData()
+  useFetchInfoNativePrice()
+  useFetchInfoPairs()
+  useFetchInfoTokensData()
+  useFetchInfoTransactions()
+  console.log(useSelector((state: State) => state.info))
+
+  // dispatch(fetchPairs(56, 10))
+  // dispatch(fetchBlock(56, 1668452899, 1668539299))
+  // dispatch(fetchDaysData(56, 10))
+  // dispatch(fetchNativePrice(56))
+  // dispatch(fetchTokens(56, 10, 23081639))
+  // dispatch(fetchTransactions(56, 10))
+
+  // console.log(infoPairs)
+  // console.log(getInfoPairs(56, 10))
+  // console.log(getTransactions(56, 10))
+  // console.log(getNativePrices(56))
+  // console.log(getDaysDataQuery(56, 10))
+  // console.log(getBlocksQuery(56, 1668452899, 1668539299))
+  // console.log(getUniswapFactoriesQuery(56, 23056202))
+  // console.log(getGraphQuery(56))
+  // console.log(getTokensQuery(56, 50, 23081639))
 
   useEffect(() => {
     setIsLoading(true)
