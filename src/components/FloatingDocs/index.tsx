@@ -22,60 +22,44 @@ export const FloatingDocs: React.FC<FloatingDocsProps> = ({ iconProps, ...props 
   // LENDING ROUTE isn't on this frontend project
   // console.log('lendingRoute:::', LENDING)
 
-  const routes = [JUNGLE_FARMS, FARMS, DEX, POOLS, MAXIMIZERS_VAULTS, LIQUIDITY, ORDERS, IAO, GNANA, TREASURY_BILL]
-  let link: string
+  const link =
+    JUNGLE_FARMS || FARMS
+      ? 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms'
+      : DEX
+      ? 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/swap'
+      : POOLS
+      ? 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/pools'
+      : MAXIMIZERS_VAULTS
+      ? 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/banana-maximizers'
+      : LIQUIDITY
+      ? 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity'
+      : ORDERS
+      ? 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/limit-orders'
+      : IAO
+      ? 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/self-serve-iao-ss-iao'
+      : GNANA
+      ? 'https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/gnana'
+      : TREASURY_BILL
+      ? 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills'
+      : null
 
-  switch (routes) {
-    case routes['JUNGLE_FARMS'] || routes['FARMS']:
-      link = 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms'
-      break
-    case routes['MAXIMIZERS_VAULTS']:
-      link = 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/vaults'
-      break
-    case routes['IAO']:
-      link = 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/self-serve-iao-ss-iao'
-      break
-    case routes['GNANA']:
-      link = 'https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/gnana'
-      break
-    case routes['TREASURY_BILL']:
-      link = 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills'
-      break
-    case routes['DEX']:
-      link = null
-      break
-    case routes['POOLS']:
-      link = null
-      break
-    case routes['LIQUIDITY']:
-      link = null
-      break
-    case routes['ORDERS']:
-      link = null
-      break
-    default:
-      link = null
-  }
-
-  if (link)
-    return (
-      <Flex
-        sx={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          width: '40px',
-          height: '40px',
-          zIndex: 5,
-          cursor: 'pointer',
-        }}
-        onClick={() => window.open(link, '_blank')}
-        {...props}
-      >
-        <Svg icon="docs" color="primaryBright" {...iconProps} />
-      </Flex>
-    )
-  return null
+  return link ? (
+    <Flex
+      sx={{
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        width: '40px',
+        height: '40px',
+        zIndex: 5,
+        cursor: 'pointer',
+      }}
+      onClick={() => window.open(link, '_blank')}
+      {...props}
+    >
+      <Svg icon="docs" color="primaryBright" {...iconProps} />
+    </Flex>
+  ) : null
 }
 
 export default FloatingDocs

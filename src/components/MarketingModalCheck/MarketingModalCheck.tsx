@@ -98,11 +98,6 @@ const MarketingModalCheck = () => {
     <LendingBody4 key="lend4" />,
     <LendingBody5 key="lend5" />,
   ]
-  // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
-  // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/vaults"
-  // link="https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/gnana"
-  // https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills
-  // link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/self-serve-iao-ss-iao"
 
   return farmsRoute ? (
     <TutorialModal
