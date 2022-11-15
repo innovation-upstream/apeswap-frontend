@@ -1,47 +1,94 @@
-import { InfoState } from '../types'
-import { getInfoPairs } from './api'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CHAINS } from '../../views/Info/config/config'
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit'
+import { InfoState } from './types'
+import { getInfoPairs, getBlocks, getDaysData, getNativePrices, getTokens, getTransactions } from './api'
+import { MAINNET_CHAINS } from 'config/constants/chains'
+import { ChainId } from '@ape.swap/sdk'
 
-import { InfoPair } from '../../views/Info/types'
-
-export const fetchInfoPairs = (amount: number) => async (dispatch) => {
-  for (let i = 0; i < CHAINS.length; i++) {
-    const chain = CHAINS[i].chain
-    const data = await getInfoPairs(amount, CHAINS[i].graphAddress)
-    console.log('--')
-    console.log(data)
-    console.log('--')
-
-    const result = { chain: chain, data: data }
-    dispatch(setInfoPairs(result))
-  }
-}
+const dataAsListInitialState = {} as Record<ChainId, { data: []; loading: boolean; initalized: boolean }>
+const dataAsNullInitialState = {} as Record<ChainId, { data: null; loading: boolean; initalized: boolean }>
+MAINNET_CHAINS.forEach((chainId) => {
+  dataAsListInitialState[chainId] = { data: [], loading: false, initalized: false }
+  dataAsNullInitialState[chainId] = { data: null, loading: false, initalized: false }
+})
 
 const initialState: InfoState = {
-  isInitialized: false,
-  isLoading: true,
-  pairs: [],
+  pairs: dataAsListInitialState,
+  transactions: dataAsListInitialState,
+  nativePrice: dataAsNullInitialState,
+  daysData: dataAsListInitialState,
+  tokens: dataAsListInitialState,
+  block: dataAsNullInitialState,
 }
 
 export const infoSlice = createSlice({
   name: 'info',
   initialState,
   reducers: {
-    setInfoPairs: (state, action) => {
-      for (let i = 0; i < action.payload.data.length; i++) {
-        action.payload.data[i].chain = action.payload.chain
-      }
-
-      //Need a way to update instead of just adding to the array each time
-
-      // @ts-ignore
-      state.pairs.push(action.payload.data)
+    setPairs: (state, action) => {
+      const { data, chainId, loading, initalized } = action.payload
+      state.pairs[chainId] = { data, loading, initalized }
+    },
+    setTransactions: (state, action) => {
+      const { data, chainId, loading, initalized } = action.payload
+      state.transactions[chainId] = { data, loading, initalized }
+    },
+    setNativePrice: (state, action) => {
+      const { data, chainId, loading, initalized } = action.payload
+      state.nativePrice[chainId] = { data, loading, initalized }
+    },
+    setDaysData: (state, action) => {
+      const { data, chainId, loading, initalized } = action.payload
+      state.daysData[chainId] = { data, loading, initalized }
+    },
+    setTokens: (state, action) => {
+      const { data, chainId, loading, initalized } = action.payload
+      state.tokens[chainId] = { data, loading, initalized }
+    },
+    setBlock: (state, action) => {
+      const { data, chainId, loading, initalized } = action.payload
+      state.block[chainId] = { data, loading, initalized }
+    },
+    setLoading: (state, action) => {
+      const { stateType, chainId, loading } = action.payload
+      state[stateType][chainId] = { ...state[stateType][chainId], loading }
     },
   },
 })
 
 // Actions
-export const { setInfoPairs } = infoSlice.actions
+export const { setPairs, setTransactions, setNativePrice, setDaysData, setTokens, setBlock, setLoading } =
+  infoSlice.actions
+
+// Thunks
+export const fetchPairs = (chainId: ChainId, amount: number) => async (dispatch) => {
+  const data = await getInfoPairs(chainId, amount)
+  dispatch(setPairs({ data, chainId, loading: false, initalized: true }))
+}
+
+export const fetchTransactions = (chainId: ChainId, amount: number) => async (dispatch) => {
+  const data = await getTransactions(chainId, amount)
+  dispatch(setTransactions({ data, chainId, loading: false, initalized: true }))
+}
+
+export const fetchNativePrice = (chainId: ChainId) => async (dispatch) => {
+  const data = await getNativePrices(chainId)
+  dispatch(setNativePrice({ data, chainId, loading: false, initalized: true }))
+}
+
+export const fetchDaysData = (chainId: ChainId, oneDayBack: number) => async (dispatch) => {
+  const data = await getDaysData(chainId, oneDayBack)
+  dispatch(setDaysData({ data, chainId, loading: false, initalized: true }))
+}
+
+export const fetchTokens = (chainId: ChainId, amount: number, block: number) => async (dispatch) => {
+  const data = await getTokens(chainId, amount, block)
+  dispatch(setTokens({ data, chainId, loading: false, initalized: true }))
+}
+
+export const fetchBlock = (chainId: ChainId, startTimestamp: number, currentTimestamp: number) => async (dispatch) => {
+  const data = await getBlocks(chainId, startTimestamp, currentTimestamp)
+  dispatch(setBlock({ data, chainId, loading: false, initalized: true }))
+}
 
 export default infoSlice.reducer

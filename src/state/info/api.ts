@@ -1,58 +1,173 @@
-import { LaunchCalendarCard } from '../types'
-import { baseUrlStrapi } from '../../hooks/api'
-import { pairsQuery } from '../../views/Info/queries'
-import { CHAINS } from '../../views/Info/config/config'
+import {
+  blocksQuery,
+  graphQuery,
+  nativePricesQuery,
+  pairsQuery,
+  tokensQuery,
+  transactionsQuery,
+  uniswapFactoriesQuery,
+} from './queries'
+import { ChainId } from '@ape.swap/sdk'
+import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
+import axiosRetry from 'axios-retry'
+import axios from 'axios'
+import { Block, DaysData, NativePrice, Pairs, Token, Transactions } from './types'
+import { daysDataQuery } from 'views/Info/queries'
 
-export const getInfoPairs = async (amount: number, graphAddress: string): Promise<any> => {
-  console.log('graph address: ' + graphAddress)
+export const getInfoPairs = async (chainId: ChainId, amount: number): Promise<Pairs[]> => {
+  const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
-    console.log('try 1')
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(pairsQuery(amount)),
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(pairsQuery(amount)))
+    const { data } = responseData
+    if (status === 500) {
+      return []
     }
-
-    console.log('try 2')
-    const response = await fetch(graphAddress, requestOptions)
-    const jsonRes = await response.json()
-
-    return jsonRes.data.pairs
-
-    // let pairs = []
-    // await fetch(graphAddress, requestOptions)
-    //   .then((res) => res.json())
-    //   .then(async (result) => {
-    //     console.log('pairs pairs pairs')
-    //     console.log(result.data.pairs)
-    //     console.log('pairs pairs pairs')
-    //     return result.data.pairs
-    //   })
-    //   .then((
-    //
-    //   )
-
-    // console.log('^&^&^&')
-    // console.log(response)
-    // console.log('^&^&^&')
-
-    //  return null
-    //
-    // fetch(graphAddress, requestOptions)
-    //   .then((res) => res.json())
-    //   .then(async (result) => {
-    //     console.log('pairs pairs pairs')
-    //     console.log(result.data.pairs)
-    //     console.log('pairs pairs pairs')
-    //     return result.data.pairs
-    //   })
-    //   .catch(async (error) => {
-    //     console.log('THERE WAS AN ERROR')
-    //     console.log(error)
-    //     console.log(graphAddress)
-    //   })
+    return data.pairs
   } catch (error) {
-    console.log('hit error')
+    console.error(error)
+    return []
+  }
+}
+
+export const getTransactions = async (chainId: ChainId, amount: number): Promise<Transactions[]> => {
+  const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
+  try {
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(transactionsQuery(amount)))
+    const { data } = responseData
+    if (status === 500) {
+      return []
+    }
+    return data.transactions
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
+export const getNativePrices = async (chainId: ChainId): Promise<NativePrice> => {
+  const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
+  try {
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(nativePricesQuery))
+    const { data } = responseData
+    if (status === 500) {
+      return null
+    }
+    return data.bundles[0]
+  } catch (error) {
+    console.error(error)
     return null
+  }
+}
+
+export const getDaysData = async (chainId: ChainId, oneDayBack: number): Promise<DaysData[]> => {
+  const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
+  try {
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(daysDataQuery(oneDayBack)))
+    const { data } = responseData
+    if (status === 500) {
+      return []
+    }
+    return data.uniswapDayDatas
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
+export const getBlocks = async (chainId: ChainId, startTimestamp: number, currentTimestamp: number): Promise<Block> => {
+  const { blockGraph } = INFO_PAGE_CHAIN_PARAMS[chainId]
+  try {
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const { data: responseData, status } = await axios.post(
+      blockGraph,
+      JSON.stringify(blocksQuery(startTimestamp, currentTimestamp)),
+    )
+    const { data } = responseData
+    if (status === 500) {
+      return null
+    }
+    return data.blocks[0]
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+export const getGraph = async (chainId: ChainId): Promise<any> => {
+  const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
+  try {
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(graphQuery))
+    const { data } = responseData
+    if (status === 500) {
+      return null
+    }
+    return data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+export const getUniswapFactories = async (chainId: ChainId, block: number): Promise<any> => {
+  const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
+  try {
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const { data: responseData, status } = await axios.post(
+      graphAddress,
+      JSON.stringify(uniswapFactoriesQuery(chainId, block)),
+    )
+    const { data } = responseData
+    if (status === 500) {
+      return null
+    }
+    return data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+export const getTokens = async (chainId: ChainId, amount: number, block: number): Promise<Token[]> => {
+  const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
+  try {
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(tokensQuery(amount, block)))
+    const { data } = responseData
+    if (status === 500) {
+      return []
+    }
+    return data.tokens
+  } catch (error) {
+    console.error(error)
+    return []
   }
 }

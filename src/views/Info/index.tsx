@@ -14,6 +14,29 @@ import { IconBox, Container, SectionsWrapper, Section } from './styles'
 import { Chain, CHAINS } from './config/config'
 import { CenteredImage } from '../Ifos/components/HowItWorks/styles'
 import PageLoader from '../../components/PageLoader'
+// import {
+//   getBlocksQuery,
+//   getDaysDataQuery,
+//   getGraphQuery,
+//   getInfoPairs,
+//   getNativePrices,
+//   getTokensQuery,
+//   getTransactions,
+//   getUniswapFactoriesQuery,
+// } from 'state/info/api'
+import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
+import { useSelector } from 'react-redux'
+import { State } from 'state/types'
+import { fetchPairs, fetchBlock, fetchDaysData, fetchNativePrice, fetchTokens, fetchTransactions } from 'state/info'
+import { useAppDispatch } from 'state'
+import {
+  useFetchInfoBlock,
+  useFetchInfoDaysData,
+  useFetchInfoNativePrice,
+  useFetchInfoPairs,
+  useFetchInfoTokensData,
+  useFetchInfoTransactions,
+} from 'state/info/hooks'
 
 // export const SectionsWrapper = styled.div`
 //   position: relative;
@@ -84,7 +107,36 @@ const Info: React.FC = () => {
     oneDayBlocks: [],
   })
 
+  const dispatch = useAppDispatch()
+
   const [isLoading, setIsLoading] = useState(false)
+  const infoPairs = useSelector((state: State) => state.info)
+  console.log('This is what info pairs look like')
+  console.log(infoPairs)
+
+  useFetchInfoBlock()
+  useFetchInfoDaysData()
+  useFetchInfoNativePrice()
+  useFetchInfoPairs()
+  useFetchInfoTokensData()
+  useFetchInfoTransactions()
+
+  // dispatch(fetchPairs(56, 10))
+  // dispatch(fetchBlock(56, 1668452899, 1668539299))
+  // dispatch(fetchDaysData(56, 10))
+  // dispatch(fetchNativePrice(56))
+  // dispatch(fetchTokens(56, 10, 23081639))
+  // dispatch(fetchTransactions(56, 10))
+
+  // console.log(infoPairs)
+  // console.log(getInfoPairs(56, 10))
+  // console.log(getTransactions(56, 10))
+  // console.log(getNativePrices(56))
+  // console.log(getDaysDataQuery(56, 10))
+  // console.log(getBlocksQuery(56, 1668452899, 1668539299))
+  // console.log(getUniswapFactoriesQuery(56, 23056202))
+  // console.log(getGraphQuery(56))
+  // console.log(getTokensQuery(56, 50, 23081639))
 
   useEffect(() => {
     setIsLoading(true)

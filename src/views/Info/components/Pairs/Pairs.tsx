@@ -42,7 +42,7 @@ const Tokens: React.FC<PairsProps> = (props) => {
   const pairs = useInfoPairs()
 
   function flattenPairs() {
-    return pairs.flat()
+    return [] // pairs.flat()
   }
 
   // const pairsData = useCallback(() => {
