@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { LeftArrow, RightArrow } from '../../components/Icons'
+import { Input } from '@apeswapfinance/uikit'
 
 interface RowProps {
   background?: boolean
@@ -35,6 +36,13 @@ export const SectionsWrapper = styled.div`
   }
 `
 
+export const SearchInput = styled(Input)`
+  width: 1000px;
+  border: none;
+  font-size: 22px;
+  font-weight: 700;
+`
+
 export const Section = styled.div`
   position: relative;
   flex: 1;
@@ -68,6 +76,11 @@ export const Section = styled.div`
       border-radius: 50%;
     }
   }
+
+  .search-wrapper {
+    flex: 3;
+  }
+
   @media screen and (min-width: 1200px) {
     width: 95vw;
     display: flex;

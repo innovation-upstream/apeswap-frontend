@@ -47,6 +47,28 @@ const Tokens: React.FC<TokensProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [chainsLoaded, setChainsLoaded] = useState(0)
 
+  const toggleFav = (token: string) => {
+    let currentFavs = JSON.parse(localStorage.getItem('infoFavTokens'))
+    if (currentFavs === null) currentFavs = []
+    currentFavs.push(token)
+
+    //Need to check if should be added to array or removed from array (if it's in there then remove, if not then add
+
+    localStorage.setItem('infoFavTokensA', JSON.stringify(currentFavs))
+  }
+
+  const favs = JSON.parse(localStorage.getItem('infoFavTokens'))
+  // const favs = () => {
+  //   return
+  // }
+
+  const getFavIcon = (token: string) => {
+    if (favs !== null && favs.filter((x) => x === token).length > 0)
+      return `/images/info/fav-yes-${isDark ? 'dark' : 'light'}.svg`
+
+    return `/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`
+  }
+
   useEffect(() => {
     setIsLoading(true)
 
@@ -122,7 +144,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
               return (
                 <Row key={token.id} background={index % 2 === 0}>
                   <Column width="35px">
-                    <img width="16px" src={`/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`} />
+                    <img width="16px" src={getFavIcon(token.id)} onClick={() => toggleFav(token.id)} />
                   </Column>
                   <Column width="18px">{index + 1}</Column>
                   <Column flex="2">
