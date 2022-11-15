@@ -9,7 +9,7 @@ import { ChainId } from '@ape.swap/sdk'
 //   }
 // }
 
-export const tokensQuery = (amount: number, block: number) => {
+export const tokensQuery = (amount: number, block: string) => {
   return {
     query:
       'query { tokens(block: { number:' +
@@ -114,11 +114,11 @@ export const blocksQuery = (startTimestamp: number, currentTimestamp: number) =>
   }
 }
 
-export const uniswapFactoriesQuery = (chainId: ChainId, block: number) => {
+export const uniswapFactoriesQuery = (chainId: ChainId, block: string) => {
   return {
     query:
       'query uniswapFactories { uniswapFactories(' +
-      (block !== 0 ? 'block: { number:' + block + '}' : '') +
+      (block !== '0' ? 'block: { number:' + block + '}' : '') +
       ' where: {id: "' +
       chainId +
       '"}) { id totalVolumeUSD totalVolumeETH untrackedVolumeUSD totalLiquidityUSD totalLiquidityETH txCount pairCount } }',

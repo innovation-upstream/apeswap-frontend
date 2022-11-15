@@ -131,7 +131,7 @@ export const getGraph = async (chainId: ChainId): Promise<any> => {
   }
 }
 
-export const getUniswapFactories = async (chainId: ChainId, block: number): Promise<any> => {
+export const getUniswapFactories = async (chainId: ChainId, block: string): Promise<any> => {
   const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
     axiosRetry(axios, {
@@ -153,7 +153,7 @@ export const getUniswapFactories = async (chainId: ChainId, block: number): Prom
   }
 }
 
-export const getTokens = async (chainId: ChainId, amount: number, block: number): Promise<Token[]> => {
+export const getTokens = async (chainId: ChainId, amount: number, block: string): Promise<Token[]> => {
   const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
     axiosRetry(axios, {

@@ -62,25 +62,26 @@ export const useFetchInfoDaysData = () => {
 
 export const useFetchInfoTokensData = () => {
   const dispatch = useAppDispatch()
-  const { slowRefresh } = useRefresh()
-
+  const blocks = useSelector((state: State) => state.info.block)
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.TOKENS, chainId, loading: true }))
-      dispatch(fetchTokens(chainId, 10, 1231023))
+      if (blocks[chainId].initialized) {
+        dispatch(fetchTokens(chainId, 10, blocks[chainId].data.number))
+      }
     })
-  }, [slowRefresh, dispatch])
+  }, [blocks, dispatch])
   return useSelector((state: State) => state.info.tokens)
 }
 
 export const useFetchInfoBlock = () => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
-
   useEffect(() => {
+    const currentTime = Math.round(new Date().getTime() / 1000)
     MAINNET_CHAINS.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.BLOCK, chainId, loading: true }))
-      dispatch(fetchBlock(chainId, 123123213, 1231231231))
+      dispatch(fetchBlock(chainId, currentTime - 24 * 60 * 60, currentTime))
     })
   }, [slowRefresh, dispatch])
   return useSelector((state: State) => state.info.block)

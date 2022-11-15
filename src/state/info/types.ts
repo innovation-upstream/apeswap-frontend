@@ -78,10 +78,10 @@ export enum InfoStateTypes {
 }
 
 export interface InfoState {
-  pairs: Record<ChainId, { data: Pairs[]; loading: boolean; initalized: boolean }>
-  transactions: Record<ChainId, { data: Transactions[]; loading: boolean; initalized: boolean }>
-  nativePrice: Record<ChainId, { data: NativePrice; loading: boolean; initalized: boolean }>
-  daysData: Record<ChainId, { data: DaysData[]; loading: boolean; initalized: boolean }>
-  tokens: Record<ChainId, { data: Token[]; loading: boolean; initalized: boolean }>
-  block: Record<ChainId, { data: Block; loading: boolean; initalized: boolean }>
+  pairs: Record<ChainId, { data: Pairs[]; loading: boolean; initialized: boolean }>
+  transactions: Record<ChainId, { data: Transactions[]; loading: boolean; initialized: boolean }>
+  nativePrice: Record<ChainId, { data: NativePrice; loading: boolean; initialized: boolean }>
+  daysData: Record<ChainId, { data: DaysData[]; loading: boolean; initialized: boolean }>
+  tokens: Record<ChainId, { data: Token[]; loading: boolean; initialized: boolean }>
+  block: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
 }

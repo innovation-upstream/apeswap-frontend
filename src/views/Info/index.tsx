@@ -14,21 +14,8 @@ import { IconBox, Container, SectionsWrapper, Section, SearchInput } from './sty
 import { Chain, CHAINS } from './config/config'
 import { CenteredImage } from '../Ifos/components/HowItWorks/styles'
 import PageLoader from '../../components/PageLoader'
-// import {
-//   getBlocksQuery,
-//   getDaysDataQuery,
-//   getGraphQuery,
-//   getInfoPairs,
-//   getNativePrices,
-//   getTokensQuery,
-//   getTransactions,
-//   getUniswapFactoriesQuery,
-// } from 'state/info/api'
-import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
 import { useSelector } from 'react-redux'
 import { State } from 'state/types'
-import { fetchPairs, fetchBlock, fetchDaysData, fetchNativePrice, fetchTokens, fetchTransactions } from 'state/info'
-import { useAppDispatch } from 'state'
 import {
   useFetchInfoBlock,
   useFetchInfoDaysData,
@@ -63,19 +50,16 @@ const Info: React.FC = () => {
     oneDayBlocks: [],
   })
 
-  const dispatch = useAppDispatch()
-
   const [isLoading, setIsLoading] = useState(false)
-  const infoPairs = useSelector((state: State) => state.info)
-  console.log('This is what info pairs look like')
-  console.log(infoPairs)
 
+  // These return the data needed from the hook. Just adding the selector to show all state
   useFetchInfoBlock()
   useFetchInfoDaysData()
   useFetchInfoNativePrice()
   useFetchInfoPairs()
   useFetchInfoTokensData()
   useFetchInfoTransactions()
+  console.log(useSelector((state: State) => state.info))
 
   // dispatch(fetchPairs(56, 10))
   // dispatch(fetchBlock(56, 1668452899, 1668539299))
