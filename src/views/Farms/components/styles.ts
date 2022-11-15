@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import styled from 'styled-components'
 import { Button, ArrowDropUpIcon, Flex, Text } from '@apeswapfinance/uikit'
 
@@ -20,7 +21,7 @@ export const Container = styled(Flex)`
   position: relative;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  width: 100%;
 `
 
 export const TitleText = styled(Text)`

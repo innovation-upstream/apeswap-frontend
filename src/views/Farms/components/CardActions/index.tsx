@@ -15,6 +15,7 @@ interface CardActionProps {
   lpValueUsd: number
   stakeLpAddress: string
   pid: number
+  v2Flag: boolean
 }
 
 const CardActions: React.FC<CardActionProps> = ({
@@ -24,6 +25,7 @@ const CardActions: React.FC<CardActionProps> = ({
   lpValueUsd,
   stakeLpAddress,
   pid,
+  v2Flag,
 }) => {
   const { account } = useActiveWeb3React()
   const actionToRender = () => {
@@ -47,6 +49,7 @@ const CardActions: React.FC<CardActionProps> = ({
         stakingTokenBalance={stakingTokenBalance}
         lpValueUsd={lpValueUsd}
         pid={pid}
+        v2Flag={v2Flag}
       />
     )
   }

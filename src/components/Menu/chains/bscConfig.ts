@@ -5,6 +5,11 @@ import { NETWORK_INFO_LINK } from 'config/constants/chains'
 
 const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   {
+    label: t('Migrate'),
+    href: '/migrate-v2',
+    isNew: true,
+  },
+  {
     label: t('Exchange'),
     lightIcon: 'ExchangeLightImage',
     darkIcon: 'ExchangeDarkImage',

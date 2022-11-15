@@ -77,3 +77,6 @@ export const getIazoFactoryAddress = (chainId: number) => {
 export const getMigratorBalanceCheckerAddress = (chainId: number) => {
   return addresses.migratorBalanceChecker[chainId]
 }
+export const getMasterChefV2Address = (chainId: number) => {
+  return addresses.masterChefV2[chainId]
+}

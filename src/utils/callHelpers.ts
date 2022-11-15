@@ -15,6 +15,7 @@ import {
   VaultApeV2,
   JungleChef,
 } from 'config/abi/types'
+import { MasterChefV2 } from 'config/abi/types/MasterChefV2'
 
 export const approve = async (lpContract: Erc20, masterChefContract: Contract) => {
   return lpContract.approve(masterChefContract.address, ethers.constants.MaxUint256).then((trx) => {
@@ -31,6 +32,14 @@ export const stake = async (masterChefContract: Masterchef, pid, amount) => {
       })
   }
 
+  return masterChefContract
+    .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+    .then((trx) => {
+      return trx.wait()
+    })
+}
+
+export const stakeMasterChefV2 = async (masterChefContract: MasterChefV2, pid, amount) => {
   return masterChefContract
     .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .then((trx) => {
@@ -71,6 +80,14 @@ export const unstake = async (masterChefContract: Masterchef, pid, amount) => {
     })
 }
 
+export const unstakeMasterChefV2 = async (masterChefContract: MasterChefV2, pid, amount) => {
+  return masterChefContract
+    .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+    .then((trx) => {
+      return trx.wait()
+    })
+}
+
 export const sousUnstake = async (sousChefContract: SousChef, amount) => {
   return sousChefContract.withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()).then((trx) => {
     return trx.wait()
@@ -95,6 +112,12 @@ export const harvest = async (masterChefContract: Masterchef, pid) => {
       return trx.wait()
     })
   }
+  return masterChefContract.deposit(pid, '0').then((trx) => {
+    return trx.wait()
+  })
+}
+
+export const harvestMasterChefV2 = async (masterChefContract: MasterChefV2, pid) => {
   return masterChefContract.deposit(pid, '0').then((trx) => {
     return trx.wait()
   })

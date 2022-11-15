@@ -17,13 +17,14 @@ interface HarvestActionsProps {
   pid: number
   userEarningsUsd: string
   disabled: boolean
+  v2Flag: boolean
 }
 
-const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarningsUsd }) => {
+const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarningsUsd, v2Flag }) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onHarvest } = useHarvest(pid)
+  const { onHarvest } = useHarvest(pid, v2Flag)
   const { toastSuccess } = useToast()
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
   const isMobile = !isLg && !isXl && !isXxl

@@ -1,8 +1,9 @@
+/** @jsxImportSource theme-ui */
 import React, { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Flex } from '@apeswapfinance/uikit'
+import { Flex } from '@ape.swap/uikit'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import ListViewMenu from 'components/ListViewMenu'
 import { orderBy } from 'lodash'
@@ -10,24 +11,26 @@ import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
 import { Farm } from 'state/types'
-import { useFarms, useFarmTags, usePollFarms, useSetFarms, useFarmOrderings } from 'state/farms/hooks'
+import { useFarmTags, useFarmOrderings } from 'state/farms/hooks'
 import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
+import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
+import LegacyFarms from './LegacyFarms'
 
 const Farms: React.FC = () => {
-  useSetFarms()
-  usePollFarms()
+  useSetFarmsV2()
+  usePollFarmsV2()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
   const { pathname } = useLocation()
   const { t } = useTranslation()
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
-  const farmsLP = useFarms(account)
+  const farmsLP = useFarmsV2(account)
   const { search } = window.location
   const params = new URLSearchParams(search)
   const urlSearchedFarm = parseInt(params.get('pid'))
@@ -58,8 +61,11 @@ const Farms: React.FC = () => {
   const [stakedOnly, setStakedOnly] = useState(false)
   const isActive = !pathname.includes('history')
 
-  const activeFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const activeFarms = farmsLP?.filter((farm) => farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP?.filter((farm) => farm.multiplier === '0X')
+  // TODO:  If banana -> banana is pid 0
+  //   const activeFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+  //   const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
   const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
@@ -168,19 +174,25 @@ const Farms: React.FC = () => {
   return (
     <>
       <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
+        sx={{
+          position: 'relative',
+          top: '30px',
+          width: '100%',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          mb: '100px',
+        }}
       >
         <ListViewLayout>
           <Banner banner="banana-farms" link="?modal=1" title={t('Banana Farms')} listViewBreak maxWidth={1130} />
-          <Flex alignItems="center" justifyContent="center" mt="20px">
+          <Flex sx={{ alignItems: 'center', justifyContent: 'center', mt: '20px' }}>
             <ListViewMenu
               onHandleQueryChange={handleChangeQuery}
               onSetSortOption={setSortOption}
               onSetStake={setStakedOnly}
-              harvestAll={<HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} />}
+              harvestAll={
+                <></> // <HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} v2Flag={true} />
+              }
               stakedOnly={stakedOnly}
               query={query}
               activeOption={sortOption}
@@ -192,7 +204,14 @@ const Farms: React.FC = () => {
               <ListView404 product={LIST_VIEW_PRODUCTS.FARMS} />
             </Flex>
           ) : (
-            <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} />
+            <>
+              <Flex sx={{ border: '5px solid', borderColor: 'white4', borderRadius: '10px', mt: '20px' }}>
+                <LegacyFarms />
+              </Flex>
+              <Flex sx={{ border: '5px solid', borderColor: 'gold', borderRadius: '10px', mt: '20px' }}>
+                <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} v2Flag={true} />
+              </Flex>
+            </>
           )}
         </ListViewLayout>
       </Flex>

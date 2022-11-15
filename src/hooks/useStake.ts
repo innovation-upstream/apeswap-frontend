@@ -7,7 +7,7 @@ import {
   updateNfaStakingUserBalance,
   updateUserNfaStakingStakedBalance,
 } from 'state/actions'
-import { stake, sousStake, nfaStake, miniChefStake, jungleStake } from 'utils/callHelpers'
+import { stake, sousStake, nfaStake, miniChefStake, jungleStake, stakeMasterChefV2 } from 'utils/callHelpers'
 import track from 'utils/track'
 import {
   updateDualFarmUserEarnings,
@@ -15,17 +15,27 @@ import {
   updateDualFarmUserTokenBalances,
 } from 'state/dualFarms'
 import { useNetworkChainId } from 'state/hooks'
-import { useJungleChef, useMasterchef, useMiniChefContract, useNfaStakingChef, useSousChef } from './useContract'
+import {
+  useJungleChef,
+  useMasterchef,
+  useMasterChefV2Contract,
+  useMiniChefContract,
+  useNfaStakingChef,
+  useSousChef,
+} from './useContract'
 import useActiveWeb3React from './useActiveWeb3React'
 import { ChainId } from '@ape.swap/sdk'
 
-const useStake = (pid: number) => {
+const useStake = (pid: number, v2Flag: boolean) => {
   const { chainId } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
+  const masterChefContractV2 = useMasterChefV2Contract()
 
   const handleStake = useCallback(
     async (amount: string) => {
-      const trxHash = await stake(masterChefContract, pid, amount)
+      const trxHash = (await v2Flag)
+        ? stakeMasterChefV2(masterChefContractV2, pid, amount)
+        : stake(masterChefContract, pid, amount)
       track({
         event: 'farm',
         chain: chainId,
@@ -37,7 +47,7 @@ const useStake = (pid: number) => {
       })
       return trxHash
     },
-    [masterChefContract, pid, chainId],
+    [masterChefContract, masterChefContractV2, v2Flag, pid, chainId],
   )
 
   return { onStake: handleStake }

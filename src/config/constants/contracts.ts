@@ -16,6 +16,9 @@ const contracts = {
     [ChainId.BSC_TESTNET]: '0xbbC5e1cD3BA8ED639b00927115e5f0e0040aA613',
     [ChainId.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
   },
+  masterChefV2: {
+    [ChainId.BSC]: '0x1761eD43aF5766a36DF00b328Dcad3c99504c507',
+  },
   sousChef: {
     [ChainId.BSC_TESTNET]: '0xAf1B22cBDbB502B2089885bcd230255f8B80243b',
     [ChainId.BSC]: '0x54aff400858Dcac39797a81894D9920f16972D1D',

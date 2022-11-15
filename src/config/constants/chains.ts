@@ -291,6 +291,7 @@ export enum OTHER_PRODUCTS {
   NFA_COLLECTION = 'nft',
   NFA_AUCTION = 'auction',
   NFA_STAKING = 'staking',
+  MIGRATE_MASTER_APE_V2 = 'migrate-v2',
 }
 
 // Products on different chains and their available chains
@@ -314,6 +315,7 @@ export const AVAILABLE_CHAINS_ON_PRODUCTS: Record<OTHER_PRODUCTS, ChainId[]> = {
   [OTHER_PRODUCTS.NFA_COLLECTION]: [ChainId.BSC],
   [OTHER_PRODUCTS.NFA_AUCTION]: [ChainId.BSC],
   [OTHER_PRODUCTS.NFA_STAKING]: [ChainId.BSC],
+  [OTHER_PRODUCTS.MIGRATE_MASTER_APE_V2]: [ChainId.BSC],
 }
 
 // Full product names for readability
@@ -330,4 +332,5 @@ export const FULL_PRODUCT_NAMES: Record<LIST_VIEW_PRODUCTS | OTHER_PRODUCTS, str
   [OTHER_PRODUCTS.NFA_COLLECTION]: 'Nfa Collection',
   [OTHER_PRODUCTS.NFA_AUCTION]: 'Nfa Auction',
   [OTHER_PRODUCTS.NFA_STAKING]: 'Nfa Staking',
+  [OTHER_PRODUCTS.MIGRATE_MASTER_APE_V2]: 'Migrate Master Ape V2',
 }

@@ -31,9 +31,10 @@ interface StakeActionsProps {
   stakedBalance: string
   lpValueUsd: number
   pid: number
+  v2Flag: boolean
 }
 
-const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedBalance, lpValueUsd, pid }) => {
+const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedBalance, lpValueUsd, pid, v2Flag }) => {
   const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
   const dispatch = useAppDispatch()
   const { chainId, account } = useActiveWeb3React()
@@ -51,8 +52,8 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
   const { showGeneralHarvestModal } = useIsModalShown()
   const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
 
-  const { onStake } = useStake(pid)
-  const { onUnstake } = useUnstake(pid)
+  const { onStake } = useStake(pid, v2Flag)
+  const { onUnstake } = useUnstake(pid, v2Flag)
 
   const [onPresentDeposit] = useModal(
     <DepositModal
@@ -85,12 +86,10 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
         await onUnstake(val)
           .then((resp) => {
             const trxHash = resp.transactionHash
-            toastSuccess(
-              t('Withdraw Successful'),
-              <LinkExternal href={getEtherscanLink(trxHash, 'transaction', chainId)}>
-                <Text> {t('View Transaction')} </Text>
-              </LinkExternal>,
-            )
+            toastSuccess(t('Withdraw Successful'), {
+              text: t('View Transaction'),
+              url: getEtherscanLink(trxHash, 'transaction', chainId),
+            })
             if (trxHash) displayGHCircular()
           })
           .catch((e) => {
@@ -111,7 +110,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
           <StyledButton
             onClick={onPresentDeposit}
             endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
-            disabled={pendingDepositTrx}
+            disabled={pendingDepositTrx || !v2Flag}
           >
             {t('DEPOSIT')}
           </StyledButton>
@@ -144,7 +143,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
           <SmallButton
             onClick={onPresentDeposit}
             endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
-            disabled={pendingDepositTrx || !new BigNumber(stakingTokenBalance)?.gt(0)}
+            disabled={pendingDepositTrx || !new BigNumber(stakingTokenBalance)?.gt(0) || !v2Flag}
           >
             <AddIcon color="white" width="20px" height="20px" fontWeight={700} />
           </SmallButton>

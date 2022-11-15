@@ -122,12 +122,6 @@ const ServiceTokenDisplay: React.FC<ServiceTokenDisplayProps> = ({
     </Flex>
   )
   const displayToReturn = () => {
-    if (stakeLp && earnLp) {
-      return StakeLpEarnLp
-    }
-    if (noEarnToken) {
-      return LpToken
-    }
     if (token1 && !token2 && !token3 && !token4) {
       return (
         <Flex alignItems="center">
@@ -136,6 +130,12 @@ const ServiceTokenDisplay: React.FC<ServiceTokenDisplayProps> = ({
           </TokenWrapper>
         </Flex>
       )
+    }
+    if (stakeLp && earnLp) {
+      return StakeLpEarnLp
+    }
+    if (noEarnToken) {
+      return LpToken
     }
     if (dualEarn) {
       return DualEarn

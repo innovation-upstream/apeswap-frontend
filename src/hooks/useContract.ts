@@ -36,6 +36,7 @@ import iazoFactoryAbi from 'config/abi/iazoFactory.json'
 import iazoAbi from 'config/abi/iazo.json'
 import zap from 'config/abi/zap.json'
 import migratorBalanceChecker from 'config/abi/migratorBalanceChecker.json'
+import masterChefV2 from 'config/abi/masterChefV2.json'
 
 import {
   Treasury,
@@ -77,6 +78,7 @@ import {
   useIazoFactoryAddress,
   useIazoSettingsAddress,
   useMasterChefAddress,
+  useMasterChefV2Address,
   useMigratorBalanceCheckerAddress,
   useMiniChefAddress,
   useMulticallAddress,
@@ -92,6 +94,7 @@ import {
 import useActiveWeb3React from './useActiveWeb3React'
 import { Zap } from 'config/abi/types/Zap'
 import { MigratorBalanceChecker } from 'config/abi/types/MigratorBalanceChecker'
+import { MasterChefV2 } from 'config/abi/types/MasterChefV2'
 
 export function useContract(abi: any, address: string | undefined, withSignerIfPossible = true): Contract | null {
   const { library, account } = useActiveWeb3React()
@@ -267,6 +270,10 @@ export function useZapContract() {
 
 export function useMigratorBalanceCheckerContract(): Contract | null {
   return useContract(migratorBalanceChecker, useMigratorBalanceCheckerAddress(), true) as MigratorBalanceChecker
+}
+
+export function useMasterChefV2Contract() {
+  return useContract(masterChefV2, useMasterChefV2Address()) as MasterChefV2
 }
 
 export default useContract

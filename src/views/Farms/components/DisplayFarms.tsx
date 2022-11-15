@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import { Text, Svg } from '@apeswapfinance/uikit'
 import { TagVariants, useModal } from '@ape.swap/uikit'
@@ -23,7 +24,12 @@ import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from 'state/zap/actions'
 import { Svg as Icon } from '@ape.swap/uikit'
 
-const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] }> = ({ farms, openPid, farmTags }) => {
+const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[]; v2Flag: boolean }> = ({
+  farms,
+  openPid,
+  farmTags,
+  v2Flag,
+}) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const isMobile = useIsMobile()
@@ -196,9 +202,15 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
             stakeLpAddress={farm.lpAddresses[chainId]}
             lpValueUsd={farm.lpValueUsd}
             pid={farm.pid}
+            v2Flag={v2Flag}
           />
           {!isMobile && <NextArrow />}
-          <HarvestAction pid={farm.pid} disabled={userEarnings === '0.00'} userEarningsUsd={userEarningsUsd} />
+          <HarvestAction
+            pid={farm.pid}
+            disabled={userEarnings === '0.00'}
+            userEarningsUsd={userEarningsUsd}
+            v2Flag={v2Flag}
+          />
         </>
       ),
     } as ExtendedListViewProps
