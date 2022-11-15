@@ -10,3 +10,17 @@ export interface Bills {
   roi: number
   vestingTime: string
 }
+
+export interface InfoPair {
+  id: string
+  token0: {
+    symbol: string
+    name: string
+  }
+  token1: {
+    symbol: string
+    name: string
+  }
+  reserveUSD: number
+  volumeUSD: number
+}

@@ -1,25 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Text } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from '../../../../contexts/Localization'
-import { CHAINS } from '../../config/config'
-import { Row, Column, HeadingWrapper, LeftArrowIcon, RightArrowIcon, FiguresWrapper, BodyWrapper } from '../../styles'
-import { pairsQuery, tokensQuery } from '../../queries'
+import { Row, Column, HeadingWrapper, FiguresWrapper, BodyWrapper } from '../../styles'
 import useTheme from '../../../../hooks/useTheme'
-
-interface Pair {
-  id: string
-  token0: {
-    symbol: string
-    name: string
-  }
-  token1: {
-    symbol: string
-    name: string
-  }
-  reserveUSD: number
-  volumeUSD: number
-}
+import { useFetchInfoPairs, useInfoPairs } from '../../hooks'
+import { InfoPair } from 'views/Info/types'
 
 interface PairsProps {
   amount: number
@@ -51,30 +37,43 @@ const Tokens: React.FC<PairsProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
 
-  const [state, setState] = useState({
-    pairs: [],
-  })
-  const [isLoading, setIsLoading] = useState(false)
+  // I can now get data from state, need to be able to pass to it now though
+  useFetchInfoPairs(props.amount)
+  const pairs = useInfoPairs()
 
-  useEffect(() => {
-    setIsLoading(true)
+  function flattenPairs() {
+    return pairs.flat()
+  }
 
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(pairsQuery(props.amount)),
-    }
+  // const pairsData = useCallback(() => {
+  //   console.log('PAIRS CALLED')
+  //   const requestOptions = {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(pairsQuery(props.amount)),
+  //   }
+  //
+  //   // Loop chains
+  //   for (let i = 0; i < CHAINS.length; i++) {
+  //     fetch(CHAINS[i].graphAddress, requestOptions)
+  //       .then((res) => res.json())
+  //       .then(async (result) => {
+  //         //  pairs = result.data.pairs
+  //         setState({ pairs: result.data.pairs })
+  //       })
+  //   }
+  // }, [props.amount])
 
-    // Loop chains
-    for (let i = 0; i < CHAINS.length; i++) {
-      fetch(CHAINS[i].graphAddress, requestOptions)
-        .then((res) => res.json())
-        .then(async (result) => {
-          setState({ pairs: result.data.pairs })
-        })
-    }
-    setIsLoading(false)
-  }, [isLoading])
+  // const [state, setState] = useState({
+  //   pairs: [],
+  // })
+  // const [isLoading, setIsLoading] = useState(false)
+
+  // useEffect(() => {
+  //   setIsLoading(true)
+  //
+  //   setIsLoading(false)
+  // }, [isLoading])
 
   return (
     <div>
@@ -101,7 +100,7 @@ const Tokens: React.FC<PairsProps> = (props) => {
               <Column>{t('Volume (24h)')}</Column>
               <Column>{t('Volume (7d)')}</Column>
             </Row>
-            {state.pairs.map((pair: Pair, index: number) => {
+            {flattenPairs().map((pair: InfoPair, index: number) => {
               return (
                 <Row key={pair.id} background={index % 2 === 0}>
                   <Column width="35px">

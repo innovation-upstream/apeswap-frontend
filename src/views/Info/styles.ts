@@ -10,6 +10,83 @@ interface ColumnProps {
   flex?: string
 }
 
+export const Container = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+  @media screen and (min-width: 1200px) {
+    flex-direction: row;
+  }
+`
+
+export const SectionsWrapper = styled.div`
+  position: relative;
+  max-width: 1412px;
+  width: 95vw;
+  z-index: 1;
+  align-items: center;
+  @media screen and (min-width: 1200px) {
+    width: 95vw;
+    display: flex;
+    flex-direction: row;
+    padding: 0px;
+  }
+`
+
+export const Section = styled.div`
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  // flex-direction: column;
+  background: ${({ theme }) => theme.colors.white2};
+  border-radius: 10px;
+  z-index: 1;
+  padding: 15px 20px 0px 20px;
+  align-items: center;
+  :last-child {
+    margin-top: 20px;
+  }
+  .figure {
+    flex-grow: 1;
+    padding: 10px 0px;
+    width: 50%;
+    .figureValue {
+      font-weight: 600;
+    }
+  }
+  @media screen and (min-width: 1200px) {
+    width: 95vw;
+    display: flex;
+    flex-direction: row;
+    padding: 10px 20px;
+    :first-child {
+      margin-right: 20px;
+    }
+    :last-child {
+      margin-top: 0px;
+      margin-left: 20px;
+    }
+
+    .figure {
+      width: 33.33%;
+    }
+  }
+
+  .showcase {
+    width: calc(50% - 10px);
+    margin-bottom: 10px;
+  }
+
+  .graphFrame {
+    height: 327px;
+    width: 100%;
+  }
+`
+
 export const BodyWrapper = styled.div`
   top: 120px;
   width: 100%;

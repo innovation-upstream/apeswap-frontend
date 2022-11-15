@@ -3,10 +3,9 @@ import { Text } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from '../../../../contexts/Localization'
 import { CHAINS } from '../../config/config'
-import { Row, Column, HeadingWrapper, LeftArrowIcon, RightArrowIcon, FiguresWrapper, BodyWrapper } from '../../styles'
+import { Row, Column, HeadingWrapper, FiguresWrapper, BodyWrapper } from '../../styles'
 import { tokensOneDayQuery, tokensQuery } from '../../queries'
 import useTheme from '../../../../hooks/useTheme'
-import { Loader } from 'react-feather'
 
 interface Token {
   id: string
@@ -94,8 +93,6 @@ const Tokens: React.FC<TokensProps> = (props) => {
               tokens: state.tokens,
               nativePrice: state.nativePrice,
             })
-            console.log(result.data.tokens)
-            console.log(state.oneDayTokens)
           })
         setChainsLoaded(chainsLoaded + 1)
       }

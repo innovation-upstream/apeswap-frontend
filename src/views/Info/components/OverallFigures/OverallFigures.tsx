@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import moment from 'moment/moment'
 import useTheme from '../../../../hooks/useTheme'
 import { CenteredImage } from '../../../Ifos/components/HowItWorks/styles'
-import { IconBox } from '../../styles'
+import { IconBox, Container, SectionsWrapper, Section } from '../../styles'
 import { daysDataQuery, graphQuery, uniswapFactoriesQuery } from '../../queries'
 import { CHAINS } from '../../config/config'
 import { ResponsiveBar } from '@nivo/bar'
@@ -27,83 +27,6 @@ const Icon = ({ name }: IconProps) => {
     </IconBox>
   )
 }
-
-export const Container = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 40px;
-  @media screen and (min-width: 1200px) {
-    flex-direction: row;
-  }
-`
-
-export const SectionsWrapper = styled.div`
-  position: relative;
-  max-width: 1412px;
-  width: 95vw;
-  z-index: 1;
-  align-items: center;
-  @media screen and (min-width: 1200px) {
-    width: 95vw;
-    display: flex;
-    flex-direction: row;
-    padding: 0px;
-  }
-`
-
-export const Section = styled.div`
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  flex-direction: column;
-  background: ${({ theme }) => theme.colors.white2};
-  border-radius: 10px;
-  z-index: 1;
-  padding: 15px 20px 0px 20px;
-  :first-child {
-    margin-right: 20px;
-  }
-  :last-child {
-    margin-left: 20px;
-  }
-  align-items: center;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: grid;
-    grid-template-rows: 50px 150px 20px;
-    width: 95vw;
-    padding: 20px calc(40% - 200px);
-  }
-  @media screen and (min-width: 1200px) {
-    width: 95vw;
-    display: flex;
-    flex-direction: row;
-    padding: 10px 20px;
-  }
-
-  .figure {
-    flex-grow: 1;
-    width: 33.33%;
-    padding: 10px 0px;
-
-    .figureValue {
-      font-weight: 600;
-    }
-  }
-
-  .showcase {
-    width: calc(50% - 10px);
-    margin-bottom: 10px;
-  }
-
-  .graphFrame {
-    height: 327px;
-    width: 100%;
-  }
-`
 
 const OverallFigures: React.FC<OverallFigureProps> = (props) => {
   const [state, setState] = useState({
@@ -142,10 +65,8 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
       .reverse()
       .slice(0, 7)
       .map((item: any) => {
-        console.log(item)
         for (let i = 0; i < CHAINS.length; i++) {
           total += item[CHAINS[i].chain] ? Number(item[CHAINS[i].chain]) : 0
-          console.log(total)
         }
       })
 
@@ -269,127 +190,125 @@ const OverallFigures: React.FC<OverallFigureProps> = (props) => {
     <>
       {Object.keys(state.currentDayData).length === CHAINS.length &&
       Object.keys(state.oneDayData).length === CHAINS.length ? (
-        <div>
-          <Container>
-            <SectionsWrapper>
-              <Section>
-                <div className="figure">
-                  <Icon name="chart" />
-                  <Text className="figureValue">
-                    {(calculateCurrentFigures('txCount') - calculateOneDayFigures('txCount')).toLocaleString()}
-                  </Text>
-                  <Text fontSize="12px">Transactions (24h)</Text>
-                </div>
-                <div className="figure">
-                  <Icon name="dollar" />
-                  <Text className="figureValue">
-                    {Math.round(calculateCurrentFigures('totalLiquidityUSD')).toLocaleString()}
-                  </Text>
-                  <Text fontSize="12px">Liquidity</Text>
-                </div>
-                <div className="figure">
-                  <Icon name="dollar" />
-                  <Text className="figureValue">
-                    {Math.round(
-                      calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
-                    ).toLocaleString()}
-                  </Text>
-                  <Text fontSize="12px">Volume (24h)</Text>
-                </div>
-                <div className="figure">
-                  <Icon name="dollar" />
-                  <Text className="figureValue">
-                    {Object.keys(state.graphData).length > 0 ? Math.round(calculate7DayVolume()).toLocaleString() : 0}
-                  </Text>
-                  <Text fontSize="12px">Volume (7d)</Text>
-                </div>
-                <div className="figure">
-                  <Icon name="dollar" />
-                  <Text className="figureValue">${(Math.round(calculateFees() * 100) / 100).toLocaleString()}</Text>
-                  <Text fontSize="12px">Fees (24h)</Text>
-                </div>
-                <div className="figure">
-                  <Icon name="chart" />
-                  <Text className="figureValue">{calculateCurrentFigures('pairCount').toLocaleString()}</Text>
-                  <Text fontSize="12px">Pairs</Text>
-                </div>
-                {/*Placeholders for sizing*/}
-                <img src="/images/info/farms-bg.png" className="showcase" />
-                <img src="/images/info/maximizers-bg.png" className="showcase" />
-              </Section>
-              <Section>
-                <div className="figure">
-                  <Icon name="chart" />
-                  <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
-                  <Text fontSize="12px">
-                    Volume (
-                    {state.displayedValueDate
-                      ? moment.unix(Number(state.displayedValueDate)).format('MMM DD, YYYY').valueOf()
-                      : 'Last 24 hours'}
-                    )
-                  </Text>
-                </div>
+        <Container>
+          <SectionsWrapper>
+            <Section>
+              <div className="figure">
+                <Icon name="chart" />
+                <Text className="figureValue">
+                  {(calculateCurrentFigures('txCount') - calculateOneDayFigures('txCount')).toLocaleString()}
+                </Text>
+                <Text fontSize="12px">Transactions (24h)</Text>
+              </div>
+              <div className="figure">
+                <Icon name="dollar" />
+                <Text className="figureValue">
+                  {Math.round(calculateCurrentFigures('totalLiquidityUSD')).toLocaleString()}
+                </Text>
+                <Text fontSize="12px">Liquidity</Text>
+              </div>
+              <div className="figure">
+                <Icon name="dollar" />
+                <Text className="figureValue">
+                  {Math.round(
+                    calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
+                  ).toLocaleString()}
+                </Text>
+                <Text fontSize="12px">Volume (24h)</Text>
+              </div>
+              <div className="figure">
+                <Icon name="dollar" />
+                <Text className="figureValue">
+                  {Object.keys(state.graphData).length > 0 ? Math.round(calculate7DayVolume()).toLocaleString() : 0}
+                </Text>
+                <Text fontSize="12px">Volume (7d)</Text>
+              </div>
+              <div className="figure">
+                <Icon name="dollar" />
+                <Text className="figureValue">${(Math.round(calculateFees() * 100) / 100).toLocaleString()}</Text>
+                <Text fontSize="12px">Fees (24h)</Text>
+              </div>
+              <div className="figure">
+                <Icon name="chart" />
+                <Text className="figureValue">{calculateCurrentFigures('pairCount').toLocaleString()}</Text>
+                <Text fontSize="12px">Pairs</Text>
+              </div>
+              {/*Placeholders for sizing*/}
+              <img src="/images/info/farms-bg.png" className="showcase" />
+              <img src="/images/info/maximizers-bg.png" className="showcase" />
+            </Section>
+            <Section>
+              <div className="figure">
+                <Icon name="chart" />
+                <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
+                <Text fontSize="12px">
+                  Volume (
+                  {state.displayedValueDate
+                    ? moment.unix(Number(state.displayedValueDate)).format('MMM DD, YYYY').valueOf()
+                    : 'Last 24 hours'}
+                  )
+                </Text>
+              </div>
 
-                <div className="graphFrame">
-                  {state.graphData.length > 0 ? (
-                    <ResponsiveBar
-                      data={state.graphData}
-                      keys={['ethereum', 'bnb', 'polygon', 'telos']}
-                      indexBy="date"
-                      groupMode="stacked"
-                      padding={0.3}
-                      theme={{
-                        fontSize: 14,
-                        textColor: '#333333',
-                      }}
-                      colors={getBarColor}
-                      axisBottom={{
-                        tickSize: 0,
-                        tickPadding: 10,
-                        tickRotation: 0,
-                        format: (x) =>
-                          moment.unix(x).format('DD').valueOf() == '01' ? moment.unix(x).format('MMM').valueOf() : '',
-                      }}
-                      axisLeft={null}
-                      valueScale={{ type: 'linear' }}
-                      indexScale={{ type: 'band', round: true }}
-                      axisTop={null}
-                      axisRight={{
-                        tickValues: [
-                          6000000, 9000000, 12000000, 15000000, 18000000, 21000000, 24000000, 27000000, 30000000,
-                          33000000, 36000000,
-                        ],
-                        tickSize: 0,
-                        tickPadding: -82,
-                        tickRotation: 0,
-                        legend: '',
-                        legendOffset: 0,
-                        format: (x) => `$${x.toLocaleString('en-US')}`,
-                      }}
-                      enableLabel={false}
-                      enableGridX={false}
-                      enableGridY={false}
-                      animate={false}
-                      tooltip={() => <></>}
-                      margin={{ top: 0, right: 0, bottom: 25, left: 0 }}
-                      onMouseEnter={(data, event) => {
-                        setState({
-                          displayedValue: data.value,
-                          displayedValueDate: data.indexValue as string,
-                          graphData: state.graphData,
-                          currentDayData: state.currentDayData,
-                          oneDayData: state.oneDayData,
-                        })
-                      }}
-                    />
-                  ) : (
-                    <div>Loading</div>
-                  )}
-                </div>
-              </Section>
-            </SectionsWrapper>
-          </Container>
-        </div>
+              <div className="graphFrame">
+                {state.graphData.length > 0 ? (
+                  <ResponsiveBar
+                    data={state.graphData}
+                    keys={['ethereum', 'bnb', 'polygon', 'telos']}
+                    indexBy="date"
+                    groupMode="stacked"
+                    padding={0.3}
+                    theme={{
+                      fontSize: 14,
+                      textColor: '#333333',
+                    }}
+                    colors={getBarColor}
+                    axisBottom={{
+                      tickSize: 0,
+                      tickPadding: 10,
+                      tickRotation: 0,
+                      format: (x) =>
+                        moment.unix(x).format('DD').valueOf() == '01' ? moment.unix(x).format('MMM').valueOf() : '',
+                    }}
+                    axisLeft={null}
+                    valueScale={{ type: 'linear' }}
+                    indexScale={{ type: 'band', round: true }}
+                    axisTop={null}
+                    axisRight={{
+                      tickValues: [
+                        6000000, 9000000, 12000000, 15000000, 18000000, 21000000, 24000000, 27000000, 30000000,
+                        33000000, 36000000,
+                      ],
+                      tickSize: 0,
+                      tickPadding: -82,
+                      tickRotation: 0,
+                      legend: '',
+                      legendOffset: 0,
+                      format: (x) => `$${x.toLocaleString('en-US')}`,
+                    }}
+                    enableLabel={false}
+                    enableGridX={false}
+                    enableGridY={false}
+                    animate={false}
+                    tooltip={() => <></>}
+                    margin={{ top: 0, right: 0, bottom: 25, left: 0 }}
+                    onMouseEnter={(data, event) => {
+                      setState({
+                        displayedValue: data.value,
+                        displayedValueDate: data.indexValue as string,
+                        graphData: state.graphData,
+                        currentDayData: state.currentDayData,
+                        oneDayData: state.oneDayData,
+                      })
+                    }}
+                  />
+                ) : (
+                  <div>Loading</div>
+                )}
+              </div>
+            </Section>
+          </SectionsWrapper>
+        </Container>
       ) : null}
     </>
   )

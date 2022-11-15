@@ -10,72 +10,61 @@ import { blocksQuery, nativePricesQuery } from './queries'
 import moment from 'moment'
 import { Loader } from 'react-feather'
 import styled from '@emotion/styled'
-import { IconBox } from './styles'
+import { IconBox, Container, SectionsWrapper, Section } from './styles'
 import { Chain, CHAINS } from './config/config'
 import { CenteredImage } from '../Ifos/components/HowItWorks/styles'
 import PageLoader from '../../components/PageLoader'
 
-export const Container = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 40px;
-  @media screen and (min-width: 1200px) {
-    flex-direction: row;
-  }
-`
-
-export const SectionsWrapper = styled.div`
-  position: relative;
-  max-width: 1412px;
-  width: 100%;
-  z-index: 1;
-  align-items: center;
-  @media screen and (min-width: 1200px) {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    padding: 0px;
-  }
-`
-
-export const Section = styled.div`
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: right;
-  flex-direction: column;
-  background: ${({ theme }) => theme.colors.white2};
-  border-radius: 10px;
-  z-index: 1;
-  padding: 15px 20px 0px 20px;
-
-  align-items: center;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: grid;
-    grid-template-rows: 50px 150px 20px;
-    width: 100vw;
-    padding: 20px calc(40% - 200px);
-  }
-  @media screen and (min-width: 1200px) {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    padding: 10px 20px;
-  }
-
-  .figure {
-    flex: 0 0 50px;
-    padding: 10px 0px;
-    margin-right: 0px;
-
-    img {
-      border: 2px solid #fff;
-      border-radius: 50%;
-    }
-  }
-`
+// export const SectionsWrapper = styled.div`
+//   position: relative;
+//   max-width: 1412px;
+//   width: 100%;
+//   z-index: 1;
+//   align-items: center;
+//   @media screen and (min-width: 1200px) {
+//     width: 100%;
+//     display: flex;
+//     flex-direction: row;
+//     padding: 0px;
+//   }
+// `
+//
+// export const Section = styled.div`
+//   position: relative;
+//   display: flex;
+//   flex-wrap: wrap;
+//   justify-content: right;
+//   flex-direction: column;
+//   background: ${({ theme }) => theme.colors.white2};
+//   border-radius: 10px;
+//   z-index: 1;
+//   padding: 15px 20px 0px 20px;
+//
+//   align-items: center;
+//   ${({ theme }) => theme.mediaQueries.sm} {
+//     display: grid;
+//     grid-template-rows: 50px 150px 20px;
+//     width: 100vw;
+//     padding: 20px calc(40% - 200px);
+//   }
+//   @media screen and (min-width: 1200px) {
+//     width: 100%;
+//     display: flex;
+//     flex-direction: row;
+//     padding: 10px 20px;
+//   }
+//
+//   .figure {
+//     flex: 0 0 50px;
+//     padding: 10px 0px;
+//     margin-right: 0px;
+//
+//     img {
+//       border: 2px solid #fff;
+//       border-radius: 50%;
+//     }
+//   }
+// `
 
 interface IconProps {
   name: string
@@ -163,7 +152,7 @@ const Info: React.FC = () => {
           <OverallFigures nativePrices={state.nativePrices} oneDayBlocks={state.oneDayBlocks} />
           <TrendingTokens />
           <Tokens oneDayBlocks={state.oneDayBlocks} amount={10} nativePrices={state.nativePrices} />
-          <Pairs amount={10} nativePrices={state.nativePrices} />
+          {/*<Pairs amount={10} nativePrices={state.nativePrices} />*/}
           <Transactions amount={10} />
         </div>
       ) : (
