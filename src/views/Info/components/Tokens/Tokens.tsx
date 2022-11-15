@@ -12,6 +12,7 @@ interface TokensProps {
   amount: number
   nativePrices?: any
   oneDayBlocks?: any
+  showFull?: boolean
 }
 
 export const HeadingContainer = styled.div`
@@ -53,14 +54,21 @@ const Tokens: React.FC<TokensProps> = (props) => {
     currentFavs.push(token)
 
     //Need to check if should be added to array or removed from array (if it's in there then remove, if not then add
+    console.log(currentFavs)
 
-    localStorage.setItem('infoFavTokensA', JSON.stringify(currentFavs))
+    localStorage.setItem('infoFavTokens', JSON.stringify(currentFavs))
   }
 
   const favs = JSON.parse(localStorage.getItem('infoFavTokens'))
   // const favs = () => {
   //   return
   // }
+
+  const getFavs = () => {
+    //const favs = ['0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', '0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95']
+    const favs = []
+    return state.tokens.filter((x) => favs.includes(x.id))
+  }
 
   const getFavIcon = (token: string) => {
     if (favs !== null && favs.filter((x) => x === token).length > 0)
@@ -117,6 +125,76 @@ const Tokens: React.FC<TokensProps> = (props) => {
 
   return (
     <div>
+      {props.showFull === true && (
+        <>
+          <HeadingContainer>
+            <HeadingWrapper>
+              <Text margin="20px 10px 5px 10px" className="heading">
+                {t('Favorite Tokens')}
+              </Text>
+            </HeadingWrapper>
+          </HeadingContainer>
+          <Container>
+            <SectionsWrapper>
+              <Section>
+                {getFavs().length === 0 ? (
+                  <div>
+                    <img src="/images/info/favs-placeholder.svg" />
+                    <Text>Your favorite tokens will appear here</Text>
+                  </div>
+                ) : (
+                  <Row>
+                    <Column width="18px">&nbsp;&nbsp;</Column>
+                    <Column width="18px">{t('#')}</Column>
+                    <Column flex="2">{t('Token Name')}</Column>
+                    <Column>{t('Price')}</Column>
+                    <Column className="mobile-hidden">{t('Liquidity')}</Column>
+                    <Column className="mobile-hidden">{t('Volume (24h)')}</Column>
+                  </Row>
+                )}
+
+                {getFavs().map((token: InfoToken, index: number) => {
+                  return (
+                    <Row key={token.id} background={index % 2 === 0}>
+                      <Column width="35px">
+                        <img width="16px" src={getFavIcon(token.id)} onClick={() => toggleFav(token.id)} />
+                      </Column>
+                      <Column width="18px">{index + 1}</Column>
+                      <Column flex="2">
+                        <img
+                          width="24px"
+                          className="logo"
+                          src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.svg`}
+                          onError={(e) => {
+                            e.currentTarget.src = `/images/info/unknownToken.svg`
+                          }}
+                        />
+                        {token.name} ({token.symbol})
+                      </Column>
+                      <Column>
+                        ${(Math.round(token.derivedETH * state.nativePrice * 100) / 100).toLocaleString()}
+                      </Column>
+                      <Column className="mobile-hidden">
+                        ${Math.round(token.totalLiquidity * state.nativePrice * token.derivedETH).toLocaleString()}
+                      </Column>
+                      <Column className="mobile-hidden">
+                        $
+                        {Math.round(
+                          token.tradeVolumeUSD -
+                            (state.oneDayTokens[index]
+                              ? state.oneDayTokens[index].tradeVolumeUSD
+                              : token.tradeVolumeUSD),
+                        ).toLocaleString()}
+                      </Column>
+                    </Row>
+                  )
+                })}
+              </Section>
+            </SectionsWrapper>
+          </Container>
+        </>
+      )}
+
       <HeadingContainer>
         <HeadingWrapper>
           <Text margin="20px 10px 5px 10px" className="heading">

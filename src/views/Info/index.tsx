@@ -118,7 +118,7 @@ const Info: React.FC = () => {
 
           <OverallFigures nativePrices={state.nativePrices} oneDayBlocks={state.oneDayBlocks} />
           <TrendingTokens />
-          <Tokens oneDayBlocks={state.oneDayBlocks} amount={10} nativePrices={state.nativePrices} />
+          <Tokens oneDayBlocks={state.oneDayBlocks} amount={10} nativePrices={state.nativePrices} showFull={true} />
           {/*<Pairs amount={10} nativePrices={state.nativePrices} />*/}
           <Transactions amount={10} />
         </div>
