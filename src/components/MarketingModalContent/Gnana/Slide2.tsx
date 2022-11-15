@@ -15,7 +15,7 @@ const Slide2 = () => {
       <Text sx={styles.content}>
         <Text sx={styles.content}>{t('In order to convert into GNANA, you must first hold BANANA.')}</Text>{' '}
         <Text sx={styles.yellow}>
-          <a href={'void'} target="_blank" rel="noreferrer noopener">
+          <a href="https://apeswap.finance/swap" target="_blank" rel="noreferrer noopener">
             {t('Click here')}
           </a>
         </Text>{' '}

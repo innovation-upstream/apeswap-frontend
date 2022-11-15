@@ -1,12 +1,15 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import { Flex, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { styles } from '../styles'
 
 const StakeSlide = () => {
   const { t } = useTranslation()
-  const farm = window.location.pathname.includes('farms')
+  const history = useHistory()
+  const { pathname } = history.location
+  const farm = pathname.includes('farms')
 
   return (
     <Flex sx={styles.container}>

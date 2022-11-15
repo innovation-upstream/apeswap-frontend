@@ -26,6 +26,8 @@ import { MaximizerSlides } from 'components/MarketingModalContent/Maximizers'
 import { GnanaSlides } from 'components/MarketingModalContent/Gnana'
 import { BillSlides } from 'components/MarketingModalContent/Bills'
 import { IaoSlides } from 'components/MarketingModalContent/Iao'
+import { OrderSlides } from 'components/MarketingModalContent/Orders'
+import { LiquiditySlides } from 'components/MarketingModalContent/Liquidity'
 
 const MarketingModalCheck = () => {
   const { chainId } = useActiveWeb3React()
@@ -68,6 +70,8 @@ const MarketingModalCheck = () => {
   const gnanaTutorialRoute = location.search.includes('modal=gnana-tutorial')
   const billsRoute = location.search.includes('modal=bills')
   const iaoRoute = location.search.includes('modal=iao')
+  const ordersRoute = location.search.includes('modal=orders')
+  const liquidityRoute = location.search.includes('modal=liquidity')
 
   const lendingRoute = location.search.includes('modal=3')
   const questRoute = location.search.includes('modal=tutorial')
@@ -191,6 +195,30 @@ const MarketingModalCheck = () => {
       readyText={t("I'm Ready")}
     >
       {IaoSlides}
+    </TutorialModal>
+  ) : ordersRoute ? (
+    <TutorialModal
+      type="orders"
+      title={t('Welcome to Limit Orders')}
+      description={t('Trade at the price you want!')}
+      t={t}
+      onDismiss={onDismiss}
+      onReady={onDismiss}
+      readyText={t("I'm Ready")}
+    >
+      {OrderSlides}
+    </TutorialModal>
+  ) : liquidityRoute ? (
+    <TutorialModal
+      type="liquidity"
+      title={t("Welcome to ApeSwap's Dex Liquidity")}
+      description={t('Provide liquidity to earn trading fees!')}
+      t={t}
+      onDismiss={onDismiss}
+      onReady={onDismiss}
+      readyText={t("I'm Ready")}
+    >
+      {LiquiditySlides}
     </TutorialModal>
   ) : lendingRoute ? (
     <MarketingModal

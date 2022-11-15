@@ -4,7 +4,7 @@ import { Flex, Text, TooltipBubble, useMatchBreakpoints } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { styles } from '../styles'
 
-const Slide3 = () => {
+const Slide2 = () => {
   const { isLg, isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isLg && !isXl && !isXxl
   const { t } = useTranslation()
@@ -64,4 +64,4 @@ const Slide3 = () => {
   )
 }
 
-export default Slide3
+export default Slide2

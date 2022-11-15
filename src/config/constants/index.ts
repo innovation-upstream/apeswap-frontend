@@ -261,10 +261,10 @@ export enum SHOW_MODAL_TYPES {
 }
 
 export enum METAMASK_LINKS {
-  BNB = '',
-  Polygon = '',
-  Ethereum = '',
-  Telos = '',
+  BNB = 'https://docs.bnbchain.org/docs/wallet/metamask/',
+  Polygon = 'https://wiki.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/',
+  Ethereum = 'https://metamask.io/faqs/',
+  Telos = 'https://decentralizedcreator.com/add-telos-evm-network-to-metamask/',
 }
 
 export enum PRODUCT {

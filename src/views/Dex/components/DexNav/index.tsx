@@ -18,6 +18,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
   const { chainId } = useActiveWeb3React()
   const { pathname } = history.location
 
+  const ORDERS = pathname.includes('orders')
   const onLiquidity =
     pathname?.includes('add-liquidity') ||
     pathname?.includes('liquidity') ||
@@ -75,7 +76,10 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
         </Text>
       </Flex>
       <Flex sx={{ ...styles.navIconContainer }}>
-        <Flex sx={styles.iconCover} onClick={() => history.push({ search: '?modal=dex' })}>
+        <Flex
+          sx={styles.iconCover}
+          onClick={() => history.push({ search: `?modal=${ORDERS ? 'orders' : onLiquidity ? 'liquidity' : 'dex'}` })}
+        >
           <Svg icon="quiz" />
         </Flex>
         <Flex sx={styles.iconCover} onClick={() => window.open('https://app.multichain.org/#/router', '_blank')}>

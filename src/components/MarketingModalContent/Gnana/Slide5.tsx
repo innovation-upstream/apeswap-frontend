@@ -42,7 +42,9 @@ const Slide5 = () => {
           transformTip={`translate(${isMobile ? '-3%' : '3%'}, 2%)`}
           body={
             <Flex sx={styles.tipBody}>
-              {t('Convert one token directly into an LP token or other product in a single transaction.')}
+              {t(
+                'A decentralized autonomous organization, or DAO, is a community-led entity with no central authority that is governed by computer code.',
+              )}
             </Flex>
           }
           sx={{ width: ['275px', '275px', '350px'] }}
@@ -50,7 +52,11 @@ const Slide5 = () => {
           <Text sx={{ ...styles.content, ...styles.tipTitle }}>DAO&apos;s</Text>
         </TooltipBubble>{' '}
         <Text sx={styles.yellow}>
-          <a href={'void'} target="_blank" rel="noreferrer noopener">
+          <a
+            href="https://discuss.apeswap.finance/?_ga=2.192308074.1948993264.1666625902-2101162031.1664826138"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             {t('Governance!')}
           </a>
         </Text>
