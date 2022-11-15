@@ -1,3 +1,5 @@
+import * as SIDFunctions from '@siddomains/sidjs'
+import { default as SID } from '@siddomains/sidjs'
 import { BigNumber } from '@ethersproject/bignumber'
 import { getAddress } from '@ethersproject/address'
 import { ChainId } from '@ape.swap/sdk'
@@ -20,6 +22,7 @@ import {
 } from '@ape.swap/sdk'
 import { parseAddress, parseSmartAddress } from 'hooks/useAddress'
 import { RouterTypes } from 'config/constants'
+import getProvider from './getProvider'
 
 export { default as formatAddress } from './formatAddress'
 
@@ -159,4 +162,11 @@ export const showCircular = (chainId: number, history, modalUrl: string) => {
 // Set circular modalss routes to show only in BNB chain
 export const circularRoute = (chainId: number, location, modalUrl: string) => {
   return chainId === ChainId.BSC && location.search.includes(modalUrl)
+}
+
+// SID Contract
+export const getSidContract = async (chainId: number) => {
+  const provider = getProvider(chainId)
+  const contract = new SID({ provider, sidAddress: SIDFunctions.getSidAddress(chainId) })
+  return contract
 }
