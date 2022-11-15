@@ -10,7 +10,7 @@ import { blocksQuery, nativePricesQuery } from './queries'
 import moment from 'moment'
 import { Loader } from 'react-feather'
 import styled from '@emotion/styled'
-import { IconBox, Container, SectionsWrapper, Section } from './styles'
+import { IconBox, Container, SectionsWrapper, Section, SearchInput } from './styles'
 import { Chain, CHAINS } from './config/config'
 import { CenteredImage } from '../Ifos/components/HowItWorks/styles'
 import PageLoader from '../../components/PageLoader'
@@ -37,58 +37,9 @@ import {
   useFetchInfoTokensData,
   useFetchInfoTransactions,
 } from 'state/info/hooks'
+import { StyledInput } from 'views/Bills/components/Actions/styles'
 
-// export const SectionsWrapper = styled.div`
-//   position: relative;
-//   max-width: 1412px;
-//   width: 100%;
-//   z-index: 1;
-//   align-items: center;
-//   @media screen and (min-width: 1200px) {
-//     width: 100%;
-//     display: flex;
-//     flex-direction: row;
-//     padding: 0px;
-//   }
-// `
-//
-// export const Section = styled.div`
-//   position: relative;
-//   display: flex;
-//   flex-wrap: wrap;
-//   justify-content: right;
-//   flex-direction: column;
-//   background: ${({ theme }) => theme.colors.white2};
-//   border-radius: 10px;
-//   z-index: 1;
-//   padding: 15px 20px 0px 20px;
-//
-//   align-items: center;
-//   ${({ theme }) => theme.mediaQueries.sm} {
-//     display: grid;
-//     grid-template-rows: 50px 150px 20px;
-//     width: 100vw;
-//     padding: 20px calc(40% - 200px);
-//   }
-//   @media screen and (min-width: 1200px) {
-//     width: 100%;
-//     display: flex;
-//     flex-direction: row;
-//     padding: 10px 20px;
-//   }
-//
-//   .figure {
-//     flex: 0 0 50px;
-//     padding: 10px 0px;
-//     margin-right: 0px;
-//
-//     img {
-//       border: 2px solid #fff;
-//       border-radius: 50%;
-//     }
-//   }
-// `
-
+let query = ''
 interface IconProps {
   name: string
 }
@@ -99,6 +50,11 @@ const Icon = ({ name }: IconProps) => {
       <CenteredImage src={`/images/chains/${name}.png`} alt={name} width="24px" />
     </IconBox>
   )
+}
+
+const onHandleQueryChange = (input: string) => {
+  query = input
+  console.log(query)
 }
 
 const Info: React.FC = () => {
@@ -190,9 +146,20 @@ const Info: React.FC = () => {
           <Container>
             <SectionsWrapper>
               <Section>
+                <div className="search-wrapper">
+                  <SearchInput
+                    width="1000px"
+                    // ref={inputEl}
+                    // value={value}
+                    // onChange={onChange}
+                    // onBlur={() => setToggled(false)}
+                    icon="search"
+                  />
+                </div>
+
                 {CHAINS.map((chain: Chain) => {
                   return (
-                    <div key={chain.id} className="figure">
+                    <div key={chain.id} className="chain">
                       <Icon name={chain.chain} />
                     </div>
                   )

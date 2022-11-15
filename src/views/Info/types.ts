@@ -24,3 +24,38 @@ export interface InfoPair {
   reserveUSD: number
   volumeUSD: number
 }
+
+export interface InfoToken {
+  id: string
+  name: string
+  symbol: string
+  totalLiquidity: number
+  derivedETH: number
+  tradeVolumeUSD: number
+}
+
+export interface InfoTransaction {
+  chain: string
+  swaps: [
+    {
+      to: string
+      amountUSD: number
+      pair: {
+        token0: {
+          symbol: string
+        }
+        token1: {
+          symbol: string
+        }
+      }
+      amount0In: number
+      amount0Out: number
+      amount1In: number
+      amount1Out: number
+      transaction: {
+        id: any
+        timestamp: number
+      }
+    },
+  ]
+}

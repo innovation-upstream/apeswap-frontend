@@ -3,18 +3,10 @@ import { Text } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from '../../../../contexts/Localization'
 import { CHAINS } from '../../config/config'
-import { Row, Column, HeadingWrapper, FiguresWrapper, BodyWrapper } from '../../styles'
+import { Row, Column, HeadingWrapper, SectionsWrapper, Section } from '../../styles'
 import { tokensOneDayQuery, tokensQuery } from '../../queries'
 import useTheme from '../../../../hooks/useTheme'
-
-interface Token {
-  id: string
-  name: string
-  symbol: string
-  totalLiquidity: number
-  derivedETH: number
-  tradeVolumeUSD: number
-}
+import { InfoToken } from '../../types'
 
 interface TokensProps {
   amount: number
@@ -54,6 +46,28 @@ const Tokens: React.FC<TokensProps> = (props) => {
   })
   const [isLoading, setIsLoading] = useState(false)
   const [chainsLoaded, setChainsLoaded] = useState(0)
+
+  const toggleFav = (token: string) => {
+    let currentFavs = JSON.parse(localStorage.getItem('infoFavTokens'))
+    if (currentFavs === null) currentFavs = []
+    currentFavs.push(token)
+
+    //Need to check if should be added to array or removed from array (if it's in there then remove, if not then add
+
+    localStorage.setItem('infoFavTokensA', JSON.stringify(currentFavs))
+  }
+
+  const favs = JSON.parse(localStorage.getItem('infoFavTokens'))
+  // const favs = () => {
+  //   return
+  // }
+
+  const getFavIcon = (token: string) => {
+    if (favs !== null && favs.filter((x) => x === token).length > 0)
+      return `/images/info/fav-yes-${isDark ? 'dark' : 'light'}.svg`
+
+    return `/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`
+  }
 
   useEffect(() => {
     setIsLoading(true)
@@ -116,21 +130,21 @@ const Tokens: React.FC<TokensProps> = (props) => {
         </HeadingWrapper>
       </HeadingContainer>
       <Container>
-        <FiguresWrapper>
-          <BodyWrapper>
+        <SectionsWrapper>
+          <Section>
             <Row>
               <Column width="18px">&nbsp;&nbsp;</Column>
               <Column width="18px">{t('#')}</Column>
               <Column flex="2">{t('Token Name')}</Column>
               <Column>{t('Price')}</Column>
-              <Column>{t('Liquidity')}</Column>
-              <Column>{t('Volume (24h)')}</Column>
+              <Column className="mobile-hidden">{t('Liquidity')}</Column>
+              <Column className="mobile-hidden">{t('Volume (24h)')}</Column>
             </Row>
-            {state.tokens.map((token: Token, index: number) => {
+            {state.tokens.map((token: InfoToken, index: number) => {
               return (
                 <Row key={token.id} background={index % 2 === 0}>
                   <Column width="35px">
-                    <img width="16px" src={`/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`} />
+                    <img width="16px" src={getFavIcon(token.id)} onClick={() => toggleFav(token.id)} />
                   </Column>
                   <Column width="18px">{index + 1}</Column>
                   <Column flex="2">
@@ -145,10 +159,10 @@ const Tokens: React.FC<TokensProps> = (props) => {
                     {token.name} ({token.symbol})
                   </Column>
                   <Column>${(Math.round(token.derivedETH * state.nativePrice * 100) / 100).toLocaleString()}</Column>
-                  <Column>
+                  <Column className="mobile-hidden">
                     ${Math.round(token.totalLiquidity * state.nativePrice * token.derivedETH).toLocaleString()}
                   </Column>
-                  <Column>
+                  <Column className="mobile-hidden">
                     $
                     {Math.round(
                       token.tradeVolumeUSD -
@@ -158,8 +172,8 @@ const Tokens: React.FC<TokensProps> = (props) => {
                 </Row>
               )
             })}
-          </BodyWrapper>
-        </FiguresWrapper>
+          </Section>
+        </SectionsWrapper>
       </Container>
     </div>
   )
