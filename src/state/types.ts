@@ -632,6 +632,12 @@ export interface TeamsState {
   data: TeamsById
 }
 
+export interface InfoState {
+  isInitialized: boolean
+  isLoading: boolean
+  pairs: []
+}
+
 // Global state
 
 export interface State {
@@ -656,4 +662,5 @@ export interface State {
   nfas: NfaState
   protocolDashboard: ProtocolDashboardState
   userStats: ApiResponse
+  info: InfoState
 }

@@ -47,7 +47,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Charts'),
-        href: NETWORK_INFO_LINK[ChainId.MAINNET],
+        href: '/info',
       },
       {
         label: t('Governance'),

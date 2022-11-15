@@ -58,7 +58,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Charts'),
-        href: NETWORK_INFO_LINK[ChainId.MATIC],
+        href: '/info',
         isNew: false,
       },
       {

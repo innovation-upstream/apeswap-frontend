@@ -58,7 +58,7 @@ const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Charts'),
-        href: NETWORK_INFO_LINK[ChainId.TLOS],
+        href: '/info',
         isNew: false,
       },
       {
