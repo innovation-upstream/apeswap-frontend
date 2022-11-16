@@ -27,7 +27,8 @@ const ActionButton = styled(Button)`
 const ActionWrapper = styled.div`
   flex: 2;
   text-align: right;
-  padding-top: 30px;
+  height: 44px;
+  padding-top: 35px;
 `
 
 const TokenPage: React.FC = () => {

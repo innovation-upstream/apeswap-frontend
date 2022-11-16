@@ -130,8 +130,12 @@ export const Section = styled.div`
     width: 100%;
   }
 
+  &.overviewFrame {
+    min-height: 327px;
+  }
+
   .sectionFrame {
-    height: 389px;
+    min-height: 389px;
     width: 100%;
   }
 `

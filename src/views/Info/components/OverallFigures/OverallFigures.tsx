@@ -127,7 +127,7 @@ const OverallFigures: React.FC<any> = (props) => {
   return (
     <Container>
       <SectionsWrapper>
-        <Section className="left-section">
+        <Section className="left-section overviewFrame">
           {checkDatasInitialized() === true && (
             <>
               <div className="figure">
