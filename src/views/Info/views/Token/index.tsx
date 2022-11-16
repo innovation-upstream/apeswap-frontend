@@ -75,19 +75,19 @@ const TokenPage: React.FC = () => {
               {/*    e.currentTarget.src = `/images/info/unknownToken.svg`*/}
               {/*  }}*/}
               {/*/>*/}
-              <Text margin="20px 10px 5px 10px" className="heading">
+              <Text margin="20px 10px 0px 10px" className="heading">
                 {tokenDaysData[chain].data[0].token.name} ({tokenDaysData[chain].data[0].token.symbol})
               </Text>
             </HeadingWrapper>
           </HeadingContainer>
           <HeadingContainer>
             <HeadingWrapper>
-              <Text margin="0px 10px 0px 10px" className="heading">
+              <Text margin="0px 10px 0px 10px" className="heading heading-large">
                 ${(Math.round(tokenDaysData[chain].data[0].priceUSD * 100) / 100).toLocaleString()}
               </Text>
             </HeadingWrapper>
           </HeadingContainer>
-          <Container>
+          <Container className="small-mt">
             <SectionsWrapper>
               <Section className="left-section">
                 <div className="sectionFrame">
@@ -95,6 +95,13 @@ const TokenPage: React.FC = () => {
                     <Icon name="chart" />
                     <Text className="figureValue">{tokenDaysData[chain].data[0].dailyTxns.toLocaleString()}</Text>
                     <Text fontSize="12px">Transactions (24h)</Text>
+                  </div>
+                  <div className="figure figure-full">
+                    <Icon name="dollar" />
+                    <Text className="figureValue">
+                      ${(Math.round(tokenDaysData[chain].data[0].dailyVolumeUSD * 100) / 100).toLocaleString()}
+                    </Text>
+                    <Text fontSize="12px">Volume (24h)</Text>
                   </div>
                   <div className="figure figure-full">
                     <Icon name="dollar" />

@@ -17,6 +17,10 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 40px;
+
+  &.small-mt {
+    margin-top: 10px;
+  }
   @media screen and (min-width: 1200px) {
     flex-direction: row;
   }
@@ -126,7 +130,7 @@ export const Section = styled.div`
   }
 
   .sectionFrame {
-    height: 385px;
+    height: 389px;
     width: 100%;
   }
 `
@@ -273,6 +277,13 @@ export const HeadingWrapper = styled.div`
 
   .heading {
     font-weight: 600;
+  }
+
+  .heading-large {
+    font-size: 35px;
+  }
+
+  .logo {
   }
 `
 
