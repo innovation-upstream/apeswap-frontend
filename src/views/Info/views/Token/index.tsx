@@ -5,7 +5,7 @@ import TrendingTokens from '../../../Homepage/components/TrendingTokens/Trending
 import { useFetchInfoNativePrice, useFetchInfoTokenDaysData } from '../../../../state/info/hooks'
 import { useParams } from 'react-router-dom'
 import { IconBox, Container, SectionsWrapper, Section, SearchInput, HeadingWrapper } from '../../styles'
-import { Text } from '@apeswapfinance/uikit'
+import { Button, Text } from '@apeswapfinance/uikit'
 import Pairs from '../../components/Pairs/Pairs'
 import Transactions from '../../components/Transactions/Transactions'
 import PageLoader from '../../../../components/PageLoader'
@@ -14,6 +14,20 @@ import moment from 'moment/moment'
 import { CHAINS } from '../../config/config'
 import useTheme from '../../../../hooks/useTheme'
 import { CenteredImage } from '../../../Ifos/components/HowItWorks/styles'
+import styled from '@emotion/styled'
+
+const ActionButton = styled(Button)`
+  height: 44px;
+  font-weight: 700;
+  @media screen and (min-width: 1180px) {
+    margin: 0 20px;
+  }
+`
+
+const ActionWrapper = styled.div`
+  float: right;
+  padding-top: 30px;
+`
 
 const TokenPage: React.FC = () => {
   interface IconProps {
@@ -78,6 +92,10 @@ const TokenPage: React.FC = () => {
               <Text margin="20px 10px 0px 10px" className="heading">
                 {tokenDaysData[chain].data[0].token.name} ({tokenDaysData[chain].data[0].token.symbol})
               </Text>
+              <ActionWrapper>
+                <ActionButton href="/swap">Trade</ActionButton>
+                <ActionButton href="/add-liquidity">Add Liquidity</ActionButton>
+              </ActionWrapper>
             </HeadingWrapper>
           </HeadingContainer>
           <HeadingContainer>
