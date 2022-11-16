@@ -92,6 +92,12 @@ const TokenPage: React.FC = () => {
               <Section className="left-section">
                 <div className="graphFrame">
                   <div className="figure">
+                    <Icon name="chart" />
+                    <Text className="figureValue">0</Text>
+                    <Text fontSize="12px">Transactions (24h)</Text>
+                  </div>
+                  <div className="figure">
+                    <Icon name="dollar" />
                     <Text className="figureValue">
                       ${(Math.round(tokenDaysData[chain].data[0].totalLiquidityUSD * 100) / 100).toLocaleString()}
                     </Text>
@@ -99,7 +105,7 @@ const TokenPage: React.FC = () => {
                   </div>
                 </div>
               </Section>
-              <Section className="right-section">
+              <Section className="right-section section-large">
                 <div className="figure">
                   <Icon name="chart" />
                   <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>

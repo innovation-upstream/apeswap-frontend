@@ -58,6 +58,9 @@ export const Section = styled.div`
   &.right-section {
     margin-top: 20px;
   }
+  &.section-large {
+    flex: 2;
+  }
   .figure {
     flex-grow: 1;
     padding: 10px 0px;
