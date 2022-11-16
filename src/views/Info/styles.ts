@@ -136,10 +136,17 @@ export const Section = styled.div`
     flex: 0 0 50px;
     padding: 10px 0px;
     margin-right: 0px;
+    cursor: pointer;
 
     img {
       border: 2px solid #fff;
       border-radius: 50%;
+    }
+
+    &:not(.activeChain) {
+      img {
+        border: none;
+      }
     }
   }
 

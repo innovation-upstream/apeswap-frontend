@@ -44,13 +44,16 @@ const Tokens: React.FC<TokensProps> = (props) => {
   const dayOldTokens = useFetchInfoTokensData()
   const nativePrices = useFetchInfoNativePrice()
   let processedDayOldTokens = []
+  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
   function processTokens() {
     const data = []
     for (let i = 0; i < Object.keys(tokens).length; i++) {
       const chain = Object.keys(tokens)[i]
-      for (let j = 0; j < tokens[chain].data.length; j++) {
-        data.push(tokens[chain].data[j])
+      if (activeChains.includes(Number(chain))) {
+        for (let j = 0; j < tokens[chain].data.length; j++) {
+          data.push(tokens[chain].data[j])
+        }
       }
     }
 
@@ -68,8 +71,10 @@ const Tokens: React.FC<TokensProps> = (props) => {
     const data = []
     for (let i = 0; i < Object.keys(dayOldTokens).length; i++) {
       const chain = Object.keys(dayOldTokens)[i]
-      for (let j = 0; j < dayOldTokens[chain].data.length; j++) {
-        data.push(dayOldTokens[chain].data[j])
+      if (activeChains.includes(Number(chain))) {
+        for (let j = 0; j < dayOldTokens[chain].data.length; j++) {
+          data.push(dayOldTokens[chain].data[j])
+        }
       }
     }
 

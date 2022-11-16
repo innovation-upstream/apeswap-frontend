@@ -35,6 +35,7 @@ const OverallFigures: React.FC<any> = (props) => {
   const currentDayData = useFetchInfoUniswapFactories(true)
   const dayOldData = useFetchInfoUniswapFactories()
   const chartData = useFetchChartData(30)
+  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
   function processChartData() {
     const data = []
@@ -42,16 +43,18 @@ const OverallFigures: React.FC<any> = (props) => {
     for (let i = 0; i < Object.keys(chartData).length; i++) {
       const chain = Object.keys(chartData)[i]
 
-      if (data.length === 0) {
-        for (let j = 0; j < chartData[chain].data.length; j++) {
-          data.push({
-            date: chartData[chain].data[j].date,
-            [chain]: chartData[chain].data[j].dailyVolumeUSD,
-          })
-        }
-      } else {
-        for (let j = 0; j < chartData[chain].data.length; j++) {
-          data[j][chain] = chartData[chain].data[j].dailyVolumeUSD
+      if (activeChains.includes(Number(chain))) {
+        if (data.length === 0) {
+          for (let j = 0; j < chartData[chain].data.length; j++) {
+            data.push({
+              date: chartData[chain].data[j].date,
+              [chain]: chartData[chain].data[j].dailyVolumeUSD,
+            })
+          }
+        } else {
+          for (let j = 0; j < chartData[chain].data.length; j++) {
+            data[j][chain] = chartData[chain].data[j].dailyVolumeUSD
+          }
         }
       }
     }
@@ -64,17 +67,18 @@ const OverallFigures: React.FC<any> = (props) => {
 
     for (let i = 0; i < Object.keys(chartData).length; i++) {
       const chain = Object.keys(chartData)[i]
-
-      if (data.length === 0) {
-        for (let j = 0; j < chartData[chain].data.length; j++) {
-          data.push({
-            date: chartData[chain].data[j].date,
-            [chain]: chartData[chain].data[j].totalLiquidityUSD,
-          })
-        }
-      } else {
-        for (let j = 0; j < chartData[chain].data.length; j++) {
-          data[j][chain] = chartData[chain].data[j].totalLiquidityUSD
+      if (activeChains.includes(Number(chain))) {
+        if (data.length === 0) {
+          for (let j = 0; j < chartData[chain].data.length; j++) {
+            data.push({
+              date: chartData[chain].data[j].date,
+              [chain]: chartData[chain].data[j].totalLiquidityUSD,
+            })
+          }
+        } else {
+          for (let j = 0; j < chartData[chain].data.length; j++) {
+            data[j][chain] = chartData[chain].data[j].totalLiquidityUSD
+          }
         }
       }
     }
@@ -87,10 +91,13 @@ const OverallFigures: React.FC<any> = (props) => {
     for (let i = 0; i < Object.keys(chartData).length; i++) {
       const chain = Object.keys(chartData)[i]
 
-      for (let j = 0; j < chartData[chain].data.length; j++) {
-        liquidity += Number(chartData[chain].data[j].totalLiquidityUSD)
+      if (activeChains.includes(Number(chain))) {
+        liquidity +=
+          Number(chartData[chain].data[Object.keys(chartData).length].totalLiquidityUSD) -
+          Number(chartData[chain].data[0].totalLiquidityUSD)
       }
     }
+
     return liquidity
   }
 
@@ -126,7 +133,9 @@ const OverallFigures: React.FC<any> = (props) => {
 
     for (let i = 0; i < Object.keys(currentDayData).length; i++) {
       const chain = Object.keys(currentDayData)[i]
-      total += Number(currentDayData[chain].data[key])
+      if (activeChains.includes(Number(chain))) {
+        total += Number(currentDayData[chain].data[key])
+      }
     }
 
     return total
@@ -136,7 +145,9 @@ const OverallFigures: React.FC<any> = (props) => {
     let total = 0
     for (let i = 0; i < Object.keys(dayOldData).length; i++) {
       const chain = Object.keys(dayOldData)[i]
-      total += Number(dayOldData[chain].data[key])
+      if (activeChains.includes(Number(chain))) {
+        total += Number(dayOldData[chain].data[key])
+      }
     }
 
     return total
@@ -169,15 +180,6 @@ const OverallFigures: React.FC<any> = (props) => {
   function getChartTextColor() {
     return isDark ? '#FFFFFF' : '#333333'
   }
-  function getTickValues() {
-    if (state.chartType === 'volume') {
-      return [
-        6000000, 9000000, 12000000, 15000000, 18000000, 21000000, 24000000, 27000000, 30000000, 33000000, 36000000,
-      ]
-    }
-
-    return [10000000, 20000000, 30000000, 40000000, 50000000, 60000000, 70000000, 80000000, 90000000]
-  }
 
   function generateToolTip(data: any) {
     return (
@@ -191,28 +193,39 @@ const OverallFigures: React.FC<any> = (props) => {
             <div className="value">
               $
               {Math.round(
-                Number(data.data[1]) + Number(data.data[40]) + Number(data.data[56]) + Number(data.data[137]),
+                Number(data.data[1] ?? 0) +
+                  Number(data.data[40] ?? 0) +
+                  Number(data.data[56] ?? 0) +
+                  Number(data.data[137] ?? 0),
               ).toLocaleString()}
             </div>
           </div>
         </div>
         <div className="body">
-          <div className="wrapper">
-            <div className="indicator eth"></div>Ethereum:{' '}
-            <div className="value">${Math.round(data.data[1]).toLocaleString()}</div>
-          </div>
-          <div className="wrapper">
-            <div className="indicator telos"></div>Telos:{' '}
-            <div className="value">${Math.round(data.data[1]).toLocaleString()}</div>
-          </div>
-          <div className="wrapper">
-            <div className="indicator bnb"></div>BNB:{' '}
-            <div className="value">${Math.round(data.data[56]).toLocaleString()}</div>
-          </div>
-          <div className="wrapper">
-            <div className="indicator polygon"></div>Polygon:{' '}
-            <div className="value">${Math.round(data.data[137]).toLocaleString()}</div>
-          </div>
+          {activeChains.includes(Number(1)) && (
+            <div className="wrapper">
+              <div className="indicator eth"></div>Ethereum:{' '}
+              <div className="value">${Math.round(data.data[1]).toLocaleString()}</div>
+            </div>
+          )}
+          {activeChains.includes(Number(40)) && (
+            <div className="wrapper">
+              <div className="indicator telos"></div>Telos:{' '}
+              <div className="value">${Math.round(data.data[40]).toLocaleString()}</div>
+            </div>
+          )}
+          {activeChains.includes(Number(56)) && (
+            <div className="wrapper">
+              <div className="indicator bnb"></div>BNB:{' '}
+              <div className="value">${Math.round(data.data[56]).toLocaleString()}</div>
+            </div>
+          )}
+          {activeChains.includes(Number(137)) && (
+            <div className="wrapper">
+              <div className="indicator polygon"></div>Polygon:{' '}
+              <div className="value">${Math.round(data.data[137]).toLocaleString()}</div>
+            </div>
+          )}
         </div>
       </Section>
     )
@@ -341,22 +354,21 @@ const OverallFigures: React.FC<any> = (props) => {
                   tickSize: 0,
                   tickPadding: 10,
                   tickRotation: 0,
-                  format: (x) =>
-                    moment.unix(x).format('DD').valueOf() == '01' ? moment.unix(x).format('MMM').valueOf() : '',
+                  format: (x) => '',
                 }}
                 axisLeft={null}
                 valueScale={{ type: 'linear' }}
                 indexScale={{ type: 'band', round: true }}
                 axisTop={null}
-                axisRight={{
-                  tickValues: getTickValues(),
-                  tickSize: 0,
-                  tickPadding: -82,
-                  tickRotation: 0,
-                  legend: '',
-                  legendOffset: 0,
-                  format: (x) => `$${x.toLocaleString('en-US')}`,
-                }}
+                // axisRight={{
+                //   tickValues: getTickValues(),
+                //   tickSize: 0,
+                //   tickPadding: -82,
+                //   tickRotation: 0,
+                //   legend: '',
+                //   legendOffset: 0,
+                //   format: (x) => `$${x.toLocaleString('en-US')}`,
+                // }}
                 enableLabel={false}
                 enableGridX={false}
                 enableGridY={false}

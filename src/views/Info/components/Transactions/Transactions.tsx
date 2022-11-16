@@ -30,6 +30,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   const { isDark } = useTheme()
 
   const transactions = useFetchInfoTransactions(props.amount)
+  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
   function formatTime(unix: number) {
     const now = moment()
@@ -55,8 +56,11 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
     const data = []
     for (let i = 0; i < Object.keys(transactions).length; i++) {
       const chain = Object.keys(transactions)[i]
-      for (let j = 0; j < transactions[chain].data.length; j++) {
-        data.push(transactions[chain].data[j])
+
+      if (activeChains.includes(Number(chain))) {
+        for (let j = 0; j < transactions[chain].data.length; j++) {
+          data.push(transactions[chain].data[j])
+        }
       }
     }
 
