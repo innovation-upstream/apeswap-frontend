@@ -98,7 +98,7 @@ export const useFetchInfoTokensData = (current?: boolean) => {
       }
     })
   }, [blocks, dispatch])
-  return useSelector((state: State) => state.info.tokens)
+  return useSelector((state: State) => (current === true ? state.info.tokens : state.info.tokensDayOld))
 }
 
 export const useFetchInfoBlock = () => {

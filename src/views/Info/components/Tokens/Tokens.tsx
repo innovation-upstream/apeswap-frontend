@@ -7,6 +7,7 @@ import useTheme from '../../../../hooks/useTheme'
 import { InfoToken, InfoTransaction } from '../../types'
 import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTokensData } from '../../../../state/info/hooks'
 import TrendingTokens from '../../../Homepage/components/TrendingTokens/TrendingTokens'
+import { TokenDaysData } from '../../../../state/info/types'
 
 interface TokensProps {
   amount: number
@@ -43,6 +44,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
   const tokens = useFetchInfoTokensData(true)
   const dayOldTokens = useFetchInfoTokensData()
   const nativePrices = useFetchInfoNativePrice()
+  let processedDayOldTokens = []
 
   function processTokens() {
     const data = []
@@ -114,6 +116,32 @@ const Tokens: React.FC<TokensProps> = (props) => {
     return `/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`
   }
 
+  function get24HourVolume(token: string) {
+    try {
+      return processedDayOldTokens.filter((x) => x.id === token)[0].tradeVolumeUSD
+    } catch {
+      return 0
+    }
+  }
+
+  function checkDatasInitialized() {
+    let total = 0
+    for (let i = 0; i < Object.keys(tokens).length; i++) {
+      const chain = Object.keys(tokens)[i]
+      total += tokens[chain].initialized === true ? 1 : 0
+    }
+    for (let i = 0; i < Object.keys(dayOldTokens).length; i++) {
+      const chain = Object.keys(dayOldTokens)[i]
+      total += dayOldTokens[chain].initialized === true ? 1 : 0
+    }
+
+    if (total === Object.keys(tokens).length + Object.keys(dayOldTokens).length) {
+      processedDayOldTokens = processDayOldTokens()
+      return true
+    }
+    return false
+  }
+
   return (
     <div>
       {props.showFull === true && (
@@ -144,52 +172,47 @@ const Tokens: React.FC<TokensProps> = (props) => {
                   </Row>
                 )}
 
-                {getFavs().map((token: InfoToken, index: number) => {
-                  return (
-                    <Row key={token.id} background={index % 2 === 0}>
-                      <Column width="35px">
-                        <img
-                          className="fav"
-                          width="16px"
-                          src={getFavIcon(token.id)}
-                          onClick={() => toggleFav(token.id)}
-                        />
-                      </Column>
-                      <Column width="18px">{index + 1}</Column>
-                      <Column flex="2">
-                        <img
-                          width="24px"
-                          className="logo"
-                          src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.svg`}
-                          onError={(e) => {
-                            e.currentTarget.src = `/images/info/unknownToken.svg`
-                          }}
-                        />
-                        <a href={`/info/token/${token.chain}/${token.id}`}>
-                          {token.name} ({token.symbol})
-                        </a>
-                      </Column>
-                      <Column>
-                        ${(Math.round(token.derivedETH * getNativePrice(token.chain) * 100) / 100).toLocaleString()}
-                      </Column>
-                      <Column className="mobile-hidden">
-                        $
-                        {Math.round(
-                          token.totalLiquidity * getNativePrice(token.chain) * token.derivedETH,
-                        ).toLocaleString()}
-                      </Column>
-                      <Column className="mobile-hidden">
-                        $0
-                        {/*{Math.round(*/}
-                        {/*  token.tradeVolumeUSD -*/}
-                        {/*    (processDayOldTokens()[index]*/}
-                        {/*      ? processDayOldTokens()[index].tradeVolumeUSD*/}
-                        {/*      : token.tradeVolumeUSD),*/}
-                        {/*).toLocaleString()}*/}
-                      </Column>
-                    </Row>
-                  )
-                })}
+                {checkDatasInitialized() === true &&
+                  getFavs().map((token: InfoToken, index: number) => {
+                    return (
+                      <Row key={token.id} background={index % 2 === 0}>
+                        <Column width="35px">
+                          <img
+                            className="fav"
+                            width="16px"
+                            src={getFavIcon(token.id)}
+                            onClick={() => toggleFav(token.id)}
+                          />
+                        </Column>
+                        <Column width="18px">{index + 1}</Column>
+                        <Column flex="2">
+                          <img
+                            width="24px"
+                            className="logo"
+                            src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.svg`}
+                            onError={(e) => {
+                              e.currentTarget.src = `/images/info/unknownToken.svg`
+                            }}
+                          />
+                          <a href={`/info/token/${token.chain}/${token.id}`}>
+                            {token.name} ({token.symbol})
+                          </a>
+                        </Column>
+                        <Column>
+                          ${(Math.round(token.derivedETH * getNativePrice(token.chain) * 100) / 100).toLocaleString()}
+                        </Column>
+                        <Column className="mobile-hidden">
+                          $
+                          {Math.round(
+                            token.totalLiquidity * getNativePrice(token.chain) * token.derivedETH,
+                          ).toLocaleString()}
+                        </Column>
+                        <Column className="mobile-hidden">
+                          ${Math.round(token.tradeVolumeUSD - get24HourVolume(token.id)).toLocaleString()}
+                        </Column>
+                      </Row>
+                    )
+                  })}
               </Section>
             </SectionsWrapper>
           </Container>
@@ -222,45 +245,47 @@ const Tokens: React.FC<TokensProps> = (props) => {
               <Column className="mobile-hidden">{t('Liquidity')}</Column>
               <Column className="mobile-hidden">{t('Volume (24h)')}</Column>
             </Row>
-
-            {processTokens().map((token: InfoToken, index: number) => {
-              return (
-                <Row key={token.id} background={index % 2 === 0}>
-                  <Column width="35px">
-                    <img className="fav" width="16px" src={getFavIcon(token.id)} onClick={() => toggleFav(token.id)} />
-                  </Column>
-                  <Column width="18px">{index + 1}</Column>
-                  <Column flex="2">
-                    <img
-                      width="24px"
-                      className="logo"
-                      src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.svg`}
-                      onError={(e) => {
-                        e.currentTarget.src = `/images/info/unknownToken.svg`
-                      }}
-                    />
-                    <a href={`/info/token/${token.chain}/${token.id}`}>
-                      {token.name} ({token.symbol})
-                    </a>
-                  </Column>
-                  <Column>
-                    ${(Math.round(token.derivedETH * getNativePrice(token.chain) * 100) / 100).toLocaleString()}
-                  </Column>
-                  <Column className="mobile-hidden">
-                    $
-                    {Math.round(token.totalLiquidity * getNativePrice(token.chain) * token.derivedETH).toLocaleString()}
-                  </Column>
-                  <Column className="mobile-hidden">
-                    $0{/*{Math.round(*/}
-                    {/*  token.tradeVolumeUSD -*/}
-                    {/*    (processDayOldTokens()[index]*/}
-                    {/*      ? processDayOldTokens()[index].tradeVolumeUSD*/}
-                    {/*      : token.tradeVolumeUSD),*/}
-                    {/*).toLocaleString()}*/}
-                  </Column>
-                </Row>
-              )
-            })}
+            {checkDatasInitialized() === true &&
+              processTokens().map((token: InfoToken, index: number) => {
+                return (
+                  <Row key={token.id} background={index % 2 === 0}>
+                    <Column width="35px">
+                      <img
+                        className="fav"
+                        width="16px"
+                        src={getFavIcon(token.id)}
+                        onClick={() => toggleFav(token.id)}
+                      />
+                    </Column>
+                    <Column width="18px">{index + 1}</Column>
+                    <Column flex="2">
+                      <img
+                        width="24px"
+                        className="logo"
+                        src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.svg`}
+                        onError={(e) => {
+                          e.currentTarget.src = `/images/info/unknownToken.svg`
+                        }}
+                      />
+                      <a href={`/info/token/${token.chain}/${token.id}`}>
+                        {token.name} ({token.symbol})
+                      </a>
+                    </Column>
+                    <Column>
+                      ${(Math.round(token.derivedETH * getNativePrice(token.chain) * 100) / 100).toLocaleString()}
+                    </Column>
+                    <Column className="mobile-hidden">
+                      $
+                      {Math.round(
+                        token.totalLiquidity * getNativePrice(token.chain) * token.derivedETH,
+                      ).toLocaleString()}
+                    </Column>
+                    <Column className="mobile-hidden">
+                      ${Math.round(token.tradeVolumeUSD - get24HourVolume(token.id)).toLocaleString()}
+                    </Column>
+                  </Row>
+                )
+              })}
           </Section>
         </SectionsWrapper>
       </Container>
