@@ -172,8 +172,12 @@ const OverallFigures: React.FC<any> = (props) => {
                 <Text fontSize="12px">Pairs</Text>
               </div>
               {/*Placeholders for sizing*/}
-              <img src="/images/info/farms-bg.png" className="showcase" />
-              <img src="/images/info/maximizers-bg.png" className="showcase" />
+              <a href="/farms" className="showcase">
+                <img src="/images/info/farms-bg.png" />
+              </a>
+              <a href="/maximizers" className="showcase">
+                <img src="/images/info/maximizers-bg.png" />
+              </a>
             </>
           )}
         </Section>
