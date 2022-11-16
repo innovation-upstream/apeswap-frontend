@@ -12,6 +12,7 @@ import { useFetchInfoPairs } from '../../../../state/info/hooks'
 interface PairsProps {
   amount: number
   nativePrices?: any
+  filter?: string
 }
 
 export const HeadingContainer = styled.div`
@@ -38,7 +39,7 @@ export const Container = styled.div`
 const Pairs: React.FC<PairsProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
-  const pairs = useFetchInfoPairs()
+  const pairs = useFetchInfoPairs(props.amount)
 
   function processPairs() {
     const data = []
@@ -47,6 +48,14 @@ const Pairs: React.FC<PairsProps> = (props) => {
       for (let j = 0; j < pairs[chain].data.length; j++) {
         data.push(pairs[chain].data[j])
       }
+    }
+
+    if (props.filter) {
+      return data
+        .filter((x) => x.token0.id === props.filter || x.token1.id === props.filter)
+        .sort((a: InfoPair, b: InfoPair) => a.volumeUSD - b.volumeUSD)
+        .reverse()
+        .slice(0, props.amount)
     }
 
     return data
@@ -62,11 +71,13 @@ const Pairs: React.FC<PairsProps> = (props) => {
           <Text margin="20px 10px 5px 10px" className="heading">
             {t('Top Pairs')}
           </Text>
-          <Text style={{ float: 'right' }}>
-            <a href="/info/pairs">
-              See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
-            </a>
-          </Text>
+          {!props.filter && (
+            <Text style={{ float: 'right' }}>
+              <a href="/info/pairs">
+                See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
+              </a>
+            </Text>
+          )}
         </HeadingWrapper>
       </HeadingContainer>
       <Container>
@@ -84,7 +95,7 @@ const Pairs: React.FC<PairsProps> = (props) => {
               return (
                 <Row key={pair.id} background={index % 2 === 0}>
                   <Column width="35px">
-                    <img width="16px" src={`/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`} />
+                    <img className="fav" width="16px" src={`/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`} />
                   </Column>
                   <Column width="18px">{index + 1}</Column>
                   <Column flex="2">

@@ -208,7 +208,7 @@ const App: React.FC = () => {
             <Route exact path="/info/tokens">
               <TokensPage />
             </Route>
-            <Route exact path="/info/token/:tokenId">
+            <Route exact path="/info/token/:chain/:tokenId">
               <TokenPage />
             </Route>
             <Route exact path="/info/transactions">

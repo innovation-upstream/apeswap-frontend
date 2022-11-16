@@ -10,6 +10,7 @@ import {
   getTransactions,
   getUniswapFactories,
   getChartData,
+  getTokenDaysData,
 } from './api'
 import { MAINNET_CHAINS } from 'config/constants/chains'
 import { ChainId } from '@ape.swap/sdk'
@@ -31,6 +32,8 @@ const initialState: InfoState = {
   currentDayFactories: dataAsNullInitialState,
   dayOldFactories: dataAsNullInitialState,
   chartData: dataAsNullInitialState,
+  tokensDayOld: dataAsNullInitialState,
+  tokenDaysData: dataAsNullInitialState,
 }
 
 export const infoSlice = createSlice({
@@ -73,6 +76,14 @@ export const infoSlice = createSlice({
       const { data, chainId, loading, initialized } = action.payload
       state.chartData[chainId] = { data, loading, initialized }
     },
+    setDayOldTokens: (state, action) => {
+      const { data, chainId, loading, initialized } = action.payload
+      state.tokensDayOld[chainId] = { data, loading, initialized }
+    },
+    setTokenDaysData: (state, action) => {
+      const { data, chainId, loading, initialized } = action.payload
+      state.tokenDaysData[chainId] = { data, loading, initialized }
+    },
     setLoading: (state, action) => {
       const { stateType, chainId, loading } = action.payload
       state[stateType][chainId] = { ...state[stateType][chainId], loading }
@@ -91,6 +102,8 @@ export const {
   setCurrentDayFactories,
   setDayOldFactories,
   setChartData,
+  setDayOldTokens,
+  setTokenDaysData,
   setLoading,
 } = infoSlice.actions
 
@@ -117,7 +130,12 @@ export const fetchDaysData = (chainId: ChainId, oneDayBack: number) => async (di
 
 export const fetchTokens = (chainId: ChainId, amount: number, block: string) => async (dispatch) => {
   const data = await getTokens(chainId, amount, block)
-  dispatch(setTokens({ data, chainId, loading: false, initialized: true }))
+  if (block === '0') {
+    //Block 0 means current day data
+    dispatch(setTokens({ data, chainId, loading: false, initialized: true }))
+  } else {
+    dispatch(setDayOldTokens({ data, chainId, loading: false, initialized: true }))
+  }
 }
 
 export const fetchBlock = (chainId: ChainId, startTimestamp: number, currentTimestamp: number) => async (dispatch) => {
@@ -138,6 +156,11 @@ export const fetchUniswapFactories = (chainId: ChainId, block: string) => async 
 export const fetchChartData = (chainId: ChainId) => async (dispatch) => {
   const data = await getChartData(chainId)
   dispatch(setChartData({ data, chainId, loading: false, initialized: true }))
+}
+
+export const fetchTokenDaysData = (chainId: ChainId, address: string) => async (dispatch) => {
+  const data = await getTokenDaysData(chainId, address)
+  dispatch(setTokenDaysData({ data, chainId, loading: false, initialized: true }))
 }
 
 export default infoSlice.reducer

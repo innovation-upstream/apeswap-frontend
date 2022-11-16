@@ -213,6 +213,10 @@ export const Column = styled.div<ColumnProps>`
     margin-left: -24px;
   }
 
+  .fav {
+    cursor: pointer;
+  }
+
   @media screen and (max-width: 400px) {
     &.mobile-hidden {
       display: none;

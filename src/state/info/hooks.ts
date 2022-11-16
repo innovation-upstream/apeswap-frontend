@@ -10,6 +10,7 @@ import {
   fetchDaysData,
   fetchNativePrice,
   fetchPairs,
+  fetchTokenDaysData,
   fetchTokens,
   fetchTransactions,
   fetchUniswapFactories,
@@ -17,31 +18,42 @@ import {
 } from '.'
 import { InfoStateTypes } from './types'
 
-export const useFetchInfoPairs = () => {
+export const useFetchInfoPairs = (amount: number) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
 
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.PAIRS, chainId, loading: true }))
-      dispatch(fetchPairs(chainId, 10))
+      dispatch(fetchPairs(chainId, amount))
     })
   }, [slowRefresh, dispatch])
 
   return useSelector((state: State) => state.info.pairs)
 }
 
-export const useFetchInfoTransactions = () => {
+export const useFetchInfoTransactions = (amount: number) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
 
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.TRANSACTIONS, chainId, loading: true }))
-      dispatch(fetchTransactions(chainId, 10))
+      dispatch(fetchTransactions(chainId, amount))
     })
   }, [slowRefresh, dispatch])
   return useSelector((state: State) => state.info.transactions)
+}
+
+export const useFetchInfoTokenDaysData = (chain: number, address: string) => {
+  const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+
+  useEffect(() => {
+    dispatch(setLoading({ stateType: InfoStateTypes.TOKENDAYSDATA, chain, loading: true }))
+    dispatch(fetchTokenDaysData(chain, address))
+  }, [slowRefresh, dispatch])
+  return useSelector((state: State) => state.info.tokenDaysData)
 }
 
 export const useFetchInfoNativePrice = () => {
@@ -70,14 +82,19 @@ export const useFetchInfoDaysData = () => {
   return useSelector((state: State) => state.info.daysData)
 }
 
-export const useFetchInfoTokensData = () => {
+export const useFetchInfoTokensData = (current?: boolean) => {
   const dispatch = useAppDispatch()
   const blocks = useSelector((state: State) => state.info.block)
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
-      dispatch(setLoading({ stateType: InfoStateTypes.TOKENS, chainId, loading: true }))
+      if (current === true) {
+        dispatch(setLoading({ stateType: InfoStateTypes.TOKENS, chainId, loading: true }))
+      } else {
+        dispatch(setLoading({ stateType: InfoStateTypes.TOKENSDAYOLD, chainId, loading: true }))
+      }
+
       if (blocks[chainId].initialized) {
-        dispatch(fetchTokens(chainId, 10, blocks[chainId].data.number))
+        dispatch(fetchTokens(chainId, 10, current === true ? '0' : blocks[chainId].data.number))
       }
     })
   }, [blocks, dispatch])

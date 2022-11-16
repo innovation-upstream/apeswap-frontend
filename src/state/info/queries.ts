@@ -12,9 +12,9 @@ import { ChainId } from '@ape.swap/sdk'
 export const tokensQuery = (amount: number, block: string) => {
   return {
     query:
-      'query { tokens(block: { number:' +
-      block +
-      '} first: ' +
+      'query { tokens(' +
+      (block !== '0' ? 'block: { number:' + block + '}' : '') +
+      'first: ' +
       amount +
       ', orderBy: tradeVolumeUSD orderDirection: desc) {  id name symbol tradeVolumeUSD totalLiquidity derivedETH }  }',
   }
@@ -134,10 +134,12 @@ export const pairsQuery = (amount: number) => {
       ' orderBy: trackedReserveETH, orderDirection: desc) {\n' +
       '  id\n' +
       '  token0 {\n' +
+      '    id\n' +
       '    symbol\n' +
       '    name\n' +
       '  }\n' +
       '  token1 {\n' +
+      '    id\n' +
       '    symbol\n' +
       '    name\n' +
       '  }\n' +
@@ -145,6 +147,32 @@ export const pairsQuery = (amount: number) => {
       '  volumeUSD\n' +
       '  }\n' +
       '}\n',
+  }
+}
+
+export const tokenDaysDataQuery = (address: string) => {
+  return {
+    query:
+      'query tokenDayDatas {\n' +
+      '  tokenDayDatas(first: 30 orderBy: date, orderDirection: desc, where: {token: "' +
+      address +
+      '"}) {\n' +
+      '    id\n' +
+      '    token {\n' +
+      '      name\n' +
+      '      symbol\n' +
+      '    }\n' +
+      '    date\n' +
+      '    priceUSD\n' +
+      '    totalLiquidityToken\n' +
+      '    totalLiquidityUSD\n' +
+      '    totalLiquidityETH\n' +
+      '    dailyVolumeETH\n' +
+      '    dailyVolumeToken\n' +
+      '    dailyVolumeUSD\n' +
+      '    __typename\n' +
+      '  }\n' +
+      '}',
   }
 }
 

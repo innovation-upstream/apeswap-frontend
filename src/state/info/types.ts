@@ -1,6 +1,7 @@
 import { ChainId } from '@ape.swap/sdk'
 
 interface PairToken {
+  id: string
   name: string
   symbol: string
 }
@@ -67,6 +68,18 @@ export interface Token {
   chainId: ChainId
 }
 
+export interface TokenDaysData {
+  id: string
+  token: {
+    name: string
+    symbol: string
+  }
+  date: number
+  priceUSD: string
+  totalLiquidityUSD: string
+  dailyVolumeUSD: string
+}
+
 export interface Block {
   id: string
   number: string
@@ -84,6 +97,8 @@ export enum InfoStateTypes {
   CURRENTDAYFACTORIES = 'currentDayFactories',
   DAYOLDFACTORIES = 'dayOldFactories',
   CHARTDATA = 'chartData',
+  TOKENSDAYOLD = 'tokensDayOld',
+  TOKENDAYSDATA = 'tokenDaysData',
 }
 
 export interface InfoState {
@@ -96,4 +111,6 @@ export interface InfoState {
   currentDayFactories: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
   dayOldFactories: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
   chartData: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
+  tokensDayOld: Record<ChainId, { data: Token[]; loading: boolean; initialized: boolean }>
+  tokenDaysData: Record<ChainId, { data: TokenDaysData[]; loading: boolean; initialized: boolean }>
 }

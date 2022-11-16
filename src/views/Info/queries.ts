@@ -1,7 +1,9 @@
-export const tokensQuery = (amount: number) => {
+export const tokensQuery = (amount: number, block: string) => {
   return {
     query:
-      'query tokens { tokens(first: ' +
+      'query tokens { tokens(' +
+      (block !== '0' ? 'block: { number:' + block + '}' : '') +
+      'first: ' +
       amount +
       ', orderBy: tradeVolumeUSD orderDirection: desc) {  id name symbol tradeVolumeUSD totalLiquidity derivedETH }  }',
   }

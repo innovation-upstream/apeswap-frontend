@@ -3,6 +3,7 @@ import {
   graphQuery,
   nativePricesQuery,
   pairsQuery,
+  tokenDaysDataQuery,
   tokensQuery,
   transactionsQuery,
   uniswapFactoriesQuery,
@@ -11,7 +12,7 @@ import { ChainId } from '@ape.swap/sdk'
 import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
 import axiosRetry from 'axios-retry'
 import axios from 'axios'
-import { Block, DaysData, NativePrice, Pairs, Token, Transactions } from './types'
+import { Block, DaysData, NativePrice, Pairs, Token, TokenDaysData, Transactions } from './types'
 import { daysDataQuery } from 'views/Info/queries'
 
 export const getInfoPairs = async (chainId: ChainId, amount: number): Promise<Pairs[]> => {
@@ -166,6 +167,25 @@ export const getTokens = async (chainId: ChainId, amount: number, block: string)
       return []
     }
     return data.tokens.map((x) => ({ ...x, chain: chainId }))
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
+export const getTokenDaysData = async (chainId: ChainId, address: string): Promise<TokenDaysData[]> => {
+  const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
+  try {
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(tokenDaysDataQuery(address)))
+    const { data } = responseData
+    if (status === 500) {
+      return []
+    }
+    return data.tokenDayDatas.map((x) => ({ ...x, chain: chainId }))
   } catch (error) {
     console.error(error)
     return []

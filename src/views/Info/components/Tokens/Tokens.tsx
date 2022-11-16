@@ -43,7 +43,8 @@ const Tokens: React.FC<TokensProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
   useFetchInfoBlock()
-  const tokens = useFetchInfoTokensData()
+  const tokens = useFetchInfoTokensData(true)
+  const dayOldTokens = useFetchInfoTokensData()
   const nativePrices = useFetchInfoNativePrice()
 
   function processTokens() {
@@ -65,11 +66,24 @@ const Tokens: React.FC<TokensProps> = (props) => {
       .slice(0, props.amount)
   }
 
-  const [state, setState] = useState({
-    tokens: [],
-    oneDayTokens: [],
-    nativePrice: 1,
-  })
+  function processDayOldTokens() {
+    const data = []
+    for (let i = 0; i < Object.keys(dayOldTokens).length; i++) {
+      const chain = Object.keys(dayOldTokens)[i]
+      for (let j = 0; j < dayOldTokens[chain].data.length; j++) {
+        data.push(dayOldTokens[chain].data[j])
+      }
+    }
+
+    return data
+      .sort(
+        (a: InfoToken, b: InfoToken) =>
+          a.totalLiquidity * getNativePrice(a.chain) * a.derivedETH -
+          b.totalLiquidity * getNativePrice(b.chain) * b.derivedETH,
+      )
+      .reverse()
+      .slice(0, props.amount)
+  }
 
   const getNativePrice = (chain: string) => {
     return nativePrices[chain].data.ethPrice
@@ -134,7 +148,12 @@ const Tokens: React.FC<TokensProps> = (props) => {
                   return (
                     <Row key={token.id} background={index % 2 === 0}>
                       <Column width="35px">
-                        <img width="16px" src={getFavIcon(token.id)} onClick={() => toggleFav(token.id)} />
+                        <img
+                          className="fav"
+                          width="16px"
+                          src={getFavIcon(token.id)}
+                          onClick={() => toggleFav(token.id)}
+                        />
                       </Column>
                       <Column width="18px">{index + 1}</Column>
                       <Column flex="2">
@@ -146,24 +165,27 @@ const Tokens: React.FC<TokensProps> = (props) => {
                             e.currentTarget.src = `/images/info/unknownToken.svg`
                           }}
                         />
-                        <a href={`/info/token/${token.id}`}>
+                        <a href={`/info/token/${token.chain}/${token.id}`}>
                           {token.name} ({token.symbol})
                         </a>
                       </Column>
                       <Column>
-                        ${(Math.round(token.derivedETH * state.nativePrice * 100) / 100).toLocaleString()}
-                      </Column>
-                      <Column className="mobile-hidden">
-                        ${Math.round(token.totalLiquidity * state.nativePrice * token.derivedETH).toLocaleString()}
+                        ${(Math.round(token.derivedETH * getNativePrice(token.chain) * 100) / 100).toLocaleString()}
                       </Column>
                       <Column className="mobile-hidden">
                         $
                         {Math.round(
-                          token.tradeVolumeUSD -
-                            (state.oneDayTokens[index]
-                              ? state.oneDayTokens[index].tradeVolumeUSD
-                              : token.tradeVolumeUSD),
+                          token.totalLiquidity * getNativePrice(token.chain) * token.derivedETH,
                         ).toLocaleString()}
+                      </Column>
+                      <Column className="mobile-hidden">
+                        $0
+                        {/*{Math.round(*/}
+                        {/*  token.tradeVolumeUSD -*/}
+                        {/*    (processDayOldTokens()[index]*/}
+                        {/*      ? processDayOldTokens()[index].tradeVolumeUSD*/}
+                        {/*      : token.tradeVolumeUSD),*/}
+                        {/*).toLocaleString()}*/}
                       </Column>
                     </Row>
                   )
@@ -204,7 +226,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
               return (
                 <Row key={token.id} background={index % 2 === 0}>
                   <Column width="35px">
-                    <img width="16px" src={getFavIcon(token.id)} onClick={() => toggleFav(token.id)} />
+                    <img className="fav" width="16px" src={getFavIcon(token.id)} onClick={() => toggleFav(token.id)} />
                   </Column>
                   <Column width="18px">{index + 1}</Column>
                   <Column flex="2">
@@ -216,7 +238,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
                         e.currentTarget.src = `/images/info/unknownToken.svg`
                       }}
                     />
-                    <a href={`/info/token/${token.id}`}>
+                    <a href={`/info/token/${token.chain}/${token.id}`}>
                       {token.name} ({token.symbol})
                     </a>
                   </Column>
@@ -228,11 +250,12 @@ const Tokens: React.FC<TokensProps> = (props) => {
                     {Math.round(token.totalLiquidity * getNativePrice(token.chain) * token.derivedETH).toLocaleString()}
                   </Column>
                   <Column className="mobile-hidden">
-                    $
-                    {Math.round(
-                      token.tradeVolumeUSD -
-                        (state.oneDayTokens[index] ? state.oneDayTokens[index].tradeVolumeUSD : token.tradeVolumeUSD),
-                    ).toLocaleString()}
+                    $0{/*{Math.round(*/}
+                    {/*  token.tradeVolumeUSD -*/}
+                    {/*    (processDayOldTokens()[index]*/}
+                    {/*      ? processDayOldTokens()[index].tradeVolumeUSD*/}
+                    {/*      : token.tradeVolumeUSD),*/}
+                    {/*).toLocaleString()}*/}
                   </Column>
                 </Row>
               )

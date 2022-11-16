@@ -14,10 +14,12 @@ export interface Bills {
 export interface InfoPair {
   id: string
   token0: {
+    id: string
     symbol: string
     name: string
   }
   token1: {
+    id: string
     symbol: string
     name: string
   }
@@ -44,9 +46,11 @@ export interface InfoTransaction {
       amountUSD: number
       pair: {
         token0: {
+          id: string
           symbol: string
         }
         token1: {
+          id: string
           symbol: string
         }
       }
