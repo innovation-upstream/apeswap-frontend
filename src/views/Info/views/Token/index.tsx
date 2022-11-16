@@ -20,12 +20,13 @@ const ActionButton = styled(Button)`
   height: 44px;
   font-weight: 700;
   @media screen and (min-width: 1180px) {
-    margin: 0 20px;
+    margin: 0 5px;
   }
 `
 
 const ActionWrapper = styled.div`
-  float: right;
+  flex: 2;
+  text-align: right;
   padding-top: 30px;
 `
 
@@ -81,14 +82,14 @@ const TokenPage: React.FC = () => {
         <>
           <HeadingContainer>
             <HeadingWrapper>
-              {/*<img*/}
-              {/*  width="24px"*/}
-              {/*  className="logo"*/}
-              {/*  src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${tokenDaysData[chain].data[0].token.symbol}.svg`}*/}
-              {/*  onError={(e) => {*/}
-              {/*    e.currentTarget.src = `/images/info/unknownToken.svg`*/}
-              {/*  }}*/}
-              {/*/>*/}
+              <img
+                width="30px"
+                className="logo"
+                src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${tokenDaysData[chain].data[0].token.symbol}.svg`}
+                onError={(e) => {
+                  e.currentTarget.src = `/images/info/unknownToken.svg`
+                }}
+              />
               <Text margin="20px 10px 0px 10px" className="heading">
                 {tokenDaysData[chain].data[0].token.name} ({tokenDaysData[chain].data[0].token.symbol})
               </Text>

@@ -285,6 +285,9 @@ export const HeadingWrapper = styled.div`
   }
 
   .logo {
+    margin: 20px 0px 0px 5px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
   }
 `
 
