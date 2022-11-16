@@ -50,7 +50,7 @@ const TokenPage: React.FC = () => {
             </SectionsWrapper>
           </Container>
           <Pairs amount={100} filter={tokenId} />
-          <Transactions amount={500} filter={tokenId} />
+          <Transactions amount={300} filter={tokenId} />
         </>
       )}
     </>

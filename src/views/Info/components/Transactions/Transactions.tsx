@@ -15,6 +15,7 @@ import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTransactions } 
 
 interface TransactionsProps {
   amount: number
+  filter?: string
 }
 
 export const Container = styled.div`
@@ -31,7 +32,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
 
-  const transactions = useFetchInfoTransactions()
+  const transactions = useFetchInfoTransactions(props.amount)
 
   function formatTime(unix: number) {
     const now = moment()
@@ -62,6 +63,17 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       }
     }
 
+    if (props.filter) {
+      return data
+        .filter((x) => x.swaps[0]?.pair.token0.id === props.filter || x.swaps[0]?.pair.token0.id === props.filter)
+        .sort(
+          (a: InfoTransaction, b: InfoTransaction) =>
+            a.swaps[0]?.transaction.timestamp - b.swaps[0]?.transaction.timestamp,
+        )
+        .reverse()
+        .slice(0, props.amount)
+    }
+
     return data
       .sort(
         (a: InfoTransaction, b: InfoTransaction) =>
@@ -78,11 +90,13 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
           <Text margin="20px 10px 5px 10px" className="heading">
             {t('Recent Transactions')}
           </Text>
-          <Text style={{ float: 'right' }}>
-            <a href="/info/transactions">
-              See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
-            </a>
-          </Text>
+          {!props.filter && (
+            <Text style={{ float: 'right' }}>
+              <a href="/info/transactions">
+                See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
+              </a>
+            </Text>
+          )}
         </HeadingWrapper>
       </HeadingContainer>
       <Container>
