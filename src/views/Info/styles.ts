@@ -140,6 +140,12 @@ export const Section = styled.div`
   }
 `
 
+export const FavsPlaceholder = styled.div`
+  width: 100%;
+  padding: 30px;
+  text-align: center;
+`
+
 export const BodyWrapper = styled.div`
   top: 120px;
   width: 100%;

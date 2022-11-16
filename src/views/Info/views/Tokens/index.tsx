@@ -6,8 +6,7 @@ import TrendingTokens from '../../../Homepage/components/TrendingTokens/Trending
 const TokensPage: React.FC = () => {
   return (
     <>
-      <TrendingTokens />
-      <Tokens amount={10} showFull={true} />
+      <Tokens amount={100} showFull={true} />
     </>
   )
 }

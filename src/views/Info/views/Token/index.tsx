@@ -14,6 +14,7 @@ import { CHAINS } from '../../config/config'
 import useTheme from '../../../../hooks/useTheme'
 import { CenteredImage } from '../../../Ifos/components/HowItWorks/styles'
 import styled from '@emotion/styled'
+import { useHistory } from 'react-router-dom'
 
 const ActionButton = styled(Button)`
   height: 44px;
@@ -31,6 +32,8 @@ const ActionWrapper = styled.div`
 `
 
 const TokenPage: React.FC = () => {
+  const history = useHistory()
+
   interface IconProps {
     name: string
   }
@@ -94,8 +97,8 @@ const TokenPage: React.FC = () => {
                 {tokenDaysData[chain].data[0].token.name} ({tokenDaysData[chain].data[0].token.symbol})
               </Text>
               <ActionWrapper>
-                <ActionButton href="/swap">Trade</ActionButton>
-                <ActionButton href="/add-liquidity">Add Liquidity</ActionButton>
+                <ActionButton onClick={() => history.push('/swap')}>Trade</ActionButton>
+                <ActionButton onClick={() => history.push('/add-liquidity')}>Add Liquidity</ActionButton>
               </ActionWrapper>
             </HeadingWrapper>
           </HeadingContainer>

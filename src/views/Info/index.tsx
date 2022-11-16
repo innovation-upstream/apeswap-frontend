@@ -3,29 +3,16 @@ import React, { useEffect, useState } from 'react'
 import Transactions from './components/Transactions/Transactions'
 import Pairs from './components/Pairs/Pairs'
 import Tokens from './components/Tokens/Tokens'
-import { blocksQuery, nativePricesQuery } from './queries'
-import moment from 'moment'
-import { Loader } from 'react-feather'
-import styled from '@emotion/styled'
 import { IconBox, Container, SectionsWrapper, Section, SearchInput } from './styles'
 import { Chain, CHAINS } from './config/config'
 import { CenteredImage } from '../Ifos/components/HowItWorks/styles'
 import PageLoader from '../../components/PageLoader'
 import { useSelector } from 'react-redux'
 import { State } from 'state/types'
-import {
-  useFetchInfoBlock,
-  useFetchInfoDaysData,
-  useFetchInfoNativePrice,
-  useFetchInfoPairs,
-  useFetchInfoTokensData,
-  useFetchInfoTransactions,
-} from 'state/info/hooks'
-import { StyledInput } from 'views/Bills/components/Actions/styles'
+import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
 import OverallFigures from './components/OverallFigures/OverallFigures'
 import TrendingTokens from '../Homepage/components/TrendingTokens/TrendingTokens'
 
-let query = ''
 interface IconProps {
   name: string
 }
@@ -36,11 +23,6 @@ const Icon = ({ name }: IconProps) => {
       <CenteredImage src={`/images/chains/${name}.png`} alt={name} width="24px" />
     </IconBox>
   )
-}
-
-const onHandleQueryChange = (input: string) => {
-  query = input
-  console.log(query)
 }
 
 const Info: React.FC = () => {

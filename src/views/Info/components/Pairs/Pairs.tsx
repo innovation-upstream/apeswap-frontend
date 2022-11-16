@@ -2,17 +2,28 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Text } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from '../../../../contexts/Localization'
-import { Row, Column, HeadingWrapper, FiguresWrapper, BodyWrapper } from '../../styles'
+import {
+  Row,
+  Column,
+  HeadingWrapper,
+  FiguresWrapper,
+  BodyWrapper,
+  SectionsWrapper,
+  Section,
+  FavsPlaceholder,
+} from '../../styles'
 import useTheme from '../../../../hooks/useTheme'
-import { InfoPair } from 'views/Info/types'
+import { InfoPair, InfoToken } from 'views/Info/types'
 import { useSelector } from 'react-redux'
 import { State } from '../../../../state/types'
 import { useFetchInfoPairs } from '../../../../state/info/hooks'
+import TrendingTokens from '../../../Homepage/components/TrendingTokens/TrendingTokens'
 
 interface PairsProps {
   amount: number
   nativePrices?: any
   filter?: string
+  showFull?: boolean
 }
 
 export const HeadingContainer = styled.div`
@@ -94,12 +105,84 @@ const Pairs: React.FC<PairsProps> = (props) => {
 
   return (
     <div>
+      {props.showFull === true && (
+        <>
+          <HeadingContainer>
+            <HeadingWrapper>
+              <Text margin="20px 10px 5px 10px" className="heading">
+                {t('Favorite Pairs')}
+              </Text>
+            </HeadingWrapper>
+          </HeadingContainer>
+          <Container>
+            <SectionsWrapper>
+              <Section>
+                {getFavs().length === 0 ? (
+                  <FavsPlaceholder>
+                    <img src="/images/info/favs-placeholder.svg" />
+                    <Text>Your favorite pairs will appear here</Text>
+                  </FavsPlaceholder>
+                ) : (
+                  <Row>
+                    <Column width="18px">&nbsp;&nbsp;</Column>
+                    <Column width="18px">{t('#')}</Column>
+                    <Column flex="2">{t('Pair')}</Column>
+                    <Column>{t('Liquidity')}</Column>
+                    <Column>{t('Volume (24h)')}</Column>
+                    <Column>{t('Volume (7d)')}</Column>
+                  </Row>
+                )}
+
+                {getFavs().map((pair: InfoPair, index: number) => {
+                  return (
+                    <Row key={pair.id} background={index % 2 === 0}>
+                      <Column width="35px">
+                        <img
+                          className="fav"
+                          width="16px"
+                          src={getFavIcon(pair.id)}
+                          onClick={() => toggleFav(pair.id)}
+                        />{' '}
+                      </Column>
+                      <Column width="18px">{index + 1}</Column>
+                      <Column flex="2">
+                        <img
+                          width="24px"
+                          className="logo"
+                          src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${pair.token0.symbol}.svg`}
+                          onError={(e) => {
+                            e.currentTarget.src = `/images/info/unknownToken.svg`
+                          }}
+                        />
+                        <img
+                          width="24px"
+                          className="logo logo-right"
+                          src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${pair.token1.symbol}.svg`}
+                          onError={(e) => {
+                            e.currentTarget.src = `/images/info/unknownToken.svg`
+                          }}
+                        />
+                        {pair.token0.name}-{pair.token1.name}
+                      </Column>
+                      <Column>${Math.round(pair.reserveUSD).toLocaleString()}</Column>
+                      <Column>${Math.round(pair.volumeUSD).toLocaleString()}</Column>
+                      <Column>${Math.round(pair.volumeUSD).toLocaleString()}</Column>
+                    </Row>
+                  )
+                })}
+              </Section>
+            </SectionsWrapper>
+          </Container>
+
+          <TrendingTokens />
+        </>
+      )}
       <HeadingContainer>
         <HeadingWrapper>
           <Text margin="20px 10px 5px 10px" className="heading">
             {t('Top Pairs')}
           </Text>
-          {!props.filter && (
+          {!props.filter && props.showFull !== false && (
             <Text style={{ float: 'right' }}>
               <a href="/info/pairs">
                 See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />

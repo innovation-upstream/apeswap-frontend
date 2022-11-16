@@ -2,14 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Text } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from '../../../../contexts/Localization'
-import { CHAINS } from '../../config/config'
-import { Row, Column, HeadingWrapper, SectionsWrapper, Section } from '../../styles'
-import { tokensOneDayQuery, tokensQuery } from '../../queries'
+import { Row, Column, HeadingWrapper, SectionsWrapper, Section, FavsPlaceholder } from '../../styles'
 import useTheme from '../../../../hooks/useTheme'
 import { InfoToken, InfoTransaction } from '../../types'
-import { useSelector } from 'react-redux'
-import { State } from '../../../../state/types'
 import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTokensData } from '../../../../state/info/hooks'
+import TrendingTokens from '../../../Homepage/components/TrendingTokens/TrendingTokens'
 
 interface TokensProps {
   amount: number
@@ -132,10 +129,10 @@ const Tokens: React.FC<TokensProps> = (props) => {
             <SectionsWrapper>
               <Section>
                 {getFavs().length === 0 ? (
-                  <div>
+                  <FavsPlaceholder>
                     <img src="/images/info/favs-placeholder.svg" />
                     <Text>Your favorite tokens will appear here</Text>
-                  </div>
+                  </FavsPlaceholder>
                 ) : (
                   <Row>
                     <Column width="18px">&nbsp;&nbsp;</Column>
@@ -196,6 +193,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
               </Section>
             </SectionsWrapper>
           </Container>
+          <TrendingTokens />
         </>
       )}
 

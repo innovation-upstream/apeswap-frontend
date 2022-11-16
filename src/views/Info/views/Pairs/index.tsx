@@ -7,7 +7,7 @@ import Pairs from '../../components/Pairs/Pairs'
 const PairsPage: React.FC = () => {
   return (
     <>
-      <Pairs amount={100} />
+      <Pairs amount={100} showFull={true} />
     </>
   )
 }
