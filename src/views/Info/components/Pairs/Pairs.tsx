@@ -64,6 +64,34 @@ const Pairs: React.FC<PairsProps> = (props) => {
       .slice(0, props.amount)
   }
 
+  const toggleFav = (pair: string) => {
+    let currentFavs = JSON.parse(localStorage.getItem('infoFavPairs'))
+    if (currentFavs === null) currentFavs = []
+
+    const index = currentFavs.indexOf(pair, 0)
+    if (index > -1) {
+      currentFavs.splice(index, 1)
+    } else {
+      currentFavs.push(pair)
+    }
+
+    localStorage.setItem('infoFavPairs', JSON.stringify(currentFavs))
+  }
+
+  const favs = JSON.parse(localStorage.getItem('infoFavPairs'))
+
+  const getFavs = () => {
+    const favs = JSON.parse(localStorage.getItem('infoFavPairs'))
+    return processPairs().filter((x) => favs.includes(x.id))
+  }
+
+  const getFavIcon = (pair: string) => {
+    if (favs !== null && favs.filter((x) => x === pair).length > 0)
+      return `/images/info/fav-yes-${isDark ? 'dark' : 'light'}.svg`
+
+    return `/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`
+  }
+
   return (
     <div>
       <HeadingContainer>
@@ -95,7 +123,7 @@ const Pairs: React.FC<PairsProps> = (props) => {
               return (
                 <Row key={pair.id} background={index % 2 === 0}>
                   <Column width="35px">
-                    <img className="fav" width="16px" src={`/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`} />
+                    <img className="fav" width="16px" src={getFavIcon(pair.id)} onClick={() => toggleFav(pair.id)} />{' '}
                   </Column>
                   <Column width="18px">{index + 1}</Column>
                   <Column flex="2">

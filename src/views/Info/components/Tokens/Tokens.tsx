@@ -92,10 +92,13 @@ const Tokens: React.FC<TokensProps> = (props) => {
   const toggleFav = (token: string) => {
     let currentFavs = JSON.parse(localStorage.getItem('infoFavTokens'))
     if (currentFavs === null) currentFavs = []
-    currentFavs.push(token)
 
-    //Need to check if should be added to array or removed from array (if it's in there then remove, if not then add
-    console.log(currentFavs)
+    const index = currentFavs.indexOf(token, 0)
+    if (index > -1) {
+      currentFavs.splice(index, 1)
+    } else {
+      currentFavs.push(token)
+    }
 
     localStorage.setItem('infoFavTokens', JSON.stringify(currentFavs))
   }
