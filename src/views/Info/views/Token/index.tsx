@@ -8,17 +8,62 @@ import { IconBox, Container, SectionsWrapper, Section, SearchInput, HeadingWrapp
 import { Text } from '@apeswapfinance/uikit'
 import Pairs from '../../components/Pairs/Pairs'
 import Transactions from '../../components/Transactions/Transactions'
+import PageLoader from '../../../../components/PageLoader'
+import { ResponsiveBar } from '@nivo/bar'
+import moment from 'moment/moment'
+import { CHAINS } from '../../config/config'
+import useTheme from '../../../../hooks/useTheme'
+import { CenteredImage } from '../../../Ifos/components/HowItWorks/styles'
 
 const TokenPage: React.FC = () => {
+  interface IconProps {
+    name: string
+  }
+
+  const Icon = ({ name }: IconProps) => {
+    const { isDark } = useTheme()
+
+    return (
+      <IconBox>
+        <CenteredImage src={`/images/info/${name}-${isDark ? 'dark' : 'light'}.svg`} alt={name} />
+      </IconBox>
+    )
+  }
+
   const { chain, tokenId } = useParams<{ chain: string; tokenId: string }>()
+
+  const [state, setState] = useState({
+    displayedValue: 0,
+    displayedValueDate: '',
+  })
 
   const tokenDaysData = useFetchInfoTokenDaysData(Number(chain), tokenId)
 
   const nativePrices = useFetchInfoNativePrice()
 
+  function getBarColor(bar: any) {
+    return CHAINS.filter((x) => x.chainId == bar.id)[0].color
+  }
+
+  function processChartData() {
+    const data = []
+
+    for (let i = 0; i < tokenDaysData[chain].data.length; i++) {
+      data.push({
+        date: tokenDaysData[chain].data[i].date,
+        [chain]: tokenDaysData[chain].data[i].dailyVolumeUSD,
+      })
+    }
+    return data.reverse()
+  }
+
+  function checkChartDataInitialized() {
+    return tokenDaysData[chain].data.length > 0
+  }
+
   return (
     <>
-      {tokenDaysData[chain].data !== null && (
+      {tokenDaysData[chain].data !== null ? (
         <>
           <HeadingContainer>
             <HeadingWrapper>
@@ -44,19 +89,86 @@ const TokenPage: React.FC = () => {
           </HeadingContainer>
           <Container>
             <SectionsWrapper>
-              <Section>
+              <Section className="left-section">
+                <div className="graphFrame">
+                  <div className="figure">
+                    <Text className="figureValue">
+                      ${(Math.round(tokenDaysData[chain].data[0].totalLiquidityUSD * 100) / 100).toLocaleString()}
+                    </Text>
+                    <Text fontSize="12px">Liquidity</Text>
+                  </div>
+                </div>
+              </Section>
+              <Section className="right-section">
                 <div className="figure">
-                  <Text className="figureValue">
-                    ${(Math.round(tokenDaysData[chain].data[0].totalLiquidityUSD * 100) / 100).toLocaleString()}
+                  <Icon name="chart" />
+                  <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
+                  <Text fontSize="12px">
+                    Volume (
+                    {state.displayedValueDate
+                      ? moment.unix(Number(state.displayedValueDate)).format('MMM DD, YYYY').valueOf()
+                      : 'Last 24 hours'}
+                    )
                   </Text>
-                  <Text fontSize="12px">Liquidity</Text>
+                </div>
+                <div className="graphFrame">
+                  {checkChartDataInitialized() === true ? (
+                    <ResponsiveBar
+                      data={processChartData()}
+                      keys={['1', '56', '137', '40']}
+                      indexBy="date"
+                      groupMode="stacked"
+                      padding={0.3}
+                      theme={{
+                        fontSize: 14,
+                        textColor: '#333333',
+                      }}
+                      colors={getBarColor}
+                      axisBottom={{
+                        tickSize: 0,
+                        tickPadding: 10,
+                        tickRotation: 0,
+                        format: (x) =>
+                          moment.unix(x).format('DD').valueOf() == '01' ? moment.unix(x).format('MMM').valueOf() : '',
+                      }}
+                      axisLeft={null}
+                      valueScale={{ type: 'linear' }}
+                      indexScale={{ type: 'band', round: true }}
+                      axisTop={null}
+                      axisRight={{
+                        tickValues: [2000000, 4000000, 6000000, 8000000, 10000000],
+                        tickSize: 0,
+                        tickPadding: -82,
+                        tickRotation: 0,
+                        legend: '',
+                        legendOffset: 0,
+                        format: (x) => `$${x.toLocaleString('en-US')}`,
+                      }}
+                      enableLabel={false}
+                      enableGridX={false}
+                      enableGridY={false}
+                      animate={false}
+                      tooltip={() => <></>}
+                      margin={{ top: 0, right: 0, bottom: 25, left: 0 }}
+                      onMouseEnter={(data, event) => {
+                        setState({
+                          displayedValue: data.value,
+                          displayedValueDate: data.indexValue as string,
+                        })
+                      }}
+                    />
+                  ) : (
+                    <div>Loading</div>
+                  )}
                 </div>
               </Section>
             </SectionsWrapper>
           </Container>
-          <Pairs amount={100} filter={tokenId} />
-          <Transactions amount={300} filter={tokenId} />
+          <Pairs amount={75} filter={tokenId} />
+          <Transactions amount={250} filter={tokenId} />
         </>
+      ) : (
+        <PageLoader />
       )}
     </>
   )
