@@ -27,6 +27,27 @@ const Info: React.FC = () => {
   useFetchInfoBlock()
   useFetchInfoTokensData()
   useFetchInfoNativePrice()
+  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
+
+  function toggleChain(chain) {
+    console.log(chain)
+
+    let current = JSON.parse(localStorage.getItem('infoActiveChains'))
+    if (current === null) current = []
+
+    const index = current.indexOf(chain, 0)
+    if (index > -1) {
+      current.splice(index, 1)
+    } else {
+      current.push(chain)
+    }
+
+    localStorage.setItem('infoActiveChains', JSON.stringify(current))
+  }
+
+  function isActive(chain) {
+    return activeChains !== null && activeChains.filter((x) => x === chain).length > 0 ? 'chain activeChain' : 'chain'
+  }
 
   return (
     <>
@@ -38,7 +59,7 @@ const Info: React.FC = () => {
 
               {CHAINS.map((chain: Chain) => {
                 return (
-                  <div key={chain.id} className="chain">
+                  <div key={chain.id} className={isActive(chain.chainId)} onClick={() => toggleChain(chain.chainId)}>
                     <Icon name={chain.chain} />
                   </div>
                 )

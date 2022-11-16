@@ -51,13 +51,16 @@ const Pairs: React.FC<PairsProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
   const pairs = useFetchInfoPairs(props.amount)
+  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
   function processPairs() {
     const data = []
     for (let i = 0; i < Object.keys(pairs).length; i++) {
       const chain = Object.keys(pairs)[i]
-      for (let j = 0; j < pairs[chain].data.length; j++) {
-        data.push(pairs[chain].data[j])
+      if (activeChains.includes(Number(chain))) {
+        for (let j = 0; j < pairs[chain].data.length; j++) {
+          data.push(pairs[chain].data[j])
+        }
       }
     }
 
