@@ -58,6 +58,11 @@ const Migrate = lazy(() => import('./views/Dex/Migrate'))
 const MigrateLiquidity = lazy(() => import('./views/Dex/Migrate/MigrateLiquidity'))
 const MigrateAll = lazy(() => import('./views/Dex/Migrate/MigrateAll'))
 const UnstakeLiquidity = lazy(() => import('./views/Dex/Migrate/UnstakeLiquidity'))
+const Info = lazy(() => import('./views/Info'))
+const TokensPage = lazy(() => import('./views/Info/views/Tokens'))
+const TransactionsPage = lazy(() => import('./views/Info/views/Transactions'))
+const PairsPage = lazy(() => import('./views/Info/views/Pairs'))
+const TokenPage = lazy(() => import('./views/Info/views/Token'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 
@@ -196,6 +201,21 @@ const App: React.FC = () => {
             </Route>
             <Route path="/privacy">
               <PrivacyPolicy />
+            </Route>
+            <Route exact path="/info">
+              <Info />
+            </Route>
+            <Route exact path="/info/tokens">
+              <TokensPage />
+            </Route>
+            <Route exact path="/info/token/:chain/:tokenId">
+              <TokenPage />
+            </Route>
+            <Route exact path="/info/transactions">
+              <TransactionsPage />
+            </Route>
+            <Route exact path="/info/pairs">
+              <PairsPage />
             </Route>
             {/* Redirect */}
             <Route path="/staking">
