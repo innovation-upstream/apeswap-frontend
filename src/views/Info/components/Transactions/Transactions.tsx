@@ -142,6 +142,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
           </Section>
         </SectionsWrapper>
       </Container>
+      <Container></Container>
     </div>
   )
 }

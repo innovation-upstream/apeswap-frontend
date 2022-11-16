@@ -171,7 +171,6 @@ const OverallFigures: React.FC<any> = (props) => {
                 <Text className="figureValue">{calculateCurrentFigures('pairCount').toLocaleString()}</Text>
                 <Text fontSize="12px">Pairs</Text>
               </div>
-              {/*Placeholders for sizing*/}
               <a href="/farms" className="showcase">
                 <img src="/images/info/farms-bg.png" />
               </a>
@@ -183,17 +182,28 @@ const OverallFigures: React.FC<any> = (props) => {
         </Section>
 
         <Section className="right-section">
-          <div className="figure">
-            <Icon name="chart" />
-            <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
-            <Text fontSize="12px">
-              Volume (
-              {state.displayedValueDate
-                ? moment.unix(Number(state.displayedValueDate)).format('MMM DD, YYYY').valueOf()
-                : 'Last 24 hours'}
-              )
-            </Text>
-          </div>
+          {checkDatasInitialized() === true && (
+            <div className="figure">
+              <Icon name="chart" />
+              {state.displayedValueDate ? (
+                <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
+              ) : (
+                <Text className="figureValue">
+                  {Math.round(
+                    calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
+                  ).toLocaleString()}
+                </Text>
+              )}
+
+              <Text fontSize="12px">
+                Volume (
+                {state.displayedValueDate
+                  ? moment.unix(Number(state.displayedValueDate)).format('MMM DD, YYYY').valueOf()
+                  : 'Last 24 hours'}
+                )
+              </Text>
+            </div>
+          )}
 
           <div className="graphFrame">
             {checkChartDataInitialized() === true ? (

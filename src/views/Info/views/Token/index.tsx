@@ -115,7 +115,13 @@ const TokenPage: React.FC = () => {
               <Section className="right-section section-large">
                 <div className="figure">
                   <Icon name="chart" />
-                  <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
+                  {state.displayedValueDate ? (
+                    <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
+                  ) : (
+                    <Text className="figureValue">
+                      ${(Math.round(tokenDaysData[chain].data[0].dailyVolumeUSD * 100) / 100).toLocaleString()}
+                    </Text>
+                  )}
                   <Text fontSize="12px">
                     Volume (
                     {state.displayedValueDate

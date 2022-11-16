@@ -21,6 +21,7 @@ export const Container = styled.div`
   &.small-mt {
     margin-top: 10px;
   }
+
   @media screen and (min-width: 1200px) {
     flex-direction: row;
   }

@@ -49,41 +49,13 @@ const Info: React.FC = () => {
   useFetchInfoTokensData()
   useFetchInfoNativePrice()
 
-  console.log(useSelector((state: State) => state.info))
-
-  // dispatch(fetchPairs(56, 10))
-  // dispatch(fetchBlock(56, 1668452899, 1668539299))
-  // dispatch(fetchDaysData(56, 10))
-  // dispatch(fetchNativePrice(56))
-  // dispatch(fetchTokens(56, 10, 23081639))
-  // dispatch(fetchTransactions(56, 10))
-
-  // console.log(infoPairs)
-  // console.log(getInfoPairs(56, 10))
-  // console.log(getTransactions(56, 10))
-  // console.log(getNativePrices(56))
-  // console.log(getDaysDataQuery(56, 10))
-  // console.log(getBlocksQuery(56, 1668452899, 1668539299))
-  // console.log(getUniswapFactoriesQuery(56, 23056202))
-  // console.log(getGraphQuery(56))
-  // console.log(getTokensQuery(56, 50, 23081639))
-
   return (
     <>
       <div>
         <Container>
           <SectionsWrapper>
             <Section>
-              <div className="search-wrapper">
-                <SearchInput
-                  width="1000px"
-                  // ref={inputEl}
-                  // value={value}
-                  // onChange={onChange}
-                  // onBlur={() => setToggled(false)}
-                  icon="search"
-                />
-              </div>
+              <div className="search-wrapper"></div>
 
               {CHAINS.map((chain: Chain) => {
                 return (
