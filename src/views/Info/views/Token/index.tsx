@@ -22,22 +22,22 @@ const TokenPage: React.FC = () => {
         <>
           <HeadingContainer>
             <HeadingWrapper>
-              <img
-                width="24px"
-                className="logo"
-                src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${tokenDaysData[chain].data[0].token.symbol}.svg`}
-                onError={(e) => {
-                  e.currentTarget.src = `/images/info/unknownToken.svg`
-                }}
-              />
-              <Text margin="5px 10px 5px 10px" className="heading">
+              {/*<img*/}
+              {/*  width="24px"*/}
+              {/*  className="logo"*/}
+              {/*  src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${tokenDaysData[chain].data[0].token.symbol}.svg`}*/}
+              {/*  onError={(e) => {*/}
+              {/*    e.currentTarget.src = `/images/info/unknownToken.svg`*/}
+              {/*  }}*/}
+              {/*/>*/}
+              <Text margin="20px 10px 5px 10px" className="heading">
                 {tokenDaysData[chain].data[0].token.name} ({tokenDaysData[chain].data[0].token.symbol})
               </Text>
             </HeadingWrapper>
           </HeadingContainer>
           <HeadingContainer>
             <HeadingWrapper>
-              <Text margin="20px 10px 5px 10px" className="heading">
+              <Text margin="0px 10px 0px 10px" className="heading">
                 ${(Math.round(tokenDaysData[chain].data[0].priceUSD * 100) / 100).toLocaleString()}
               </Text>
             </HeadingWrapper>
@@ -45,7 +45,12 @@ const TokenPage: React.FC = () => {
           <Container>
             <SectionsWrapper>
               <Section>
-                ${(Math.round(tokenDaysData[chain].data[0].totalLiquidityUSD * 100) / 100).toLocaleString()}
+                <div className="figure">
+                  <Text className="figureValue">
+                    ${(Math.round(tokenDaysData[chain].data[0].totalLiquidityUSD * 100) / 100).toLocaleString()}
+                  </Text>
+                  <Text fontSize="12px">Liquidity</Text>
+                </div>
               </Section>
             </SectionsWrapper>
           </Container>
