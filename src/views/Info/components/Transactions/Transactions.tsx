@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Text } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
 import moment from 'moment/moment'
 import { useTranslation } from '../../../../contexts/Localization'
 import { CHAINS } from '../../config/config'
 import { Row, Column, HeadingWrapper, SectionsWrapper, Section } from '../../styles'
-import { transactionsQuery } from '../../queries'
 import { HeadingContainer } from '../Tokens/Tokens'
 import useTheme from '../../../../hooks/useTheme'
 import { InfoTransaction } from '../../types'
-import { useSelector } from 'react-redux'
-import { State } from '../../../../state/types'
-import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTransactions } from '../../../../state/info/hooks'
+import { useFetchInfoTransactions } from '../../../../state/info/hooks'
 
 interface TransactionsProps {
   amount: number

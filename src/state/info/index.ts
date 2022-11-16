@@ -153,8 +153,8 @@ export const fetchUniswapFactories = (chainId: ChainId, block: string) => async 
   }
 }
 
-export const fetchChartData = (chainId: ChainId) => async (dispatch) => {
-  const data = await getChartData(chainId)
+export const fetchChartData = (chainId: ChainId, amount: number) => async (dispatch) => {
+  const data = await getChartData(chainId, amount)
   dispatch(setChartData({ data, chainId, loading: false, initialized: true }))
 }
 

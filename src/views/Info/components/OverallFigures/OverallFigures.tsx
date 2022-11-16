@@ -30,9 +30,11 @@ const OverallFigures: React.FC<any> = (props) => {
     chartType: 'volume',
   })
 
+  const { isDark } = useTheme()
+
   const currentDayData = useFetchInfoUniswapFactories(true)
   const dayOldData = useFetchInfoUniswapFactories()
-  const chartData = useFetchChartData()
+  const chartData = useFetchChartData(30)
 
   function processChartData() {
     const data = []
@@ -80,12 +82,28 @@ const OverallFigures: React.FC<any> = (props) => {
     return data.reverse()
   }
 
+  function getLiquidity() {
+    let liquidity = 0
+    for (let i = 0; i < Object.keys(chartData).length; i++) {
+      const chain = Object.keys(chartData)[i]
+
+      for (let j = 0; j < chartData[chain].data.length; j++) {
+        liquidity += Number(chartData[chain].data[j].totalLiquidityUSD)
+      }
+    }
+    return liquidity
+  }
+
   function getBarColor(bar: any) {
     return CHAINS.filter((x) => x.chainId == bar.id)[0].color
   }
 
   function calculateFees() {
     return (calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD')) * 0.002
+  }
+
+  function UpdateChart(amount: number) {
+    //chartData = useFetchChartData(amount)
   }
 
   function calculate7DayVolume() {
@@ -148,6 +166,9 @@ const OverallFigures: React.FC<any> = (props) => {
     return total === Object.keys(chartData).length
   }
 
+  function getChartTextColor() {
+    return isDark ? '#FFFFFF' : '#333333'
+  }
   function getTickValues() {
     if (state.chartType === 'volume') {
       return [
@@ -156,6 +177,45 @@ const OverallFigures: React.FC<any> = (props) => {
     }
 
     return [10000000, 20000000, 30000000, 40000000, 50000000, 60000000, 70000000, 80000000, 90000000]
+  }
+
+  function generateToolTip(data: any) {
+    return (
+      <Section className="smallSection">
+        <div className="header">
+          <div className="wrapper">
+            Date: <div className="value">{moment.unix(Number(data.data.date)).format('MMM DD, YYYY').valueOf()}</div>
+          </div>
+          <div className="wrapper">
+            Total:{' '}
+            <div className="value">
+              $
+              {Math.round(
+                Number(data.data[1]) + Number(data.data[40]) + Number(data.data[56]) + Number(data.data[137]),
+              ).toLocaleString()}
+            </div>
+          </div>
+        </div>
+        <div className="body">
+          <div className="wrapper">
+            <div className="indicator eth"></div>Ethereum:{' '}
+            <div className="value">${Math.round(data.data[1]).toLocaleString()}</div>
+          </div>
+          <div className="wrapper">
+            <div className="indicator telos"></div>Telos:{' '}
+            <div className="value">${Math.round(data.data[1]).toLocaleString()}</div>
+          </div>
+          <div className="wrapper">
+            <div className="indicator bnb"></div>BNB:{' '}
+            <div className="value">${Math.round(data.data[56]).toLocaleString()}</div>
+          </div>
+          <div className="wrapper">
+            <div className="indicator polygon"></div>Polygon:{' '}
+            <div className="value">${Math.round(data.data[137]).toLocaleString()}</div>
+          </div>
+        </div>
+      </Section>
+    )
   }
   return (
     <Container>
@@ -234,26 +294,33 @@ const OverallFigures: React.FC<any> = (props) => {
 
         <Section className="right-section">
           {checkDatasInitialized() === true && (
-            <div className="figure">
-              <Icon name="dollar" />
-              {state.displayedValueDate ? (
-                <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
-              ) : (
-                <Text className="figureValue">
-                  {Math.round(
-                    calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
-                  ).toLocaleString()}
-                </Text>
-              )}
+            <>
+              <div className="figure">
+                <Icon name="dollar" />
+                {state.displayedValueDate ? (
+                  <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
+                ) : (
+                  <Text className="figureValue">{Math.round(getLiquidity()).toLocaleString()}</Text>
+                )}
 
-              <Text fontSize="12px">
-                Volume (
-                {state.displayedValueDate
-                  ? moment.unix(Number(state.displayedValueDate)).format('MMM DD, YYYY').valueOf()
-                  : 'Last 24 hours'}
-                )
-              </Text>
-            </div>
+                <Text fontSize="12px">Liquidity</Text>
+              </div>
+              <div className="date-selector" onClick={() => UpdateChart(1)}>
+                1D
+              </div>
+              <div className="date-selector" onClick={() => UpdateChart(1)}>
+                1W
+              </div>
+              <div className="date-selector live" onClick={() => UpdateChart(1)}>
+                1M
+              </div>
+              <div className="date-selector" onClick={() => UpdateChart(1)}>
+                1Y
+              </div>
+              <div className="date-selector" onClick={() => UpdateChart(1)}>
+                ALL
+              </div>
+            </>
           )}
 
           <div className="graphFrame">
@@ -266,7 +333,8 @@ const OverallFigures: React.FC<any> = (props) => {
                 padding={0.3}
                 theme={{
                   fontSize: 14,
-                  textColor: '#333333',
+                  fontFamily: 'Poppins',
+                  textColor: getChartTextColor(),
                 }}
                 colors={getBarColor}
                 axisBottom={{
@@ -293,15 +361,8 @@ const OverallFigures: React.FC<any> = (props) => {
                 enableGridX={false}
                 enableGridY={false}
                 animate={false}
-                tooltip={() => <></>}
+                tooltip={(data) => generateToolTip(data)}
                 margin={{ top: 0, right: 0, bottom: 25, left: 0 }}
-                onMouseEnter={(data, event) => {
-                  setState({
-                    displayedValue: data.value,
-                    displayedValueDate: data.indexValue as string,
-                    chartType: state.chartType,
-                  })
-                }}
               />
             ) : (
               <div>Loading</div>

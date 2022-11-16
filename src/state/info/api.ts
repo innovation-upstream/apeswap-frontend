@@ -113,14 +113,14 @@ export const getBlocks = async (chainId: ChainId, startTimestamp: number, curren
   }
 }
 
-export const getChartData = async (chainId: ChainId): Promise<any> => {
+export const getChartData = async (chainId: ChainId, amount: number): Promise<any> => {
   const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
     axiosRetry(axios, {
       retries: 5,
       retryCondition: () => true,
     })
-    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(graphQuery))
+    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(graphQuery(amount)))
     const { data } = responseData
     if (status === 500) {
       return null

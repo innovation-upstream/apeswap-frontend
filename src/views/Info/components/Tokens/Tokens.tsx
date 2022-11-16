@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Text } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
 import { useTranslation } from '../../../../contexts/Localization'
 import { Row, Column, HeadingWrapper, SectionsWrapper, Section, FavsPlaceholder } from '../../styles'
 import useTheme from '../../../../hooks/useTheme'
-import { InfoToken, InfoTransaction } from '../../types'
+import { InfoToken } from '../../types'
 import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTokensData } from '../../../../state/info/hooks'
 import TrendingTokens from '../../../Homepage/components/TrendingTokens/TrendingTokens'
-import { TokenDaysData } from '../../../../state/info/types'
 
 interface TokensProps {
   amount: number

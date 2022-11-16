@@ -78,6 +78,60 @@ export const Section = styled.div`
     }
   }
 
+  &.smallSection {
+    width: 300px;
+    padding: 0px 0px 5px 0px;
+    box-shadow: 0px 0px 10px ${(props) => props.theme.colors.gray};
+
+    .header {
+      padding: 10px 0;
+      background: ${({ theme }) => theme.colors.white3};
+      width: 100%;
+      border-radius-topleft: 10px;
+      border-radius-topright: 10px;
+
+      margin-bottom: 5px;
+      .wrapper {
+        font-weight: 600;
+      }
+    }
+
+    .body {
+      padding: 10px 0;
+    }
+    .wrapper {
+      width: 300px;
+      padding: 5px 18px;
+      font-weight: 500;
+      font-size: 12px;
+
+      .value {
+        float: right;
+      }
+      .indicator {
+        width: 10px;
+        height: 10px;
+        margin: 1px 5px 0 0;
+        float: left;
+        border-radius: 50%;
+        &.eth {
+          background: #637dea;
+        }
+
+        &.bnb {
+          background: #fab701;
+        }
+
+        &.telos {
+          background: #9d68e8;
+        }
+
+        &.polygon {
+          background: #637dea;
+        }
+      }
+    }
+  }
   .chain {
     flex: 0 0 50px;
     padding: 10px 0px;
@@ -86,6 +140,18 @@ export const Section = styled.div`
     img {
       border: 2px solid #fff;
       border-radius: 50%;
+    }
+  }
+
+  .clickable-figure {
+    cursor: pointer;
+  }
+
+  .date-selector {
+    margin-left: 15px;
+    cursor: pointer;
+    &:not(.live) {
+      opacity: 50%;
     }
   }
 
@@ -188,9 +254,6 @@ export const FiguresWrapper = styled.div`
     .figureValue {
       font-weight: 600;
     }
-  }
-  .clickable-figure {
-    cursor: pointer;
   }
 `
 

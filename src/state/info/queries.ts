@@ -177,7 +177,11 @@ export const tokenDaysDataQuery = (address: string) => {
   }
 }
 
-export const graphQuery = {
-  query:
-    'query uniswapDayDatas { uniswapDayDatas(orderBy: date, orderDirection: desc first: 30) {id date totalVolumeUSD dailyVolumeUSD dailyVolumeETH totalLiquidityUSD totalLiquidityETH } }',
+export const graphQuery = (amount: number) => {
+  return {
+    query:
+      'query uniswapDayDatas { uniswapDayDatas(orderBy: date, orderDirection: desc first: ' +
+      amount +
+      ') {id date totalVolumeUSD dailyVolumeUSD dailyVolumeETH totalLiquidityUSD totalLiquidityETH } }',
+  }
 }

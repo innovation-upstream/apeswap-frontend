@@ -114,13 +114,13 @@ export const useFetchInfoBlock = () => {
   return useSelector((state: State) => state.info.block)
 }
 
-export const useFetchChartData = () => {
+export const useFetchChartData = (amount: number) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.CHARTDATA, chainId, loading: true }))
-      dispatch(fetchChartData(chainId))
+      dispatch(fetchChartData(chainId, amount))
     })
   }, [slowRefresh, dispatch])
   return useSelector((state: State) => state.info.chartData)
