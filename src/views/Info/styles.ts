@@ -183,6 +183,9 @@ export const FiguresWrapper = styled.div`
       font-weight: 600;
     }
   }
+  .clickable-figure {
+    cursor: pointer;
+  }
 `
 
 export const Row = styled.div<RowProps>`

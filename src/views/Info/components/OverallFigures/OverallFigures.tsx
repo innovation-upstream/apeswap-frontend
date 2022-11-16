@@ -27,6 +27,7 @@ const OverallFigures: React.FC<any> = (props) => {
   const [state, setState] = useState({
     displayedValue: 0,
     displayedValueDate: '',
+    chartType: 'volume',
   })
 
   const currentDayData = useFetchInfoUniswapFactories(true)
@@ -49,6 +50,29 @@ const OverallFigures: React.FC<any> = (props) => {
       } else {
         for (let j = 0; j < chartData[chain].data.length; j++) {
           data[j][chain] = chartData[chain].data[j].dailyVolumeUSD
+        }
+      }
+    }
+
+    return data.reverse()
+  }
+
+  function processChartLiquidityData() {
+    const data = []
+
+    for (let i = 0; i < Object.keys(chartData).length; i++) {
+      const chain = Object.keys(chartData)[i]
+
+      if (data.length === 0) {
+        for (let j = 0; j < chartData[chain].data.length; j++) {
+          data.push({
+            date: chartData[chain].data[j].date,
+            [chain]: chartData[chain].data[j].totalLiquidityUSD,
+          })
+        }
+      } else {
+        for (let j = 0; j < chartData[chain].data.length; j++) {
+          data[j][chain] = chartData[chain].data[j].totalLiquidityUSD
         }
       }
     }
@@ -124,6 +148,15 @@ const OverallFigures: React.FC<any> = (props) => {
     return total === Object.keys(chartData).length
   }
 
+  function getTickValues() {
+    if (state.chartType === 'volume') {
+      return [
+        6000000, 9000000, 12000000, 15000000, 18000000, 21000000, 24000000, 27000000, 30000000, 33000000, 36000000,
+      ]
+    }
+
+    return [10000000, 20000000, 30000000, 40000000, 50000000, 60000000, 70000000, 80000000, 90000000]
+  }
   return (
     <Container>
       <SectionsWrapper>
@@ -137,14 +170,32 @@ const OverallFigures: React.FC<any> = (props) => {
                 </Text>
                 <Text fontSize="12px">Transactions (24h)</Text>
               </div>
-              <div className="figure">
+              <div
+                className="figure clickable-figure"
+                onClick={() =>
+                  setState({
+                    displayedValue: 0,
+                    displayedValueDate: '',
+                    chartType: 'liquidity',
+                  })
+                }
+              >
                 <Icon name="dollar" />
                 <Text className="figureValue">
                   {Math.round(calculateCurrentFigures('totalLiquidityUSD')).toLocaleString()}
                 </Text>
                 <Text fontSize="12px">Liquidity</Text>
               </div>
-              <div className="figure">
+              <div
+                className="figure clickable-figure"
+                onClick={() =>
+                  setState({
+                    displayedValue: 0,
+                    displayedValueDate: '',
+                    chartType: 'volume',
+                  })
+                }
+              >
                 <Icon name="dollar" />
                 <Text className="figureValue">
                   {Math.round(
@@ -184,7 +235,7 @@ const OverallFigures: React.FC<any> = (props) => {
         <Section className="right-section">
           {checkDatasInitialized() === true && (
             <div className="figure">
-              <Icon name="chart" />
+              <Icon name="dollar" />
               {state.displayedValueDate ? (
                 <Text className="figureValue">${Math.round(state.displayedValue).toLocaleString()}</Text>
               ) : (
@@ -208,7 +259,7 @@ const OverallFigures: React.FC<any> = (props) => {
           <div className="graphFrame">
             {checkChartDataInitialized() === true ? (
               <ResponsiveBar
-                data={processChartData()}
+                data={state.chartType === 'volume' ? processChartData() : processChartLiquidityData()}
                 keys={['1', '56', '137', '40']}
                 indexBy="date"
                 groupMode="stacked"
@@ -230,10 +281,7 @@ const OverallFigures: React.FC<any> = (props) => {
                 indexScale={{ type: 'band', round: true }}
                 axisTop={null}
                 axisRight={{
-                  tickValues: [
-                    6000000, 9000000, 12000000, 15000000, 18000000, 21000000, 24000000, 27000000, 30000000, 33000000,
-                    36000000,
-                  ],
+                  tickValues: getTickValues(),
                   tickSize: 0,
                   tickPadding: -82,
                   tickRotation: 0,
@@ -251,6 +299,7 @@ const OverallFigures: React.FC<any> = (props) => {
                   setState({
                     displayedValue: data.value,
                     displayedValueDate: data.indexValue as string,
+                    chartType: state.chartType,
                   })
                 }}
               />

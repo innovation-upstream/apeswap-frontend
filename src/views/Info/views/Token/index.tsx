@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
-import React, { useEffect, useState } from 'react'
-import Tokens, { HeadingContainer } from '../../components/Tokens/Tokens'
-import TrendingTokens from '../../../Homepage/components/TrendingTokens/TrendingTokens'
+import React, { useState } from 'react'
+import { HeadingContainer } from '../../components/Tokens/Tokens'
 import { useFetchInfoNativePrice, useFetchInfoTokenDaysData } from '../../../../state/info/hooks'
 import { useParams } from 'react-router-dom'
 import { IconBox, Container, SectionsWrapper, Section, SearchInput, HeadingWrapper } from '../../styles'
