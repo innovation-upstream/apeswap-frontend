@@ -23,6 +23,7 @@ import {
 } from 'state/info/hooks'
 import { StyledInput } from 'views/Bills/components/Actions/styles'
 import OverallFigures from './components/OverallFigures/OverallFigures'
+import TrendingTokens from '../Homepage/components/TrendingTokens/TrendingTokens'
 
 let query = ''
 interface IconProps {
@@ -47,9 +48,6 @@ const Info: React.FC = () => {
   useFetchInfoBlock()
   useFetchInfoTokensData()
   useFetchInfoNativePrice()
-  useFetchInfoPairs()
-
-  useFetchInfoTransactions()
 
   console.log(useSelector((state: State) => state.info))
 
@@ -99,7 +97,7 @@ const Info: React.FC = () => {
         </Container>
 
         <OverallFigures />
-        {/*<TrendingTokens />*/}
+        <TrendingTokens />
         <Tokens amount={10} showFull={false} />
         <Pairs amount={10} />
         <Transactions amount={10} />

@@ -11,6 +11,7 @@ import useTheme from '../../../../hooks/useTheme'
 import { InfoTransaction } from '../../types'
 import { useSelector } from 'react-redux'
 import { State } from '../../../../state/types'
+import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTransactions } from '../../../../state/info/hooks'
 
 interface TransactionsProps {
   amount: number
@@ -30,7 +31,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
 
-  const transactions = useSelector((state: State) => state.info.transactions)
+  const transactions = useFetchInfoTransactions()
 
   function formatTime(unix: number) {
     const now = moment()

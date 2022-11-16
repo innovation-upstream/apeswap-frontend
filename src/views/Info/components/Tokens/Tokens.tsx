@@ -9,7 +9,7 @@ import useTheme from '../../../../hooks/useTheme'
 import { InfoToken, InfoTransaction } from '../../types'
 import { useSelector } from 'react-redux'
 import { State } from '../../../../state/types'
-import { useFetchInfoNativePrice, useFetchInfoTokensData } from '../../../../state/info/hooks'
+import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTokensData } from '../../../../state/info/hooks'
 
 interface TokensProps {
   amount: number
@@ -42,12 +42,9 @@ export const Container = styled.div`
 const Tokens: React.FC<TokensProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
+  useFetchInfoBlock()
   const tokens = useFetchInfoTokensData()
   const nativePrices = useFetchInfoNativePrice()
-  console.log('tokens:')
-  console.log(tokens)
-  console.log('nativePrices:')
-  console.log(nativePrices)
 
   function processTokens() {
     const data = []
@@ -149,7 +146,9 @@ const Tokens: React.FC<TokensProps> = (props) => {
                             e.currentTarget.src = `/images/info/unknownToken.svg`
                           }}
                         />
-                        {token.name} ({token.symbol})
+                        <a href={`/info/token/${token.id}`}>
+                          {token.name} ({token.symbol})
+                        </a>
                       </Column>
                       <Column>
                         ${(Math.round(token.derivedETH * state.nativePrice * 100) / 100).toLocaleString()}
@@ -178,13 +177,15 @@ const Tokens: React.FC<TokensProps> = (props) => {
       <HeadingContainer>
         <HeadingWrapper>
           <Text margin="20px 10px 5px 10px" className="heading">
-            {t('Top Tokens')}
+            {t(props.showFull !== true ? 'Top Tokens' : 'All Tokens')}
           </Text>
-          <Text style={{ float: 'right' }}>
-            <a href="/info/tokens">
-              See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
-            </a>
-          </Text>
+          {props.showFull !== true && (
+            <Text style={{ float: 'right' }}>
+              <a href="/info/tokens">
+                See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
+              </a>
+            </Text>
+          )}
         </HeadingWrapper>
       </HeadingContainer>
       <Container>
@@ -215,7 +216,9 @@ const Tokens: React.FC<TokensProps> = (props) => {
                         e.currentTarget.src = `/images/info/unknownToken.svg`
                       }}
                     />
-                    {token.name} ({token.symbol})
+                    <a href={`/info/token/${token.id}`}>
+                      {token.name} ({token.symbol})
+                    </a>
                   </Column>
                   <Column>
                     ${(Math.round(token.derivedETH * getNativePrice(token.chain) * 100) / 100).toLocaleString()}

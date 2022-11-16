@@ -7,6 +7,7 @@ import useTheme from '../../../../hooks/useTheme'
 import { InfoPair } from 'views/Info/types'
 import { useSelector } from 'react-redux'
 import { State } from '../../../../state/types'
+import { useFetchInfoPairs } from '../../../../state/info/hooks'
 
 interface PairsProps {
   amount: number
@@ -37,7 +38,7 @@ export const Container = styled.div`
 const Pairs: React.FC<PairsProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
-  const pairs = useSelector((state: State) => state.info.pairs)
+  const pairs = useFetchInfoPairs()
 
   function processPairs() {
     const data = []
@@ -62,7 +63,7 @@ const Pairs: React.FC<PairsProps> = (props) => {
             {t('Top Pairs')}
           </Text>
           <Text style={{ float: 'right' }}>
-            <a href="tokens">
+            <a href="/info/pairs">
               See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
             </a>
           </Text>
