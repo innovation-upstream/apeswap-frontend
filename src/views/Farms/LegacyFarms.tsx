@@ -18,6 +18,7 @@ import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
+import DisplayLegacyFarms from './components/DisplayLegacyFarms'
 
 const LegacyFarms: React.FC = () => {
   useSetFarms()
@@ -136,7 +137,7 @@ const LegacyFarms: React.FC = () => {
     }),
   )
 
-  return <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} v2Flag={false} />
+  return <DisplayLegacyFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} v2Flag={false} />
 }
 
 export default React.memo(LegacyFarms)
