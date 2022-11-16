@@ -78,6 +78,7 @@ export interface TokenDaysData {
   priceUSD: string
   totalLiquidityUSD: string
   dailyVolumeUSD: string
+  dailyTxns: string
 }
 
 export interface Block {

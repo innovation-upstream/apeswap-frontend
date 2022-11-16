@@ -68,7 +68,11 @@ export const Section = styled.div`
     .figureValue {
       font-weight: 600;
     }
+    &.figure-full {
+      width: 100%;
+    }
   }
+
   .chain {
     flex: 0 0 50px;
     padding: 10px 0px;
@@ -118,6 +122,11 @@ export const Section = styled.div`
 
   .graphFrame {
     height: 327px;
+    width: 100%;
+  }
+
+  .sectionFrame {
+    height: 385px;
     width: 100%;
   }
 `

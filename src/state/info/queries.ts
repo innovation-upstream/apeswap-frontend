@@ -170,6 +170,7 @@ export const tokenDaysDataQuery = (address: string) => {
       '    dailyVolumeETH\n' +
       '    dailyVolumeToken\n' +
       '    dailyVolumeUSD\n' +
+      '    dailyTxns\n' +
       '    __typename\n' +
       '  }\n' +
       '}',
