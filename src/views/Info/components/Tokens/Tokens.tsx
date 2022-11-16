@@ -6,7 +6,9 @@ import { CHAINS } from '../../config/config'
 import { Row, Column, HeadingWrapper, SectionsWrapper, Section } from '../../styles'
 import { tokensOneDayQuery, tokensQuery } from '../../queries'
 import useTheme from '../../../../hooks/useTheme'
-import { InfoToken } from '../../types'
+import { InfoToken, InfoTransaction } from '../../types'
+import { useSelector } from 'react-redux'
+import { State } from '../../../../state/types'
 
 interface TokensProps {
   amount: number
@@ -39,14 +41,37 @@ export const Container = styled.div`
 const Tokens: React.FC<TokensProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
+  const tokens = useSelector((state: State) => state.info.tokens)
+  const nativePrices = useSelector((state: State) => state.info.nativePrice)
+
+  function processTokens() {
+    const data = []
+    for (let i = 0; i < Object.keys(tokens).length; i++) {
+      const chain = Object.keys(tokens)[i]
+      for (let j = 0; j < tokens[chain].data.length; j++) {
+        data.push(tokens[chain].data[j])
+      }
+    }
+
+    return data
+      .sort(
+        (a: InfoToken, b: InfoToken) =>
+          a.totalLiquidity * getNativePrice(a.chain) * a.derivedETH -
+          b.totalLiquidity * getNativePrice(b.chain) * b.derivedETH,
+      )
+      .reverse()
+      .slice(0, props.amount)
+  }
 
   const [state, setState] = useState({
     tokens: [],
     oneDayTokens: [],
     nativePrice: 1,
   })
-  const [isLoading, setIsLoading] = useState(false)
-  const [chainsLoaded, setChainsLoaded] = useState(0)
+
+  const getNativePrice = (chain: string) => {
+    return nativePrices[chain].data.ethPrice
+  }
 
   const toggleFav = (token: string) => {
     let currentFavs = JSON.parse(localStorage.getItem('infoFavTokens'))
@@ -76,52 +101,6 @@ const Tokens: React.FC<TokensProps> = (props) => {
 
     return `/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`
   }
-
-  useEffect(() => {
-    setIsLoading(true)
-
-    if (chainsLoaded < CHAINS.length) {
-      const currentTokensRequestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(tokensQuery(props.amount)),
-      }
-
-      // Loop chains
-      for (let i = 0; i < CHAINS.length; i++) {
-        const chain = CHAINS[i].chain
-
-        const oneDayTokensRequestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(tokensOneDayQuery(props.amount, props.oneDayBlocks[chain])),
-        }
-
-        fetch(CHAINS[i].graphAddress, currentTokensRequestOptions)
-          .then((res) => res.json())
-          .then(async (result) => {
-            setState({
-              tokens: result.data.tokens,
-              nativePrice: props.nativePrices[CHAINS[i].chain],
-              oneDayTokens: state.oneDayTokens,
-            })
-          })
-
-        fetch(CHAINS[i].graphAddress, oneDayTokensRequestOptions)
-          .then((res) => res.json())
-          .then(async (result) => {
-            setState({
-              oneDayTokens: result.data.tokens,
-              tokens: state.tokens,
-              nativePrice: state.nativePrice,
-            })
-          })
-        setChainsLoaded(chainsLoaded + 1)
-      }
-    }
-
-    // setIsLoading(false)
-  }, [])
 
   return (
     <div>
@@ -218,7 +197,8 @@ const Tokens: React.FC<TokensProps> = (props) => {
               <Column className="mobile-hidden">{t('Liquidity')}</Column>
               <Column className="mobile-hidden">{t('Volume (24h)')}</Column>
             </Row>
-            {state.tokens.map((token: InfoToken, index: number) => {
+
+            {processTokens().map((token: InfoToken, index: number) => {
               return (
                 <Row key={token.id} background={index % 2 === 0}>
                   <Column width="35px">
@@ -236,9 +216,12 @@ const Tokens: React.FC<TokensProps> = (props) => {
                     />
                     {token.name} ({token.symbol})
                   </Column>
-                  <Column>${(Math.round(token.derivedETH * state.nativePrice * 100) / 100).toLocaleString()}</Column>
+                  <Column>
+                    ${(Math.round(token.derivedETH * getNativePrice(token.chain) * 100) / 100).toLocaleString()}
+                  </Column>
                   <Column className="mobile-hidden">
-                    ${Math.round(token.totalLiquidity * state.nativePrice * token.derivedETH).toLocaleString()}
+                    $
+                    {Math.round(token.totalLiquidity * getNativePrice(token.chain) * token.derivedETH).toLocaleString()}
                   </Column>
                   <Column className="mobile-hidden">
                     $

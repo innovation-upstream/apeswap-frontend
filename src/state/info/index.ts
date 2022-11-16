@@ -1,7 +1,15 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
 import { InfoState } from './types'
-import { getInfoPairs, getBlocks, getDaysData, getNativePrices, getTokens, getTransactions } from './api'
+import {
+  getInfoPairs,
+  getBlocks,
+  getDaysData,
+  getNativePrices,
+  getTokens,
+  getTransactions,
+  getUniswapFactories,
+} from './api'
 import { MAINNET_CHAINS } from 'config/constants/chains'
 import { ChainId } from '@ape.swap/sdk'
 
@@ -19,6 +27,7 @@ const initialState: InfoState = {
   daysData: dataAsListInitialState,
   tokens: dataAsListInitialState,
   block: dataAsNullInitialState,
+  uniswapFactories: dataAsNullInitialState,
 }
 
 export const infoSlice = createSlice({
@@ -49,6 +58,10 @@ export const infoSlice = createSlice({
       const { data, chainId, loading, initialized } = action.payload
       state.block[chainId] = { data, loading, initialized }
     },
+    setUniswapFactories: (state, action) => {
+      const { data, chainId, loading, initialized } = action.payload
+      state.uniswapFactories[chainId] = { data, loading, initialized }
+    },
     setLoading: (state, action) => {
       const { stateType, chainId, loading } = action.payload
       state[stateType][chainId] = { ...state[stateType][chainId], loading }
@@ -57,8 +70,16 @@ export const infoSlice = createSlice({
 })
 
 // Actions
-export const { setPairs, setTransactions, setNativePrice, setDaysData, setTokens, setBlock, setLoading } =
-  infoSlice.actions
+export const {
+  setPairs,
+  setTransactions,
+  setNativePrice,
+  setDaysData,
+  setTokens,
+  setBlock,
+  setUniswapFactories,
+  setLoading,
+} = infoSlice.actions
 
 // Thunks
 export const fetchPairs = (chainId: ChainId, amount: number) => async (dispatch) => {
@@ -89,6 +110,11 @@ export const fetchTokens = (chainId: ChainId, amount: number, block: string) => 
 export const fetchBlock = (chainId: ChainId, startTimestamp: number, currentTimestamp: number) => async (dispatch) => {
   const data = await getBlocks(chainId, startTimestamp, currentTimestamp)
   dispatch(setBlock({ data, chainId, loading: false, initialized: true }))
+}
+
+export const fetchUniswapFactories = (chainId: ChainId, block: string) => async (dispatch) => {
+  const data = await getUniswapFactories(chainId, block)
+  dispatch(setUniswapFactories({ data, chainId, loading: false, initialized: true }))
 }
 
 export default infoSlice.reducer

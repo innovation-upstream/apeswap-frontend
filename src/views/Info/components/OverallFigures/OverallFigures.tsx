@@ -13,11 +13,6 @@ interface IconProps {
   name: string
 }
 
-interface OverallFigureProps {
-  nativePrices: any
-  oneDayBlocks: any
-}
-
 const Icon = ({ name }: IconProps) => {
   const { isDark } = useTheme()
 
@@ -28,7 +23,7 @@ const Icon = ({ name }: IconProps) => {
   )
 }
 
-const OverallFigures: React.FC<OverallFigureProps> = (props) => {
+const OverallFigures: React.FC<any> = (props) => {
   const [state, setState] = useState({
     currentDayData: [],
     oneDayData: [],

@@ -4,8 +4,18 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { State } from 'state/types'
-import { fetchBlock, fetchDaysData, fetchNativePrice, fetchPairs, fetchTokens, fetchTransactions, setLoading } from '.'
+import {
+  fetchBlock,
+  fetchDaysData,
+  fetchNativePrice,
+  fetchPairs,
+  fetchTokens,
+  fetchTransactions,
+  fetchUniswapFactories,
+  setLoading,
+} from '.'
 import { InfoStateTypes } from './types'
+import block from '../block'
 
 export const useFetchInfoPairs = () => {
   const dispatch = useAppDispatch()
@@ -85,4 +95,18 @@ export const useFetchInfoBlock = () => {
     })
   }, [slowRefresh, dispatch])
   return useSelector((state: State) => state.info.block)
+}
+
+export const useFetchInfoUniswapFactories = () => {
+  const dispatch = useAppDispatch()
+  const blocks = useSelector((state: State) => state.info.block)
+  useEffect(() => {
+    MAINNET_CHAINS.forEach((chainId) => {
+      dispatch(setLoading({ stateType: InfoStateTypes.UNISWAPFACTORIES, chainId, loading: true }))
+      if (blocks[chainId].initialized) {
+        dispatch(fetchUniswapFactories(chainId, blocks[chainId].data.number))
+      }
+    })
+  }, [blocks, dispatch])
+  return useSelector((state: State) => state.info.uniswapFactories)
 }

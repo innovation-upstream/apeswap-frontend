@@ -114,7 +114,7 @@ export const blocksQuery = (startTimestamp: number, currentTimestamp: number) =>
   }
 }
 
-export const uniswapFactoriesQuery = (chainId: ChainId, block: string) => {
+export const uniswapFactoriesQuery = (chainId: string, block: string) => {
   return {
     query:
       'query uniswapFactories { uniswapFactories(' +

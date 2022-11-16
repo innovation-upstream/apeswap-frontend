@@ -26,7 +26,7 @@ export const getInfoPairs = async (chainId: ChainId, amount: number): Promise<Pa
     if (status === 500) {
       return []
     }
-    return data.pairs
+    return data.pairs.map((x) => ({ ...x, chain: chainId }))
   } catch (error) {
     console.error(error)
     return []
@@ -45,7 +45,7 @@ export const getTransactions = async (chainId: ChainId, amount: number): Promise
     if (status === 500) {
       return []
     }
-    return data.transactions
+    return data.transactions.map((x) => ({ ...x, chain: chainId }))
   } catch (error) {
     console.error(error)
     return []
@@ -64,7 +64,7 @@ export const getNativePrices = async (chainId: ChainId): Promise<NativePrice> =>
     if (status === 500) {
       return null
     }
-    return data.bundles[0]
+    return data.bundles.map((x) => ({ ...x, chain: chainId }))[0]
   } catch (error) {
     console.error(error)
     return null
@@ -132,7 +132,7 @@ export const getGraph = async (chainId: ChainId): Promise<any> => {
 }
 
 export const getUniswapFactories = async (chainId: ChainId, block: string): Promise<any> => {
-  const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
+  const { graphAddress, id } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
     axiosRetry(axios, {
       retries: 5,
@@ -140,13 +140,13 @@ export const getUniswapFactories = async (chainId: ChainId, block: string): Prom
     })
     const { data: responseData, status } = await axios.post(
       graphAddress,
-      JSON.stringify(uniswapFactoriesQuery(chainId, block)),
+      JSON.stringify(uniswapFactoriesQuery(id, block)),
     )
     const { data } = responseData
     if (status === 500) {
       return null
     }
-    return data
+    return data.uniswapFactories.map((x) => ({ ...x, chain: chainId }))
   } catch (error) {
     console.error(error)
     return null
@@ -165,7 +165,7 @@ export const getTokens = async (chainId: ChainId, amount: number, block: string)
     if (status === 500) {
       return []
     }
-    return data.tokens
+    return data.tokens.map((x) => ({ ...x, chain: chainId }))
   } catch (error) {
     console.error(error)
     return []

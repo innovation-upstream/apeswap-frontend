@@ -9,6 +9,8 @@ import { transactionsQuery } from '../../queries'
 import { HeadingContainer } from '../Tokens/Tokens'
 import useTheme from '../../../../hooks/useTheme'
 import { InfoTransaction } from '../../types'
+import { useSelector } from 'react-redux'
+import { State } from '../../../../state/types'
 
 interface TransactionsProps {
   amount: number
@@ -28,41 +30,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
 
-  const [state, setState] = useState({
-    transactions: [],
-  })
-  const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    setIsLoading(true)
-
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(transactionsQuery(props.amount)),
-    }
-
-    // Loop chains
-    for (let i = 0; i < CHAINS.length; i++) {
-      const chain = CHAINS[i].chain
-
-      fetch(CHAINS[i].graphAddress, requestOptions)
-        .then((res) => res.json())
-        .then(async (result) => {
-          for (let j = 0; j < result.data.transactions.length; j++) {
-            result.data.transactions[j].chain = chain
-            // Some come back with 0 swap data and it messes things up, not sure why but for now am just removing them (they might be a transcation that isn't a swap
-            if (result.data.transactions[j].swaps.length === 0) {
-              result.data.transactions.splice(j, 1)
-            }
-          }
-          const temp = state.transactions
-          temp[chain] = result.data.transactions
-          setState({ transactions: temp })
-        })
-    }
-    setIsLoading(false)
-  }, [isLoading])
+  const transactions = useSelector((state: State) => state.info.transactions)
 
   function formatTime(unix: number) {
     const now = moment()
@@ -85,13 +53,15 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   }
 
   function processTransactions() {
-    let temp = []
-    for (let i = 0; i < CHAINS.length; i++) {
-      const chain = CHAINS[i].chain
-
-      temp = temp.concat(state.transactions[chain])
+    const data = []
+    for (let i = 0; i < Object.keys(transactions).length; i++) {
+      const chain = Object.keys(transactions)[i]
+      for (let j = 0; j < transactions[chain].data.length; j++) {
+        data.push(transactions[chain].data[j])
+      }
     }
-    return temp
+
+    return data
       .sort(
         (a: InfoTransaction, b: InfoTransaction) =>
           a.swaps[0]?.transaction.timestamp - b.swaps[0]?.transaction.timestamp,
@@ -125,36 +95,35 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
               <Column className="mobile-hidden">{t('Account')}</Column>
               <Column className="mobile-hidden">{t('Time')}</Column>
             </Row>
-            {Object.keys(state.transactions).length === CHAINS.length &&
-              processTransactions().map((tran: InfoTransaction, index) => {
-                return (
-                  tran.swaps[0] && (
-                    <Row key={tran.swaps[0].transaction.id} background={index % 2 === 0}>
-                      <Column flex="2">
-                        <img src={`/images/chains/${tran.chain}.png`} width="24px" className="logo" />
-                        {`Swap ${tran.swaps[0]?.pair?.token0.symbol} for ${tran.swaps[0]?.pair?.token1.symbol}`}
-                      </Column>
-                      <Column>${(Math.round(tran.swaps[0]?.amountUSD * 100) / 100).toLocaleString()}</Column>
-                      <Column className="mobile-hidden">{`${Math.abs(
-                        tran.swaps[0]?.amount0In - tran.swaps[0]?.amount0Out,
-                      ).toLocaleString()} ${tran.swaps[0]?.pair.token0.symbol}`}</Column>
-                      <Column className="mobile-hidden">{`${Math.abs(
-                        tran.swaps[0]?.amount1In - tran.swaps[0]?.amount1Out,
-                      ).toLocaleString()} ${tran.swaps[0]?.pair.token1.symbol}`}</Column>
-                      <Column className="mobile-hidden">
-                        <a
-                          href={`${CHAINS.find((x) => x.chain === tran.chain)?.explorer}address/${tran.swaps[0]?.to}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {tran.swaps[0]?.to.slice(0, 6) + '...' + tran.swaps[0]?.to.slice(38, 42)}
-                        </a>
-                      </Column>
-                      <Column className="mobile-hidden">{formatTime(tran.swaps[0]?.transaction.timestamp)}</Column>
-                    </Row>
-                  )
+            {processTransactions().map((tran: InfoTransaction, index) => {
+              return (
+                tran.swaps[0] && (
+                  <Row key={tran.swaps[0].transaction.id} background={index % 2 === 0}>
+                    <Column flex="2">
+                      <img src={`/images/chains/${tran.chain}.png`} width="24px" className="logo" />
+                      {`Swap ${tran.swaps[0]?.pair?.token0.symbol} for ${tran.swaps[0]?.pair?.token1.symbol}`}
+                    </Column>
+                    <Column>${(Math.round(tran.swaps[0]?.amountUSD * 100) / 100).toLocaleString()}</Column>
+                    <Column className="mobile-hidden">{`${Math.abs(
+                      tran.swaps[0]?.amount0In - tran.swaps[0]?.amount0Out,
+                    ).toLocaleString()} ${tran.swaps[0]?.pair.token0.symbol}`}</Column>
+                    <Column className="mobile-hidden">{`${Math.abs(
+                      tran.swaps[0]?.amount1In - tran.swaps[0]?.amount1Out,
+                    ).toLocaleString()} ${tran.swaps[0]?.pair.token1.symbol}`}</Column>
+                    <Column className="mobile-hidden">
+                      <a
+                        href={`${CHAINS.find((x) => x.chain === tran.chain)?.explorer}address/${tran.swaps[0]?.to}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {tran.swaps[0]?.to.slice(0, 6) + '...' + tran.swaps[0]?.to.slice(38, 42)}
+                      </a>
+                    </Column>
+                    <Column className="mobile-hidden">{formatTime(tran.swaps[0]?.transaction.timestamp)}</Column>
+                  </Row>
                 )
-              })}
+              )
+            })}
           </Section>
         </SectionsWrapper>
       </Container>

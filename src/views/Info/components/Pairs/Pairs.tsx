@@ -4,8 +4,9 @@ import styled from '@emotion/styled'
 import { useTranslation } from '../../../../contexts/Localization'
 import { Row, Column, HeadingWrapper, FiguresWrapper, BodyWrapper } from '../../styles'
 import useTheme from '../../../../hooks/useTheme'
-import { useFetchInfoPairs, useInfoPairs } from '../../hooks'
 import { InfoPair } from 'views/Info/types'
+import { useSelector } from 'react-redux'
+import { State } from '../../../../state/types'
 
 interface PairsProps {
   amount: number
@@ -33,47 +34,25 @@ export const Container = styled.div`
   margin-bottom: 40px;
 `
 
-const Tokens: React.FC<PairsProps> = (props) => {
+const Pairs: React.FC<PairsProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
+  const pairs = useSelector((state: State) => state.info.pairs)
 
-  // I can now get data from state, need to be able to pass to it now though
-  useFetchInfoPairs(props.amount)
-  const pairs = useInfoPairs()
+  function processPairs() {
+    const data = []
+    for (let i = 0; i < Object.keys(pairs).length; i++) {
+      const chain = Object.keys(pairs)[i]
+      for (let j = 0; j < pairs[chain].data.length; j++) {
+        data.push(pairs[chain].data[j])
+      }
+    }
 
-  function flattenPairs() {
-    return [] // pairs.flat()
+    return data
+      .sort((a: InfoPair, b: InfoPair) => a.volumeUSD - b.volumeUSD)
+      .reverse()
+      .slice(0, props.amount)
   }
-
-  // const pairsData = useCallback(() => {
-  //   console.log('PAIRS CALLED')
-  //   const requestOptions = {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(pairsQuery(props.amount)),
-  //   }
-  //
-  //   // Loop chains
-  //   for (let i = 0; i < CHAINS.length; i++) {
-  //     fetch(CHAINS[i].graphAddress, requestOptions)
-  //       .then((res) => res.json())
-  //       .then(async (result) => {
-  //         //  pairs = result.data.pairs
-  //         setState({ pairs: result.data.pairs })
-  //       })
-  //   }
-  // }, [props.amount])
-
-  // const [state, setState] = useState({
-  //   pairs: [],
-  // })
-  // const [isLoading, setIsLoading] = useState(false)
-
-  // useEffect(() => {
-  //   setIsLoading(true)
-  //
-  //   setIsLoading(false)
-  // }, [isLoading])
 
   return (
     <div>
@@ -100,7 +79,7 @@ const Tokens: React.FC<PairsProps> = (props) => {
               <Column>{t('Volume (24h)')}</Column>
               <Column>{t('Volume (7d)')}</Column>
             </Row>
-            {flattenPairs().map((pair: InfoPair, index: number) => {
+            {processPairs().map((pair: InfoPair, index: number) => {
               return (
                 <Row key={pair.id} background={index % 2 === 0}>
                   <Column width="35px">
@@ -139,4 +118,4 @@ const Tokens: React.FC<PairsProps> = (props) => {
   )
 }
 
-export default Tokens
+export default Pairs

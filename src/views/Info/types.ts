@@ -23,6 +23,7 @@ export interface InfoPair {
   }
   reserveUSD: number
   volumeUSD: number
+  chain: string
 }
 
 export interface InfoToken {
@@ -32,6 +33,7 @@ export interface InfoToken {
   totalLiquidity: number
   derivedETH: number
   tradeVolumeUSD: number
+  chain: string
 }
 
 export interface InfoTransaction {
