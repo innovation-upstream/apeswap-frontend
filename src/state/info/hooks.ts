@@ -15,7 +15,6 @@ import {
   setLoading,
 } from '.'
 import { InfoStateTypes } from './types'
-import block from '../block'
 
 export const useFetchInfoPairs = () => {
   const dispatch = useAppDispatch()

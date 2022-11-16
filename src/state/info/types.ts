@@ -20,6 +20,7 @@ export interface Pairs {
   token0: PairToken
   token1: PairToken
   volumeUsd: string
+  chainId: ChainId
 }
 
 export interface Swaps {
@@ -31,6 +32,7 @@ export interface Swaps {
   pair: { token0: SwapToken; token1: SwapToken }
   to: string
   transaction: SwapTransaction
+  chainId: ChainId
 }
 
 export interface Transactions {
@@ -40,6 +42,7 @@ export interface Transactions {
 export interface NativePrice {
   id: string
   ethPrice: string
+  chainId: ChainId
 }
 
 export interface DaysData {
@@ -51,6 +54,7 @@ export interface DaysData {
   totalLiquidityUSD: string
   totalVolumeUSD: string
   txCount: string
+  chainId: ChainId
 }
 
 export interface Token {
@@ -60,12 +64,14 @@ export interface Token {
   symbol: string
   totalLiquidity: string
   tradeVolumeUSD: string
+  chainId: ChainId
 }
 
 export interface Block {
   id: string
   number: string
   timestamp: string
+  chainId: ChainId
 }
 
 export enum InfoStateTypes {
