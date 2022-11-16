@@ -20,7 +20,6 @@ import {
   useFetchInfoPairs,
   useFetchInfoTokensData,
   useFetchInfoTransactions,
-  useFetchInfoUniswapFactories,
 } from 'state/info/hooks'
 import { StyledInput } from 'views/Bills/components/Actions/styles'
 import OverallFigures from './components/OverallFigures/OverallFigures'
@@ -44,21 +43,14 @@ const onHandleQueryChange = (input: string) => {
 }
 
 const Info: React.FC = () => {
-  const [state, setState] = useState({
-    nativePrices: [],
-    oneDayBlocks: [],
-  })
-
-  const [isLoading, setIsLoading] = useState(false)
-
   // These return the data needed from the hook. Just adding the selector to show all state
   useFetchInfoBlock()
-  useFetchInfoDaysData()
+  useFetchInfoTokensData()
   useFetchInfoNativePrice()
   useFetchInfoPairs()
-  useFetchInfoTokensData()
+
   useFetchInfoTransactions()
-  useFetchInfoUniswapFactories()
+
   console.log(useSelector((state: State) => state.info))
 
   // dispatch(fetchPairs(56, 10))
@@ -106,7 +98,7 @@ const Info: React.FC = () => {
           </SectionsWrapper>
         </Container>
 
-        {/*<OverallFigures />*/}
+        <OverallFigures />
         {/*<TrendingTokens />*/}
         <Tokens amount={10} showFull={false} />
         <Pairs amount={10} />

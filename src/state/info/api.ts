@@ -112,7 +112,7 @@ export const getBlocks = async (chainId: ChainId, startTimestamp: number, curren
   }
 }
 
-export const getGraph = async (chainId: ChainId): Promise<any> => {
+export const getChartData = async (chainId: ChainId): Promise<any> => {
   const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
     axiosRetry(axios, {
@@ -124,7 +124,7 @@ export const getGraph = async (chainId: ChainId): Promise<any> => {
     if (status === 500) {
       return null
     }
-    return data
+    return data.uniswapDayDatas.map((x) => ({ ...x, chain: chainId }))
   } catch (error) {
     console.error(error)
     return null
@@ -146,7 +146,7 @@ export const getUniswapFactories = async (chainId: ChainId, block: string): Prom
     if (status === 500) {
       return null
     }
-    return data.uniswapFactories.map((x) => ({ ...x, chain: chainId }))
+    return data.uniswapFactories.map((x) => ({ ...x, chain: chainId }))[0]
   } catch (error) {
     console.error(error)
     return null

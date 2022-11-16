@@ -7,7 +7,7 @@ const TokensPage: React.FC = () => {
   return (
     <>
       <TrendingTokens />
-      <Tokens amount={100} />
+      <Tokens amount={10} showFull={true} />
     </>
   )
 }

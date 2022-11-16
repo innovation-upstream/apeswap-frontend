@@ -6,6 +6,7 @@ import { useAppDispatch } from 'state'
 import { State } from 'state/types'
 import {
   fetchBlock,
+  fetchChartData,
   fetchDaysData,
   fetchNativePrice,
   fetchPairs,
@@ -96,16 +97,34 @@ export const useFetchInfoBlock = () => {
   return useSelector((state: State) => state.info.block)
 }
 
-export const useFetchInfoUniswapFactories = () => {
+export const useFetchChartData = () => {
+  const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+  useEffect(() => {
+    MAINNET_CHAINS.forEach((chainId) => {
+      dispatch(setLoading({ stateType: InfoStateTypes.CHARTDATA, chainId, loading: true }))
+      dispatch(fetchChartData(chainId))
+    })
+  }, [slowRefresh, dispatch])
+  return useSelector((state: State) => state.info.chartData)
+}
+
+export const useFetchInfoUniswapFactories = (current?: boolean) => {
   const dispatch = useAppDispatch()
   const blocks = useSelector((state: State) => state.info.block)
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
-      dispatch(setLoading({ stateType: InfoStateTypes.UNISWAPFACTORIES, chainId, loading: true }))
+      if (current === true) {
+        dispatch(setLoading({ stateType: InfoStateTypes.CURRENTDAYFACTORIES, chainId, loading: true }))
+      } else {
+        dispatch(setLoading({ stateType: InfoStateTypes.DAYOLDFACTORIES, chainId, loading: true }))
+      }
+
       if (blocks[chainId].initialized) {
-        dispatch(fetchUniswapFactories(chainId, blocks[chainId].data.number))
+        dispatch(fetchUniswapFactories(chainId, current === true ? '0' : blocks[chainId].data.number))
       }
     })
   }, [blocks, dispatch])
-  return useSelector((state: State) => state.info.uniswapFactories)
+
+  return useSelector((state: State) => (current === true ? state.info.currentDayFactories : state.info.dayOldFactories))
 }

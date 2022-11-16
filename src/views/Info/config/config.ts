@@ -7,6 +7,7 @@ export interface Chain {
   blockGraph: string
   id: string
   fee: number
+  chainId: number
 }
 
 export const CHAINS = [
@@ -18,6 +19,7 @@ export const CHAINS = [
     id: '0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6',
     fee: 0.002,
     color: '#FAB701',
+    chainId: 56,
   },
   {
     chain: 'polygon',
@@ -27,6 +29,7 @@ export const CHAINS = [
     id: '0xcf083be4164828f00cae704ec15a36d711491284',
     fee: 0.002,
     color: '#8C3EED',
+    chainId: 137,
   },
   {
     chain: 'ethereum',
@@ -36,6 +39,7 @@ export const CHAINS = [
     id: '0xBAe5dc9B19004883d0377419FeF3c2C8832d7d7B',
     fee: 0.002,
     color: '#637DEA',
+    chainId: 1,
   },
   {
     chain: 'telos',
@@ -45,5 +49,6 @@ export const CHAINS = [
     id: '0x411172Dfcd5f68307656A1ff35520841C2F7fAec',
     fee: 0.002,
     color: '#9D68E8',
+    chainId: 40,
   },
 ]

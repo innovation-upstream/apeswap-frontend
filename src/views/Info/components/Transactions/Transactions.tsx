@@ -78,7 +78,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
             {t('Recent Transactions')}
           </Text>
           <Text style={{ float: 'right' }}>
-            <a href="transactions">
+            <a href="/info/transactions">
               See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
             </a>
           </Text>

@@ -81,7 +81,9 @@ export enum InfoStateTypes {
   DAYS_DATA = 'daysData',
   TOKENS = 'tokens',
   BLOCK = 'block',
-  UNISWAPFACTORIES = 'uniswapFactories',
+  CURRENTDAYFACTORIES = 'currentDayFactories',
+  DAYOLDFACTORIES = 'dayOldFactories',
+  CHARTDATA = 'chartData',
 }
 
 export interface InfoState {
@@ -91,5 +93,7 @@ export interface InfoState {
   daysData: Record<ChainId, { data: DaysData[]; loading: boolean; initialized: boolean }>
   tokens: Record<ChainId, { data: Token[]; loading: boolean; initialized: boolean }>
   block: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
-  uniswapFactories: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
+  currentDayFactories: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
+  dayOldFactories: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
+  chartData: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
 }

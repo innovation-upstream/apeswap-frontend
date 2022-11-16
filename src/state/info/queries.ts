@@ -148,19 +148,7 @@ export const pairsQuery = (amount: number) => {
   }
 }
 
-export const graphQuery = () => {
-  return {
-    query:
-      'query uniswapDayDatas {\n' +
-      '    uniswapDayDatas(orderBy: date, orderDirection: desc first: 30) {\n' +
-      '      id\n' +
-      '      date\n' +
-      '      totalVolumeUSD\n' +
-      '      dailyVolumeUSD\n' +
-      '      dailyVolumeETH\n' +
-      '      totalLiquidityUSD\n' +
-      '      totalLiquidityETH\n' +
-      '    }\n' +
-      '  }',
-  }
+export const graphQuery = {
+  query:
+    'query uniswapDayDatas { uniswapDayDatas(orderBy: date, orderDirection: desc first: 30) {id date totalVolumeUSD dailyVolumeUSD dailyVolumeETH totalLiquidityUSD totalLiquidityETH } }',
 }

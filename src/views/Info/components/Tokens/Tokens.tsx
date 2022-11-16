@@ -9,6 +9,7 @@ import useTheme from '../../../../hooks/useTheme'
 import { InfoToken, InfoTransaction } from '../../types'
 import { useSelector } from 'react-redux'
 import { State } from '../../../../state/types'
+import { useFetchInfoNativePrice, useFetchInfoTokensData } from '../../../../state/info/hooks'
 
 interface TokensProps {
   amount: number
@@ -41,8 +42,12 @@ export const Container = styled.div`
 const Tokens: React.FC<TokensProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
-  const tokens = useSelector((state: State) => state.info.tokens)
-  const nativePrices = useSelector((state: State) => state.info.nativePrice)
+  const tokens = useFetchInfoTokensData()
+  const nativePrices = useFetchInfoNativePrice()
+  console.log('tokens:')
+  console.log(tokens)
+  console.log('nativePrices:')
+  console.log(nativePrices)
 
   function processTokens() {
     const data = []
@@ -85,14 +90,10 @@ const Tokens: React.FC<TokensProps> = (props) => {
   }
 
   const favs = JSON.parse(localStorage.getItem('infoFavTokens'))
-  // const favs = () => {
-  //   return
-  // }
 
   const getFavs = () => {
-    //const favs = ['0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', '0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95']
-    const favs = []
-    return state.tokens.filter((x) => favs.includes(x.id))
+    const favs = JSON.parse(localStorage.getItem('infoFavTokens'))
+    return processTokens().filter((x) => favs.includes(x.id))
   }
 
   const getFavIcon = (token: string) => {
@@ -180,7 +181,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
             {t('Top Tokens')}
           </Text>
           <Text style={{ float: 'right' }}>
-            <a href="tokens">
+            <a href="/info/tokens">
               See more <img src={`/images/info/arrow-right-${isDark ? 'dark' : 'light'}.svg`} alt="see more" />
             </a>
           </Text>

@@ -9,6 +9,7 @@ import {
   getTokens,
   getTransactions,
   getUniswapFactories,
+  getChartData,
 } from './api'
 import { MAINNET_CHAINS } from 'config/constants/chains'
 import { ChainId } from '@ape.swap/sdk'
@@ -27,7 +28,9 @@ const initialState: InfoState = {
   daysData: dataAsListInitialState,
   tokens: dataAsListInitialState,
   block: dataAsNullInitialState,
-  uniswapFactories: dataAsNullInitialState,
+  currentDayFactories: dataAsNullInitialState,
+  dayOldFactories: dataAsNullInitialState,
+  chartData: dataAsNullInitialState,
 }
 
 export const infoSlice = createSlice({
@@ -58,9 +61,17 @@ export const infoSlice = createSlice({
       const { data, chainId, loading, initialized } = action.payload
       state.block[chainId] = { data, loading, initialized }
     },
-    setUniswapFactories: (state, action) => {
+    setCurrentDayFactories: (state, action) => {
       const { data, chainId, loading, initialized } = action.payload
-      state.uniswapFactories[chainId] = { data, loading, initialized }
+      state.currentDayFactories[chainId] = { data, loading, initialized }
+    },
+    setDayOldFactories: (state, action) => {
+      const { data, chainId, loading, initialized } = action.payload
+      state.dayOldFactories[chainId] = { data, loading, initialized }
+    },
+    setChartData: (state, action) => {
+      const { data, chainId, loading, initialized } = action.payload
+      state.chartData[chainId] = { data, loading, initialized }
     },
     setLoading: (state, action) => {
       const { stateType, chainId, loading } = action.payload
@@ -77,7 +88,9 @@ export const {
   setDaysData,
   setTokens,
   setBlock,
-  setUniswapFactories,
+  setCurrentDayFactories,
+  setDayOldFactories,
+  setChartData,
   setLoading,
 } = infoSlice.actions
 
@@ -114,7 +127,17 @@ export const fetchBlock = (chainId: ChainId, startTimestamp: number, currentTime
 
 export const fetchUniswapFactories = (chainId: ChainId, block: string) => async (dispatch) => {
   const data = await getUniswapFactories(chainId, block)
-  dispatch(setUniswapFactories({ data, chainId, loading: false, initialized: true }))
+  if (block === '0') {
+    //Block 0 means current day data
+    dispatch(setCurrentDayFactories({ data, chainId, loading: false, initialized: true }))
+  } else {
+    dispatch(setDayOldFactories({ data, chainId, loading: false, initialized: true }))
+  }
+}
+
+export const fetchChartData = (chainId: ChainId) => async (dispatch) => {
+  const data = await getChartData(chainId)
+  dispatch(setChartData({ data, chainId, loading: false, initialized: true }))
 }
 
 export default infoSlice.reducer
