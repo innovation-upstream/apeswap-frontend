@@ -1,5 +1,3 @@
-import flex from '../../../components/layout/Flex'
-
 export interface Chain {
   chain: string
   graphAddress: string

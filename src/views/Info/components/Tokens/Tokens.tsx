@@ -165,7 +165,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
                   <Section>
                     {getFavs().length === 0 ? (
                       <FavsPlaceholder>
-                        <img src="/images/info/favs-placeholder.svg" />
+                        <img src="/images/info/favs-placeholder.svg" alt="fix" />
                         <Text>Your favorite tokens will appear here</Text>
                       </FavsPlaceholder>
                     ) : (
@@ -189,6 +189,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
                                 width="16px"
                                 src={getFavIcon(token.id)}
                                 onClick={() => toggleFav(token.id)}
+                                alt="fix"
                               />
                             </Column>
                             <Column width="18px">{index + 1}</Column>
@@ -200,6 +201,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
                                 onError={(e) => {
                                   e.currentTarget.src = `/images/info/unknownToken.svg`
                                 }}
+                                alt="fix"
                               />
                               <a href={`/info/token/${token.chain}/${token.id}`}>
                                 {token.name} ({token.symbol})
@@ -271,6 +273,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
                         width="16px"
                         src={getFavIcon(token.id)}
                         onClick={() => toggleFav(token.id)}
+                        alt="fix"
                       />
                     </Column>
                     <Column width="18px">{index + 1}</Column>
@@ -282,6 +285,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
                         onError={(e) => {
                           e.currentTarget.src = `/images/info/unknownToken.svg`
                         }}
+                        alt="fix"
                       />
                       <a href={`/info/token/${token.chain}/${token.id}`}>
                         {token.name} ({token.symbol})

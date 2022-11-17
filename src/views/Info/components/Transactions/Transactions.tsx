@@ -116,7 +116,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
                 tran.swaps[0] && (
                   <Row key={tran.swaps[0].transaction.id} background={index % 2 === 0}>
                     <Column flex="2">
-                      <img src={`/images/chains/${tran.chain}.png`} width="24px" className="logo" />
+                      <img src={`/images/chains/${tran.chain}.png`} width="24px" className="logo" alt="fix" />
                       {`Swap ${tran.swaps[0]?.pair?.token0.symbol} for ${tran.swaps[0]?.pair?.token1.symbol}`}
                     </Column>
                     <Column>${(Math.round(tran.swaps[0]?.amountUSD * 100) / 100).toLocaleString()}</Column>
