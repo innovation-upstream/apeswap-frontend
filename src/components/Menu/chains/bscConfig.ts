@@ -1,7 +1,5 @@
 import { MenuEntry } from '@ape.swap/uikit'
-import { ChainId } from '@ape.swap/sdk'
 import { ContextApi } from 'contexts/Localization/types'
-import { NETWORK_INFO_LINK } from 'config/constants/chains'
 
 const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   {
@@ -144,7 +142,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Charts'),
-        href: NETWORK_INFO_LINK[ChainId.BSC],
+        href: '/info',
         isNew: false,
       },
       {
