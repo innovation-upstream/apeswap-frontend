@@ -1,20 +1,29 @@
 /** @jsxImportSource theme-ui */
 import { ChainId } from '@ape.swap/sdk'
 import { Flex, Text } from '@ape.swap/uikit'
-import { CurrencyLogo } from 'components/Logo'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
+import { CHAIN_PARAMS } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import CountUp from 'react-countup'
-import { useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
-import { Pairs, Token } from 'state/info/types'
-import { Grid, Image } from 'theme-ui'
-import getTokenLogoURL from 'utils/getTokenLogoURL'
+import { useFetchInfoPairs } from 'state/info/hooks'
+import { Pairs } from 'state/info/types'
+import { Grid } from 'theme-ui'
 
 const Rows = ({ pairs, activeIndex }: { pairs: Pairs[]; activeIndex: number }) => {
   const { t } = useTranslation()
   const mobile = useIsMobile()
+  const dayOldPairs = useFetchInfoPairs(20, 1) as any
+  console.log(dayOldPairs)
+  const get24HourVolume = (chainId: ChainId, id: string) => {
+    try {
+      const volume = dayOldPairs[chainId]?.data?.find(({ id: curId }) => curId === id)?.volumeUSD
+      return parseFloat(volume)
+    } catch {
+      return 0
+    }
+  }
 
   return (
     <Flex
@@ -49,16 +58,12 @@ const Rows = ({ pairs, activeIndex }: { pairs: Pairs[]; activeIndex: number }) =
           {t('Volume (24hs)')}
         </Text>
         <Text size="14px" weight={700} sx={{ alignSelf: 'center' }}>
-          {t('Volume (7d)')}
+          {t('Total Volume')}
         </Text>
         <span />
       </Grid>
       <Flex sx={{ flexDirection: 'column', height: '500px' }}>
         {pairs.map(({ id, chainId, volumeUSD, reserveUSD, token0, token1 }, index) => {
-          console.log(reserveUSD)
-          // const currentNativePrice = parseFloat(nativePrice[chainId]?.data.ethPrice)
-          // const currentAssetPrice = currentNativePrice * parseFloat(derivedETH)
-          // const currentAssetLiquidity = parseFloat(totalLiquidity) * currentNativePrice * parseFloat(derivedETH)
           return (
             <Grid
               key={id}
@@ -72,7 +77,9 @@ const Rows = ({ pairs, activeIndex }: { pairs: Pairs[]; activeIndex: number }) =
                 minWidth: '700px',
               }}
             >
-              <span />
+              <Flex sx={{ ml: '5px' }}>
+                <ServiceTokenDisplay token1={CHAIN_PARAMS[chainId].nativeCurrency.symbol} size={20} />
+              </Flex>{' '}
               <Flex>
                 <Text size="14px" weight={400}>
                   {index + 1 + activeIndex}
@@ -99,7 +106,12 @@ const Rows = ({ pairs, activeIndex }: { pairs: Pairs[]; activeIndex: number }) =
               <Flex>
                 <Text size="14px" weight={400}>
                   $
-                  <CountUp start={parseFloat(volumeUSD)} end={parseFloat(volumeUSD)} duration={0} separator="," />{' '}
+                  <CountUp
+                    start={parseFloat(volumeUSD) - get24HourVolume(chainId, id)}
+                    end={parseFloat(volumeUSD) - get24HourVolume(chainId, id)}
+                    duration={0}
+                    separator=","
+                  />{' '}
                 </Text>
               </Flex>
               <Flex>

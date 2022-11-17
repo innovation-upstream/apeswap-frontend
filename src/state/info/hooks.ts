@@ -35,7 +35,7 @@ export const useFetchInfoPairs = (amount: number, days: number) => {
         dispatch(fetchPairs(chainId, amount, days === 0 ? '0' : blocks[chainId].data.number))
       }
     })
-  }, [slowRefresh, amount, dispatch])
+  }, [slowRefresh, amount, blocks, days, dispatch])
 
   return useSelector((state: State) => (days === 0 ? state.info.pairs : state.info.dayOldPairs))
 }
@@ -49,7 +49,7 @@ export const useFetchInfoTransactions = (amount: number) => {
       dispatch(setLoading({ stateType: InfoStateTypes.TRANSACTIONS, chainId, loading: true }))
       dispatch(fetchTransactions(chainId, amount))
     })
-  }, [slowRefresh, dispatch])
+  }, [slowRefresh, dispatch, amount])
   return useSelector((state: State) => state.info.transactions)
 }
 
@@ -60,7 +60,7 @@ export const useFetchInfoTokenDaysData = (chain: number, address: string) => {
   useEffect(() => {
     dispatch(setLoading({ stateType: InfoStateTypes.TOKENDAYSDATA, chain, loading: true }))
     dispatch(fetchTokenDaysData(chain, address))
-  }, [slowRefresh, dispatch])
+  }, [slowRefresh, chain, address, dispatch])
   return useSelector((state: State) => state.info.tokenDaysData)
 }
 
@@ -105,7 +105,7 @@ export const useFetchInfoTokensData = (amount: number, current?: boolean) => {
         dispatch(fetchTokens(chainId, amount, current === true ? '0' : blocks[chainId].data.number))
       }
     })
-  }, [blocks, dispatch])
+  }, [blocks, amount, current, dispatch])
   return useSelector((state: State) => (current === true ? state.info.tokens : state.info.tokensDayOld))
 }
 

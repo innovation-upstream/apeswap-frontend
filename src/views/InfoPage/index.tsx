@@ -9,12 +9,11 @@ import Tokens from './components/Tokens'
 import Heading from './components/Heading'
 import Pairs from './components/Pairs'
 import Transactions from './components/Transactions'
-import OverallFigures from './components/OverallFigures/OverallFigures'
 
 const InfoPage = () => {
   useFetchInfoBlock()
   useFetchInfoNativePrice()
-  useFetchInfoTokensData()
+  useFetchInfoTokensData(20)
 
   return (
     <Flex sx={{ width: '100%', justifyContent: 'center' }}>
@@ -29,12 +28,6 @@ const InfoPage = () => {
         }}
       >
         <Heading />
-        <Flex
-          sx={{ justifyContent: 'space-between', alignItems: 'space-between', flexDirection: 'row', width: '100%' }}
-        >
-          <></>
-          {/* <OverallFigures /> */}
-        </Flex>
         <TrendingTokens />
         <Tokens />
         <Pairs />

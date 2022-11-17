@@ -3,6 +3,7 @@ import { ChainId } from '@ape.swap/sdk'
 import { Flex, Text } from '@ape.swap/uikit'
 import { CurrencyLogo } from 'components/Logo'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
+import { CHAIN_PARAMS } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
@@ -16,7 +17,7 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
   const { t } = useTranslation()
   const nativePrice = useFetchInfoNativePrice()
   const mobile = useIsMobile()
-  const dayOldTokens = useFetchInfoTokensData()
+  const dayOldTokens = useFetchInfoTokensData(20)
 
   const get24HourVolume = (chainId: ChainId, id: string) => {
     try {
@@ -82,7 +83,9 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
                 minWidth: '450px',
               }}
             >
-              <span />
+              <Flex sx={{ ml: '5px' }}>
+                <ServiceTokenDisplay token1={CHAIN_PARAMS[chainId].nativeCurrency.symbol} size={20} />
+              </Flex>
               <Flex>
                 <Text size="14px" weight={400}>
                   {index + 1 + activeIndex}

@@ -15,7 +15,7 @@ const ROWS_PER_PAGE = 10
 const Tokens = () => {
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)
-  const tokens = useFetchInfoTokensData(true)
+  const tokens = useFetchInfoTokensData(20, true)
   const nativePrice = useFetchInfoNativePrice()
   const flattenedTokens = Object.values(tokens).flatMap((row) => (row.initialized ? row.data : []))
   const tokensInitialized = Object.values(tokens)

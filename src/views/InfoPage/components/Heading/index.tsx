@@ -21,10 +21,16 @@ const Heading = () => {
       }}
     >
       <Flex sx={{ width: '100%', alignItems: 'center', justifyContent: 'center', mb: '20px' }}>
-        <Text size="26px"> {`(Beta) Aggregated Info Page`} </Text>
+        <Text size="26px" sx={{ textAlign: 'center' }}>
+          {' '}
+          {`Aggregated DEX Info Page (Beta)`}{' '}
+        </Text>
       </Flex>
       <Flex sx={{ width: '100%', alignItems: 'center', justifyContent: 'center', mb: '20px' }}>
-        <Text size="20px"> {`Click on a logo to view legacy info page`} </Text>
+        <Text size="14px" sx={{ textAlign: 'center' }}>
+          {' '}
+          {`Select a logo below to view that chain's previous analytics page`}{' '}
+        </Text>
       </Flex>
       <Flex>
         {MAINNET_CHAINS.map((chainId) => {
