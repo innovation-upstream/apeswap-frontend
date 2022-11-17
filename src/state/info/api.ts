@@ -27,7 +27,7 @@ export const getInfoPairs = async (chainId: ChainId, amount: number): Promise<Pa
     if (status === 500) {
       return []
     }
-    return data.pairs.map((x) => ({ ...x, chain: chainId }))
+    return data.pairs.map((x) => ({ ...x, chainId }))
   } catch (error) {
     console.error(error)
     return []
@@ -46,7 +46,7 @@ export const getTransactions = async (chainId: ChainId, amount: number): Promise
     if (status === 500) {
       return []
     }
-    return data.transactions.map((x) => ({ ...x, chain: chainId }))
+    return data.transactions.map((x) => ({ ...x, chainId }))
   } catch (error) {
     console.error(error)
     return []
@@ -65,7 +65,7 @@ export const getNativePrices = async (chainId: ChainId): Promise<NativePrice> =>
     if (status === 500) {
       return null
     }
-    return data.bundles.map((x) => ({ ...x, chain: chainId }))[0]
+    return data.bundles.map((x) => ({ ...x, chainId }))[0]
   } catch (error) {
     console.error(error)
     return null
@@ -125,7 +125,7 @@ export const getChartData = async (chainId: ChainId, amount: number): Promise<an
     if (status === 500) {
       return null
     }
-    return data.uniswapDayDatas.map((x) => ({ ...x, chain: chainId }))
+    return data.uniswapDayDatas.map((x) => ({ ...x, chainId }))
   } catch (error) {
     console.error(error)
     return null
@@ -147,7 +147,7 @@ export const getUniswapFactories = async (chainId: ChainId, block: string): Prom
     if (status === 500) {
       return null
     }
-    return data.uniswapFactories.map((x) => ({ ...x, chain: chainId }))[0]
+    return data.uniswapFactories.map((x) => ({ ...x, chainId }))[0]
   } catch (error) {
     console.error(error)
     return null
@@ -166,7 +166,7 @@ export const getTokens = async (chainId: ChainId, amount: number, block: string)
     if (status === 500) {
       return []
     }
-    return data.tokens.map((x) => ({ ...x, chain: chainId }))
+    return data.tokens.map((x) => ({ ...x, chainId }))
   } catch (error) {
     console.error(error)
     return []
@@ -185,7 +185,7 @@ export const getTokenDaysData = async (chainId: ChainId, address: string): Promi
     if (status === 500) {
       return []
     }
-    return data.tokenDayDatas.map((x) => ({ ...x, chain: chainId }))
+    return data.tokenDayDatas.map((x) => ({ ...x, chainId }))
   } catch (error) {
     console.error(error)
     return []

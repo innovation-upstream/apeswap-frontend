@@ -17,10 +17,10 @@ interface SwapTransaction {
 
 export interface Pairs {
   id: string
-  reserveUsd: string
+  reserveUSD: string
   token0: PairToken
   token1: PairToken
-  volumeUsd: string
+  volumeUSD: string
   chainId: ChainId
 }
 
@@ -29,7 +29,7 @@ export interface Swaps {
   amount0Out: string
   amount1In: string
   amount1Out: string
-  amountUsd: string
+  amountUSD: string
   pair: { token0: SwapToken; token1: SwapToken }
   to: string
   transaction: SwapTransaction
@@ -38,6 +38,7 @@ export interface Swaps {
 
 export interface Transactions {
   swaps: Swaps[]
+  chainId: ChainId
 }
 
 export interface NativePrice {

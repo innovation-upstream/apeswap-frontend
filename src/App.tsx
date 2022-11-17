@@ -64,6 +64,8 @@ const TransactionsPage = lazy(() => import('./views/Info/views/Transactions'))
 const PairsPage = lazy(() => import('./views/Info/views/Pairs'))
 const TokenPage = lazy(() => import('./views/Info/views/Token'))
 
+const InfoPage = lazy(() => import('./views/InfoPage'))
+
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -141,6 +143,9 @@ const App: React.FC = () => {
       <Menu>
         <Suspense fallback={<PageLoader />}>
           <Switch>
+            <Route exact path="/info-page">
+              <InfoPage />
+            </Route>
             <Route exact path="/nft">
               <Nft />
             </Route>

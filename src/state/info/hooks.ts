@@ -27,7 +27,7 @@ export const useFetchInfoPairs = (amount: number) => {
       dispatch(setLoading({ stateType: InfoStateTypes.PAIRS, chainId, loading: true }))
       dispatch(fetchPairs(chainId, amount))
     })
-  }, [slowRefresh, dispatch])
+  }, [slowRefresh, amount, dispatch])
 
   return useSelector((state: State) => state.info.pairs)
 }
