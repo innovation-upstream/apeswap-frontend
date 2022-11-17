@@ -130,7 +130,7 @@ export const useFetchChartData = (amount: number) => {
       dispatch(setLoading({ stateType: InfoStateTypes.CHARTDATA, chainId, loading: true }))
       dispatch(fetchChartData(chainId, amount))
     })
-  }, [slowRefresh, dispatch])
+  }, [slowRefresh, dispatch, amount])
   return useSelector((state: State) => state.info.chartData)
 }
 
@@ -149,7 +149,7 @@ export const useFetchInfoUniswapFactories = (current?: boolean) => {
         dispatch(fetchUniswapFactories(chainId, current === true ? '0' : blocks[chainId].data.number))
       }
     })
-  }, [blocks, dispatch])
+  }, [blocks, dispatch, current])
 
   return useSelector((state: State) => (current === true ? state.info.currentDayFactories : state.info.dayOldFactories))
 }

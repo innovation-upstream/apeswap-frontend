@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { Flex, Text } from '@apeswapfinance/uikit'
-import styled from '@emotion/styled'
+import React, { useState } from 'react'
+import { Text } from '@apeswapfinance/uikit'
 import moment from 'moment/moment'
 import useTheme from '../../../../hooks/useTheme'
 import { CenteredImage } from '../../../Ifos/components/HowItWorks/styles'
 import { IconBox, Container, SectionsWrapper, Section } from '../../../Info/styles'
 import { CHAINS } from '../../../Info/config/config'
 import { ResponsiveBar } from '@nivo/bar'
-import { useFetchChartData, useFetchInfoDaysData, useFetchInfoUniswapFactories } from '../../../../state/info/hooks'
+import { useFetchChartData, useFetchInfoUniswapFactories } from '../../../../state/info/hooks'
 
 interface IconProps {
   name: string
@@ -102,7 +101,7 @@ const OverallFigures: React.FC<any> = (props) => {
   }
 
   function getBarColor(bar: any) {
-    return CHAINS.filter((x) => x.chainId == bar.id)[0].color
+    return CHAINS.filter((x) => x.chainId === bar.id)[0].color
   }
 
   function calculateFees() {
@@ -110,6 +109,7 @@ const OverallFigures: React.FC<any> = (props) => {
   }
 
   function UpdateChart(amount: number) {
+    return amount
     //chartData = useFetchChartData(amount)
   }
 
@@ -119,7 +119,7 @@ const OverallFigures: React.FC<any> = (props) => {
     processChartData()
       .reverse()
       .slice(0, 7)
-      .map((item: any) => {
+      .forEach((item: any) => {
         for (let i = 0; i < CHAINS.length; i++) {
           total += item[CHAINS[i].chainId] ? Number(item[CHAINS[i].chainId]) : 0
         }
@@ -295,12 +295,12 @@ const OverallFigures: React.FC<any> = (props) => {
                 <Text className="figureValue">{calculateCurrentFigures('pairCount').toLocaleString()}</Text>
                 <Text fontSize="12px">Pairs</Text>
               </div>
-              <a href="/farms" className="showcase">
+              {/* <a href="/farms" className="showcase">
                 <img src="/images/info/farms-bg.png" />
               </a>
               <a href="/maximizers" className="showcase">
                 <img src="/images/info/maximizers-bg.png" />
-              </a>
+              </a> */}
             </>
           )}
         </Section>

@@ -13,7 +13,7 @@ const ROWS_PER_PAGE = 10
 const Transactions = () => {
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)
-  const transactions = useFetchInfoTransactions(20)
+  const transactions = useFetchInfoTransactions(50)
 
   const flattenedTransactions = Object.values(transactions).flatMap((row) =>
     row.initialized
@@ -30,7 +30,7 @@ const Transactions = () => {
   const sortedTransactions = useMemo(
     () => orderBy(flattenedTransactions, ({ transaction }) => parseFloat(transaction.timestamp), 'desc'),
     [flattenedTransactions],
-  )
+  )?.slice(0, 50)
   const handlePageClick = (event) => {
     const newOffset = (event.selected * ROWS_PER_PAGE) % sortedTransactions.length
     setDataOffset(newOffset)

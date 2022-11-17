@@ -1,6 +1,4 @@
 import { MenuEntry } from '@ape.swap/uikit'
-import { ChainId } from '@ape.swap/sdk'
-import { NETWORK_INFO_LINK } from 'config/constants/chains'
 import { ContextApi } from '../../../contexts/Localization/types'
 
 const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [

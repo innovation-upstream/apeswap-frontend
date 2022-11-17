@@ -1,5 +1,3 @@
-import { ChainId } from '@ape.swap/sdk'
-
 // export const tokensQuery = (amount: number) => {
 //   return {
 //     query:

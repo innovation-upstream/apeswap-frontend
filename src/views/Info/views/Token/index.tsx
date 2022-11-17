@@ -1,11 +1,11 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { HeadingContainer } from '../../components/Tokens/Tokens'
-import { useFetchInfoNativePrice, useFetchInfoTokenDaysData } from '../../../../state/info/hooks'
+import { useFetchInfoTokenDaysData } from '../../../../state/info/hooks'
 import { useParams } from 'react-router-dom'
-import { IconBox, Container, SectionsWrapper, Section, SearchInput, HeadingWrapper } from '../../styles'
+import { IconBox, Container, SectionsWrapper, Section, HeadingWrapper } from '../../styles'
 import { Button, Text } from '@apeswapfinance/uikit'
-import Pairs from '../../components/Pairs/Pairs'
+import Pairs from '../../components/Pairs'
 import Transactions from '../../components/Transactions/Transactions'
 import PageLoader from '../../../../components/PageLoader'
 import { ResponsiveBar } from '@nivo/bar'
@@ -57,10 +57,8 @@ const TokenPage: React.FC = () => {
 
   const tokenDaysData = useFetchInfoTokenDaysData(Number(chain), tokenId)
 
-  const nativePrices = useFetchInfoNativePrice()
-
   function getBarColor(bar: any) {
-    return CHAINS.filter((x) => x.chainId == bar.id)[0].color
+    return CHAINS.filter((x) => x.chainId === bar.id)[0].color
   }
 
   function processChartData() {
@@ -85,14 +83,14 @@ const TokenPage: React.FC = () => {
         <>
           <HeadingContainer>
             <HeadingWrapper>
-              <img
+              {/* <img
                 width="30px"
                 className="logo"
                 src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${tokenDaysData[chain].data[0].token.symbol}.svg`}
                 onError={(e) => {
                   e.currentTarget.src = `/images/info/unknownToken.svg`
                 }}
-              />
+              /> */}
               <Text margin="20px 10px 0px 10px" className="heading">
                 {tokenDaysData[chain].data[0].token.name} ({tokenDaysData[chain].data[0].token.symbol})
               </Text>
@@ -170,7 +168,7 @@ const TokenPage: React.FC = () => {
                         tickPadding: 10,
                         tickRotation: 0,
                         format: (x) =>
-                          moment.unix(x).format('DD').valueOf() == '01' ? moment.unix(x).format('MMM').valueOf() : '',
+                          moment.unix(x).format('DD').valueOf() === '01' ? moment.unix(x).format('MMM').valueOf() : '',
                       }}
                       axisLeft={null}
                       valueScale={{ type: 'linear' }}
@@ -205,7 +203,7 @@ const TokenPage: React.FC = () => {
               </Section>
             </SectionsWrapper>
           </Container>
-          <Pairs amount={75} filter={tokenId} />
+          <Pairs />
           <Transactions amount={250} filter={tokenId} />
         </>
       ) : (

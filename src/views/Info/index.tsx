@@ -1,14 +1,21 @@
 /** @jsxImportSource theme-ui */
-import React, { useState } from 'react'
+import React from 'react'
 import Transactions from './components/Transactions/Transactions'
-import Pairs from './components/Pairs/Pairs'
+import Pairs from './components/Pairs'
 import Tokens from './components/Tokens/Tokens'
-import { IconBox, Container, SectionsWrapper, Section, SearchInput } from './styles'
+import { IconBox, Container, SectionsWrapper, Section } from './styles'
 import { Chain, CHAINS } from './config/config'
 import { CenteredImage } from '../Ifos/components/HowItWorks/styles'
-import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
+import { useFetchInfoBlock, useFetchInfoNativePrice } from 'state/info/hooks'
 import OverallFigures from './components/OverallFigures/OverallFigures'
 import TrendingTokens from '../Homepage/components/TrendingTokens/TrendingTokens'
+
+//
+//
+// !!!
+// USE infoPage folder !!!!
+// !!
+// This folder should be deleted after logic is transferred
 
 interface IconProps {
   name: string
@@ -68,7 +75,7 @@ const Info: React.FC = () => {
         <OverallFigures />
         <TrendingTokens />
         <Tokens amount={10} showFull={false} />
-        <Pairs amount={10} />
+        <Pairs />
         <Transactions amount={10} />
       </div>
 
