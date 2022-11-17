@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux'
 import { State } from '../../../../state/types'
 import { useFetchInfoPairs } from '../../../../state/info/hooks'
 import TrendingTokens from '../../../Homepage/components/TrendingTokens/TrendingTokens'
+import PageLoader from '../../../../components/PageLoader'
 
 interface PairsProps {
   amount: number
@@ -50,8 +51,10 @@ export const Container = styled.div`
 const Pairs: React.FC<PairsProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
-  const pairs = useFetchInfoPairs(props.amount)
+  const pairs = useFetchInfoPairs(props.amount, 0)
+  const dayOldPairs = useFetchInfoPairs(props.amount, 1)
   const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
+  let processedDayOldPairs = []
 
   function processPairs() {
     const data = []
@@ -60,6 +63,39 @@ const Pairs: React.FC<PairsProps> = (props) => {
       if (activeChains.includes(Number(chain))) {
         for (let j = 0; j < pairs[chain].data.length; j++) {
           data.push(pairs[chain].data[j])
+        }
+      }
+    }
+
+    if (props.filter) {
+      return data
+        .filter((x) => x.token0.id === props.filter || x.token1.id === props.filter)
+        .sort((a: InfoPair, b: InfoPair) => a.volumeUSD - b.volumeUSD)
+        .reverse()
+        .slice(0, props.amount)
+    }
+
+    return data
+      .sort((a: InfoPair, b: InfoPair) => a.volumeUSD - b.volumeUSD)
+      .reverse()
+      .slice(0, props.amount)
+  }
+
+  function get24HourVolume(pair: string) {
+    try {
+      return processedDayOldPairs.filter((x) => x.id === pair)[0].volumeUSD
+    } catch {
+      return 0
+    }
+  }
+
+  function processDayOldPairs() {
+    const data = []
+    for (let i = 0; i < Object.keys(dayOldPairs).length; i++) {
+      const chain = Object.keys(dayOldPairs)[i]
+      if (activeChains.includes(Number(chain))) {
+        for (let j = 0; j < dayOldPairs[chain].data.length; j++) {
+          data.push(dayOldPairs[chain].data[j])
         }
       }
     }
@@ -106,9 +142,27 @@ const Pairs: React.FC<PairsProps> = (props) => {
     return `/images/info/fav-no-${isDark ? 'dark' : 'light'}.svg`
   }
 
+  function checkDatasInitialized() {
+    let total = 0
+    for (let i = 0; i < Object.keys(pairs).length; i++) {
+      const chain = Object.keys(pairs)[i]
+      total += pairs[chain].initialized === true ? 1 : 0
+    }
+    for (let i = 0; i < Object.keys(dayOldPairs).length; i++) {
+      const chain = Object.keys(dayOldPairs)[i]
+      total += dayOldPairs[chain].initialized === true ? 1 : 0
+    }
+
+    if (total === Object.keys(pairs).length + Object.keys(dayOldPairs).length) {
+      processedDayOldPairs = processDayOldPairs()
+      return true
+    }
+    return false
+  }
+
   return (
     <div>
-      {props.showFull === true && (
+      {checkDatasInitialized() === true && props.showFull === true && (
         <>
           <HeadingContainer>
             <HeadingWrapper>
@@ -132,7 +186,6 @@ const Pairs: React.FC<PairsProps> = (props) => {
                     <Column flex="2">{t('Pair')}</Column>
                     <Column>{t('Liquidity')}</Column>
                     <Column>{t('Volume (24h)')}</Column>
-                    <Column>{t('Volume (7d)')}</Column>
                   </Row>
                 )}
 
@@ -168,8 +221,7 @@ const Pairs: React.FC<PairsProps> = (props) => {
                         {pair.token0.name}-{pair.token1.name}
                       </Column>
                       <Column>${Math.round(pair.reserveUSD).toLocaleString()}</Column>
-                      <Column>${Math.round(pair.volumeUSD).toLocaleString()}</Column>
-                      <Column>${Math.round(pair.volumeUSD).toLocaleString()}</Column>
+                      <Column>${Math.round(pair.volumeUSD - get24HourVolume(pair.id)).toLocaleString()}</Column>
                     </Row>
                   )
                 })}
@@ -203,7 +255,6 @@ const Pairs: React.FC<PairsProps> = (props) => {
               <Column flex="2">{t('Pair')}</Column>
               <Column>{t('Liquidity')}</Column>
               <Column>{t('Volume (24h)')}</Column>
-              <Column>{t('Volume (7d)')}</Column>
             </Row>
             {processPairs().map((pair: InfoPair, index: number) => {
               return (
@@ -232,14 +283,14 @@ const Pairs: React.FC<PairsProps> = (props) => {
                     {pair.token0.name}-{pair.token1.name}
                   </Column>
                   <Column>${Math.round(pair.reserveUSD).toLocaleString()}</Column>
-                  <Column>${Math.round(pair.volumeUSD).toLocaleString()}</Column>
-                  <Column>${Math.round(pair.volumeUSD).toLocaleString()}</Column>
+                  <Column>${Math.round(pair.volumeUSD - get24HourVolume(pair.id)).toLocaleString()}</Column>
                 </Row>
               )
             })}
           </BodyWrapper>
         </FiguresWrapper>
       </Container>
+      )
     </div>
   )
 }

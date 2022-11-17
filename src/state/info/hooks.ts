@@ -18,18 +18,26 @@ import {
 } from '.'
 import { InfoStateTypes } from './types'
 
-export const useFetchInfoPairs = (amount: number) => {
+export const useFetchInfoPairs = (amount: number, days: number) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
+  const blocks = useSelector((state: State) => state.info.block)
 
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
-      dispatch(setLoading({ stateType: InfoStateTypes.PAIRS, chainId, loading: true }))
-      dispatch(fetchPairs(chainId, amount))
+      if (days === 0) {
+        dispatch(setLoading({ stateType: InfoStateTypes.PAIRS, chainId, loading: true }))
+      } else {
+        dispatch(setLoading({ stateType: InfoStateTypes.DAYOLDPAIRS, chainId, loading: true }))
+      }
+
+      if (blocks[chainId].initialized) {
+        dispatch(fetchPairs(chainId, amount, days === 0 ? '0' : blocks[chainId].data.number))
+      }
     })
   }, [slowRefresh, amount, dispatch])
 
-  return useSelector((state: State) => state.info.pairs)
+  return useSelector((state: State) => (days === 0 ? state.info.pairs : state.info.dayOldPairs))
 }
 
 export const useFetchInfoTransactions = (amount: number) => {
@@ -82,7 +90,7 @@ export const useFetchInfoDaysData = () => {
   return useSelector((state: State) => state.info.daysData)
 }
 
-export const useFetchInfoTokensData = (current?: boolean) => {
+export const useFetchInfoTokensData = (amount: number, current?: boolean) => {
   const dispatch = useAppDispatch()
   const blocks = useSelector((state: State) => state.info.block)
   useEffect(() => {
@@ -94,7 +102,7 @@ export const useFetchInfoTokensData = (current?: boolean) => {
       }
 
       if (blocks[chainId].initialized) {
-        dispatch(fetchTokens(chainId, 10, current === true ? '0' : blocks[chainId].data.number))
+        dispatch(fetchTokens(chainId, amount, current === true ? '0' : blocks[chainId].data.number))
       }
     })
   }, [blocks, dispatch])

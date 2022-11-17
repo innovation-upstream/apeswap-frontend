@@ -125,11 +125,13 @@ export const uniswapFactoriesQuery = (chainId: string, block: string) => {
   }
 }
 
-export const pairsQuery = (amount: number) => {
+export const pairsQuery = (amount: number, block: string) => {
   return {
     query:
       'query pairs {\n' +
-      '  pairs(first: ' +
+      '  pairs(' +
+      (block !== '0' ? 'block: { number:' + block + '}' : '') +
+      'first: ' +
       amount +
       ' orderBy: trackedReserveETH, orderDirection: desc) {\n' +
       '  id\n' +

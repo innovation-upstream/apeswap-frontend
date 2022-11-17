@@ -15,14 +15,14 @@ import axios from 'axios'
 import { Block, DaysData, NativePrice, Pairs, Token, TokenDaysData, Transactions } from './types'
 import { daysDataQuery } from 'views/Info/queries'
 
-export const getInfoPairs = async (chainId: ChainId, amount: number): Promise<Pairs[]> => {
+export const getInfoPairs = async (chainId: ChainId, amount: number, block: string): Promise<Pairs[]> => {
   const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
     axiosRetry(axios, {
       retries: 5,
       retryCondition: () => true,
     })
-    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(pairsQuery(amount)))
+    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(pairsQuery(amount, block)))
     const { data } = responseData
     if (status === 500) {
       return []
