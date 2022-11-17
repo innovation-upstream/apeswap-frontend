@@ -20,7 +20,6 @@ const Rows = ({ transactions, activeIndex }: { transactions: Swaps[]; activeInde
   const nativePrice = useFetchInfoNativePrice()
   const currentTime = useCurrentTime()
   const mobile = useIsMobile()
-  console.log(transactions)
 
   return (
     <Flex

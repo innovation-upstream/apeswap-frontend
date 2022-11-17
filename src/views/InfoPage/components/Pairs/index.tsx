@@ -16,9 +16,7 @@ const Pairs = () => {
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)
   const pairs = useFetchInfoPairs(20)
-  console.log(pairs)
   const flattenedPairs = Object.values(pairs).flatMap((row) => (row.initialized ? row.data : []))
-  console.log(flattenedPairs)
   const tokensInitialized = Object.values(pairs)
     .flatMap((row) => row.initialized)
     ?.includes(true)
@@ -33,7 +31,6 @@ const Pairs = () => {
   useEffect(() => {
     setPageCount(Math.ceil(sortedPairs.length / ROWS_PER_PAGE))
   }, [sortedPairs.length, dataOffset])
-  console.log(sortedPairs)
 
   return (
     <Flex sx={{ flexDirection: 'column', width: '100%', mt: '20px' }}>

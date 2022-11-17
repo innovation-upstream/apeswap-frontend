@@ -9,6 +9,7 @@ import Tokens from './components/Tokens'
 import Heading from './components/Heading'
 import Pairs from './components/Pairs'
 import Transactions from './components/Transactions'
+import OverallFigures from './components/OverallFigures/OverallFigures'
 
 const InfoPage = () => {
   useFetchInfoBlock()
@@ -31,8 +32,8 @@ const InfoPage = () => {
         <Flex
           sx={{ justifyContent: 'space-between', alignItems: 'space-between', flexDirection: 'row', width: '100%' }}
         >
-          <Overview />
-          <VolumeChart />
+          <></>
+          {/* <OverallFigures /> */}
         </Flex>
         <TrendingTokens />
         <Tokens />
