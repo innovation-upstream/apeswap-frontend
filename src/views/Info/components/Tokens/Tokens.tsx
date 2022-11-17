@@ -7,6 +7,7 @@ import useTheme from '../../../../hooks/useTheme'
 import { InfoToken } from '../../types'
 import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTokensData } from '../../../../state/info/hooks'
 import TrendingTokens from '../../../Homepage/components/TrendingTokens/TrendingTokens'
+import PageLoader from '../../../../components/PageLoader'
 
 interface TokensProps {
   amount: number
@@ -40,8 +41,8 @@ const Tokens: React.FC<TokensProps> = (props) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
   useFetchInfoBlock()
-  const tokens = useFetchInfoTokensData(true)
-  const dayOldTokens = useFetchInfoTokensData()
+  const tokens = useFetchInfoTokensData(props.amount, true)
+  const dayOldTokens = useFetchInfoTokensData(props.amount)
   const nativePrices = useFetchInfoNativePrice()
   let processedDayOldTokens = []
   const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
@@ -148,81 +149,92 @@ const Tokens: React.FC<TokensProps> = (props) => {
 
   return (
     <div>
-      {props.showFull === true && (
-        <>
-          <HeadingContainer>
-            <HeadingWrapper>
-              <Text margin="20px 10px 5px 10px" className="heading">
-                {t('Favorite Tokens')}
-              </Text>
-            </HeadingWrapper>
-          </HeadingContainer>
-          <Container>
-            <SectionsWrapper>
-              <Section>
-                {getFavs().length === 0 ? (
-                  <FavsPlaceholder>
-                    <img src="/images/info/favs-placeholder.svg" />
-                    <Text>Your favorite tokens will appear here</Text>
-                  </FavsPlaceholder>
-                ) : (
-                  <Row>
-                    <Column width="18px">&nbsp;&nbsp;</Column>
-                    <Column width="18px">{t('#')}</Column>
-                    <Column flex="2">{t('Token Name')}</Column>
-                    <Column>{t('Price')}</Column>
-                    <Column className="mobile-hidden">{t('Liquidity')}</Column>
-                    <Column className="mobile-hidden">{t('Volume (24h)')}</Column>
-                  </Row>
-                )}
-
-                {checkDatasInitialized() === true &&
-                  getFavs().map((token: InfoToken, index: number) => {
-                    return (
-                      <Row key={token.id} background={index % 2 === 0}>
-                        <Column width="35px">
-                          <img
-                            className="fav"
-                            width="16px"
-                            src={getFavIcon(token.id)}
-                            onClick={() => toggleFav(token.id)}
-                          />
-                        </Column>
-                        <Column width="18px">{index + 1}</Column>
-                        <Column flex="2">
-                          <img
-                            width="24px"
-                            className="logo"
-                            src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.svg`}
-                            onError={(e) => {
-                              e.currentTarget.src = `/images/info/unknownToken.svg`
-                            }}
-                          />
-                          <a href={`/info/token/${token.chain}/${token.id}`}>
-                            {token.name} ({token.symbol})
-                          </a>
-                        </Column>
-                        <Column>
-                          ${(Math.round(token.derivedETH * getNativePrice(token.chain) * 100) / 100).toLocaleString()}
-                        </Column>
-                        <Column className="mobile-hidden">
-                          $
-                          {Math.round(
-                            token.totalLiquidity * getNativePrice(token.chain) * token.derivedETH,
-                          ).toLocaleString()}
-                        </Column>
-                        <Column className="mobile-hidden">
-                          ${Math.round(token.tradeVolumeUSD - get24HourVolume(token.id)).toLocaleString()}
-                        </Column>
+      {
+        (props.showFull === true && checkDatasInitialized() === true) || props.showFull !== true ? (
+          props.showFull === true && (
+            <>
+              <HeadingContainer>
+                <HeadingWrapper>
+                  <Text margin="20px 10px 5px 10px" className="heading">
+                    {t('Favorite Tokens')}
+                  </Text>
+                </HeadingWrapper>
+              </HeadingContainer>
+              <Container>
+                <SectionsWrapper>
+                  <Section>
+                    {getFavs().length === 0 ? (
+                      <FavsPlaceholder>
+                        <img src="/images/info/favs-placeholder.svg" />
+                        <Text>Your favorite tokens will appear here</Text>
+                      </FavsPlaceholder>
+                    ) : (
+                      <Row>
+                        <Column width="18px">&nbsp;&nbsp;</Column>
+                        <Column width="18px">{t('#')}</Column>
+                        <Column flex="2">{t('Token Name')}</Column>
+                        <Column>{t('Price')}</Column>
+                        <Column className="mobile-hidden">{t('Liquidity')}</Column>
+                        <Column className="mobile-hidden">{t('Volume (24h)')}</Column>
                       </Row>
-                    )
-                  })}
-              </Section>
-            </SectionsWrapper>
-          </Container>
-          <TrendingTokens />
-        </>
-      )}
+                    )}
+
+                    {checkDatasInitialized() === true &&
+                      getFavs().map((token: InfoToken, index: number) => {
+                        return (
+                          <Row key={token.id} background={index % 2 === 0}>
+                            <Column width="35px">
+                              <img
+                                className="fav"
+                                width="16px"
+                                src={getFavIcon(token.id)}
+                                onClick={() => toggleFav(token.id)}
+                              />
+                            </Column>
+                            <Column width="18px">{index + 1}</Column>
+                            <Column flex="2">
+                              <img
+                                width="24px"
+                                className="logo"
+                                src={`https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/${token.symbol}.svg`}
+                                onError={(e) => {
+                                  e.currentTarget.src = `/images/info/unknownToken.svg`
+                                }}
+                              />
+                              <a href={`/info/token/${token.chain}/${token.id}`}>
+                                {token.name} ({token.symbol})
+                              </a>
+                            </Column>
+                            <Column>
+                              $
+                              {(
+                                Math.round(token.derivedETH * getNativePrice(token.chain) * 100) / 100
+                              ).toLocaleString()}
+                            </Column>
+                            <Column className="mobile-hidden">
+                              $
+                              {Math.round(
+                                token.totalLiquidity * getNativePrice(token.chain) * token.derivedETH,
+                              ).toLocaleString()}
+                            </Column>
+                            <Column className="mobile-hidden">
+                              ${Math.round(token.tradeVolumeUSD - get24HourVolume(token.id)).toLocaleString()}
+                            </Column>
+                          </Row>
+                        )
+                      })}
+                  </Section>
+                </SectionsWrapper>
+              </Container>
+              <TrendingTokens />
+            </>
+          )
+        ) : (
+          <PageLoader />
+        )
+
+        //If show full (page) and not loaded the display loaded. Don't want to do this for component load because will show multiple loadeds
+      }
 
       <HeadingContainer>
         <HeadingWrapper>

@@ -100,6 +100,7 @@ export enum InfoStateTypes {
   CHARTDATA = 'chartData',
   TOKENSDAYOLD = 'tokensDayOld',
   TOKENDAYSDATA = 'tokenDaysData',
+  DAYOLDPAIRS = 'dayOldPairs',
 }
 
 export interface InfoState {
@@ -114,4 +115,5 @@ export interface InfoState {
   chartData: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
   tokensDayOld: Record<ChainId, { data: Token[]; loading: boolean; initialized: boolean }>
   tokenDaysData: Record<ChainId, { data: TokenDaysData[]; loading: boolean; initialized: boolean }>
+  dayOldPairs: Record<ChainId, { data: TokenDaysData[]; loading: boolean; initialized: boolean }>
 }

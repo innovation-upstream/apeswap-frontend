@@ -34,6 +34,7 @@ const initialState: InfoState = {
   chartData: dataAsNullInitialState,
   tokensDayOld: dataAsNullInitialState,
   tokenDaysData: dataAsNullInitialState,
+  dayOldPairs: dataAsNullInitialState,
 }
 
 export const infoSlice = createSlice({
@@ -84,6 +85,10 @@ export const infoSlice = createSlice({
       const { data, chainId, loading, initialized } = action.payload
       state.tokenDaysData[chainId] = { data, loading, initialized }
     },
+    setDayOldPairs: (state, action) => {
+      const { data, chainId, loading, initialized } = action.payload
+      state.dayOldPairs[chainId] = { data, loading, initialized }
+    },
     setLoading: (state, action) => {
       const { stateType, chainId, loading } = action.payload
       state[stateType][chainId] = { ...state[stateType][chainId], loading }
@@ -104,13 +109,19 @@ export const {
   setChartData,
   setDayOldTokens,
   setTokenDaysData,
+  setDayOldPairs,
   setLoading,
 } = infoSlice.actions
 
 // Thunks
-export const fetchPairs = (chainId: ChainId, amount: number) => async (dispatch) => {
-  const data = await getInfoPairs(chainId, amount)
-  dispatch(setPairs({ data, chainId, loading: false, initialized: true }))
+export const fetchPairs = (chainId: ChainId, amount: number, block: string) => async (dispatch) => {
+  const data = await getInfoPairs(chainId, amount, block)
+  if (block === '0') {
+    //Block 0 means current day data
+    dispatch(setPairs({ data, chainId, loading: false, initialized: true }))
+  } else {
+    dispatch(setDayOldPairs({ data, chainId, loading: false, initialized: true }))
+  }
 }
 
 export const fetchTransactions = (chainId: ChainId, amount: number) => async (dispatch) => {

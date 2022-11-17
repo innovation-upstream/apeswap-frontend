@@ -25,7 +25,6 @@ const Icon = ({ name }: IconProps) => {
 const Info: React.FC = () => {
   // These return the data needed from the hook. Just adding the selector to show all state
   useFetchInfoBlock()
-  useFetchInfoTokensData()
   useFetchInfoNativePrice()
   const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
