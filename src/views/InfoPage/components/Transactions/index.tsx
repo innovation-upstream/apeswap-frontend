@@ -1,14 +1,11 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Text } from '@ape.swap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import { orderBy } from 'lodash'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useFetchInfoNativePrice, useFetchInfoTokensData, useFetchInfoTransactions } from 'state/info/hooks'
-import { Grid } from 'theme-ui'
+import { useFetchInfoTransactions } from 'state/info/hooks'
 import ReactPaginate from 'react-paginate'
 import Rows from './Rows'
 import styled from 'styled-components'
-import { ChainId } from '@ape.swap/sdk'
 import { Swaps } from 'state/info/types'
 
 const ROWS_PER_PAGE = 10
@@ -58,10 +55,7 @@ const Transactions = () => {
           mt: '20px',
         }}
       >
-        <Rows
-          transactions={sortedTransactions.slice(dataOffset, dataOffset + ROWS_PER_PAGE)}
-          activeIndex={dataOffset}
-        />
+        <Rows transactions={sortedTransactions.slice(dataOffset, dataOffset + ROWS_PER_PAGE)} />
         <Flex sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
           <Pagination
             previousLabel="<"

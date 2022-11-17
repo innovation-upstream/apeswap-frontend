@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { ChainId } from '@ape.swap/sdk'
 import { Flex, Text } from '@ape.swap/uikit'
-import { CurrencyLogo } from 'components/Logo'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
@@ -10,8 +9,7 @@ import React from 'react'
 import CountUp from 'react-countup'
 import { useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
 import { Token } from 'state/info/types'
-import { Grid, Image } from 'theme-ui'
-import getTokenLogoURL from 'utils/getTokenLogoURL'
+import { Grid } from 'theme-ui'
 
 const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number }) => {
   const { t } = useTranslation()
@@ -46,7 +44,7 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
     >
       <Grid
         gap="0px"
-        columns={[`.25fr .25fr ${mobile ? '1.5fr' : '3fr'} 1.25fr 1.5fr 1.5fr`]}
+        columns={[`.5fr .25fr ${mobile ? '1.5fr' : '3fr'} 1.25fr 1.5fr 1.5fr`]}
         sx={{ minHeight: '40px', alignItems: 'center', minWidth: '450px' }}
       >
         <span />
@@ -74,7 +72,7 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
             <Grid
               key={id}
               gap="0px"
-              columns={[`.25fr .25fr ${mobile ? '1.5fr' : '3fr'} 1.25fr 1.5fr 1.5fr`]}
+              columns={[`.5fr .25fr ${mobile ? '1.5fr' : '3fr'} 1.25fr 1.5fr 1.5fr`]}
               sx={{
                 background: index % 2 === 0 ? 'white3' : 'white2',
                 height: '40px',

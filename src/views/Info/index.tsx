@@ -29,8 +29,6 @@ const Info: React.FC = () => {
   const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
   function toggleChain(chain) {
-    console.log(chain)
-
     let current = JSON.parse(localStorage.getItem('infoActiveChains'))
     if (current === null) current = []
 

@@ -1,14 +1,11 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Text } from '@ape.swap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import { orderBy } from 'lodash'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
-import { Grid } from 'theme-ui'
 import ReactPaginate from 'react-paginate'
 import Rows from './Rows'
 import styled from 'styled-components'
-import { ChainId } from '@ape.swap/sdk'
 
 const ROWS_PER_PAGE = 10
 
@@ -18,9 +15,9 @@ const Tokens = () => {
   const tokens = useFetchInfoTokensData(20, true)
   const nativePrice = useFetchInfoNativePrice()
   const flattenedTokens = Object.values(tokens).flatMap((row) => (row.initialized ? row.data : []))
-  const tokensInitialized = Object.values(tokens)
-    .flatMap((row) => row.initialized)
-    ?.includes(true)
+  // const tokensInitialized = Object.values(tokens)
+  //   .flatMap((row) => row.initialized)
+  //   ?.includes(true)
   const sortedTokens = useMemo(
     () =>
       orderBy(

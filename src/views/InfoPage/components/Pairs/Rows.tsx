@@ -15,7 +15,6 @@ const Rows = ({ pairs, activeIndex }: { pairs: Pairs[]; activeIndex: number }) =
   const { t } = useTranslation()
   const mobile = useIsMobile()
   const dayOldPairs = useFetchInfoPairs(20, 1) as any
-  console.log(dayOldPairs)
   const get24HourVolume = (chainId: ChainId, id: string) => {
     try {
       const volume = dayOldPairs[chainId]?.data?.find(({ id: curId }) => curId === id)?.volumeUSD
@@ -43,7 +42,7 @@ const Rows = ({ pairs, activeIndex }: { pairs: Pairs[]; activeIndex: number }) =
     >
       <Grid
         gap="0px"
-        columns={[`.25fr .25fr ${mobile ? '1.5fr' : '3fr'} 1.25fr 1.5fr 1.5fr`]}
+        columns={[`.35fr .25fr ${mobile ? '1.5fr' : '3fr'} 1.25fr 1.5fr 1.5fr`]}
         sx={{ minHeight: '40px', alignItems: 'center', minWidth: '700px' }}
       >
         <span />
@@ -68,7 +67,7 @@ const Rows = ({ pairs, activeIndex }: { pairs: Pairs[]; activeIndex: number }) =
             <Grid
               key={id}
               gap="0px"
-              columns={[`.25fr .25fr ${mobile ? '1.5fr' : '3fr'} 1.25fr 1.5fr 1.5fr`]}
+              columns={[`.35fr .25fr ${mobile ? '1.5fr' : '3fr'} 1.25fr 1.5fr 1.5fr`]}
               sx={{
                 background: index % 2 === 0 ? 'white3' : 'white2',
                 height: '40px',

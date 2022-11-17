@@ -1,25 +1,18 @@
 /** @jsxImportSource theme-ui */
-import { ChainId } from '@ape.swap/sdk'
 import { Flex, Text } from '@ape.swap/uikit'
-import { CurrencyLogo } from 'components/Logo'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
-import useIsMobile from 'hooks/useIsMobile'
 import useCurrentTime from 'hooks/useTimer'
 import React from 'react'
 import CountUp from 'react-countup'
-import { useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
-import { Swaps, Token } from 'state/info/types'
-import { Grid, Image } from 'theme-ui'
+import { Swaps } from 'state/info/types'
+import { Grid } from 'theme-ui'
 import getTimePeriods from 'utils/getTimePeriods'
-import getTokenLogoURL from 'utils/getTokenLogoURL'
 
-const Rows = ({ transactions, activeIndex }: { transactions: Swaps[]; activeIndex: number }) => {
+const Rows = ({ transactions }: { transactions: Swaps[] }) => {
   const { t } = useTranslation()
-  const nativePrice = useFetchInfoNativePrice()
   const currentTime = useCurrentTime()
-  const mobile = useIsMobile()
 
   return (
     <Flex
