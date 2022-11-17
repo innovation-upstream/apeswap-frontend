@@ -58,6 +58,7 @@ const Migrate = lazy(() => import('./views/Dex/Migrate'))
 const MigrateLiquidity = lazy(() => import('./views/Dex/Migrate/MigrateLiquidity'))
 const MigrateAll = lazy(() => import('./views/Dex/Migrate/MigrateAll'))
 const UnstakeLiquidity = lazy(() => import('./views/Dex/Migrate/UnstakeLiquidity'))
+const InfoPage = lazy(() => import('./views/InfoPage'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 
@@ -196,6 +197,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/privacy">
               <PrivacyPolicy />
+            </Route>
+            <Route exact path="/info">
+              <InfoPage />
             </Route>
             {/* Redirect */}
             <Route path="/staking">

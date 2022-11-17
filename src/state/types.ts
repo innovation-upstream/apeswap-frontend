@@ -19,6 +19,7 @@ import {
 } from 'config/constants/types'
 import { ProtocolDashboardState } from './protocolDashboard/types'
 import { ApiResponse } from './statsPage/types'
+import { InfoState } from './info/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -656,4 +657,5 @@ export interface State {
   nfas: NfaState
   protocolDashboard: ProtocolDashboardState
   userStats: ApiResponse
+  info: InfoState
 }
