@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useEffect, useState } from 'react'
-import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
+import { Flex, Svg } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { useCurrency } from 'hooks/Tokens'
 import { Currency, CurrencyAmount } from '@ape.swap/sdk'
