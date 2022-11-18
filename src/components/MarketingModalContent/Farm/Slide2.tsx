@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, Text, TooltipBubble, useMatchBreakpoints } from '@ape.swap/uikit'
+import { Flex, InfoIcon, Text, TooltipBubble, useMatchBreakpoints } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { styles } from '../styles'
 

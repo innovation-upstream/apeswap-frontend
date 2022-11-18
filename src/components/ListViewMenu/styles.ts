@@ -116,7 +116,6 @@ export const StyledText = styled(Text)`
 export const StyledCheckbox = styled(Checkbox)<{ checked?: boolean }>`
   height: 21px;
   width: 21px;
-  margin-left: 20px;
 `
 
 export const StyledImage = styled.img`

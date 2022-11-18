@@ -29,7 +29,7 @@ const WelcomeSlide = () => {
       <Text sx={{ ...styles.content, fontStyle: 'italic' }}>
         <Text sx={styles.content}>{t('Don’t have a wallet?')}</Text>{' '}
         <Text sx={styles.content}>
-          {t(`A full setup guide for MetaMask on ${NETWORK_LABEL[chainId]} Chain can be found `)}
+          {t(`A full setup guide for MetaMask on ${NETWORK_LABEL[chainId]} can be found `)}
         </Text>
         <Text sx={styles.yellow}>
           <a href={METAMASK_LINKS[NETWORK_LABEL[chainId]]} target="_blank" rel="noreferrer noopener">

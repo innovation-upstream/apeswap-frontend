@@ -13,6 +13,8 @@ export const useRouteLinks = () => {
   DOC_LINKS['FARMS'] = `https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms/${farmTypes}`
 
   const link: string = DOC_LINKS[routeNames[pathname]] ?? null
+  console.log('pathname:::', pathname)
+  console.log('link:::', link)
 
   return { link }
 }

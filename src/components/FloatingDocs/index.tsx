@@ -13,8 +13,8 @@ export const FloatingDocs: React.FC<FloatingDocsProps> = ({ iconProps, ...props 
     <Flex
       sx={{
         position: 'fixed',
-        bottom: '20px',
-        right: '20px',
+        right: ['20px', '20px', '35px'],
+        bottom: ['20px', '20px', '35px'],
         zIndex: 5,
         cursor: 'pointer',
       }}
