@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Flex, TooltipBubble, InfoIcon } from '@ape.swap/uikit'
+import { Flex, TooltipBubble, InfoIcon, Svg } from '@ape.swap/uikit'
 import React, { useState } from 'react'
 import { ContentContainer, DropDownIcon, ListCardContainer, ListExpandedContainer, styles } from './styles'
 import { ListCardProps } from './types'
@@ -25,7 +25,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
     <>
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)} backgroundColor={backgroundColor}>
         <Flex sx={{ width: '100%', justifyContent: 'space-between' }}>
-          <Flex>{beforeTokenContent}</Flex>
+          {beforeTokenContent && <Flex>{beforeTokenContent}</Flex>}
           <Flex sx={styles.titleContainer}>
             {serviceTokenDisplay}
             <Flex sx={{ flexDirection: 'column', marginLeft: '10px' }}>
@@ -33,8 +33,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
               {title}
             </Flex>
           </Flex>
-          <Flex>
-            {expandedContent && <DropDownIcon open={expanded} mr="20px" />}
+          <Flex sx={{ alignItems: 'baseline' }}>
             {infoContent && (
               <div style={{ display: 'inline-block', ...toolTipStyle }}>
                 <TooltipBubble
@@ -42,13 +41,18 @@ const MobileListCard: React.FC<ListCardProps> = ({
                   transformTip={infoContentPosition || 'translate(0%, 0%)'}
                   width={ttWidth || '200px'}
                 >
-                  <InfoIcon width={toolTipIconWidth || '25px'} />
+                  <InfoIcon width={'18px'} />
                 </TooltipBubble>
               </div>
             )}
+            {expandedContent && (
+              <span style={{ marginLeft: '10px', transform: 'translate(0, -5px)' }}>
+                <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="10px" />
+              </span>
+            )}
           </Flex>
         </Flex>
-        <ContentContainer>{cardContent}</ContentContainer>
+        {cardContent && <ContentContainer>{cardContent}</ContentContainer>}
       </ListCardContainer>
       {expandedContent && expanded && (
         <ListExpandedContainer size={expandedContentSize}>{expandedContent}</ListExpandedContainer>
