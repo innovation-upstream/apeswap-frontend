@@ -62,15 +62,18 @@ const Menu = (props) => {
   }
 
   const getSidOwner = useCallback(async () => {
-    const sid = await getSidContract(chainId)
-    const { name } = await sid.getName(account)
-
-    setSidOwner({ account, name })
+    if (chainId === ChainId.BSC) {
+      const sid = await getSidContract(chainId)
+      const { name } = await sid.getName(account)
+      setSidOwner({ account, name })
+    }
   }, [chainId, account])
 
   useEffect(() => {
-    account && getSidOwner()
-  }, [getSidOwner, account])
+    if (chainId === ChainId.BSC) {
+      account && getSidOwner()
+    }
+  }, [getSidOwner, account, chainId])
 
   useEffect(() => {
     uauth.uauth
