@@ -11,8 +11,15 @@ import { useTranslation } from 'contexts/Localization'
 import Claim from '../Actions/Claim'
 import VestedTimer from '../VestedTimer'
 import BillModal from '../Modals'
+import EmptyListComponent, { EmptyComponentType } from '../EmptyListComponent/EmptyListComponent'
+import { BillsView } from '../../index'
 
-const UserBillListView: React.FC<{ bills: Bills[]; showAll?: boolean }> = ({ bills, showAll }) => {
+const UserBillListView: React.FC<{
+  bills: Bills[]
+  showAll?: boolean
+  handleBillsViewChange: (view: BillsView) => void
+  noResults: boolean
+}> = ({ bills, showAll, handleBillsViewChange, noResults }) => {
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -100,7 +107,18 @@ const UserBillListView: React.FC<{ bills: Bills[]; showAll?: boolean }> = ({ bil
       } as ExtendedListViewProps
     })
   })
-  return <ListView listViews={billsListView?.reverse()} />
+  return (
+    <>
+      {billsListView?.length ? (
+        <ListView listViews={billsListView?.reverse()} />
+      ) : (
+        <EmptyListComponent
+          type={noResults ? EmptyComponentType.NO_RESULTS : EmptyComponentType.USER_BILLS}
+          handleBillsViewChange={handleBillsViewChange}
+        />
+      )}
+    </>
+  )
 }
 
 export default React.memo(UserBillListView)

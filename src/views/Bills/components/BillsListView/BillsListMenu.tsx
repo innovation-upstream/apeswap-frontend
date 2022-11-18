@@ -1,11 +1,12 @@
-import React, { useRef, useState } from 'react'
-import { Checkbox, Flex, Select, SelectItem, Text } from '@apeswapfinance/uikit'
+/** @jsxImportSource theme-ui */
+import React, { useState } from 'react'
+import { Checkbox, Flex, Input, Select, SelectItem, Svg, Text, useMatchBreakpoints } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { ControlContainer, LabelWrapper, StyledText, Container, StyledInput } from './styles'
-import { Bills } from 'state/types'
+import { ControlContainer, SearchText, styles } from './styles'
 import { NetworkButton, Toggle } from '@ape.swap/uikit'
 import useSelectNetwork from '../../../../hooks/useSelectNetwork'
+import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
 
 export const FILTER_OPTIONS = [
   {
@@ -22,13 +23,33 @@ export const FILTER_OPTIONS = [
   },
 ]
 
+export const SORT_OPTIONS = [
+  {
+    label: 'Discount',
+    value: 'discount',
+  },
+  {
+    label: 'Vesting Term',
+    value: 'vesting',
+  },
+  {
+    label: 'Price',
+    value: 'price',
+  },
+  {
+    label: 'New',
+    value: 'new',
+  },
+]
+
 export interface BillsListMenuProps {
   onHandleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onSetSortOption: (value: string) => void
-  activeOption?: string
+  setFilterOption: (value: string) => void
+  filterOption?: string
+  setSortOption: (value: string) => void
+  sortOption: string
   query: string
   harvestAll?: React.ReactNode
-  bills?: Bills[]
   showOnlyDiscount: boolean
   setShowOnlyDiscount: (value: boolean) => void
   showAvailable: boolean
@@ -37,61 +58,164 @@ export interface BillsListMenuProps {
 
 const BillsListMenu: React.FC<BillsListMenuProps> = ({
   onHandleQueryChange,
-  onSetSortOption,
+  setFilterOption,
+  filterOption,
+  setSortOption,
+  sortOption,
   query,
-  activeOption,
-  bills,
   showOnlyDiscount,
   setShowOnlyDiscount,
   showAvailable,
   setShowAvailable,
 }) => {
-  const [toggled, setToggled] = useState(false)
-  const inputEl = useRef(null)
   const { t } = useTranslation()
   const { switchNetwork } = useSelectNetwork()
   const { chainId } = useActiveWeb3React()
+  const { isLg, isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isLg && !isXl && !isXxl
+  const [expanded, setExpended] = useState<boolean>(false)
 
   return (
     <ControlContainer>
-      <LabelWrapper>
-        <StyledText bold mr="15px">
-          {t('Search')}
-        </StyledText>
-        <Container toggled={toggled}>
-          <StyledInput
-            ref={inputEl}
-            value={query}
-            onChange={onHandleQueryChange}
-            onBlur={() => setToggled(false)}
-            icon="search"
+      {isMobile ? (
+        <Flex sx={{ width: '100%', alignItems: 'center', flexDirection: 'column' }}>
+          <Flex sx={{ width: '100%', justifyContent: 'center' }}>
+            <SearchText bold mr="15px">
+              {t('Search')}
+            </SearchText>
+            <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.input} />
+            <Flex
+              sx={{ backgroundColor: 'lvl1', padding: '10px', borderRadius: '10px', cursor: 'pointer' }}
+              onClick={() => setExpended(!expanded)}
+            >
+              <Svg icon="MenuSettings" width="18px" />
+            </Flex>
+          </Flex>
+          {expanded && (
+            <Flex sx={{ width: '100%', justifyContent: 'space-around', flexWrap: 'wrap', maxWidth: '353.4px' }}>
+              <Flex sx={{ marginTop: '15px', width: '50%', justifyContent: 'center', paddingRight: '10px' }}>
+                <Select
+                  size="xsm"
+                  onChange={(e) => setSortOption(e.target.value)}
+                  active={sortOption}
+                  sx={{ height: '36px', display: 'flex', width: '100%' }}
+                >
+                  {SORT_OPTIONS.map((option) => {
+                    return (
+                      <SelectItem size="sm" value={option.value} key={option.label}>
+                        <Text>{t(option.label)}</Text>
+                      </SelectItem>
+                    )
+                  })}
+                </Select>
+              </Flex>
+              <Flex sx={{ marginTop: '15px', width: '50%', justifyContent: 'center', paddingLeft: '10px' }}>
+                <Select
+                  size="xsm"
+                  onChange={(e) => setFilterOption(e.target.value)}
+                  active={filterOption}
+                  sx={{ height: '36px', display: 'flex', width: '100%' }}
+                >
+                  {FILTER_OPTIONS.map((option) => {
+                    return (
+                      <SelectItem size="xsm" value={option.value} key={option.label}>
+                        <Text>{t(option.label)}</Text>
+                      </SelectItem>
+                    )
+                  })}
+                </Select>
+              </Flex>
+              <Flex sx={{ marginLeft: '15px', marginTop: '15px' }}>
+                <NetworkButton
+                  switchNetwork={switchNetwork}
+                  chainId={chainId}
+                  t={t}
+                  supportedChains={AVAILABLE_CHAINS_ON_PRODUCTS['bills']}
+                />
+              </Flex>
+            </Flex>
+          )}
+          <Flex sx={{ width: '100%', justifyContent: 'space-around', marginTop: '15px' }}>
+            <Flex>
+              <Toggle
+                size="sm"
+                labels={[t('Available'), t('Sold out')]}
+                onClick={() => setShowAvailable(!showAvailable)}
+                checked={!showAvailable}
+                sx={{ height: '36px', alignItems: 'center' }}
+              />
+            </Flex>
+            <Flex sx={{ alignItems: 'center' }}>
+              <Checkbox checked={showOnlyDiscount} onClick={() => setShowOnlyDiscount(!showOnlyDiscount)} />
+              <Text ml="15px" size="14px" weight={700} color="success">
+                {t('Discount')}
+              </Text>
+            </Flex>
+          </Flex>
+        </Flex>
+      ) : (
+        <>
+          <Flex>
+            <SearchText bold mr="15px">
+              {t('Search')}
+            </SearchText>
+            <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.input} />
+          </Flex>
+          <Flex>
+            <Select
+              size="xsm"
+              onChange={(e) => setSortOption(e.target.value)}
+              active={sortOption}
+              sx={{ height: '36px', display: 'flex', width: '145px' }}
+            >
+              {SORT_OPTIONS.map((option) => {
+                return (
+                  <SelectItem size="sm" value={option.value} key={option.label}>
+                    <Text>{t(option.label)}</Text>
+                  </SelectItem>
+                )
+              })}
+            </Select>
+          </Flex>
+          <Flex>
+            <Select
+              size="xsm"
+              onChange={(e) => setFilterOption(e.target.value)}
+              active={filterOption}
+              sx={{ height: '36px', display: 'flex', width: '95px' }}
+            >
+              {FILTER_OPTIONS.map((option) => {
+                return (
+                  <SelectItem size="xsm" value={option.value} key={option.label}>
+                    <Text>{t(option.label)}</Text>
+                  </SelectItem>
+                )
+              })}
+            </Select>
+          </Flex>
+          <Flex>
+            <Toggle
+              size="sm"
+              labels={[t('Available'), t('Sold out')]}
+              onClick={() => setShowAvailable(!showAvailable)}
+              checked={!showAvailable}
+              sx={{ height: '36px', alignItems: 'center' }}
+            />
+          </Flex>
+          <Flex sx={{ alignItems: 'center' }}>
+            <Checkbox checked={showOnlyDiscount} onClick={() => setShowOnlyDiscount(!showOnlyDiscount)} />
+            <Text ml="15px" size="14px" weight={700} color="success">
+              {t('Discount')}
+            </Text>
+          </Flex>
+          <NetworkButton
+            switchNetwork={switchNetwork}
+            chainId={chainId}
+            t={t}
+            supportedChains={AVAILABLE_CHAINS_ON_PRODUCTS['bills']}
           />
-        </Container>
-      </LabelWrapper>
-      <Flex>
-        <Select size="sm" width="126px" onChange={(e) => onSetSortOption(e.target.value)} active={activeOption}>
-          {FILTER_OPTIONS.map((option) => {
-            return (
-              <SelectItem size="sm" value={option.value} key={option.label}>
-                <Text>{t(option.label)}</Text>
-              </SelectItem>
-            )
-          })}
-        </Select>
-      </Flex>
-      <Flex>
-        <Toggle
-          size="md"
-          labels={[t('Available'), t('Sold out')]}
-          onClick={() => setShowAvailable(!showAvailable)}
-          checked={!showAvailable}
-        />
-      </Flex>
-      <Flex style={{ minWidth: '140px', gridArea: 'expired' }}>
-        <Text mr="12.5px">{t('Discount')}</Text>
-        <Checkbox checked={showOnlyDiscount} onClick={() => setShowOnlyDiscount(!showOnlyDiscount)} />
-      </Flex>
-      <NetworkButton switchNetwork={switchNetwork} chainId={chainId} t={t} />
+        </>
+      )}
     </ControlContainer>
   )
 }

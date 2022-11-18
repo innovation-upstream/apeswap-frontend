@@ -6,11 +6,21 @@ import UserBillListView from './UserBillListView'
 import UserBillsMenu from './UserBillsMenu'
 import { useBills } from 'state/bills/hooks'
 import { Flex } from '@ape.swap/uikit'
+import { BillsView } from '../../index'
 
-const UserBillViews: React.FC = () => {
+interface UserBillListViewProps {
+  handleBillsViewChange: (view: BillsView) => void
+}
+
+const UserBillViews: React.FC<UserBillListViewProps> = ({ handleBillsViewChange }) => {
   const bills = useBills()
   const [query, setQuery] = useState('')
-  const [sortOption, setSortOption] = useState('all')
+  const [sortOption, setSortOption] = useState('discount')
+  const [filterOption, setFilterOption] = useState('all')
+  const [showOnlyClaimed, setShowOnlyClaimed] = useState(false)
+  const [listView, setListView] = useState(false)
+  console.log(listView)
+  const noResults = !!query || filterOption !== 'all' || showOnlyClaimed
 
   const billsToRender = useMemo((): BillType[] => {
     let billsToReturn = bills
@@ -19,16 +29,15 @@ const UserBillViews: React.FC = () => {
         return bill.lpToken.symbol.toUpperCase().includes(query.toUpperCase())
       })
     }
-    if (sortOption === 'bananaBill') {
-      billsToReturn = billsToReturn?.filter((bill) => bill.billType === 'BANANA Bill')
+    if (filterOption === 'bananaBill') {
+      billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'BANANA Bill'.toUpperCase())
     }
-    if (sortOption === 'jungleBill') {
-      billsToReturn = billsToReturn?.filter((bill) => bill.billType === 'JUNGLE Bill')
+    if (filterOption === 'jungleBill') {
+      billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'JUNGLE Bill'.toUpperCase())
     }
     return billsToReturn
-  }, [bills, query, sortOption])
+  }, [bills, query, filterOption])
   const userOwnedBills = billsToRender?.filter((bill) => bill?.userOwnedBillsData?.length > 0)
-  const [showExpired, setShowExpired] = useState(true)
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
@@ -39,14 +48,23 @@ const UserBillViews: React.FC = () => {
       <UserBillsMenu
         bills={bills}
         onHandleQueryChange={handleChangeQuery}
-        onSetSortOption={setSortOption}
-        activeOption={sortOption}
+        setFilterOption={setFilterOption}
+        filterOption={filterOption}
+        setSortOption={setSortOption}
+        sortOption={sortOption}
         query={query}
-        showExpired={showExpired}
-        setShowExpired={setShowExpired}
+        showOnlyClaimed={showOnlyClaimed}
+        setShowOnlyClaimed={setShowOnlyClaimed}
+        listView={listView}
+        setListView={setListView}
       />
       <Flex flexDirection="column" sx={{ padding: '20px 0 50px 0' }}>
-        <UserBillListView bills={userOwnedBills} showAll={showExpired} />
+        <UserBillListView
+          bills={userOwnedBills}
+          showAll={showOnlyClaimed}
+          handleBillsViewChange={handleBillsViewChange}
+          noResults={noResults}
+        />
       </Flex>
     </Container>
   )

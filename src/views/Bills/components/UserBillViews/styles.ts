@@ -10,6 +10,18 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     justifyContent: 'space-between',
     marginBottom: '0.3em',
   },
+  input: {
+    borderRadius: '10px',
+    fontWeight: 800,
+    border: 'none',
+    width: '100%',
+    '@media screen and (min-width: 852px)': {
+      width: '170px',
+    },
+    '@media screen and (min-width: 1000px)': {
+      width: '240px',
+    },
+  },
 }
 
 export const CardContainer = styled(Card)`
@@ -79,20 +91,6 @@ export const DescriptionContainer = styled(Flex)`
   }
 `
 
-export const BillGifImage = styled.div<{ image?: string }>`
-  width: 270px;
-  height: 150px;
-  background-image: url(/images/bills-gif.gif);
-  background-repeat: no-repeat;
-  background-size: contain;
-  ${({ theme }) => theme.mediaQueries.md} {
-    max-width: 606px;
-    max-height: 341px;
-    height: 100%;
-    width: 100%;
-  }
-`
-
 export const BillDiagramContainer = styled(Flex)`
   margin-top: 10px;
 `
@@ -104,7 +102,7 @@ export const ControlContainer = styled(Flex)`
   border-radius: 10px;
   justify-content: space-between;
   flex-direction: row;
-  padding: 15px;
+  padding: 0 20px;
   z-index: 2;
   background-color: ${({ theme }) => theme.colors.white2};
   min-width: 300px;
@@ -120,13 +118,9 @@ export const ControlContainer = styled(Flex)`
     flex-direction: row;
     min-height: 59px;
     height: 100%;
-    padding: 0px 50px 0px 30px;
     align-items: center;
     max-width: 100%;
     height: auto;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 0px 50px 0px 30px;
   }
 `
 
@@ -139,9 +133,14 @@ export const LabelWrapper = styled.div`
   }
 `
 
-export const StyledText = styled(Text)`
+export const SearchText = styled(Text)`
   font-weight: 700;
   font-size: 16px !important;
+  display: none;
+  align-items: center;
+  @media screen and (min-width: 1050px) {
+    display: inherit;
+  }
 `
 
 export const ClaimAllWrapper = styled(Flex)`
@@ -150,24 +149,5 @@ export const ClaimAllWrapper = styled(Flex)`
   justify-content: center;
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
-  }
-`
-
-export const Container = styled.div<{ toggled: boolean }>``
-
-export const StyledInput = styled(Input)`
-  border-radius: 10px;
-  background: ${({ theme }) => theme.colors.white3};
-  font-weight: 800;
-  border: none;
-  width: 100%;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 180px;
-  }
-  @media screen and (min-width: 900px) {
-    width: 200px;
-  }
-  @media screen and (min-width: 1000px) {
-    width: 300px;
   }
 `

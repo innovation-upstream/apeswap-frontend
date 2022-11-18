@@ -1,10 +1,12 @@
-import React, { useRef, useState } from 'react'
-import { Checkbox, Flex, Select, SelectItem, Text } from '@apeswapfinance/uikit'
+/** @jsxImportSource theme-ui */
+import React, { useState } from 'react'
+import { Checkbox, Flex, Select, SelectItem, Text, Input, useMatchBreakpoints, Toggle } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { ClaimAllWrapper, ControlContainer, LabelWrapper, StyledText, Container, StyledInput } from './styles'
+import { ClaimAllWrapper, ControlContainer, SearchText, styles } from './styles'
 import ClaimAll from '../Actions/ClaimAll'
 import { Bills } from 'state/types'
+import { SORT_OPTIONS } from '../BillsListView/BillsListMenu'
 
 export const FILTER_OPTIONS = [
   {
@@ -23,28 +25,37 @@ export const FILTER_OPTIONS = [
 
 export interface UserBillsMenuProps {
   onHandleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onSetSortOption: (value: string) => void
-  activeOption?: string
+  setFilterOption: (value: string) => void
+  filterOption?: string
+  setSortOption: (value: string) => void
+  sortOption?: string
   query: string
   harvestAll?: React.ReactNode
   bills?: Bills[]
-  showExpired: boolean
-  setShowExpired: (value: boolean) => void
+  showOnlyClaimed: boolean
+  setShowOnlyClaimed: (value: boolean) => void
+  listView: boolean
+  setListView: (view: boolean) => void
 }
 
 const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
   onHandleQueryChange,
-  onSetSortOption,
+  setFilterOption,
+  filterOption,
+  setSortOption,
   query,
-  activeOption,
+  sortOption,
   bills,
-  showExpired,
-  setShowExpired,
+  showOnlyClaimed,
+  setShowOnlyClaimed,
+  listView,
+  setListView,
 }) => {
-  const [toggled, setToggled] = useState(false)
-  const inputEl = useRef(null)
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
+  const { isLg, isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isLg && !isXl && !isXxl
+  const [expanded, setExpended] = useState<boolean>(false)
   const userOwnedBills = bills?.filter((bill) => bill?.userOwnedBillsData?.length > 0)
   const ownedBillsAmount = bills
     ?.flatMap((bill) => (bill?.userOwnedBillsData ? bill.userOwnedBillsData : []))
@@ -63,38 +74,66 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
   })
   return (
     <ControlContainer>
-      <LabelWrapper>
-        <StyledText bold mr="15px">
-          {t('Search')}
-        </StyledText>
-        <Container toggled={toggled}>
-          <StyledInput
-            ref={inputEl}
-            value={query}
-            onChange={onHandleQueryChange}
-            onBlur={() => setToggled(false)}
-            icon="search"
-          />
-        </Container>
-      </LabelWrapper>
-      <Flex>
-        <Select size="sm" width="126px" onChange={(e) => onSetSortOption(e.target.value)} active={activeOption}>
-          {FILTER_OPTIONS.map((option) => {
-            return (
-              <SelectItem size="sm" value={option.value} key={option.label}>
-                <Text>{t(option.label)}</Text>
-              </SelectItem>
-            )
-          })}
-        </Select>
-      </Flex>
-      <Flex style={{ minWidth: '140px', gridArea: 'expired' }}>
-        <Text mr="12.5px">{t('Claimed')}</Text>
-        <Checkbox checked={showExpired} onClick={() => setShowExpired(!showExpired)} />
-      </Flex>
-      <ClaimAllWrapper>
-        <ClaimAll userOwnedBills={ownedBills} ownedBillsAmount={ownedBillsAmount} />
-      </ClaimAllWrapper>
+      {isMobile ? (
+        <Flex sx={{ width: '100%', alignItems: 'center', flexDirection: 'column' }}>asdasd</Flex>
+      ) : (
+        <>
+          <SearchText bold mr="15px">
+            {t('Search')}
+          </SearchText>
+          <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.input} />
+          <Flex>
+            <Select
+              size="xsm"
+              onChange={(e) => setSortOption(e.target.value)}
+              active={sortOption}
+              sx={{ height: '36px', display: 'flex', width: '100%' }}
+            >
+              {SORT_OPTIONS.map((option) => {
+                return (
+                  <SelectItem size="sm" value={option.value} key={option.label}>
+                    <Text>{t(option.label)}</Text>
+                  </SelectItem>
+                )
+              })}
+            </Select>
+          </Flex>
+          <Flex>
+            <Select
+              size="xsm"
+              onChange={(e) => setFilterOption(e.target.value)}
+              active={filterOption}
+              sx={{ height: '36px', display: 'flex', width: '95px' }}
+            >
+              {FILTER_OPTIONS.map((option) => {
+                return (
+                  <SelectItem size="sm" value={option.value} key={option.label}>
+                    <Text>{t(option.label)}</Text>
+                  </SelectItem>
+                )
+              })}
+            </Select>
+          </Flex>
+          <Flex>
+            <Toggle
+              size="sm"
+              labels={[t('List'), t('Gallery')]}
+              onClick={() => setListView(!listView)}
+              checked={!listView}
+              sx={{ height: '36px', alignItems: 'center' }}
+            />
+          </Flex>
+          <Flex>
+            <Checkbox checked={showOnlyClaimed} onClick={() => setShowOnlyClaimed(!showOnlyClaimed)} />
+            <Text ml="15px" size="14px">
+              {t('Claimed')}
+            </Text>
+          </Flex>
+          <ClaimAllWrapper>
+            <ClaimAll userOwnedBills={ownedBills} ownedBillsAmount={ownedBillsAmount} />
+          </ClaimAllWrapper>
+        </>
+      )}
     </ControlContainer>
   )
 }
