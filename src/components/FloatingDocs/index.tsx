@@ -14,7 +14,7 @@ export const FloatingDocs: React.FC<FloatingDocsProps> = ({ iconProps, ...props 
       sx={{
         position: 'fixed',
         right: ['20px', '20px', '35px'],
-        bottom: ['20px', '20px', '35px'],
+        bottom: ['20px', '20px', '30px'],
         zIndex: 5,
         cursor: 'pointer',
       }}
