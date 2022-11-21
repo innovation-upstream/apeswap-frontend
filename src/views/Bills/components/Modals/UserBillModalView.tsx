@@ -114,6 +114,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
                 billIds={[billId]}
                 buttonSize={218}
                 pendingRewards={userOwnedBill?.payout}
+                margin={'0'}
               />
               <StyledButton onClick={onPresentTransferBillModal} style={{ width: '218px' }}>
                 {t('Transfer')}

@@ -29,9 +29,8 @@ export const CardContainer = styled(Card)`
   flex-direction: column;
   min-width: 270px;
   max-height: 307px;
-  height: 307px;
   align-items: center;
-  margin-left: 16px;
+  margin: 0 0 16px 12px;
 `
 
 export const BillsImage = styled.div<{ image?: string }>`
@@ -47,13 +46,10 @@ export const BillsImage = styled.div<{ image?: string }>`
 
 export const BillCardsContainer = styled(Flex)`
   width: 100%;
-  height: 307px;
+  flex-wrap: wrap;
   flex-direction: row;
-  overflow: hidden;
   margin-bottom: 20px;
-  & :nth-child(1) {
-    margin-left: 0px;
-  }
+  justify-content: space-around;
 `
 
 export const FirstTimeCardContainer = styled(Flex)`

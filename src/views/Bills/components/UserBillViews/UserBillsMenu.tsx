@@ -32,8 +32,8 @@ export interface UserBillsMenuProps {
   query: string
   harvestAll?: React.ReactNode
   bills?: Bills[]
-  showOnlyClaimed: boolean
-  setShowOnlyClaimed: (value: boolean) => void
+  showClaimed: boolean
+  setShowClaimed: (value: boolean) => void
   listView: boolean
   setListView: (view: boolean) => void
 }
@@ -46,8 +46,8 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
   query,
   sortOption,
   bills,
-  showOnlyClaimed,
-  setShowOnlyClaimed,
+  showClaimed,
+  setShowClaimed,
   listView,
   setListView,
 }) => {
@@ -124,7 +124,7 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
             />
           </Flex>
           <Flex>
-            <Checkbox checked={showOnlyClaimed} onClick={() => setShowOnlyClaimed(!showOnlyClaimed)} />
+            <Checkbox checked={showClaimed} onClick={() => setShowClaimed(!showClaimed)} />
             <Text ml="15px" size="14px">
               {t('Claimed')}
             </Text>

@@ -26,7 +26,7 @@ const Bills: React.FC = () => {
   const { chainId, account } = useActiveWeb3React()
   const bills = useBills()
   const { t } = useTranslation()
-  const [billsView, setBillsView] = useState<BillsView>(BillsView.AVAILABLE_BILLS)
+  const [billsView, setBillsView] = useState<BillsView>(BillsView.YOUR_BILLS)
   const ownedBillsAmount = bills?.flatMap((bill) => (bill?.userOwnedBillsData ? bill?.userOwnedBillsData : [])).length
 
   const handleBillsViewChange = useCallback((newBillsView: BillsView) => {

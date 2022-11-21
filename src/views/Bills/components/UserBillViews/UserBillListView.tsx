@@ -13,13 +13,16 @@ import VestedTimer from '../VestedTimer'
 import BillModal from '../Modals'
 import EmptyListComponent, { EmptyComponentType } from '../EmptyListComponent/EmptyListComponent'
 import { BillsView } from '../../index'
+import BillCard from './BillCard'
+import ListViewContentMobile from '../../../../components/ListViewContent/ListViewContentMobile'
 
 const UserBillListView: React.FC<{
   bills: Bills[]
-  showAll?: boolean
+  showClaimed?: boolean
+  listView: boolean
   handleBillsViewChange: (view: BillsView) => void
   noResults: boolean
-}> = ({ bills, showAll, handleBillsViewChange, noResults }) => {
+}> = ({ bills, showClaimed, handleBillsViewChange, noResults, listView }) => {
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -28,7 +31,7 @@ const UserBillListView: React.FC<{
     const ownedBills = bill?.userOwnedBillsData
     const { token, quoteToken, earnToken } = bill
     return ownedBills.flatMap((ownedBill) => {
-      if (!showAll && parseFloat(ownedBill.pendingRewards) === 0 && parseFloat(ownedBill.payout) === 0) {
+      if (!showClaimed && parseFloat(ownedBill.pendingRewards) === 0 && parseFloat(ownedBill.payout) === 0) {
         return []
       }
       const pending = getBalanceNumber(new BigNumber(ownedBill.payout), bill?.earnToken?.decimals)?.toFixed(4)
@@ -52,39 +55,50 @@ const UserBillListView: React.FC<{
         ),
         cardContent: (
           <>
-            <ListViewContent
-              title={t('Claimable')}
-              value={pendingRewards}
-              width={isMobile ? 120 : 165}
-              ml={20}
-              height={52.5}
-              toolTip={t('This is the amount of tokens that have vested and available to claim.')}
-              toolTipPlacement="bottomLeft"
-              toolTipTransform="translate(0, 65%)"
-            />
-            <ListViewContent
-              title={t('Pending')}
-              value={pending}
-              width={isMobile ? 120 : 160}
-              height={52.5}
-              toolTip={t('This is the amount of unvested tokens that cannot be claimed yet.')}
-              toolTipPlacement="bottomLeft"
-              toolTipTransform="translate(0, 65%)"
-            />
-            <VestedTimer lastBlockTimestamp={ownedBill.lastBlockTimestamp} vesting={ownedBill.vesting} />
-            {!isMobile && (
+            {isMobile ? (
+              <ListViewContentMobile
+                title={'Claimable'}
+                value={pendingRewards}
+                toolTip={`This is the amount of tokens that have vested and available to claim.`}
+                toolTipPlacement={'bottomLeft'}
+                toolTipTransform={'translate(29%, 0%)'}
+              />
+            ) : (
               <>
-                <Flex alignItems="center" style={{ height: '100%' }}>
-                  <Claim
-                    billAddress={bill.contractAddress[chainId]}
-                    billIds={[ownedBill.id]}
-                    buttonSize={100}
-                    pendingRewards={ownedBill?.pendingRewards}
-                  />
-                </Flex>
-                <Flex alignItems="center" style={{ height: '100%' }}>
-                  <BillModal buttonText={t('VIEW')} bill={bill} billId={ownedBill.id} buttonSize={100} />
-                </Flex>
+                <ListViewContent
+                  title={t('Claimable')}
+                  value={pendingRewards}
+                  width={isMobile ? 120 : 165}
+                  ml={20}
+                  height={52.5}
+                  toolTip={t('This is the amount of tokens that have vested and available to claim.')}
+                  toolTipPlacement="bottomLeft"
+                  toolTipTransform="translate(0, 65%)"
+                />
+                <ListViewContent
+                  title={t('Pending')}
+                  value={pending}
+                  width={isMobile ? 120 : 160}
+                  height={52.5}
+                  toolTip={t('This is the amount of unvested tokens that cannot be claimed yet.')}
+                  toolTipPlacement="bottomLeft"
+                  toolTipTransform="translate(0, 65%)"
+                />
+                <VestedTimer lastBlockTimestamp={ownedBill.lastBlockTimestamp} vesting={ownedBill.vesting} />
+                <>
+                  <Flex alignItems="center" style={{ height: '100%' }}>
+                    <Claim
+                      billAddress={bill.contractAddress[chainId]}
+                      billIds={[ownedBill.id]}
+                      buttonSize={100}
+                      pendingRewards={ownedBill?.pendingRewards}
+                      margin={'10px'}
+                    />
+                  </Flex>
+                  <Flex alignItems="center" style={{ height: '100%' }}>
+                    <BillModal buttonText={t('VIEW')} bill={bill} billId={ownedBill.id} buttonSize={100} />
+                  </Flex>
+                </>
               </>
             )}
           </>
@@ -97,6 +111,7 @@ const UserBillListView: React.FC<{
                 billAddress={bill.contractAddress[chainId]}
                 billIds={[ownedBill.id]}
                 pendingRewards={ownedBill?.pendingRewards}
+                margin={'0'}
               />
             </Flex>
             <Flex alignItems="center" mt="20px">
@@ -109,7 +124,9 @@ const UserBillListView: React.FC<{
   })
   return (
     <>
-      {billsListView?.length ? (
+      {!listView ? (
+        <BillCard bills={bills} showClaimed={showClaimed} />
+      ) : billsListView?.length ? (
         <ListView listViews={billsListView?.reverse()} />
       ) : (
         <EmptyListComponent

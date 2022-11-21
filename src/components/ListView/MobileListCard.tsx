@@ -3,6 +3,7 @@ import { Flex, TooltipBubble, InfoIcon, Svg } from '@ape.swap/uikit'
 import React, { useState } from 'react'
 import { ContentContainer, DropDownIcon, ListCardContainer, ListExpandedContainer, styles } from './styles'
 import { ListCardProps } from './types'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const MobileListCard: React.FC<ListCardProps> = ({
   serviceTokenDisplay,
@@ -14,8 +15,6 @@ const MobileListCard: React.FC<ListCardProps> = ({
   infoContentPosition,
   open,
   expandedContentSize,
-  toolTipIconWidth,
-  toolTipStyle,
   ttWidth,
   backgroundColor,
   beforeTokenContent,
@@ -33,9 +32,9 @@ const MobileListCard: React.FC<ListCardProps> = ({
               {title}
             </Flex>
           </Flex>
-          <Flex sx={{ alignItems: 'baseline' }}>
+          <Flex sx={{ alignItems: 'center' }}>
             {infoContent && (
-              <div style={{ display: 'inline-block', ...toolTipStyle }}>
+              <div style={{ display: 'inline-block' }}>
                 <TooltipBubble
                   body={infoContent}
                   transformTip={infoContentPosition || 'translate(0%, 0%)'}
@@ -46,7 +45,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
               </div>
             )}
             {expandedContent && (
-              <span style={{ marginLeft: '10px', transform: 'translate(0, -5px)' }}>
+              <span style={{ marginLeft: '20px', transform: 'translate(0, -2px)' }}>
                 <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="10px" />
               </span>
             )}
@@ -54,9 +53,18 @@ const MobileListCard: React.FC<ListCardProps> = ({
         </Flex>
         {cardContent && <ContentContainer>{cardContent}</ContentContainer>}
       </ListCardContainer>
-      {expandedContent && expanded && (
-        <ListExpandedContainer size={expandedContentSize}>{expandedContent}</ListExpandedContainer>
-      )}
+      <AnimatePresence>
+        {expandedContent && expanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'fit-content' }}
+            exit={{ opacity: 0, height: 0 }}
+            sx={{ position: 'relative', width: '100%' }}
+          >
+            <ListExpandedContainer size={expandedContentSize}>{expandedContent}</ListExpandedContainer>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

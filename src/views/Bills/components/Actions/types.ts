@@ -7,6 +7,7 @@ export interface ClaimProps {
   pendingRewards: string
   billIds: string[]
   buttonSize?: number
+  margin: string
 }
 
 export interface TransferProps {

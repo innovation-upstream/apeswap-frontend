@@ -17,10 +17,9 @@ const UserBillViews: React.FC<UserBillListViewProps> = ({ handleBillsViewChange 
   const [query, setQuery] = useState('')
   const [sortOption, setSortOption] = useState('discount')
   const [filterOption, setFilterOption] = useState('all')
-  const [showOnlyClaimed, setShowOnlyClaimed] = useState(false)
-  const [listView, setListView] = useState(false)
-  console.log(listView)
-  const noResults = !!query || filterOption !== 'all' || showOnlyClaimed
+  const [showClaimed, setShowClaimed] = useState(true)
+  const [listView, setListView] = useState(true)
+  const noResults = !!query || filterOption !== 'all' || showClaimed
 
   const billsToRender = useMemo((): BillType[] => {
     let billsToReturn = bills
@@ -53,15 +52,16 @@ const UserBillViews: React.FC<UserBillListViewProps> = ({ handleBillsViewChange 
         setSortOption={setSortOption}
         sortOption={sortOption}
         query={query}
-        showOnlyClaimed={showOnlyClaimed}
-        setShowOnlyClaimed={setShowOnlyClaimed}
+        showClaimed={showClaimed}
+        setShowClaimed={setShowClaimed}
         listView={listView}
         setListView={setListView}
       />
-      <Flex flexDirection="column" sx={{ padding: '20px 0 50px 0' }}>
+      <Flex flexDirection="column" sx={{ padding: '20px 0 50px 0', width: '100%' }}>
         <UserBillListView
           bills={userOwnedBills}
-          showAll={showOnlyClaimed}
+          showClaimed={showClaimed}
+          listView={listView}
           handleBillsViewChange={handleBillsViewChange}
           noResults={noResults}
         />
