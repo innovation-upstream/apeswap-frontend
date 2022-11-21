@@ -34,12 +34,8 @@ const Nft = () => {
         />
         <StyledHero>
           <Text style={{ color: 'subtle', paddingTop: '10px', textDecoration: 'underline' }}>
-            <StyledAnchor
-              href="https://github.com/ApeSwapFinance/non-fungible-apes"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('GitHub Info')}
+            <StyledAnchor href="https://apeswap.finance/staking" target="_blank" rel="noopener noreferrer">
+              {t('Legacy Staking Pools')}
             </StyledAnchor>
           </Text>
           <OwnedNfts />
