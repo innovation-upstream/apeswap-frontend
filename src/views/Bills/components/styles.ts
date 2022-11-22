@@ -1,13 +1,14 @@
 import styled from 'styled-components'
 import { Button, ArrowDropUpIcon, Flex } from '@apeswapfinance/uikit'
 
-export const StyledButton = styled(Button)<{ buttonSize?: number }>`
+export const StyledButton = styled(Button)<{ buttonSize?: string }>`
   border-radius: 10px;
   font-size: 16px;
   font-weight: 700;
   padding: 10px 20px;
   width: 100%;
-  min-width: ${({ buttonSize }) => buttonSize || 145}px;
+  min-width: ${({ buttonSize }) => buttonSize || '145px'};
+  max-width: ${({ buttonSize }) => buttonSize || '145px'};
   height: 44px;
 `
 

@@ -1,5 +1,6 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { Flex, useMatchBreakpoints } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
 import { Bills } from 'state/types'
 import { ExtendedListViewProps } from 'components/ListView/types'
@@ -13,8 +14,9 @@ import VestedTimer from '../VestedTimer'
 import BillModal from '../Modals'
 import EmptyListComponent, { EmptyComponentType } from '../EmptyListComponent/EmptyListComponent'
 import { BillsView } from '../../index'
-import BillCard from './BillCard'
-import ListViewContentMobile from '../../../../components/ListViewContent/ListViewContentMobile'
+import ListViewContentMobile from 'components/ListViewContent/ListViewContentMobile'
+import { Box } from 'theme-ui'
+import CardView from './CardView'
 
 const UserBillListView: React.FC<{
   bills: Bills[]
@@ -53,6 +55,7 @@ const UserBillListView: React.FC<{
             ml={10}
           />
         ),
+        titleContainerWidth: 255,
         cardContent: (
           <>
             {isMobile ? (
@@ -85,37 +88,46 @@ const UserBillListView: React.FC<{
                   toolTipTransform="translate(0, 65%)"
                 />
                 <VestedTimer lastBlockTimestamp={ownedBill.lastBlockTimestamp} vesting={ownedBill.vesting} />
-                <>
-                  <Flex alignItems="center" style={{ height: '100%' }}>
-                    <Claim
-                      billAddress={bill.contractAddress[chainId]}
-                      billIds={[ownedBill.id]}
-                      buttonSize={100}
-                      pendingRewards={ownedBill?.pendingRewards}
-                      margin={'10px'}
-                    />
-                  </Flex>
-                  <Flex alignItems="center" style={{ height: '100%' }}>
-                    <BillModal buttonText={t('VIEW')} bill={bill} billId={ownedBill.id} buttonSize={100} />
-                  </Flex>
-                </>
+                <Flex sx={{ minWidth: '220px', alignItems: 'center' }}>
+                  <Claim
+                    billAddress={bill.contractAddress[chainId]}
+                    billIds={[ownedBill.id]}
+                    buttonSize={100}
+                    pendingRewards={ownedBill?.pendingRewards}
+                    margin={'10px'}
+                  />
+                  <BillModal buttonText={t('VIEW')} bill={bill} billId={ownedBill.id} buttonSize={'100px'} />
+                </Flex>
               </>
             )}
           </>
         ),
-        expandedContentSize: 135,
+        expandedContentSize: 176,
         expandedContent: isMobile && (
-          <Flex flexDirection="column" alignItems="center" style={{ height: '110px', width: '100%' }}>
-            <Flex alignItems="center" justifyContent="center">
-              <Claim
-                billAddress={bill.contractAddress[chainId]}
-                billIds={[ownedBill.id]}
-                pendingRewards={ownedBill?.pendingRewards}
-                margin={'0'}
+          <Flex sx={{ width: '100%', flexWrap: 'wrap', padding: '0 10px' }}>
+            <Flex sx={{ width: '100%', flexDirection: 'column' }}>
+              <ListViewContentMobile
+                title={'Pending'}
+                value={pending}
+                toolTip={`This is the amount of unvested tokens that cannot be claimed yet.`}
+                toolTipPlacement={'bottomLeft'}
+                toolTipTransform={'translate(22%, 0%)'}
               />
+              <VestedTimer lastBlockTimestamp={ownedBill.lastBlockTimestamp} vesting={ownedBill.vesting} mobileFlag />
             </Flex>
-            <Flex alignItems="center" mt="20px">
-              <BillModal buttonText={t('VIEW')} bill={bill} billId={ownedBill.id} buttonSize={200} />
+            <Flex sx={{ width: '100%', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <Box sx={{ width: '240px', margin: '10px 0' }}>
+                <Claim
+                  billAddress={bill.contractAddress[chainId]}
+                  billIds={[ownedBill.id]}
+                  pendingRewards={ownedBill?.pendingRewards}
+                  margin={'0'}
+                  buttonSize={200}
+                />
+              </Box>
+              <Box sx={{ width: '240px' }}>
+                <BillModal buttonText={t('VIEW')} bill={bill} billId={ownedBill.id} buttonSize={'240px'} />
+              </Box>
             </Flex>
           </Flex>
         ),
@@ -125,7 +137,7 @@ const UserBillListView: React.FC<{
   return (
     <>
       {!listView ? (
-        <BillCard bills={bills} showClaimed={showClaimed} />
+        <CardView bills={bills} showClaimed={showClaimed} />
       ) : billsListView?.length ? (
         <ListView listViews={billsListView?.reverse()} />
       ) : (

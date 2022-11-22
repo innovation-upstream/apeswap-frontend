@@ -12,7 +12,7 @@ interface BillModalProps {
   buttonText?: string
   id?: number
   billId?: string
-  buttonSize?: number
+  buttonSize?: string
   buyFlag?: boolean
   billCardImage?: string
   disabled?: boolean

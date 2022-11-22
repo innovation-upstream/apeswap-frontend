@@ -14,11 +14,9 @@ import { BillCardsContainer, BillsImage, CardContainer } from './styles'
 import { StyledButton } from '../styles'
 import BillModal from '../Modals'
 
-const BillCard: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, showClaimed }) => {
+const CardView: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, showClaimed }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const scrollDown = () => window.scrollBy({ top: 500, behavior: 'smooth' })
-  const ownedBillsAmount = bills?.flatMap((bill) => (bill?.userOwnedBillsData ? bill?.userOwnedBillsData : [])).length
   const billsCardView = bills.flatMap((bill) => {
     const ownedBills = bill?.userOwnedBillsData
     return ownedBills?.flatMap((ownedBill, i) => {
@@ -72,4 +70,4 @@ const BillCard: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, s
   return <BillCardsContainer>{billsCardView}</BillCardsContainer>
 }
 
-export default React.memo(BillCard)
+export default React.memo(CardView)

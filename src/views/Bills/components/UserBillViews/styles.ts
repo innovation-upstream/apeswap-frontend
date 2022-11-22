@@ -98,25 +98,18 @@ export const ControlContainer = styled(Flex)`
   border-radius: 10px;
   justify-content: space-between;
   flex-direction: row;
-  padding: 0 20px;
+  padding: 10px 20px;
   z-index: 2;
   background-color: ${({ theme }) => theme.colors.white2};
   min-width: 300px;
   max-width: 500px;
   width: 100%;
   align-self: center;
-  height: 225px;
   margin-top: 20px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    height: 180px;
-  }
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
-    min-height: 59px;
-    height: 100%;
     align-items: center;
     max-width: 100%;
-    height: auto;
   }
 `
 

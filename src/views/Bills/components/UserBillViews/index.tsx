@@ -17,7 +17,7 @@ const UserBillViews: React.FC<UserBillListViewProps> = ({ handleBillsViewChange 
   const [query, setQuery] = useState('')
   const [sortOption, setSortOption] = useState('discount')
   const [filterOption, setFilterOption] = useState('all')
-  const [showClaimed, setShowClaimed] = useState(true)
+  const [showClaimed, setShowClaimed] = useState(false)
   const [listView, setListView] = useState(true)
   const noResults = !!query || filterOption !== 'all' || showClaimed
 

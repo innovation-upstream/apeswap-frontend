@@ -214,6 +214,7 @@ const BillsListView: React.FC = () => {
                   id={bill.index}
                   buyFlag
                   disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
+                  buttonSize={'240px'}
                 />
               </Flex>
             </Flex>
