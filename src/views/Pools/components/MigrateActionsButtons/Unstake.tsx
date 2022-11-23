@@ -21,11 +21,15 @@ const Unstake = ({ rawTokenAmount }: { rawTokenAmount: string }) => {
       load={txPending}
       onClick={() => {
         setTxPending(true)
-        unstake(masterChef, 0, rawTokenAmount).then(() => {
-          setTxPending(false)
-          dispatch(updateUserBalance(chainId, 999, account))
-          dispatch(updateUserStakedBalance(chainId, 999, account))
-        })
+        unstake(masterChef, 0, rawTokenAmount)
+          .then(() => {
+            setTxPending(false)
+            dispatch(updateUserBalance(chainId, 999, account))
+            dispatch(updateUserStakedBalance(chainId, 999, account))
+          })
+          .catch(() => {
+            setTxPending(false)
+          })
       }}
     >
       Withdraw

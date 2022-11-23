@@ -23,10 +23,14 @@ const Approve = ({ pid, lpAddress }: { pid: number; lpAddress: string }) => {
       load={txPending}
       onClick={() => {
         setTxPending(true)
-        approve(tokenContract, masterChefV2).then(() => {
-          setTxPending(false)
-          dispatch(updateFarmV2UserAllowances(chainId, pid, account))
-        })
+        approve(tokenContract, masterChefV2)
+          .then(() => {
+            setTxPending(false)
+            dispatch(updateFarmV2UserAllowances(chainId, pid, account))
+          })
+          .catch(() => {
+            setTxPending(false)
+          })
       }}
     >
       Approve

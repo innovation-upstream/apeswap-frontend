@@ -21,12 +21,16 @@ const Unstake = ({ pid, rawTokenAmount, farmV2Pid }: { pid: number; rawTokenAmou
       load={txPending}
       onClick={() => {
         setTxPending(true)
-        unstake(masterChef, pid, rawTokenAmount).then(() => {
-          setTxPending(false)
-          dispatch(updateFarmV2UserTokenBalances(chainId, farmV2Pid, account))
-          dispatch(updateFarmUserStakedBalances(chainId, pid, account))
-          dispatch(updateFarmUserTokenBalances(chainId, pid, account))
-        })
+        unstake(masterChef, pid, rawTokenAmount)
+          .then(() => {
+            setTxPending(false)
+            dispatch(updateFarmV2UserTokenBalances(chainId, farmV2Pid, account))
+            dispatch(updateFarmUserStakedBalances(chainId, pid, account))
+            dispatch(updateFarmUserTokenBalances(chainId, pid, account))
+          })
+          .catch(() => {
+            setTxPending(false)
+          })
       }}
     >
       Withdraw

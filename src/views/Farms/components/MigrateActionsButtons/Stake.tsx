@@ -19,11 +19,15 @@ const Stake = ({ pid, rawTokenBalance }: { pid: number; rawTokenBalance: string 
       load={txPending}
       onClick={() => {
         setTxPending(true)
-        stakeMasterChefV2(masterChefV2, pid, rawTokenBalance).then(() => {
-          setTxPending(false)
-          dispatch(updateFarmV2UserStakedBalances(chainId, pid, account))
-          dispatch(updateFarmV2UserTokenBalances(chainId, pid, account))
-        })
+        stakeMasterChefV2(masterChefV2, pid, rawTokenBalance)
+          .then(() => {
+            setTxPending(false)
+            dispatch(updateFarmV2UserStakedBalances(chainId, pid, account))
+            dispatch(updateFarmV2UserTokenBalances(chainId, pid, account))
+          })
+          .catch(() => {
+            setTxPending(false)
+          })
       }}
     >
       Deposit
