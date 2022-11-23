@@ -15,7 +15,7 @@ const EXCHANGE_POLYGON_SUBGRAPH_URL = 'https://api.thegraph.com/subgraphs/name/a
 
 // TODO: Switch this back to main
 export const apeswapListUrl =
-  process.env.REACT_APP_LISTS_CONFIG_URL ||
+  // process.env.REACT_APP_LISTS_CONFIG_URL ||
   'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-lists/feat/mav2/config'
 /* eslint-disable camelcase */
 
