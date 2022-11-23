@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useState } from 'react'
 import { Currency, Token } from '@ape.swap/sdk'
-import { Flex, Text, ModalProps, ModalFooter, Modal } from '@ape.swap/uikit'
+import { Flex, ModalProps, ModalFooter, Modal, Button } from '@ape.swap/uikit'
 import { TokenList } from '@uniswap/token-lists'
 import { useTranslation } from 'contexts/Localization'
 import CurrencySearch from './CurrencySearch'
@@ -98,13 +98,13 @@ export default function CurrencySearchModal({
           {modalView === CurrencyModalView.search && !isZapInput && (
             <Box sx={{ marginBottom: ['30px', '0px'] }}>
               <ModalFooter onDismiss={onDismiss}>
-                <Text
+                <Button
                   onClick={() => setModalView(CurrencyModalView.manage)}
                   className="list-token-manage-button"
-                  sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  sx={{ cursor: 'pointer' }}
                 >
                   {t('Manage Tokens')}
-                </Text>
+                </Button>
               </ModalFooter>
             </Box>
           )}
