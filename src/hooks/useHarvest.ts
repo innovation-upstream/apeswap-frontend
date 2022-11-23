@@ -98,10 +98,13 @@ export const useSousHarvest = (sousId) => {
   const { chainId } = useActiveWeb3React()
   const sousChefContract = useSousChef(sousId)
   const masterChefContract = useMasterchef()
+  const masterChefContractV2 = useMasterChefV2Contract()
 
   const handleHarvest = useCallback(async () => {
     let trxHash
     if (sousId === 0) {
+      trxHash = await harvestMasterChefV2(masterChefContractV2, 0)
+    } else if (sousId === 999) {
       trxHash = await harvest(masterChefContract, 0)
     } else {
       trxHash = await soushHarvest(sousChefContract)
@@ -115,7 +118,7 @@ export const useSousHarvest = (sousId) => {
       },
     })
     return trxHash
-  }, [masterChefContract, sousChefContract, sousId, chainId])
+  }, [masterChefContract, sousChefContract, sousId, masterChefContractV2, chainId])
 
   return { onHarvest: handleHarvest }
 }

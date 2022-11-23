@@ -12,12 +12,12 @@ const fetchPools = async (chainId: number, tokenPrices: TokenPrices[], poolsConf
     poolIds.push(pool.sousId)
     return fetchPoolCalls(pool, chainId)
   })
-  // We do not want the block time for the banana earn banana pool so we append two null values to keep the chunks even
   const vals = await multicall(chainId, [...sousChefABI, ...bananaABI], poolCalls)
-  const formattedVals = [null, null, ...vals]
+  // We do not want the block time for the banana earn banana pool so we append two null values to keep the chunks even
+  // First null values is for Master Ape V2 and second is Master Ape V1
+  const formattedVals = [null, null, vals[0], null, null, ...vals.slice(1)]
   const chunkSize = formattedVals.length / poolsConfig.length
   const chunkedPools = chunk(formattedVals, chunkSize)
-
   return cleanPoolData(poolIds, chunkedPools, tokenPrices, chainId, poolsConfig)
 }
 

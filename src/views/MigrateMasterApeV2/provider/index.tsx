@@ -83,7 +83,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
 
   // Set the initial status for each LP
   useEffect(() => {
-    console.log('Ut oh in here')
     setMigrateLpStatus(v1ApeProducts, v2ApeProducts, v2Farms, migrateMaximizers, setLpStatus, chainId)
   }, [loaded, account, chainId])
 
@@ -98,8 +97,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   //     setMigrationLoading(false)
   //   }
   // }
-
-  console.log(lpStatus)
 
   return (
     <MigrateContext.Provider

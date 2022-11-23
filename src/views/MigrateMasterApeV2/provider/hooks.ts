@@ -372,7 +372,7 @@ export const usePullAndMergeV2Products = () => {
     () => [
       ...userV2Farms.map((farm) => {
         // This should be updated once we know the pid for single staking
-        const singleStakeAsset = false // farm.pid === 0
+        const singleStakeAsset = farm.pid === 0
         const lp = farm.lpAddresses[chainId].toLowerCase()
         return {
           id: `${ProductTypes.FARM}-${lp}`,
@@ -424,7 +424,6 @@ export const usePullAndMergeV2Products = () => {
     [userV2Farms, chainId],
   )
 
-  console.log(mergedProducts)
   const loaded = !!farms?.[0]?.userData && mergedProducts
   return { mergedProducts, loaded }
 }

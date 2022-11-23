@@ -23,7 +23,7 @@ const fetchPoolCalls = (pool: PoolConfig, chainId: number): Call[] => {
     name: 'totalStaked',
   }
   // Banana earn banana pool will break on start / end block calls
-  if (pool.sousId === 0) {
+  if (pool.sousId === 0 || pool.sousId === 999) {
     return [bananaCall]
   }
   return [...standardCalls, pool.reflect || pool.stakingToken.symbol === 'GNANA' ? gnanaCall : bananaCall]

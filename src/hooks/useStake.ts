@@ -55,15 +55,17 @@ const useStake = (pid: number, v2Flag: boolean) => {
 
 export const useSousStake = (sousId) => {
   const dispatch = useDispatch()
-  // TODO switch to useActiveWeb3React. useWeb3React is legacy hook and useActiveWeb3React should be used going forward
-  const { account, chainId } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
   const sousChefContract = useSousChef(sousId)
+  const masterChefContractV2 = useMasterChefV2Contract()
 
   const handleStake = useCallback(
     async (amount: string) => {
       let trxHash
       if (sousId === 0) {
+        trxHash = await stakeMasterChefV2(masterChefContractV2, 0, amount)
+      } else if (sousId === 999) {
         trxHash = await stake(masterChefContract, 0, amount)
       } else {
         trxHash = await sousStake(sousChefContract, amount)
@@ -83,7 +85,7 @@ export const useSousStake = (sousId) => {
       dispatch(updateUserBalance(chainId, sousId, account))
       return trxHash
     },
-    [account, dispatch, masterChefContract, sousChefContract, sousId, chainId],
+    [account, dispatch, masterChefContract, sousChefContract, sousId, masterChefContractV2, chainId],
   )
 
   return { onStake: handleStake }

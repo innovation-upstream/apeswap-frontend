@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Flex } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import ListViewMenu from 'components/ListViewMenu'
 import { orderBy } from 'lodash'
@@ -20,10 +20,9 @@ import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
 import LegacyFarms from './LegacyFarms'
+import DisplayDepositV2Farms from './components/DisplayDepositV2Farms'
 
 const Farms: React.FC = () => {
-  useSetFarmsV2()
-  usePollFarmsV2()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
   const { pathname } = useLocation()
@@ -61,11 +60,12 @@ const Farms: React.FC = () => {
   const [stakedOnly, setStakedOnly] = useState(false)
   const isActive = !pathname.includes('history')
 
-  const activeFarms = farmsLP?.filter((farm) => farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP?.filter((farm) => farm.multiplier === '0X')
-  // TODO:  If banana -> banana is pid 0
-  //   const activeFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-  //   const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const activeFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+
+  const farmsWithLpBalance = farmsLP?.filter(
+    (farm) => farm.pid !== 0 && new BigNumber(farm?.userData?.tokenBalance).isGreaterThan(0),
+  )
 
   const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
@@ -191,7 +191,7 @@ const Farms: React.FC = () => {
               onSetSortOption={setSortOption}
               onSetStake={setStakedOnly}
               harvestAll={
-                <></> // <HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} v2Flag={true} />
+                <HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} v2Flag={true} />
               }
               stakedOnly={stakedOnly}
               query={query}
@@ -205,11 +205,38 @@ const Farms: React.FC = () => {
             </Flex>
           ) : (
             <>
-              <Flex sx={{ border: '5px solid', borderColor: 'white4', borderRadius: '10px', mt: '20px' }}>
-                <LegacyFarms />
-              </Flex>
-              <Flex sx={{ border: '5px solid', borderColor: 'gold', borderRadius: '10px', mt: '20px' }}>
-                <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} v2Flag={true} />
+              <LegacyFarms />
+              {farmsWithLpBalance.length > 0 && (
+                <Flex
+                  sx={{
+                    background: 'gradient',
+                    padding: '5px',
+                    borderRadius: '10px 0px 10px 10px',
+                    mt: '40px',
+                    position: 'relative',
+                  }}
+                >
+                  <Flex
+                    sx={{
+                      position: 'absolute',
+                      right: 0,
+                      top: 0,
+                      padding: '2.5px 10px',
+                      borderRadius: '10px 10px 0px 0px',
+                      background: 'rgb(221,174,66)',
+                      transform: 'translate(0px, -24px)',
+                      zIndex: 10,
+                    }}
+                  >
+                    <Text size="12px" color="primaryBright">
+                      NEW Master Ape V2
+                    </Text>
+                  </Flex>
+                  <DisplayDepositV2Farms farms={farmsWithLpBalance} openPid={null} farmTags={null} v2Flag={true} />
+                </Flex>
+              )}
+              <Flex sx={{ mt: '20px' }}>
+                <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={null} v2Flag={true} />
               </Flex>
             </>
           )}

@@ -32,11 +32,12 @@ const useUnstakeAll = () => {
     (migrateLps: MasterApeProductsInterface[]) => {
       migrateLps.map(async (migrateLp) => {
         // Get the corresponding farm pid
-        const v2FarmPid = v2Farms.find(
-          ({ lpAddresses }) =>
-            migrateLp.type === ProductTypes.FARM && migrateLp.lp === lpAddresses[chainId].toLowerCase(),
-        )?.pid
-        console.log(v2FarmPid)
+        // TODO: Remove the or 0 pid after farmaway is removed
+        const v2FarmPid =
+          v2Farms.find(
+            ({ lpAddresses }) =>
+              migrateLp.type === ProductTypes.FARM && migrateLp.lp === lpAddresses[chainId].toLowerCase(),
+          )?.pid || 0
         try {
           const { pid, stakedAmount, id, type } = migrateLp
           // Define contracts in the callback to avoid a new contract being initalized every render

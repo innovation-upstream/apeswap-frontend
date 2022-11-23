@@ -2,7 +2,7 @@ import { SmartRouter } from '@ape.swap/sdk'
 import { SMART_PRICE_GETTERS } from 'config/constants/chains'
 import addresses from 'config/constants/contracts'
 
-export const getBananaAddress = (chainId: number) => {
+export const getBananaAddress = (chainId: number): string => {
   return addresses.banana[chainId]
 }
 export const getGoldenBananaAddress = (chainId: number) => {

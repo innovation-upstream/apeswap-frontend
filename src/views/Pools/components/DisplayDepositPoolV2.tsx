@@ -12,15 +12,21 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import CalcButton from 'components/RoiCalculator/CalcButton'
 import useIsMobile from 'hooks/useIsMobile'
 import { Pool, Tag } from 'state/types'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
 import { StyledTag, poolStyles } from './styles'
+import Stake from './MigrateActionsButtons/Stake'
+import Approve from './MigrateActionsButtons/Approve'
 
-const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
+const DisplayDepositPoolV2: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({
+  pools,
+  openId,
+  poolTags,
+}) => {
   const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
@@ -32,6 +38,8 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
     const token1 = pool?.stakingToken?.symbol
     const token2 = pool?.rewardToken?.symbol
     const totalDollarAmountStaked = Math.round(getBalanceNumber(pool?.totalStaked) * pool?.stakingToken?.price)
+    const rawTokenBalance = getFullDisplayBalance(new BigNumber(pool?.userData.stakingTokenBalance))
+
     const liquidityUrl = !pool?.lpStaking
       ? pool?.stakingToken?.symbol === 'GNANA'
         ? 'https://apeswap.finance/gnana'
@@ -58,44 +66,31 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
 
     // Token symbol logic is here temporarily for nfty
     return {
-      tag: (
-        <>
-          {pTag?.pid === pool?.sousId && (
-            <Box sx={{ marginRight: '5px', mt: '1px' }}>
-              <StyledTag key={pTag?.pid} variant={tagColor}>
-                {pTag?.text}
-              </StyledTag>
-            </Box>
-          )}
-        </>
-      ),
       tokens: { token1, token2: token2 === 'NFTY ' ? 'NFTY2' : token2 || pool?.tokenName },
       title: <Text bold>{pool?.rewardToken?.symbol || pool?.tokenName}</Text>,
       id: pool?.sousId,
-      infoContent: <InfoContent pool={pool} />,
-      infoContentPosition: 'translate(8%, 0%)',
-      ttWidth: '250px',
-      toolTipIconWidth: isMobile && '20px',
-      toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },
       open: openId === pool?.sousId,
       cardContent: (
         <>
-          <Flex sx={{ width: '90px', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-            {!isMobile && (
-              <>
-                <a href={pool?.projectLink} target="_blank" rel="noreferrer">
-                  <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
-                </a>
-                <a href={pool?.twitter} target="_blank" rel="noreferrer">
-                  <IconButton icon="twitter" color="primaryBright" width={20} />
-                </a>
-              </>
-            )}
-          </Flex>
+          {!isMobile && (
+            <Flex sx={{ width: '90px', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
+              {!isMobile && (
+                <>
+                  <a href={pool?.projectLink} target="_blank" rel="noreferrer">
+                    <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
+                  </a>
+                  <a href={pool?.twitter} target="_blank" rel="noreferrer">
+                    <IconButton icon="twitter" color="primaryBright" width={20} />
+                  </a>
+                </>
+              )}
+            </Flex>
+          )}
           <ListViewContent
             title={t('APR')}
             value={`${isActive ? pool?.apr?.toFixed(2) : '0.00'}%`}
             width={isMobile ? 95 : 80}
+            ml={isMobile && 10}
             height={50}
             toolTip={t('APRs are calculated based on current value of the token, reward rate, and share of pool.')}
             toolTipPlacement="bottomLeft"
@@ -110,76 +105,63 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
               />
             }
           />
-          <ListViewContent
-            title={t('Total Staked')}
-            value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
-            width={isMobile ? 160 : 110}
-            height={50}
-            toolTip={t('The total value of the tokens currently staked in this pool.')}
-            toolTipPlacement="bottomRight"
-            toolTipTransform="translate(13%, 0%)"
-          />
-          <ListViewContent title={t('Earned')} value={userEarningsUsd} height={50} width={isMobile ? 80 : 150} />
-        </>
-      ),
-      expandedContent: (
-        <>
-          <Flex sx={poolStyles.actionContainer}>
-            {isMobile && (
-              <ListViewContent
-                title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
-                value={userTokenBalance}
-                value2={userTokenBalanceUsd}
-                value2Secondary
-                width={190}
-                height={50}
-                lineHeight={15}
-                ml={10}
-              />
-            )}
-            <Button variant="primary" sx={poolStyles.styledBtn} onClick={openLiquidityUrl}>
-              {t('GET')} {pool?.stakingToken?.symbol}
-            </Button>
-            {!isMobile && (
-              <ListViewContent
-                title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
-                value={userTokenBalance}
-                value2={userTokenBalanceUsd}
-                value2Secondary
-                width={190}
-                height={50}
-                lineHeight={15}
-                ml={10}
-              />
+          {!isMobile && (
+            <ListViewContent
+              title={t('Total Staked')}
+              value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
+              width={isMobile ? 160 : 110}
+              height={50}
+              toolTip={t('The total value of the tokens currently staked in this pool.')}
+              toolTipPlacement="bottomRight"
+              toolTipTransform="translate(13%, 0%)"
+            />
+          )}
+          {!isMobile && (
+            <ListViewContent title={t('Earned')} value={userEarningsUsd} height={50} width={isMobile ? 80 : 80} />
+          )}
+          <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
+            {new BigNumber(pool?.userData.allowance).gt(0) ? (
+              <Stake pid={0} rawTokenBalance={rawTokenBalance} />
+            ) : (
+              <Approve pid={0} lpAddress={pool.stakingToken.address[chainId]} />
             )}
           </Flex>
-          {!isMobile && <NextArrow />}
-          <Actions
-            allowance={userAllowance?.toString()}
-            stakedBalance={pool?.userData?.stakedBalance?.toString()}
-            stakedTokenSymbol={pool?.stakingToken?.symbol}
-            stakingTokenBalance={pool?.userData?.stakingTokenBalance?.toString()}
-            stakeTokenAddress={pool?.stakingToken?.address[chainId]}
-            stakeTokenValueUsd={pool?.stakingToken?.price}
-            earnTokenSymbol={pool?.rewardToken?.symbol || pool?.tokenName}
-            sousId={pool?.sousId}
-          />
-          {!isMobile && <NextArrow />}
-          <HarvestAction
-            sousId={pool?.sousId}
-            disabled={userEarnings <= 0}
-            userEarnings={userEarnings}
-            earnTokenSymbol={pool?.rewardToken?.symbol || pool?.tokenName}
-          />
         </>
       ),
     } as ExtendedListViewProps
   })
   return (
-    <Flex sx={poolStyles.container}>
-      <ListView listViews={poolsListView} />
+    <Flex
+      sx={{
+        background: 'gradient',
+        padding: '5px',
+        borderRadius: '10px 0px 10px 10px',
+        mt: '20px',
+        mb: '20px',
+        position: 'relative',
+      }}
+    >
+      <Flex
+        sx={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          padding: '2.5px 10px',
+          borderRadius: '10px 10px 0px 0px',
+          background: 'rgb(221,174,66)',
+          transform: 'translate(0px, -24px)',
+          zIndex: 10,
+        }}
+      >
+        <Text size="12px" color="primaryBright">
+          NEW Master Ape V2
+        </Text>
+      </Flex>
+      <Flex sx={poolStyles.container}>
+        <ListView listViews={poolsListView} />
+      </Flex>
     </Flex>
   )
 }
 
-export default React.memo(DisplayPools)
+export default React.memo(DisplayDepositPoolV2)

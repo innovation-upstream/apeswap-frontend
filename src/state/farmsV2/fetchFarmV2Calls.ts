@@ -51,7 +51,6 @@ const fetchFarmV2Calls = (farm: FarmConfig, chainId: number): Call[] => {
       name: 'totalAllocPoint',
     },
   ]
-  console.log(calls)
   return calls
 }
 

@@ -67,24 +67,20 @@ const useUnstake = (pid: number, v2Flag: boolean) => {
   return { onUnstake: handleUnstake }
 }
 
-// TODO remove legacy code we don't need to support
-const SYRUPIDS = []
-
 export const useSousUnstake = (sousId) => {
   const dispatch = useDispatch()
-  // TODO switch to useActiveWeb3React. useWeb3React is legacy hook and useActiveWeb3React should be used going forward
-  const { account, chainId } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
+  const masterChefContractV2 = useMasterChefV2Contract()
   const sousChefContract = useSousChef(sousId)
-  const isOldSyrup = SYRUPIDS.includes(sousId)
 
   const handleUnstake = useCallback(
     async (amount: string) => {
       let trxHash
       if (sousId === 0) {
+        trxHash = await unstakeMasterChefV2(masterChefContractV2, 0, amount)
+      } else if (sousId === 999) {
         trxHash = await unstake(masterChefContract, 0, amount)
-      } else if (isOldSyrup) {
-        trxHash = await sousEmegencyWithdraw(sousChefContract)
       } else {
         trxHash = await sousUnstake(sousChefContract, amount)
       }
@@ -102,7 +98,7 @@ export const useSousUnstake = (sousId) => {
       })
       return trxHash
     },
-    [account, dispatch, isOldSyrup, masterChefContract, sousChefContract, sousId, chainId],
+    [account, dispatch, masterChefContract, masterChefContractV2, sousChefContract, sousId, chainId],
   )
 
   return { onUnstake: handleUnstake }

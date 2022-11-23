@@ -1,11 +1,12 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Flex } from '@ape.swap/uikit'
-import { dexStyles } from '../Dex/styles'
 import { MigrateProvider } from './provider'
 // import { usePollFarms, useSetFarms } from 'state/farms/hooks'
 // import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
 import MigrateStart from './MigrateStart'
+import Banner from 'components/Banner'
+import MigrateTimer from './components/MigrateTimer'
 // import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
 
 const MigrateMasterApeV2: React.FC = () => {
@@ -19,8 +20,33 @@ const MigrateMasterApeV2: React.FC = () => {
   // usePollFarms()
   // usePollFarmsV2()
   return (
-    <Flex sx={dexStyles.pageContainer}>
-      <Flex sx={{ flexDirection: 'column', width: '1200px' }}>
+    <Flex
+      sx={{
+        alignItems: 'center',
+        height: 'fit-content',
+        minHeight: '100vh',
+        flexDirection: 'column',
+      }}
+    >
+      <Flex sx={{ flexDirection: 'column', maxWidth: '1200px', width: '100%' }}>
+        <Flex sx={{ position: 'relative' }}>
+          <Flex
+            sx={{
+              position: 'absolute',
+              right: '12.5%',
+              bottom: '47.5%',
+              zIndex: 10,
+              flexDirection: 'column',
+              width: '30%',
+              flexWrap: 'no-wrap',
+              alignItems: 'flex-start',
+            }}
+          >
+            <MigrateTimer migrateTimeStart={1672531200} />
+          </Flex>
+          <Banner banner="migrate" link="" title="MasterApe Migration" margin="30px 0px 20px 0px" />
+        </Flex>
+        <Flex sx={{ margin: '10px 0px' }} />
         <MigrateProvider>
           <MigrateStart />
         </MigrateProvider>

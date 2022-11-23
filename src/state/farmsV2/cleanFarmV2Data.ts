@@ -14,11 +14,9 @@ const cleanFarmV2Data = (
 ) => {
   const data = chunkedFarms.map((chunk, index) => {
     const farmConfig = farmsConfig?.find((farm) => farm.pid === farmIds[index])
-    console.log(lpPrices)
     const filteredLpPrice = lpPrices?.find(
       (lp) => lp.address[chainId].toLowerCase() === farmConfig.lpAddresses[chainId].toLowerCase(),
     )
-    console.log(filteredLpPrice)
     const [
       tokenBalanceLP,
       quoteTokenBlanceLP,

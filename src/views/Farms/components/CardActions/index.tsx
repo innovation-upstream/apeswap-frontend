@@ -39,7 +39,7 @@ const CardActions: React.FC<CardActionProps> = ({
     if (!new BigNumber(allowance)?.gt(0)) {
       return (
         <CenterContainer>
-          <ApprovalAction stakingTokenContractAddress={stakeLpAddress} pid={pid} />
+          <ApprovalAction stakingTokenContractAddress={stakeLpAddress} pid={pid} v2Flag={v2Flag} />
         </CenterContainer>
       )
     }

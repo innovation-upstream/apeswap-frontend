@@ -55,7 +55,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
                       transformTip="translate(10%, 0%)"
                       width="200px"
                     >
-                      <Svg icon="info" width="16.5px" color={activeIndex >= i ? 'primaryBright' : 'text'} />
+                      <Svg icon="question" width="16.5px" color={activeIndex >= i ? 'primaryBright' : 'text'} />
                     </TooltipBubble>
                   </Flex>
                 </Flex>
