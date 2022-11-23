@@ -31,6 +31,7 @@ import MigrateMasterApeV2 from './views/MigrateMasterApeV2'
 import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
 import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
 import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
+import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -260,6 +261,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
+      <MigrationRequiredPopup />
       <NetworkProductCheck />
       <PageMeta />
       <ResetScroll />

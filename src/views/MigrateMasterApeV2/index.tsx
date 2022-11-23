@@ -33,7 +33,7 @@ const MigrateMasterApeV2: React.FC = () => {
           <Flex
             sx={{
               position: 'absolute',
-              right: '12.5%',
+              right: '8.5%',
               bottom: '47.5%',
               zIndex: 10,
               flexDirection: 'column',
