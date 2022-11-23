@@ -16,6 +16,7 @@ import {
   SHOW_DEFAULT_MODAL_KEY,
   SET_DEF_MOD_KEY,
   SHOW_DEF_MOD_KEY,
+  TutorialModal,
 } from 'config/constants'
 import { circularRoute } from 'utils'
 // import { NETWORK_LABEL } from 'config/constants/chains'
@@ -29,7 +30,6 @@ import { circularRoute } from 'utils'
 // import { OrderSlides } from 'components/MarketingModalContent/Orders'
 // import { LiquiditySlides } from 'components/MarketingModalContent/Liquidity'
 import Tutorial from 'components/MarketingModalContent/Tutorial'
-import { Product } from 'components/MarketingModalContent/slides'
 
 const MarketingModalCheck = () => {
   const { chainId } = useActiveWeb3React()
@@ -111,35 +111,35 @@ const MarketingModalCheck = () => {
   ]
 
   return jungleFarms ? (
-    <Tutorial type={Product.JUNGLE_FARMS} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.JUNGLE_FARMS} onDismiss={onDismiss} />
   ) : bananaFarms ? (
-    <Tutorial type={Product.BANANA_FARMS} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.BANANA_FARMS} onDismiss={onDismiss} />
   ) : polygonFarms ? (
-    <Tutorial type={Product.POLYGON_FARMS} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.POLYGON_FARMS} onDismiss={onDismiss} />
   ) : telosFarms ? (
-    <Tutorial type={Product.TELOS_FARMS} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.TELOS_FARMS} onDismiss={onDismiss} />
   ) : bnbDex ? (
-    <Tutorial type={Product.BNB_DEX} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.BNB_DEX} onDismiss={onDismiss} />
   ) : polygonDex ? (
-    <Tutorial type={Product.POLYGON_DEX} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.POLYGON_DEX} onDismiss={onDismiss} />
   ) : ethDex ? (
-    <Tutorial type={Product.ETHEREUM_DEX} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.ETHEREUM_DEX} onDismiss={onDismiss} />
   ) : telosDex ? (
-    <Tutorial type={Product.TELOS_DEX} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.TELOS_DEX} onDismiss={onDismiss} />
   ) : poolsRoute ? (
-    <Tutorial type={Product.POOLS} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.POOLS} onDismiss={onDismiss} />
   ) : maximizersRoute ? (
-    <Tutorial type={Product.MAXIMIZERS_VAULTS} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.MAXIMIZERS_VAULTS} onDismiss={onDismiss} />
   ) : gnanaTutorialRoute ? (
-    <Tutorial type={Product.GNANA} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.GNANA} onDismiss={onDismiss} />
   ) : billsRoute ? (
-    <Tutorial type={Product.TREASURY_BILL} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.TREASURY_BILL} onDismiss={onDismiss} />
   ) : iaoRoute ? (
-    <Tutorial type={Product.IAO} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.IAO} onDismiss={onDismiss} />
   ) : ordersRoute ? (
-    <Tutorial type={Product.ORDERS} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.ORDERS} onDismiss={onDismiss} />
   ) : liquidityRoute ? (
-    <Tutorial type={Product.LIQUIDITY} onDismiss={onDismiss} />
+    <Tutorial type={TutorialModal.LIQUIDITY} onDismiss={onDismiss} />
   ) : //  farmsRoute ? (
   //   <TutorialModal
   //     type={farm}

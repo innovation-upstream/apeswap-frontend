@@ -327,3 +327,23 @@ export const DOC_LINKS = {
   APESTATS: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/apestats',
   PROTOCOL_DASHBOARD: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/protocol-dashboard',
 }
+
+export enum TutorialModal {
+  BNB_DEX = 'BNB-dex',
+  POLYGON_DEX = 'Polygon-dex',
+  ETHEREUM_DEX = 'Ethereum-dex',
+  TELOS_DEX = 'Telos-dex',
+  JUNGLE_FARMS = 'jungle-farms',
+  BANANA_FARMS = 'banana-farms',
+  POLYGON_FARMS = 'Polygon-farms',
+  TELOS_FARMS = 'Telos-farms',
+  POOLS = 'pools',
+  MAXIMIZERS_VAULTS = 'maximizers-vaults',
+  GNANA = 'gnana',
+  TREASURY_BILL = 'treasury-bills',
+  IAO = 'iao',
+  ORDERS = 'orders',
+  LIQUIDITY = 'liquidity',
+
+  LENDING = 'lending',
+}

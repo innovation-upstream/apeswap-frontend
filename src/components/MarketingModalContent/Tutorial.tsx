@@ -4,7 +4,7 @@ import { TutorialModal } from '@ape.swap/uikit'
 import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { NETWORK_LABEL } from 'config/constants/chains'
-import { Product } from './slides'
+import { TutorialModal as Modals } from 'config/constants'
 import { useTranslation } from 'contexts/Localization'
 import { DexSlides } from './Dex'
 import { FarmSlides } from './Farm'
@@ -17,7 +17,7 @@ import { OrderSlides } from './Orders'
 import { LiquiditySlides } from './Liquidity'
 
 const Tutorial: React.FC<{
-  type: Product
+  type: Modals
   onDismiss: () => void
 }> = ({ type, onDismiss }) => {
   const { t } = useTranslation()
@@ -33,7 +33,7 @@ const Tutorial: React.FC<{
   const DEX = `${networkLabel}-dex`
   const FARMS = `${farmType}-farms`
 
-  const displayModal = (type: Product) => {
+  const displayModal = (type: Modals) => {
     switch (type) {
       case DEX:
         return {
