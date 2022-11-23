@@ -1,4 +1,4 @@
-import { Card, Flex, Text, Input } from '@apeswapfinance/uikit'
+import { Card, Flex, Text } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
 import { ThemeUIStyleObject } from 'theme-ui'
 

@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useMemo, useState } from 'react'
-import { Bills as BillType } from 'state/types'
+import { Bills } from 'state/types'
 import { Container } from '../styles'
 import UserBillListView from './UserBillListView'
 import UserBillsMenu from './UserBillsMenu'
@@ -15,13 +15,13 @@ interface UserBillListViewProps {
 const UserBillViews: React.FC<UserBillListViewProps> = ({ handleBillsViewChange }) => {
   const bills = useBills()
   const [query, setQuery] = useState('')
-  const [sortOption, setSortOption] = useState('discount')
-  const [filterOption, setFilterOption] = useState('all')
+  const [sortOption, setSortOption] = useState('sort')
+  const [filterOption, setFilterOption] = useState('filter')
   const [showClaimed, setShowClaimed] = useState(false)
   const [listView, setListView] = useState(true)
   const noResults = !!query || filterOption !== 'all' || showClaimed
 
-  const billsToRender = useMemo((): BillType[] => {
+  const billsToRender = useMemo((): Bills[] => {
     let billsToReturn = bills
     if (query) {
       billsToReturn = billsToReturn?.filter((bill) => {
@@ -34,9 +34,8 @@ const UserBillViews: React.FC<UserBillListViewProps> = ({ handleBillsViewChange 
     if (filterOption === 'jungleBill') {
       billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'JUNGLE Bill'.toUpperCase())
     }
-    return billsToReturn
+    return billsToReturn.filter((bill) => bill?.userOwnedBillsData?.length > 0)
   }, [bills, query, filterOption])
-  const userOwnedBills = billsToRender?.filter((bill) => bill?.userOwnedBillsData?.length > 0)
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
@@ -59,7 +58,8 @@ const UserBillViews: React.FC<UserBillListViewProps> = ({ handleBillsViewChange 
       />
       <Flex flexDirection="column" sx={{ padding: '20px 0 50px 0', width: '100%' }}>
         <UserBillListView
-          bills={userOwnedBills}
+          bills={billsToRender}
+          sortOption={sortOption}
           showClaimed={showClaimed}
           listView={listView}
           handleBillsViewChange={handleBillsViewChange}

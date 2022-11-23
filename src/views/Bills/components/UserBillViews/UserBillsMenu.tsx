@@ -1,29 +1,16 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import {
-  Checkbox,
-  Flex,
-  Select,
-  SelectItem,
-  Text,
-  Input,
-  useMatchBreakpoints,
-  Toggle,
-  Svg,
-  NetworkButton,
-} from '@ape.swap/uikit'
+import { Checkbox, Flex, Select, SelectItem, Text, Input, useMatchBreakpoints, Toggle, Svg } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { ClaimAllWrapper, ControlContainer, SearchText, styles } from './styles'
 import ClaimAll from '../Actions/ClaimAll'
 import { Bills } from 'state/types'
-import { SORT_OPTIONS } from '../BillsListView/BillsListMenu'
-import { AVAILABLE_CHAINS_ON_PRODUCTS } from '../../../../config/constants/chains'
 
 export const FILTER_OPTIONS = [
   {
-    label: 'All',
-    value: 'all',
+    label: 'Filter',
+    value: 'filter',
   },
   {
     label: 'BANANA',
@@ -32,6 +19,25 @@ export const FILTER_OPTIONS = [
   {
     label: 'Jungle',
     value: 'jungleBill',
+  },
+]
+
+export const SORT_OPTIONS = [
+  {
+    label: 'Sort',
+    value: 'sort',
+  },
+  {
+    label: 'Pending',
+    value: 'pending',
+  },
+  {
+    label: 'Claimable',
+    value: 'claimable',
+  },
+  {
+    label: 'Fully Vested',
+    value: 'vested',
   },
 ]
 
@@ -67,7 +73,7 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
   const { t } = useTranslation()
   const { isLg, isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isLg && !isXl && !isXxl
-  const [expanded, setExpended] = useState<boolean>(false)
+  const [expanded, setExpended] = useState(false)
   const userOwnedBills = bills?.filter((bill) => bill?.userOwnedBillsData?.length > 0)
   const ownedBillsAmount = bills
     ?.flatMap((bill) => (bill?.userOwnedBillsData ? bill.userOwnedBillsData : []))
@@ -134,14 +140,14 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
                   })}
                 </Select>
               </Flex>
-              <Flex sx={{ marginTop: '15px', width: '100%', justifyContent: 'space-around', alignItems: 'center' }}>
+              <Flex sx={{ marginTop: '15px', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Flex>
                   <Toggle
                     size="sm"
                     labels={[t('List'), t('Gallery')]}
                     onClick={() => setListView(!listView)}
                     checked={!listView}
-                    sx={{ height: '36px', alignItems: 'center' }}
+                    sx={{ height: '36px', alignItems: 'center', '& div': { minWidth: '70px', textAlign: 'center' } }}
                   />
                 </Flex>
                 <Flex>
@@ -201,7 +207,7 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
               labels={[t('List'), t('Gallery')]}
               onClick={() => setListView(!listView)}
               checked={!listView}
-              sx={{ height: '36px', alignItems: 'center' }}
+              sx={{ height: '36px', alignItems: 'center', '& div': { minWidth: '70px', textAlign: 'center' } }}
             />
           </Flex>
           <Flex>

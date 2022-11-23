@@ -1,17 +1,14 @@
 import { Flex, Skeleton } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import ListViewContent from 'components/ListViewContent'
-import ReactPlayer from 'react-player'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React from 'react'
 import { Bills } from 'state/types'
 import 'swiper/swiper.min.css'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import Claim from '../Actions/Claim'
-import { BillCardsContainer, BillsImage, CardContainer } from './styles'
-import { StyledButton } from '../styles'
+import { BillCardsContainer, CardContainer } from './styles'
 import BillModal from '../Modals'
 
 const CardView: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, showClaimed }) => {
@@ -64,8 +61,6 @@ const CardView: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, s
       )
     })
   })
-
-  console.log(billsCardView)
 
   return <BillCardsContainer>{billsCardView}</BillCardsContainer>
 }

@@ -63,6 +63,7 @@ export const ListViewContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  z-index: 1;
   & ${ListCardContainer}:first-child {
     border-radius: 10px 10px 0px 0px;
   }

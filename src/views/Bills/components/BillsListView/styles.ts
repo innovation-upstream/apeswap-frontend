@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { Flex, Input, Text } from '@apeswapfinance/uikit'
+import { Flex, Text } from '@apeswapfinance/uikit'
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const MainContainer = styled(Flex)`

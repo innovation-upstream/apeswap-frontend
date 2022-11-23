@@ -10,8 +10,8 @@ import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
 
 export const FILTER_OPTIONS = [
   {
-    label: 'All',
-    value: 'all',
+    label: 'Filter',
+    value: 'filter',
   },
   {
     label: 'BANANA',
@@ -24,6 +24,10 @@ export const FILTER_OPTIONS = [
 ]
 
 export const SORT_OPTIONS = [
+  {
+    label: 'Sort',
+    value: 'sort',
+  },
   {
     label: 'Discount',
     value: 'discount',
@@ -73,7 +77,7 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
   const { chainId } = useActiveWeb3React()
   const { isLg, isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isLg && !isXl && !isXxl
-  const [expanded, setExpended] = useState<boolean>(false)
+  const [expanded, setExpended] = useState(false)
 
   return (
     <ControlContainer>
@@ -125,7 +129,17 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
                   })}
                 </Select>
               </Flex>
-              <Flex sx={{ marginLeft: '15px', marginTop: '15px' }}>
+              <Flex
+                sx={{
+                  marginTop: '15px',
+                  width: '100%',
+                  '& button': {
+                    width: '100%',
+                    justifyContent: 'space-between',
+                    '& span': { width: '100%', textAlign: 'left' },
+                  },
+                }}
+              >
                 <NetworkButton
                   switchNetwork={switchNetwork}
                   chainId={chainId}
@@ -135,7 +149,7 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
               </Flex>
             </Flex>
           )}
-          <Flex sx={{ width: '100%', justifyContent: 'space-around', marginTop: '15px' }}>
+          <Flex sx={{ width: '100%', justifyContent: 'space-between', marginTop: '15px', maxWidth: '353px' }}>
             <Flex>
               <Toggle
                 size="sm"

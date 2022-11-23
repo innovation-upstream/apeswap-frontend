@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Flex, TooltipBubble, InfoIcon, Svg } from '@ape.swap/uikit'
 import React, { useState } from 'react'
-import { ContentContainer, DropDownIcon, ListCardContainer, ListExpandedContainer, styles } from './styles'
+import { ContentContainer, ListCardContainer, ListExpandedContainer, styles } from './styles'
 import { ListCardProps } from './types'
 import { AnimatePresence, motion } from 'framer-motion'
 

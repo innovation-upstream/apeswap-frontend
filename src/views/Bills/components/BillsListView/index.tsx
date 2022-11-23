@@ -2,7 +2,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { Flex, InfoIcon, TooltipBubble, useMatchBreakpoints } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
-import { Bills as BillType, Bills } from 'state/types'
+import { Bills } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ExtendedListViewProps } from 'components/ListView/types'
@@ -18,6 +18,7 @@ import { useBills } from '../../../../state/bills/hooks'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import EmptyListComponent, { EmptyComponentType } from '../EmptyListComponent/EmptyListComponent'
 import ListViewContentMobile from 'components/ListViewContent/ListViewContentMobile'
+import orderBy from 'lodash/orderBy'
 
 const BillsListView: React.FC = () => {
   const bills = useBills()
@@ -27,8 +28,8 @@ const BillsListView: React.FC = () => {
   const isSmall = !isXxl
   const isMobile = !isLg && !isXl && !isXxl
   const [query, setQuery] = useState('')
-  const [filterOption, setFilterOption] = useState('all')
-  const [sortOption, setSortOption] = useState('discount')
+  const [filterOption, setFilterOption] = useState('filter')
+  const [sortOption, setSortOption] = useState('sort')
   const [showOnlyDiscount, setShowOnlyDiscount] = useState(false)
   const [showAvailable, setShowAvailable] = useState(true)
   const noResults = !!query || filterOption !== 'all' || showOnlyDiscount
@@ -48,7 +49,25 @@ const BillsListView: React.FC = () => {
     return new BigNumber(discount).gt(0)
   }, [])
 
-  const billsToRender = useMemo((): BillType[] => {
+  const sortBills = useCallback(
+    (billsToSort: Bills[]) => {
+      switch (sortOption) {
+        case 'discount':
+          return orderBy(billsToSort, (bill: Bills) => parseFloat(bill.discount), 'desc')
+        case 'vesting':
+          return orderBy(billsToSort, (bill: Bills) => parseFloat(bill.vestingTime), 'asc')
+        case 'price':
+          return orderBy(billsToSort, (bill: Bills) => parseFloat(bill.priceUsd), 'asc')
+        case 'new':
+          return orderBy(billsToSort, (bill: Bills) => bill.index, 'asc')
+        default:
+          return billsToSort
+      }
+    },
+    [sortOption],
+  )
+
+  const billsToRender = useMemo((): Bills[] => {
     let billsToReturn = []
     bills?.forEach((bill) => {
       if (bill.inactive) return
@@ -70,8 +89,8 @@ const BillsListView: React.FC = () => {
     if (filterOption === 'jungleBill') {
       billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'JUNGLE Bill'.toUpperCase())
     }
-    return billsToReturn
-  }, [bills, isSoldOut, query, showAvailable, filterOption, showOnlyDiscount, hasDiscount])
+    return sortBills(billsToReturn)
+  }, [bills, isSoldOut, query, showAvailable, filterOption, showOnlyDiscount, hasDiscount, sortBills])
 
   const billsListView = billsToRender.map((bill) => {
     const { earnToken, token, quoteToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill

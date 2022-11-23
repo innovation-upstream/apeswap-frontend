@@ -1,8 +1,8 @@
 /** @jsxImportSource theme-ui */
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Flex, useMatchBreakpoints } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
-import { Bills } from 'state/types'
+import { Bills, UserBill } from 'state/types'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -17,6 +17,8 @@ import { BillsView } from '../../index'
 import ListViewContentMobile from 'components/ListViewContent/ListViewContentMobile'
 import { Box } from 'theme-ui'
 import CardView from './CardView'
+import orderBy from 'lodash/orderBy'
+import useCurrentTime from 'hooks/useTimer'
 
 const UserBillListView: React.FC<{
   bills: Bills[]
@@ -24,11 +26,39 @@ const UserBillListView: React.FC<{
   listView: boolean
   handleBillsViewChange: (view: BillsView) => void
   noResults: boolean
-}> = ({ bills, showClaimed, handleBillsViewChange, noResults, listView }) => {
+  sortOption: string
+}> = ({ bills, showClaimed, handleBillsViewChange, noResults, listView, sortOption }) => {
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const isMobile = !isLg && !isXl && !isXxl
+  const currentTime = useCurrentTime() / 1000
+
+  const sortBills = useCallback(
+    (billsToSort: UserBill[]) => {
+      const sorting = (bills) => {
+        switch (sortOption) {
+          case 'sort':
+            return bills.reverse()
+          case 'claimable':
+            return orderBy(bills, (bill) => parseFloat(bill.billData.pendingRewards), 'desc')
+          case 'pending':
+            return orderBy(bills, (bill) => parseFloat(bill.billData.pending), 'desc')
+          case 'vested':
+            return orderBy(
+              bills,
+              (bill) => parseInt(bill.billData.time) + parseInt(bill.billData.vesting) - currentTime,
+              'asc',
+            )
+          default:
+            return bills.reverse()
+        }
+      }
+      return sorting(billsToSort)
+    },
+    [currentTime, sortOption],
+  )
+
   const billsListView = bills.flatMap((bill) => {
     const ownedBills = bill?.userOwnedBillsData
     const { token, quoteToken, earnToken } = bill
@@ -42,6 +72,7 @@ const UserBillListView: React.FC<{
         bill?.earnToken?.decimals,
       )?.toFixed(4)
       return {
+        billData: { pendingRewards, pending, time: ownedBill.lastBlockTimestamp, vesting: ownedBill.vesting },
         tokens: { token1: token.symbol, token2: quoteToken.symbol, token3: earnToken.symbol },
         stakeLp: true,
         id: ownedBill.id,
@@ -131,15 +162,17 @@ const UserBillListView: React.FC<{
             </Flex>
           </Flex>
         ),
-      } as ExtendedListViewProps
+      }
     })
   })
+  const sortedBills = sortBills(billsListView) as ExtendedListViewProps[]
+
   return (
     <>
       {!listView ? (
         <CardView bills={bills} showClaimed={showClaimed} />
       ) : billsListView?.length ? (
-        <ListView listViews={billsListView?.reverse()} />
+        <ListView listViews={sortedBills} />
       ) : (
         <EmptyListComponent
           type={noResults ? EmptyComponentType.NO_RESULTS : EmptyComponentType.USER_BILLS}
