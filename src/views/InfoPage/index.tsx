@@ -4,11 +4,12 @@ import React from 'react'
 import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
 import TrendingTokens from './components/TrendingTokens/TrendingTokens'
 // import Overview from './components/Overview'
-// import VolumeChart from './components/VolumeChart'
+// import Chart from './components/Chart'
 import Tokens from './components/Tokens'
 import Heading from './components/Heading'
 import Pairs from './components/Pairs'
 import Transactions from './components/Transactions'
+import Overview from './components/Overview'
 
 const InfoPage = () => {
   useFetchInfoBlock()
@@ -28,6 +29,7 @@ const InfoPage = () => {
         }}
       >
         <Heading />
+        <Overview />
         <TrendingTokens />
         <Tokens />
         <Pairs />

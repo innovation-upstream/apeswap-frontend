@@ -199,8 +199,6 @@ export const Section = styled.div`
   }
 
   .graphFrame {
-    height: 327px;
-    width: 100%;
   }
 
   &.overviewFrame {
