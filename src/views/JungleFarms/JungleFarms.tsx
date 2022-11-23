@@ -201,7 +201,7 @@ const JungleFarms: React.FC = () => {
           <Banner
             banner={`${chainId}-jungle-farms` as BannerTypes}
             title={chainId === 40 ? t('Telos Farms') : t('Jungle Farms')}
-            link="?modal=farms"
+            link={`?modal=${chainId === 40 ? 'telos' : 'jungle'}-farms`}
             listViewBreak
             maxWidth={1130}
           />

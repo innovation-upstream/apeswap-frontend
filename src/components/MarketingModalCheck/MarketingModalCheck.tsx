@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import { MarketingModal, TutorialModal } from '@ape.swap/uikit'
+import { MarketingModal } from '@ape.swap/uikit'
 import { LendingBodies } from 'components/MarketingModalContent/Lending/'
 import CircularModal from 'components/CircularModal'
 import { useTranslation } from 'contexts/Localization'
@@ -18,28 +18,30 @@ import {
   SHOW_DEF_MOD_KEY,
 } from 'config/constants'
 import { circularRoute } from 'utils'
-import { NETWORK_LABEL } from 'config/constants/chains'
-import { DexSlides } from 'components/MarketingModalContent/Dex'
-import { FarmSlides } from 'components/MarketingModalContent/Farm'
-import { PoolSlides } from 'components/MarketingModalContent/Pool'
-import { MaximizerSlides } from 'components/MarketingModalContent/Maximizers'
-import { GnanaSlides } from 'components/MarketingModalContent/Gnana'
-import { BillSlides } from 'components/MarketingModalContent/Bills'
-import { IaoSlides } from 'components/MarketingModalContent/Iao'
-import { OrderSlides } from 'components/MarketingModalContent/Orders'
-import { LiquiditySlides } from 'components/MarketingModalContent/Liquidity'
+// import { NETWORK_LABEL } from 'config/constants/chains'
+// import { DexSlides } from 'components/MarketingModalContent/Dex'
+// import { FarmSlides } from 'components/MarketingModalContent/Farm'
+// import { PoolSlides } from 'components/MarketingModalContent/Pool'
+// import { MaximizerSlides } from 'components/MarketingModalContent/Maximizers'
+// import { GnanaSlides } from 'components/MarketingModalContent/Gnana'
+// import { BillSlides } from 'components/MarketingModalContent/Bills'
+// import { IaoSlides } from 'components/MarketingModalContent/Iao'
+// import { OrderSlides } from 'components/MarketingModalContent/Orders'
+// import { LiquiditySlides } from 'components/MarketingModalContent/Liquidity'
+import Tutorial from 'components/MarketingModalContent/Tutorial'
+import { Product } from 'components/MarketingModalContent/slides'
 
 const MarketingModalCheck = () => {
   const { chainId } = useActiveWeb3React()
   const location = useLocation()
   const history = useHistory()
   const { t } = useTranslation()
-  const networkLabel = NETWORK_LABEL[chainId]
-  const jungleFarmRoute = location.pathname.includes('jungle-farms')
-  const farmType =
-    networkLabel === 'Telos' || networkLabel === 'Polygon' ? networkLabel : jungleFarmRoute ? 'jungle' : 'banana'
-  const dex = `${networkLabel}-dex`
-  const farm = `${farmType}-farms`
+  // const networkLabel = NETWORK_LABEL[chainId]
+  // const jungleFarmRoute = location.pathname.includes('jungle-farms')
+  // const farmType =
+  //   networkLabel === 'Telos' || networkLabel === 'Polygon' ? networkLabel : jungleFarmRoute ? 'jungle' : 'banana'
+  // const dex = `${networkLabel}-dex`
+  // const farm = `${farmType}-farms`
 
   useMemo(() => {
     localStorage.removeItem(SHOW_DEFAULT_MODAL_KEY) // remove old key
@@ -63,8 +65,17 @@ const MarketingModalCheck = () => {
     }
   }, [history])
 
-  const dexRoute = location.search.includes('modal=dex')
-  const farmsRoute = location.search.includes('modal=farms')
+  const jungleFarms = location.search.includes('modal=jungle-farms')
+  const bananaFarms = location.search.includes('modal=banana-farms')
+  const polygonFarms = location.search.includes('modal=polygon-farms')
+  const telosFarms = location.search.includes('modal=telos-farms')
+  const bnbDex = location.search.includes('modal=bnb-dex')
+  const polygonDex = location.search.includes('modal=polygon-dex')
+  const ethDex = location.search.includes('modal=ethereum-dex')
+  const telosDex = location.search.includes('modal=telos-dex')
+
+  // const dexRoute = location.search.includes('modal=dex')
+  // const farmsRoute = location.search.includes('modal=farms')
   const poolsRoute = location.search.includes('modal=pools')
   const maximizersRoute = location.search.includes('modal=maximizers')
   const gnanaTutorialRoute = location.search.includes('modal=gnana-tutorial')
@@ -99,123 +110,160 @@ const MarketingModalCheck = () => {
     <LendingBody5 key="lend5" />,
   ]
 
-  return farmsRoute ? (
-    <TutorialModal
-      type={farm}
-      title={t(`Welcome to ${farmType} Farms`)}
-      description={t(
-        `Earn ${
-          jungleFarmRoute
-            ? 'Partner Tokens by Staking Liquidity!'
-            : `${
-                networkLabel === 'Polygon' ? 'rewards' : networkLabel === 'Telos' ? 'TLOS' : 'BANANA'
-              } by staking liquidity provider (LP) tokens!`
-        }`,
-      )}
-      t={t}
-      onDismiss={onDismiss}
-      onReady={onDismiss}
-      readyText={t("I'm Ready")}
-    >
-      {FarmSlides}
-    </TutorialModal>
-  ) : dexRoute ? (
-    <TutorialModal
-      type={dex}
-      title={t("Welcome to ApeSwap's Dex")}
-      description={t(`Easily trade ANY token on ${networkLabel} Chain!`)}
-      t={t}
-      onDismiss={onDismiss}
-      onReady={onDismiss}
-      readyText={t("I'm Ready")}
-    >
-      {DexSlides}
-    </TutorialModal>
+  return jungleFarms ? (
+    <Tutorial type={Product.JUNGLE_FARMS} onDismiss={onDismiss} />
+  ) : bananaFarms ? (
+    <Tutorial type={Product.BANANA_FARMS} onDismiss={onDismiss} />
+  ) : polygonFarms ? (
+    <Tutorial type={Product.POLYGON_FARMS} onDismiss={onDismiss} />
+  ) : telosFarms ? (
+    <Tutorial type={Product.TELOS_FARMS} onDismiss={onDismiss} />
+  ) : bnbDex ? (
+    <Tutorial type={Product.BNB_DEX} onDismiss={onDismiss} />
+  ) : polygonDex ? (
+    <Tutorial type={Product.POLYGON_DEX} onDismiss={onDismiss} />
+  ) : ethDex ? (
+    <Tutorial type={Product.ETHEREUM_DEX} onDismiss={onDismiss} />
+  ) : telosDex ? (
+    <Tutorial type={Product.TELOS_DEX} onDismiss={onDismiss} />
   ) : poolsRoute ? (
-    <TutorialModal
-      type="pools"
-      title={t('Welcome to Staking Pools')}
-      description={t('Earn tokens by staking BANANA or GNANA!')}
-      t={t}
-      onDismiss={onDismiss}
-      onReady={onDismiss}
-      readyText={t("I'm Ready")}
-    >
-      {PoolSlides}
-    </TutorialModal>
+    <Tutorial type={Product.POOLS} onDismiss={onDismiss} />
   ) : maximizersRoute ? (
-    <TutorialModal
-      type="maximizers-vaults"
-      title={t('Welcome to Banana Maximizers')}
-      description={t('Maximize your BANANA yields!')}
-      t={t}
-      onDismiss={onDismiss}
-      onReady={onDismiss}
-      readyText={t("I'm Ready")}
-    >
-      {MaximizerSlides}
-    </TutorialModal>
+    <Tutorial type={Product.MAXIMIZERS_VAULTS} onDismiss={onDismiss} />
   ) : gnanaTutorialRoute ? (
-    <TutorialModal
-      type="gnana"
-      title={t('Welcome to Golden Banana')}
-      description={t('Unlock the exclusive benefits of GNANA!')}
-      t={t}
-      onDismiss={onDismiss}
-      onReady={onDismiss}
-      readyText={t("I'm Ready")}
-    >
-      {GnanaSlides}
-    </TutorialModal>
+    <Tutorial type={Product.GNANA} onDismiss={onDismiss} />
   ) : billsRoute ? (
-    <TutorialModal
-      type="treasury-bills"
-      title={t('Welcome to Treasury Bills')}
-      description={t('Buy tokens at a discount and obtain a unique NFT!')}
-      t={t}
-      onDismiss={onDismiss}
-      onReady={onDismiss}
-      readyText={t("I'm Ready")}
-    >
-      {BillSlides}
-    </TutorialModal>
+    <Tutorial type={Product.TREASURY_BILL} onDismiss={onDismiss} />
   ) : iaoRoute ? (
-    <TutorialModal
-      type="iao"
-      title={t('Welcome to Initial Ape Offerings')}
-      description={t('Contribute BNB or GNANA to obtain newly launched tokens!')}
-      t={t}
-      onDismiss={onDismiss}
-      onReady={onDismiss}
-      readyText={t("I'm Ready")}
-    >
-      {IaoSlides}
-    </TutorialModal>
+    <Tutorial type={Product.IAO} onDismiss={onDismiss} />
   ) : ordersRoute ? (
-    <TutorialModal
-      type="orders"
-      title={t('Welcome to Limit Orders')}
-      description={t('Trade at the price you want!')}
-      t={t}
-      onDismiss={onDismiss}
-      onReady={onDismiss}
-      readyText={t("I'm Ready")}
-    >
-      {OrderSlides}
-    </TutorialModal>
+    <Tutorial type={Product.ORDERS} onDismiss={onDismiss} />
   ) : liquidityRoute ? (
-    <TutorialModal
-      type="liquidity"
-      title={t("Welcome to ApeSwap's Dex Liquidity")}
-      description={t('Provide liquidity to earn trading fees!')}
-      t={t}
-      onDismiss={onDismiss}
-      onReady={onDismiss}
-      readyText={t("I'm Ready")}
-    >
-      {LiquiditySlides}
-    </TutorialModal>
-  ) : lendingRoute ? (
+    <Tutorial type={Product.LIQUIDITY} onDismiss={onDismiss} />
+  ) : //  farmsRoute ? (
+  //   <TutorialModal
+  //     type={farm}
+  //     title={t(`Welcome to ${farmType} Farms`)}
+  //     description={t(
+  //       `Earn ${
+  //         jungleFarmRoute
+  //           ? 'Partner Tokens by Staking Liquidity!'
+  //           : `${
+  //               networkLabel === 'Polygon' ? 'rewards' : networkLabel === 'Telos' ? 'TLOS' : 'BANANA'
+  //             } by staking liquidity provider (LP) tokens!`
+  //       }`,
+  //     )}
+  //     t={t}
+  //     onDismiss={onDismiss}
+  //     onReady={onDismiss}
+  //     readyText={t("I'm Ready")}
+  //   >
+  //     {FarmSlides}
+  //   </TutorialModal>
+  // )
+  // dexRoute ? (
+  //   <TutorialModal
+  //     type={dex}
+  //     title={t("Welcome to ApeSwap's Dex")}
+  //     description={t(`Easily trade ANY token on ${networkLabel} Chain!`)}
+  //     t={t}
+  //     onDismiss={onDismiss}
+  //     onReady={onDismiss}
+  //     readyText={t("I'm Ready")}
+  //   >
+  //     {DexSlides}
+  //   </TutorialModal>
+  // ) :
+  // poolsRoute ? (
+  //   <TutorialModal
+  //     type="pools"
+  //     title={t('Welcome to Staking Pools')}
+  //     description={t('Earn tokens by staking BANANA or GNANA!')}
+  //     t={t}
+  //     onDismiss={onDismiss}
+  //     onReady={onDismiss}
+  //     readyText={t("I'm Ready")}
+  //   >
+  //     {PoolSlides}
+  //   </TutorialModal>
+  // ) :
+  // maximizersRoute ? (
+  //   <TutorialModal
+  //     type="maximizers-vaults"
+  //     title={t('Welcome to Banana Maximizers')}
+  //     description={t('Maximize your BANANA yields!')}
+  //     t={t}
+  //     onDismiss={onDismiss}
+  //     onReady={onDismiss}
+  //     readyText={t("I'm Ready")}
+  //   >
+  //     {MaximizerSlides}
+  //   </TutorialModal>
+  // ) :
+  // gnanaTutorialRoute ? (
+  //   <TutorialModal
+  //     type="gnana"
+  //     title={t('Welcome to Golden Banana')}
+  //     description={t('Unlock the exclusive benefits of GNANA!')}
+  //     t={t}
+  //     onDismiss={onDismiss}
+  //     onReady={onDismiss}
+  //     readyText={t("I'm Ready")}
+  //   >
+  //     {GnanaSlides}
+  //   </TutorialModal>
+  // ) :
+  // billsRoute ? (
+  //   <TutorialModal
+  //     type="treasury-bills"
+  //     title={t('Welcome to Treasury Bills')}
+  //     description={t('Buy tokens at a discount and obtain a unique NFT!')}
+  //     t={t}
+  //     onDismiss={onDismiss}
+  //     onReady={onDismiss}
+  //     readyText={t("I'm Ready")}
+  //   >
+  //     {BillSlides}
+  //   </TutorialModal>
+  // ) :
+  // iaoRoute ? (
+  //   <TutorialModal
+  //     type="iao"
+  //     title={t('Welcome to Initial Ape Offerings')}
+  //     description={t('Contribute BNB or GNANA to obtain newly launched tokens!')}
+  //     t={t}
+  //     onDismiss={onDismiss}
+  //     onReady={onDismiss}
+  //     readyText={t("I'm Ready")}
+  //   >
+  //     {IaoSlides}
+  //   </TutorialModal>
+  // ) : ordersRoute ? (
+  //   <TutorialModal
+  //     type="orders"
+  //     title={t('Welcome to Limit Orders')}
+  //     description={t('Trade at the price you want!')}
+  //     t={t}
+  //     onDismiss={onDismiss}
+  //     onReady={onDismiss}
+  //     readyText={t("I'm Ready")}
+  //   >
+  //     {OrderSlides}
+  //   </TutorialModal>
+  // ) : liquidityRoute ? (
+  //   <TutorialModal
+  //     type="liquidity"
+  //     title={t("Welcome to ApeSwap's Dex Liquidity")}
+  //     description={t('Provide liquidity to earn trading fees!')}
+  //     t={t}
+  //     onDismiss={onDismiss}
+  //     onReady={onDismiss}
+  //     readyText={t("I'm Ready")}
+  //   >
+  //     {LiquiditySlides}
+  //   </TutorialModal>
+  // ) :
+  lendingRoute ? (
     <MarketingModal
       title={t("Welcome to ApeSwap's Lending Network")}
       description={t('How does it work?')}

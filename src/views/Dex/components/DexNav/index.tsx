@@ -78,7 +78,25 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
       <Flex sx={{ ...styles.navIconContainer }}>
         <Flex
           sx={styles.iconCover}
-          onClick={() => history.push({ search: `?modal=${ORDERS ? 'orders' : onLiquidity ? 'liquidity' : 'dex'}` })}
+          onClick={() =>
+            history.push({
+              search: `?modal=${
+                ORDERS
+                  ? 'orders'
+                  : onLiquidity
+                  ? 'liquidity'
+                  : `${
+                      chainId === ChainId.MAINNET
+                        ? 'ethereum'
+                        : chainId === ChainId.MATIC
+                        ? 'polygon'
+                        : chainId === ChainId.TLOS
+                        ? 'telos'
+                        : 'bnb'
+                    }-dex`
+              }`,
+            })
+          }
         >
           <Svg icon="quiz" />
         </Flex>
