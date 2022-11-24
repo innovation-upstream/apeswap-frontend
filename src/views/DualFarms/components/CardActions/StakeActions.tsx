@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Flex, AddIcon, MinusIcon, AutoRenewIcon, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -13,6 +13,8 @@ import WithdrawModal from '../../../../components/WithdrawModal'
 import { ActionContainer, CenterContainer, SmallButton, StyledButton } from './styles'
 import { DualFarm } from 'state/types'
 import { useModal } from '@ape.swap/uikit'
+import { useDualFarmStake } from 'hooks/useStake'
+import { PRODUCT } from '../../../../config/constants'
 
 interface StakeActionsProps {
   lpValueUsd: number
@@ -29,22 +31,48 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
   ).toFixed(2)}`
   const [pendingDepositTrx, setPendingDepositTrx] = useState(false)
   const [pendingWithdrawTrx, setPendingWithdrawTrx] = useState(false)
-  const { toastSuccess } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
   const isMobile = !isLg && !isXl && !isXxl
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
 
+  const { onStake } = useDualFarmStake(farm?.pid)
   const { onUnstake } = useMiniChefUnstake(farm?.pid)
+
+  const handlePendingDepositTx = useCallback((value: boolean) => {
+    setPendingDepositTrx(value)
+  }, [])
 
   const [onPresentDeposit] = useModal(
     <DualDepositModal
-      setPendingDepositTrx={setPendingDepositTrx}
+      setPendingDepositTrx={handlePendingDepositTx}
       pendingTx={pendingDepositTrx}
       pid={farm?.pid}
       allowance={farm?.userData?.allowance?.toString()}
       token0={farm?.stakeTokens?.token0?.address[chainId]}
       token1={farm?.stakeTokens?.token1?.address[chainId]}
       lpAddress={farm?.stakeTokenAddress}
+      poolAddress={farm?.stakeTokenAddress}
+      onStakeLp={async (val: string) => {
+        setPendingDepositTrx(true)
+        await onStake(val)
+          .then((resp) => {
+            resp.wait().then(() => {
+              setPendingDepositTrx(false)
+              toastSuccess(t('Deposit Successful'), {
+                text: t('View Transaction'),
+                url: getEtherscanLink(resp.hash, 'transaction', chainId),
+              })
+            })
+          })
+          .catch((error) => {
+            console.error(error)
+            setPendingDepositTrx(false)
+            toastError(error?.message || t('Error: Please try again.'))
+          })
+      }}
+      enableZap={true}
+      product={PRODUCT.DUAL_FARM}
     />,
     true,
     true,
@@ -112,7 +140,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
             disabled={pendingWithdrawTrx}
             mr="6px"
           >
-            <MinusIcon color="white" width="16px" height="20px" fontWeight={700} />
+            {!pendingWithdrawTrx && <MinusIcon color="white" width="16px" height="20px" fontWeight={700} />}
           </SmallButton>
           <SmallButton
             onClick={onPresentDeposit}

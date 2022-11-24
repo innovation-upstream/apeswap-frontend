@@ -1,31 +1,15 @@
 import React from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import BigNumber from 'bignumber.js'
 import { CenterContainer } from './styles'
-import ApprovalAction from './ApprovalAction'
 import StakeAction from './StakeActions'
-import UnlockButton from '../../../../components/UnlockButton'
+import UnlockButton from 'components/UnlockButton'
+import { JungleFarm } from 'state/types'
 
-// Changed props to type string because BigNumbers cause re-renders
-
-interface CardActionProps {
-  allowance: string
-  stakingTokenBalance: string
-  stakedTokenSymbol: string
-  stakedBalance: string
-  stakeTokenValueUsd: number
-  stakeTokenAddress: string
-  jungleId: number
+interface ActionProps {
+  farm: JungleFarm
 }
 
-const Actions: React.FC<CardActionProps> = ({
-  allowance,
-  stakingTokenBalance,
-  stakedBalance,
-  stakeTokenValueUsd,
-  stakeTokenAddress,
-  jungleId,
-}) => {
+const Actions: React.FC<ActionProps> = ({ farm }) => {
   const { account } = useActiveWeb3React()
   const actionToRender = () => {
     if (!account) {
@@ -35,21 +19,7 @@ const Actions: React.FC<CardActionProps> = ({
         </CenterContainer>
       )
     }
-    if (!new BigNumber(allowance)?.gt(0)) {
-      return (
-        <CenterContainer>
-          <ApprovalAction stakingTokenContractAddress={stakeTokenAddress} jungleId={jungleId} />
-        </CenterContainer>
-      )
-    }
-    return (
-      <StakeAction
-        stakedBalance={stakedBalance}
-        stakingTokenBalance={stakingTokenBalance}
-        stakeTokenValueUsd={stakeTokenValueUsd}
-        jungleId={jungleId}
-      />
-    )
+    return <StakeAction farm={farm} />
   }
   return actionToRender()
 }

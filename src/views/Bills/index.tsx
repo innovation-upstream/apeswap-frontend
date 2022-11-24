@@ -9,7 +9,7 @@ import UserBillViews from './components/UserBillViews'
 import { BannerTypes } from 'components/Banner/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListView404 from 'components/ListView404'
-import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
+import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import FirstTimeCard from './components/UserBillViews/FirstTimeCard'
 import BillsNav from './components/BillsNav'
 import BillsListView from './components/BillsListView'
@@ -55,9 +55,9 @@ const Bills: React.FC = () => {
             maxWidth={1130}
             titleColor="primaryBright"
           />
-          {!AVAILABLE_CHAINS_ON_PRODUCTS['bills'].includes(chainId) ? (
+          {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS].includes(chainId) ? (
             <Flex sx={{ mt: '20px' }}>
-              <ListView404 product="bills" />
+              <ListView404 product={LIST_VIEW_PRODUCTS.BILLS} />
             </Flex>
           ) : (
             <>

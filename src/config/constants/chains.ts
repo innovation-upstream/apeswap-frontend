@@ -3,6 +3,10 @@
 import { ChainId, SmartRouter } from '@ape.swap/sdk'
 import BigNumber from 'bignumber.js'
 
+// List of mainnet chains
+// This is currently used for the info page
+export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS]
+
 // Network labels
 export const NETWORK_LABEL: Partial<Record<ChainId, string>> = {
   [ChainId.BSC]: 'BNB',
@@ -274,14 +278,101 @@ export const SMART_ROUTER_FULL_NAME = {
   [SmartRouter.BISWAP]: 'Biswap',
 }
 
+// enum to corresponding url
+export enum LIST_VIEW_PRODUCTS {
+  BILLS = 'treasury-bills',
+  MAXIMIZERS = 'maximizers',
+  JUNGLE_FARMS = 'jungle-farms',
+  POOLS = 'pools',
+  FARMS = 'banana-farms',
+}
+
+export enum OTHER_PRODUCTS {
+  GNANA = 'gnana',
+  MIGRATE = 'migrate',
+  ZAP = 'zap',
+  IAO = 'iao',
+  NFA_COLLECTION = 'nft',
+  NFA_AUCTION = 'auction',
+  NFA_STAKING = 'staking',
+}
+
 // Products on different chains and their available chains
-export const AVAILABLE_CHAINS_ON_PRODUCTS: Record<
-  'bills' | 'maximizers' | 'jungleFarms' | 'pools' | 'farms',
-  ChainId[]
+
+// These products are list view components that have a specific chain redirect component
+export const AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS: Record<LIST_VIEW_PRODUCTS, ChainId[]> = {
+  [LIST_VIEW_PRODUCTS.BILLS]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  [LIST_VIEW_PRODUCTS.FARMS]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  [LIST_VIEW_PRODUCTS.MAXIMIZERS]: [ChainId.BSC],
+  [LIST_VIEW_PRODUCTS.JUNGLE_FARMS]: [ChainId.BSC],
+  [LIST_VIEW_PRODUCTS.POOLS]: [ChainId.BSC],
+}
+
+// These products are specific products to certain chains like GNANA and Migrate
+// These products will be redirected a different way
+export const AVAILABLE_CHAINS_ON_PRODUCTS: Record<OTHER_PRODUCTS, ChainId[]> = {
+  [OTHER_PRODUCTS.GNANA]: [ChainId.BSC],
+  [OTHER_PRODUCTS.MIGRATE]: [ChainId.BSC],
+  [OTHER_PRODUCTS.ZAP]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  [OTHER_PRODUCTS.IAO]: [ChainId.BSC],
+  [OTHER_PRODUCTS.NFA_COLLECTION]: [ChainId.BSC],
+  [OTHER_PRODUCTS.NFA_AUCTION]: [ChainId.BSC],
+  [OTHER_PRODUCTS.NFA_STAKING]: [ChainId.BSC],
+}
+
+// Full product names for readability
+export const FULL_PRODUCT_NAMES: Record<LIST_VIEW_PRODUCTS | OTHER_PRODUCTS, string> = {
+  [LIST_VIEW_PRODUCTS.BILLS]: 'Treasury Bills',
+  [LIST_VIEW_PRODUCTS.MAXIMIZERS]: 'Banana Maximizers',
+  [LIST_VIEW_PRODUCTS.JUNGLE_FARMS]: 'Jungle Farms',
+  [LIST_VIEW_PRODUCTS.POOLS]: 'Pools',
+  [LIST_VIEW_PRODUCTS.FARMS]: 'Farms',
+  [OTHER_PRODUCTS.GNANA]: 'Golden Banana',
+  [OTHER_PRODUCTS.MIGRATE]: 'Migrate',
+  [OTHER_PRODUCTS.ZAP]: 'Zap',
+  [OTHER_PRODUCTS.IAO]: 'Official IAO',
+  [OTHER_PRODUCTS.NFA_COLLECTION]: 'Nfa Collection',
+  [OTHER_PRODUCTS.NFA_AUCTION]: 'Nfa Auction',
+  [OTHER_PRODUCTS.NFA_STAKING]: 'Nfa Staking',
+}
+
+// This is needed for the info page queries
+export const INFO_PAGE_CHAIN_PARAMS: Partial<
+  Record<
+    ChainId,
+    { graphAddress: string; explorer: string; blockGraph: string; id: string; fee: number; color: string }
+  >
 > = {
-  bills: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
-  farms: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
-  maximizers: [ChainId.BSC],
-  jungleFarms: [ChainId.BSC],
-  pools: [ChainId.BSC],
+  [ChainId.BSC]: {
+    graphAddress: 'https://bnb.apeswapgraphs.com/subgraphs/name/ape-swap/apeswap-subgraph',
+    explorer: BLOCK_EXPLORER[ChainId.BSC],
+    blockGraph: 'https://api.thegraph.com/subgraphs/name/matthewlilley/bsc-blocks',
+    id: '0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6',
+    fee: 0.002,
+    color: '#FAB701',
+  },
+  [ChainId.MATIC]: {
+    graphAddress: 'https://api.thegraph.com/subgraphs/name/prof-sd/as-matic-graft',
+    explorer: BLOCK_EXPLORER[ChainId.MATIC],
+    blockGraph: 'https://api.thegraph.com/subgraphs/name/matthewlilley/polygon-blocks',
+    id: '0xcf083be4164828f00cae704ec15a36d711491284',
+    fee: 0.002,
+    color: '#8C3EED',
+  },
+  [ChainId.MAINNET]: {
+    graphAddress: 'https://api.thegraph.com/subgraphs/name/apeswapfinance/ethereum-dex',
+    explorer: BLOCK_EXPLORER[ChainId.MAINNET],
+    blockGraph: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
+    id: '0xBAe5dc9B19004883d0377419FeF3c2C8832d7d7B',
+    fee: 0.002,
+    color: '#637DEA',
+  },
+  [ChainId.TLOS]: {
+    graphAddress: 'https://telos.apeswapgraphs.com/subgraphs/name/ape-swap/apeswap-subgraph-telos',
+    explorer: BLOCK_EXPLORER[ChainId.TLOS],
+    blockGraph: 'https://telos.apeswapgraphs.com/subgraphs/name/ape-swap/telos-blocks',
+    id: '0x411172Dfcd5f68307656A1ff35520841C2F7fAec',
+    fee: 0.002,
+    color: '#9D68E8',
+  },
 }

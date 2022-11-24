@@ -25,7 +25,7 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import useCurrentTime from 'hooks/useTimer'
 import ListView404 from 'components/ListView404'
-import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
+import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import { BannerTypes } from 'components/Banner/types'
 
 const NUMBER_OF_FARMS_VISIBLE = 10
@@ -219,9 +219,9 @@ const JungleFarms: React.FC = () => {
             />
           </Flex>
           {isJungleFarms ? (
-            !AVAILABLE_CHAINS_ON_PRODUCTS['jungleFarms'].includes(chainId) ? (
+            !AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.JUNGLE_FARMS].includes(chainId) ? (
               <Flex mt="20px">
-                <ListView404 product="jungleFarms" />
+                <ListView404 product={LIST_VIEW_PRODUCTS.JUNGLE_FARMS} />
               </Flex>
             ) : (
               <DisplayJungleFarms
@@ -230,9 +230,9 @@ const JungleFarms: React.FC = () => {
                 jungleFarmTags={jungleFarmTags}
               />
             )
-          ) : !AVAILABLE_CHAINS_ON_PRODUCTS['farms'].includes(chainId) ? (
+          ) : !AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.FARMS].includes(chainId) ? (
             <Flex mt="20px">
-              <ListView404 product="farms" />
+              <ListView404 product={LIST_VIEW_PRODUCTS.FARMS} />
             </Flex>
           ) : (
             <DisplayJungleFarms

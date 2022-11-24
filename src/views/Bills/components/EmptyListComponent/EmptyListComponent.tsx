@@ -1,7 +1,13 @@
 /** @jsxImportSource theme-ui */
 import { Button, Flex, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
-import { AVAILABLE_CHAINS_ON_PRODUCTS, CHAIN_PARAMS, NETWORK_LABEL } from 'config/constants/chains'
+import {
+  AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS,
+  AVAILABLE_CHAINS_ON_PRODUCTS,
+  CHAIN_PARAMS,
+  LIST_VIEW_PRODUCTS,
+  NETWORK_LABEL,
+} from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSwitchNetwork from 'hooks/useSelectNetwork'
@@ -24,7 +30,9 @@ const EmptyListComponent: React.FC<EmptyListComponentProps> = ({ type, handleBil
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { switchNetwork } = useSwitchNetwork()
-  const eligibleChains = AVAILABLE_CHAINS_ON_PRODUCTS['bills'].filter((chain) => chain !== chainId)
+  const eligibleChains = AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS]?.filter(
+    (chain) => chain !== chainId,
+  )
 
   return (
     <Flex

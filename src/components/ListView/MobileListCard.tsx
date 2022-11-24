@@ -1,9 +1,9 @@
 /** @jsxImportSource theme-ui */
 import { Flex, TooltipBubble, InfoIcon, Svg } from '@ape.swap/uikit'
-import React, { useState } from 'react'
-import { ContentContainer, ListCardContainer, ListExpandedContainer, styles } from './styles'
-import { ListCardProps } from './types'
 import { AnimatePresence, motion } from 'framer-motion'
+import React, { useState } from 'react'
+import { ContentContainer, ListCardContainer, DropDownIcon, ListExpandedContainer, styles } from './styles'
+import { ListCardProps } from './types'
 
 const MobileListCard: React.FC<ListCardProps> = ({
   serviceTokenDisplay,
@@ -18,14 +18,19 @@ const MobileListCard: React.FC<ListCardProps> = ({
   ttWidth,
   backgroundColor,
   beforeTokenContent,
+  forMigratonList,
 }) => {
   const [expanded, setExpanded] = useState(open)
   return (
     <>
-      <ListCardContainer onClick={() => setExpanded((prev) => !prev)} backgroundColor={backgroundColor}>
+      <ListCardContainer
+        onClick={() => setExpanded((prev) => !prev)}
+        backgroundColor={backgroundColor}
+        forMigrationList={forMigratonList}
+      >
         <Flex sx={{ width: '100%', justifyContent: 'space-between' }}>
           {beforeTokenContent && <Flex>{beforeTokenContent}</Flex>}
-          <Flex sx={styles.titleContainer}>
+          <Flex sx={{ ...styles.titleContainer }}>
             {serviceTokenDisplay}
             <Flex sx={{ flexDirection: 'column', marginLeft: '10px' }}>
               {tag}
@@ -59,9 +64,21 @@ const MobileListCard: React.FC<ListCardProps> = ({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'fit-content' }}
             exit={{ opacity: 0, height: 0 }}
-            sx={{ position: 'relative', width: '100%' }}
+            sx={{ position: 'relative', width: '100%', maxWidth: '500px', minWidth: '300px', overflow: 'hidden' }}
           >
-            <ListExpandedContainer size={expandedContentSize}>{expandedContent}</ListExpandedContainer>
+            <Flex
+              sx={{
+                background: 'white3',
+                flexDirection: 'column',
+                height: expandedContentSize || '234px',
+                justifyContent: 'space-between',
+                padding: '15px 10px',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+              }}
+            >
+              {expandedContent}
+            </Flex>
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,6 +1,4 @@
 import { MenuEntry } from '@ape.swap/uikit'
-import { ChainId } from '@ape.swap/sdk'
-import { NETWORK_INFO_LINK } from 'config/constants/chains'
 import { ContextApi } from '../../../contexts/Localization/types'
 
 const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
@@ -58,7 +56,7 @@ const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Charts'),
-        href: NETWORK_INFO_LINK[ChainId.TLOS],
+        href: '/info',
         isNew: false,
       },
       {

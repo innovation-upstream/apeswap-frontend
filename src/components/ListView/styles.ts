@@ -1,6 +1,6 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 import { ArrowDropDownIcon, Flex, Text } from '@apeswapfinance/uikit'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 // TODO: Change everything to theme ui
 
@@ -13,11 +13,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
 }
 
-const ExpandLargeAnimation = keyframes`
-    0%{height: 0;}
-    100%{height: 100px;}
-`
-
 export const ListExpandedContainer = styled(Flex)<{ size?: number; justifyContent?: string }>`
   height: ${({ size }) => size || 234}px;
   align-items: center;
@@ -25,19 +20,16 @@ export const ListExpandedContainer = styled(Flex)<{ size?: number; justifyConten
   flex-wrap: wrap;
   padding: 10px;
   background: ${({ theme }) => theme.colors.white3};
-  max-width: 500px;
-  min-width: 300px;
-  width: 100%;
+  min-width: 100%;
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 0px 30px 0px 30px;
-    animation: ${ExpandLargeAnimation} 0.3s ease;
     height: 100px;
     max-width: 100%;
     flex-wrap: no-wrap;
   }
 `
 
-export const ListCardContainer = styled(Flex)<{ backgroundColor: string }>`
+export const ListCardContainer = styled(Flex)<{ backgroundColor: string; forMigrationList?: boolean }>`
   border-radius: 0;
   flex-direction: column;
   align-items: center;
@@ -69,6 +61,10 @@ export const ListViewContainer = styled.div`
   }
   & ${ListCardContainer}:last-child {
     border-radius: 0px 0px 10px 10px;
+    border: none;
+  }
+  & ${ListCardContainer}:first-child:last-child {
+    border-radius: 10px 10px 10px 10px;
     border: none;
   }
 `

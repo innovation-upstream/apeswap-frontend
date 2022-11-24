@@ -1,3 +1,4 @@
+import { ChainId } from '@ape.swap/sdk'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
@@ -18,8 +19,10 @@ export const usePollVaultsData = (includeArchive = false) => {
   const { tokenPrices } = useTokenPrices()
   const farmLpAprs = useFarmLpAprs()
   useEffect(() => {
-    dispatch(fetchVaultsPublicDataAsync(chainId, tokenPrices, farmLpAprs))
-    if (account) {
+    if (chainId === ChainId.BSC) {
+      dispatch(fetchVaultsPublicDataAsync(chainId, tokenPrices, farmLpAprs))
+    }
+    if (account && chainId === ChainId.BSC) {
       dispatch(fetchVaultUserDataAsync(account, chainId))
     }
   }, [includeArchive, dispatch, slowRefresh, account, chainId, tokenPrices, farmLpAprs])
@@ -32,7 +35,7 @@ export const usePollVaultUserData = () => {
   const vaults = useSelector((state: State) => state.vaults.data)
   const vaultsLoaded = vaults.length > 0
   useEffect(() => {
-    if (account) {
+    if (account && chainId === ChainId.BSC) {
       dispatch(fetchVaultUserDataAsync(account, chainId))
     }
   }, [dispatch, slowRefresh, vaultsLoaded, account, chainId])
@@ -67,7 +70,7 @@ export const useSetVaults = () => {
   const dispatch = useAppDispatch()
   const { vaults } = useVaults()
   const { chainId } = useActiveWeb3React()
-  if (vaults.length === 0) {
+  if (vaults.length === 0 && chainId === ChainId.BSC) {
     dispatch(setInitialVaultDataAsync(chainId))
   }
 }

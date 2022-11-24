@@ -1,7 +1,5 @@
 import { MenuEntry } from '@ape.swap/uikit'
-import { ChainId } from '@ape.swap/sdk'
 import { ContextApi } from 'contexts/Localization/types'
-import { NETWORK_INFO_LINK } from 'config/constants/chains'
 
 const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   {
@@ -96,11 +94,6 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         isNew: false,
       },
       {
-        label: t('NFA Staking'),
-        href: '/staking',
-        isNew: false,
-      },
-      {
         label: t('NFA Liquidity'),
         href: 'https://liquidcollectibles.io/collection/0x6afc012783e3a6ef8c5f05f8eee2edef6a052ec4',
         isNew: false,
@@ -144,7 +137,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Charts'),
-        href: NETWORK_INFO_LINK[ChainId.BSC],
+        href: '/info',
         isNew: false,
       },
       {

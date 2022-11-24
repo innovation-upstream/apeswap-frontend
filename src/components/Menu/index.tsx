@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Navbar as UikitMenu, useModal } from '@ape.swap/uikit'
 import { ChainId } from '@ape.swap/sdk'
 import { uauth } from 'utils/web3React'
@@ -19,6 +19,7 @@ import ethConfig from './chains/ethConfig'
 import tlosConfig from './chains/tlosConfig'
 import iframeConfig from './chains/iframeConfig'
 import MoonPayModal from '../../views/Topup/MoonpayModal'
+import { getSidContract } from 'utils'
 import { mailChimpUrl } from 'config/constants'
 
 const Menu = (props) => {
@@ -37,6 +38,7 @@ const Menu = (props) => {
   const { liveIfos } = useLiveIfoStatus()
   const { fastRefresh } = useRefresh()
   const [uDName, setUDName] = useState(null)
+  const [sidOwner, setSidOwner] = useState(null)
 
   const bananaPriceUsd = useBananaPrice()
   const [onPresentModal] = useModal(<MoonPayModal />)
@@ -59,6 +61,20 @@ const Menu = (props) => {
     return bscConfig(translate)
   }
 
+  const getSidOwner = useCallback(async () => {
+    if (chainId === ChainId.BSC) {
+      const sid = await getSidContract(chainId)
+      const { name } = await sid.getName(account)
+      setSidOwner({ account, name })
+    }
+  }, [chainId, account])
+
+  useEffect(() => {
+    if (chainId === ChainId.BSC) {
+      account && getSidOwner()
+    }
+  }, [getSidOwner, account, chainId])
+
   useEffect(() => {
     uauth.uauth
       .user()
@@ -68,6 +84,7 @@ const Menu = (props) => {
 
   return (
     <UikitMenu
+      sidName={sidOwner?.name}
       uDName={uDName}
       account={account}
       login={login}
