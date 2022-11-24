@@ -57,6 +57,14 @@ export enum PoolCategory {
   'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
 }
 
+export interface Decimals {
+  [ChainId.MAINNET]?: number
+  [ChainId.BSC_TESTNET]?: number
+  [ChainId.BSC]?: number
+  [ChainId.MATIC]?: number
+  [ChainId.TLOS]?: number
+}
+
 export interface Address {
   [ChainId.BSC_TESTNET]?: string
   [ChainId.BSC]?: string
@@ -148,7 +156,7 @@ export interface NfaStakingPoolConfig {
 export interface Token {
   symbol: string
   address?: Address
-  decimals?: number
+  decimals?: Decimals
   dontFetch?: boolean
   lpToken?: boolean
   price?: number

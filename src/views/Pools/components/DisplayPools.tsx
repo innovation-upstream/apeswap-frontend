@@ -40,7 +40,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
     const userAllowance = pool?.userData?.allowance
     const userEarnings = getBalanceNumber(
       pool?.userData?.pendingReward || new BigNumber(0),
-      pool?.rewardToken?.decimals,
+      pool?.rewardToken?.decimals[chainId],
     )
     const userEarningsUsd = `$${(userEarnings * pool.rewardToken?.price).toFixed(2)}`
     const userTokenBalance = `${getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0))?.toFixed(6)}`
