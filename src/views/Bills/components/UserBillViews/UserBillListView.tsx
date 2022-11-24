@@ -123,7 +123,7 @@ const UserBillListView: React.FC<{
                   <Claim
                     billAddress={bill.contractAddress[chainId]}
                     billIds={[ownedBill.id]}
-                    buttonSize={100}
+                    buttonSize={'100px'}
                     pendingRewards={ownedBill?.pendingRewards}
                     margin={'10px'}
                   />
@@ -153,7 +153,6 @@ const UserBillListView: React.FC<{
                   billIds={[ownedBill.id]}
                   pendingRewards={ownedBill?.pendingRewards}
                   margin={'0'}
-                  buttonSize={200}
                 />
               </Box>
               <Box sx={{ width: '240px' }}>

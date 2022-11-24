@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { Flex } from '@apeswapfinance/uikit'
-import { Modal, ModalProvider } from '@ape.swap/uikit'
+import { IconButton, Modal, ModalProvider } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { Bills } from 'state/types'
 import getTimePeriods from 'utils/getTimePeriods'
@@ -13,13 +13,27 @@ import {
   BillsImage,
   BillTitleContainer,
   ModalBodyContainer,
-  StyledExit,
   StyledHeadingText,
   TopDescriptionText,
 } from './styles'
 import UserBillModalView from './UserBillModalView'
 import { getFirstNonZeroDigits } from 'utils/roundNumber'
 import Buy from '../Actions/Buy'
+
+const modalProps = {
+  sx: {
+    zIndex: 98,
+    overflowY: 'auto',
+    maxHeight: 'calc(100% - 30px)',
+    width: ['90%'],
+    minWidth: 'unset',
+    '@media screen and (min-width: 1180px)': {
+      maxWidth: '1200px',
+      minWidth: '1200px',
+    },
+    maxWidth: '350px',
+  },
+}
 
 interface BillModalProps {
   onDismiss: () => void
@@ -41,12 +55,18 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
 
   return (
     <ModalProvider>
-      <Modal onDismiss={onDismiss} maxWidth="1200px" minWidth="350px" zIndex={98}>
+      <Modal onDismiss={onDismiss} {...modalProps}>
         {billId ? (
           <UserBillModalView bill={bill} billId={billId} onDismiss={onDismiss} />
         ) : (
           <ModalBodyContainer>
-            <StyledExit onClick={onDismiss}>x</StyledExit>
+            <IconButton
+              icon="close"
+              color="text"
+              variant="transparent"
+              onClick={onDismiss}
+              sx={{ position: 'absolute', right: '20px', top: '25px' }}
+            />
             <Flex alignItems="center" justifyContent="center">
               {loading && !billId ? (
                 <BillsImage>
@@ -78,7 +98,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                     </Flex>
                   </Flex>
                 </BillTitleContainer>
-                <Flex flexDirection="column" my={10}>
+                <Flex flexDirection="column" mb={10}>
                   <Flex style={{ width: '250px' }}>
                     <TopDescriptionText>
                       {earnToken.symbol} {t('Market Price')}{' '}

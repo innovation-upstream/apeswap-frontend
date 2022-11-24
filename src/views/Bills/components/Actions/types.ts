@@ -6,7 +6,7 @@ export interface ClaimProps {
   billAddress: string
   pendingRewards: string
   billIds: string[]
-  buttonSize?: number
+  buttonSize?: string
   margin: string
 }
 

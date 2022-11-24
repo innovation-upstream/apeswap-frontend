@@ -52,6 +52,7 @@ export const styles = {
     '@media screen and (min-width: 1180px)': {
       flexWrap: 'wrap',
       flexDirection: 'row',
+      marginTop: '10px',
     },
   },
   getLpContainer: {

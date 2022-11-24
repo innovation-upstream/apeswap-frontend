@@ -12,12 +12,12 @@ export const StyledButton = styled(Button)<{ buttonSize?: string }>`
   height: 44px;
 `
 
-export const ClaimButton = styled(Button)<{ margin?: string; buttonSize?: number }>`
+export const ClaimButton = styled(Button)<{ margin?: string; buttonSize?: string }>`
   border-radius: 10px;
   font-weight: 700;
   width: 100%;
   margin: ${({ margin }) => margin || 0};
-  min-width: ${({ buttonSize }) => buttonSize || 145}px;
+  max-width: ${({ buttonSize }) => buttonSize || '100%'};
 `
 
 export const NextArrow = styled(ArrowDropUpIcon)`
