@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Flex, Svg, Text, Text as StyledText, useModal } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useBuyBill from 'views/Bills/hooks/useBuyBill'
@@ -29,6 +29,7 @@ import BillActions from './BillActions'
 import track from 'utils/track'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useBillType } from '../../hooks/useBillType'
+import UpdateSlippage from 'components/DualDepositModal/UpdateSlippage'
 
 const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   const {
@@ -65,7 +66,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, pair?.liquidityToken ?? currencyA)
 
   const { zap } = useDerivedZapInfo()
-  const [zapSlippage] = useUserSlippageTolerance(true)
+  const [zapSlippage, setZapSlippage] = useUserSlippageTolerance(true)
   const { onCurrencySelection, onUserInput } = useZapActionHandlers()
   const maxPrice = new BigNumber(price).times(102).div(100).toFixed(0)
   const { callback: zapCallback } = useZapCallback(
@@ -76,6 +77,19 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
     contractAddress[chainId] || 's',
     maxPrice,
   )
+  const priceImpact = new BigNumber(zap?.totalPriceImpact?.toFixed(2)).times(100).toNumber()
+  const showUpdateSlippage =
+    zapSlippage < priceImpact && !currencyB && parseFloat(selectedCurrencyBalance?.toExact()) >= parseFloat(typedValue)
+  const updateSlippage = useCallback(() => {
+    if (zapSlippage < priceImpact) {
+      const newZapSlippage = Math.round(priceImpact + 5)
+      setZapSlippage(newZapSlippage)
+    }
+  }, [priceImpact, setZapSlippage, zapSlippage])
+  const originalSlippage = useMemo(() => {
+    return zapSlippage
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // this logic prevents user to initiate a tx for a higher bill value than the available amount
   const consideredValue = currencyB ? typedValue : zap?.pairOut?.liquidityMinted?.toExact()
@@ -129,6 +143,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
       await zapCallback()
         .then((hash) => {
           setPendingTrx(true)
+          setZapSlippage(originalSlippage)
           library
             .waitForTransaction(hash)
             .then((receipt) => {
@@ -141,7 +156,6 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
               dispatch(fetchBillsUserDataAsync(chainId, account))
             })
             .catch((e) => {
-              console.error(e)
               toastError(e?.data?.message || t('Error: Please try again.'))
               setPendingTrx(false)
               onTransactionSubmited(false)
@@ -170,8 +184,13 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
           })
         })
         .catch((e) => {
+          setZapSlippage(originalSlippage)
           console.error(e)
-          toastError(e?.data?.message || t('Error: Please try again.'))
+          toastError(
+            e?.message.includes('INSUFFICIENT')
+              ? t('Slippage Error: Please go to the GET LP modal and check your slippage using the ⚙️ icon')
+              : e?.message || t('Error: Please try again.'),
+          )
           setPendingTrx(false)
           onTransactionSubmited(false)
         })
@@ -196,6 +215,8 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
     billType,
     contractAddress,
     lpPrice,
+    originalSlippage,
+    setZapSlippage,
   ])
 
   // would love to create a function on the near future to avoid the same code repeating itself along several parts of the repo
@@ -291,8 +312,28 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
               safeAvailable={safeAvailable?.toString()}
               balance={selectedCurrencyBalance?.toExact()}
               pendingTrx={pendingTrx}
+              errorMessage={zapSlippage < priceImpact && !currencyB ? 'Change Slippage' : null}
             />
           </Box>
+          {showUpdateSlippage && !pendingTrx && (
+            <Flex
+              sx={{
+                '@media screen and (min-width: 1180px)': {
+                  '& div': {
+                    position: 'absolute',
+                    top: '360px',
+                    left: '0px',
+                    background: 'lvl1',
+                    padding: '10px',
+                    borderRadius: '10px',
+                    width: '552px',
+                  },
+                },
+              }}
+            >
+              <UpdateSlippage priceImpact={priceImpact} updateSlippage={updateSlippage} />
+            </Flex>
+          )}
         </Flex>
       </Flex>
     </Flex>

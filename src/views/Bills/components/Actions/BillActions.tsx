@@ -23,6 +23,7 @@ const BillActions: React.FC<BillActionsProps> = ({
   safeAvailable,
   balance,
   pendingTrx,
+  errorMessage,
 }) => {
   const { lpToken, contractAddress, index } = bill
   const [approval, approveCallback] = useApproveCallbackFromZap(zap)
@@ -86,10 +87,11 @@ const BillActions: React.FC<BillActionsProps> = ({
             parseFloat(billValue) > parseFloat(safeAvailable) ||
             parseFloat(balance) < parseFloat(value) ||
             pendingApprove ||
-            pendingTrx
+            pendingTrx ||
+            !!errorMessage
           }
         >
-          {t('Buy')}
+          {errorMessage && !pendingTrx ? errorMessage : t('Buy')}
         </BuyButton>
       )}
     </>

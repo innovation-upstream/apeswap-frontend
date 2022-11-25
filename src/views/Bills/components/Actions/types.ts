@@ -33,6 +33,7 @@ export interface BillActionsProps {
   safeAvailable: string
   balance: string
   pendingTrx: boolean
+  errorMessage: string
 }
 
 export interface DualCurrencySelector {

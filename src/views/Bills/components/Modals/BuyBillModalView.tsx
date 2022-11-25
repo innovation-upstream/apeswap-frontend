@@ -30,6 +30,7 @@ const modalProps = {
     '@media screen and (min-width: 1180px)': {
       maxWidth: '1200px',
       minWidth: '1200px',
+      overflow: 'inherit',
     },
     maxWidth: '350px',
   },
@@ -55,10 +56,10 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
 
   return (
     <ModalProvider>
-      <Modal onDismiss={onDismiss} {...modalProps}>
-        {billId ? (
-          <UserBillModalView bill={bill} billId={billId} onDismiss={onDismiss} />
-        ) : (
+      {billId ? (
+        <UserBillModalView bill={bill} billId={billId} onDismiss={onDismiss} />
+      ) : (
+        <Modal onDismiss={onDismiss} {...modalProps}>
           <ModalBodyContainer>
             <IconButton
               icon="close"
@@ -124,8 +125,8 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
               </Flex>
             </BillDescriptionContainer>
           </ModalBodyContainer>
-        )}
-      </Modal>
+        </Modal>
+      )}
     </ModalProvider>
   )
 }
