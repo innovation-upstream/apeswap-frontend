@@ -3,7 +3,6 @@ import { Button, Flex, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import {
   AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS,
-  AVAILABLE_CHAINS_ON_PRODUCTS,
   CHAIN_PARAMS,
   LIST_VIEW_PRODUCTS,
   NETWORK_LABEL,

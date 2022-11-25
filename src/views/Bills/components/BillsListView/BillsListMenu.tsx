@@ -5,8 +5,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { ControlContainer, SearchText, styles } from './styles'
 import { NetworkButton, Toggle } from '@ape.swap/uikit'
-import useSelectNetwork from '../../../../hooks/useSelectNetwork'
-import { AVAILABLE_CHAINS_ON_PRODUCTS } from 'config/constants/chains'
+import useSelectNetwork from 'hooks/useSelectNetwork'
+import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 
 export const FILTER_OPTIONS = [
   {
@@ -144,7 +144,7 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
                   switchNetwork={switchNetwork}
                   chainId={chainId}
                   t={t}
-                  supportedChains={AVAILABLE_CHAINS_ON_PRODUCTS['bills']}
+                  supportedChains={AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS]}
                 />
               </Flex>
             </Flex>
@@ -226,7 +226,7 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
             switchNetwork={switchNetwork}
             chainId={chainId}
             t={t}
-            supportedChains={AVAILABLE_CHAINS_ON_PRODUCTS['bills']}
+            supportedChains={AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS]}
           />
         </>
       )}

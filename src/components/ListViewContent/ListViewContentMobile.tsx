@@ -2,7 +2,7 @@
 import React from 'react'
 import { Flex, HelpIcon, Text } from '@ape.swap/uikit'
 import { TooltipBubble } from '@ape.swap/uikit'
-import { TitleText } from './styles'
+import { TitleText, ValueSkeleton } from './styles'
 import { useTranslation } from '../../contexts/Localization'
 
 interface ListViewContentMobileProps {
@@ -37,7 +37,15 @@ const ListViewContentMobile: React.FC<ListViewContentMobileProps> = ({
         </TitleText>
       </TooltipBubble>
       <Text sx={{ color: valueColor }} weight={700} size="12px">
-        {value}
+        {value.includes('0 days') ||
+        value.includes('N/A') ||
+        value.includes('NaN') ||
+        value.includes('undefined') ||
+        value.includes('null') ? (
+          <ValueSkeleton />
+        ) : (
+          value
+        )}
       </Text>
     </Flex>
   )
