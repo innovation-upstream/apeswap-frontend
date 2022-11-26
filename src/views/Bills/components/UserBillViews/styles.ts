@@ -62,7 +62,6 @@ export const FirstTimeCardContainer = styled(Flex)`
   align-self: center;
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
-    height: 410px;
     max-width: 100%;
     align-self: auto;
   }
@@ -74,7 +73,7 @@ export const BillGifContainer = styled(Flex)`
   align-items: center;
   ${({ theme }) => theme.mediaQueries.md} {
     max-width: 620px;
-    width: 100%;
+    width: 50%;
   }
 `
 
@@ -82,8 +81,11 @@ export const DescriptionContainer = styled(Flex)`
   flex-direction: column;
   padding-left: 20px;
   padding: 21px 0px 20px 20px;
+  width: 100%;
+  justify-content: center;
   ${({ theme }) => theme.mediaQueries.md} {
     max-width: 530px;
+    width: 50%;
   }
 `
 

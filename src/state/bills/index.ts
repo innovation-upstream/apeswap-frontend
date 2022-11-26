@@ -10,7 +10,7 @@ import fetchBills from './fetchBills'
 import { getNewBillNftData } from './getBillNftData'
 import fetchBillsConfig from './api'
 
-const initialState: BillsState = { data: [] }
+const initialState: BillsState = { data: [], loadedUserBills: false }
 
 export const billsSlice = createSlice({
   name: 'Bills',
@@ -60,6 +60,12 @@ export const billsSlice = createSlice({
         userOwnedBillsNftData: { ...state.data[i].userOwnedBillsNftData, ...value },
       }
     },
+    setLoadedUserBills: (state, action) => {
+      return {
+        ...state,
+        loadedUserBills: action.payload,
+      }
+    },
   },
 })
 
@@ -71,6 +77,7 @@ export const {
   setUserOwnedBillsData,
   setUserOwnedBillsNftData,
   updateBillsUserData,
+  setLoadedUserBills,
 } = billsSlice.actions
 
 // Thunks
@@ -156,6 +163,7 @@ export const fetchUserOwnedBillsDataAsync =
         }
       })
       dispatch(setUserOwnedBillsNftData(ownedBillsWithNftData))
+      dispatch(setLoadedUserBills(true))
     } catch (error) {
       console.warn(error)
     }

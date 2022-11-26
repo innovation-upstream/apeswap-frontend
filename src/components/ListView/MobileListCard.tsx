@@ -2,7 +2,7 @@
 import { Flex, TooltipBubble, InfoIcon, Svg } from '@ape.swap/uikit'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
-import { ContentContainer, ListCardContainer, DropDownIcon, ListExpandedContainer, styles } from './styles'
+import { ContentContainer, ListCardContainer, styles } from './styles'
 import { ListCardProps } from './types'
 
 const MobileListCard: React.FC<ListCardProps> = ({

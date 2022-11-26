@@ -10,6 +10,7 @@ import {
   fetchBillsUserDataAsync,
   fetchUserOwnedBillsDataAsync,
   setInitialBillsDataAsync,
+  setLoadedUserBills,
 } from '.'
 
 export const usePollBills = () => {
@@ -30,6 +31,7 @@ export const usePollUserBills = (): Bills[] => {
   const billsLoaded = bills.length
   useEffect(() => {
     if (account) {
+      dispatch(setLoadedUserBills(false))
       dispatch(fetchBillsUserDataAsync(chainId, account))
       dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
     }
@@ -40,6 +42,11 @@ export const usePollUserBills = (): Bills[] => {
 export const useBills = (): Bills[] => {
   const bills = useSelector((state: State) => state.bills.data)
   return bills
+}
+
+export const useLoadedUserBills = (): boolean => {
+  const loadedUserBills = useSelector((state: State) => state.bills.loadedUserBills)
+  return loadedUserBills
 }
 
 let prevChainId = null

@@ -535,6 +535,7 @@ export interface JungleFarmsState {
 
 export interface BillsState {
   data: Bills[]
+  loadedUserBills: boolean
 }
 
 export interface NetworkState {

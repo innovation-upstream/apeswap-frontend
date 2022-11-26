@@ -13,25 +13,8 @@ const FirstTimeCard: React.FC = () => {
         <ReactPlayer playing muted loop url="videos/bills-video.mp4" height="100%" width="100%" playsInline />
       </BillGifContainer>
       <DescriptionContainer>
-        <Text bold mb="0px" fontSize="22px">
-          {t('Information')}
-        </Text>
-        <Text fontSize="12px" style={{ lineHeight: '15px' }}>
-          {t(
-            'Treasury Bills allows users to access tokens at a discount in exchange for their liquidity provider (LP) tokens. Each Treasury Bill is a unique NFT that represents the contract and its respective reward tokens, which vest over a certain amount of time.',
-          )}
-          <br /> <br />
-          <a
-            href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {t('For more info, visit the Treasury Bills page in our Documentation.')}
-          </a>
-          <br /> <br />
-          <Text fontSize="12px" bold>
-            {t('HOW IT WORKS')}:
-          </Text>
+        <Text fontSize="18px" bold>
+          {t('Tips for buying bills')}:
         </Text>
         <BillDiagramContainer>
           <BillsDiagram />

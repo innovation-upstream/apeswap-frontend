@@ -115,7 +115,7 @@ const BillsListView: React.FC = () => {
       toolTipIconWidth: '15px',
       toolTipStyle: isSmall && { marginRight: '10px' },
       infoContentPosition: 'translate(10%, 0%)',
-      titleContainerWidth: 255,
+      titleContainerWidth: 260,
       cardContent: isMobile ? (
         <ListViewContentMobile
           title={'Discount'}
@@ -146,7 +146,7 @@ const BillsListView: React.FC = () => {
             height={52.5}
             toolTip={t("This is the percentage discount relative to the token's current market price.")}
             toolTipPlacement="bottomLeft"
-            toolTipTransform={parseFloat(bill?.discount) < 0 ? 'translate(25, 0%)' : 'translate(23%, 0%)'}
+            toolTipTransform={'translate(23%, 0%)'}
           />
           <ListViewContent
             title={t('Vesting Term')}

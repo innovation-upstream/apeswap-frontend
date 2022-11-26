@@ -113,15 +113,10 @@ export const RightContent = styled.div`
     width: 80%;
   } ;
 `
-export const RightHeader = styled(StyledText)`
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.text};
-  text-align: left;
-  margin: 0;
-`
 export const RightText = styled(StyledText)`
   margin: 0;
   text-align: left;
+  font-size: 14px;
 `
 export const InnerTextButton = styled(TextButton)`
   margin: 0;
