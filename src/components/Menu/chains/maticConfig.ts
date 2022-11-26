@@ -26,7 +26,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   },
   {
     label: t('Farms'),
-    href: '/banana-farms',
+    href: '/farms',
     isNew: false,
   },
   {
