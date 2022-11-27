@@ -1,64 +1,14 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Checkbox, Flex, Input, Select, SelectItem, Svg, Text, useMatchBreakpoints } from '@ape.swap/uikit'
+import { Checkbox, Flex, Input, Svg, Text, useMatchBreakpoints } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { ControlContainer, SearchText, styles } from './styles'
+import { SearchText, styles } from './styles'
 import { NetworkButton, Toggle } from '@ape.swap/uikit'
 import useSelectNetwork from 'hooks/useSelectNetwork'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
-
-export const FILTER_OPTIONS = [
-  {
-    label: 'Filter',
-    value: 'filter',
-  },
-  {
-    label: 'BANANA',
-    value: 'bananaBill',
-  },
-  {
-    label: 'Jungle',
-    value: 'jungleBill',
-  },
-]
-
-export const SORT_OPTIONS = [
-  {
-    label: 'Sort',
-    value: 'sort',
-  },
-  {
-    label: 'Discount',
-    value: 'discount',
-  },
-  {
-    label: 'Vesting Term',
-    value: 'vesting',
-  },
-  {
-    label: 'Price',
-    value: 'price',
-  },
-  {
-    label: 'New',
-    value: 'new',
-  },
-]
-
-export interface BillsListMenuProps {
-  onHandleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  setFilterOption: (value: string) => void
-  filterOption?: string
-  setSortOption: (value: string) => void
-  sortOption: string
-  query: string
-  harvestAll?: React.ReactNode
-  showOnlyDiscount: boolean
-  setShowOnlyDiscount: (value: boolean) => void
-  showAvailable: boolean
-  setShowAvailable: (value: boolean) => void
-}
+import { BillsListMenuProps, FILTER_OPTIONS, SORT_OPTIONS } from './types'
+import MenuSelect from './MenuSelect'
 
 const BillsListMenu: React.FC<BillsListMenuProps> = ({
   onHandleQueryChange,
@@ -80,66 +30,27 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
   const [expanded, setExpended] = useState(false)
 
   return (
-    <ControlContainer>
+    <Flex sx={styles.menuContainer}>
       {isMobile ? (
-        <Flex sx={{ width: '100%', alignItems: 'center', flexDirection: 'column' }}>
-          <Flex sx={{ width: '100%', justifyContent: 'center' }}>
+        <Flex sx={styles.mobileContainer}>
+          <Flex>
             <SearchText bold mr="15px">
               {t('Search')}
             </SearchText>
             <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.input} />
-            <Flex
-              sx={{ backgroundColor: 'lvl1', padding: '10px', borderRadius: '10px', cursor: 'pointer' }}
-              onClick={() => setExpended(!expanded)}
-            >
+            <Flex sx={styles.expandedButton} onClick={() => setExpended(!expanded)}>
               <Svg icon="MenuSettings" width="18px" />
             </Flex>
           </Flex>
           {expanded && (
-            <Flex sx={{ width: '100%', justifyContent: 'space-around', flexWrap: 'wrap', maxWidth: '353.4px' }}>
-              <Flex sx={{ marginTop: '15px', width: '50%', justifyContent: 'center', paddingRight: '10px' }}>
-                <Select
-                  size="xsm"
-                  onChange={(e) => setSortOption(e.target.value)}
-                  active={sortOption}
-                  sx={{ height: '36px', display: 'flex', width: '100%' }}
-                >
-                  {SORT_OPTIONS.map((option) => {
-                    return (
-                      <SelectItem size="sm" value={option.value} key={option.label}>
-                        <Text>{t(option.label)}</Text>
-                      </SelectItem>
-                    )
-                  })}
-                </Select>
+            <Flex sx={styles.mobileRow}>
+              <Flex sx={styles.inputContainer} pr={3}>
+                <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={SORT_OPTIONS} />
               </Flex>
-              <Flex sx={{ marginTop: '15px', width: '50%', justifyContent: 'center', paddingLeft: '10px' }}>
-                <Select
-                  size="xsm"
-                  onChange={(e) => setFilterOption(e.target.value)}
-                  active={filterOption}
-                  sx={{ height: '36px', display: 'flex', width: '100%' }}
-                >
-                  {FILTER_OPTIONS.map((option) => {
-                    return (
-                      <SelectItem size="xsm" value={option.value} key={option.label}>
-                        <Text>{t(option.label)}</Text>
-                      </SelectItem>
-                    )
-                  })}
-                </Select>
+              <Flex sx={styles.inputContainer} pl={3}>
+                <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
               </Flex>
-              <Flex
-                sx={{
-                  marginTop: '15px',
-                  width: '100%',
-                  '& button': {
-                    width: '100%',
-                    justifyContent: 'space-between',
-                    '& span': { width: '100%', textAlign: 'left' },
-                  },
-                }}
-              >
+              <Flex sx={styles.networkWrapper}>
                 <NetworkButton
                   switchNetwork={switchNetwork}
                   chainId={chainId}
@@ -149,7 +60,7 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
               </Flex>
             </Flex>
           )}
-          <Flex sx={{ width: '100%', justifyContent: 'space-between', marginTop: '15px', maxWidth: '353px' }}>
+          <Flex sx={styles.mobileRow}>
             <Flex>
               <Toggle
                 size="sm"
@@ -175,37 +86,11 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
             </SearchText>
             <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.input} />
           </Flex>
-          <Flex>
-            <Select
-              size="xsm"
-              onChange={(e) => setSortOption(e.target.value)}
-              active={sortOption}
-              sx={{ height: '36px', display: 'flex', width: '145px' }}
-            >
-              {SORT_OPTIONS.map((option) => {
-                return (
-                  <SelectItem size="sm" value={option.value} key={option.label}>
-                    <Text>{t(option.label)}</Text>
-                  </SelectItem>
-                )
-              })}
-            </Select>
+          <Flex sx={{ width: '145px' }}>
+            <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={SORT_OPTIONS} />
           </Flex>
-          <Flex>
-            <Select
-              size="xsm"
-              onChange={(e) => setFilterOption(e.target.value)}
-              active={filterOption}
-              sx={{ height: '36px', display: 'flex', width: '95px' }}
-            >
-              {FILTER_OPTIONS.map((option) => {
-                return (
-                  <SelectItem size="xsm" value={option.value} key={option.label}>
-                    <Text>{t(option.label)}</Text>
-                  </SelectItem>
-                )
-              })}
-            </Select>
+          <Flex sx={{ width: '95px' }}>
+            <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
           </Flex>
           <Flex>
             <Toggle
@@ -230,7 +115,7 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
           />
         </>
       )}
-    </ControlContainer>
+    </Flex>
   )
 }
 

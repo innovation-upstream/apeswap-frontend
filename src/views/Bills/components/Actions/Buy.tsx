@@ -156,6 +156,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
               dispatch(fetchBillsUserDataAsync(chainId, account))
             })
             .catch((e) => {
+              console.error(e)
               toastError(e?.data?.message || t('Error: Please try again.'))
               setPendingTrx(false)
               onTransactionSubmited(false)
@@ -316,21 +317,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
             />
           </Box>
           {showUpdateSlippage && !pendingTrx && (
-            <Flex
-              sx={{
-                '@media screen and (min-width: 1180px)': {
-                  '& div': {
-                    position: 'absolute',
-                    top: '360px',
-                    left: '0px',
-                    background: 'lvl1',
-                    padding: '10px',
-                    borderRadius: '10px',
-                    width: '552px',
-                  },
-                },
-              }}
-            >
+            <Flex sx={styles.updateSlippage}>
               <UpdateSlippage priceImpact={priceImpact} updateSlippage={updateSlippage} />
             </Flex>
           )}
