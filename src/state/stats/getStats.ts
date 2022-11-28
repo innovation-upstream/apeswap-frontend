@@ -19,9 +19,9 @@ export const fetchPoolStats = (pools: Pool[], curBlock): any[] => {
   const stakedPools = pools.filter((pool) => parseInt(pool?.userData?.stakedBalance?.toString()) > 0)
   const mappedPoolStats = stakedPools.map((pool) => {
     const stakedTvl =
-      getBalanceNumber(pool.userData?.stakedBalance, pool.stakingToken.decimals) * pool.stakingToken?.price
+      getBalanceNumber(pool.userData?.stakedBalance, pool.stakingToken.decimals[56]) * pool.stakingToken?.price
     const pendingReward = pool.rewardToken
-      ? getBalanceNumber(pool.userData?.pendingReward, pool?.rewardToken.decimals)
+      ? getBalanceNumber(pool.userData?.pendingReward, pool?.rewardToken.decimals[56])
       : getBalanceNumber(pool.userData?.pendingReward, pool.tokenDecimals)
     const pendingRewardUsd = pool.rewardToken ? pendingReward * pool?.rewardToken?.price : 0
     const dollarsEarnedPerDay = (stakedTvl * (pool?.apr / 100)) / 365
