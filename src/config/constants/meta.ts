@@ -25,7 +25,7 @@ export const customMeta: { [key: string]: PageMeta } = {
     title: 'Non Fungible Apes | ApeSwap : Your One-Stop DeFi Hub',
     description: 'Buy and sell ApeSwap NFTs and join our NFT community.',
   },
-  '/banana-farms': {
+  '/farms': {
     title: 'BANANA Farms | ApeSwap : Your One-Stop DeFi Hub',
     description: 'Stake your liquidity provider (LP) tokens in BANANA Farms to earn BANANA.',
   },
