@@ -3,43 +3,11 @@ import React, { useState } from 'react'
 import { Checkbox, Flex, Select, SelectItem, Text, Input, useMatchBreakpoints, Toggle, Svg } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { ClaimAllWrapper, ControlContainer, SearchText, styles } from './styles'
+import { ClaimAllWrapper, SearchText, styles } from './styles'
 import ClaimAll from '../Actions/ClaimAll'
 import { Bills } from 'state/types'
-
-export const FILTER_OPTIONS = [
-  {
-    label: 'Filter',
-    value: 'filter',
-  },
-  {
-    label: 'BANANA',
-    value: 'bananaBill',
-  },
-  {
-    label: 'Jungle',
-    value: 'jungleBill',
-  },
-]
-
-export const SORT_OPTIONS = [
-  {
-    label: 'Sort',
-    value: 'sort',
-  },
-  {
-    label: 'Pending',
-    value: 'pending',
-  },
-  {
-    label: 'Claimable',
-    value: 'claimable',
-  },
-  {
-    label: 'Fully Vested',
-    value: 'vested',
-  },
-]
+import { FILTER_OPTIONS, SORT_OPTIONS } from './types'
+import MenuSelect from '../BillsListView/MenuSelect'
 
 export interface UserBillsMenuProps {
   onHandleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -91,54 +59,25 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
     )
   })
   return (
-    <ControlContainer>
+    <Flex sx={styles.menuContainer}>
       {isMobile ? (
-        <Flex sx={{ width: '100%', alignItems: 'center', flexDirection: 'column' }}>
-          <Flex sx={{ width: '100%', justifyContent: 'center' }}>
+        <Flex sx={styles.mobileContainer}>
+          <Flex>
             <SearchText bold mr="15px">
               {t('Search')}
             </SearchText>
             <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.input} />
-            <Flex
-              sx={{ backgroundColor: 'lvl1', padding: '10px', borderRadius: '10px', cursor: 'pointer' }}
-              onClick={() => setExpended(!expanded)}
-            >
+            <Flex sx={styles.expandedButton} onClick={() => setExpended(!expanded)}>
               <Svg icon="MenuSettings" width="18px" />
             </Flex>
           </Flex>
           {expanded && (
-            <Flex sx={{ width: '100%', justifyContent: 'space-around', flexWrap: 'wrap', maxWidth: '353.4px' }}>
-              <Flex sx={{ marginTop: '15px', width: '50%', justifyContent: 'center', paddingRight: '10px' }}>
-                <Select
-                  size="xsm"
-                  onChange={(e) => setSortOption(e.target.value)}
-                  active={sortOption}
-                  sx={{ height: '36px', display: 'flex', width: '100%' }}
-                >
-                  {SORT_OPTIONS.map((option) => {
-                    return (
-                      <SelectItem size="sm" value={option.value} key={option.label}>
-                        <Text>{t(option.label)}</Text>
-                      </SelectItem>
-                    )
-                  })}
-                </Select>
+            <Flex sx={styles.mobileRow}>
+              <Flex sx={styles.inputContainer} pr={3}>
+                <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={SORT_OPTIONS} />
               </Flex>
-              <Flex sx={{ marginTop: '15px', width: '50%', justifyContent: 'center', paddingLeft: '10px' }}>
-                <Select
-                  size="xsm"
-                  onChange={(e) => setFilterOption(e.target.value)}
-                  active={filterOption}
-                  sx={{ height: '36px', display: 'flex', width: '100%' }}
-                >
-                  {FILTER_OPTIONS.map((option) => {
-                    return (
-                      <SelectItem size="xsm" value={option.value} key={option.label}>
-                        <Text>{t(option.label)}</Text>
-                      </SelectItem>
-                    )
-                  })}
-                </Select>
+              <Flex sx={styles.inputContainer} pl={3}>
+                <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
               </Flex>
               <Flex sx={{ marginTop: '15px', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Flex>
@@ -170,36 +109,10 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
           </SearchText>
           <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.input} />
           <Flex>
-            <Select
-              size="xsm"
-              onChange={(e) => setSortOption(e.target.value)}
-              active={sortOption}
-              sx={{ height: '36px', display: 'flex', width: '100%' }}
-            >
-              {SORT_OPTIONS.map((option) => {
-                return (
-                  <SelectItem size="sm" value={option.value} key={option.label}>
-                    <Text>{t(option.label)}</Text>
-                  </SelectItem>
-                )
-              })}
-            </Select>
+            <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={SORT_OPTIONS} />
           </Flex>
           <Flex>
-            <Select
-              size="xsm"
-              onChange={(e) => setFilterOption(e.target.value)}
-              active={filterOption}
-              sx={{ height: '36px', display: 'flex', width: '95px' }}
-            >
-              {FILTER_OPTIONS.map((option) => {
-                return (
-                  <SelectItem size="sm" value={option.value} key={option.label}>
-                    <Text>{t(option.label)}</Text>
-                  </SelectItem>
-                )
-              })}
-            </Select>
+            <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
           </Flex>
           <Flex>
             <Toggle
@@ -210,7 +123,7 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
               sx={{ height: '36px', alignItems: 'center', '& div': { minWidth: '70px', textAlign: 'center' } }}
             />
           </Flex>
-          <Flex>
+          <Flex sx={{ alignItems: 'center' }}>
             <Checkbox checked={showClaimed} onClick={() => setShowClaimed(!showClaimed)} />
             <Text ml="15px" size="14px">
               {t('Claimed')}
@@ -221,7 +134,7 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
           </ClaimAllWrapper>
         </>
       )}
-    </ControlContainer>
+    </Flex>
   )
 }
 

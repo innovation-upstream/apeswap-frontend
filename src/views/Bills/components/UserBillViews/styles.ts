@@ -22,6 +22,41 @@ export const styles: Record<string, ThemeUIStyleObject> = {
       width: '240px',
     },
   },
+  menuContainer: {
+    borderRadius: '10px',
+    justifyContent: 'space-between',
+    padding: '10px 20px',
+    zIndex: 2,
+    backgroundColor: 'white2',
+    minWidth: '300px',
+    width: '100%',
+    marginTop: '20px',
+    '@media screen and (min-width: 852px)': {
+      padding: '10px 10px',
+    },
+  },
+  mobileContainer: {
+    width: '100%',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  expandedButton: {
+    backgroundColor: 'lvl1',
+    padding: '10px',
+    borderRadius: '10px',
+    cursor: 'pointer',
+  },
+  mobileRow: {
+    width: '100%',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    maxWidth: '353px',
+    marginTop: '15px',
+  },
+  inputContainer: {
+    width: '50%',
+    justifyContent: 'center',
+  },
 }
 
 export const CardContainer = styled(Card)`
@@ -91,28 +126,6 @@ export const DescriptionContainer = styled(Flex)`
 
 export const BillDiagramContainer = styled(Flex)`
   margin-top: 10px;
-`
-
-export const ControlContainer = styled(Flex)`
-  align-items: center;
-  position: relative;
-  flex-wrap: wrap;
-  border-radius: 10px;
-  justify-content: space-between;
-  flex-direction: row;
-  padding: 10px 20px;
-  z-index: 2;
-  background-color: ${({ theme }) => theme.colors.white2};
-  min-width: 300px;
-  max-width: 500px;
-  width: 100%;
-  align-self: center;
-  margin-top: 20px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-direction: row;
-    align-items: center;
-    max-width: 100%;
-  }
 `
 
 export const LabelWrapper = styled.div`
