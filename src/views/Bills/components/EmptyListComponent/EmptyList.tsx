@@ -13,6 +13,7 @@ import useSwitchNetwork from 'hooks/useSelectNetwork'
 import React from 'react'
 import MonkeyImage from 'views/Dex/Orders/components/OrderHistoryPanel/MonkeyImage'
 import { BillsView } from '../../index'
+import { styles } from './styles'
 
 export enum EmptyComponentType {
   USER_BILLS,
@@ -25,7 +26,7 @@ interface EmptyListComponentProps {
   handleBillsViewChange?: (view: BillsView) => void
 }
 
-const EmptyListComponent: React.FC<EmptyListComponentProps> = ({ type, handleBillsViewChange }) => {
+const EmptyList: React.FC<EmptyListComponentProps> = ({ type, handleBillsViewChange }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { switchNetwork } = useSwitchNetwork()
@@ -34,18 +35,10 @@ const EmptyListComponent: React.FC<EmptyListComponentProps> = ({ type, handleBil
   )
 
   return (
-    <Flex
-      sx={{
-        width: '100%',
-        background: 'white2',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '10px',
-      }}
-    >
-      <Flex sx={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '50px 20px' }}>
+    <Flex sx={styles.mainContainer}>
+      <Flex sx={styles.subContainer}>
         <MonkeyImage />
-        <Flex sx={{ width: '100%', justifyContent: 'center', marginTop: '10px' }}>
+        <Flex sx={styles.title}>
           <Text color="gray">
             {type === EmptyComponentType.AVAILABLE_BILLS &&
               t(`All Treasury Bills on ${NETWORK_LABEL[chainId]} are sold out.`)}
@@ -57,22 +50,11 @@ const EmptyListComponent: React.FC<EmptyListComponentProps> = ({ type, handleBil
           {type === EmptyComponentType.AVAILABLE_BILLS && t('Switch to: ')}
           {type === EmptyComponentType.USER_BILLS && t('Click below to purchase your first bill')}
         </Text>
-        <Flex sx={{ mt: '5px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+        <Flex sx={styles.availableBills}>
           {type === EmptyComponentType.AVAILABLE_BILLS &&
             eligibleChains.map((chainId) => {
               return (
-                <Flex
-                  key={chainId}
-                  sx={{
-                    padding: '5px 10px',
-                    background: 'white3',
-                    alignItems: 'center',
-                    borderRadius: '10px',
-                    cursor: 'pointer',
-                    margin: '5px 5px',
-                  }}
-                  onClick={() => switchNetwork(chainId)}
-                >
+                <Flex key={chainId} sx={styles.networkButton} onClick={() => switchNetwork(chainId)}>
                   <ServiceTokenDisplay token1={CHAIN_PARAMS[chainId].nativeCurrency.symbol} size={22.5} />
                   <Text ml="10px">{NETWORK_LABEL[chainId]}</Text>
                 </Flex>
@@ -89,4 +71,4 @@ const EmptyListComponent: React.FC<EmptyListComponentProps> = ({ type, handleBil
   )
 }
 
-export default EmptyListComponent
+export default EmptyList

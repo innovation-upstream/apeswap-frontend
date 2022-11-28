@@ -16,7 +16,7 @@ import ProjectLinks from '../UserBillViews/ProjectLinks'
 import BillsListMenu from './BillsListMenu'
 import { useBills } from '../../../../state/bills/hooks'
 import { useSetZapOutputList } from 'state/zap/hooks'
-import EmptyListComponent, { EmptyComponentType } from '../EmptyListComponent/EmptyListComponent'
+import EmptyListComponent, { EmptyComponentType } from '../EmptyListComponent/EmptyList'
 import ListViewContentMobile from 'components/ListViewContent/ListViewContentMobile'
 import orderBy from 'lodash/orderBy'
 
