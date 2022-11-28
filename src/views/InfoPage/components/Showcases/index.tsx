@@ -11,7 +11,7 @@ import useSwiper from 'hooks/useSwiper'
 const InfoShowcases = () => {
   const mobile = useIsMobile()
   const [activeSlide, setActiveSlide] = useState(0)
-  // const { swiper, setSwiper } = useSwiper()
+  const [swiper, setSwiper] = useState(null)
 
   const showcases = [
     {
@@ -29,7 +29,7 @@ const InfoShowcases = () => {
   ]
 
   const updateSlide = (index) => {
-    // swiper.slideTo(index)
+    swiper.slideTo(index)
     setActiveSlide(index)
   }
 
@@ -67,7 +67,7 @@ const InfoShowcases = () => {
               centeredSlides
               resizeObserver
               lazy
-              //onSwiper={setSwiper}
+              onSwiper={setSwiper}
             >
               {showcases.map((showcase, index) => {
                 return (
