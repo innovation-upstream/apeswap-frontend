@@ -10,11 +10,15 @@ import Heading from './components/Heading'
 import Pairs from './components/Pairs'
 import Transactions from './components/Transactions'
 import Overview from './components/Overview'
+import NetworkSelector from './components/NetworkSelector'
+import useIsMobile from '../../hooks/useIsMobile'
+import Showcases from './components/Showcases'
 
 const InfoPage = () => {
   useFetchInfoBlock()
   useFetchInfoNativePrice()
   useFetchInfoTokensData(20)
+  const mobile = useIsMobile()
 
   return (
     <Flex sx={{ width: '100%', justifyContent: 'center' }}>
@@ -29,8 +33,11 @@ const InfoPage = () => {
         }}
       >
         <Heading />
+        <NetworkSelector />
         <Overview />
         <TrendingTokens />
+        {mobile && <Showcases />}
+
         <Tokens />
         <Pairs />
         <Transactions />

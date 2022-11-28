@@ -16,7 +16,30 @@ export const FigureWrapper = styled.div`
   &.clickable {
     cursor: pointer;
   }
+
+  .date-selector {
+    margin-left: 15px;
+    cursor: pointer;
+    &:not(.live) {
+      opacity: 50%;
+    }
+    
 `
+
+export const RangeSelectorsWrapper = styled.div`
+  ul {
+    list-style-type: none;
+  }
+  li {
+    float: left;
+    margin-left: 15px;
+    cursor: pointer;
+    &:not(.active) {
+      opacity: 50%;
+    }
+  }
+`
+
 export const ShowcaseWrapper = styled.div`
   width: calc(50% - 10px);
   margin-bottom: 10px;
@@ -45,4 +68,14 @@ export const CenteredImage = styled.img`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+`
+
+export const Bubble = styled.div<{ isActive?: boolean }>`
+  background: ${({ isActive, theme }) =>
+    isActive ? 'linear-gradient(53.53deg, #a16552 15.88%, #e1b242 92.56%)' : theme.colors.white4};
+  height: 14px;
+  width: 14px;
+  border-radius: 50px;
+  margin: 0px 2.5px 0px 2.5px;
+  cursor: pointer;
 `

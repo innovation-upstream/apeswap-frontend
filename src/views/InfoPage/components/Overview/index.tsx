@@ -19,7 +19,7 @@ const Overview = () => {
     <Flex
       sx={{
         gap: '20px',
-        width: '100%',
+        width: `${mobile ? '95vw' : '100%'}`,
         maxWidth: '1200px',
         justifyContent: 'space-between',
         flexWrap: 'wrap',

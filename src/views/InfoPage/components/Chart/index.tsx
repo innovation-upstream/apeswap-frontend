@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { Flex } from '@ape.swap/uikit'
-import React from 'react'
+import React, { useState } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import { useFetchChartData } from '../../../../state/info/hooks'
 import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
@@ -8,8 +8,9 @@ import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
 import { Section } from '../../../Info/styles'
 import moment from 'moment/moment'
 import useTheme from '../../../../hooks/useTheme'
-import { ChartWrapper } from '../styles'
+import { ChartWrapper, RangeSelectorsWrapper } from '../styles'
 import Figure from '../Figures/figure'
+import CircleLoader from '../../../../components/Loader/CircleLoader'
 
 interface ChartProps {
   chartType: string
@@ -20,7 +21,10 @@ interface ChartProps {
 const Chart: React.FC<ChartProps> = (props) => {
   const { isDark } = useTheme()
 
-  const chartData = useFetchChartData(30)
+  const [dataAmount, setDataAmount] = useState(props.chartType === 'liquidity' ? 30 : 7)
+  const [sevenDayVolume, setSevenDayVolume] = useState(0)
+
+  const chartData = useFetchChartData(dataAmount)
   const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
   function processChartData() {
@@ -28,20 +32,27 @@ const Chart: React.FC<ChartProps> = (props) => {
 
     for (let i = 0; i < Object.keys(chartData).length; i++) {
       const chain = Object.keys(chartData)[i]
-      if (data.length === 0) {
-        for (let j = 0; j < chartData[chain].data.length; j++) {
-          data.push({
-            date: chartData[chain].data[j].date,
-            [chain]: chartData[chain].data[j].dailyVolumeUSD,
-          })
-        }
-      } else {
-        for (let j = 0; j < chartData[chain].data.length; j++) {
-          data[j][chain] = chartData[chain].data[j].dailyVolumeUSD
+
+      if (chartData[chain].data === null || chartData[chain].data === undefined) {
+        continue
+      }
+      if (activeChains === null || activeChains.includes(Number(chain))) {
+        if (data.length === 0) {
+          for (let j = 0; j < chartData[chain].data.length; j++) {
+            data.push({
+              date: chartData[chain].data[j].date,
+              [chain]: chartData[chain].data[j].dailyVolumeUSD,
+            })
+          }
+        } else {
+          for (let j = 0; j < chartData[chain].data.length; j++) {
+            data[j][chain] = chartData[chain].data[j].dailyVolumeUSD
+          }
         }
       }
-      //  }
     }
+
+    //  }
 
     return data.reverse()
   }
@@ -51,20 +62,24 @@ const Chart: React.FC<ChartProps> = (props) => {
 
     for (let i = 0; i < Object.keys(chartData).length; i++) {
       const chain = Object.keys(chartData)[i]
-      //  if (activeChains.includes(Number(chain))) {
-      if (data.length === 0) {
-        for (let j = 0; j < chartData[chain].data.length; j++) {
-          data.push({
-            date: chartData[chain].data[j].date,
-            [chain]: chartData[chain].data[j].totalLiquidityUSD,
-          })
-        }
-      } else {
-        for (let j = 0; j < chartData[chain].data.length; j++) {
-          data[j][chain] = chartData[chain].data[j].totalLiquidityUSD
+
+      if (chartData[chain].data === null || chartData[chain].data === undefined) {
+        continue
+      }
+      if (activeChains === null || activeChains.includes(Number(chain))) {
+        if (data.length === 0) {
+          for (let j = 0; j < chartData[chain].data.length; j++) {
+            data.push({
+              date: chartData[chain].data[j].date,
+              [chain]: chartData[chain].data[j].totalLiquidityUSD,
+            })
+          }
+        } else {
+          for (let j = 0; j < chartData[chain].data.length; j++) {
+            data[j][chain] = chartData[chain].data[j].totalLiquidityUSD
+          }
         }
       }
-      //   }
     }
 
     return data.reverse()
@@ -92,16 +107,15 @@ const Chart: React.FC<ChartProps> = (props) => {
     return chain ? chain.color : '#000000'
   }
 
-  function UpdateChart(amount: number) {
-    return amount
-    //chartData = useFetchChartData(amount)
+  const UpdateChart = (amount: number) => {
+    setDataAmount(amount)
   }
 
   function checkChartDataInitialized() {
     let total = 0
     for (let i = 0; i < Object.keys(chartData).length; i++) {
       const chain = Object.keys(chartData)[i]
-      total += chartData[chain].initialized === true ? 1 : 0
+      total += chartData[chain].initialized === true && chartData[chain].loading === false ? 1 : 0
     }
 
     if (total === Object.keys(chartData).length) {
@@ -170,8 +184,8 @@ const Chart: React.FC<ChartProps> = (props) => {
   return (
     <Flex
       sx={{
-        maxWidth: '100%',
-        minWidth: '100%',
+        // width: `${mobile ? '95vw' : '100%'}`,
+        width: '100%',
         minHeight: '402px',
         maxHeight: '402px',
         background: 'white2',
@@ -191,6 +205,20 @@ const Chart: React.FC<ChartProps> = (props) => {
           ) : (
             <Figure label="Liquidty" icon="chart" value={Math.round(props.liquidity).toLocaleString()} />
           )}
+
+          <RangeSelectorsWrapper>
+            <ul>
+              <li className={dataAmount === 7 && 'active'} onClick={() => UpdateChart(7)}>
+                1W
+              </li>
+              <li className={dataAmount === 30 && 'active'} onClick={() => UpdateChart(30)}>
+                1M
+              </li>
+              <li className={dataAmount === 180 && 'active'} onClick={() => UpdateChart(180)}>
+                6M
+              </li>
+            </ul>
+          </RangeSelectorsWrapper>
 
           <ChartWrapper>
             <ResponsiveBar
@@ -225,7 +253,7 @@ const Chart: React.FC<ChartProps> = (props) => {
           </ChartWrapper>
         </>
       ) : (
-        <div>Loading</div>
+        <CircleLoader />
       )}
     </Flex>
   )

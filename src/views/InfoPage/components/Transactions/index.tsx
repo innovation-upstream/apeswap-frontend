@@ -7,13 +7,18 @@ import ReactPaginate from 'react-paginate'
 import Rows from './Rows'
 import styled from 'styled-components'
 import { Swaps } from 'state/info/types'
+import useIsMobile from '../../../../hooks/useIsMobile'
 
 const ROWS_PER_PAGE = 10
 
 const Transactions = () => {
+  const mobile = useIsMobile()
+
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)
   const transactions = useFetchInfoTransactions(50)
+
+  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
   const flattenedTransactions = Object.values(transactions).flatMap((row) =>
     row.initialized
@@ -28,8 +33,13 @@ const Transactions = () => {
   //   .flatMap((row) => row.initialized)
   //   ?.includes(true)
   const sortedTransactions = useMemo(
-    () => orderBy(flattenedTransactions, ({ transaction }) => parseFloat(transaction.timestamp), 'desc'),
-    [flattenedTransactions],
+    () =>
+      orderBy(
+        flattenedTransactions.filter((x) => activeChains === null || activeChains.includes(x.chainId)),
+        ({ transaction }) => parseFloat(transaction.timestamp),
+        'desc',
+      ),
+    [flattenedTransactions, activeChains],
   )?.slice(0, 50)
   const handlePageClick = (event) => {
     const newOffset = (event.selected * ROWS_PER_PAGE) % sortedTransactions.length
@@ -40,7 +50,7 @@ const Transactions = () => {
   }, [sortedTransactions.length, dataOffset])
 
   return (
-    <Flex sx={{ flexDirection: 'column', width: '100%', mt: '20px' }}>
+    <Flex sx={{ flexDirection: 'column', width: `${mobile ? '95vw' : '100%'}`, mt: '20px' }}>
       <Text size="18px" weight={700}>
         Recent Transactions
       </Text>

@@ -4,7 +4,8 @@ import React, { useState } from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import Figure from './figure'
 import { useFetchInfoUniswapFactories } from '../../../../state/info/hooks'
-import { ShowcaseWrapper } from '../styles'
+import CircleLoader from '../../../../components/Loader/CircleLoader'
+import Showcases from '../Showcases'
 
 interface FiguresProps {
   switchChart: () => void
@@ -14,6 +15,7 @@ interface FiguresProps {
 
 const Figures: React.FC<FiguresProps> = (props) => {
   const mobile = useIsMobile()
+
   const [chart, setChart] = useState('liquidity')
 
   const currentDayData = useFetchInfoUniswapFactories(true)
@@ -42,9 +44,9 @@ const Figures: React.FC<FiguresProps> = (props) => {
 
     for (let i = 0; i < Object.keys(currentDayData).length; i++) {
       const chain = Object.keys(currentDayData)[i]
-      // if (activeChains.includes(Number(chain))) {
-      total += Number(currentDayData[chain].data[key])
-      //  }
+      if (activeChains === null || activeChains.includes(Number(chain))) {
+        total += Number(currentDayData[chain].data[key])
+      }
     }
 
     return total
@@ -54,9 +56,9 @@ const Figures: React.FC<FiguresProps> = (props) => {
     let total = 0
     for (let i = 0; i < Object.keys(dayOldData).length; i++) {
       const chain = Object.keys(dayOldData)[i]
-      //  if (activeChains.includes(Number(chain))) {
-      total += Number(dayOldData[chain].data[key])
-      //  }
+      if (activeChains === null || activeChains.includes(Number(chain))) {
+        total += Number(dayOldData[chain].data[key])
+      }
     }
 
     return total
@@ -85,13 +87,8 @@ const Figures: React.FC<FiguresProps> = (props) => {
         flexWrap: 'wrap',
       }}
     >
-      {checkDatasInitialized() === true && (
+      {checkDatasInitialized() === true ? (
         <>
-          <Figure
-            label="Transactions (24h)"
-            icon="chart"
-            value={(calculateCurrentFigures('txCount') - calculateOneDayFigures('txCount')).toLocaleString()}
-          />
           <Figure
             label="Liquidity"
             icon="dollar"
@@ -101,13 +98,6 @@ const Figures: React.FC<FiguresProps> = (props) => {
             onClick={() => updateChart('liquidity')}
           />
           <Figure
-            label="Volume (24h)"
-            icon="dollar"
-            value={Math.round(
-              calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
-            ).toLocaleString()}
-          />
-          <Figure
             label="Volume (7d)"
             icon="dollar"
             clickable={true}
@@ -115,20 +105,27 @@ const Figures: React.FC<FiguresProps> = (props) => {
             highlighted={chart === 'volume'}
             onClick={() => updateChart('volume')}
           />
+          <Figure
+            label="Volume (24h)"
+            icon="dollar"
+            value={Math.round(
+              calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
+            ).toLocaleString()}
+          />
+
+          <Figure
+            label="Transactions (24h)"
+            icon="chart"
+            value={(calculateCurrentFigures('txCount') - calculateOneDayFigures('txCount')).toLocaleString()}
+          />
           <Figure label="Fees (24h)" icon="dollar" value={(Math.round(calculateFees() * 100) / 100).toLocaleString()} />
 
           <Figure label="Pairs" icon="chart" value={calculateCurrentFigures('pairCount').toLocaleString()} />
-          <ShowcaseWrapper>
-            <a href="/farms">
-              <img src="/images/info/farms-bg.png" alt="Farms Spotlight" />
-            </a>
-          </ShowcaseWrapper>
-          <ShowcaseWrapper>
-            <a href="/maximizers">
-              <img src="/images/info/maximizers-bg.png" alt="Maximizers Spotlight" />
-            </a>
-          </ShowcaseWrapper>
+
+          {!mobile && <Showcases />}
         </>
+      ) : (
+        <CircleLoader />
       )}
     </Flex>
   )
