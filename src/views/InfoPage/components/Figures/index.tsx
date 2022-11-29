@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import Figure from './figure'
 import { useFetchInfoUniswapFactories } from '../../../../state/info/hooks'
-import CircleLoader from '../../../../components/Loader/CircleLoader'
 import Showcases from '../Showcases'
 import SwiperProvider from 'contexts/SwiperProvider'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -210,7 +209,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
             alignItems: 'center',
           }}
         >
-          <Spinner />
+          <Spinner size={250} />
         </Flex>
       )}
     </Flex>

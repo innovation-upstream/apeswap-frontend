@@ -247,7 +247,7 @@ const Chart: React.FC<ChartProps> = (props) => {
             alignItems: 'center',
           }}
         >
-          <Spinner />
+          <Spinner size={250} />
         </Flex>
       )}
     </Flex>
