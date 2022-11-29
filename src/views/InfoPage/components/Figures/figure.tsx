@@ -13,6 +13,7 @@ interface FigureProps {
   highlighted?: boolean
   onClick?: () => void
   clickable?: boolean
+  type?: string
 }
 
 const Icon = ({ name }: { name: string }) => {
@@ -31,7 +32,7 @@ const Figure: React.FC<FigureProps> = (props) => {
   return (
     <Flex
       sx={{
-        flex: `1 0 ${mobile ? '100%' : '30%'}`,
+        flex: `1 0 ${mobile ? (props.type === 'chart' ? '50%' : '100%') : '30%'}`,
       }}
     >
       <FigureWrapper

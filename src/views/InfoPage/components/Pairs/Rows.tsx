@@ -85,7 +85,13 @@ const Rows = ({ pairs, activeIndex }: { pairs: Pairs[]; activeIndex: number }) =
                 </Text>
               </Flex>
               <Flex sx={{ alignItems: 'center' }}>
-                <ServiceTokenDisplay token1={token0.symbol} token2={token1.symbol} noEarnToken size={20} />
+                <ServiceTokenDisplay
+                  token1={token0.symbol}
+                  token2={token1.symbol}
+                  noEarnToken
+                  size={20}
+                  tokensMargin={-10}
+                />
                 <Text size="14px" weight={400} ml="10px">
                   {token0.symbol} - {token1.symbol}
                 </Text>

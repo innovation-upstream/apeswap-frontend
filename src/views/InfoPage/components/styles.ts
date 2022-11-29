@@ -35,6 +35,7 @@ export const FigureWrapper = styled.div`
 `
 
 export const RangeSelectorsWrapper = styled.div`
+  margin-top: 10px;
   ul {
     list-style-type: none;
   }

@@ -106,7 +106,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
                 label="Liquidity"
                 icon="dollar"
                 clickable={true}
-                value={Math.round(calculateCurrentFigures('totalLiquidityUSD')).toLocaleString()}
+                value={`$${Math.round(calculateCurrentFigures('totalLiquidityUSD')).toLocaleString()}`}
                 highlighted={chart === 'liquidity'}
                 onClick={() => updateChart('liquidity')}
               />
@@ -114,16 +114,16 @@ const Figures: React.FC<FiguresProps> = (props) => {
                 label="Volume (7d)"
                 icon="dollar"
                 clickable={true}
-                value={Math.round((props.sevenDayVolume * 100) / 100).toLocaleString()}
+                value={`$${Math.round((props.sevenDayVolume * 100) / 100).toLocaleString()}`}
                 highlighted={chart === 'volume'}
                 onClick={() => updateChart('volume')}
               />
               <Figure
                 label="Volume (24h)"
                 icon="dollar"
-                value={Math.round(
+                value={`$${Math.round(
                   calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
-                ).toLocaleString()}
+                ).toLocaleString()}`}
               />
               <Figure
                 label="Transactions (24h)"
@@ -133,7 +133,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
               <Figure
                 label="Fees (24h)"
                 icon="dollar"
-                value={(Math.round(calculateFees() * 100) / 100).toLocaleString()}
+                value={`$${(Math.round(calculateFees() * 100) / 100).toLocaleString()}`}
               />
               <Figure label="Pairs" icon="chart" value={calculateCurrentFigures('pairCount').toLocaleString()} />
 

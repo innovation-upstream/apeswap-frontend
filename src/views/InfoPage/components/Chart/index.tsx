@@ -181,12 +181,18 @@ const Chart: React.FC<ChartProps> = (props) => {
         <>
           {props.chartType === 'volume' ? (
             <Figure
+              type="chart"
               label="Volume (7d)"
               icon="dollar"
-              value={Math.round((calculate7DayVolume() * 100) / 100).toLocaleString()}
+              value={`$${Math.round((calculate7DayVolume() * 100) / 100).toLocaleString()}`}
             />
           ) : (
-            <Figure label="Liquidty" icon="chart" value={Math.round(props.liquidity).toLocaleString()} />
+            <Figure
+              type="chart"
+              label="Liquidty"
+              icon="dollar"
+              value={`$${Math.round(props.liquidity).toLocaleString()}`}
+            />
           )}
 
           <RangeSelectorsWrapper>
@@ -196,9 +202,6 @@ const Chart: React.FC<ChartProps> = (props) => {
               </li>
               <li className={dataAmount === 30 && 'active'} onClick={() => UpdateChart(30)}>
                 1M
-              </li>
-              <li className={dataAmount === 180 && 'active'} onClick={() => UpdateChart(180)}>
-                6M
               </li>
               <li className={dataAmount === 365 && 'active'} onClick={() => UpdateChart(365)}>
                 1Y
