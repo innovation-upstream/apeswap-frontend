@@ -41,7 +41,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
 
     const userEarnings = getBalanceNumber(
       farm?.userData?.pendingReward || new BigNumber(0),
-      farm?.rewardToken?.decimals,
+      farm?.rewardToken?.decimals[chainId],
     )
     const userEarningsUsd = `$${(userEarnings * farm.rewardToken?.price).toFixed(2)}`
     const userTokenBalance = `${getBalanceNumber(farm?.userData?.stakingTokenBalance || new BigNumber(0))?.toFixed(6)}`

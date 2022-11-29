@@ -66,10 +66,10 @@ const UserBillListView: React.FC<{
       if (!showClaimed && parseFloat(ownedBill.pendingRewards) === 0 && parseFloat(ownedBill.payout) === 0) {
         return []
       }
-      const pending = getBalanceNumber(new BigNumber(ownedBill.payout), bill?.earnToken?.decimals)?.toFixed(4)
+      const pending = getBalanceNumber(new BigNumber(ownedBill.payout), bill?.earnToken?.decimals[chainId])?.toFixed(4)
       const pendingRewards = getBalanceNumber(
         new BigNumber(ownedBill.pendingRewards),
-        bill?.earnToken?.decimals,
+        bill?.earnToken?.decimals[chainId],
       )?.toFixed(4)
       return {
         billData: { pendingRewards, pending, time: ownedBill.lastBlockTimestamp, vesting: ownedBill.vesting },

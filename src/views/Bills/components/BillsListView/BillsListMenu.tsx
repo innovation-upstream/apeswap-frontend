@@ -1,10 +1,9 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Checkbox, Flex, Input, Svg, Text, useMatchBreakpoints } from '@ape.swap/uikit'
+import { Checkbox, Flex, Input, Svg, Text, useMatchBreakpoints, NetworkButton, Toggle } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { SearchText, styles } from './styles'
-import { NetworkButton, Toggle } from '@ape.swap/uikit'
 import useSelectNetwork from 'hooks/useSelectNetwork'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import { BillsListMenuProps, FILTER_OPTIONS, SORT_OPTIONS } from './types'

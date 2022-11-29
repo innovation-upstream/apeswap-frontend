@@ -16,6 +16,7 @@ import {
   LiveIfo,
   BillsConfig,
   Token,
+  Decimals,
 } from 'config/constants/types'
 import { ProtocolDashboardState } from './protocolDashboard/types'
 import { ApiResponse } from './statsPage/types'
@@ -494,7 +495,7 @@ export interface TokenPrices {
   symbol: string
   address: Address
   price: number
-  decimals: number
+  decimals: Decimals
 }
 
 export interface LpTokenPrices {

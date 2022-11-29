@@ -38,7 +38,7 @@ const BillsListView: React.FC = () => {
     const { earnToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
     const available = new BigNumber(maxTotalPayOut)
       ?.minus(new BigNumber(totalPayoutGiven))
-      ?.div(new BigNumber(10).pow(earnToken.decimals))
+      ?.div(new BigNumber(10).pow(earnToken.decimals[chainId]))
 
     const threshold = new BigNumber(11).div(earnTokenPrice)
     return available.lte(threshold)
@@ -97,7 +97,7 @@ const BillsListView: React.FC = () => {
     const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
     const available = new BigNumber(maxTotalPayOut)
       ?.minus(new BigNumber(totalPayoutGiven))
-      ?.div(new BigNumber(10).pow(earnToken.decimals))
+      ?.div(new BigNumber(10).pow(earnToken.decimals[chainId]))
 
     const threshold = new BigNumber(11).div(earnTokenPrice)
     const disabled = new BigNumber(available).lte(threshold)

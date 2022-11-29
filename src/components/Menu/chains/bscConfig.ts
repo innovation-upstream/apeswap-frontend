@@ -51,7 +51,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('BANANA Farms'),
-        href: '/banana-farms',
+        href: '/farms',
         isNew: false,
       },
       {

@@ -22,7 +22,7 @@ const CardView: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, s
       }
       const pendingRewards = getBalanceNumber(
         new BigNumber(ownedBill.pendingRewards),
-        bill?.earnToken?.decimals,
+        bill?.earnToken?.decimals[chainId],
       )?.toFixed(4)
       const ownedBillNftData = bill?.userOwnedBillsNftData ? bill?.userOwnedBillsNftData[i] : null
       return (
