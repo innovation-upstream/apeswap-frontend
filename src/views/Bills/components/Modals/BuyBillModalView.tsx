@@ -66,7 +66,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
               color="text"
               variant="transparent"
               onClick={onDismiss}
-              sx={{ position: 'absolute', right: '20px', top: '25px' }}
+              sx={{ position: 'absolute', right: '20px', top: '25px', zIndex: 50 }}
             />
             <Flex alignItems="center" justifyContent="center">
               {loading && !billId ? (

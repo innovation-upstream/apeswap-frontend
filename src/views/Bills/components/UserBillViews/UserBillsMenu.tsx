@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Checkbox, Flex, Select, SelectItem, Text, Input, useMatchBreakpoints, Toggle, Svg } from '@ape.swap/uikit'
+import { Checkbox, Flex, Text, Input, useMatchBreakpoints, Toggle, Svg } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { ClaimAllWrapper, SearchText, styles } from './styles'
@@ -104,14 +104,16 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
         </Flex>
       ) : (
         <>
-          <SearchText bold mr="15px">
-            {t('Search')}
-          </SearchText>
-          <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.input} />
           <Flex>
+            <SearchText bold mr="15px">
+              {t('Search')}
+            </SearchText>
+            <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.input} />
+          </Flex>
+          <Flex sx={{ minWidth: '100px' }}>
             <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={SORT_OPTIONS} />
           </Flex>
-          <Flex>
+          <Flex sx={{ minWidth: '100px' }}>
             <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
           </Flex>
           <Flex>

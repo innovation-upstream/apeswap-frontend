@@ -34,15 +34,18 @@ const BillsListView: React.FC = () => {
   const [showAvailable, setShowAvailable] = useState(true)
   const noResults = !!query || filterOption !== 'all' || showOnlyDiscount
 
-  const isSoldOut = useCallback((bill: Bills) => {
-    const { earnToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
-    const available = new BigNumber(maxTotalPayOut)
-      ?.minus(new BigNumber(totalPayoutGiven))
-      ?.div(new BigNumber(10).pow(earnToken.decimals[chainId]))
+  const isSoldOut = useCallback(
+    (bill: Bills) => {
+      const { earnToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
+      const available = new BigNumber(maxTotalPayOut)
+        ?.minus(new BigNumber(totalPayoutGiven))
+        ?.div(new BigNumber(10).pow(earnToken.decimals[chainId]))
 
-    const threshold = new BigNumber(11).div(earnTokenPrice)
-    return available.lte(threshold)
-  }, [])
+      const threshold = new BigNumber(11).div(earnTokenPrice)
+      return available.lte(threshold)
+    },
+    [chainId],
+  )
 
   const hasDiscount = useCallback((bill: Bills) => {
     const { discount } = bill

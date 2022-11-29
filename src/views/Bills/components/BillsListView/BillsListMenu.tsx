@@ -85,10 +85,10 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
             </SearchText>
             <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.input} />
           </Flex>
-          <Flex sx={{ width: '145px' }}>
+          <Flex sx={{ minWidth: '100px' }}>
             <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={SORT_OPTIONS} />
           </Flex>
-          <Flex sx={{ width: '95px' }}>
+          <Flex sx={{ minWidth: '100px' }}>
             <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
           </Flex>
           <Flex>
