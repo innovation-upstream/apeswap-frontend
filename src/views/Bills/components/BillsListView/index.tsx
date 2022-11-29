@@ -153,7 +153,7 @@ const BillsListView: React.FC = () => {
           />
           <ListViewContent
             title={t('Vesting Term')}
-            value={`${vestingTime.days} days`}
+            value={vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
             width={isSmall ? 105 : 105}
             ml={isSmall ? 10 : 15}
             height={52.5}
@@ -215,7 +215,7 @@ const BillsListView: React.FC = () => {
                   />
                   <ListViewContentMobile
                     title={'Vesting Term'}
-                    value={`${vestingTime.days} days`}
+                    value={vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
                     toolTip={`This is how long it will take for all tokens in the Bill to fully vest.`}
                     toolTipPlacement={'bottomLeft'}
                     toolTipTransform={'translate(39%, 0%)'}
