@@ -100,16 +100,24 @@ const Transactions = () => {
         <RangeSelectorsWrapper className="transctionSelector">
           <ul>
             <li className={transactionType === 'all' ? 'active' : ''} onClick={() => setTransactionType('all')}>
-              All
+              <Text size="14px" weight={700}>
+                All
+              </Text>
             </li>
             <li className={transactionType === 'swaps' ? 'active' : ''} onClick={() => setTransactionType('swaps')}>
-              Swaps
+              <Text size="14px" weight={700}>
+                Swaps
+              </Text>
             </li>
             <li className={transactionType === 'mints' ? 'active' : ''} onClick={() => setTransactionType('mints')}>
-              Adds
+              <Text size="14px" weight={700}>
+                Adds
+              </Text>
             </li>
             <li className={transactionType === 'burns' ? 'active' : ''} onClick={() => setTransactionType('burns')}>
-              Removes
+              <Text size="14px" weight={700}>
+                Removes
+              </Text>
             </li>
           </ul>
         </RangeSelectorsWrapper>

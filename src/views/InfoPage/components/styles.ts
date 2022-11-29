@@ -48,7 +48,13 @@ export const RangeSelectorsWrapper = styled.div`
   }
 
   &.transctionSelector {
+    margin-top: 7px;
     position: absolute;
+
+    li {
+      margin-left: 0px;
+      margin-right: 10px;
+    }
   }
 `
 

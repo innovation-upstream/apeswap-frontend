@@ -10,6 +10,7 @@ import SwiperProvider from 'contexts/SwiperProvider'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper.min.css'
 import { Bubble } from '../styles'
+import { Spinner } from '@apeswapfinance/uikit'
 
 interface FiguresProps {
   switchChart: () => void
@@ -202,7 +203,15 @@ const Figures: React.FC<FiguresProps> = (props) => {
           )}
         </>
       ) : (
-        <CircleLoader />
+        <Flex
+          sx={{
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Spinner />
+        </Flex>
       )}
     </Flex>
   )

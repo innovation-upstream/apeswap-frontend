@@ -9,8 +9,8 @@ import moment from 'moment/moment'
 import useTheme from '../../../../hooks/useTheme'
 import { ChartWrapper, RangeSelectorsWrapper } from '../styles'
 import Figure from '../Figures/figure'
-import CircleLoader from '../../../../components/Loader/CircleLoader'
 import { map, groupBy } from 'lodash'
+import { Spinner } from '@apeswapfinance/uikit'
 
 interface ChartProps {
   chartType: string
@@ -35,13 +35,13 @@ const Chart: React.FC<ChartProps> = (props) => {
   const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
   const flattenedChartData = Object.values(chartData).flatMap((item) => (item.initialized ? item.data : []))
-  const groupedData = groupBy(flattenedChartData, (x) => x.date)
+  const groupedData = groupBy(flattenedChartData, (x) => (x ? x.date : ''))
 
   const mappedLiquidityData = useMemo(
     () =>
       map(groupedData, (x) => {
         const item: ChartData = {}
-        item.date = x[0].date
+        item.date = x ? x[0].date : ''
         for (let i = 0; i < x.length; i++) {
           if (activeChains === null || activeChains.includes(Number(x[i].chainId))) {
             item[x[i].chainId] = x[i].totalLiquidityUSD
@@ -56,7 +56,7 @@ const Chart: React.FC<ChartProps> = (props) => {
     () =>
       map(groupedData, (x) => {
         const item: ChartData = {}
-        item.date = x[0].date
+        item.date = x ? x[0].date : ''
         for (let i = 0; i < x.length; i++) {
           if (activeChains === null || activeChains.includes(Number(x[i].chainId))) {
             item[x[i].chainId] = x[i].dailyVolumeUSD
@@ -130,34 +130,30 @@ const Chart: React.FC<ChartProps> = (props) => {
           </div>
         </div>
         <div className="body">
-          {activeChains === null ||
-            (activeChains.includes(Number(1)) && (
-              <div className="wrapper">
-                <div className="indicator eth"></div>Ethereum:
-                <div className="value">${Math.round(data.data[1] ?? 0).toLocaleString()}</div>
-              </div>
-            ))}
-          {activeChains === null ||
-            (activeChains.includes(Number(40)) && (
-              <div className="wrapper">
-                <div className="indicator telos"></div>Telos:
-                <div className="value">${Math.round(data.data[40] ?? 0).toLocaleString()}</div>
-              </div>
-            ))}
-          {activeChains === null ||
-            (activeChains.includes(Number(56)) && (
-              <div className="wrapper">
-                <div className="indicator bnb"></div>BNB:
-                <div className="value">${Math.round(data.data[56] ?? 0).toLocaleString()}</div>
-              </div>
-            ))}
-          {activeChains === null ||
-            (activeChains.includes(Number(137)) && (
-              <div className="wrapper">
-                <div className="indicator polygon"></div>Polygon:
-                <div className="value">${Math.round(data.data[137] ?? 0).toLocaleString()}</div>
-              </div>
-            ))}
+          {(activeChains === null || activeChains.includes(Number(1))) && (
+            <div className="wrapper">
+              <div className="indicator eth"></div>Ethereum:
+              <div className="value">${Math.round(data.data[1] ?? 0).toLocaleString()}</div>
+            </div>
+          )}
+          {(activeChains === null || activeChains.includes(Number(40))) && (
+            <div className="wrapper">
+              <div className="indicator telos"></div>Telos:
+              <div className="value">${Math.round(data.data[40] ?? 0).toLocaleString()}</div>
+            </div>
+          )}
+          {(activeChains === null || activeChains.includes(Number(56))) && (
+            <div className="wrapper">
+              <div className="indicator bnb"></div>BNB:
+              <div className="value">${Math.round(data.data[56] ?? 0).toLocaleString()}</div>
+            </div>
+          )}
+          {(activeChains === null || activeChains.includes(Number(137))) && (
+            <div className="wrapper">
+              <div className="indicator polygon"></div>Polygon:
+              <div className="value">${Math.round(data.data[137] ?? 0).toLocaleString()}</div>
+            </div>
+          )}
         </div>
       </Section>
     )
@@ -244,7 +240,15 @@ const Chart: React.FC<ChartProps> = (props) => {
           </ChartWrapper>
         </>
       ) : (
-        <CircleLoader />
+        <Flex
+          sx={{
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Spinner />
+        </Flex>
       )}
     </Flex>
   )
