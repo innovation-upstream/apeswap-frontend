@@ -6,7 +6,6 @@ import SwiperProvider from 'contexts/SwiperProvider'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper.min.css'
 import { Flex } from '@apeswapfinance/uikit'
-import useSwiper from 'hooks/useSwiper'
 
 const InfoShowcases = () => {
   const mobile = useIsMobile()

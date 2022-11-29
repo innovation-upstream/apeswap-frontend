@@ -6,6 +6,10 @@ import Figure from './figure'
 import { useFetchInfoUniswapFactories } from '../../../../state/info/hooks'
 import CircleLoader from '../../../../components/Loader/CircleLoader'
 import Showcases from '../Showcases'
+import SwiperProvider from 'contexts/SwiperProvider'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper.min.css'
+import { Bubble } from '../styles'
 
 interface FiguresProps {
   switchChart: () => void
@@ -15,12 +19,19 @@ interface FiguresProps {
 
 const Figures: React.FC<FiguresProps> = (props) => {
   const mobile = useIsMobile()
+  const [swiper, setSwiper] = useState(null)
+  const [activeSlide, setActiveSlide] = useState(0)
 
   const [chart, setChart] = useState('liquidity')
 
   const currentDayData = useFetchInfoUniswapFactories(true)
   const dayOldData = useFetchInfoUniswapFactories()
   const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
+
+  const updateSlide = (index) => {
+    swiper.slideTo(index)
+    setActiveSlide(index)
+  }
 
   function checkDatasInitialized() {
     let total = 0
@@ -77,7 +88,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
     <Flex
       sx={{
         maxWidth: '100%',
-        minHeight: '402px',
+        minHeight: `${mobile ? ' 220px' : '402px'}`,
         height: '100%',
         background: 'white2',
         borderRadius: '10px',
@@ -89,40 +100,108 @@ const Figures: React.FC<FiguresProps> = (props) => {
     >
       {checkDatasInitialized() === true ? (
         <>
-          <Figure
-            label="Liquidity"
-            icon="dollar"
-            clickable={true}
-            value={Math.round(calculateCurrentFigures('totalLiquidityUSD')).toLocaleString()}
-            highlighted={chart === 'liquidity'}
-            onClick={() => updateChart('liquidity')}
-          />
-          <Figure
-            label="Volume (7d)"
-            icon="dollar"
-            clickable={true}
-            value={Math.round((props.sevenDayVolume * 100) / 100).toLocaleString()}
-            highlighted={chart === 'volume'}
-            onClick={() => updateChart('volume')}
-          />
-          <Figure
-            label="Volume (24h)"
-            icon="dollar"
-            value={Math.round(
-              calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
-            ).toLocaleString()}
-          />
+          {!mobile ? (
+            <>
+              <Figure
+                label="Liquidity"
+                icon="dollar"
+                clickable={true}
+                value={Math.round(calculateCurrentFigures('totalLiquidityUSD')).toLocaleString()}
+                highlighted={chart === 'liquidity'}
+                onClick={() => updateChart('liquidity')}
+              />
+              <Figure
+                label="Volume (7d)"
+                icon="dollar"
+                clickable={true}
+                value={Math.round((props.sevenDayVolume * 100) / 100).toLocaleString()}
+                highlighted={chart === 'volume'}
+                onClick={() => updateChart('volume')}
+              />
+              <Figure
+                label="Volume (24h)"
+                icon="dollar"
+                value={Math.round(
+                  calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
+                ).toLocaleString()}
+              />
 
-          <Figure
-            label="Transactions (24h)"
-            icon="chart"
-            value={(calculateCurrentFigures('txCount') - calculateOneDayFigures('txCount')).toLocaleString()}
-          />
-          <Figure label="Fees (24h)" icon="dollar" value={(Math.round(calculateFees() * 100) / 100).toLocaleString()} />
+              <Figure
+                label="Transactions (24h)"
+                icon="chart"
+                value={(calculateCurrentFigures('txCount') - calculateOneDayFigures('txCount')).toLocaleString()}
+              />
+              <Figure
+                label="Fees (24h)"
+                icon="dollar"
+                value={(Math.round(calculateFees() * 100) / 100).toLocaleString()}
+              />
 
-          <Figure label="Pairs" icon="chart" value={calculateCurrentFigures('pairCount').toLocaleString()} />
+              <Figure label="Pairs" icon="chart" value={calculateCurrentFigures('pairCount').toLocaleString()} />
 
-          {!mobile && <Showcases />}
+              <Showcases />
+            </>
+          ) : (
+            <SwiperProvider>
+              <Swiper
+                id="serviceSwiper"
+                initialSlide={0}
+                spaceBetween={20}
+                slidesPerView="auto"
+                loopedSlides={2}
+                loop={false}
+                centeredSlides
+                resizeObserver
+                lazy
+                onSwiper={setSwiper}
+                style={{ maxWidth: '100%', minWidth: '100%', height: '175px' }}
+              >
+                <SwiperSlide style={{ maxWidth: '100%', minWidth: '100%' }}>
+                  <Figure
+                    label="Liquidity"
+                    icon="dollar"
+                    clickable={true}
+                    value={Math.round(calculateCurrentFigures('totalLiquidityUSD')).toLocaleString()}
+                    highlighted={chart === 'liquidity'}
+                    onClick={() => updateChart('liquidity')}
+                  />
+                  <Figure
+                    label="Volume (7d)"
+                    icon="dollar"
+                    clickable={true}
+                    value={Math.round((props.sevenDayVolume * 100) / 100).toLocaleString()}
+                    highlighted={chart === 'volume'}
+                    onClick={() => updateChart('volume')}
+                  />
+                  <Figure
+                    label="Volume (24h)"
+                    icon="dollar"
+                    value={Math.round(
+                      calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
+                    ).toLocaleString()}
+                  />
+                </SwiperSlide>
+                <SwiperSlide style={{ maxWidth: '100%', minWidth: '100%' }}>
+                  <Figure
+                    label="Transactions (24h)"
+                    icon="chart"
+                    value={(calculateCurrentFigures('txCount') - calculateOneDayFigures('txCount')).toLocaleString()}
+                  />
+                  <Figure
+                    label="Fees (24h)"
+                    icon="dollar"
+                    value={(Math.round(calculateFees() * 100) / 100).toLocaleString()}
+                  />
+
+                  <Figure label="Pairs" icon="chart" value={calculateCurrentFigures('pairCount').toLocaleString()} />
+                </SwiperSlide>
+              </Swiper>
+              <Flex sx={{ width: '100%', justifyContent: 'center' }}>
+                <Bubble isActive={0 === activeSlide} onClick={() => updateSlide(0)} />
+                <Bubble isActive={1 === activeSlide} onClick={() => updateSlide(1)} />
+              </Flex>
+            </SwiperProvider>
+          )}
         </>
       ) : (
         <CircleLoader />

@@ -4,7 +4,6 @@ import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS, MAINNET_CHAINS } from 'config/constants/chains'
 import React from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
-import { Title } from '../TrendingTokens/styles'
 
 const NetworkSelector = () => {
   const mobile = useIsMobile()

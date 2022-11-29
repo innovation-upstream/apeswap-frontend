@@ -9,6 +9,7 @@ import CountUp from 'react-countup'
 import { Swaps } from 'state/info/types'
 import { Grid } from 'theme-ui'
 import getTimePeriods from 'utils/getTimePeriods'
+import { StyledLink } from '../styles'
 
 const Rows = ({ transactions }: { transactions: Swaps[] }) => {
   const { t } = useTranslation()
@@ -139,7 +140,10 @@ const Rows = ({ transactions }: { transactions: Swaps[] }) => {
                 </Flex>
                 <Flex>
                   <Text size="14px" weight={400}>
-                    {`${to.slice(0, 4)}...${to.slice(to.length - 4, to.length)}`}
+                    <StyledLink
+                      href={`${CHAIN_PARAMS[chainId]?.blockExplorerUrls}/address/${to}`}
+                      target="_blank"
+                    >{`${to.slice(0, 4)}...${to.slice(to.length - 4, to.length)}`}</StyledLink>
                   </Text>
                 </Flex>
                 <Flex>

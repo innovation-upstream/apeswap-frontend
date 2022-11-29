@@ -22,7 +22,6 @@ const Chart: React.FC<ChartProps> = (props) => {
   const { isDark } = useTheme()
 
   const [dataAmount, setDataAmount] = useState(props.chartType === 'liquidity' ? 30 : 7)
-  const [sevenDayVolume, setSevenDayVolume] = useState(0)
 
   const chartData = useFetchChartData(dataAmount)
   const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
@@ -151,31 +150,34 @@ const Chart: React.FC<ChartProps> = (props) => {
           </div>
         </div>
         <div className="body">
-          {/*{activeChains.includes(Number(1)) && (*/}
-
-          <div className="wrapper">
-            <div className="indicator eth"></div>Ethereum:{' '}
-            <div className="value">${Math.round(data.data[1]).toLocaleString()}</div>
-          </div>
-          {/*)}*/}
-          {/*{activeChains.includes(Number(40)) && (*/}
-          <div className="wrapper">
-            <div className="indicator telos"></div>Telos:{' '}
-            <div className="value">${Math.round(data.data[40]).toLocaleString()}</div>
-          </div>
-          {/*)}*/}
-          {/*{activeChains.includes(Number(56)) && (*/}
-          <div className="wrapper">
-            <div className="indicator bnb"></div>BNB:{' '}
-            <div className="value">${Math.round(data.data[56]).toLocaleString()}</div>
-          </div>
-          {/*)}*/}
-          {/*{activeChains.includes(Number(137)) && (*/}
-          <div className="wrapper">
-            <div className="indicator polygon"></div>Polygon:{' '}
-            <div className="value">${Math.round(data.data[137]).toLocaleString()}</div>
-          </div>
-          {/*)}*/}
+          {activeChains === null ||
+            (activeChains.includes(Number(1)) && (
+              <div className="wrapper">
+                <div className="indicator eth"></div>Ethereum:
+                <div className="value">${Math.round(data.data[1] ?? 0).toLocaleString()}</div>
+              </div>
+            ))}
+          {activeChains === null ||
+            (activeChains.includes(Number(40)) && (
+              <div className="wrapper">
+                <div className="indicator telos"></div>Telos:
+                <div className="value">${Math.round(data.data[40] ?? 0).toLocaleString()}</div>
+              </div>
+            ))}
+          {activeChains === null ||
+            (activeChains.includes(Number(56)) && (
+              <div className="wrapper">
+                <div className="indicator bnb"></div>BNB:
+                <div className="value">${Math.round(data.data[56] ?? 0).toLocaleString()}</div>
+              </div>
+            ))}
+          {activeChains === null ||
+            (activeChains.includes(Number(137)) && (
+              <div className="wrapper">
+                <div className="indicator polygon"></div>Polygon:
+                <div className="value">${Math.round(data.data[137] ?? 0).toLocaleString()}</div>
+              </div>
+            ))}
         </div>
       </Section>
     )
@@ -184,7 +186,6 @@ const Chart: React.FC<ChartProps> = (props) => {
   return (
     <Flex
       sx={{
-        // width: `${mobile ? '95vw' : '100%'}`,
         width: '100%',
         minHeight: '402px',
         maxHeight: '402px',
@@ -223,7 +224,7 @@ const Chart: React.FC<ChartProps> = (props) => {
           <ChartWrapper>
             <ResponsiveBar
               data={props.chartType === 'volume' ? processChartData() : processChartLiquidityData()}
-              keys={['1', '56', '137', '40']}
+              keys={['1', '137', '40', '56']}
               indexBy="date"
               groupMode="stacked"
               padding={0.3}
@@ -235,7 +236,7 @@ const Chart: React.FC<ChartProps> = (props) => {
               colors={getBarColor}
               axisBottom={{
                 tickSize: 0,
-                tickPadding: 10,
+                tickPadding: 15,
                 tickRotation: 0,
                 format: (x) => '',
               }}

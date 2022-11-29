@@ -1,10 +1,18 @@
 import styled from 'styled-components'
+import { Link } from '@apeswapfinance/uikit'
 
 export const FigureWrapper = styled.div`
   flex-grow: 1;
-  width: 33.33%;
+  width: 100%;
   padding: 3px;
   border-radius: 5px;
+  margin-bottom: 10px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 33.33%;
+    margin-bottom: 0px;
+  }
+  
   .value {
     font-weight: 600;
   }
@@ -78,4 +86,7 @@ export const Bubble = styled.div<{ isActive?: boolean }>`
   border-radius: 50px;
   margin: 0px 2.5px 0px 2.5px;
   cursor: pointer;
+`
+export const StyledLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.yellow};
 `

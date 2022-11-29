@@ -4,6 +4,7 @@ import React from 'react'
 import useTheme from '../../../../hooks/useTheme'
 import { FigureWrapper, IconBox, CenteredImage } from '../styles'
 import { Text } from '@apeswapfinance/uikit'
+import useIsMobile from '../../../../hooks/useIsMobile'
 
 interface FigureProps {
   label: string
@@ -25,10 +26,12 @@ const Icon = ({ name }: { name: string }) => {
 }
 
 const Figure: React.FC<FigureProps> = (props) => {
+  const mobile = useIsMobile()
+
   return (
     <Flex
       sx={{
-        flex: '1 0 30%',
+        flex: `1 0 ${mobile ? '100%' : '30%'}`,
       }}
     >
       <FigureWrapper
