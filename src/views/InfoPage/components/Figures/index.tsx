@@ -56,7 +56,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
     for (let i = 0; i < Object.keys(currentDayData).length; i++) {
       const chain = Object.keys(currentDayData)[i]
       if (activeChains === null || activeChains.includes(Number(chain))) {
-        total += Number(currentDayData[chain].data[key])
+        total += currentDayData[chain].data ? Number(currentDayData[chain].data[key]) : 0
       }
     }
 
@@ -68,7 +68,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
     for (let i = 0; i < Object.keys(dayOldData).length; i++) {
       const chain = Object.keys(dayOldData)[i]
       if (activeChains === null || activeChains.includes(Number(chain))) {
-        total += Number(dayOldData[chain].data[key])
+        total += dayOldData[chain].data ? Number(dayOldData[chain].data[key]) : 0
       }
     }
 
