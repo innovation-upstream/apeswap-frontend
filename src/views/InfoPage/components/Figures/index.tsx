@@ -125,7 +125,6 @@ const Figures: React.FC<FiguresProps> = (props) => {
                   calculateCurrentFigures('totalVolumeUSD') - calculateOneDayFigures('totalVolumeUSD'),
                 ).toLocaleString()}
               />
-
               <Figure
                 label="Transactions (24h)"
                 icon="chart"
@@ -136,7 +135,6 @@ const Figures: React.FC<FiguresProps> = (props) => {
                 icon="dollar"
                 value={(Math.round(calculateFees() * 100) / 100).toLocaleString()}
               />
-
               <Figure label="Pairs" icon="chart" value={calculateCurrentFigures('pairCount').toLocaleString()} />
 
               <Showcases />

@@ -7,24 +7,38 @@ import useIsMobile from '../../../../hooks/useIsMobile'
 
 const NetworkSelector = () => {
   const mobile = useIsMobile()
-  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
+  let activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
   function toggleChain(chain) {
     let current = JSON.parse(localStorage.getItem('infoActiveChains'))
-    if (current === null) current = []
 
-    const index = current.indexOf(chain, 0)
-    if (index > -1) {
-      current.splice(index, 1)
+    // If activeChains is null it means all are selected, so when they select one they are actually deselecting it.
+    // Add all and then let it be removed below
+    if (current === null) {
+      current = []
+      for (let i = 0; i < MAINNET_CHAINS.length; i++) {
+        if (MAINNET_CHAINS[i] !== chain) {
+          current.push(MAINNET_CHAINS[i])
+        }
+      }
     } else {
-      current.push(chain)
+      const index = current.indexOf(chain, 0)
+      if (index > -1) {
+        current.splice(index, 1)
+        //If this makes active Chains = 0 then add all
+        if (current.length === 0) current = MAINNET_CHAINS
+      } else {
+        current.push(chain)
+      }
     }
 
     localStorage.setItem('infoActiveChains', JSON.stringify(current))
+    activeChains = current
   }
 
   function isActive(chain) {
-    return activeChains !== null && activeChains.filter((x) => x === chain).length > 0
+    // If active changes equals null it means all chains should be shown
+    return activeChains === null || activeChains.filter((x) => x === chain).length > 0
   }
 
   return (

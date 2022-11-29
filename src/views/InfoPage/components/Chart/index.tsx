@@ -1,21 +1,29 @@
 /** @jsxImportSource theme-ui */
 import { Flex } from '@ape.swap/uikit'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import { useFetchChartData } from '../../../../state/info/hooks'
 import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
-
 import { Section } from '../../../Info/styles'
 import moment from 'moment/moment'
 import useTheme from '../../../../hooks/useTheme'
 import { ChartWrapper, RangeSelectorsWrapper } from '../styles'
 import Figure from '../Figures/figure'
 import CircleLoader from '../../../../components/Loader/CircleLoader'
+import { map, groupBy } from 'lodash'
 
 interface ChartProps {
   chartType: string
   sevenDayVolume: (input: number) => void
   liquidity: number
+}
+
+type ChartData = {
+  date?: string
+  56?: string
+  40?: string
+  1?: string
+  137?: string
 }
 
 const Chart: React.FC<ChartProps> = (props) => {
@@ -26,68 +34,42 @@ const Chart: React.FC<ChartProps> = (props) => {
   const chartData = useFetchChartData(dataAmount)
   const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
-  function processChartData() {
-    const data = []
-
-    for (let i = 0; i < Object.keys(chartData).length; i++) {
-      const chain = Object.keys(chartData)[i]
-
-      if (chartData[chain].data === null || chartData[chain].data === undefined) {
-        continue
-      }
-      if (activeChains === null || activeChains.includes(Number(chain))) {
-        if (data.length === 0) {
-          for (let j = 0; j < chartData[chain].data.length; j++) {
-            data.push({
-              date: chartData[chain].data[j].date,
-              [chain]: chartData[chain].data[j].dailyVolumeUSD,
-            })
-          }
-        } else {
-          for (let j = 0; j < chartData[chain].data.length; j++) {
-            data[j][chain] = chartData[chain].data[j].dailyVolumeUSD
+  const flattenedChartData = Object.values(chartData).flatMap((item) => (item.initialized ? item.data : []))
+  const groupedData = groupBy(flattenedChartData, (x) => x.date)
+  const mappedLiquidityData = useMemo(
+    () =>
+      map(groupedData, (x) => {
+        const item: ChartData = {}
+        item.date = x[0].date
+        for (let i = 0; i < x.length; i++) {
+          if (activeChains === null || activeChains.includes(Number(x[i].chainId))) {
+            item[x[i].chainId] = x[i].totalLiquidityUSD
           }
         }
-      }
-    }
+        return item
+      }),
+    [groupedData, activeChains],
+  )
 
-    //  }
-
-    return data.reverse()
-  }
-
-  function processChartLiquidityData() {
-    const data = []
-
-    for (let i = 0; i < Object.keys(chartData).length; i++) {
-      const chain = Object.keys(chartData)[i]
-
-      if (chartData[chain].data === null || chartData[chain].data === undefined) {
-        continue
-      }
-      if (activeChains === null || activeChains.includes(Number(chain))) {
-        if (data.length === 0) {
-          for (let j = 0; j < chartData[chain].data.length; j++) {
-            data.push({
-              date: chartData[chain].data[j].date,
-              [chain]: chartData[chain].data[j].totalLiquidityUSD,
-            })
-          }
-        } else {
-          for (let j = 0; j < chartData[chain].data.length; j++) {
-            data[j][chain] = chartData[chain].data[j].totalLiquidityUSD
+  const mappedVolumeData = useMemo(
+    () =>
+      map(groupedData, (x) => {
+        const item: ChartData = {}
+        item.date = x[0].date
+        for (let i = 0; i < x.length; i++) {
+          if (activeChains === null || activeChains.includes(Number(x[i].chainId))) {
+            item[x[i].chainId] = x[i].dailyVolumeUSD
           }
         }
-      }
-    }
-
-    return data.reverse()
-  }
+        return item
+      }),
+    [groupedData, activeChains],
+  )
 
   function calculate7DayVolume() {
     let total = 0
 
-    processChartData()
+    mappedVolumeData
       .reverse()
       .slice(0, 7)
       .forEach((item: any) => {
@@ -218,12 +200,18 @@ const Chart: React.FC<ChartProps> = (props) => {
               <li className={dataAmount === 180 && 'active'} onClick={() => UpdateChart(180)}>
                 6M
               </li>
+              <li className={dataAmount === 365 && 'active'} onClick={() => UpdateChart(365)}>
+                1Y
+              </li>
+              <li className={dataAmount === 999 && 'active'} onClick={() => UpdateChart(999)}>
+                ALL
+              </li>
             </ul>
           </RangeSelectorsWrapper>
 
           <ChartWrapper>
             <ResponsiveBar
-              data={props.chartType === 'volume' ? processChartData() : processChartLiquidityData()}
+              data={props.chartType === 'volume' ? mappedVolumeData : mappedLiquidityData}
               keys={['1', '137', '40', '56']}
               indexBy="date"
               groupMode="stacked"
