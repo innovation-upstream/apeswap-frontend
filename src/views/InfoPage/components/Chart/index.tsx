@@ -36,6 +36,7 @@ const Chart: React.FC<ChartProps> = (props) => {
 
   const flattenedChartData = Object.values(chartData).flatMap((item) => (item.initialized ? item.data : []))
   const groupedData = groupBy(flattenedChartData, (x) => x.date)
+
   const mappedLiquidityData = useMemo(
     () =>
       map(groupedData, (x) => {
@@ -66,7 +67,17 @@ const Chart: React.FC<ChartProps> = (props) => {
     [groupedData, activeChains],
   )
 
-  function calculate7DayVolume() {
+  const checkChartDataInitialized = useMemo(() => {
+    let total = 0
+    for (let i = 0; i < Object.keys(chartData).length; i++) {
+      const chain = Object.keys(chartData)[i]
+      total += chartData[chain].initialized === true && chartData[chain].loading === false ? 1 : 0
+    }
+
+    return total === Object.keys(chartData).length
+  }, [chartData])
+
+  const calculate7DayVolume = useMemo(() => {
     let total = 0
 
     mappedVolumeData
@@ -80,8 +91,10 @@ const Chart: React.FC<ChartProps> = (props) => {
         }
       })
 
+    props.sevenDayVolume(total)
+
     return total
-  }
+  }, [checkChartDataInitialized])
 
   function getBarColor(bar: any) {
     const chain = INFO_PAGE_CHAIN_PARAMS[bar.id]
@@ -90,21 +103,6 @@ const Chart: React.FC<ChartProps> = (props) => {
 
   const UpdateChart = (amount: number) => {
     setDataAmount(amount)
-  }
-
-  function checkChartDataInitialized() {
-    let total = 0
-    for (let i = 0; i < Object.keys(chartData).length; i++) {
-      const chain = Object.keys(chartData)[i]
-      total += chartData[chain].initialized === true && chartData[chain].loading === false ? 1 : 0
-    }
-
-    if (total === Object.keys(chartData).length) {
-      //Update 7 day volume to pass over to figures
-      props.sevenDayVolume(calculate7DayVolume())
-    }
-
-    return total === Object.keys(chartData).length
   }
 
   function getChartTextColor() {
@@ -177,14 +175,14 @@ const Chart: React.FC<ChartProps> = (props) => {
         flexWrap: 'wrap',
       }}
     >
-      {checkChartDataInitialized() === true ? (
+      {checkChartDataInitialized === true ? (
         <>
           {props.chartType === 'volume' ? (
             <Figure
               type="chart"
               label="Volume (7d)"
               icon="dollar"
-              value={`$${Math.round((calculate7DayVolume() * 100) / 100).toLocaleString()}`}
+              value={`$${Math.round((calculate7DayVolume * 100) / 100).toLocaleString()}`}
             />
           ) : (
             <Figure
@@ -219,6 +217,7 @@ const Chart: React.FC<ChartProps> = (props) => {
               indexBy="date"
               groupMode="stacked"
               padding={0.3}
+              renderWrapper={true}
               theme={{
                 fontSize: 14,
                 fontFamily: 'Poppins',

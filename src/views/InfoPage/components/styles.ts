@@ -31,7 +31,6 @@ export const FigureWrapper = styled.div`
     &:not(.live) {
       opacity: 50%;
     }
-    
 `
 
 export const RangeSelectorsWrapper = styled.div`
@@ -46,6 +45,10 @@ export const RangeSelectorsWrapper = styled.div`
     &:not(.active) {
       opacity: 50%;
     }
+  }
+
+  &.transctionSelector {
+    position: absolute;
   }
 `
 

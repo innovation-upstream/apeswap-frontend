@@ -8,6 +8,7 @@ import Rows from './Rows'
 import styled from 'styled-components'
 import { Swaps } from 'state/info/types'
 import useIsMobile from '../../../../hooks/useIsMobile'
+import { RangeSelectorsWrapper } from '../styles'
 
 const ROWS_PER_PAGE = 10
 
@@ -17,10 +18,11 @@ const Transactions = () => {
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)
   const transactions = useFetchInfoTransactions(50)
+  const [transactionType, setTransactionType] = useState('all')
 
   const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
 
-  const flattenedTransactions = Object.values(transactions).flatMap((row) =>
+  const flattenedSwaps = Object.values(transactions).flatMap((row) =>
     row.initialized
       ? row.data?.flatMap(({ swaps, chainId }) =>
           swaps.map((swap) => {
@@ -29,18 +31,48 @@ const Transactions = () => {
         )
       : [],
   ) as Swaps[]
-  // const transactionsInitialized = Object.values(tokens)
-  //   .flatMap((row) => row.initialized)
-  //   ?.includes(true)
+
+  const flattenedMints = Object.values(transactions).flatMap((row) =>
+    row.initialized
+      ? row.data?.flatMap(({ mints, chainId }) =>
+          mints.map((mint) => {
+            return { ...mint, chainId }
+          }),
+        )
+      : [],
+  ) as Swaps[]
+
+  const flattenedBurns = Object.values(transactions).flatMap((row) =>
+    row.initialized
+      ? row.data?.flatMap(({ burns, chainId }) =>
+          burns.map((burn) => {
+            return { ...burn, chainId }
+          }),
+        )
+      : [],
+  ) as Swaps[]
+
+  function getTransactions() {
+    if (transactionType === 'all') {
+      return flattenedSwaps.concat(flattenedMints).concat(flattenedBurns)
+    } else if (transactionType === 'swaps') {
+      return flattenedSwaps
+    } else if (transactionType === 'mints') {
+      return flattenedMints
+    }
+    return flattenedBurns
+  }
+
   const sortedTransactions = useMemo(
     () =>
       orderBy(
-        flattenedTransactions.filter((x) => activeChains === null || activeChains.includes(x.chainId)),
+        getTransactions().filter((x) => activeChains === null || activeChains.includes(x.chainId)),
         ({ transaction }) => parseFloat(transaction.timestamp),
         'desc',
       ),
-    [flattenedTransactions, activeChains],
+    [flattenedSwaps, flattenedMints, flattenedBurns, activeChains, transactionType],
   )?.slice(0, 50)
+
   const handlePageClick = (event) => {
     const newOffset = (event.selected * ROWS_PER_PAGE) % sortedTransactions.length
     setDataOffset(newOffset)
@@ -65,16 +97,36 @@ const Transactions = () => {
           mt: '20px',
         }}
       >
-        <Rows transactions={sortedTransactions.slice(dataOffset, dataOffset + ROWS_PER_PAGE)} />
-        <Flex sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-          <Pagination
-            previousLabel="<"
-            nextLabel=">"
-            pageCount={pageCount}
-            renderOnZeroPageCount={null}
-            onPageChange={handlePageClick}
-          />
-        </Flex>
+        <RangeSelectorsWrapper className="transctionSelector">
+          <ul>
+            <li className={transactionType === 'all' ? 'active' : ''} onClick={() => setTransactionType('all')}>
+              All
+            </li>
+            <li className={transactionType === 'swaps' ? 'active' : ''} onClick={() => setTransactionType('swaps')}>
+              Swaps
+            </li>
+            <li className={transactionType === 'mints' ? 'active' : ''} onClick={() => setTransactionType('mints')}>
+              Adds
+            </li>
+            <li className={transactionType === 'burns' ? 'active' : ''} onClick={() => setTransactionType('burns')}>
+              Removes
+            </li>
+          </ul>
+        </RangeSelectorsWrapper>
+        {sortedTransactions && (
+          <>
+            <Rows transactions={sortedTransactions.slice(dataOffset, dataOffset + ROWS_PER_PAGE)} />
+            <Flex sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+              <Pagination
+                previousLabel="<"
+                nextLabel=">"
+                pageCount={pageCount}
+                renderOnZeroPageCount={null}
+                onPageChange={handlePageClick}
+              />
+            </Flex>
+          </>
+        )}
       </Flex>
     </Flex>
   )

@@ -29,14 +29,20 @@ export interface Swaps {
   amount0Out: string
   amount1In: string
   amount1Out: string
+  amount0: string
+  amount1: string
   amountUSD: string
   pair: { token0: SwapToken; token1: SwapToken }
   to: string
+  sender: string
   transaction: SwapTransaction
   chainId: ChainId
+  transactionType: string
 }
 
 export interface Transactions {
+  mints: Swaps[]
+  burns: Swaps[]
   swaps: Swaps[]
   chainId: ChainId
 }
