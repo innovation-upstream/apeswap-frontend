@@ -28,7 +28,7 @@ const BillCard: React.FC<{ bills: Bills[]; ml?: string }> = ({ bills, ml }) => {
         }
         const pendingRewards = getBalanceNumber(
           new BigNumber(ownedBill.pendingRewards),
-          bill?.earnToken?.decimals,
+          bill?.earnToken?.decimals[chainId],
         )?.toFixed(4)
         const ownedBillNftData = bill?.userOwnedBillsNftData ? bill?.userOwnedBillsNftData[i] : null
         return (

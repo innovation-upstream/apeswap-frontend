@@ -24,10 +24,10 @@ const UserBillListView: React.FC<{ bills: Bills[]; showAll?: boolean }> = ({ bil
       if (!showAll && parseFloat(ownedBill.pendingRewards) === 0 && parseFloat(ownedBill.payout) === 0) {
         return []
       }
-      const pending = getBalanceNumber(new BigNumber(ownedBill.payout), bill?.earnToken?.decimals)?.toFixed(4)
+      const pending = getBalanceNumber(new BigNumber(ownedBill.payout), bill?.earnToken?.decimals[chainId])?.toFixed(4)
       const pendingRewards = getBalanceNumber(
         new BigNumber(ownedBill.pendingRewards),
-        bill?.earnToken?.decimals,
+        bill?.earnToken?.decimals[chainId],
       )?.toFixed(4)
       return {
         tokens: { token1: token.symbol, token2: quoteToken.symbol, token3: earnToken.symbol },

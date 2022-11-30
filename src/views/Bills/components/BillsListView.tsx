@@ -15,7 +15,7 @@ import BillModal from './Modals'
 import ProjectLinks from './UserBillViews/ProjectLinks'
 
 const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isXl && !isXxl
@@ -24,7 +24,7 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
     const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
     const available = new BigNumber(maxTotalPayOut)
       ?.minus(new BigNumber(totalPayoutGiven))
-      ?.div(new BigNumber(10).pow(earnToken.decimals))
+      ?.div(new BigNumber(10).pow(earnToken.decimals[chainId]))
 
     const threshold = new BigNumber(11).div(earnTokenPrice)
     const disabled = available.lte(threshold)

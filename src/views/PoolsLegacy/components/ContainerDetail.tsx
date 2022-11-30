@@ -7,10 +7,11 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 import { BSC_BLOCK_TIME } from 'config'
 import Detail from './Detail'
+import { Address, Decimals } from '../../../config/constants/types'
 
 interface RewardToken {
-  address?: any
-  decimals?: number
+  address?: Address
+  decimals?: Decimals
   symbol?: string
 }
 export interface ExpandableSectionProps {

@@ -35,19 +35,21 @@ const CreatePresale: React.FC<CreatePresaleProps> = ({ presaleData, disabled, cr
   // Format token price
   // TOKEN_PRICE = BASE_TOKEN_AMOUNT * 10**(18 - iazoTokenDecimals)
   const formatTokenPriceToBaseToken = new BigNumber(pricePerToken).times(
-    new BigNumber(10).pow(quoteTokenObject.decimals),
+    new BigNumber(10).pow(quoteTokenObject.decimals[chainId]),
   )
   const formattedPricePerToken = formatTokenPriceToBaseToken.times(new BigNumber(10).pow(18 - tokenDecimals)).toString()
 
   // Format max spend of the quote token per user
   const formattedMaxSpend = new BigNumber(limitPerUser)
-    .times(new BigNumber(10).pow(quoteTokenObject?.decimals))
+    .times(new BigNumber(10).pow(quoteTokenObject?.decimals[chainId]))
     .toString()
 
   // Format hardcap and softcap for the contract
   const formattedHardcap = new BigNumber(tokensForSale).times(new BigNumber(10).pow(tokenDecimals)).toString()
 
-  const formattedSoftcap = new BigNumber(softcap).times(new BigNumber(10).pow(quoteTokenObject?.decimals)).toString()
+  const formattedSoftcap = new BigNumber(softcap)
+    .times(new BigNumber(10).pow(quoteTokenObject?.decimals[chainId]))
+    .toString()
 
   const hardcapForApi = parseFloat(tokensForSale) * parseFloat(pricePerToken)
 
@@ -67,7 +69,7 @@ const CreatePresale: React.FC<CreatePresaleProps> = ({ presaleData, disabled, cr
 
   // Calculate post listing price
   const formatListingPriceToBaseToken = new BigNumber(listingPrice).times(
-    new BigNumber(10).pow(quoteTokenObject.decimals),
+    new BigNumber(10).pow(quoteTokenObject.decimals[chainId]),
   )
 
   const postListingPrice =

@@ -127,7 +127,7 @@ const App: React.FC = () => {
               <BabRaffle />
             </Route>
             <Route path="/" exact component={Home} />
-            <Route path="/banana-farms">
+            <Route path="/farms">
               {chainId === ChainId.MATIC ? <DualFarms /> : chainId === ChainId.TLOS ? <JungleFarms /> : <Farms />}
             </Route>
             <Route path="/pools">
@@ -191,8 +191,8 @@ const App: React.FC = () => {
             <Route path="/syrup">
               <Redirect to="/pools" />
             </Route>
-            <Route path="/farms">
-              <Redirect to="/banana-farms" />
+            <Route path="/banana-farms">
+              <Redirect to="/farms" />
             </Route>
             {/* SWAP ROUTES */}
             <Route path="/swap" component={Swap} />

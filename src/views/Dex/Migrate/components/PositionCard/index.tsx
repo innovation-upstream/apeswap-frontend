@@ -205,7 +205,7 @@ export default function FullPositionCard({
                         {wrappedToNative(token0.symbol)}-{wrappedToNative(token1.symbol)} farm at ApeSwap
                       </span>
                     </Text>
-                    <UiLink href={`https://apeswap.finance/banana-farms?pid=${matchingFarm.pid}`} target="_blank">
+                    <UiLink href={`https://apeswap.finance/farms?pid=${matchingFarm.pid}`} target="_blank">
                       <Text size="12px" mr="10px">
                         View farm
                       </Text>

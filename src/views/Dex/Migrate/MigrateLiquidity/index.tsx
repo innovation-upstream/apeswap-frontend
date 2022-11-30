@@ -152,7 +152,7 @@ function MigrateLiquidity({
                 })
                 toastSuccess(t('Migrate Successful'), {
                   text: t('Go To Farm'),
-                  url: `/banana-farms?pid=${matchingFarm.pid}`,
+                  url: `/farms?pid=${matchingFarm.pid}`,
                 })
                 history.push({ pathname: `/migrate` })
               }),

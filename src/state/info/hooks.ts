@@ -32,7 +32,7 @@ export const useFetchInfoPairs = (amount: number, days: number) => {
       }
 
       if (blocks[chainId].initialized) {
-        dispatch(fetchPairs(chainId, amount, days === 0 ? '0' : blocks[chainId].data.number))
+        dispatch(fetchPairs(chainId, amount, days === 0 ? '0' : blocks[chainId].data?.number))
       }
     })
   }, [slowRefresh, amount, blocks, days, dispatch])
@@ -102,7 +102,7 @@ export const useFetchInfoTokensData = (amount: number, current?: boolean) => {
       }
 
       if (blocks[chainId].initialized) {
-        dispatch(fetchTokens(chainId, amount, current === true ? '0' : blocks[chainId].data.number))
+        dispatch(fetchTokens(chainId, amount, current === true ? '0' : blocks[chainId].data?.number))
       }
     })
   }, [blocks, amount, current, dispatch])

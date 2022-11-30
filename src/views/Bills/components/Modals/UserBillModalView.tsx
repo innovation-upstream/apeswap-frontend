@@ -41,15 +41,16 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
   const { token, quoteToken, earnToken, billType, lpToken, index, userOwnedBillsData, userOwnedBillsNftData } = bill
   const userOwnedBill = userOwnedBillsData?.find((b) => parseInt(b.id) === parseInt(billId))
   const userOwnedBillNftData = userOwnedBillsNftData?.find((b) => parseInt(b.tokenId) === parseInt(billId))
-  const pending = getBalanceNumber(new BigNumber(userOwnedBill?.payout), bill?.earnToken?.decimals)?.toFixed(4)
+  const pending = getBalanceNumber(new BigNumber(userOwnedBill?.payout), bill?.earnToken?.decimals[chainId])?.toFixed(4)
   const pendingUsd = (parseFloat(pending) * bill?.earnTokenPrice)?.toFixed(2)
-  const claimable = getBalanceNumber(new BigNumber(userOwnedBill?.pendingRewards), bill?.earnToken?.decimals)?.toFixed(
-    4,
-  )
+  const claimable = getBalanceNumber(
+    new BigNumber(userOwnedBill?.pendingRewards),
+    bill?.earnToken?.decimals[chainId],
+  )?.toFixed(4)
   const attributes = userOwnedBillNftData?.attributes?.filter((attrib) => BILL_ATTRIBUTES.includes(attrib.trait_type))
   const claimableUsd = (parseFloat(claimable) * bill?.earnTokenPrice)?.toFixed(2)
   const [onPresentTransferBillModal] = useModal(
-    <TransferBillModal bill={bill} billId={billId} onDismiss={onDismiss} />,
+    <TransferBillModal bill={bill} billId={billId} onDismiss={onDismiss} chainId={chainId} />,
     true,
     true,
     `transferModal${billId}-${index}`,

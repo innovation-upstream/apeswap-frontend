@@ -238,14 +238,15 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
   yellow: {
     color: 'yellow',
-    lineHeight: '18px',
+    lineHeight: ['16px', '16px', '21px'],
     textDecoration: 'underline',
     cursor: 'pointer',
+    fontSize: ['12px', '12px', '14px'],
   },
   content: {
     fontSize: ['12px', '12px', '14px'],
     fontWeight: [400, 400, 500],
-    lineHeight: ['18px', '18px', '21px'],
+    lineHeight: ['16px', '16px', '21px'],
   },
   tipTitle: {
     fontWeight: 700,
