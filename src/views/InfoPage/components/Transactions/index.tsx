@@ -70,7 +70,7 @@ const Transactions = () => {
         ({ transaction }) => parseFloat(transaction.timestamp),
         'desc',
       ),
-    [flattenedSwaps, flattenedMints, flattenedBurns, activeChains, transactionType, getTransactions],
+    [activeChains, getTransactions],
   )?.slice(0, 50)
 
   const handlePageClick = (event) => {

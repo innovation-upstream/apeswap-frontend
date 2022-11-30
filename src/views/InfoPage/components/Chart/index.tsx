@@ -114,7 +114,6 @@ const Chart: React.FC<ChartProps> = (props) => {
     for (let i = 0; i < activeChains.length; i++) {
       total += Number(data.data[activeChains[i]] ?? 0)
     }
-    console.log(data)
     return (
       <Section className="smallSection">
         <div className="header">

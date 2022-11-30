@@ -78,10 +78,10 @@ const InfoShowcases = () => {
                           </Text>
                         </Flex>
                         <Flex sx={{ flex: '0 0 100%', marginTop: '-5px' }}>
-                          <Text sx={{ color: '#4d4040' }}>
+                          <Text sx={{ color: '#4d4040' }} weight={400} size="14px">
                             {showcase.type === 'billDetails'
-                              ? stat.type
-                              : `APR: ${(Math.round(stat.apr * 100) / 100).toLocaleString()}%`}
+                              ? `Discount: ${stat.discount.toFixed(2).toLocaleString()}%`
+                              : `APR: ${(stat.apr * 100).toFixed(2).toLocaleString()}%`}
                           </Text>
                         </Flex>
                       </Flex>
@@ -160,10 +160,10 @@ const InfoShowcases = () => {
                                   </Text>
                                 </Flex>
                                 <Flex sx={{ flex: '0 0 100%', marginTop: '-5px' }}>
-                                  <Text sx={{ color: '#4d4040' }}>
+                                  <Text sx={{ color: '#4d4040' }} weight={400} size="14px">
                                     {showcase.type === 'billDetails'
-                                      ? stat.type
-                                      : `APR: ${(Math.round(stat.apr * 100) / 100).toLocaleString()}%`}
+                                      ? `Discount: ${stat.discount.toFixed(2).toLocaleString()}%`
+                                      : `APR: ${(stat.apr * 100).toFixed(2).toLocaleString()}%`}
                                   </Text>
                                 </Flex>
                               </Flex>
