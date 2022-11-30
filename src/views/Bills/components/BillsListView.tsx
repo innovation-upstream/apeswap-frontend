@@ -20,14 +20,14 @@ const BillsListView: React.FC<{ bills: Bills[] }> = ({ bills }) => {
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isXl && !isXxl
   const billsListView = bills.map((bill) => {
-    const { earnToken, token, quoteToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
+    const { earnToken, token, quoteToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice, discount } = bill
     const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
     const available = new BigNumber(maxTotalPayOut)
       ?.minus(new BigNumber(totalPayoutGiven))
       ?.div(new BigNumber(10).pow(earnToken.decimals[chainId]))
 
     const threshold = new BigNumber(11).div(earnTokenPrice)
-    const disabled = available.lte(threshold)
+    const disabled = available.lte(threshold) || new BigNumber(discount).eq(100)
 
     return {
       tokens: { token1: token.symbol, token2: quoteToken.symbol, token3: earnToken.symbol },
