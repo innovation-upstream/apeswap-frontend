@@ -110,6 +110,11 @@ const Chart: React.FC<ChartProps> = (props) => {
   }
 
   function generateToolTip(data: any) {
+    let total = 0
+    for (let i = 0; i < activeChains.length; i++) {
+      total += Number(data.data[activeChains[i]] ?? 0)
+    }
+    console.log(data)
     return (
       <Section className="smallSection">
         <div className="header">
@@ -117,16 +122,7 @@ const Chart: React.FC<ChartProps> = (props) => {
             Date: <div className="value">{moment.unix(Number(data.data.date)).format('MMM DD, YYYY').valueOf()}</div>
           </div>
           <div className="wrapper">
-            Total:{' '}
-            <div className="value">
-              $
-              {Math.round(
-                Number(data.data[1] ?? 0) +
-                  Number(data.data[40] ?? 0) +
-                  Number(data.data[56] ?? 0) +
-                  Number(data.data[137] ?? 0),
-              ).toLocaleString()}
-            </div>
+            Total: <div className="value">${Math.round(total).toLocaleString()}</div>
           </div>
         </div>
         <div className="body">

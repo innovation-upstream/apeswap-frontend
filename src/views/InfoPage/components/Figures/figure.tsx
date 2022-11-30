@@ -3,7 +3,7 @@ import { Flex } from '@ape.swap/uikit'
 import React from 'react'
 import useTheme from '../../../../hooks/useTheme'
 import { FigureWrapper, IconBox, CenteredImage } from '../styles'
-import { Text } from '@apeswapfinance/uikit'
+import { Text } from '@ape.swap/uikit'
 import useIsMobile from '../../../../hooks/useIsMobile'
 
 interface FigureProps {
@@ -48,8 +48,13 @@ const Figure: React.FC<FigureProps> = (props) => {
         onClick={props.onClick}
       >
         <Icon name={props.icon} />
-        <Text className="value">{props.value}</Text>
-        <Text fontSize="12px"> {props.label}</Text>
+        <Text className="value" sx={{ display: 'block' }}>
+          {props.value}
+        </Text>
+        <Text size="12px" weight={400} sx={{ display: 'block', marginTop: '-5px' }}>
+          {' '}
+          {props.label}
+        </Text>
       </FigureWrapper>
     </Flex>
   )
