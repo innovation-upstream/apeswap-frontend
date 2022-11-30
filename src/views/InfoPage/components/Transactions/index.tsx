@@ -52,7 +52,7 @@ const Transactions = () => {
       : [],
   ) as Swaps[]
 
-  function getTransactions() {
+  const getTransactions = useMemo(() => {
     if (transactionType === 'all') {
       return flattenedSwaps.concat(flattenedMints).concat(flattenedBurns)
     } else if (transactionType === 'swaps') {
@@ -61,12 +61,12 @@ const Transactions = () => {
       return flattenedMints
     }
     return flattenedBurns
-  }
+  }, [flattenedSwaps, flattenedMints, flattenedBurns, transactionType])
 
   const sortedTransactions = useMemo(
     () =>
       orderBy(
-        getTransactions().filter((x) => activeChains === null || activeChains.includes(x.chainId)),
+        getTransactions.filter((x) => activeChains === null || activeChains.includes(x.chainId)),
         ({ transaction }) => parseFloat(transaction.timestamp),
         'desc',
       ),

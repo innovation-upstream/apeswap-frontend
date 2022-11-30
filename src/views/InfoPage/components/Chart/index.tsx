@@ -3,11 +3,11 @@ import { Flex, Spinner } from '@ape.swap/uikit'
 import React, { useMemo, useState } from 'react'
 import { useFetchActiveChains, useFetchChartData } from '../../../../state/info/hooks'
 import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
-
+import { ChainId } from '@ape.swap/sdk'
 import { RangeSelectorsWrapper } from '../styles'
-import Figure from '../Figures/figure'
+import Figure from '../Figures/Figure'
 import { map, groupBy } from 'lodash'
-import ChartItem from './chartItem'
+import ChartItem from './ChartItem'
 
 interface ChartProps {
   chartType: string
@@ -17,10 +17,10 @@ interface ChartProps {
 
 type ChartData = {
   date?: string
-  56?: string
-  40?: string
-  1?: string
-  137?: string
+  [ChainId.BSC]?: string
+  [ChainId.TLOS]?: string
+  [ChainId.MAINNET]?: string
+  [ChainId.MATIC]?: string
 }
 
 const Chart: React.FC<ChartProps> = (props) => {

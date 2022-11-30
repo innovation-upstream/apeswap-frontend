@@ -2,7 +2,7 @@
 import { Flex, Spinner } from '@ape.swap/uikit'
 import React, { useState } from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
-import Figure from './figure'
+import Figure from './Figure'
 import { useFetchActiveChains, useFetchInfoUniswapFactories } from '../../../../state/info/hooks'
 import Showcases from '../Showcases'
 import SwiperProvider from 'contexts/SwiperProvider'

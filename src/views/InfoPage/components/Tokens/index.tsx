@@ -20,9 +20,6 @@ const Tokens = () => {
   const nativePrice = useFetchInfoNativePrice()
 
   const flattenedTokens = Object.values(tokens).flatMap((row) => (row.initialized ? row.data : []))
-  // const tokensInitialized = Object.values(tokens)
-  //   .flatMap((row) => row.initialized)
-  //   ?.includes(true)
   const sortedTokens = useMemo(
     () =>
       orderBy(

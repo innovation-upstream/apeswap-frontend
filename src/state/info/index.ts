@@ -35,7 +35,7 @@ const initialState: InfoState = {
   tokensDayOld: dataAsNullInitialState,
   tokenDaysData: dataAsNullInitialState,
   dayOldPairs: dataAsNullInitialState,
-  activeChains: [1, 40, 56, 137],
+  activeChains: [ChainId.MAINNET, ChainId.TLOS, ChainId.BSC, ChainId.MATIC],
 }
 
 export const infoSlice = createSlice({

@@ -15,7 +15,6 @@ import Showcases from './components/Showcases'
 const InfoPage = () => {
   useFetchInfoBlock()
   useFetchInfoNativePrice()
-  //useFetchInfoTokensData(20)
   const mobile = useIsMobile()
 
   return (
