@@ -5,6 +5,8 @@ import { CHAIN_PARAMS, MAINNET_CHAINS } from 'config/constants/chains'
 import React, { useState } from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import { useFetchActiveChains } from '../../../../state/info/hooks'
+import { useSelector } from 'react-redux'
+import { AppState } from '../../../../state'
 
 const NetworkSelector = () => {
   const mobile = useIsMobile()
@@ -13,6 +15,8 @@ const NetworkSelector = () => {
 
   function toggleChain(chain: number) {
     setUpdateChain(chain)
+
+    // useSelector<AppState, AppState['user']['isDark']>((state) => state.user.isDark)
   }
 
   function isActive(chain) {

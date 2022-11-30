@@ -18,9 +18,7 @@ const Pairs = () => {
   const [dataOffset, setDataOffset] = useState(0)
   const pairs = useFetchInfoPairs(20, 0)
   const flattenedPairs = Object.values(pairs).flatMap((row) => (row.initialized ? row.data : []))
-  // const tokensInitialized = Object.values(pairs)
-  //   .flatMap((row) => row.initialized)
-  //   ?.includes(true)
+
   const sortedPairs = useMemo(
     () =>
       orderBy(
