@@ -2,7 +2,7 @@
 import { Flex, Text } from '@ape.swap/uikit'
 import { orderBy } from 'lodash'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useFetchInfoPairs } from 'state/info/hooks'
+import { useFetchActiveChains, useFetchInfoPairs } from 'state/info/hooks'
 import ReactPaginate from 'react-paginate'
 import Rows from './Rows'
 import styled from 'styled-components'
@@ -12,7 +12,7 @@ const ROWS_PER_PAGE = 10
 
 const Pairs = () => {
   const mobile = useIsMobile()
-  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
+  const activeChains = useFetchActiveChains(0)
 
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)

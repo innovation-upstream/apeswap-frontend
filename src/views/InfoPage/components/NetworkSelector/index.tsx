@@ -2,38 +2,17 @@
 import { Flex, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS, MAINNET_CHAINS } from 'config/constants/chains'
-import React from 'react'
+import React, { useState } from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
+import { useFetchActiveChains } from '../../../../state/info/hooks'
 
 const NetworkSelector = () => {
   const mobile = useIsMobile()
-  let activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
+  const [updateChain, setUpdateChain] = useState(0)
+  const activeChains = useFetchActiveChains(updateChain)
 
-  function toggleChain(chain) {
-    let current = JSON.parse(localStorage.getItem('infoActiveChains'))
-
-    // If activeChains is null it means all are selected, so when they select one they are actually deselecting it.
-    // Add all and then let it be removed below
-    if (current === null) {
-      current = []
-      for (let i = 0; i < MAINNET_CHAINS.length; i++) {
-        if (MAINNET_CHAINS[i] !== chain) {
-          current.push(MAINNET_CHAINS[i])
-        }
-      }
-    } else {
-      const index = current.indexOf(chain, 0)
-      if (index > -1) {
-        current.splice(index, 1)
-        //If this makes active Chains = 0 then add all
-        if (current.length === 0) current = MAINNET_CHAINS
-      } else {
-        current.push(chain)
-      }
-    }
-
-    localStorage.setItem('infoActiveChains', JSON.stringify(current))
-    activeChains = current
+  function toggleChain(chain: number) {
+    setUpdateChain(chain)
   }
 
   function isActive(chain) {

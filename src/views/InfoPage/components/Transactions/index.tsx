@@ -2,7 +2,7 @@
 import { Flex, Text } from '@ape.swap/uikit'
 import { orderBy } from 'lodash'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useFetchInfoTransactions } from 'state/info/hooks'
+import { useFetchActiveChains, useFetchInfoTransactions } from 'state/info/hooks'
 import ReactPaginate from 'react-paginate'
 import Rows from './Rows'
 import styled from 'styled-components'
@@ -20,7 +20,7 @@ const Transactions = () => {
   const transactions = useFetchInfoTransactions(50)
   const [transactionType, setTransactionType] = useState('all')
 
-  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
+  const activeChains = useFetchActiveChains(0)
 
   const flattenedSwaps = Object.values(transactions).flatMap((row) =>
     row.initialized
@@ -70,7 +70,7 @@ const Transactions = () => {
         ({ transaction }) => parseFloat(transaction.timestamp),
         'desc',
       ),
-    [flattenedSwaps, flattenedMints, flattenedBurns, activeChains, transactionType],
+    [flattenedSwaps, flattenedMints, flattenedBurns, activeChains, transactionType, getTransactions],
   )?.slice(0, 50)
 
   const handlePageClick = (event) => {

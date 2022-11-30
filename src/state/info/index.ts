@@ -35,6 +35,7 @@ const initialState: InfoState = {
   tokensDayOld: dataAsNullInitialState,
   tokenDaysData: dataAsNullInitialState,
   dayOldPairs: dataAsNullInitialState,
+  activeChains: [1, 40, 56, 137],
 }
 
 export const infoSlice = createSlice({
@@ -93,6 +94,11 @@ export const infoSlice = createSlice({
       const { stateType, chainId, loading } = action.payload
       state[stateType][chainId] = { ...state[stateType][chainId], loading }
     },
+    setActiveChains: (state, action) => {
+      if (action.payload !== null) {
+        state.activeChains = action.payload
+      }
+    },
   },
 })
 
@@ -111,6 +117,7 @@ export const {
   setTokenDaysData,
   setDayOldPairs,
   setLoading,
+  setActiveChains,
 } = infoSlice.actions
 
 // Thunks
@@ -169,9 +176,41 @@ export const fetchChartData = (chainId: ChainId, amount: number) => async (dispa
   dispatch(setChartData({ data, chainId, loading: false, initialized: true }))
 }
 
+export const fetchActiveChains = (chainId: number) => async (dispatch) => {
+  const data = JSON.parse(localStorage.getItem('infoActiveChains'))
+  if (chainId > 0) {
+    dispatch(updateActiveChains(chainId, data))
+  } else {
+    dispatch(setActiveChains(data))
+  }
+}
+
 export const fetchTokenDaysData = (chainId: ChainId, address: string) => async (dispatch) => {
   const data = await getTokenDaysData(chainId, address)
   dispatch(setTokenDaysData({ data, chainId, loading: false, initialized: true }))
+}
+
+export const updateActiveChains = (chainId: number, data: number[]) => async (dispatch) => {
+  let current = data
+  if (current === null) {
+    current = []
+    for (let i = 0; i < MAINNET_CHAINS.length; i++) {
+      if (MAINNET_CHAINS[i] !== chainId) {
+        current.push(MAINNET_CHAINS[i])
+      }
+    }
+  } else {
+    const index = current.indexOf(chainId, 0)
+    if (index > -1) {
+      current.splice(index, 1)
+      //If this makes active Chains = 0 then add all
+      if (current.length === 0) current = MAINNET_CHAINS
+    } else {
+      current.push(chainId)
+    }
+  }
+  localStorage.setItem('infoActiveChains', JSON.stringify(current))
+  dispatch(setActiveChains(current))
 }
 
 export default infoSlice.reducer

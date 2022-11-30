@@ -123,4 +123,5 @@ export interface InfoState {
   tokensDayOld: Record<ChainId, { data: Token[]; loading: boolean; initialized: boolean }>
   tokenDaysData: Record<ChainId, { data: TokenDaysData[]; loading: boolean; initialized: boolean }>
   dayOldPairs: Record<ChainId, { data: TokenDaysData[]; loading: boolean; initialized: boolean }>
+  activeChains: number[]
 }

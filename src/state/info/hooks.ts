@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { State } from 'state/types'
 import {
+  fetchActiveChains,
   fetchBlock,
   fetchChartData,
   fetchDaysData,
@@ -133,6 +134,14 @@ export const useFetchChartData = (amount: number) => {
   }, [dispatch, amount])
   // [slowRefresh, dispatch, amount])
   return useSelector((state: State) => state.info.chartData)
+}
+
+export const useFetchActiveChains = (chainId: number) => {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(fetchActiveChains(chainId))
+  }, [dispatch, chainId])
+  return useSelector((state: State) => state.info.activeChains)
 }
 
 export const useFetchInfoUniswapFactories = (current?: boolean) => {

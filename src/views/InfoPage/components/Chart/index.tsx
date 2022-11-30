@@ -1,16 +1,14 @@
 /** @jsxImportSource theme-ui */
-import { Flex } from '@ape.swap/uikit'
+import { Flex, Spinner } from '@ape.swap/uikit'
 import React, { useMemo, useState } from 'react'
 import { ResponsiveBar } from '@nivo/bar'
-import { useFetchChartData } from '../../../../state/info/hooks'
+import { useFetchActiveChains, useFetchChartData } from '../../../../state/info/hooks'
 import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
-import { Section } from '../../../Info/styles'
 import moment from 'moment/moment'
 import useTheme from '../../../../hooks/useTheme'
-import { ChartWrapper, RangeSelectorsWrapper } from '../styles'
+import { ChartWrapper, RangeSelectorsWrapper, Section } from '../styles'
 import Figure from '../Figures/figure'
 import { map, groupBy } from 'lodash'
-import { Spinner } from '@apeswapfinance/uikit'
 
 interface ChartProps {
   chartType: string
@@ -29,10 +27,12 @@ type ChartData = {
 const Chart: React.FC<ChartProps> = (props) => {
   const { isDark } = useTheme()
 
-  const [dataAmount, setDataAmount] = useState(props.chartType === 'liquidity' ? 30 : 7)
+  const { chartType, sevenDayVolume, liquidity } = props
+
+  const [dataAmount, setDataAmount] = useState(chartType === 'liquidity' ? 30 : 7)
 
   const chartData = useFetchChartData(dataAmount)
-  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
+  const activeChains = useFetchActiveChains(0)
 
   const flattenedChartData = Object.values(chartData).flatMap((item) => (item.initialized ? item.data : []))
   const groupedData = groupBy(flattenedChartData, (x) => (x ? x.date : ''))
@@ -91,10 +91,10 @@ const Chart: React.FC<ChartProps> = (props) => {
         }
       })
 
-    props.sevenDayVolume(total)
+    sevenDayVolume(total)
 
     return total
-  }, [checkChartDataInitialized])
+  }, [mappedVolumeData, sevenDayVolume])
 
   function getBarColor(bar: any) {
     const chain = INFO_PAGE_CHAIN_PARAMS[bar.id]
@@ -173,7 +173,7 @@ const Chart: React.FC<ChartProps> = (props) => {
     >
       {checkChartDataInitialized === true ? (
         <>
-          {props.chartType === 'volume' ? (
+          {chartType === 'volume' ? (
             <Figure
               type="chart"
               label="Volume (7d)"
@@ -181,12 +181,7 @@ const Chart: React.FC<ChartProps> = (props) => {
               value={`$${Math.round((calculate7DayVolume * 100) / 100).toLocaleString()}`}
             />
           ) : (
-            <Figure
-              type="chart"
-              label="Liquidty"
-              icon="dollar"
-              value={`$${Math.round(props.liquidity).toLocaleString()}`}
-            />
+            <Figure type="chart" label="Liquidty" icon="dollar" value={`$${Math.round(liquidity).toLocaleString()}`} />
           )}
 
           <RangeSelectorsWrapper>
@@ -208,7 +203,7 @@ const Chart: React.FC<ChartProps> = (props) => {
 
           <ChartWrapper>
             <ResponsiveBar
-              data={props.chartType === 'volume' ? mappedVolumeData : mappedLiquidityData}
+              data={chartType === 'volume' ? mappedVolumeData : mappedLiquidityData}
               keys={['1', '137', '40', '56']}
               indexBy="date"
               groupMode="stacked"

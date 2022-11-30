@@ -1,15 +1,14 @@
 /** @jsxImportSource theme-ui */
-import { Flex } from '@ape.swap/uikit'
+import { Flex, Spinner } from '@ape.swap/uikit'
 import React, { useState } from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import Figure from './figure'
-import { useFetchInfoUniswapFactories } from '../../../../state/info/hooks'
+import { useFetchActiveChains, useFetchInfoUniswapFactories } from '../../../../state/info/hooks'
 import Showcases from '../Showcases'
 import SwiperProvider from 'contexts/SwiperProvider'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper.min.css'
 import { Bubble } from '../styles'
-import { Spinner } from '@apeswapfinance/uikit'
 
 interface FiguresProps {
   switchChart: () => void
@@ -26,7 +25,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
 
   const currentDayData = useFetchInfoUniswapFactories(true)
   const dayOldData = useFetchInfoUniswapFactories()
-  const activeChains = JSON.parse(localStorage.getItem('infoActiveChains'))
+  const activeChains = useFetchActiveChains(0)
 
   const updateSlide = (index) => {
     swiper.slideTo(index)

@@ -1,5 +1,9 @@
 import styled from 'styled-components'
-import { Link } from '@apeswapfinance/uikit'
+import { Link } from '@ape.swap/uikit'
+
+interface ShowcaseProps {
+  background: string
+}
 
 export const FigureWrapper = styled.div`
   flex-grow: 1;
@@ -48,7 +52,7 @@ export const RangeSelectorsWrapper = styled.div`
   }
 
   &.transctionSelector {
-    margin-top: 7px;
+    margin-top: 8px;
     position: absolute;
 
     li {
@@ -58,9 +62,34 @@ export const RangeSelectorsWrapper = styled.div`
   }
 `
 
-export const ShowcaseWrapper = styled.div`
-  width: calc(50% - 10px);
+export const ShowcaseWrapper = styled.div<ShowcaseProps>`
+  width: 100%;
+  max-width: 100%;
   margin-bottom: 10px;
+  height: 214px;
+  background: url(${(props) => props.background});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  border-radius: 10px;
+  padding: 15px 10px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: calc(50% - 10px);
+  }
+
+  .showcaseItem {
+    background: rgba(255, 255, 255, 0.7);
+    width: 100%;
+    height: 60px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 8px 0;
+  }
+  .showcaseLink {
+    width: 100%;
+    text-align: center;
+  }
 `
 
 export const ChartWrapper = styled.div`
@@ -99,4 +128,73 @@ export const Bubble = styled.div<{ isActive?: boolean }>`
 `
 export const StyledLink = styled(Link)`
   color: ${({ theme }) => theme.colors.yellow};
+`
+
+export const Section = styled.div`
+  position: relative;
+  // flex: 1;
+  // display: flex;
+  // flex-wrap: wrap;
+  // justify-content: space-between;
+  // // flex-direction: column;
+  background: ${({ theme }) => theme.colors.white2};
+  border-radius: 10px;
+  // z-index: 1;
+  // padding: 15px 20px 0px 20px;
+  // align-items: center;
+
+  &.smallSection {
+    width: 300px;
+    padding: 0px 0px 5px 0px;
+    box-shadow: 0px 0px 10px ${(props) => props.theme.colors.gray};
+
+    .header {
+      padding: 10px 0;
+      background: ${({ theme }) => theme.colors.white3};
+      width: 100%;
+      border-radius-topleft: 10px;
+      border-radius-topright: 10px;
+
+      margin-bottom: 5px;
+      .wrapper {
+        font-weight: 600;
+      }
+    }
+
+    .body {
+      padding: 10px 0;
+    }
+    .wrapper {
+      width: 300px;
+      padding: 5px 18px;
+      font-weight: 500;
+      font-size: 12px;
+
+      .value {
+        float: right;
+      }
+      .indicator {
+        width: 10px;
+        height: 10px;
+        margin: 1px 5px 0 0;
+        float: left;
+        border-radius: 50%;
+        &.eth {
+          background: #637dea;
+        }
+
+        &.bnb {
+          background: #fab701;
+        }
+
+        &.telos {
+          background: #9d68e8;
+        }
+
+        &.polygon {
+          background: #637dea;
+        }
+      }
+    }
+  }
 `

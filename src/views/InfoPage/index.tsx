@@ -1,10 +1,8 @@
 /** @jsxImportSource theme-ui */
 import { Flex } from '@ape.swap/uikit'
 import React from 'react'
-import { useFetchInfoBlock, useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
+import { useFetchInfoBlock, useFetchInfoNativePrice } from 'state/info/hooks'
 import TrendingTokens from './components/TrendingTokens/TrendingTokens'
-// import Overview from './components/Overview'
-// import Chart from './components/Chart'
 import Tokens from './components/Tokens'
 import Heading from './components/Heading'
 import Pairs from './components/Pairs'
@@ -17,7 +15,7 @@ import Showcases from './components/Showcases'
 const InfoPage = () => {
   useFetchInfoBlock()
   useFetchInfoNativePrice()
-  useFetchInfoTokensData(20)
+  //useFetchInfoTokensData(20)
   const mobile = useIsMobile()
 
   return (
@@ -26,7 +24,7 @@ const InfoPage = () => {
         sx={{
           height: 'fit-content',
           width: 'fit-content',
-          maxWidth: '1500px',
+          maxWidth: '1200px',
           alignItems: 'center',
           flexDirection: 'column',
           margin: '40px 0px',

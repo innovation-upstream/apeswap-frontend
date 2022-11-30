@@ -34,23 +34,23 @@ const Rows = ({ transactions }: { transactions: Swaps[] }) => {
       <Grid
         gap="0px"
         columns={[`.05fr 3.5fr 1.5fr 2fr 2fr  1.5fr 2fr`]}
-        sx={{ minHeight: '40px', alignItems: 'center', minWidth: '850px' }}
+        sx={{ minHeight: '40px', alignItems: 'center', minWidth: '850px', zIndex: '999' }}
       >
         <span />
         <Text size="14px" weight={700} sx={{ alignSelf: 'center' }}></Text>
-        <Text size="14px" weight={700} sx={{ alignSelf: 'center' }}>
+        <Text size="14px" weight={700} sx={{ alignSelf: 'center', backgroundColor: 'white2' }}>
           {t('Total Value')}
         </Text>
-        <Text size="14px" weight={700} sx={{ alignSelf: 'center' }}>
+        <Text size="14px" weight={700} sx={{ alignSelf: 'center', backgroundColor: 'white2' }}>
           {t('Token 1')}
         </Text>
-        <Text size="14px" weight={700} sx={{ alignSelf: 'center' }}>
+        <Text size="14px" weight={700} sx={{ alignSelf: 'center', backgroundColor: 'white2' }}>
           {t('Token 2')}
         </Text>
-        <Text size="14px" weight={700} sx={{ alignSelf: 'center' }}>
+        <Text size="14px" weight={700} sx={{ alignSelf: 'center', backgroundColor: 'white2' }}>
           {t('Address')}
         </Text>
-        <Text size="14px" weight={700} sx={{ alignSelf: 'center' }}>
+        <Text size="14px" weight={700} sx={{ alignSelf: 'center', backgroundColor: 'white2' }}>
           {t('Time')}
         </Text>
       </Grid>
