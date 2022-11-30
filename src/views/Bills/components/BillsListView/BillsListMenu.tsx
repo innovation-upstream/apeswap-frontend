@@ -8,6 +8,7 @@ import useSelectNetwork from 'hooks/useSelectNetwork'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import { BillsListMenuProps, FILTER_OPTIONS, SORT_OPTIONS } from './types'
 import MenuSelect from './MenuSelect'
+import { AnimatePresence, motion } from 'framer-motion'
 
 const BillsListMenu: React.FC<BillsListMenuProps> = ({
   onHandleQueryChange,
@@ -41,24 +42,40 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
               <Svg icon="MenuSettings" width="18px" />
             </Flex>
           </Flex>
-          {expanded && (
-            <Flex sx={styles.mobileRow}>
-              <Flex sx={styles.inputContainer} pr={3}>
-                <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={SORT_OPTIONS} />
-              </Flex>
-              <Flex sx={styles.inputContainer} pl={3}>
-                <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
-              </Flex>
-              <Flex sx={styles.networkWrapper}>
-                <NetworkButton
-                  switchNetwork={switchNetwork}
-                  chainId={chainId}
-                  t={t}
-                  supportedChains={AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS]}
-                />
-              </Flex>
-            </Flex>
-          )}
+          <AnimatePresence>
+            {expanded && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'fit-content' }}
+                exit={{ opacity: 0 }}
+                transition={{ opacity: { duration: 0.4 } }}
+                sx={{
+                  position: 'relative',
+                  width: '100%',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Flex sx={styles.mobileRow}>
+                  <Flex sx={styles.inputContainer} pr={3}>
+                    <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={SORT_OPTIONS} />
+                  </Flex>
+                  <Flex sx={styles.inputContainer} pl={3}>
+                    <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
+                  </Flex>
+                  <Flex sx={styles.networkWrapper}>
+                    <NetworkButton
+                      switchNetwork={switchNetwork}
+                      chainId={chainId}
+                      t={t}
+                      supportedChains={AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS]}
+                    />
+                  </Flex>
+                </Flex>
+              </motion.div>
+            )}
+          </AnimatePresence>
           <Flex sx={styles.mobileRow}>
             <Flex>
               <Toggle

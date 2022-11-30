@@ -63,9 +63,12 @@ export const CardContainer = styled(Card)`
   display: flex;
   flex-direction: column;
   min-width: 270px;
-  max-height: 307px;
   align-items: center;
   margin: 0 0 16px 12px;
+  @media screen and (max-width: 852px) {
+    width: 100%;
+    margin: 0 0 10px 0;
+  }
 `
 
 export const BillsImage = styled.div<{ image?: string }>`
@@ -77,6 +80,12 @@ export const BillsImage = styled.div<{ image?: string }>`
   background-repeat: no-repeat;
   background-size: 100% 100%;
   margin-bottom: 8px;
+  @media screen and (max-width: 852px) {
+   width: calc(100vw - 20px);
+   max-width: 480px;
+   height: calc((100vw - 20px)/1.7777);
+   max-height: 270px;
+  }
 `
 
 export const BillCardsContainer = styled(Flex)`

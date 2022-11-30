@@ -1,43 +1,24 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Text } from '@ape.swap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import React from 'react'
-import { styles } from './styles'
-import { BillsView } from '../../index'
+import { Container } from './styles'
+import { TabNav } from 'components/TabNav'
 
 interface BillsNavProps {
-  billsView: BillsView
-  setBillsView: (newBillsView: BillsView) => void
+  billsView: string
+  setBillsView: (newBillsView: string) => void
+  ownedBillsAmount: number
 }
 
-const BillsNav: React.FC<BillsNavProps> = ({ billsView, setBillsView }) => {
-  const { t } = useTranslation()
-
+const BillsNav: React.FC<BillsNavProps> = ({ billsView, setBillsView, ownedBillsAmount }) => {
   return (
-    <Flex sx={styles.dexNavContainer}>
-      <Text
-        size="16px"
-        sx={{
-          ...styles.navLink,
-          color: billsView === BillsView.YOUR_BILLS && 'textDisabled',
-          '::after': billsView === BillsView.AVAILABLE_BILLS && styles.underlined,
-        }}
-        onClick={() => setBillsView(BillsView.AVAILABLE_BILLS)}
-      >
-        {t('Available Bills')}
-      </Text>
-      <Text
-        size="16px"
-        sx={{
-          ...styles.navLink,
-          color: billsView === BillsView.AVAILABLE_BILLS && 'textDisabled',
-          '::after': billsView === BillsView.YOUR_BILLS && styles.underlined,
-        }}
-        onClick={() => setBillsView(BillsView.YOUR_BILLS)}
-      >
-        {t('Your Bills')}
-      </Text>
-    </Flex>
+    <Container>
+      <TabNav
+        tabOptions={['Available Bills', 'Your Bills']}
+        activeTab={billsView}
+        onChangeActiveTab={setBillsView}
+        ownedBillsAmount={ownedBillsAmount ? ownedBillsAmount : 0}
+      />
+    </Container>
   )
 }
 

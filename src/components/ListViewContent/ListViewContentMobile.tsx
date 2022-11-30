@@ -37,11 +37,7 @@ const ListViewContentMobile: React.FC<ListViewContentMobileProps> = ({
         </TitleText>
       </TooltipBubble>
       <Text sx={{ color: valueColor }} weight={700} size="12px">
-        {value.includes('N/A') || value.includes('NaN') || value.includes('undefined') || value.includes('null') ? (
-          <ValueSkeleton />
-        ) : (
-          value
-        )}
+        {value.includes('NaN') || value.includes('undefined') || value.includes('null') ? <ValueSkeleton /> : value}
       </Text>
     </Flex>
   )

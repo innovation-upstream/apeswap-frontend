@@ -17,8 +17,8 @@ import useDebounce from '../../hooks/useDebounce'
 import { AnimatePresence, motion } from 'framer-motion'
 
 export enum BillsView {
-  AVAILABLE_BILLS,
-  YOUR_BILLS,
+  AVAILABLE_BILLS = 'Available Bills',
+  YOUR_BILLS = 'Your Bills',
 }
 
 const Bills: React.FC = () => {
@@ -28,10 +28,10 @@ const Bills: React.FC = () => {
   const { chainId, account } = useActiveWeb3React()
   const bills = useBills()
   const { t } = useTranslation()
-  const [billsView, setBillsView] = useState<BillsView>(BillsView.AVAILABLE_BILLS)
+  const [billsView, setBillsView] = useState<string>(BillsView.AVAILABLE_BILLS)
   const ownedBillsAmount = bills?.flatMap((bill) => (bill?.userOwnedBillsData ? bill?.userOwnedBillsData : [])).length
 
-  const handleBillsViewChange = useCallback((newBillsView: BillsView) => {
+  const handleBillsViewChange = useCallback((newBillsView: string) => {
     setBillsView(newBillsView)
   }, [])
 
@@ -90,7 +90,11 @@ const Bills: React.FC = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <BillsNav billsView={billsView} setBillsView={handleBillsViewChange} />
+              <BillsNav
+                billsView={billsView}
+                setBillsView={handleBillsViewChange}
+                ownedBillsAmount={ownedBillsAmount}
+              />
               {billsView === BillsView.AVAILABLE_BILLS ? (
                 <BillsListView />
               ) : (

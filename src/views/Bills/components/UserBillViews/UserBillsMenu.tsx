@@ -8,6 +8,7 @@ import ClaimAll from '../Actions/ClaimAll'
 import { Bills } from 'state/types'
 import { FILTER_OPTIONS, SORT_OPTIONS } from './types'
 import MenuSelect from '../BillsListView/MenuSelect'
+import { AnimatePresence, motion } from 'framer-motion'
 
 export interface UserBillsMenuProps {
   onHandleQueryChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -71,33 +72,55 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
               <Svg icon="MenuSettings" width="18px" />
             </Flex>
           </Flex>
-          {expanded && (
-            <Flex sx={styles.mobileRow}>
-              <Flex sx={styles.inputContainer} pr={3}>
-                <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={SORT_OPTIONS} />
-              </Flex>
-              <Flex sx={styles.inputContainer} pl={3}>
-                <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
-              </Flex>
-              <Flex sx={{ marginTop: '15px', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Flex>
-                  <Toggle
-                    size="sm"
-                    labels={[t('List'), t('Gallery')]}
-                    onClick={() => setListView(!listView)}
-                    checked={!listView}
-                    sx={{ height: '36px', alignItems: 'center', '& div': { minWidth: '70px', textAlign: 'center' } }}
-                  />
+          <AnimatePresence>
+            {expanded && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'fit-content' }}
+                exit={{ opacity: 0 }}
+                transition={{ opacity: { duration: 0.4 } }}
+                sx={{
+                  position: 'relative',
+                  width: '100%',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Flex sx={styles.mobileRow}>
+                  <Flex sx={styles.inputContainer} pr={3}>
+                    <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={SORT_OPTIONS} />
+                  </Flex>
+                  <Flex sx={styles.inputContainer} pl={3}>
+                    <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
+                  </Flex>
+                  <Flex
+                    sx={{ marginTop: '15px', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}
+                  >
+                    <Flex>
+                      <Toggle
+                        size="sm"
+                        labels={[t('List'), t('Gallery')]}
+                        onClick={() => setListView(!listView)}
+                        checked={!listView}
+                        sx={{
+                          height: '36px',
+                          alignItems: 'center',
+                          '& div': { minWidth: '70px', textAlign: 'center' },
+                        }}
+                      />
+                    </Flex>
+                    <Flex>
+                      <Checkbox checked={showClaimed} onClick={() => setShowClaimed(!showClaimed)} />
+                      <Text ml="15px" size="14px">
+                        {t('Claimed')}
+                      </Text>
+                    </Flex>
+                  </Flex>
                 </Flex>
-                <Flex>
-                  <Checkbox checked={showClaimed} onClick={() => setShowClaimed(!showClaimed)} />
-                  <Text ml="15px" size="14px">
-                    {t('Claimed')}
-                  </Text>
-                </Flex>
-              </Flex>
-            </Flex>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
           <Flex sx={{ width: '100%', maxWidth: '350px', marginTop: '15px' }}>
             <ClaimAll userOwnedBills={ownedBills} ownedBillsAmount={ownedBillsAmount} buttonSize={'100%'} />
           </Flex>

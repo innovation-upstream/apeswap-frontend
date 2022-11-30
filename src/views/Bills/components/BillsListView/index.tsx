@@ -62,7 +62,7 @@ const BillsListView: React.FC = () => {
         case 'price':
           return orderBy(billsToSort, (bill: Bills) => parseFloat(bill.priceUsd), 'asc')
         case 'new':
-          return orderBy(billsToSort, (bill: Bills) => bill.index, 'asc')
+          return orderBy(billsToSort, (bill: Bills) => bill.index, 'desc')
         default:
           return billsToSort
       }
@@ -122,7 +122,7 @@ const BillsListView: React.FC = () => {
       cardContent: isMobile ? (
         <ListViewContentMobile
           title={'Discount'}
-          value={!bill?.discount || bill?.discount === 'NaN' || disabled ? 'N/A' : `${bill?.discount}%`}
+          value={disabled ? 'N/A' : `${bill?.discount}%`}
           valueColor={disabled ? null : parseFloat(bill?.discount) < 0 ? '#DF4141' : '#38A611'}
           toolTip={`This is the percentage discount relative to the token's current market price.`}
           toolTipPlacement={'bottomLeft'}
@@ -215,7 +215,7 @@ const BillsListView: React.FC = () => {
                   />
                   <ListViewContentMobile
                     title={'Vesting Term'}
-                    value={vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
+                    value={disabled ? 'N/A' : vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
                     toolTip={`This is how long it will take for all tokens in the Bill to fully vest.`}
                     toolTipPlacement={'bottomLeft'}
                     toolTipTransform={'translate(39%, 0%)'}
