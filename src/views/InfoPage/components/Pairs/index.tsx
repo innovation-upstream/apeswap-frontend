@@ -12,7 +12,7 @@ const ROWS_PER_PAGE = 10
 
 const Pairs = () => {
   const mobile = useIsMobile()
-  const activeChains = useFetchActiveChains(0)
+  const [activeChains] = useFetchActiveChains()
 
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)

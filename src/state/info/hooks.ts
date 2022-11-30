@@ -1,6 +1,6 @@
 import { MAINNET_CHAINS } from 'config/constants/chains'
 import useRefresh from 'hooks/useRefresh'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { State } from 'state/types'
@@ -16,6 +16,7 @@ import {
   fetchTransactions,
   fetchUniswapFactories,
   setLoading,
+  updateActiveChains,
 } from '.'
 import { InfoStateTypes } from './types'
 
@@ -136,12 +137,21 @@ export const useFetchChartData = (amount: number) => {
   return useSelector((state: State) => state.info.chartData)
 }
 
-export const useFetchActiveChains = (chainId: number) => {
+export const useFetchActiveChains = (): [number[], (chainId: number) => void] => {
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(fetchActiveChains(chainId))
-  }, [dispatch, chainId])
-  return useSelector((state: State) => state.info.activeChains)
+    dispatch(fetchActiveChains())
+  }, [dispatch])
+
+  const activeChains = useSelector((state: State) => state.info.activeChains)
+  const toggleChain = useCallback(
+    (chainId: number) => {
+      dispatch(updateActiveChains(chainId, activeChains))
+    },
+    [dispatch, activeChains],
+  )
+
+  return [activeChains, toggleChain]
 }
 
 export const useFetchInfoUniswapFactories = (current?: boolean) => {

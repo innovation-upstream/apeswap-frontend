@@ -20,7 +20,7 @@ const Transactions = () => {
   const transactions = useFetchInfoTransactions(50)
   const [transactionType, setTransactionType] = useState('all')
 
-  const activeChains = useFetchActiveChains(0)
+  const [activeChains] = useFetchActiveChains()
 
   const flattenedSwaps = Object.values(transactions).flatMap((row) =>
     row.initialized

@@ -1,11 +1,9 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Spinner } from '@ape.swap/uikit'
 import React, { useMemo, useState } from 'react'
-import { ResponsiveBar } from '@nivo/bar'
 import { useFetchActiveChains, useFetchChartData } from '../../../../state/info/hooks'
 import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
-import moment from 'moment/moment'
-import useTheme from '../../../../hooks/useTheme'
+
 import { ChartWrapper, RangeSelectorsWrapper, Section } from '../styles'
 import Figure from '../Figures/figure'
 import { map, groupBy } from 'lodash'
@@ -31,7 +29,7 @@ const Chart: React.FC<ChartProps> = (props) => {
   const [dataAmount, setDataAmount] = useState(chartType === 'liquidity' ? 30 : 7)
 
   const chartData = useFetchChartData(dataAmount)
-  const activeChains = useFetchActiveChains(0)
+  const [activeChains] = useFetchActiveChains()
 
   const flattenedChartData = Object.values(chartData).flatMap((item) => (item.initialized ? item.data : []))
   const groupedData = groupBy(flattenedChartData, (x) => (x ? x.date : ''))

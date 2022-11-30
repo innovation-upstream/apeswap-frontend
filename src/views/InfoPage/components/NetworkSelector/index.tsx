@@ -2,22 +2,13 @@
 import { Flex, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS, MAINNET_CHAINS } from 'config/constants/chains'
-import React, { useState } from 'react'
+import React from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import { useFetchActiveChains } from '../../../../state/info/hooks'
-import { useSelector } from 'react-redux'
-import { AppState } from '../../../../state'
 
 const NetworkSelector = () => {
   const mobile = useIsMobile()
-  const [updateChain, setUpdateChain] = useState(0)
-  const activeChains = useFetchActiveChains(updateChain)
-
-  function toggleChain(chain: number) {
-    setUpdateChain(chain)
-
-    // useSelector<AppState, AppState['user']['isDark']>((state) => state.user.isDark)
-  }
+  const [activeChains, toggleChain] = useFetchActiveChains()
 
   function isActive(chain) {
     // If active changes equals null it means all chains should be shown

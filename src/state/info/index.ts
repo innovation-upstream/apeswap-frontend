@@ -176,13 +176,9 @@ export const fetchChartData = (chainId: ChainId, amount: number) => async (dispa
   dispatch(setChartData({ data, chainId, loading: false, initialized: true }))
 }
 
-export const fetchActiveChains = (chainId: number) => async (dispatch) => {
+export const fetchActiveChains = () => async (dispatch) => {
   const data = JSON.parse(localStorage.getItem('infoActiveChains'))
-  if (chainId > 0) {
-    dispatch(updateActiveChains(chainId, data))
-  } else {
-    dispatch(setActiveChains(data))
-  }
+  dispatch(setActiveChains(data))
 }
 
 export const fetchTokenDaysData = (chainId: ChainId, address: string) => async (dispatch) => {
@@ -190,8 +186,9 @@ export const fetchTokenDaysData = (chainId: ChainId, address: string) => async (
   dispatch(setTokenDaysData({ data, chainId, loading: false, initialized: true }))
 }
 
-export const updateActiveChains = (chainId: number, data: number[]) => async (dispatch) => {
-  let current = data
+export const updateActiveChains = (chainId: number, data: number[]) => (dispatch) => {
+  let current = data.map((x) => x)
+
   if (current === null) {
     current = []
     for (let i = 0; i < MAINNET_CHAINS.length; i++) {
@@ -201,6 +198,7 @@ export const updateActiveChains = (chainId: number, data: number[]) => async (di
     }
   } else {
     const index = current.indexOf(chainId, 0)
+
     if (index > -1) {
       current.splice(index, 1)
       //If this makes active Chains = 0 then add all
@@ -209,6 +207,7 @@ export const updateActiveChains = (chainId: number, data: number[]) => async (di
       current.push(chainId)
     }
   }
+
   localStorage.setItem('infoActiveChains', JSON.stringify(current))
   dispatch(setActiveChains(current))
 }

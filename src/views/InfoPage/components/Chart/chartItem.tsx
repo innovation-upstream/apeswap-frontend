@@ -1,10 +1,9 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Spinner } from '@ape.swap/uikit'
-import React, { useMemo, useState } from 'react'
+
+import React from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import moment from 'moment/moment'
-import { ChartWrapper, RangeSelectorsWrapper, Section } from '../styles'
-import Figure from '../Figures/figure'
+import { ChartWrapper, Section } from '../styles'
 import { useFetchActiveChains } from '../../../../state/info/hooks'
 import { INFO_PAGE_CHAIN_PARAMS } from '../../../../config/constants/chains'
 import useTheme from '../../../../hooks/useTheme'
@@ -16,7 +15,7 @@ interface ChartItemProps {
 const ChartItem: React.FC<ChartItemProps> = (props) => {
   const { isDark } = useTheme()
 
-  const activeChains = useFetchActiveChains(0)
+  const [activeChains] = useFetchActiveChains()
 
   const { chartData } = props
 

@@ -25,7 +25,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
 
   const currentDayData = useFetchInfoUniswapFactories(true)
   const dayOldData = useFetchInfoUniswapFactories()
-  const activeChains = useFetchActiveChains(0)
+  const [activeChains] = useFetchActiveChains()
 
   const updateSlide = (index) => {
     swiper.slideTo(index)
