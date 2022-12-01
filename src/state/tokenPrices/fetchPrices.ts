@@ -6,19 +6,21 @@ import { getBalanceNumber } from 'utils/formatBalance'
 
 const fetchPrices = async (chainId: number, tokens: Token[]) => {
   const apePriceGetterAddress = getApePriceGetterAddress(chainId)
-  const tokensToCall = Object.fromEntries(Object.entries(tokens).filter(([, values]) => values.address[chainId]))
+  const tokensToCall = Object.fromEntries(
+    Object.entries(tokens).filter(([, values]) => values.address[chainId] && values.decimals[chainId]),
+  )
   const calls = Object.values(tokensToCall).map((token, i) => {
     if (token.lpToken) {
       return {
         address: apePriceGetterAddress,
         name: 'getLPPrice',
-        params: [token.address[chainId], token.decimals[chainId] ?? 18],
+        params: [token.address[chainId], token.decimals[chainId]],
       }
     }
     return {
       address: apePriceGetterAddress,
       name: 'getPrice',
-      params: [token.address[chainId], token.decimals[chainId] ?? 18],
+      params: [token.address[chainId], token.decimals[chainId]],
     }
   })
   const tokenPrices = await multicall(chainId, apePriceGetterABI, calls)
@@ -30,8 +32,8 @@ const fetchPrices = async (chainId: number, tokens: Token[]) => {
       address: token.address,
       price:
         token.symbol === 'GNANA'
-          ? getBalanceNumber(tokenPrices[0], token.decimals[chainId] ?? 18) * 1.389
-          : getBalanceNumber(tokenPrices[i], token.decimals[chainId] ?? 18),
+          ? getBalanceNumber(tokenPrices[0], token.decimals[chainId]) * 1.389
+          : getBalanceNumber(tokenPrices[i], token.decimals[chainId]),
       decimals: token.decimals,
     }
   })
