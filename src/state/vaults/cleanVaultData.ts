@@ -12,14 +12,17 @@ import { getBalanceNumber } from 'utils/formatBalance'
 const cleanVaultData = (
   vaultIds: number[],
   chunkedVaults: any[],
-  vaultSettings: any[],
+  vaultSettingsV2: any[],
+  vaultSettingsV3: any[],
   tokenPrices: TokenPrices[],
   farmLpAprs: FarmLpAprsType,
   chainId: number,
   vaultsConfig: Vault[],
 ) => {
-  const keeperFee = parseFloat(vaultSettings[1]) / 100
-  const withdrawFee = parseFloat(vaultSettings[5]) / 100
+  const keeperFeeV2 = parseFloat(vaultSettingsV2[1]) / 100
+  const withdrawFeeV2 = parseFloat(vaultSettingsV2[5]) / 100
+  const keeperFeeV3 = parseFloat(vaultSettingsV3[1]) / 100
+  const withdrawFeeV3 = parseFloat(vaultSettingsV3[5]) / 100
   const data = chunkedVaults.map((chunk, index) => {
     const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
     const vaultConfig: VaultConfig = filteredVaults?.find((vault) => vault.id === vaultIds[index])
@@ -67,31 +70,31 @@ const cleanVaultData = (
     let yearlyApy = 0
     let dailyApy = 0
 
-    if (vaultConfig.version === 'V2') {
+    if (vaultConfig.version === 'V2' || vaultConfig.version === 'V3') {
       yearlyApy = tokenEarnedPerThousandDollarsCompoundingMax({
         numberOfDays: 365,
         farmApr: lpApr ? apr + lpApr : apr,
         bananaPoolApr,
-        performanceFee: keeperFee,
+        performanceFee: vaultConfig.version === 'V2' ? keeperFeeV2 : keeperFeeV3,
       })
       dailyApy = tokenEarnedPerThousandDollarsCompoundingMax({
         numberOfDays: 1,
         farmApr: lpApr ? apr + lpApr : apr,
         bananaPoolApr,
-        performanceFee: keeperFee,
+        performanceFee: vaultConfig.version === 'V2' ? keeperFeeV2 : keeperFeeV3,
       })
     } else {
       const amountEarnedYealry = tokenEarnedPerThousandDollarsCompounding({
         numberOfDays: 365,
         farmApr: lpApr ? apr + lpApr : apr,
         tokenPrice: rewardTokenPriceUsd,
-        performanceFee: keeperFee,
+        performanceFee: keeperFeeV2,
       })
       const amountEarnedDaily = tokenEarnedPerThousandDollarsCompounding({
         numberOfDays: 1,
         farmApr: lpApr ? apr + lpApr : apr,
         tokenPrice: rewardTokenPriceUsd,
-        performanceFee: keeperFee,
+        performanceFee: keeperFeeV2,
       })
       yearlyApy = getRoi({ amountEarned: amountEarnedYealry, amountInvested: oneThousandDollarsWorthOfToken })
       dailyApy = getRoi({ amountEarned: amountEarnedDaily, amountInvested: oneThousandDollarsWorthOfToken })
@@ -99,8 +102,20 @@ const cleanVaultData = (
 
     return {
       ...vaultConfig,
-      keeperFee: vaultConfig.version === 'V2' ? keeperFee.toString() : '0.25',
-      withdrawFee: vaultConfig.version === 'V2' ? withdrawFee.toString() : vaultConfig?.fee ? vaultConfig.fee : '0',
+      keeperFee:
+        vaultConfig.version === 'V2'
+          ? keeperFeeV2.toString()
+          : vaultConfig.version === 'V3'
+          ? keeperFeeV3.toString()
+          : '0.25',
+      withdrawFee:
+        vaultConfig.version === 'V2'
+          ? withdrawFeeV2.toString()
+          : vaultConfig.version === 'V3'
+          ? withdrawFeeV3.toString()
+          : vaultConfig?.fee
+          ? vaultConfig.fee
+          : '0',
       totalStaked: totalTokensStaked.toString(),
       totalAllocPoint: totalAllocPoint.toString(),
       allocPoint: allocPoint.toString(),

@@ -3,8 +3,9 @@ import { useVaultApeV1, useVaultApeV2 } from 'hooks/useContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { stakeVaultV1, stakeVaultV2 } from 'utils/callHelpers'
 import track from 'utils/track'
+import { VaultVersion } from 'config/constants/types'
 
-export const useVaultStake = (pid: number, version: 'V1' | 'V2') => {
+export const useVaultStake = (pid: number, version: VaultVersion) => {
   const { chainId } = useActiveWeb3React()
   const vaultApeContractV1 = useVaultApeV1()
   const vaultApeContractV2 = useVaultApeV2()

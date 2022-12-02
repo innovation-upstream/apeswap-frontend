@@ -7,10 +7,11 @@ import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useToast } from 'state/hooks'
 import { StyledButton } from '../styles'
+import { VaultVersion } from 'config/constants/types'
 
 interface ApprovalActionProps {
   stakingTokenContractAddress: string
-  vaultVersion: 'V1' | 'V2'
+  vaultVersion: VaultVersion
   pid: number
   isLoading?: boolean
 }

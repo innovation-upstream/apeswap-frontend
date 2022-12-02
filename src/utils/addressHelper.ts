@@ -59,6 +59,9 @@ export const getVaultApeAddressV1 = (chainId: number) => {
 export const getVaultApeAddressV2 = (chainId: number) => {
   return addresses.vaultApeV2[chainId]
 }
+export const getVaultApeAddressV3 = (chainId: number) => {
+  return addresses.vaultApeV3[chainId]
+}
 export const getMiniChefAddress = (chainId: number) => {
   return addresses.miniApeV2[chainId]
 }

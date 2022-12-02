@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js'
 import { CenterContainer, StyledUnlockButton } from './styles'
 import ApprovalAction from './ApprovalAction'
 import StakeAction from './StakeActions'
+import { VaultVersion } from 'config/constants/types'
 
 // Changed props to type string because BigNumbers cause re-renders
 
@@ -16,7 +17,7 @@ interface CardActionProps {
   stakeTokenAddress: string
   withdrawFee: string
   pid: number
-  vaultVersion: 'V1' | 'V2'
+  vaultVersion: VaultVersion
 }
 
 const Actions: React.FC<CardActionProps> = ({

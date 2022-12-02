@@ -57,6 +57,12 @@ export enum PoolCategory {
   'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
 }
 
+export enum VaultVersion {
+  'V1' = 'V1',
+  'V2' = 'V2',
+  'V3' = 'V3',
+}
+
 export interface Decimals {
   [ChainId.MAINNET]?: number
   [ChainId.BSC_TESTNET]?: number
@@ -241,7 +247,7 @@ export interface VaultConfig {
   id: number
   pid: number
   type: 'MAX' | 'AUTO' | 'BURN'
-  version: 'V1' | 'V2'
+  version: VaultVersion
   availableChains: number[]
   stratAddress: Address
   platform: string
