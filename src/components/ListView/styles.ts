@@ -93,7 +93,6 @@ export const TagContainer = styled(Flex)<{ backgroundColor: string }>`
 export const ContentContainer = styled(Flex)`
   position: relative;
   width: 100%;
-  margin-top: 10px;
   align-items: flex-end;
   justify-content: space-between;
   ${({ theme }) => theme.mediaQueries.md} {

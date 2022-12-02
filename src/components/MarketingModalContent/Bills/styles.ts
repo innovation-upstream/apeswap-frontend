@@ -107,16 +107,12 @@ export const Content = styled.div`
     margin-top: 0;
   }
 `
-export const RightContent = styled.div`
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin: 0;
-    width: 80%;
-  } ;
-`
+
 export const RightText = styled(StyledText)`
   margin: 0;
   text-align: left;
   font-size: 14px;
+  line-height: 21px;
 `
 export const InnerTextButton = styled(TextButton)`
   margin: 0;

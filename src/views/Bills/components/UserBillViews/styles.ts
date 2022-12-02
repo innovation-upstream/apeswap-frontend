@@ -16,7 +16,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     border: 'none',
     width: '100%',
     '@media screen and (min-width: 852px)': {
-      width: '170px',
+      width: '150px',
     },
     '@media screen and (min-width: 1000px)': {
       width: '240px',
@@ -93,11 +93,12 @@ export const BillCardsContainer = styled(Flex)`
   flex-wrap: wrap;
   flex-direction: row;
   margin-bottom: 20px;
-  justify-content: space-around;
+  justify-content: flex-start;
 `
 
 export const FirstTimeCardContainer = styled(Flex)`
   max-width: 500px;
+  width: 100%;
   height: auto;
   background: ${({ theme }) => theme.colors.white2};
   border-radius: 10px;
@@ -116,8 +117,8 @@ export const BillGifContainer = styled(Flex)`
   justify-content: center;
   align-items: center;
   ${({ theme }) => theme.mediaQueries.md} {
-    max-width: 620px;
     width: 50%;
+    min-width: 450px;
   }
 `
 
@@ -128,7 +129,6 @@ export const DescriptionContainer = styled(Flex)`
   width: 100%;
   justify-content: center;
   ${({ theme }) => theme.mediaQueries.md} {
-    max-width: 530px;
     width: 50%;
   }
 `

@@ -61,11 +61,11 @@ const MobileListCard: React.FC<ListCardProps> = ({
       <AnimatePresence>
         {expandedContent && expanded && (
           <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: 'fit-content' }}
-            transition={{ opacity: { duration: 0.2 } }}
-            exit={{ height: 0 }}
-            sx={{ position: 'relative', width: '100%', maxWidth: '500px', minWidth: '300px', overflow: 'hidden' }}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'fit-content' }}
+            exit={{ opacity: 1 }}
+            transition={{ opacity: { duration: 0.4 } }}
+            sx={{ position: 'relative', width: '100%', maxWidth: '500px', minWidth: '300px', background: 'white3' }}
           >
             <Flex
               sx={{

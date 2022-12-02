@@ -5,7 +5,6 @@ import { IconButton, Modal, ModalProvider } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { Bills } from 'state/types'
 import getTimePeriods from 'utils/getTimePeriods'
-import ReactPlayer from 'react-player'
 import { useTranslation } from 'contexts/Localization'
 import {
   ActionButtonsContainer,
@@ -71,10 +70,10 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
             <Flex alignItems="center" justifyContent="center">
               {loading && !billId ? (
                 <BillsImage>
-                  <ReactPlayer playing muted loop url="videos/bills-video.mp4" height="100%" width="100%" playsInline />
+                  <img src={'images/bills/bill-nfts.gif'} alt="bill-img" />
                 </BillsImage>
               ) : (
-                <BillsImage image="images/hidden-bill.png" />
+                <BillsImage image="images/bills/hidden-bill.jpg" />
               )}
             </Flex>
             <BillDescriptionContainer p="0">

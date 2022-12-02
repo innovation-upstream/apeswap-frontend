@@ -73,7 +73,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     border: 'none',
     width: '100%',
     '@media screen and (min-width: 852px)': {
-      width: '165px',
+      width: '150px',
     },
     '@media screen and (min-width: 1000px)': {
       width: '240px',

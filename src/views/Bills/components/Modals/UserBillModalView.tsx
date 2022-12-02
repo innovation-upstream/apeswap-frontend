@@ -6,7 +6,6 @@ import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { Bills } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ReactPlayer from 'react-player'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import {
@@ -86,7 +85,7 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
           ) : (
             <Flex alignItems="center" justifyContent="center">
               <BillsImage>
-                <ReactPlayer playing muted loop url="videos/bills-video.mp4" height="100%" width="100%" playsInline />
+                <img src={'images/bills/bill-nfts.gif'} alt="bill-img" />
               </BillsImage>
             </Flex>
           )}

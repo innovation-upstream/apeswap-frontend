@@ -82,7 +82,6 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
                 sx={{
                   position: 'relative',
                   width: '100%',
-                  overflow: 'hidden',
                   display: 'flex',
                   justifyContent: 'center',
                 }}
@@ -139,13 +138,18 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
           <Flex sx={{ minWidth: '100px' }}>
             <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
           </Flex>
-          <Flex>
+          <Flex sx={{ minWidth: '150px' }}>
             <Toggle
               size="sm"
               labels={[t('List'), t('Gallery')]}
               onClick={() => setListView(!listView)}
               checked={!listView}
-              sx={{ height: '36px', alignItems: 'center', '& div': { minWidth: '70px', textAlign: 'center' } }}
+              sx={{
+                height: '36px',
+                width: '100%',
+                alignItems: 'center',
+                '& div': { minWidth: '75px', textAlign: 'center' },
+              }}
             />
           </Flex>
           <Flex sx={{ alignItems: 'center' }}>
@@ -155,7 +159,7 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
             </Text>
           </Flex>
           <ClaimAllWrapper>
-            <ClaimAll userOwnedBills={ownedBills} ownedBillsAmount={ownedBillsAmount} buttonSize={'190px'} />
+            <ClaimAll userOwnedBills={ownedBills} ownedBillsAmount={ownedBillsAmount} buttonSize={'180px'} />
           </ClaimAllWrapper>
         </>
       )}

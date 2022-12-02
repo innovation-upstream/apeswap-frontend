@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useMemo, useState } from 'react'
 import { Flex, InfoIcon, TooltipBubble, useMatchBreakpoints } from '@ape.swap/uikit'
-import ListView from 'components/ListView'
+import ListView from 'components/ListViewV2'
 import { Bills } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -17,7 +17,7 @@ import BillsListMenu from './BillsListMenu'
 import { useBills } from '../../../../state/bills/hooks'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import EmptyListComponent, { EmptyComponentType } from '../EmptyListComponent/EmptyList'
-import ListViewContentMobile from 'components/ListViewContent/ListViewContentMobile'
+import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
 import orderBy from 'lodash/orderBy'
 
 const BillsListView: React.FC = () => {
@@ -173,7 +173,7 @@ const BillsListView: React.FC = () => {
           />
           {!isSmall && (
             <>
-              <Flex style={{ height: '100%', alignItems: 'center' }}>
+              <Flex style={{ height: '100%', alignItems: 'center', minWidth: '145px' }}>
                 {account ? (
                   <BillModal
                     bill={bill}
@@ -183,7 +183,7 @@ const BillsListView: React.FC = () => {
                     disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
                   />
                 ) : (
-                  <UnlockButton />
+                  <UnlockButton sx={{ width: '100%' }} />
                 )}
               </Flex>
               <Flex sx={{ alignItems: 'center', height: '100%', marginLeft: '20px' }}>
@@ -229,19 +229,21 @@ const BillsListView: React.FC = () => {
                   />
                 </Flex>
               )}
-              <Flex sx={{ width: '100%', justifyContent: 'center', maxWidth: '240px' }}>
+              <Flex sx={{ width: '240px', justifyContent: 'center' }}>
                 <BillModal
                   bill={bill}
                   buttonText={disabled ? t('SOLD OUT') : t('BUY')}
                   id={bill.index}
                   buyFlag
                   disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
-                  buttonSize={'240px'}
+                  buttonSize={'100%'}
                 />
               </Flex>
             </Flex>
           ) : (
-            <UnlockButton />
+            <Flex sx={{ width: '240px', justifyContent: 'center' }}>
+              <UnlockButton sx={{ width: '100%' }} />
+            </Flex>
           )}
         </Flex>
       ),

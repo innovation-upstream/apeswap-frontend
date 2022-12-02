@@ -14,7 +14,7 @@ import VestedTimer from '../VestedTimer'
 import BillModal from '../Modals'
 import EmptyListComponent, { EmptyComponentType } from '../EmptyListComponent/EmptyList'
 import { BillsView } from '../../index'
-import ListViewContentMobile from 'components/ListViewContent/ListViewContentMobile'
+import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
 import { Box } from 'theme-ui'
 import CardView from './CardView'
 import orderBy from 'lodash/orderBy'
@@ -133,7 +133,7 @@ const UserBillListView: React.FC<{
             )}
           </>
         ),
-        expandedContentSize: 176,
+        expandedContentSize: 185,
         expandedContent: isMobile && (
           <Flex sx={{ width: '100%', flexWrap: 'wrap', padding: '0 10px' }}>
             <Flex sx={{ width: '100%', flexDirection: 'column' }}>
@@ -155,7 +155,7 @@ const UserBillListView: React.FC<{
                   margin={'0'}
                 />
               </Box>
-              <Box sx={{ width: '240px' }}>
+              <Box sx={{ width: '240px', mb: 6 }}>
                 <BillModal buttonText={t('VIEW')} bill={bill} billId={ownedBill.id} buttonSize={'240px'} />
               </Box>
             </Flex>

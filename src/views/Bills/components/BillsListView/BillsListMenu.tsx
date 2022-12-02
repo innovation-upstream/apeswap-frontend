@@ -52,7 +52,6 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
                 sx={{
                   position: 'relative',
                   width: '100%',
-                  overflow: 'hidden',
                   display: 'flex',
                   justifyContent: 'center',
                 }}
@@ -108,13 +107,13 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
           <Flex sx={{ minWidth: '100px' }}>
             <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={FILTER_OPTIONS} />
           </Flex>
-          <Flex>
+          <Flex sx={{ minWidth: '150px' }}>
             <Toggle
               size="sm"
               labels={[t('Available'), t('Sold out')]}
               onClick={() => setShowAvailable(!showAvailable)}
               checked={!showAvailable}
-              sx={{ height: '36px', alignItems: 'center' }}
+              sx={{ height: '36px', alignItems: 'center', width: '100%' }}
             />
           </Flex>
           <Flex sx={{ alignItems: 'center' }}>
@@ -123,12 +122,22 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
               {t('Discount')}
             </Text>
           </Flex>
-          <NetworkButton
-            switchNetwork={switchNetwork}
-            chainId={chainId}
-            t={t}
-            supportedChains={AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS]}
-          />
+          <Flex
+            sx={{
+              '& button': {
+                width: '180px',
+                justifyContent: 'space-between',
+                '& span': { width: '100%', textAlign: 'left' },
+              },
+            }}
+          >
+            <NetworkButton
+              switchNetwork={switchNetwork}
+              chainId={chainId}
+              t={t}
+              supportedChains={AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS]}
+            />
+          </Flex>
         </>
       )}
     </Flex>

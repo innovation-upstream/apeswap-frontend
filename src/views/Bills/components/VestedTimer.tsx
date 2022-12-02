@@ -5,7 +5,7 @@ import useCurrentTime from 'hooks/useTimer'
 import React from 'react'
 import getTimePeriods from 'utils/getTimePeriods'
 import { StyledHeadingText } from './Modals/styles'
-import ListViewContentMobile from '../../../components/ListViewContent/ListViewContentMobile'
+import ListViewContentMobile from '../../../components/ListViewV2/ListViewContentMobile'
 
 const VestedTimer: React.FC<{
   lastBlockTimestamp: string
