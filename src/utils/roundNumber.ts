@@ -5,6 +5,7 @@
  * @returns @number
  */
 export const getFirstNonZeroDigits = (n: number, precision = 3) => {
-  const amountToShow = precision - 1 - Math.floor(Math.log(n) / Math.log(10))
+  let amountToShow = precision - 1
+  if (n !== 0) amountToShow -= Math.floor(Math.log(n) / Math.log(10))
   return n.toFixed(amountToShow < 0 ? 0 : amountToShow)
 }
