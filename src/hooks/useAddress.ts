@@ -113,3 +113,7 @@ export const useRaffleAddress = () => {
 export const useMigratorBalanceCheckerAddress = () => {
   return useAddress(addresses.migratorBalanceChecker)
 }
+
+export const useMasterChefV2Address = () => {
+  return useAddress(addresses.masterChefV2)
+}

@@ -3,7 +3,14 @@ import sousChef from 'config/abi/sousChef.json'
 import { useWeb3React } from '@web3-react/core'
 import { ChainId } from '@ape.swap/sdk'
 import { useDispatch } from 'react-redux'
-import { soushHarvest, harvest, nfaStakeHarvest, miniChefHarvest, jungleHarvest } from 'utils/callHelpers'
+import {
+  soushHarvest,
+  harvest,
+  nfaStakeHarvest,
+  miniChefHarvest,
+  jungleHarvest,
+  harvestMasterChefV2,
+} from 'utils/callHelpers'
 import { usePools } from 'state/pools/hooks'
 import track from 'utils/track'
 import { useNetworkChainId } from 'state/hooks'
@@ -12,15 +19,25 @@ import { useJungleFarms } from 'state/jungleFarms/hooks'
 import { SousChef, JungleChef } from 'config/abi/types'
 import { updateDualFarmRewarderEarnings, updateDualFarmUserEarnings } from 'state/dualFarms'
 import { updateUserNfaStakingPendingReward, updateNfaStakingUserBalance } from 'state/nfaStakingPools'
-import { useMasterchef, useMiniChefContract, useSousChef, useNfaStakingChef, useJungleChef } from './useContract'
+import {
+  useMasterchef,
+  useMiniChefContract,
+  useSousChef,
+  useNfaStakingChef,
+  useJungleChef,
+  useMasterChefV2Contract,
+} from './useContract'
 import useActiveWeb3React from './useActiveWeb3React'
 
-export const useHarvest = (farmPid: number) => {
+export const useHarvest = (farmPid: number, v2Flag: boolean) => {
   const { chainId } = useWeb3React()
   const masterChefContract = useMasterchef()
+  const masterChefContractV2 = useMasterChefV2Contract()
 
   const handleHarvest = useCallback(async () => {
-    const txHash = await harvest(masterChefContract, farmPid)
+    const txHash = (await v2Flag)
+      ? harvestMasterChefV2(masterChefContractV2, farmPid)
+      : harvest(masterChefContract, farmPid)
     track({
       event: 'farm',
       chain: chainId,
@@ -30,7 +47,7 @@ export const useHarvest = (farmPid: number) => {
       },
     })
     return txHash
-  }, [farmPid, masterChefContract, chainId])
+  }, [farmPid, masterChefContract, masterChefContractV2, v2Flag, chainId])
 
   return { onHarvest: handleHarvest }
 }
@@ -56,10 +73,11 @@ export const useJungleHarvest = (jungleId) => {
   return { onHarvest: handleHarvest }
 }
 
-export const useAllHarvest = (farmPids: number[], chainId: number) => {
+export const useAllHarvest = (farmPids: number[], chainId: number, v2Flag: boolean) => {
   const { account } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
   const miniChefContract = useMiniChefContract()
+  const masterChefContractV2 = useMasterChefV2Contract()
 
   const handleHarvest = useCallback(async () => {
     if (chainId === ChainId.MATIC) {
@@ -69,10 +87,10 @@ export const useAllHarvest = (farmPids: number[], chainId: number) => {
       return Promise.all(harvestPromises)
     }
     const harvestPromises = farmPids.reduce((accum, pid) => {
-      return [...accum, harvest(masterChefContract, pid)]
+      return [...accum, v2Flag ? harvestMasterChefV2(masterChefContractV2, pid) : harvest(masterChefContract, pid)]
     }, [])
     return Promise.all(harvestPromises)
-  }, [account, farmPids, masterChefContract, miniChefContract, chainId])
+  }, [account, farmPids, masterChefContract, miniChefContract, v2Flag, masterChefContractV2, chainId])
   return { onReward: handleHarvest }
 }
 
@@ -80,10 +98,13 @@ export const useSousHarvest = (sousId) => {
   const { chainId } = useActiveWeb3React()
   const sousChefContract = useSousChef(sousId)
   const masterChefContract = useMasterchef()
+  const masterChefContractV2 = useMasterChefV2Contract()
 
   const handleHarvest = useCallback(async () => {
     let trxHash
     if (sousId === 0) {
+      trxHash = await harvestMasterChefV2(masterChefContractV2, 0)
+    } else if (sousId === 999) {
       trxHash = await harvest(masterChefContract, 0)
     } else {
       trxHash = await soushHarvest(sousChefContract)
@@ -97,7 +118,7 @@ export const useSousHarvest = (sousId) => {
       },
     })
     return trxHash
-  }, [masterChefContract, sousChefContract, sousId, chainId])
+  }, [masterChefContract, sousChefContract, sousId, masterChefContractV2, chainId])
 
   return { onHarvest: handleHarvest }
 }

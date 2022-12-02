@@ -1,10 +1,11 @@
+/** @jsxImportSource theme-ui */
 import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PoolCategory } from 'config/constants/types'
 import { useWeb3React } from '@web3-react/core'
-import { Flex } from '@apeswapfinance/uikit'
+import { Flex } from '@ape.swap/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
@@ -18,6 +19,8 @@ import PoolMenu from './components/Menu'
 import DisplayPools from './components/DisplayPools'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import ListView404 from 'components/ListView404'
+import DisplayLegacyPool from './components/DisplayLegacyPool'
+import DisplayDepositPoolV2 from './components/DisplayDepositPoolV2'
 
 const NUMBER_OF_POOLS_VISIBLE = 12
 
@@ -65,9 +68,18 @@ const Pools: React.FC = () => {
     }
   }, [observerIsSet])
 
-  const allNonAdminPools = allPools.filter((pool) => !pool.forAdmins && pool?.poolCategory !== PoolCategory.JUNGLE)
+  const allNonAdminPools = allPools.filter(
+    (pool) => !pool.forAdmins && pool?.poolCategory !== PoolCategory.JUNGLE && pool.sousId !== 999,
+  )
+
+  const legacyPool = allPools.find((pool) => pool.sousId === 999)
+  const v2Pool = allPools.find((pool) => pool.sousId === 0)
+
   const curPools = allNonAdminPools.map((pool) => {
-    return { ...pool, isFinished: pool.sousId === 0 ? false : pool.isFinished || currentBlock > pool.endBlock }
+    return {
+      ...pool,
+      isFinished: pool.sousId === 0 || pool.sousId === 999 ? false : pool.isFinished || currentBlock > pool.endBlock,
+    }
   })
 
   const [finishedPools, openPools] = partition(curPools, (pool) => pool.isFinished)
@@ -163,14 +175,18 @@ const Pools: React.FC = () => {
   return (
     <>
       <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
+        sx={{
+          position: 'relative',
+          top: '30px',
+          width: '100%',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          mb: '100px',
+        }}
       >
         <ListViewLayout>
           <Banner banner="pools" link="?modal=2" title={t('Staking Pools')} listViewBreak maxWidth={1130} />
-          <Flex flexDirection="column" alignSelf="center" style={{ maxWidth: '1130px', width: '100%' }}>
+          <Flex sx={{ maxWidth: '1130px', width: '100%', flexDirection: 'column', alignSelf: 'center' }}>
             <PoolMenu
               onHandleQueryChange={handleChangeQuery}
               onSetSortOption={setSortOption}
@@ -185,7 +201,15 @@ const Pools: React.FC = () => {
             {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.pools.includes(chainId) ? (
               <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
             ) : (
-              <DisplayPools pools={renderPools()} openId={urlSearchedPool} poolTags={poolTags} />
+              <>
+                {new BigNumber(legacyPool?.userData?.stakedBalance).gt(0) && (
+                  <DisplayLegacyPool pools={[legacyPool]} openId={null} poolTags={null} />
+                )}
+                {new BigNumber(v2Pool?.userData?.stakingTokenBalance).gt(0) && (
+                  <DisplayDepositPoolV2 pools={[v2Pool]} openId={null} poolTags={null} />
+                )}
+                <DisplayPools pools={renderPools()} openId={urlSearchedPool} poolTags={poolTags} />
+              </>
             )}
             <div ref={loadMoreRef} />
           </Flex>

@@ -516,6 +516,8 @@ export interface FarmsState {
   data: Farm[]
 }
 
+export interface FarmsV2State extends FarmsState {}
+
 export interface PoolsState {
   data: Pool[]
 }
@@ -638,6 +640,7 @@ export interface TeamsState {
 
 export interface State {
   farms: FarmsState
+  farmsV2: FarmsV2State
   block: BlockState
   toasts: ToastsState
   pools: PoolsState

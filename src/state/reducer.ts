@@ -1,6 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
 import multicall from 'lib/state/multicall'
 import farmsReducer from './farms'
+import farmsV2Reducer from './farmsV2'
 import toastsReducer from './toasts'
 import poolsReducer from './pools'
 import profileReducer from './profile'
@@ -32,6 +33,7 @@ import infoReducer from './info'
 
 const reducer = combineReducers({
   farms: farmsReducer,
+  farmsV2: farmsV2Reducer,
   block: blockReducer,
   toasts: toastsReducer,
   pools: poolsReducer,

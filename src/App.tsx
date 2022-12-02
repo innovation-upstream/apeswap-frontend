@@ -27,6 +27,11 @@ import useCircularStaking from 'hooks/useCircularStaking'
 import Home from './views/Homepage'
 import { ChainId } from '@ape.swap/sdk'
 import NetworkProductCheck from 'components/NetworkProductCheck'
+import MigrateMasterApeV2 from './views/MigrateMasterApeV2'
+import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
+import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
+import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
+import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -97,6 +102,8 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
+  const { account, chainId } = useActiveWeb3React()
+
   usePollBlockNumber()
   useUpdateNetwork()
   useEagerConnect()
@@ -104,10 +111,23 @@ const App: React.FC = () => {
   useFetchProfile()
   useFetchLiveIfoStatus()
   useFetchLiveTagsAndOrdering()
+
   // Hotfix for showModal. Update redux state and remove
   useCircularStaking()
 
-  const { account, chainId } = useActiveWeb3React()
+  // Loading migration data on load.
+  // This should be removed after the migration process has finished
+  // This has high performance impact
+  useSetFarms()
+  useSetFarmsV2()
+  useSetVaults()
+  usePollVaultsData()
+  usePollVaultUserData()
+  usePollFarms()
+  usePollFarmsV2()
+  useFarms(account)
+  useFarmsV2(account)
+
   const [showScrollIcon, setShowScrollIcon] = useState(false)
 
   const showScroll = useCallback(() => {
@@ -201,6 +221,9 @@ const App: React.FC = () => {
             <Route exact path="/info">
               <InfoPage />
             </Route>
+            <Route path="/migrate-v2">
+              <MigrateMasterApeV2 />
+            </Route>
             {/* Redirect */}
             <Route path="/staking">
               <Redirect to="/pools" />
@@ -242,6 +265,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
+      <MigrationRequiredPopup />
       <NetworkProductCheck />
       <PageMeta />
       <ResetScroll />
