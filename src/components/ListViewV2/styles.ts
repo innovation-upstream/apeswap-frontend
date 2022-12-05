@@ -1,5 +1,5 @@
 import { ThemeUIStyleObject } from 'theme-ui'
-import { ArrowDropDownIcon, Flex, Text } from '@apeswapfinance/uikit'
+import { ArrowDropDownIcon, Flex, Skeleton, Text } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 
 // TODO: Change everything to theme ui
@@ -105,4 +105,36 @@ export const TitleText = styled(Text)`
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 16px;
   }
+`
+
+export const ListViewContentContainer = styled(Flex)<{ width?: number; height?: number }>`
+  flex-direction: column;
+  align-items: flex-start:
+  justify-content: flex-start;
+  height: ${({ height }) => (height ? `${height}px` : '100%')};
+  max-width: ${({ width }) => width || 100}px;
+  width: 100%;
+`
+
+export const ValueText = styled(Text)<{ lineHeight?: number; value2Secondary?: boolean; valueColor?: string }>`
+  font-size: 12px;
+  color: ${({ valueColor, theme }) => valueColor || theme.colors.text};
+  line-height: ${({ lineHeight }) => lineHeight || 20}px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: ${({ value2Secondary }) => (value2Secondary ? '12px' : '16px')};
+  }
+`
+
+export const ValueSkeleton = styled(Skeleton)`
+  width: 60px;
+  height: 20px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 100px;
+  }
+`
+
+export const TitleContentText = styled(Text)<{ lineHeight?: number }>`
+  opacity: 0.6;
+  font-size: 12px;
+  line-height: ${({ lineHeight }) => lineHeight || 20}px;
 `
