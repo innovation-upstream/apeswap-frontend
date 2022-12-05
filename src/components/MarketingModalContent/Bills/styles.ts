@@ -111,8 +111,12 @@ export const Content = styled.div`
 export const RightText = styled(StyledText)`
   margin: 0;
   text-align: left;
-  font-size: 14px;
-  line-height: 21px;
+  font-size: 12px;
+  line-height: 18px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 14px;
+    line-height: 21px;
+  }
 `
 export const InnerTextButton = styled(TextButton)`
   margin: 0;

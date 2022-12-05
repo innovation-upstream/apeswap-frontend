@@ -48,7 +48,7 @@ const VestedTimer: React.FC<{
       height={52.5}
       toolTip={t('This is the time remaining until all tokens from the bill are available to claim.')}
       toolTipPlacement={isMobile ? 'bottomRight' : 'bottomLeft'}
-      toolTipTransform={isMobile ? 'translate(-75%, 65%)' : 'translate(0%, 65%)'}
+      toolTipTransform={isMobile ? 'translate(-75%, 65%)' : 'translate(34%, -4%)'}
     />
   )
 }

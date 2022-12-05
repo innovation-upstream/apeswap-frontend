@@ -107,7 +107,7 @@ const UserBillListView: React.FC<{
                   height={52.5}
                   toolTip={t('This is the amount of tokens that have vested and available to claim.')}
                   toolTipPlacement="bottomLeft"
-                  toolTipTransform="translate(0, 65%)"
+                  toolTipTransform="translate(29%, -4%)"
                 />
                 <ListViewContent
                   title={t('Pending')}
@@ -116,7 +116,7 @@ const UserBillListView: React.FC<{
                   height={52.5}
                   toolTip={t('This is the amount of unvested tokens that cannot be claimed yet.')}
                   toolTipPlacement="bottomLeft"
-                  toolTipTransform="translate(0, 65%)"
+                  toolTipTransform="translate(22%, -4%)"
                 />
                 <VestedTimer lastBlockTimestamp={ownedBill.lastBlockTimestamp} vesting={ownedBill.vesting} />
                 <Flex sx={{ minWidth: '220px', alignItems: 'center' }}>
@@ -168,10 +168,12 @@ const UserBillListView: React.FC<{
 
   return (
     <>
-      {!listView ? (
-        <CardView bills={bills} showClaimed={showClaimed} />
-      ) : billsListView?.length ? (
-        <ListView listViews={sortedBills} />
+      {billsListView?.length ? (
+        !listView ? (
+          <CardView bills={bills} showClaimed={showClaimed} />
+        ) : (
+          <ListView listViews={sortedBills} />
+        )
       ) : (
         <EmptyListComponent
           type={noResults ? EmptyComponentType.NO_RESULTS : EmptyComponentType.USER_BILLS}

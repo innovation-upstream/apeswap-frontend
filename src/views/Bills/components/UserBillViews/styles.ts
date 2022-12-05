@@ -125,11 +125,12 @@ export const BillGifContainer = styled(Flex)`
 export const DescriptionContainer = styled(Flex)`
   flex-direction: column;
   padding-left: 20px;
-  padding: 21px 0px 20px 20px;
+  padding: 20px 0 0 0;
   width: 100%;
   justify-content: center;
   ${({ theme }) => theme.mediaQueries.md} {
     width: 50%;
+    padding: 20px 0px 20px 20px;
   }
 `
 
