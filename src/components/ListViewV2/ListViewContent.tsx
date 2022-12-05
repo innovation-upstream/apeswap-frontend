@@ -3,9 +3,10 @@ import React from 'react'
 import { Flex, HelpIcon } from '@apeswapfinance/uikit'
 import { LpTag, TooltipBubble } from '@ape.swap/uikit'
 import { TitleContentText, ListViewContentContainer, ValueText, ValueSkeleton } from './styles'
-import { ListViewContentProps, LpTypeVariants } from './types'
+import { ListViewContentProps } from './types'
 
 const ListViewContent: React.FC<ListViewContentProps> = ({
+  tag,
   title,
   value,
   value2,
@@ -47,9 +48,7 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
           </Flex>
         ) : (
           <Flex>
-            <TitleContentText lineHeight={lineHeight}>
-              <LpTag variant={LpTypeVariants.APE} />
-            </TitleContentText>
+            <TitleContentText lineHeight={lineHeight}>{tag ? <LpTag variant={tag} /> : title}</TitleContentText>
             {aprCalculator}
           </Flex>
         )}

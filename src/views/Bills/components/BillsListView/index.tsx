@@ -18,7 +18,8 @@ import { useSetZapOutputList } from 'state/zap/hooks'
 import EmptyListComponent, { EmptyComponentType } from '../EmptyListComponent/EmptyList'
 import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
 import orderBy from 'lodash/orderBy'
-import ListViewContent from '../../../../components/ListViewV2/ListViewContent'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
+import { LpTypeVariants } from 'components/ListViewV2/types'
 
 const BillsListView: React.FC = () => {
   const bills = useBills()
@@ -112,7 +113,7 @@ const BillsListView: React.FC = () => {
       stakeLp: true,
       id: bill.index,
       billArrow: true,
-      title: <ListViewContent title={'asd'} value={bill.lpToken.symbol} width={150} height={45} ml={0} />,
+      title: <ListViewContent tag={LpTypeVariants.APE} value={bill.lpToken.symbol} width={150} height={45} ml={0} />,
       infoContent: isSmall && <ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} isMobile />,
       ttWidth: isSmall && '200px',
       toolTipIconWidth: '15px',

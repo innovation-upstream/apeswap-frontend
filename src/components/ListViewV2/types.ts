@@ -25,7 +25,8 @@ export interface ListCardProps extends ListViewProps {
 }
 
 export interface ListViewContentProps {
-  title: string
+  tag?: LpTypeVariants
+  title?: string
   value: string
   value2?: string
   value2Secondary?: boolean
