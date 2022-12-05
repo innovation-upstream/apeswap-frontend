@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Flex } from '@ape.swap/uikit'
-import React, { useCallback, useEffect, useState } from 'react'
-import { usePollBills, useBills, usePollUserBills, useSetBills, useLoadedUserBills } from 'state/bills/hooks'
+import React, { useCallback, useState } from 'react'
+import { usePollBills, useBills, usePollUserBills, useSetBills } from 'state/bills/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
@@ -13,8 +13,6 @@ import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'conf
 import FirstTimeCard from './components/UserBillViews/FirstTimeCard'
 import BillsNav from './components/BillsNav'
 import BillsListView from './components/BillsListView'
-import useDebounce from '../../hooks/useDebounce'
-import { AnimatePresence, motion } from 'framer-motion'
 
 export enum BillsView {
   AVAILABLE_BILLS = 'Available Bills',
@@ -25,23 +23,21 @@ const Bills: React.FC = () => {
   useSetBills()
   usePollBills()
   usePollUserBills()
-  const { chainId, account } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const bills = useBills()
   const { t } = useTranslation()
   const [billsView, setBillsView] = useState<string>(BillsView.AVAILABLE_BILLS)
-  const ownedBillsAmount = bills?.flatMap((bill) => (bill?.userOwnedBillsData ? bill?.userOwnedBillsData : [])).length
+  const [loaded, setLoaded] = useState<boolean>(false)
+  const ownedBillsAmount = bills?.flatMap((bill) => {
+    if (bill?.userOwnedBillsData !== undefined && !loaded) {
+      setLoaded(true)
+    }
+    return bill?.userOwnedBillsData ? bill?.userOwnedBillsData : []
+  }).length
 
   const handleBillsViewChange = useCallback((newBillsView: string) => {
     setBillsView(newBillsView)
   }, [])
-
-  // logic used to prevent FirstTimeComponent to pop up abruptly
-  const loadedUserBills = useLoadedUserBills()
-  const [showFirstTimeCard, setShowFirstTimeCard] = useState(false)
-  const debouncedShowCard = useDebounce(showFirstTimeCard, 1000)
-  useEffect(() => {
-    setShowFirstTimeCard(!account || (ownedBillsAmount === 0 && loadedUserBills))
-  }, [account, ownedBillsAmount, loadedUserBills])
 
   return (
     <>
@@ -71,25 +67,7 @@ const Bills: React.FC = () => {
             </Flex>
           ) : (
             <>
-              <AnimatePresence>
-                {debouncedShowCard && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'fit-content' }}
-                    exit={{ opacity: 0 }}
-                    transition={{ opacity: { duration: 0.4 } }}
-                    sx={{
-                      position: 'relative',
-                      width: '100%',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <Flex sx={{ mt: '20px' }}>
-                      <FirstTimeCard />
-                    </Flex>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <FirstTimeCard ownedBillsAmount={ownedBillsAmount} loaded={loaded} />
               <BillsNav
                 billsView={billsView}
                 setBillsView={handleBillsViewChange}

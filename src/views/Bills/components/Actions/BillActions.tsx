@@ -20,7 +20,7 @@ const BillActions: React.FC<BillActionsProps> = ({
   handleBuy,
   billValue,
   value,
-  safeAvailable,
+  purchaseLimit,
   balance,
   pendingTrx,
   errorMessage,
@@ -84,7 +84,7 @@ const BillActions: React.FC<BillActionsProps> = ({
           disabled={
             billValue === 'NaN' ||
             parseFloat(billValue) < 0.01 ||
-            parseFloat(billValue) > parseFloat(safeAvailable) ||
+            parseFloat(billValue) > parseFloat(purchaseLimit) ||
             parseFloat(balance) < parseFloat(value) ||
             pendingApprove ||
             pendingTrx ||

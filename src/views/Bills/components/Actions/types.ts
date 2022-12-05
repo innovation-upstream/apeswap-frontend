@@ -30,7 +30,7 @@ export interface BillActionsProps {
   handleBuy: () => void
   billValue: string
   value: string
-  safeAvailable: string
+  purchaseLimit: string
   balance: string
   pendingTrx: boolean
   errorMessage: string

@@ -43,6 +43,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
     maxTotalPayOut,
     totalPayoutGiven,
     billNftAddress,
+    maxPayoutTokens,
   } = bill
   const { chainId, account, library } = useActiveWeb3React()
   const { recipient, typedValue } = useZapState()
@@ -101,6 +102,10 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   // threshold equals to 10 usd in earned tokens (banana or jungle token)
   const threshold = new BigNumber(10).div(earnTokenPrice)
   const safeAvailable = available.minus(threshold)
+  const singlePurchaseLimit = new BigNumber(maxPayoutTokens).div(new BigNumber(10).pow(18))
+  const displayAvailable = singlePurchaseLimit.lt(safeAvailable)
+    ? singlePurchaseLimit.toFixed(3)
+    : safeAvailable.toFixed(3)
 
   const onHandleValueChange = useCallback(
     (val: string) => {
@@ -288,9 +293,9 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
           </TextWrapper>
           <TextWrapper>
             <Text size="12px">
-              {t('Available')}:{' '}
+              {t('Single Purchase Limit')}:{' '}
               <span style={{ fontWeight: 700 }}>
-                {!available ? '0' : new BigNumber(safeAvailable).toFixed(3)} {earnToken?.symbol}
+                {!available ? '0' : displayAvailable} {earnToken?.symbol}
               </span>
             </Text>
           </TextWrapper>
@@ -310,7 +315,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
               handleBuy={handleBuy}
               billValue={billValue}
               value={typedValue}
-              safeAvailable={safeAvailable?.toString()}
+              purchaseLimit={displayAvailable?.toString()}
               balance={selectedCurrencyBalance?.toExact()}
               pendingTrx={pendingTrx}
               errorMessage={zapSlippage < priceImpact && !currencyB ? 'Change Slippage' : null}

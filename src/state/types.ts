@@ -147,6 +147,7 @@ export interface Bills extends BillsConfig {
   userOwnedBillsNftData?: UserBillNft[]
   maxTotalPayOut?: string
   lpPrice?: number
+  maxPayoutTokens?: string
 }
 
 export interface Vault extends VaultConfig {
@@ -536,7 +537,6 @@ export interface JungleFarmsState {
 
 export interface BillsState {
   data: Bills[]
-  loadedUserBills: boolean
 }
 
 export interface NetworkState {
