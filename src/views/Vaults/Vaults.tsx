@@ -10,19 +10,19 @@ import Banner from 'components/Banner'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import partition from 'lodash/partition'
 import { useFetchFarmLpAprs } from 'state/hooks'
-import { useVaults, usePollVaultsData, useSetVaults } from 'state/vaults/hooks'
+import { useVaults } from 'state/vaults/hooks'
 import { Vault } from 'state/types'
 import DisplayVaults from './components/DisplayVaults'
 import VaultMenu from './components/Menu'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import ListView404 from 'components/ListView404'
+import { useVaultsV3 } from 'state/vaultsV3/hooks'
+import LegacyVaults from './LegacyVaults'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
 const Vaults: React.FC = () => {
-  useSetVaults()
-  usePollVaultsData()
   const { chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
   const { t } = useTranslation()
@@ -35,6 +35,7 @@ const Vaults: React.FC = () => {
   const { pathname } = useLocation()
   const { search } = window.location
   const { vaults: initVaults } = useVaults()
+  const { vaults: initVaultsV3 } = useVaultsV3()
   const params = new URLSearchParams(search)
   const urlSearchedVault = parseInt(params.get('id'))
   const [allVaults, setAllVaults] = useState(initVaults)
@@ -168,7 +169,10 @@ const Vaults: React.FC = () => {
           {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.maximizers.includes(chainId) ? (
             <ListView404 product={LIST_VIEW_PRODUCTS.MAXIMIZERS} />
           ) : (
-            <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
+            <>
+              <LegacyVaults />
+              <DisplayVaults vaults={initVaultsV3} openId={urlSearchedVault} />
+            </>
           )}
         </ListViewLayout>
         <div ref={loadMoreRef} />

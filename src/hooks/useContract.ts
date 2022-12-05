@@ -89,6 +89,7 @@ import {
   useTreasuryAddress,
   useVaultApeAddressV1,
   useVaultApeAddressV2,
+  useVaultApeAddressV3,
   useZapAddress,
 } from './useAddress'
 import useActiveWeb3React from './useActiveWeb3React'
@@ -184,6 +185,10 @@ export const useVaultApeV1 = () => {
 
 export const useVaultApeV2 = () => {
   return useContract(vaultApeV2, useVaultApeAddressV2()) as VaultApeV2
+}
+
+export const useVaultApeV3 = () => {
+  return useContract(vaultApeV2, useVaultApeAddressV3()) as VaultApeV2
 }
 
 export const useApePriceGetter = () => {

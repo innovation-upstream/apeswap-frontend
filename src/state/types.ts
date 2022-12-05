@@ -552,6 +552,8 @@ export interface VaultsState {
   data: Vault[]
 }
 
+export interface VaultsV3State extends VaultsState {}
+
 export interface NfaStakingPoolsState {
   data: NfaStakingPool[]
 }
@@ -650,6 +652,7 @@ export interface State {
   teams: TeamsState
   auctions: AuctionsState
   vaults: VaultsState
+  vaultsV3: VaultsV3State
   tokenPrices: TokenPricesState
   lpTokenPrices: LpTokenPricesState
   iazos: IazosState

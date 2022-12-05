@@ -9,6 +9,7 @@ import statsReducer from './stats'
 import statsOverallReducer from './statsOverall'
 import auctionReducer from './auction'
 import vaultReducer from './vaults'
+import vaultV3Reducer from './vaultsV3'
 import tokenPricesReducer from './tokenPrices'
 import iazosReducer from './iazos'
 import networkReducer from './network'
@@ -42,6 +43,7 @@ const reducer = combineReducers({
   statsOverall: statsOverallReducer,
   auctions: auctionReducer,
   vaults: vaultReducer,
+  vaultsV3: vaultV3Reducer,
   tokenPrices: tokenPricesReducer,
   lpTokenPrices: lpPricesReducer,
   iazos: iazosReducer,

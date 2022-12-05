@@ -32,6 +32,7 @@ import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
 import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
 import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
 import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
+import { usePollVaultsV3Data, usePollVaultV3UserData, useSetVaultsV3 } from 'state/vaultsV3/hooks'
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -121,8 +122,11 @@ const App: React.FC = () => {
   useSetFarms()
   useSetFarmsV2()
   useSetVaults()
+  useSetVaultsV3()
   usePollVaultsData()
   usePollVaultUserData()
+  usePollVaultsV3Data()
+  usePollVaultV3UserData()
   usePollFarms()
   usePollFarmsV2()
   useFarms(account)
