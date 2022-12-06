@@ -19,7 +19,7 @@ import { useJungleChef, useMasterchef, useMiniChefContract, useNfaStakingChef, u
 import useActiveWeb3React from './useActiveWeb3React'
 import { ChainId } from '@ape.swap/sdk'
 
-const useStake = (pid: number) => {
+const useStake = (pid: number, lpValue: number) => {
   const { chainId } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
 
@@ -33,11 +33,12 @@ const useStake = (pid: number) => {
           cat: 'stake',
           amount,
           pid,
+          usdAmount: parseFloat(amount) * lpValue,
         },
       })
       return trxHash
     },
-    [masterChefContract, pid, chainId],
+    [masterChefContract, pid, chainId, lpValue],
   )
 
   return { onStake: handleStake }
