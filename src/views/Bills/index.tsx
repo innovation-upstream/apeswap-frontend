@@ -5,14 +5,15 @@ import { usePollBills, useBills, usePollUserBills, useSetBills } from 'state/bil
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
-import UserBillViews from './components/UserBillViews'
+import UserBillsView from './components/UserBillsView'
 import { BannerTypes } from 'components/Banner/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
-import FirstTimeCard from './components/UserBillViews/FirstTimeCard'
+import FirstTimeCard from './components/UserBillsView/components/FirstTimeCard'
 import BillsNav from './components/BillsNav'
 import BillsListView from './components/BillsListView'
+import { styles } from './styles'
 
 export enum BillsView {
   AVAILABLE_BILLS = 'Available Bills',
@@ -41,17 +42,7 @@ const Bills: React.FC = () => {
 
   return (
     <>
-      <Flex
-        mb="80px"
-        sx={{
-          position: 'relative',
-          top: '30px',
-          width: '100%',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItem: 'center',
-        }}
-      >
+      <Flex sx={styles.billsViewContainer}>
         <ListViewLayout>
           <Banner
             banner={`${chainId}-treasury-bills` as BannerTypes}
@@ -76,7 +67,7 @@ const Bills: React.FC = () => {
               {billsView === BillsView.AVAILABLE_BILLS ? (
                 <BillsListView />
               ) : (
-                <UserBillViews handleBillsViewChange={handleBillsViewChange} />
+                <UserBillsView handleBillsViewChange={handleBillsViewChange} />
               )}
             </>
           )}

@@ -9,18 +9,18 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import Claim from '../Actions/Claim'
-import VestedTimer from '../VestedTimer'
-import BillModal from '../Modals'
-import EmptyListComponent, { EmptyComponentType } from '../EmptyListComponent/EmptyList'
-import { BillsView } from '../../index'
+import Claim from '../../Actions/Claim'
+import VestedTimer from '../../VestedTimer'
+import BillModal from '../../Modals'
+import EmptyListComponent, { EmptyComponentType } from '../../EmptyListComponent/EmptyList'
+import { BillsView } from '../../../index'
 import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
 import { Box } from 'theme-ui'
 import CardView from './CardView'
 import orderBy from 'lodash/orderBy'
 import useCurrentTime from 'hooks/useTimer'
 
-const UserBillListView: React.FC<{
+const UserBillsRows: React.FC<{
   bills: Bills[]
   showClaimed?: boolean
   listView: boolean
@@ -184,4 +184,4 @@ const UserBillListView: React.FC<{
   )
 }
 
-export default React.memo(UserBillListView)
+export default React.memo(UserBillsRows)

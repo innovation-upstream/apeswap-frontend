@@ -4,7 +4,7 @@ import { Bills } from 'state/types'
 import BuyBillModalView from './BuyBillModalView'
 import { StyledButton } from '../styles'
 import UserBillModalView from './UserBillModalView'
-import { BillsImage } from '../UserBillViews/styles'
+import { BillsImage } from '../UserBillsView/styles'
 import WarningModal from './WarningModal'
 
 interface BillModalProps {

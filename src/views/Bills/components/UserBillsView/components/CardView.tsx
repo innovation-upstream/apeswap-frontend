@@ -7,9 +7,9 @@ import { Bills } from 'state/types'
 import 'swiper/swiper.min.css'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
-import Claim from '../Actions/Claim'
-import { BillCardsContainer, CardContainer } from './styles'
-import BillModal from '../Modals'
+import Claim from '../../Actions/Claim'
+import { BillCardsContainer, CardContainer } from '../styles'
+import BillModal from '../../Modals'
 
 const CardView: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, showClaimed }) => {
   const { chainId } = useActiveWeb3React()

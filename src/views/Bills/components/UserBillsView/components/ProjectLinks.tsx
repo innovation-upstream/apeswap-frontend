@@ -1,8 +1,8 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Flex, LinkExternal } from '@ape.swap/uikit'
-import { PLProps } from './types'
-import { styles } from './styles'
+import { PLProps } from '../types'
+import { styles } from '../styles'
 
 const ProjectLinks: React.FC<PLProps> = ({ website, twitter, isMobile, t }) => {
   return (

@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { styles } from './styles'
-import { Option } from './types'
+import { styles } from '../styles'
+import { Option } from '../types'
 import { Select, SelectItem, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 

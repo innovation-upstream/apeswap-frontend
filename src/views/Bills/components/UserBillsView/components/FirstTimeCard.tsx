@@ -3,7 +3,7 @@ import { Text } from '@apeswapfinance/uikit'
 import BillsDiagram from 'components/MarketingModalContent/Bills/BillsDiagram'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'contexts/Localization'
-import { BillDiagramContainer, BillGifContainer, DescriptionContainer, FirstTimeCardContainer } from './styles'
+import { BillDiagramContainer, BillGifContainer, DescriptionContainer, FirstTimeCardContainer } from '../styles'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Flex } from '@ape.swap/uikit'
 import useDebounce from 'hooks/useDebounce'
@@ -12,13 +12,14 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 const FirstTimeCard: React.FC<{ ownedBillsAmount: number; loaded: boolean }> = ({ ownedBillsAmount, loaded }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
-  // logic used to prevent FirstTimeComponent to pop up abruptly
-  // const loadedUserBills = useLoadedUserBills()
+
+  // logic used to prevent FirstTimeCard to pop up abruptly
   const [showFirstTimeCard, setShowFirstTimeCard] = useState(false)
   const debouncedShowCard = useDebounce(showFirstTimeCard, 1000)
   useEffect(() => {
     setShowFirstTimeCard(!account || (ownedBillsAmount === 0 && loaded))
   }, [account, ownedBillsAmount, loaded])
+
   return (
     <AnimatePresence>
       {debouncedShowCard && (

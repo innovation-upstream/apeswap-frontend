@@ -2,17 +2,17 @@
 import React, { useMemo, useState } from 'react'
 import { Bills } from 'state/types'
 import { Container } from '../styles'
-import UserBillListView from './UserBillListView'
-import UserBillsMenu from './UserBillsMenu'
+import UserBillsRows from './components/UserBillsRows'
+import UserBillsMenu from './components/UserBillsMenu'
 import { useBills } from 'state/bills/hooks'
 import { Flex } from '@ape.swap/uikit'
 import { BillsView } from '../../index'
 
-interface UserBillListViewProps {
+interface UserBillsViewProps {
   handleBillsViewChange: (view: BillsView) => void
 }
 
-const UserBillViews: React.FC<UserBillListViewProps> = ({ handleBillsViewChange }) => {
+const UserBillsView: React.FC<UserBillsViewProps> = ({ handleBillsViewChange }) => {
   const bills = useBills()
   const [query, setQuery] = useState('')
   const [sortOption, setSortOption] = useState('sort')
@@ -57,7 +57,7 @@ const UserBillViews: React.FC<UserBillListViewProps> = ({ handleBillsViewChange 
         setListView={setListView}
       />
       <Flex flexDirection="column" sx={{ padding: '20px 0 50px 0', width: '100%' }}>
-        <UserBillListView
+        <UserBillsRows
           bills={billsToRender}
           sortOption={sortOption}
           showClaimed={showClaimed}
@@ -70,4 +70,4 @@ const UserBillViews: React.FC<UserBillListViewProps> = ({ handleBillsViewChange 
   )
 }
 
-export default React.memo(UserBillViews)
+export default React.memo(UserBillsView)
