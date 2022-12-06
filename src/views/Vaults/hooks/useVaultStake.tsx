@@ -17,7 +17,7 @@ export const useVaultStake = (pid: number, version: VaultVersion) => {
         const trxHash =
           version === VaultVersion.V1
             ? await stakeVaultV1(vaultApeContractV1, pid, amount)
-            : VaultVersion.V2
+            : version === VaultVersion.V2
             ? await stakeVaultV2(vaultApeContractV2, pid, amount)
             : await stakeVaultV2(vaultApeContractV3, pid, amount)
         track({
