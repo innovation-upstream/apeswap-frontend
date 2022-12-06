@@ -44,7 +44,7 @@ const useStake = (pid: number, lpValue: number) => {
   return { onStake: handleStake }
 }
 
-export const useSousStake = (sousId) => {
+export const useSousStake = (sousId, tokenValue: number) => {
   const dispatch = useDispatch()
   // TODO switch to useActiveWeb3React. useWeb3React is legacy hook and useActiveWeb3React should be used going forward
   const { account, chainId } = useWeb3React()
@@ -67,6 +67,7 @@ export const useSousStake = (sousId) => {
           cat: 'stake',
           amount,
           pid: sousId,
+          usdAmount: parseFloat(amount) * tokenValue,
         },
       })
 
@@ -74,7 +75,7 @@ export const useSousStake = (sousId) => {
       dispatch(updateUserBalance(chainId, sousId, account))
       return trxHash
     },
-    [account, dispatch, masterChefContract, sousChefContract, sousId, chainId],
+    [sousId, tokenValue, dispatch, chainId, account, masterChefContract, sousChefContract],
   )
 
   return { onStake: handleStake }
