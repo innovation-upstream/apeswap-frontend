@@ -4,7 +4,6 @@ import { Flex, useMatchBreakpoints } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
 import { Bills, UserBill } from 'state/types'
 import { ExtendedListViewProps } from 'components/ListView/types'
-import ListViewContent from 'components/ListViewContent'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import BigNumber from 'bignumber.js'
@@ -19,6 +18,8 @@ import { Box } from 'theme-ui'
 import CardView from './CardView'
 import orderBy from 'lodash/orderBy'
 import useCurrentTime from 'hooks/useTimer'
+import { LpTypeVariants } from 'components/ListViewV2/types'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
 
 const UserBillsRows: React.FC<{
   bills: Bills[]
@@ -79,7 +80,7 @@ const UserBillsRows: React.FC<{
         billArrow: true,
         title: (
           <ListViewContent
-            title={bill.billType}
+            tag={LpTypeVariants.APE}
             value={bill.lpToken.symbol}
             width={isMobile ? 150 : 150}
             height={45}

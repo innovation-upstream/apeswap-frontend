@@ -1,15 +1,15 @@
 import { Flex, Skeleton } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
-import ListViewContent from 'components/ListViewContent'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React from 'react'
 import { Bills } from 'state/types'
-import 'swiper/swiper.min.css'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import Claim from '../../Actions/Claim'
 import { BillCardsContainer, CardContainer } from '../styles'
 import BillModal from '../../Modals'
+import { LpTypeVariants } from 'components/ListViewV2/types'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
 
 const CardView: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, showClaimed }) => {
   const { chainId } = useActiveWeb3React()
@@ -42,7 +42,7 @@ const CardView: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, s
             justifyContent="space-between"
             style={{ height: '75px', width: '100%' }}
           >
-            <ListViewContent title={t(`${bill.billType}`)} value={bill.lpToken.symbol} height={50} width={130} />
+            <ListViewContent tag={LpTypeVariants.APE} value={bill.lpToken.symbol} height={50} width={130} />
             <ListViewContent
               title={t('Claimable')}
               value={pendingRewards}

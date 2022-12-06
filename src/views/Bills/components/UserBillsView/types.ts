@@ -18,11 +18,11 @@ export const FILTER_OPTIONS: Option[] = [
     value: 'filter',
   },
   {
-    label: 'BANANA',
+    label: 'ApeSwap',
     value: 'bananaBill',
   },
   {
-    label: 'Jungle',
+    label: 'Partner',
     value: 'jungleBill',
   },
 ]
