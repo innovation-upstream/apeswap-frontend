@@ -4,7 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { stakeVaultV1, stakeVaultV2 } from 'utils/callHelpers'
 import track from 'utils/track'
 
-export const useVaultStake = (pid: number, version: 'V1' | 'V2') => {
+export const useVaultStake = (pid: number, version: 'V1' | 'V2', lpValue: number) => {
   const { chainId } = useActiveWeb3React()
   const vaultApeContractV1 = useVaultApeV1()
   const vaultApeContractV2 = useVaultApeV2()
@@ -23,6 +23,7 @@ export const useVaultStake = (pid: number, version: 'V1' | 'V2') => {
             cat: 'stake',
             amount,
             pid,
+            usdAmount: parseFloat(amount) * lpValue,
           },
         })
         console.info(trxHash)
@@ -32,7 +33,7 @@ export const useVaultStake = (pid: number, version: 'V1' | 'V2') => {
       }
       return null
     },
-    [vaultApeContractV1, vaultApeContractV2, version, pid, chainId],
+    [version, vaultApeContractV1, pid, vaultApeContractV2, chainId, lpValue],
   )
 
   return { onStake: handleStake }
