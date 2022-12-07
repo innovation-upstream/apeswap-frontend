@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useMemo } from 'react'
 import { Pair } from '@ape.swap/sdk'
-import { Text, Flex, AddIcon, Button, Spinner, Svg } from '@ape.swap/uikit'
+import { Text, Flex, Spinner } from '@ape.swap/uikit'
 import { Link } from 'react-router-dom'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -95,7 +95,7 @@ export default function Pool() {
           </Flex>
           {account && !v2IsLoading && (
             <Flex sx={{ flexDirection: 'column', alignItems: 'center', margin: '20px 0px 10px 0px' }}>
-              <Text mb="8px">{t('Dont see a pool you joined?')}</Text>
+              <Text mb="8px">{t('Missing LPs?')}</Text>
               <Text style={{ textDecoration: 'underline' }} mb="8px" as={Link} to="/find">
                 {t('Find other LP tokens')}
               </Text>
