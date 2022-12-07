@@ -30,6 +30,7 @@ export interface Props {
   isActive?: boolean
   isFinished?: boolean
   vestedValueDollar?: string
+  tokenValue?: number
 }
 
 const IfoCardContribute: React.FC<Props> = ({
@@ -42,6 +43,7 @@ const IfoCardContribute: React.FC<Props> = ({
   isActive,
   userTokenStatus,
   vestedValueDollar,
+  tokenValue,
 }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const contract = useSafeIfoContract(address, true)
@@ -49,7 +51,7 @@ const IfoCardContribute: React.FC<Props> = ({
   const allowance = useIfoAllowance(currencyAddress, address, pendingTx)
   const onApprove = useIfoApprove(currencyAddress, address)
   const tokenBalance = useTokenBalance(currencyAddress)
-  const onClaim = useLinearIAOHarvest(contract, setPendingTx)
+  const onClaim = useLinearIAOHarvest(contract, setPendingTx, tokenValue)
   const { t } = useTranslation()
 
   if (currencyAddress !== ZERO_ADDRESS && allowance === null) {
@@ -90,6 +92,7 @@ const IfoCardContribute: React.FC<Props> = ({
             tokenBalance={tokenBalance}
             currencyAddress={currencyAddress}
             disabled={pendingTx}
+            tokenValue={tokenValue}
           />
           <TextWrapRow>
             <Text fontSize="14px" fontWeight={700}>

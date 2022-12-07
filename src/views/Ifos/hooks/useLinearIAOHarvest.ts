@@ -3,7 +3,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import track from 'utils/track'
 import { Contract } from 'ethers'
 
-const useLinearIAOHarvest = (contract: Contract, setPendingTx: (f: boolean) => unknown) => {
+const useLinearIAOHarvest = (contract: Contract, setPendingTx: (f: boolean) => unknown, tokenValue: number) => {
   const { chainId } = useActiveWeb3React()
 
   const handleClaim = useCallback(
@@ -20,6 +20,7 @@ const useLinearIAOHarvest = (contract: Contract, setPendingTx: (f: boolean) => u
             cat: 'claim',
             amount,
             contract: contract.address,
+            usdAmount: parseFloat(amount) * tokenValue,
           },
         })
       } catch (e) {
@@ -28,7 +29,7 @@ const useLinearIAOHarvest = (contract: Contract, setPendingTx: (f: boolean) => u
 
       setPendingTx(false)
     },
-    [contract, setPendingTx, chainId],
+    [setPendingTx, contract, chainId, tokenValue],
   )
 
   return handleClaim
