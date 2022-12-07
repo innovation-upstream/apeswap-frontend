@@ -8,7 +8,6 @@ import { useTranslation } from 'contexts/Localization'
 import Claim from '../../Actions/Claim'
 import { BillCardsContainer, CardContainer } from '../styles'
 import BillModal from '../../Modals'
-import { LpTypeVariants } from 'components/ListViewV2/types'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 
 const CardView: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, showClaimed }) => {
@@ -42,7 +41,7 @@ const CardView: React.FC<{ bills: Bills[]; showClaimed: boolean }> = ({ bills, s
             justifyContent="space-between"
             style={{ height: '75px', width: '100%' }}
           >
-            <ListViewContent tag={LpTypeVariants.APE} value={bill.lpToken.symbol} height={50} width={130} />
+            <ListViewContent tag="ape" value={bill.lpToken.symbol} height={50} width={130} />
             <ListViewContent
               title={t('Claimable')}
               value={pendingRewards}

@@ -1,5 +1,6 @@
 import React from 'react'
 import { CSSProperties } from 'theme-ui'
+import { LpTagVariants } from '@ape.swap/uikit'
 
 export interface ListViewProps {
   tokens?: { token1: string; token2: string; token3?: string; token4?: string }
@@ -25,7 +26,7 @@ export interface ListCardProps extends ListViewProps {
 }
 
 export interface ListViewContentProps {
-  tag?: LpTypeVariants
+  tag?: LpTagVariants
   title?: string
   value: string
   value2?: string
@@ -43,9 +44,4 @@ export interface ListViewContentProps {
   toolTipPlacement?: 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft'
   toolTipTransform?: string
   valueColor?: string
-}
-
-export enum LpTypeVariants {
-  APE = 'ape',
-  UNI = 'uni',
 }

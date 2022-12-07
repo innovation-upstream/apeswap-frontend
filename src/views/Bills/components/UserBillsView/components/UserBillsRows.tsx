@@ -18,7 +18,6 @@ import { Box } from 'theme-ui'
 import CardView from './CardView'
 import orderBy from 'lodash/orderBy'
 import useCurrentTime from 'hooks/useTimer'
-import { LpTypeVariants } from 'components/ListViewV2/types'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 
 const UserBillsRows: React.FC<{
@@ -79,13 +78,7 @@ const UserBillsRows: React.FC<{
         id: ownedBill.id,
         billArrow: true,
         title: (
-          <ListViewContent
-            tag={LpTypeVariants.APE}
-            value={bill.lpToken.symbol}
-            width={isMobile ? 150 : 150}
-            height={45}
-            ml={10}
-          />
+          <ListViewContent tag="ape" value={bill.lpToken.symbol} width={isMobile ? 150 : 150} height={45} ml={10} />
         ),
         titleContainerWidth: 255,
         cardContent: (

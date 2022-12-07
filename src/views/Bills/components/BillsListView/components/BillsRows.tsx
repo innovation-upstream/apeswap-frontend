@@ -3,7 +3,6 @@ import React from 'react'
 import getTimePeriods from 'utils/getTimePeriods'
 import BigNumber from 'bignumber.js'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
-import { LpTypeVariants } from 'components/ListViewV2/types'
 import ProjectLinks from '../../UserBillsView/components/ProjectLinks'
 import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
 import { Flex, InfoIcon, TooltipBubble, useMatchBreakpoints } from '@ape.swap/uikit'
@@ -44,7 +43,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
       stakeLp: true,
       id: bill.index,
       billArrow: true,
-      title: <ListViewContent tag={LpTypeVariants.APE} value={bill.lpToken.symbol} width={150} height={45} ml={0} />,
+      title: <ListViewContent tag="ape" value={bill.lpToken.symbol} width={150} height={45} ml={0} />,
       infoContent: isSmall && <ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} isMobile />,
       ttWidth: isSmall && '200px',
       toolTipIconWidth: '15px',
