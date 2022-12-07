@@ -81,7 +81,7 @@ export const useSousStake = (sousId, tokenValue: number) => {
   return { onStake: handleStake }
 }
 
-export const useJungleStake = (jungleId) => {
+export const useJungleStake = (jungleId, lpValue: number) => {
   const jungleChefContract = useJungleChef(jungleId)
 
   const handleStake = useCallback(
@@ -95,12 +95,13 @@ export const useJungleStake = (jungleId) => {
           cat: 'stake',
           amount,
           pid: jungleId,
+          usdAmount: parseFloat(amount) * lpValue,
         },
       })
 
       return trxHash
     },
-    [jungleChefContract, jungleId],
+    [jungleChefContract, jungleId, lpValue],
   )
 
   return { onStake: handleStake }
