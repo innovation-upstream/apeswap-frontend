@@ -89,38 +89,7 @@ export default function Pool() {
               <Text weight={700} sx={{ textTransform: 'uppercase' }}>
                 {t('Add liquidity to receive LP tokens')}
               </Text>
-              {account ? (
-                <Flex sx={{ width: '100%' }}>
-                  <Button
-                    id="join-pool-button"
-                    as={Link}
-                    to="/add-liquidity"
-                    startIcon={<AddIcon color="white" />}
-                    m="10px"
-                    sx={{ width: '50%' }}
-                    size="sm"
-                  >
-                    {t('Add Liquidity')}
-                  </Button>
-                  <Button
-                    id="join-pool-button"
-                    as={Link}
-                    to="/zap"
-                    startIcon={
-                      <Flex sx={{ marginRight: '10px' }}>
-                        <Svg icon="ZapIcon" color="primaryBright" />
-                      </Flex>
-                    }
-                    m="10px"
-                    sx={{ width: '50%' }}
-                    size="sm"
-                  >
-                    {t('Zap Liquidity')}
-                  </Button>
-                </Flex>
-              ) : (
-                <UnlockButton fullWidth mt="10px" />
-              )}
+              {!account && <UnlockButton mt="10px" />}
             </Flex>
             {renderBody()}
           </Flex>
@@ -130,6 +99,13 @@ export default function Pool() {
               <Text style={{ textDecoration: 'underline' }} mb="8px" as={Link} to="/find">
                 {t('Find other LP tokens')}
               </Text>
+              <Text mb="8px">{t('or')}</Text>
+              <Flex>
+                <Text style={{ textDecoration: 'underline' }} mb="8px" pr="5px" as={Link} to="/apestats">
+                  {t('Visit ApeStats')}
+                </Text>
+                <Text mb="8px">{t(' for an overview of your positions.')}</Text>
+              </Flex>
             </Flex>
           )}
         </Flex>
