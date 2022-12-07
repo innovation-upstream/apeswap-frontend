@@ -18,6 +18,7 @@ import { StyledCard, HeaderCard, Header, TokensDisplay, ContentCard, StyledButto
 import { Flex } from 'theme-ui'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useBananaPrice } from 'state/tokenPrices/hooks'
 
 interface ReturnCardType {
   fromToken: string
@@ -30,7 +31,7 @@ const ReturnCard: React.FC<ReturnCardType> = ({ fromToken, toToken }) => {
   const treasuryContract = useTreasury()
   const { toastSuccess } = useToast()
   const valBanana = parseFloat(val) * 0.98
-  const { handleSell } = useSellGoldenBanana()
+  const { handleSell } = useSellGoldenBanana(parseFloat(useBananaPrice()))
   const goldenBananaBalance = useTokenBalance(useGoldenBananaAddress())
   const goldenBananaContract = useGoldenBanana()
   const { t } = useTranslation()

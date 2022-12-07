@@ -23,7 +23,7 @@ export const sell = async (contract, amount) => {
   }
 }
 
-export const useSellGoldenBanana = () => {
+export const useSellGoldenBanana = (tokenValue: number) => {
   const treasuryContract = useTreasury()
 
   const handleSell = useCallback(
@@ -36,6 +36,7 @@ export const useSellGoldenBanana = () => {
           data: {
             amount,
             cat: 'sell',
+            usdAmount: parseFloat(amount) * tokenValue,
           },
         })
         return txHash
@@ -43,13 +44,13 @@ export const useSellGoldenBanana = () => {
         return false
       }
     },
-    [treasuryContract],
+    [tokenValue, treasuryContract],
   )
 
   return { handleSell }
 }
 
-export const useBuyGoldenBanana = () => {
+export const useBuyGoldenBanana = (tokenValue: number) => {
   const treasuryContract = useTreasury()
 
   const handleBuy = useCallback(
@@ -62,6 +63,7 @@ export const useBuyGoldenBanana = () => {
           data: {
             amount,
             cat: 'buy',
+            usdAmount: parseFloat(amount) * tokenValue,
           },
         })
         return txHash
@@ -69,7 +71,7 @@ export const useBuyGoldenBanana = () => {
         return false
       }
     },
-    [treasuryContract],
+    [tokenValue, treasuryContract],
   )
 
   return { handleBuy }
