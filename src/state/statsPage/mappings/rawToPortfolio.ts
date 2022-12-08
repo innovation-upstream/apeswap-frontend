@@ -1,3 +1,4 @@
+import { chainMap } from './chainMap'
 import { ApiResponse, Chain, Position } from '../types'
 import {
   billToPosition,
@@ -11,17 +12,22 @@ import {
 
 export interface PortfolioData {
   type: ProductType
-  chainData: Partial<{
-    [key in Chain]: Position[]
-  }>
+  chainData: { [key in Chain]: Position[] }
   totalValue: number
   totalEarnings: number
 }
 
-export type ProductType = 'farms' | 'pools' | 'vaults' | 'jungleFarms' | 'lending' | 'maximizers' | 'bills' | 'iaos'
+function initProducts(): PortfolioData[] {
+  return productTypes.map((type) => ({
+    type,
+    chainData: chainMap(() => [] as Position[]),
+    totalValue: 0,
+    totalEarnings: 0,
+  }))
+}
 
 export function rawToPortfolio({ userStats, bananaPrice }: ApiResponse) {
-  const products: PortfolioData[] = []
+  const products = initProducts()
 
   userStats.forEach((chainInfo) => {
     if (chainInfo.farms.length > 0) {
