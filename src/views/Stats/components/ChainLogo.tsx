@@ -9,7 +9,7 @@ export const ChainLogo: React.FC<{ chain: Chain; width?: number }> = ({ chain, w
         return icons.TLOS_TOKEN
 
       case 56:
-        return icons.BNB_TOKEN
+        return icons.BSC_TOKEN
 
       case 137:
         return icons.POLYGON_TOKEN
