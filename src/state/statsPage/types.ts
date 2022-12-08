@@ -1,3 +1,5 @@
+import { supportedChains } from './mappings'
+
 export interface ApiResponse {
   userStats: UserChainInfo[]
   userHoldings: {
@@ -183,6 +185,6 @@ export interface Position {
   isAuto?: boolean
 }
 
-export type Chain = 56 | 137
+export type Chain = typeof supportedChains[number]
 
 export type ChainOption = 'all' | 'bnb' | 'polygon'
