@@ -7,6 +7,9 @@ export const supportedChains = [40, 56, 137] as const
 
 export function mapChain(option: ChainOption) {
   switch (option) {
+    case 'telos':
+      return 40
+
     case 'bnb':
       return 56
 
