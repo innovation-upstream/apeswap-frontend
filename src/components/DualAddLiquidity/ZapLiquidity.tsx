@@ -19,6 +19,7 @@ import track from 'utils/track'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useTokenPriceFromSymbol } from 'state/hooks'
 
 interface ZapLiquidityProps {
   handleConfirmedTx: (hash: string, pairOut: Pair) => void
@@ -53,6 +54,8 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({
   const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
   const { onUserInput, onInputSelect, onCurrencySelection, onSetZapType } = useZapActionHandlers()
 
+  const tokenPrice = useTokenPriceFromSymbol(wrappedToNative(zap.currencyIn.currency?.getSymbol(chainId)))
+
   const handleInputSelect = useCallback(
     (field: Field, currency: Currency) => {
       onInputSelect(field, currency)
@@ -86,6 +89,7 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({
     zapCallback()
       .then((hash) => {
         handleConfirmedTx(hash, zap.pairOut.pair)
+        const amount = getBalanceNumber(new BigNumber(zap.currencyIn.inputAmount.toString()))
         track({
           event: 'zap',
           chain: chainId,
@@ -95,14 +99,15 @@ const ZapLiquidity: React.FC<ZapLiquidityProps> = ({
             token2: `${zap.currencyOut1.outputCurrency.getSymbol(chainId)}-${zap.currencyOut2.outputCurrency.getSymbol(
               chainId,
             )}`,
-            amount: getBalanceNumber(new BigNumber(zap.currencyIn.inputAmount.toString())),
+            amount,
+            usdAmount: amount * tokenPrice,
           },
         })
       })
       .catch((error) => {
         setZapErrorMessage(error.message)
       })
-  }, [chainId, handleConfirmedTx, zap, zapCallback])
+  }, [chainId, handleConfirmedTx, tokenPrice, zap, zapCallback])
 
   const handleDismissConfirmation = useCallback(() => {
     // clear zapErrorMessage if user closes the error modal

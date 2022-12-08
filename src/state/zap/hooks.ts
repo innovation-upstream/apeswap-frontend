@@ -28,6 +28,7 @@ import useTotalSupply from 'hooks/useTotalSupply'
 
 import BigNumber from 'bignumber.js'
 import fetchZapInputTokens from './api'
+import { useFetchTokenPrices } from '../tokenPrices/hooks'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -255,6 +256,7 @@ export function useDerivedZapInfo(): {
 // Set default currencies for zap state
 export function useDefaultCurrencies() {
   const { chainId, account } = useActiveWeb3React()
+  useFetchTokenPrices()
   const dispatch = useAppDispatch()
   useEffect(() => {
     const outputCurrencies = { currency1: 'ETH', currency2: contracts.banana[chainId] }
