@@ -102,7 +102,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   // threshold equals to 10 usd in earned tokens (banana or jungle token)
   const threshold = new BigNumber(10).div(earnTokenPrice)
   const safeAvailable = available.minus(threshold)
-  const singlePurchaseLimit = new BigNumber(maxPayoutTokens).div(new BigNumber(10).pow(18))
+  const singlePurchaseLimit = new BigNumber(maxPayoutTokens).div(new BigNumber(10).pow(token?.decimals?.[chainId]))
   const displayAvailable = singlePurchaseLimit.lt(safeAvailable) ? singlePurchaseLimit : safeAvailable
 
   const onHandleValueChange = useCallback(
