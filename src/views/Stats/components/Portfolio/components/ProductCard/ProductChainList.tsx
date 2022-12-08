@@ -31,7 +31,9 @@ const ProductChainList: React.FC<ProductChainListProps> = ({ chain, listViews })
             textTransform="uppercase"
             fontSize={isMobile ? '12px' : '16px'}
           >
-            {chain === '56' ? 'BNB Chain' : 'Polygon Chain'}
+            {chain === 40 && 'Telos Chain'}
+            {chain === 56 && 'BNB Chain'}
+            {chain === 137 && 'Polygon Chain'}
           </Text>
         </Flex>
         <AnimatedArrow height={8} isOpen={isOpen} />
