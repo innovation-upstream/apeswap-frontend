@@ -5,9 +5,10 @@ import { AnimatedArrow, ChainDisplay } from '../../styles'
 import ListView from '../ListView'
 import { ExtendedListViewProps } from '../ListView/types'
 import { ChainLogo } from 'views/Stats/components/ChainLogo'
+import { Chain } from 'state/statsPage/types'
 
 interface ProductChainListProps {
-  chain: string
+  chain: Chain
   listViews: ExtendedListViewProps[]
 }
 
