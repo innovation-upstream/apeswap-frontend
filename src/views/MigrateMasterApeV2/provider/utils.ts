@@ -7,6 +7,7 @@ import {
   MasterApeV2ProductsInterface,
   MigrateLpStatus,
   MigrateStatus,
+  ProductTypes,
 } from './types'
 import { Farm, Vault } from 'state/types'
 import { MIGRATION_STEPS } from './constants'
@@ -38,8 +39,34 @@ export const setMigrateLpStatus = async (
   // To make sure we dont have farms that wont be part of the migration we need to filter them out
   // TODO: Remove the two or conditions after testing! This is because farmaway is the banana farm
   const bananaAddress = getBananaAddress(chainId)
-  const farmAway = v2Products?.filter(({ singleStakeAsset }) => singleStakeAsset)
-  const filteredV1Products = v1Products.filter(({ lp, token0 }) =>
+  console.error('ASDASDASd')
+  console.error('ASDASDASd')
+  console.error('ASDASDASd')
+  console.error('ASDASDASd')
+  console.error('ASDASDASd')
+  console.error('ASDASDASd')
+  console.error('ASDASDASd')
+
+  console.log(v2Products)
+  const farmAway = v2Products?.find(({ singleStakeAsset }) => singleStakeAsset)
+  console.log(farmAway)
+
+  // TODO: Remove all FARMAWAY code.
+  const farmAwayDummyType: MasterApeProductsInterface = {
+    id: farmAway?.id,
+    lp: farmAway?.lp,
+    pid: farmAway?.farm.pid,
+    type: ProductTypes.FARM,
+    singleStakeAsset: true,
+    token0: farmAway?.farm.token0,
+    token1: farmAway?.farm.token1,
+    stakedAmount: farmAway?.farm.stakedAmount,
+    walletBalance: farmAway?.walletBalance,
+    allowance: farmAway?.farm.allowance,
+    lpValueUsd: farmAway?.lpValueUsd,
+  }
+
+  const filteredV1Products = [...v1Products, farmAway !== undefined && farmAwayDummyType].filter(({ lp, token0 }) =>
     v2Farms.find(
       ({ lpAddresses }) =>
         lpAddresses[chainId].toLowerCase() === lp ||

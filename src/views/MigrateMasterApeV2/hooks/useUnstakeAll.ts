@@ -16,12 +16,15 @@ import { useVaultApeV2 } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
 import { updateFarmUserStakedBalances, updateFarmUserTokenBalances } from 'state/farms'
 import { updateVaultUserBalance, updateVaultUserStakedBalance } from 'state/vaults'
-import { updateFarmV2UserTokenBalances } from 'state/farmsV2'
+import farmsV2, { updateFarmV2UserTokenBalances } from 'state/farmsV2'
 import { useFarmsV2 } from 'state/farmsV2/hooks'
+import { useHandleUpdateAndMergeMigrateUnstake } from '../provider/hooks'
+import { updateVaultsV3UserData, updateVaultV3UserBalance } from 'state/vaultsV3'
+import { useVaultsV3 } from 'state/vaultsV3/hooks'
 
 const useUnstakeAll = () => {
   const { library, account, chainId } = useActiveWeb3React()
-  const { handleUpdateMigrateLp } = useMigrateAll()
+  const { handleUpdateMigrateLp, handleUpdateAndMergeMigrateUnstake } = useMigrateAll()
   const masterChefV1Address = useMasterChefAddress()
   const vaultV2Address = useVaultApeAddressV2()
   const vaultV1Address = useVaultApeAddressV1()
@@ -34,12 +37,10 @@ const useUnstakeAll = () => {
         // Get the corresponding farm pid
         // TODO: Remove the or 0 pid after farmaway is removed
         const v2FarmPid =
-          v2Farms.find(
-            ({ lpAddresses }) =>
-              migrateLp.type === ProductTypes.FARM && migrateLp.lp === lpAddresses[chainId].toLowerCase(),
-          )?.pid || 0
+          v2Farms.find(({ lpAddresses }) => migrateLp.lp === lpAddresses[chainId].toLowerCase())?.pid || 0
+        console.log(v2FarmPid)
         try {
-          const { pid, stakedAmount, id, type } = migrateLp
+          const { pid, stakedAmount, id, type, lp } = migrateLp
           // Define contracts in the callback to avoid a new contract being initalized every render
           const masterApeV1Contract = new Contract(
             masterChefV1Address,
@@ -73,10 +74,11 @@ const useUnstakeAll = () => {
                     dispatch(updateFarmUserStakedBalances(chainId, pid, account))
                     dispatch(updateFarmUserTokenBalances(chainId, pid, account))
                   } else {
+                    dispatch(updateFarmV2UserTokenBalances(chainId, v2FarmPid, account))
                     dispatch(updateVaultUserStakedBalance(account, chainId, pid))
                     dispatch(updateVaultUserBalance(account, chainId, pid))
                   }
-                  handleUpdateMigrateLp(id, 'unstake', MigrateStatus.COMPLETE, 'Unstake complete')
+                  handleUpdateAndMergeMigrateUnstake(id, lp, 'unstake', MigrateStatus.COMPLETE, 'Unstake complete')
                   // track({
                   //   event: 'migrate_unstake',
                   //   chain: chainId,
@@ -103,7 +105,18 @@ const useUnstakeAll = () => {
         }
       })
     },
-    [account, handleUpdateMigrateLp, dispatch, masterChefV1Address, vaultV2Address, vaultV1Address, library, chainId],
+    [
+      account,
+      handleUpdateMigrateLp,
+      handleUpdateAndMergeMigrateUnstake,
+      dispatch,
+      masterChefV1Address,
+      vaultV2Address,
+      vaultV1Address,
+      library,
+      chainId,
+      v2Farms,
+    ],
   )
   return handleUnstakeAll
 }

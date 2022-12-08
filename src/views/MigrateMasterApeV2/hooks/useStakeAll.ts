@@ -8,18 +8,19 @@ import {
 } from '../provider/types'
 import { useMigrateAll } from '../provider'
 import { useVaults } from 'state/vaults/hooks'
-import { useMasterchef, useMasterChefV2Contract, useVaultApeV2 } from 'hooks/useContract'
+import { useMasterchef, useMasterChefV2Contract, useVaultApeV2, useVaultApeV3 } from 'hooks/useContract'
 import { useFarms } from 'state/farms/hooks'
 import { calculateGasMargin } from 'utils'
 import track from 'utils/track'
 import BigNumber from 'bignumber.js'
+import { useVaultsV3 } from 'state/vaultsV3/hooks'
 
 const useStakeAll = () => {
   const { account, chainId, library } = useActiveWeb3React()
   const { handleUpdateMigrateLp, migrateMaximizers, handleAddMigrationCompleteLog } = useMigrateAll()
   const masterChefV2Contract = useMasterChefV2Contract()
-  const vaultApeV2Contract = useVaultApeV2()
-  const { vaults: fetchedVaults } = useVaults()
+  const vaultApeV3Contract = useVaultApeV3()
+  const { vaults: fetchedVaults } = useVaultsV3()
   // We need to filter out the innactive vaults
   const vaults = fetchedVaults.filter((vault) => !vault.inactive)
 
@@ -30,10 +31,11 @@ const useStakeAll = () => {
         try {
           // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
           const matchedVault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)
+          console.log(matchedVault, migrateMaximizers)
           // Estimate gas to make sure transactions dont fail
           const gasEstimate =
             migrateMaximizers && matchedVault
-              ? vaultApeV2Contract.estimateGas.deposit(
+              ? vaultApeV3Contract.estimateGas.deposit(
                   matchedVault.pid,
                   new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
                 )
@@ -43,7 +45,7 @@ const useStakeAll = () => {
                 )
           const call =
             migrateMaximizers && matchedVault
-              ? vaultApeV2Contract.deposit(
+              ? vaultApeV3Contract.deposit(
                   matchedVault.pid,
                   new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
                   {
@@ -94,7 +96,7 @@ const useStakeAll = () => {
       handleAddMigrationCompleteLog,
       chainId,
       masterChefV2Contract,
-      vaultApeV2Contract,
+      vaultApeV3Contract,
       migrateMaximizers,
       library,
       vaults,

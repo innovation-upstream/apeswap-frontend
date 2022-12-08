@@ -69,7 +69,9 @@ export const fetchVaultUserStakedAndPendingBalances = async (
 
   const rawStakedBalances = await multicall(chainId, [...vaultApeV1ABI, ...vaultApeV2ABI], calls)
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
-    return new BigNumber(stakedBalance[0]._hex).toJSON()
+    const rawStakedBalance = new BigNumber(stakedBalance[0]._hex)
+    // Dont display dust as it is confusing for the migration
+    return rawStakedBalance.gt(10) ? rawStakedBalance.toJSON() : '0'
   })
   const parsePendingBalances = rawStakedBalances.map((stakedBalance, index) => {
     return filteredVaults[index].version === 'V1' ? '0' : new BigNumber(stakedBalance[1]._hex).toJSON()

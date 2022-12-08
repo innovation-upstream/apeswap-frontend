@@ -186,6 +186,51 @@ export const useHandleUpdateMigrateLp = (
 }
 
 /**
+ * Hook the set a callback to handle updating lp status state
+ * @param lpStatus List of Migrate LP status
+ * @param setLpStatus Action to set the state of LP Status
+ */
+export const useHandleUpdateAndMergeMigrateUnstake = (
+  lpStatus: MigrateLpStatus[],
+  migrateMaximizers: boolean,
+  setLpStatus: React.Dispatch<React.SetStateAction<MigrateLpStatus[]>>,
+) => {
+  const { account, chainId } = useActiveWeb3React()
+  const farms = useFarmsV2(account)
+  const { vaults } = useVaultsV3()
+  const handleUpdateAndMergeMigrateUnstake = useCallback(
+    (id, lp, type, status, statusText) => {
+      const allowance = migrateMaximizers
+        ? vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)?.userData.allowance
+        : farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lp)?.userData.allowance
+      const updatedMigrateLpStatus = lpStatus
+      const lpToUpdateIndex = lpStatus.findIndex((migrateLp) => migrateLp.id === id)
+      const lpToUpdate = {
+        ...lpStatus[lpToUpdateIndex],
+        id: lp,
+        status: {
+          ...lpStatus[lpToUpdateIndex].status,
+          [type]: status,
+          // TODO: REMOVE BANANA LOGIC
+          approveStake:
+            lp === '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95'.toLowerCase()
+              ? MigrateStatus.COMPLETE
+              : new BigNumber(allowance).gt(0)
+              ? MigrateStatus.COMPLETE
+              : MigrateStatus.INCOMPLETE,
+        },
+        statusText: statusText,
+      }
+      updatedMigrateLpStatus[lpToUpdateIndex] = lpToUpdate
+      setLpStatus([...updatedMigrateLpStatus])
+    },
+    [setLpStatus, lpStatus, farms, vaults, chainId, migrateMaximizers],
+  )
+
+  return handleUpdateAndMergeMigrateUnstake
+}
+
+/**
  * Hook the set a callback to handle updating the migration completion state
  * @param setMigrationCompleteLog Action to add a completed migration to the completion state
  */
@@ -222,12 +267,7 @@ export const usePullAndMergeV1Products = () => {
     [farms],
   )
   const userV1StakedVaults = useMemo(
-    () =>
-      vaults?.filter(
-        ({ userData }) =>
-          (userData && new BigNumber(userData.stakedBalance).isGreaterThan(0)) ||
-          new BigNumber(userData?.tokenBalance).isGreaterThan(0),
-      ),
+    () => vaults?.filter(({ userData }) => userData && new BigNumber(userData.stakedBalance).isGreaterThan(0)),
     [vaults],
   )
 
@@ -477,6 +517,8 @@ export const useMergedV2Products = () => {
     )
   }, [userV2Farms, vaults, chainId])
   const loaded = !!vaults?.[0]?.userData && !!farms?.[0]?.userData && mergedProducts
+  console.log(loaded)
+  console.log(mergedProducts)
 
   return { mergedProducts, loaded }
 }

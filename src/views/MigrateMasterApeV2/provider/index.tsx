@@ -4,6 +4,7 @@ import { activeIndexHelper, setMigrateLpStatus } from './utils'
 import {
   useHandleAddMigrationCompleteLog,
   useHandleMaximizerApprovalToggle,
+  useHandleUpdateAndMergeMigrateUnstake,
   useHandleUpdateMigrateLp,
   useMergedV2Products,
   usePullAndMergeV1Products,
@@ -40,7 +41,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   // Helpful hooks used
   const { mergedProducts: v1ApeProducts, loaded: v1ProductsLoaded } = usePullAndMergeV1Products()
   const { mergedProducts: v2ApeProducts, loaded: v2ProductsLoaded } = useMergedV2Products()
-  useMergedV2Products()
 
   // V1 products
   useEffect(() => {
@@ -60,6 +60,11 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
 
   const handleMaximizerApprovalToggle = useHandleMaximizerApprovalToggle(lpStatus, setLpStatus, setMigrateMaximizers)
   const handleUpdateMigrateLp = useHandleUpdateMigrateLp(lpStatus, setLpStatus)
+  const handleUpdateAndMergeMigrateUnstake = useHandleUpdateAndMergeMigrateUnstake(
+    lpStatus,
+    migrateMaximizers,
+    setLpStatus,
+  )
   const handleAddMigrationCompleteLog = useHandleAddMigrationCompleteLog(setMigrationCompleteLog)
   const handleActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
 
@@ -103,6 +108,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   // }
 
   console.log(v2Products)
+  console.warn(lpStatus)
 
   return (
     <MigrateContext.Provider
@@ -116,6 +122,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
         v2Products,
         handleActiveIndexCallback,
         handleUpdateMigrateLp,
+        handleUpdateAndMergeMigrateUnstake,
         handleMaximizerApprovalToggle,
         handleAddMigrationCompleteLog,
       }}

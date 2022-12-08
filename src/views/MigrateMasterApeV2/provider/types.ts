@@ -12,6 +12,13 @@ export interface MigrateContextData {
     status: MigrateStatus,
     statusText?: string,
   ) => void
+  handleUpdateAndMergeMigrateUnstake: (
+    id: string,
+    lp: string,
+    type: 'unstake',
+    status: MigrateStatus,
+    statusText?: string,
+  ) => void
   migrateMaximizers: boolean
   v1Products: MasterApeProductsInterface[]
   v2Products: MasterApeV2ProductsInterface[]
