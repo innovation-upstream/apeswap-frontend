@@ -18,7 +18,7 @@ export interface ApiResponse {
 
 export interface IAssetBreakdown {
   address: string
-  chain: number
+  chain: Chain
   balance: string
   price: number
   amount: string
