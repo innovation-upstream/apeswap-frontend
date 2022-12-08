@@ -33,22 +33,23 @@ const UserBillsRows: React.FC<{
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const isMobile = !isLg && !isXl && !isXxl
-  const currentTime = useCurrentTime() / 1000
+  const currentTime = useCurrentTime(false) / 1000
 
   const sortBills = useCallback(
     (billsToSort: UserBill[]) => {
       const sorting = (bills) => {
+        //  console.log(bills)
         switch (sortOption) {
           case 'sort':
             return bills.reverse()
           case 'claimable':
-            return orderBy(bills, (bill) => parseFloat(bill.billData.pendingRewards), 'desc')
+            return orderBy(bills, (bill) => parseFloat(bill?.bill?.billData?.pendingRewards), 'desc')
           case 'pending':
-            return orderBy(bills, (bill) => parseFloat(bill.billData.pending), 'desc')
+            return orderBy(bills, (bill) => parseFloat(bill?.bill?.billData?.pending), 'desc')
           case 'vested':
             return orderBy(
               bills,
-              (bill) => parseInt(bill.billData.time) + parseInt(bill.billData.vesting) - currentTime,
+              (bill) => parseInt(bill?.bill?.billData?.time) + parseInt(bill?.bill?.billData?.vesting) - currentTime,
               'asc',
             )
           default:
@@ -59,6 +60,18 @@ const UserBillsRows: React.FC<{
     },
     [currentTime, sortOption],
   )
+  const flatMapBeforeSorting = bills.flatMap((bill) => {
+    const ownedBills = bill?.userOwnedBillsData
+    return ownedBills.flatMap((ownedBill) => {
+      if (!showClaimed && parseFloat(ownedBill.pendingRewards) === 0 && parseFloat(ownedBill.payout) === 0) {
+        return []
+      }
+      return { ...ownedBill, bill }
+    })
+  })
+  const sorrrtttt = sortBills(flatMapBeforeSorting)
+  console.log(flatMapBeforeSorting)
+  console.log(sorrrtttt)
 
   const billsListView = bills.flatMap((bill) => {
     const ownedBills = bill?.userOwnedBillsData
@@ -165,7 +178,7 @@ const UserBillsRows: React.FC<{
       }
     })
   })
-  const sortedBills = sortBills(billsListView) as ExtendedListViewProps[]
+  const sortedBills = billsListView as ExtendedListViewProps[]
 
   return (
     <>
