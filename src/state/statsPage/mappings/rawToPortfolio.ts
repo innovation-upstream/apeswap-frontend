@@ -117,16 +117,16 @@ export function rawToPortfolio({ userStats, bananaPrice }: ApiResponse) {
   return products
 }
 
+const symbolsMap = {
+  WBNB: 'BNB',
+  WETH: 'ETH',
+  WMATIC: 'MATIC',
+  eLunr: 'LUNR',
+  BTCB: 'BTC',
+  WTLOS: 'TLOS',
+  WBTC: 'BTC',
+}
+
 export function wrappedToNative(symbol: string) {
-  if (symbol.includes('WBNB')) return symbol.replace('WBNB', 'BNB')
-
-  if (symbol.includes('WETH')) return symbol.replace('WETH', 'ETH')
-
-  if (symbol.includes('WMATIC')) return symbol.replace('WMATIC', 'MATIC')
-
-  if (symbol.includes('eLunr')) return symbol.replace('eLunr', 'LUNR')
-
-  if (symbol.includes('BTCB')) return symbol.replace('BTCB', 'BTC')
-
-  return symbol
+  return symbolsMap[symbol] || symbol
 }
