@@ -40,12 +40,12 @@ export interface ITVLBreakdownInfo {
 
 export interface UserChainInfo {
   chainId: Chain
-  farms: Array<Farm | DualFarm>
-  pools: Pool[]
-  vaults: Vault[]
-  maximizers: Vault[]
-  jungleFarms: Pool[]
-  lending: LendingInfo
+  farms?: Array<Farm | DualFarm>
+  pools?: Pool[]
+  vaults?: Vault[]
+  maximizers?: Vault[]
+  jungleFarms?: Pool[]
+  lending?: LendingInfo
 
   // Additional variables to be added post-beta launch
   bills?: Bill[]
