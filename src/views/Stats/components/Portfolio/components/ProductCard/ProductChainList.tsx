@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { BNB, Flex, POLYGON, Text } from '@apeswapfinance/uikit'
+import { Flex, Text } from '@apeswapfinance/uikit'
 import useIsMobile from 'hooks/useIsMobile'
-import { AnimatedArrow, ChainDisplay } from '../../styles'
+
 import ListView from '../ListView'
 import { ExtendedListViewProps } from '../ListView/types'
 import { ChainLogo } from 'views/Stats/components/ChainLogo'
+
 import { Chain } from 'state/statsPage/types'
+import { AnimatedArrow, ChainDisplay } from '../../styles'
 
 interface ProductChainListProps {
   chain: Chain
