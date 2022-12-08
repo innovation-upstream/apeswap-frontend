@@ -1,11 +1,11 @@
 import React from 'react'
-import { BinanceIcon } from '@ape.swap/uikit'
-import { Image, Flex, Text, POLYGON } from '@apeswapfinance/uikit'
+import { Image, Flex, Text } from '@apeswapfinance/uikit'
 
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import CardValue from '../../CardValue'
 import { Chain } from 'state/statsPage/types'
 import { BillImageContainer, ChainIndicator, StyledCard, StyledText } from '../styles'
+import { ChainLogo } from '../../ChainLogo'
 
 interface BillProps {
   chain: Chain
@@ -17,22 +17,14 @@ interface BillProps {
   timeRemaining: string
 }
 
-const renderChain = (chain: Chain) => {
-  switch (chain) {
-    case 56:
-      return <BinanceIcon width={20} />
-
-    case 137:
-      return <POLYGON width={20} />
-  }
-}
-
 export const BillCard: React.FC<BillProps> = ({ chain, imageUrl, name, type, tokens, value, timeRemaining }) => {
   return (
     <StyledCard>
       <Flex flexDirection="column" alignItems="center" style={{ height: '100%' }}>
         <BillImageContainer>
-          <ChainIndicator>{renderChain(chain)}</ChainIndicator>
+          <ChainIndicator>
+            <ChainLogo chain={chain} width={20} />
+          </ChainIndicator>
           <Image src={`${imageUrl}?img-width=280`} width={230} height={132} />
         </BillImageContainer>
         <div style={{ padding: '20px', width: '100%' }}>
