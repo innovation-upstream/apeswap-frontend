@@ -3,6 +3,8 @@ import { ChainOption } from '../types'
 export * from './rawToPortfolio'
 export * from './rawToProjected'
 
+export const supportedChains = [40, 56, 137] as const
+
 export function mapChain(option: ChainOption) {
   switch (option) {
     case 'bnb':
