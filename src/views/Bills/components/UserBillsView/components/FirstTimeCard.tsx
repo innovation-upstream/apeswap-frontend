@@ -8,10 +8,19 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Flex } from '@ape.swap/uikit'
 import useDebounce from 'hooks/useDebounce'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useBills } from 'state/bills/hooks'
 
-const FirstTimeCard: React.FC<{ ownedBillsAmount: number; loaded: boolean }> = ({ ownedBillsAmount, loaded }) => {
+const FirstTimeCard = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
+  const [loaded, setLoaded] = useState<boolean>(false)
+  const bills = useBills()
+  const ownedBillsAmount = bills?.flatMap((bill) => {
+    if (bill?.userOwnedBillsData !== undefined && !loaded) {
+      setLoaded(true)
+    }
+    return bill?.userOwnedBillsData ? bill?.userOwnedBillsData : []
+  }).length
 
   // logic used to prevent FirstTimeCard to pop up abruptly
   const [showFirstTimeCard, setShowFirstTimeCard] = useState(false)
