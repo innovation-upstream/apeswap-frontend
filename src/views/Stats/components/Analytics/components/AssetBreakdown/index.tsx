@@ -35,7 +35,7 @@ const Asset = React.memo(function Asset({ amount, price, symbol, balance, chain 
           stakeLp={symbol.includes('-') ? true : null}
           noEarnToken={symbol.includes('-') ? true : null}
         />
-        <div style={{ margin: '6px -2px 0 -8px', alignSelf: 'start' }}>
+        <div style={{ margin: '6px -2px 0 -8px', alignSelf: 'start', zIndex: 1 }}>
           <ChainLogo chain={chain} width={13} />
         </div>
         <div style={{ marginLeft: '10px' }}>
