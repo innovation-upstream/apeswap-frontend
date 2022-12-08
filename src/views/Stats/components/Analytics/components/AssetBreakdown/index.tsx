@@ -1,5 +1,5 @@
 import React from 'react'
-import { BNB, Flex, POLYGON, Text } from '@apeswapfinance/uikit'
+import { Flex, Text } from '@apeswapfinance/uikit'
 
 import { useStats } from 'state/statsPage/hooks'
 import { wrappedToNative } from 'state/statsPage/mappings'
@@ -8,6 +8,7 @@ import useIsMobile from 'hooks/useIsMobile'
 import { useTranslation } from 'contexts/Localization'
 
 import CardValue from '../../../CardValue'
+import { ChainLogo } from 'views/Stats/components/ChainLogo'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { NoContentPlaceholder } from 'views/Stats/components/NoContentPlaceholder'
 
@@ -35,7 +36,7 @@ const Asset = React.memo(function Asset({ amount, price, symbol, balance, chain 
           noEarnToken={symbol.includes('-') ? true : null}
         />
         <div style={{ margin: '6px -2px 0 -8px', alignSelf: 'start' }}>
-          {chain === 56 ? <BNB width={13} /> : <POLYGON width={13} />}
+          <ChainLogo chain={chain} width={13} />
         </div>
         <div style={{ marginLeft: '10px' }}>
           <Text fontSize={isMobile ? '14px' : '16px'} fontWeight={700}>
