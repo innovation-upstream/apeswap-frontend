@@ -34,6 +34,10 @@ const displayChainOptions = [
     label: 'Polygon',
     value: 'polygon',
   },
+  {
+    label: 'Telos',
+    value: 'telos',
+  },
 ]
 
 const Stats: React.FC = () => {
