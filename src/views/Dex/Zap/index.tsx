@@ -28,8 +28,7 @@ import track from 'utils/track'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTokenPriceFromSymbol } from 'state/hooks'
-import { wrappedToNative } from 'utils'
+import { useTokenPriceUsd } from 'hooks/useTokenPriceUsd'
 
 function ZapLiquidity({
   match: {
@@ -57,7 +56,7 @@ function ZapLiquidity({
   const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
   const { onUserInput, onCurrencySelection } = useZapActionHandlers()
 
-  const tokenPrice = useTokenPriceFromSymbol(wrappedToNative(zap.currencyIn.currency?.getSymbol(chainId)))
+  const tokenPrice = useTokenPriceUsd(chainId, zap.currencyIn.currency)
 
   const handleCurrencySelect = useCallback(
     (field: Field, currency: Currency[]) => {
