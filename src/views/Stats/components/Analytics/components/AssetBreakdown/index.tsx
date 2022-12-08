@@ -1,6 +1,7 @@
 import React from 'react'
 import { Flex, Text } from '@apeswapfinance/uikit'
 
+import { IAssetBreakdown } from 'state/statsPage/types'
 import { useStats } from 'state/statsPage/hooks'
 import { wrappedToNative } from 'state/statsPage/mappings'
 
@@ -14,13 +15,7 @@ import { NoContentPlaceholder } from 'views/Stats/components/NoContentPlaceholde
 
 import { Container } from './styles'
 
-interface AssetProps {
-  chain: number
-  amount: number
-  price: number
-  balance: number
-  symbol: string
-}
+type AssetProps = Omit<IAssetBreakdown, 'address' | 'amount' | 'balance'> & { amount: number; balance: number }
 
 const Asset = React.memo(function Asset({ amount, price, symbol, balance, chain }: AssetProps) {
   const isMobile = useIsMobile()
