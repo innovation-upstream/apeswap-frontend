@@ -7,6 +7,7 @@ import { MigrateProvider } from './provider'
 import MigrateStart from './MigrateStart'
 import Banner from 'components/Banner'
 import MigrateTimer from './components/MigrateTimer'
+import { AboutMigrating } from './components/AboutMigrating'
 // import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
 
 const MigrateMasterApeV2: React.FC = () => {
@@ -50,6 +51,7 @@ const MigrateMasterApeV2: React.FC = () => {
         <MigrateProvider>
           <MigrateStart />
         </MigrateProvider>
+        <AboutMigrating />
       </Flex>
     </Flex>
   )

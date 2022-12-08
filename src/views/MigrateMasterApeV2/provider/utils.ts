@@ -51,34 +51,14 @@ export const setMigrateLpStatus = async (
   const farmAway = v2Products?.find(({ singleStakeAsset }) => singleStakeAsset)
   console.log(farmAway)
 
-  // TODO: Remove all FARMAWAY code.
-  const farmAwayDummyType: MasterApeProductsInterface = {
-    id: farmAway?.id,
-    lp: farmAway?.lp,
-    pid: farmAway?.farm.pid,
-    type: ProductTypes.FARM,
-    singleStakeAsset: true,
-    token0: farmAway?.farm.token0,
-    token1: farmAway?.farm.token1,
-    stakedAmount: farmAway?.farm.stakedAmount,
-    walletBalance: farmAway?.walletBalance,
-    allowance: farmAway?.farm.allowance,
-    lpValueUsd: farmAway?.lpValueUsd,
-  }
-
-  const filteredV1Products = [...v1Products, farmAway !== undefined && farmAwayDummyType].filter(({ lp, token0 }) =>
-    v2Farms.find(
-      ({ lpAddresses }) =>
-        lpAddresses[chainId].toLowerCase() === lp ||
-        lp === bananaAddress?.toLowerCase() ||
-        token0.symbol === 'FARMAWAY',
-    ),
+  // TODO: Remove all FARMAWAY and BANANA code.
+  const filteredV1Products = v1Products.filter(({ lp, token0 }) =>
+    v2Farms.find(({ lpAddresses }) => lpAddresses[chainId].toLowerCase() === lp || lp === bananaAddress?.toLowerCase()),
   )
 
   console.log(filteredV1Products)
   console.log(v2Products)
-  const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, walletBalance, lp, id, token0, pid }) => {
-    // TODO: Comeback to this when vaults get added
+  const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, lp, id, token0 }) => {
     const matchedV2Product = v2Products?.find(({ lp: v2Lp }) => v2Lp === lp)
     const idToUse = new BigNumber(stakedAmount).isGreaterThan(0) ? id : lp
     console.log('Matched v2 product')
@@ -107,8 +87,27 @@ export const setMigrateLpStatus = async (
       statusText: 'Migration Initialized',
     }
   })
-  console.error(apeswapLpStatus)
-  setLpStatus(apeswapLpStatus)
+
+  const apeswapV2LpStatus = v2Products?.flatMap(({ walletBalance, id, lp, farm }) => {
+    // If there is a matched V1 product that means we still need to unstake so make that incomplete
+    const matchedV1ProductStaked = new BigNumber(
+      filteredV1Products.find(({ lp: v1Lp }) => v1Lp === lp)?.stakedAmount || 0,
+    )?.gt(0)
+    return {
+      id,
+      lp,
+      status: {
+        unstake: matchedV1ProductStaked ? MigrateStatus.INCOMPLETE : MigrateStatus.COMPLETE,
+        approveStake: new BigNumber(farm.allowance).gt(0) ? MigrateStatus.COMPLETE : MigrateStatus.INCOMPLETE,
+        stake: MigrateStatus.INCOMPLETE,
+      },
+      statusText: 'Migration Initialized',
+    }
+  })
+  // Get rid of duplicate status
+  // v1 status gets priority over v2 status
+  const mergedStatus = [...new Map([...apeswapV2LpStatus, ...apeswapLpStatus].map((item) => [item.lp, item])).values()]
+  setLpStatus(mergedStatus)
 }
 
 /**

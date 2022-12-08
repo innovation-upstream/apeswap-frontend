@@ -3,7 +3,7 @@ import erc20ABI from 'config/abi/erc20.json'
 import vaultApeV1ABI from 'config/abi/vaultApeV1.json'
 import vaultApeV2ABI from 'config/abi/vaultApeV2.json'
 import multicall from 'utils/multicall'
-import { getVaultApeAddressV1, getVaultApeAddressV2, getVaultApeAddressV3 } from 'utils/addressHelper'
+import { getBananaAddress, getVaultApeAddressV1, getVaultApeAddressV2, getVaultApeAddressV3 } from 'utils/addressHelper'
 import { Vault } from 'state/types'
 
 export const fetchVaultUserAllowances = async (account: string, chainId: number, vaultsConfig: Vault[]) => {
@@ -68,10 +68,12 @@ export const fetchVaultUserStakedAndPendingBalances = async (
   })
 
   const rawStakedBalances = await multicall(chainId, [...vaultApeV1ABI, ...vaultApeV2ABI], calls)
-  const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
+  const parsedStakedBalances = rawStakedBalances.map((stakedBalance, i) => {
+    const isBanana =
+      vaultsConfig[i].stakeToken.address[chainId].toLowerCase() === getBananaAddress(chainId).toLowerCase()
     const rawStakedBalance = new BigNumber(stakedBalance[0]._hex)
     // Dont display dust as it is confusing for the migration
-    return rawStakedBalance.gt(10) ? rawStakedBalance.toJSON() : '0'
+    return rawStakedBalance.gt(isBanana ? 10000000000000 : 10) ? rawStakedBalance.toJSON() : '0'
   })
   const parsePendingBalances = rawStakedBalances.map((stakedBalance, index) => {
     return filteredVaults[index].version === 'V1' ? '0' : new BigNumber(stakedBalance[1]._hex).toJSON()
