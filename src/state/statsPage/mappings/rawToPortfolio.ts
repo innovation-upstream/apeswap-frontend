@@ -10,12 +10,16 @@ import {
   poolToPosition,
 } from './rawToPosition'
 
+export type ProductType = typeof productTypes[number]
+
 export interface PortfolioData {
   type: ProductType
   chainData: { [key in Chain]: Position[] }
   totalValue: number
   totalEarnings: number
 }
+
+const productTypes = ['farms', 'pools', 'vaults', 'jungleFarms', 'lending', 'maximizers', 'bills', 'iaos'] as const
 
 function initProducts(): PortfolioData[] {
   return productTypes.map((type) => ({
