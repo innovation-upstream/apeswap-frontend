@@ -1,16 +1,16 @@
 /** @jsxImportSource theme-ui */
 import { Button } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useMasterChefV2Contract } from 'hooks/useContract'
+import { useVaultApeV3 } from 'hooks/useContract'
 import React, { useState } from 'react'
 import { useAppDispatch } from 'state'
-import { updateFarmV2UserStakedBalances, updateFarmV2UserTokenBalances } from 'state/farmsV2'
-import { stakeMasterChefV2 } from 'utils/callHelpers'
+import { updateVaultV3UserBalance, updateVaultV3UserStakedBalance } from 'state/vaultsV3'
+import { stakeVaultV2 } from 'utils/callHelpers'
 
 const Stake = ({ pid, rawTokenBalance }: { pid: number; rawTokenBalance: string }) => {
   const [txPending, setTxPending] = useState(false)
   const { chainId, account } = useActiveWeb3React()
-  const masterChefV2 = useMasterChefV2Contract()
+  const vaultApeV3 = useVaultApeV3()
   const dispatch = useAppDispatch()
   return (
     <Button
@@ -19,11 +19,11 @@ const Stake = ({ pid, rawTokenBalance }: { pid: number; rawTokenBalance: string 
       load={txPending}
       onClick={() => {
         setTxPending(true)
-        stakeMasterChefV2(masterChefV2, pid, rawTokenBalance)
+        stakeVaultV2(vaultApeV3, pid, rawTokenBalance)
           .then(() => {
             setTxPending(false)
-            dispatch(updateFarmV2UserStakedBalances(chainId, pid, account))
-            dispatch(updateFarmV2UserTokenBalances(chainId, pid, account))
+            dispatch(updateVaultV3UserStakedBalance(account, chainId, pid))
+            dispatch(updateVaultV3UserBalance(account, chainId, pid))
           })
           .catch(() => {
             setTxPending(false)

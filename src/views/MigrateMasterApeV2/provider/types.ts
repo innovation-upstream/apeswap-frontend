@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 export interface MigrateContextData {
   activeIndex: number
   handleActiveIndexCallback: (activeIndex: number) => void
-  handleMaximizerApprovalToggle: (apeswapLps: ApeswapWalletLpInterface[], migrateMaximizers: boolean) => void
+  handleMaximizerApprovalToggle: (apeswapLps: MasterApeV2ProductsInterface[], migrateMaximizers: boolean) => void
   handleAddMigrationCompleteLog: (migrationLog: MigrationCompleteLog) => void
   handleUpdateMigrateLp: (
     id: string,
@@ -14,7 +14,7 @@ export interface MigrateContextData {
   ) => void
   migrateMaximizers: boolean
   v1Products: MasterApeProductsInterface[]
-  v2Products: MasterApeProductsInterface[]
+  v2Products: MasterApeV2ProductsInterface[]
   migrateLpStatus: MigrateLpStatus[]
   migrationCompleteLog: MigrationCompleteLog[]
   migrationLoading: boolean
@@ -56,8 +56,8 @@ export interface MigrationCompleteLog {
 
 export enum ProductTypes {
   FARM = 'FARM',
+  VAULT = 'VAULT',
   VAULT_V1 = 'VAULT_V1',
-  VAULT_V2 = 'VAULT_V2',
 }
 
 // Since LPs can be duplicate an ID is the product-lp combined
@@ -73,4 +73,22 @@ export interface MasterApeProductsInterface {
   walletBalance: string
   allowance: string
   lpValueUsd: number
+}
+
+export interface V2Product {
+  pid: number
+  token0: { address: string; symbol: string }
+  token1: { address: string; symbol: string }
+  stakedAmount: string
+  allowance: string
+}
+
+export interface MasterApeV2ProductsInterface {
+  id: string
+  lp: string
+  singleStakeAsset: boolean
+  walletBalance: string
+  lpValueUsd: number
+  farm: V2Product
+  vault: V2Product | null
 }

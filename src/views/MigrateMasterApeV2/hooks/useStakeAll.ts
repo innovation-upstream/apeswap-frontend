@@ -1,6 +1,11 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
-import { ApeswapWalletLpInterface, MasterApeProductsInterface, MigrateStatus } from '../provider/types'
+import {
+  ApeswapWalletLpInterface,
+  MasterApeProductsInterface,
+  MasterApeV2ProductsInterface,
+  MigrateStatus,
+} from '../provider/types'
 import { useMigrateAll } from '../provider'
 import { useVaults } from 'state/vaults/hooks'
 import { useMasterchef, useMasterChefV2Contract, useVaultApeV2 } from 'hooks/useContract'
@@ -19,8 +24,9 @@ const useStakeAll = () => {
   const vaults = fetchedVaults.filter((vault) => !vault.inactive)
 
   const handleStakeAll = useCallback(
-    (apeswapWalletLps: MasterApeProductsInterface[]) => {
-      apeswapWalletLps.map(async ({ walletBalance, lp, token0, token1, id, pid }) => {
+    (apeswapWalletLps: MasterApeV2ProductsInterface[]) => {
+      apeswapWalletLps.map(async ({ walletBalance, lp, id, vault, farm }) => {
+        const { token0, token1, pid } = migrateMaximizers && vault ? vault : farm
         try {
           // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
           const matchedVault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)

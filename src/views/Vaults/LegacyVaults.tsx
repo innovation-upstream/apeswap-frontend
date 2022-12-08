@@ -38,6 +38,7 @@ const LegacyVaults: React.FC = () => {
           padding: '5px',
           borderRadius: '10px 0px 10px 10px',
           mt: '40px',
+          mb: '20px',
           position: 'relative',
         }}
       >

@@ -1,7 +1,13 @@
 import React, { useCallback } from 'react'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import BigNumber from 'bignumber.js'
-import { ApeswapWalletLpInterface, MasterApeProductsInterface, MigrateLpStatus, MigrateStatus } from './types'
+import {
+  ApeswapWalletLpInterface,
+  MasterApeProductsInterface,
+  MasterApeV2ProductsInterface,
+  MigrateLpStatus,
+  MigrateStatus,
+} from './types'
 import { Farm, Vault } from 'state/types'
 import { MIGRATION_STEPS } from './constants'
 import { useFarms } from 'state/farms/hooks'
@@ -23,7 +29,7 @@ import { getBananaAddress } from 'utils/addressHelper'
  */
 export const setMigrateLpStatus = async (
   v1Products: MasterApeProductsInterface[],
-  v2Products: MasterApeProductsInterface[],
+  v2Products: MasterApeV2ProductsInterface[],
   v2Farms: Farm[],
   migrateMaximizers,
   setLpStatus: React.Dispatch<React.SetStateAction<MigrateLpStatus[]>>,
@@ -33,7 +39,7 @@ export const setMigrateLpStatus = async (
   // TODO: Remove the two or conditions after testing! This is because farmaway is the banana farm
   const bananaAddress = getBananaAddress(chainId)
   const farmAway = v2Products?.filter(({ singleStakeAsset }) => singleStakeAsset)
-  const filteredV1Products = [...v1Products, ...farmAway].filter(({ lp, token0 }) =>
+  const filteredV1Products = v1Products.filter(({ lp, token0 }) =>
     v2Farms.find(
       ({ lpAddresses }) =>
         lpAddresses[chainId].toLowerCase() === lp ||
@@ -41,14 +47,20 @@ export const setMigrateLpStatus = async (
         token0.symbol === 'FARMAWAY',
     ),
   )
+
+  console.log(filteredV1Products)
+  console.log(v2Products)
   const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, walletBalance, lp, id, token0, pid }) => {
     // TODO: Comeback to this when vaults get added
-    const matchedV2Product = v2Products?.find(({ id: v2Id }) => v2Id === id)
+    const matchedV2Product = v2Products?.find(({ lp: v2Lp }) => v2Lp === lp)
+    const idToUse = new BigNumber(stakedAmount).isGreaterThan(0) ? id : lp
+    console.log('Matched v2 product')
+    console.log(matchedV2Product)
     const isFarmAway = token0.symbol === 'FARMAWAY'
     // TODO: Remove when ready
     const isV1BananaFarm = lp === bananaAddress?.toLowerCase()
     return {
-      id,
+      id: idToUse,
       lp,
       status: {
         unstake: isFarmAway
@@ -59,7 +71,7 @@ export const setMigrateLpStatus = async (
         approveStake: isV1BananaFarm
           ? MigrateStatus.COMPLETE
           : matchedV2Product
-          ? new BigNumber(matchedV2Product.allowance).isGreaterThan(0)
+          ? new BigNumber(matchedV2Product.farm.allowance).isGreaterThan(0)
             ? MigrateStatus.COMPLETE
             : MigrateStatus.INCOMPLETE
           : MigrateStatus.INCOMPLETE,

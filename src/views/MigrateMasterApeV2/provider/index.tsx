@@ -3,7 +3,9 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { activeIndexHelper, setMigrateLpStatus } from './utils'
 import {
   useHandleAddMigrationCompleteLog,
+  useHandleMaximizerApprovalToggle,
   useHandleUpdateMigrateLp,
+  useMergedV2Products,
   usePullAndMergeV1Products,
   usePullAndMergeV2Products,
 } from './hooks'
@@ -13,6 +15,7 @@ import {
   MigrateContextData,
   MigrationCompleteLog,
   MasterApeProductsInterface,
+  MasterApeV2ProductsInterface,
 } from './types'
 import track from 'utils/track'
 import { useFarmsV2 } from 'state/farmsV2/hooks'
@@ -26,7 +29,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   const [migrationLoading, setMigrationLoading] = useState<boolean>(false)
   const [migrateMaximizers, setMigrateMaximizers] = useState<boolean>(false)
   const [v1Products, setV1Products] = useState<MasterApeProductsInterface[]>([])
-  const [v2Products, setV2Products] = useState<MasterApeProductsInterface[]>([])
+  const [v2Products, setV2Products] = useState<MasterApeV2ProductsInterface[]>([])
   const [migrationCompleteLog, setMigrationCompleteLog] = useState<MigrationCompleteLog[]>([])
   const [lpStatus, setLpStatus] = useState<MigrateLpStatus[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
@@ -36,7 +39,8 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
 
   // Helpful hooks used
   const { mergedProducts: v1ApeProducts, loaded: v1ProductsLoaded } = usePullAndMergeV1Products()
-  const { mergedProducts: v2ApeProducts, loaded: v2ProductsLoaded } = usePullAndMergeV2Products()
+  const { mergedProducts: v2ApeProducts, loaded: v2ProductsLoaded } = useMergedV2Products()
+  useMergedV2Products()
 
   // V1 products
   useEffect(() => {
@@ -54,7 +58,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   // Value filters and needed variables
   // Callbacks that are used on user actions
 
-  const handleMaximizerApprovalToggle = () => null // useHandleMaximizerApprovalToggle(lpStatus, setLpStatus, setMigrateMaximizers)
+  const handleMaximizerApprovalToggle = useHandleMaximizerApprovalToggle(lpStatus, setLpStatus, setMigrateMaximizers)
   const handleUpdateMigrateLp = useHandleUpdateMigrateLp(lpStatus, setLpStatus)
   const handleAddMigrationCompleteLog = useHandleAddMigrationCompleteLog(setMigrationCompleteLog)
   const handleActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
@@ -97,6 +101,8 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   //     setMigrationLoading(false)
   //   }
   // }
+
+  console.log(v2Products)
 
   return (
     <MigrateContext.Provider

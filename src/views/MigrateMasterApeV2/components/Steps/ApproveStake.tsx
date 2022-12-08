@@ -11,9 +11,9 @@ import StatusIcons from '../StatusIcons'
 import { useMigrateAll } from '../../provider'
 import useStakeApproveAll from '../../hooks/useStakeApproveAll'
 import useIsMobile from 'hooks/useIsMobile'
-import { ApeswapWalletLpInterface, MasterApeProductsInterface, MigrateStatus } from '../../provider/types'
+import { MasterApeProductsInterface, MasterApeV2ProductsInterface, MigrateStatus } from '../../provider/types'
 
-const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeProductsInterface[] }> = ({ apeswapWalletLps }) => {
+const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] }> = ({ apeswapWalletLps }) => {
   const { t } = useTranslation()
   const isMobile = useIsMobile()
 
@@ -25,7 +25,8 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeProductsInterface[] }>
     ({ id }) => migrateLpStatus?.find((status) => status.id === id)?.status.approveStake !== MigrateStatus.COMPLETE,
   )
 
-  const listView = filteredLpsForStake?.map(({ walletBalance, lp, token0, token1, id, singleStakeAsset }) => {
+  const listView = filteredLpsForStake?.map(({ walletBalance, lp, farm, vault, id, singleStakeAsset }) => {
+    const { token0, token1 } = migrateMaximizers && vault ? vault : farm
     const status = migrateLpStatus?.find((status) => status.id === id)
     return {
       beforeTokenContent: <StatusIcons id={id} />,
@@ -79,7 +80,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeProductsInterface[] }>
         <Text size="14px" weight={500} mr="10px">
           {t('Migrate to maximizers?')}
         </Text>
-        {/* <Flex>
+        <Flex>
           <Switch
             sx={{
               borderRadius: '8px',
@@ -91,7 +92,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeProductsInterface[] }>
             checked={migrateMaximizers}
             onChange={() => handleMaximizerApprovalToggle(apeswapWalletLps, !migrateMaximizers)}
           />
-        </Flex> */}
+        </Flex>
       </Flex>
       <Button mb="20px" onClick={() => handleApproveAll(filteredLpsForStake)}>
         Approve All

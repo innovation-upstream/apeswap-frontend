@@ -4,7 +4,12 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { useCallback } from 'react'
 import { getProviderOrSigner } from 'utils'
-import { ApeswapWalletLpInterface, MasterApeProductsInterface, MigrateStatus } from '../provider/types'
+import {
+  ApeswapWalletLpInterface,
+  MasterApeProductsInterface,
+  MasterApeV2ProductsInterface,
+  MigrateStatus,
+} from '../provider/types'
 import { useMigrateAll } from '../provider'
 import { useVaults } from 'state/vaults/hooks'
 import { useMasterChefAddress, useMasterChefV2Address, useVaultApeAddressV2 } from 'hooks/useAddress'
@@ -20,7 +25,7 @@ const useStakeApproveAll = () => {
   const vaults = fetchedVaults.filter((vault) => !vault.inactive)
 
   const handleApproveAll = useCallback(
-    (apeswapWalletLps: MasterApeProductsInterface[]) => {
+    (apeswapWalletLps: MasterApeV2ProductsInterface[]) => {
       apeswapWalletLps.map(async ({ lp, id }) => {
         try {
           // If maximizers is selected we need to check if one exists first. Otherwise approve the farm

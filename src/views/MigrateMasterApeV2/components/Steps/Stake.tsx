@@ -10,9 +10,9 @@ import StatusIcons from '../StatusIcons'
 import { useMigrateAll } from '../../provider'
 import useStakeAll from '../../hooks/useStakeAll'
 import useIsMobile from 'hooks/useIsMobile'
-import { MasterApeProductsInterface, MigrateStatus } from '../../provider/types'
-const Stake: React.FC<{ apeswapWalletLps: MasterApeProductsInterface[] }> = ({ apeswapWalletLps }) => {
-  const { migrateLpStatus } = useMigrateAll()
+import { MasterApeProductsInterface, MasterApeV2ProductsInterface, MigrateStatus } from '../../provider/types'
+const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] }> = ({ apeswapWalletLps }) => {
+  const { migrateLpStatus, migrateMaximizers } = useMigrateAll()
   const isMobile = useIsMobile()
   const handleStakeAll = useStakeAll()
   const { t } = useTranslation()
@@ -22,7 +22,8 @@ const Stake: React.FC<{ apeswapWalletLps: MasterApeProductsInterface[] }> = ({ a
     ({ id }) => migrateLpStatus?.find((status) => status.id === id)?.status.approveStake === MigrateStatus.COMPLETE,
   )
 
-  const listView = filteredLpsForStake?.map(({ walletBalance, token0, token1, id, singleStakeAsset }) => {
+  const listView = filteredLpsForStake?.map(({ walletBalance, id, singleStakeAsset, farm, vault }) => {
+    const { token0, token1 } = migrateMaximizers && vault ? vault : farm
     const status = migrateLpStatus?.find((status) => status.id === id)
     return {
       beforeTokenContent: <StatusIcons id={id} />,
