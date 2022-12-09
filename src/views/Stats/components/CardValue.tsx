@@ -22,8 +22,8 @@ const getDecimals = (value: number) => {
   return 2
 }
 
-const format = (value: number) => {
-  const decimals = getDecimals(value)
+const format = (value: number, decimals?: number) => {
+  if (!decimals) decimals = getDecimals(value)
 
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,
@@ -67,7 +67,7 @@ const CardValue: React.FC<CardValueProps> = ({
       style={{ width: `${width}`, maxWidth: `${maxWidth}` }}
     >
       {prefix}
-      {enableCountUp ? countUp : format(value)} {suffix}
+      {enableCountUp ? countUp : format(value, decimals)} {suffix}
     </Text>
   )
 }
