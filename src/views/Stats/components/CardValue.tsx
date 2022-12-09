@@ -15,6 +15,11 @@ interface CardValueProps {
   maxWidth?: string
 }
 
+const getDecimals = (value: number) => {
+  if (value === 0 || value > 1e5) return 0
+  if (value < 1) return 4
+  return 2
+}
 const CardValue: React.FC<CardValueProps> = ({
   value,
   decimals,
@@ -27,14 +32,14 @@ const CardValue: React.FC<CardValueProps> = ({
   width,
   maxWidth,
 }) => {
+  const decimalsFromValue = getDecimals(value)
+
   const { countUp, update } = useCountUp({
     start: 0,
     end: value,
     duration: 1,
     separator: ',',
-    decimals:
-      // eslint-disable-next-line no-nested-ternary
-      decimals !== undefined ? decimals : value === 0 ? 0 : value < 1 ? 4 : value > 1e5 ? 0 : 2,
+    decimals: decimals || decimalsFromValue,
   })
 
   const updateValue = useRef(update)
