@@ -45,7 +45,7 @@ export const BillCard: React.FC<BillProps> = ({ chain, imageUrl, name, type, tok
           </Flex>
           <div style={{ marginTop: '24px' }}>
             <StyledText>Value</StyledText>
-            <CardValue fontSize="16px" fontWeight={700} value={value} suffix={tokens.token3} />
+            <CardValue fontSize="16px" fontWeight={700} value={value} suffix={tokens.token3} enableCountUp />
             <Text fontSize="12px" fontWeight={500}>
               {timeRemaining}
             </Text>

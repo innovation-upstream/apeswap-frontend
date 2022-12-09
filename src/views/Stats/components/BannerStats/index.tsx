@@ -62,6 +62,7 @@ export const BannerStats = () => {
                 value={calculateTotalHoldings()}
                 decimals={2}
                 prefix="$"
+                enableCountUp
               />
             )}
             <PacocaPortfolio>
@@ -96,6 +97,7 @@ export const BannerStats = () => {
                       value={+stats.userHoldings.banana}
                       color="primaryBright"
                       decimals={2}
+                      enableCountUp
                     />
                     <Svg icon="banana_token" width={20} />
                   </>
@@ -121,6 +123,7 @@ export const BannerStats = () => {
                   color="primaryBright"
                   decimals={2}
                   prefix="$"
+                  enableCountUp
                 />
               )}
             </TranslucidCard>
@@ -138,6 +141,7 @@ export const BannerStats = () => {
                   color="primaryBright"
                   decimals={2}
                   prefix="$"
+                  enableCountUp
                 />
               )}
             </TranslucidCard>
