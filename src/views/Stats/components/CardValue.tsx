@@ -34,14 +34,12 @@ const CardValue: React.FC<CardValueProps> = ({
   maxWidth,
   enableCountUp,
 }) => {
-  const decimalsFromValue = getDecimals(value)
-
   const { countUp, update } = useCountUp({
     start: 0,
     end: value,
     duration: 1,
     separator: ',',
-    decimals: decimals || decimalsFromValue,
+    decimals: decimals || getDecimals(value),
   })
 
   const updateValue = useRef(update)
