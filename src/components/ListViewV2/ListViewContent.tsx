@@ -1,8 +1,8 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Flex, HelpIcon } from '@apeswapfinance/uikit'
-import { LpTag, TooltipBubble } from '@ape.swap/uikit'
-import { TitleContentText, ListViewContentContainer, ValueText, ValueSkeleton } from './styles'
+import { LpTag, Text, TooltipBubble } from '@ape.swap/uikit'
+import { TitleContentText, ListViewContentContainer, ValueText, ValueSkeleton, styles } from './styles'
 import { ListViewContentProps } from './types'
 
 const ListViewContent: React.FC<ListViewContentProps> = ({
@@ -48,7 +48,7 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
           </Flex>
         ) : (
           <Flex>
-            <TitleContentText lineHeight={lineHeight}>{tag ? <LpTag variant={tag} /> : title}</TitleContentText>
+            {tag ? <LpTag variant={tag} /> : <Text sx={styles.titleText}>{title}</Text>}
             {aprCalculator}
           </Flex>
         )}
