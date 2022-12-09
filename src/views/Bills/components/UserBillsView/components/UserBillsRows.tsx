@@ -39,9 +39,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
         <ListViewContent
           tag={LpTypeVariants.APE}
           value={bill.lpToken.symbol}
-          width={isMobile ? 150 : 150}
-          height={45}
-          ml={10}
+          style={{ width: '150px', height: '45px', ml: '10px' }}
         />
       ),
       titleContainerWidth: 255,
@@ -60,9 +58,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               <ListViewContent
                 title={t('Claimable')}
                 value={pendingRewards}
-                width={isMobile ? 120 : 165}
-                ml={20}
-                height={52.5}
+                style={{ width: isMobile ? '120px' : '165px', ml: '20px', height: '52.5px' }}
                 toolTip={t('This is the amount of tokens that have vested and available to claim.')}
                 toolTipPlacement="bottomLeft"
                 toolTipTransform="translate(29%, -4%)"
@@ -70,8 +66,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               <ListViewContent
                 title={t('Pending')}
                 value={pending}
-                width={isMobile ? 120 : 160}
-                height={52.5}
+                style={{ width: isMobile ? '120px' : '160px', height: '52.5px' }}
                 toolTip={t('This is the amount of unvested tokens that cannot be claimed yet.')}
                 toolTipPlacement="bottomLeft"
                 toolTipTransform="translate(22%, -4%)"

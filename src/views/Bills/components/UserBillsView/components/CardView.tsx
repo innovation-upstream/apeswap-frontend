@@ -37,14 +37,12 @@ const CardView: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender 
           justifyContent="space-between"
           style={{ height: '75px', width: '100%' }}
         >
-          <ListViewContent tag={LpTypeVariants.APE} value={bill.lpToken.symbol} height={50} width={130} />
           <ListViewContent
-            title={t('Claimable')}
-            value={pendingRewards}
-            height={50}
-            width={60}
-            justifyContent="flex-end"
+            tag={LpTypeVariants.APE}
+            value={bill.lpToken.symbol}
+            style={{ height: '50px', width: '130px' }}
           />
+          <ListViewContent title={t('Claimable')} value={pendingRewards} style={{ height: '50px', width: '60px' }} />
         </Flex>
         <Claim
           billAddress={bill.contractAddress[chainId]}
