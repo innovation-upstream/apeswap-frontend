@@ -2,7 +2,7 @@ import React from 'react'
 import { Svg, icons } from '@ape.swap/uikit'
 import { Chain } from 'state/statsPage/types'
 
-export const ChainLogo: React.FC<{ chain: Chain; width?: number }> = ({ chain, width }) => {
+export const ChainIcon: React.FC<{ chain: Chain; width?: number }> = ({ chain, width }) => {
   const getIcon = () => {
     switch (chain) {
       case 40:

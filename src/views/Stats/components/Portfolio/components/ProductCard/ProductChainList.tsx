@@ -4,7 +4,7 @@ import useIsMobile from 'hooks/useIsMobile'
 
 import ListView from '../ListView'
 import { ExtendedListViewProps } from '../ListView/types'
-import { ChainLogo } from 'views/Stats/components/ChainLogo'
+import { ChainIcon } from 'views/Stats/components/ChainIcon'
 
 import { Chain } from 'state/statsPage/types'
 import { AnimatedArrow, ChainDisplay } from '../../styles'
@@ -26,7 +26,7 @@ const ProductChainList: React.FC<ProductChainListProps> = ({ chain, listViews })
     <>
       <ChainDisplay onClick={toogle}>
         <Flex alignItems="center">
-          <ChainLogo chain={chain} width={22} />
+          <ChainIcon chain={chain} width={22} />
           <Text
             fontWeight={500}
             marginLeft={isMobile ? '10px' : '12px'}

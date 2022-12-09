@@ -10,7 +10,7 @@ import getTimePeriods from 'utils/getTimePeriods'
 
 import { Tooltip } from '../../../Tooltip'
 import CardValue from '../../../CardValue'
-import { ChainLogo } from 'views/Stats/components/ChainLogo'
+import { ChainIcon } from 'views/Stats/components/ChainIcon'
 import { NoContentPlaceholder } from 'views/Stats/components/NoContentPlaceholder'
 
 import { ChainIndicator, StyledTable, TableContainer, TableHeading } from '../../styles'
@@ -44,7 +44,7 @@ export const VestedEarnings: React.FC = () => {
                 <tr key={`${vesting.chain}-${'billId' in vesting ? vesting.billId : vesting.id}`}>
                   <td>
                     <ChainIndicator>
-                      <ChainLogo chain={vesting.chain} width={isMobile ? 12 : 14} />
+                      <ChainIcon chain={vesting.chain} width={isMobile ? 12 : 14} />
                     </ChainIndicator>
                     {'billId' in vesting
                       ? `${vesting.type} Bill #${vesting.billId}`

@@ -5,7 +5,7 @@ import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import CardValue from '../../CardValue'
 import { Chain } from 'state/statsPage/types'
 import { BillImageContainer, ChainIndicator, StyledCard, StyledText } from '../styles'
-import { ChainLogo } from '../../ChainLogo'
+import { ChainIcon } from '../../ChainIcon'
 
 interface BillProps {
   chain: Chain
@@ -23,7 +23,7 @@ export const BillCard: React.FC<BillProps> = ({ chain, imageUrl, name, type, tok
       <Flex flexDirection="column" alignItems="center" style={{ height: '100%' }}>
         <BillImageContainer>
           <ChainIndicator>
-            <ChainLogo chain={chain} width={20} />
+            <ChainIcon chain={chain} width={20} />
           </ChainIndicator>
           <Image src={`${imageUrl}?img-width=280`} width={230} height={132} />
         </BillImageContainer>

@@ -9,7 +9,7 @@ import useIsMobile from 'hooks/useIsMobile'
 import { useTranslation } from 'contexts/Localization'
 
 import CardValue from '../../../CardValue'
-import { ChainLogo } from 'views/Stats/components/ChainLogo'
+import { ChainIcon } from 'views/Stats/components/ChainIcon'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { NoContentPlaceholder } from 'views/Stats/components/NoContentPlaceholder'
 
@@ -31,7 +31,7 @@ const Asset = React.memo(function Asset({ amount, price, symbol, balance, chain 
           noEarnToken={symbol.includes('-') ? true : null}
         />
         <div style={{ margin: '6px -2px 0 -8px', alignSelf: 'start', zIndex: 1 }}>
-          <ChainLogo chain={chain} width={13} />
+          <ChainIcon chain={chain} width={13} />
         </div>
         <div style={{ marginLeft: '10px' }}>
           <Text fontSize={isMobile ? '14px' : '16px'} fontWeight={700}>
