@@ -13,6 +13,7 @@ interface CardValueProps {
   color?: string
   width?: string
   maxWidth?: string
+  enableCountUp?: boolean
 }
 
 const getDecimals = (value: number) => {
@@ -31,6 +32,7 @@ const CardValue: React.FC<CardValueProps> = ({
   color,
   width,
   maxWidth,
+  enableCountUp,
 }) => {
   const decimalsFromValue = getDecimals(value)
 
@@ -45,8 +47,8 @@ const CardValue: React.FC<CardValueProps> = ({
   const updateValue = useRef(update)
 
   useEffect(() => {
-    updateValue.current(value)
-  }, [value, updateValue])
+    if (enableCountUp) updateValue.current(value)
+  }, [value, updateValue, enableCountUp])
 
   return (
     <Text
