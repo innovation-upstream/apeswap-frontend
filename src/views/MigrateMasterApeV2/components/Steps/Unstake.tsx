@@ -24,7 +24,7 @@ const Unstake: React.FC<{ migrateList: MasterApeProductsInterface[] }> = ({ migr
     const formattedStakedBalanceBalance = stakedAmount?.substring(0, 8)
 
     return {
-      beforeTokenContent: <StatusIcons id={id} />,
+      beforeTokenContent: <StatusIcons id={id} migrateLpStatus={migrateLpStatus} />,
       tokens: singleStakeAsset ? { token1: token0.symbol } : { token1: token0.symbol, token2: token1.symbol },
       titleContainerWidth: 350,
       expandedContentSize: 70,

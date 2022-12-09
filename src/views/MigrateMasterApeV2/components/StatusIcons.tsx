@@ -4,12 +4,12 @@ import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import { Spinner } from 'theme-ui'
 import { useMigrateAll } from '../provider'
-import { MigrateStatus } from '../provider/types'
+import { MigrateLpStatus, MigrateStatus } from '../provider/types'
 
-const StatusIcons: React.FC<{ id: string }> = ({ id }) => {
-  const { migrateLpStatus } = useMigrateAll()
+const StatusIcons: React.FC<{ id: string; migrateLpStatus: MigrateLpStatus[] }> = ({ id, migrateLpStatus }) => {
   const status = migrateLpStatus.find((status) => status.id === id)
   const isMobile = useIsMobile()
+  console.log('RENDER SMENDER')
   return (
     <Flex
       sx={{
@@ -59,4 +59,4 @@ const StatusIcons: React.FC<{ id: string }> = ({ id }) => {
   )
 }
 
-export default StatusIcons
+export default React.memo(StatusIcons)

@@ -12,7 +12,7 @@ import {
 } from '../provider/types'
 import { useMigrateAll } from '../provider'
 import { useVaults } from 'state/vaults/hooks'
-import { useMasterChefAddress, useMasterChefV2Address, useVaultApeAddressV2 } from 'hooks/useAddress'
+import { useMasterChefV2Address, useVaultApeAddressV3 } from 'hooks/useAddress'
 import track from 'utils/track'
 
 const useStakeApproveAll = () => {
@@ -20,7 +20,7 @@ const useStakeApproveAll = () => {
   const { handleUpdateMigrateLp, migrateMaximizers } = useMigrateAll()
   const masterChefV2Address = useMasterChefV2Address()
   // TODO: Update vaults when ready
-  const vaultAddress = useVaultApeAddressV2()
+  const vaultAddress = useVaultApeAddressV3()
   const { vaults: fetchedVaults } = useVaults()
   const vaults = fetchedVaults.filter((vault) => !vault.inactive)
 

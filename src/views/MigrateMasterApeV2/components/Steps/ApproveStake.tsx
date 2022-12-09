@@ -29,7 +29,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
     const { token0, token1 } = migrateMaximizers && vault ? vault : farm
     const status = migrateLpStatus?.find((status) => status.id === id)
     return {
-      beforeTokenContent: <StatusIcons id={id} />,
+      beforeTokenContent: <StatusIcons id={id} migrateLpStatus={migrateLpStatus} />,
       tokens: singleStakeAsset ? { token1: token0.symbol } : { token1: token0.symbol, token2: token1.symbol },
       titleContainerWidth: 350,
       stakeLp: true,

@@ -11,7 +11,7 @@ import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
 import { Farm } from 'state/types'
-import { useFarmTags, useFarmOrderings } from 'state/farms/hooks'
+import { useFarmTags, useFarmOrderings, useFarms } from 'state/farms/hooks'
 import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
@@ -22,7 +22,7 @@ import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
 import LegacyFarms from './LegacyFarms'
 import DisplayDepositV2Farms from './components/DisplayDepositV2Farms'
 
-const Farms: React.FC = () => {
+const FarmsV2: React.FC = () => {
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
   const { pathname } = useLocation()
@@ -247,4 +247,4 @@ const Farms: React.FC = () => {
   )
 }
 
-export default React.memo(Farms)
+export default React.memo(FarmsV2)
