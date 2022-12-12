@@ -1,5 +1,4 @@
 import React from 'react'
-import { CSSProperties } from 'theme-ui'
 import { LpTagVariants } from '@ape.swap/uikit'
 
 export interface ListViewProps {
@@ -7,7 +6,6 @@ export interface ListViewProps {
   id?: string | number
   title: React.ReactNode //
   infoContent?: React.ReactNode //
-  infoContentPosition?: string //
   cardContent: React.ReactNode //
   expandedContent?: React.ReactNode //
   expandedContentSize?: number //
@@ -15,9 +13,6 @@ export interface ListViewProps {
   stakeLp?: boolean //
   earnLp?: boolean //
   titleContainerWidth?: number //
-  toolTipIconWidth?: string //
-  toolTipStyle?: CSSProperties //
-  ttWidth?: string //
   noEarnToken?: boolean //
 }
 

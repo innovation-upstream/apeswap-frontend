@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react'
 
-export const useCurrentTime = (update = true) => {
+/**
+ * Returns current time in ms
+ * @param refresh determines whether the hook will update the time every second or not
+ */
+
+export const useCurrentTime = (refresh = true) => {
   const [currentMillis, setCurrentMillis] = useState(new Date().getTime())
 
   useEffect(() => {
-    if (update) {
+    if (refresh) {
       const tick = () => {
         setCurrentMillis((prevMillis) => prevMillis + 1000)
       }
@@ -13,7 +18,7 @@ export const useCurrentTime = (update = true) => {
 
       return () => clearInterval(timerID)
     }
-  }, [update])
+  }, [refresh])
 
   return currentMillis
 }

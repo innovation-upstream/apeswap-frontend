@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 import ProjectLinks from '../../UserBillsView/components/ProjectLinks'
 import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
-import { Flex, InfoIcon, TooltipBubble, useMatchBreakpoints } from '@ape.swap/uikit'
+import { Flex, useMatchBreakpoints } from '@ape.swap/uikit'
 import BillModal from '../../Modals'
 import UnlockButton from 'components/UnlockButton'
 import { ExtendedListViewProps } from 'components/ListView/types'
@@ -45,9 +45,8 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
       id: bill.index,
       billArrow: true,
       title: <ListViewContent tag="ape" value={bill.lpToken.symbol} style={{ maxWidth: '150px', height: '45px' }} />,
-      toolTipIconWidth: '15px',
-      infoContentPosition: 'translate(10%, 0%)',
-      titleContainerWidth: 280,
+      infoContent: <ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} isMobile />,
+      titleContainerWidth: 275,
       cardContent: isMobile ? (
         <ListViewContentMobile
           title={'Discount'}
@@ -85,31 +84,20 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             style={{ maxWidth: '125px', ml: '10px' }}
             toolTip={t('This is the amount of available tokens for purchase.')}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(26%, 0%)"
+            toolTipTransform="translate(50%, 0%)"
           />
-          <Flex sx={{ width: '100%', maxWidth: '185px', minWidth: '145px' }}>
-            <Flex style={{ height: '100%', alignItems: 'center', minWidth: '145px' }}>
-              {account ? (
-                <BillModal
-                  bill={bill}
-                  buttonText={disabled ? t('SOLD OUT') : t('BUY')}
-                  id={bill.index}
-                  buyFlag
-                  disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
-                />
-              ) : (
-                <UnlockButton sx={{ width: '100%' }} />
-              )}
-            </Flex>
-            <Flex sx={{ alignItems: 'center', width: '40px', justifyContent: 'flex-end' }}>
-              <TooltipBubble
-                placement="bottomRight"
-                transformTip="translate(8%, -2%)"
-                body={<ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} />}
-              >
-                <InfoIcon width="20px" />
-              </TooltipBubble>
-            </Flex>
+          <Flex sx={{ width: '165px', minWidth: '145px' }}>
+            {account ? (
+              <BillModal
+                bill={bill}
+                buttonText={disabled ? t('SOLD OUT') : t('BUY')}
+                id={bill.index}
+                buyFlag
+                disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
+              />
+            ) : (
+              <UnlockButton sx={{ width: '100%' }} />
+            )}
           </Flex>
         </Flex>
       ),
@@ -134,7 +122,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
                   toolTipTransform={'translate(39%, 0%)'}
                 />
                 <ListViewContentMobile
-                  title={'Available'}
+                  title={'Available Tokens'}
                   value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 2)}
                   toolTip={`This is the amount of available tokens for purchase.`}
                   toolTipPlacement={'bottomLeft'}
