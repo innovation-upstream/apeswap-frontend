@@ -30,7 +30,7 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
                 placement={toolTipPlacement || 'topLeft'}
                 transformTip={toolTipTransform}
                 body={<Flex>{toolTip}</Flex>}
-                width="150px"
+                width="180px"
               >
                 <Text sx={styles.titleText}>
                   {title}
@@ -43,13 +43,19 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
           </Flex>
         ) : (
           <Flex>
-            {tag ? <LpTag variant={tag} /> : <Text sx={styles.titleText}>{title}</Text>}
+            {tag ? (
+              <Flex sx={{ margin: '4px 0' }}>
+                <LpTag variant={tag} />
+              </Flex>
+            ) : (
+              <Text sx={styles.titleText}>{title}</Text>
+            )}
             {aprCalculator}
           </Flex>
         )}
       </Flex>
       <Flex sx={{ flexDirection: valuesDirection }}>
-        <Flex sx={{ mr: '5px' }}>
+        <Flex>
           {valueIcon && valueIcon}
           <Text sx={{ ...styles.valueText, color: valueColor }}>
             {value.includes('NaN') || value.includes('undefined') || value.includes('null') ? (
@@ -59,7 +65,7 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
             )}
           </Text>
         </Flex>
-        <Flex>
+        <Flex sx={{ ml: valuesDirection === 'row' ? '5px' : 0 }}>
           {value2Icon && value2Icon}
           {value2 && (
             <Text sx={value2Secondary ? styles.secondaryText : styles.valueText}>

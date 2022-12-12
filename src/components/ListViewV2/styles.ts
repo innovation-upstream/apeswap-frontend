@@ -7,7 +7,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   listViewContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     width: '100%',
   },
   titleContainer: {
@@ -27,7 +27,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     height: '20px',
   },
   valueText: {
-    fontSize: ['12px', '16px'],
+    fontSize: ['12px', '12px', '16px'],
     color: 'primaryBright',
     lineHeight: '20px',
     fontWeight: 700,

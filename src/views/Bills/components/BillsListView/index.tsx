@@ -47,8 +47,6 @@ const BillsListView: React.FC = () => {
           return orderBy(billsToSort, (bill: Bills) => parseFloat(bill.discount), 'desc')
         case 'vesting':
           return orderBy(billsToSort, (bill: Bills) => parseFloat(bill.vestingTime), 'asc')
-        case 'price':
-          return orderBy(billsToSort, (bill: Bills) => parseFloat(bill.priceUsd), 'asc')
         case 'new':
           return orderBy(billsToSort, (bill: Bills) => bill.index, 'desc')
         default:

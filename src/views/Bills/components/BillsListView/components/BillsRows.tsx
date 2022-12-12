@@ -15,6 +15,7 @@ import { useTranslation } from 'contexts/Localization'
 import ListView from 'components/ListViewV2'
 import EmptyListComponent, { EmptyComponentType } from '../../EmptyListComponent/EmptyList'
 import { Bills } from 'state/types'
+import { formatNumberSI } from '../../../../../utils/formatNumber'
 
 interface BillsRowsProps {
   billsToRender: Bills[]
@@ -37,7 +38,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
     const threshold = new BigNumber(11).div(earnTokenPrice)
     const disabled = new BigNumber(available).lte(threshold)
 
-    const displayAvailable = available.toFixed(available.lte(10000000) ? 2 : 0)
+    const displayAvailable = available.toFixed(0)
 
     return {
       tokens: { token1: token.symbol, token2: quoteToken.symbol, token3: earnToken.symbol },
@@ -53,7 +54,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
       ),
       toolTipIconWidth: '15px',
       infoContentPosition: 'translate(10%, 0%)',
-      titleContainerWidth: 260,
+      titleContainerWidth: 280,
       cardContent: isMobile ? (
         <ListViewContentMobile
           title={'Discount'}
@@ -73,7 +74,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             value2Secondary
             valuesDirection="row"
             style={{ maxWidth: '135px', ml: '10px', height: '52.5px' }}
-            toolTip={`${disabled ? 'N/A' : `$${bill?.priceUsd}`}`}
+            toolTip={`${disabled ? 'N/A' : `${t('Price:')} $${bill?.priceUsd}`}`}
             toolTipPlacement="bottomLeft"
             toolTipTransform={'translate(23%, 0%)'}
           />
@@ -86,9 +87,9 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             toolTipTransform="translate(39%, 0%)"
           />
           <ListViewContent
-            title={t('Available Tokens')}
-            value={disabled ? '0' : parseFloat(displayAvailable).toLocaleString(undefined)}
-            style={{ maxWidth: '150px', ml: '10px', height: '52.5px' }}
+            title={t('Available')}
+            value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 2, false)[0]}
+            style={{ maxWidth: '90px', ml: '10px', height: '52.5px' }}
             toolTip={t('This is the amount of available tokens for purchase.')}
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(49%, 0%)"
