@@ -7,7 +7,7 @@ export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2)
 }
 
 // Formats a number with SI (International System of Units) sufixes
-export const formatNumberSI = (number: number, digits = 2, addPercentege = true) => {
+export const formatNumberSI = (number: number, digits = 2) => {
   const lookupSI = [
     { value: 1, symbol: ' ' },
     { value: 1e6, symbol: ' M' },
@@ -17,9 +17,7 @@ export const formatNumberSI = (number: number, digits = 2, addPercentege = true)
   const regEx = /\.0+$|(\.[0-9]*[1-9])0+$/
 
   let formatted: string
-  let symbol: string
   if (number >= 1e18) {
-    symbol = ''
     formatted = '∞'
   } else {
     let i: number
@@ -28,8 +26,7 @@ export const formatNumberSI = (number: number, digits = 2, addPercentege = true)
         break
       }
     }
-    symbol = '%'
     formatted = formatNumber(number / lookupSI[i].value, digits, digits).replace(regEx, '$1') + lookupSI[i].symbol
   }
-  return addPercentege ? [formatted, symbol] : [formatted]
+  return formatted
 }

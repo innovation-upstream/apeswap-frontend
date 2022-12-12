@@ -15,7 +15,7 @@ import { useTranslation } from 'contexts/Localization'
 import ListView from 'components/ListViewV2'
 import EmptyListComponent, { EmptyComponentType } from '../../EmptyListComponent/EmptyList'
 import { Bills } from 'state/types'
-import { formatNumberSI } from '../../../../../utils/formatNumber'
+import { formatNumberSI } from 'utils/formatNumber'
 
 interface BillsRowsProps {
   billsToRender: Bills[]
@@ -88,7 +88,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
           />
           <ListViewContent
             title={t('Available')}
-            value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 2, false)[0]}
+            value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 3)}
             style={{ maxWidth: '90px', ml: '10px', height: '52.5px' }}
             toolTip={t('This is the amount of available tokens for purchase.')}
             toolTipPlacement="bottomLeft"
@@ -141,8 +141,8 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
                   toolTipTransform={'translate(39%, 0%)'}
                 />
                 <ListViewContentMobile
-                  title={'Available Tokens'}
-                  value={disabled ? '0' : parseFloat(displayAvailable).toLocaleString(undefined)}
+                  title={'Available'}
+                  value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 2)}
                   toolTip={`This is the amount of available tokens for purchase.`}
                   toolTipPlacement={'bottomLeft'}
                   toolTipTransform={'translate(50%, 0%)'}

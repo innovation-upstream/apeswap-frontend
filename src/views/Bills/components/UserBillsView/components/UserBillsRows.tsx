@@ -15,6 +15,7 @@ import { LpTypeVariants } from 'components/ListViewV2/types'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { BillsToRender } from '../types'
 import { ExtendedListViewProps } from 'components/ListView/types'
+import { formatNumberSI } from '../../../../../utils/formatNumber'
 
 const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender }) => {
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
@@ -46,7 +47,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
           {isMobile ? (
             <ListViewContentMobile
               title={'Claimable'}
-              value={parseFloat(claimable.toFixed(0)).toLocaleString(undefined)}
+              value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
               value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(3)})`}
               value2Secondary
               toolTip={`This is the amount of tokens that have vested and available to claim.`}
@@ -57,7 +58,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
             <>
               <ListViewContent
                 title={t('Claimable')}
-                value={parseFloat(claimable.toFixed(0)).toLocaleString(undefined)}
+                value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
                 value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(3)})`}
                 value2Secondary
                 valuesDirection="row"
@@ -68,7 +69,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               />
               <ListViewContent
                 title={t('Pending')}
-                value={parseFloat(pending.toFixed(0)).toLocaleString(undefined)}
+                value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
                 value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(3)})`}
                 value2Secondary
                 valuesDirection="row"
@@ -98,7 +99,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
           <Flex sx={{ width: '100%', flexDirection: 'column' }}>
             <ListViewContentMobile
               title={'Pending'}
-              value={parseFloat(pending.toFixed(0)).toLocaleString(undefined)}
+              value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
               value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(3)})`}
               value2Secondary
               toolTip={`This is the amount of unvested tokens that cannot be claimed yet.`}
