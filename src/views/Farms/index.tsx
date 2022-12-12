@@ -3,8 +3,8 @@ import FarmsV2 from './FarmsV2'
 import TempLegacyFarms from './TempLegacyFarms'
 
 const Farms = () => {
-  return <TempLegacyFarms />
-  //  <FarmsV2 />
+  return <FarmsV2 />
+  //  <TempLegacyFarms />
 }
 
 export default Farms

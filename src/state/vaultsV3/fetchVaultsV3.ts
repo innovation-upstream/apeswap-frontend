@@ -22,9 +22,7 @@ const fetchVaults = async (
     vaultIds.push(vault.id)
     return fetchVaultCalls(vault, chainId)
   })
-  console.log(vaultCalls)
   const vals = await multicall(chainId, [...masterchefABI, ...erc20], vaultCalls)
-  console.log(vals)
   const vaultSettingsV3 = await masterVaultApeV3.getSettings()
   const chunkSize = vaultCalls.length / filteredVaults.length
   const chunkedVaults = chunk(vals, chunkSize)

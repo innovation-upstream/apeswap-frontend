@@ -219,7 +219,6 @@ export const vaultUnstakeV1 = async (vaultApeContract: VaultApeV1, pid, amount) 
 }
 
 export const stakeVaultV2 = async (vaultApeContract: VaultApeV2, pid, amount) => {
-  console.log(vaultApeContract)
   return vaultApeContract
     .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .then((trx) => {

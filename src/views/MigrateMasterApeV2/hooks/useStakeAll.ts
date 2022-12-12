@@ -31,7 +31,6 @@ const useStakeAll = () => {
         try {
           // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
           const matchedVault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)
-          console.log(matchedVault, migrateMaximizers)
           // Estimate gas to make sure transactions dont fail
           const gasEstimate =
             migrateMaximizers && matchedVault

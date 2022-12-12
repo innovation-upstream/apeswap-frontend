@@ -15,7 +15,6 @@ const MigrationRequiredPopup = () => {
   const { vaults } = useVaults()
   const userHasFarmOrVault =
     [...farms, ...vaults].filter((product) => new BigNumber(product?.userData?.stakedBalance).gt(0))?.length > 0
-  console.log(userHasFarmOrVault)
   const [open, setOpen] = useState(true)
   return (
     open &&

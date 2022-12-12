@@ -6,10 +6,10 @@ const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationComple
   migrationCompleteLog,
 }) => {
   return (
-    <Modal maxWidth="400px" minWidth="350px" zIndex={98} title="Successful Migration!" onDismiss={null}>
+    <Modal maxWidth="400px" minWidth="350px" zIndex={98} title="Successful Migration! 🎉" onDismiss={null}>
       <Flex sx={{ background: 'white2', flexDirection: 'column', width: '100%' }}>
         <Flex sx={{ margin: '10px 0px' }}>
-          <Text size="14px">You are no longer a virgin, congratulations. Heres a summary of your migration:</Text>
+          <Text size="14px">Your LPs have been migrated and staked on ApeSwap.</Text>
         </Flex>
         <Flex
           sx={{

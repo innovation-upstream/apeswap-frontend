@@ -9,7 +9,6 @@ import { MigrateLpStatus, MigrateStatus } from '../provider/types'
 const StatusIcons: React.FC<{ id: string; migrateLpStatus: MigrateLpStatus[] }> = ({ id, migrateLpStatus }) => {
   const status = migrateLpStatus.find((status) => status.id === id)
   const isMobile = useIsMobile()
-  console.log('RENDER SMENDER')
   return (
     <Flex
       sx={{

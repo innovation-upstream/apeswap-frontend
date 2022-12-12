@@ -38,7 +38,6 @@ const useUnstakeAll = () => {
         // TODO: Remove the or 0 pid after farmaway is removed
         const v2FarmPid =
           v2Farms.find(({ lpAddresses }) => migrateLp.lp === lpAddresses[chainId].toLowerCase())?.pid || 0
-        console.log(v2FarmPid)
         try {
           const { pid, stakedAmount, id, type, lp } = migrateLp
           // Define contracts in the callback to avoid a new contract being initalized every render

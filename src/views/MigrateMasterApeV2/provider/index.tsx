@@ -107,9 +107,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   //   }
   // }
 
-  console.log(v2Products)
-  console.warn(lpStatus)
-
   return (
     <MigrateContext.Provider
       value={{

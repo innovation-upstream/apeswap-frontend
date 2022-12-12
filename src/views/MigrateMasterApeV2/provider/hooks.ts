@@ -271,8 +271,6 @@ export const usePullAndMergeV1Products = () => {
     [vaults],
   )
 
-  console.log(userV1StakedVaults)
-
   // Standardize both farm and vaults to the same type interface to make flow easier
   const mergedProducts: MasterApeProductsInterface[] = useMemo(
     () => [
@@ -353,8 +351,6 @@ export const usePullAndMergeV2Products = (migrateMaximizers: boolean) => {
     () => vaults?.filter(({ userData }) => userData && new BigNumber(userData?.tokenBalance).isGreaterThan(0)),
     [vaults],
   )
-
-  console.log(userV3Vaults)
 
   // Standardize both farm and vaults to the same type interface to make flow easier
   const mergedProducts: MasterApeProductsInterface[] = useMemo(
@@ -440,7 +436,6 @@ export const usePullAndMergeV2Products = (migrateMaximizers: boolean) => {
       ),
     [mergedProducts, migrateMaximizers],
   )
-  console.log([...filterMergedUniqueFarms, ...filteredProducts])
   const loaded = !!vaults?.[0]?.userData && !!farms?.[0]?.userData && mergedProducts
   return {
     mergedProducts: useMemo(
@@ -517,8 +512,6 @@ export const useMergedV2Products = () => {
     )
   }, [userV2Farms, vaults, chainId])
   const loaded = !!vaults?.[0]?.userData && !!farms?.[0]?.userData && mergedProducts
-  console.log(loaded)
-  console.log(mergedProducts)
 
   return { mergedProducts, loaded }
 }

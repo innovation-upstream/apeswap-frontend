@@ -39,30 +39,16 @@ export const setMigrateLpStatus = async (
   // To make sure we dont have farms that wont be part of the migration we need to filter them out
   // TODO: Remove the two or conditions after testing! This is because farmaway is the banana farm
   const bananaAddress = getBananaAddress(chainId)
-  console.error('ASDASDASd')
-  console.error('ASDASDASd')
-  console.error('ASDASDASd')
-  console.error('ASDASDASd')
-  console.error('ASDASDASd')
-  console.error('ASDASDASd')
-  console.error('ASDASDASd')
-
-  console.log(v2Products)
   const farmAway = v2Products?.find(({ singleStakeAsset }) => singleStakeAsset)
-  console.log(farmAway)
 
   // TODO: Remove all FARMAWAY and BANANA code.
   const filteredV1Products = v1Products.filter(({ lp, token0 }) =>
     v2Farms.find(({ lpAddresses }) => lpAddresses[chainId].toLowerCase() === lp || lp === bananaAddress?.toLowerCase()),
   )
 
-  console.log(filteredV1Products)
-  console.log(v2Products)
   const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, lp, id, token0 }) => {
     const matchedV2Product = v2Products?.find(({ lp: v2Lp }) => v2Lp === lp)
     const idToUse = new BigNumber(stakedAmount).isGreaterThan(0) ? id : lp
-    console.log('Matched v2 product')
-    console.log(matchedV2Product)
     const isFarmAway = token0.symbol === 'FARMAWAY'
     // TODO: Remove when ready
     const isV1BananaFarm = lp === bananaAddress?.toLowerCase()

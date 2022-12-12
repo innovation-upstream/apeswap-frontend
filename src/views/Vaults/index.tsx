@@ -3,8 +3,8 @@ import TempLegacyVaults from './TempLegacyVaults'
 import VaultsV3 from './VaultsV3'
 
 const Vaults = () => {
-  return <TempLegacyVaults />
-  // <VaultsV3 />
+  return <VaultsV3 />
+  // <TempLegacyVaults />
 }
 
 export default Vaults
