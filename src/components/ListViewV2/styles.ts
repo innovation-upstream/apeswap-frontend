@@ -82,11 +82,9 @@ export const ListViewContainer = styled.div`
 export const ContentContainer = styled(Flex)`
   position: relative;
   width: 100%;
+  height: 100%;
   align-items: flex-end;
   justify-content: space-between;
-  ${({ theme }) => theme.mediaQueries.md} {
-    height: 60px;
-  }
 `
 
 export const ValueText = styled(Text)<{ value2Secondary?: boolean; valueColor?: string }>`

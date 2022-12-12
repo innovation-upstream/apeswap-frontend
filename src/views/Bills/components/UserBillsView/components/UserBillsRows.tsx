@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Flex, useMatchBreakpoints } from '@ape.swap/uikit'
-import ListView from 'components/ListView'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import BigNumber from 'bignumber.js'
@@ -15,6 +14,7 @@ import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { BillsToRender } from '../types'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import { formatNumberSI } from 'utils/formatNumber'
+import ListView from '../../../../../components/ListViewV2'
 
 const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender }) => {
   const { isXl, isLg, isXxl } = useMatchBreakpoints()
@@ -35,55 +35,51 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
       billArrow: true,
       title: <ListViewContent tag="ape" value={bill.lpToken.symbol} style={{ maxWidth: '150px', height: '45px' }} />,
       titleContainerWidth: 260,
-      cardContent: (
-        <Flex style={{ width: '100%', alignItems: 'center', justifyContent: 'flex-end' }}>
-          {isMobile ? (
-            <ListViewContentMobile
-              title={'Claimable'}
-              value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
-              value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
-              value2Secondary
-              toolTip={`This is the amount of tokens that have vested and available to claim.`}
-              toolTipPlacement={'bottomLeft'}
-              toolTipTransform={'translate(29%, 0%)'}
+      cardContent: isMobile ? (
+        <ListViewContentMobile
+          title={'Claimable'}
+          value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
+          value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
+          value2Secondary
+          toolTip={`This is the amount of tokens that have vested and available to claim.`}
+          toolTipPlacement={'bottomLeft'}
+          toolTipTransform={'translate(29%, 0%)'}
+        />
+      ) : (
+        <Flex style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
+          <ListViewContent
+            title={t('Claimable')}
+            value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
+            value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
+            value2Secondary
+            valuesDirection="row"
+            style={{ maxWidth: isMobile ? '120px' : '135px', ml: '10px', height: '52.5px' }}
+            toolTip={t('This is the amount of tokens that have vested and available to claim.')}
+            toolTipPlacement="bottomLeft"
+            toolTipTransform="translate(29%, -4%)"
+          />
+          <ListViewContent
+            title={t('Pending')}
+            value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
+            value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
+            value2Secondary
+            valuesDirection="row"
+            style={{ maxWidth: isMobile ? '120px' : '135px', ml: '10px', height: '52.5px' }}
+            toolTip={t('This is the amount of unvested tokens that cannot be claimed yet.')}
+            toolTipPlacement="bottomLeft"
+            toolTipTransform="translate(22%, -4%)"
+          />
+          <VestedTimer lastBlockTimestamp={billToRender.lastBlockTimestamp} vesting={billToRender.vesting} />
+          <Flex sx={{ minWidth: '220px', alignItems: 'center' }}>
+            <Claim
+              billAddress={bill.contractAddress[chainId]}
+              billIds={[billToRender.id]}
+              buttonSize={'100px'}
+              pendingRewards={billToRender?.pendingRewards}
+              margin={'0 10px'}
             />
-          ) : (
-            <>
-              <ListViewContent
-                title={t('Claimable')}
-                value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
-                value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
-                value2Secondary
-                valuesDirection="row"
-                style={{ maxWidth: isMobile ? '120px' : '135px', ml: '10px', height: '52.5px' }}
-                toolTip={t('This is the amount of tokens that have vested and available to claim.')}
-                toolTipPlacement="bottomLeft"
-                toolTipTransform="translate(29%, -4%)"
-              />
-              <ListViewContent
-                title={t('Pending')}
-                value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
-                value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
-                value2Secondary
-                valuesDirection="row"
-                style={{ maxWidth: isMobile ? '120px' : '135px', ml: '10px', height: '52.5px' }}
-                toolTip={t('This is the amount of unvested tokens that cannot be claimed yet.')}
-                toolTipPlacement="bottomLeft"
-                toolTipTransform="translate(22%, -4%)"
-              />
-              <VestedTimer lastBlockTimestamp={billToRender.lastBlockTimestamp} vesting={billToRender.vesting} />
-              <Flex sx={{ minWidth: '220px', alignItems: 'center' }}>
-                <Claim
-                  billAddress={bill.contractAddress[chainId]}
-                  billIds={[billToRender.id]}
-                  buttonSize={'100px'}
-                  pendingRewards={billToRender?.pendingRewards}
-                  margin={'0 10px'}
-                />
-                <BillModal buttonText={t('VIEW')} bill={bill} billId={billToRender.id} buttonSize={'100px'} />
-              </Flex>
-            </>
-          )}
+            <BillModal buttonText={t('VIEW')} bill={bill} billId={billToRender.id} buttonSize={'100px'} />
+          </Flex>
         </Flex>
       ),
       expandedContentSize: 185,

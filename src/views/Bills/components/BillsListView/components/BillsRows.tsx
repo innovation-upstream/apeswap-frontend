@@ -58,7 +58,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
           toolTipTransform={'translate(23%, 0%)'}
         />
       ) : (
-        <Flex style={{ width: '100%', alignItems: 'center', justifyContent: 'flex-end' }}>
+        <Flex style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
           <ListViewContent
             title={t('Discount')}
             valueColor={disabled ? null : parseFloat(bill?.discount) < 0 ? '#DF4141' : '#38A611'}
@@ -66,7 +66,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             value2={disabled ? '' : ` ($${parseFloat(bill?.priceUsd) < 0.001 ? '0.000...' : bill?.priceUsd})`}
             value2Secondary
             valuesDirection="row"
-            style={{ maxWidth: '135px', ml: '10px', height: '52.5px' }}
+            style={{ maxWidth: '130px', ml: '10px' }}
             toolTip={`${disabled ? 'N/A' : `${t('Price:')} $${bill?.priceUsd}`}`}
             toolTipPlacement="bottomLeft"
             toolTipTransform={'translate(23%, 0%)'}
@@ -74,20 +74,20 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
           <ListViewContent
             title={t('Vesting Term')}
             value={vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
-            style={{ maxWidth: '105px', ml: '10px', height: '52.5px' }}
+            style={{ maxWidth: '105px', ml: '10px' }}
             toolTip={t('This is how long it will take for all tokens in the Bill to fully vest.')}
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(39%, 0%)"
           />
           <ListViewContent
-            title={t('Available')}
+            title={t('Available Tokens')}
             value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 3)}
-            style={{ maxWidth: '90px', ml: '10px', height: '52.5px' }}
+            style={{ maxWidth: '125px', ml: '10px' }}
             toolTip={t('This is the amount of available tokens for purchase.')}
             toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(49%, 0%)"
+            toolTipTransform="translate(26%, 0%)"
           />
-          <>
+          <Flex sx={{ width: '100%', maxWidth: '185px', minWidth: '145px' }}>
             <Flex style={{ height: '100%', alignItems: 'center', minWidth: '145px' }}>
               {account ? (
                 <BillModal
@@ -110,7 +110,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
                 <InfoIcon width="20px" />
               </TooltipBubble>
             </Flex>
-          </>
+          </Flex>
         </Flex>
       ),
       expandedContentSize: 150,
