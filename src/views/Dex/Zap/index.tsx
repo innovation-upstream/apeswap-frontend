@@ -28,7 +28,6 @@ import track from 'utils/track'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTokenPriceUsd } from 'hooks/useTokenPriceUsd'
 
 function ZapLiquidity({
   match: {
@@ -56,7 +55,7 @@ function ZapLiquidity({
   const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
   const { onUserInput, onCurrencySelection } = useZapActionHandlers()
 
-  const tokenPrice = useTokenPriceUsd(chainId, zap.currencyIn.currency)
+  const [tradeValueUsd, setTradeValueUsd] = useState(0)
 
   const handleCurrencySelect = useCallback(
     (field: Field, currency: Currency[]) => {
@@ -78,7 +77,6 @@ function ZapLiquidity({
           zapErrorMessage: undefined,
           txHash: hash,
         })
-        const amount = getBalanceNumber(new BigNumber(zap.currencyIn.inputAmount.toString()))
         track({
           event: 'zap',
           chain: chainId,
@@ -88,8 +86,8 @@ function ZapLiquidity({
             token2: `${zap.currencyOut1.outputCurrency.getSymbol(chainId)}-${zap.currencyOut2.outputCurrency.getSymbol(
               chainId,
             )}`,
-            amount,
-            usdAmount: amount * tokenPrice,
+            amount: getBalanceNumber(new BigNumber(zap.currencyIn.inputAmount.toString())),
+            usdAmount: tradeValueUsd,
           },
         })
       })
@@ -99,7 +97,7 @@ function ZapLiquidity({
           txHash: undefined,
         })
       })
-  }, [zapCallback, zap, chainId, tokenPrice])
+  }, [zapCallback, zap, chainId, tradeValueUsd])
 
   const handleDismissConfirmation = useCallback(() => {
     // clear zapState if user close the error modal
@@ -147,6 +145,7 @@ function ZapLiquidity({
               onUserInput={onUserInput}
               handleMaxInput={handleMaxInput}
               isZapInput
+              setTradeValueUsd={setTradeValueUsd}
             />
             <Flex sx={{ margin: '10px', justifyContent: 'center' }}>
               <Svg icon="ZapArrow" />
