@@ -13,9 +13,11 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import ListView from 'components/ListViewV2'
 import EmptyListComponent, { EmptyComponentType } from '../../EmptyListComponent/EmptyList'
+import { Bills } from 'state/types'
+import { formatNumberSI } from 'utils/formatNumber'
 
 interface BillsRowsProps {
-  billsToRender: any
+  billsToRender: Bills[]
   noResults: boolean
 }
 
@@ -23,7 +25,6 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { isLg, isXl, isXxl } = useMatchBreakpoints()
-  const isSmall = !isXxl
   const isMobile = !isLg && !isXl && !isXxl
 
   const billsListView = billsToRender.map((bill) => {
@@ -36,20 +37,17 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
     const threshold = new BigNumber(11).div(earnTokenPrice)
     const disabled = new BigNumber(available).lte(threshold)
 
-    const displayAvailable = available.toFixed(available.lte(10000000) ? 2 : 0)
+    const displayAvailable = available.toFixed(0)
 
     return {
       tokens: { token1: token.symbol, token2: quoteToken.symbol, token3: earnToken.symbol },
       stakeLp: true,
       id: bill.index,
       billArrow: true,
-      title: <ListViewContent tag="ape" value={bill.lpToken.symbol} width={150} height={45} ml={0} />,
-      infoContent: isSmall && <ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} isMobile />,
-      ttWidth: isSmall && '200px',
+      title: <ListViewContent tag="ape" value={bill.lpToken.symbol} style={{ maxWidth: '150px', height: '45px' }} />,
       toolTipIconWidth: '15px',
-      toolTipStyle: isSmall && { marginRight: '10px' },
       infoContentPosition: 'translate(10%, 0%)',
-      titleContainerWidth: 260,
+      titleContainerWidth: 280,
       cardContent: isMobile ? (
         <ListViewContentMobile
           title={'Discount'}
@@ -62,104 +60,87 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
       ) : (
         <Flex style={{ width: '100%', alignItems: 'center', justifyContent: 'flex-end' }}>
           <ListViewContent
-            title={t('Price')}
-            value={disabled ? 'N/A' : `$${bill?.priceUsd}`}
-            width={isSmall ? 130 : 130}
-            ml={isSmall ? 10 : 15}
-            height={52.5}
-            toolTip={t('This is the current discounted price of the tokens.')}
-            toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(11%, 0%)"
-          />
-          <ListViewContent
             title={t('Discount')}
             valueColor={disabled ? null : parseFloat(bill?.discount) < 0 ? '#DF4141' : '#38A611'}
             value={disabled ? 'N/A' : `${bill?.discount}%`}
-            width={isSmall ? 75 : 90}
-            ml={isSmall ? 10 : 15}
-            height={52.5}
-            toolTip={t("This is the percentage discount relative to the token's current market price.")}
+            value2={disabled ? '' : ` ($${parseFloat(bill?.priceUsd) < 0.001 ? '0.000...' : bill?.priceUsd})`}
+            value2Secondary
+            valuesDirection="row"
+            style={{ maxWidth: '135px', ml: '10px', height: '52.5px' }}
+            toolTip={`${disabled ? 'N/A' : `${t('Price:')} $${bill?.priceUsd}`}`}
             toolTipPlacement="bottomLeft"
             toolTipTransform={'translate(23%, 0%)'}
           />
           <ListViewContent
             title={t('Vesting Term')}
             value={vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
-            width={isSmall ? 105 : 105}
-            ml={isSmall ? 10 : 15}
-            height={52.5}
+            style={{ maxWidth: '105px', ml: '10px', height: '52.5px' }}
             toolTip={t('This is how long it will take for all tokens in the Bill to fully vest.')}
-            toolTipPlacement={isSmall ? 'bottomRight' : 'bottomLeft'}
-            toolTipTransform={isSmall ? 'translate(13%, 0%)' : 'translate(39%, 0%)'}
+            toolTipPlacement="bottomLeft"
+            toolTipTransform="translate(39%, 0%)"
           />
           <ListViewContent
-            title={t('Available Tokens')}
-            value={disabled ? '0' : parseFloat(displayAvailable).toLocaleString(undefined)}
-            width={isSmall ? 150 : 150}
-            ml={isSmall ? 10 : 15}
-            height={52.5}
+            title={t('Available')}
+            value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 3)}
+            style={{ maxWidth: '90px', ml: '10px', height: '52.5px' }}
             toolTip={t('This is the amount of available tokens for purchase.')}
-            toolTipPlacement={isSmall ? 'bottomRight' : 'bottomLeft'}
-            toolTipTransform={isSmall ? 'translate(13%, 0%)' : 'translate(49%, 0%)'}
+            toolTipPlacement="bottomLeft"
+            toolTipTransform="translate(49%, 0%)"
           />
-          {!isSmall && (
-            <>
-              <Flex style={{ height: '100%', alignItems: 'center', minWidth: '145px' }}>
-                {account ? (
-                  <BillModal
-                    bill={bill}
-                    buttonText={disabled ? t('SOLD OUT') : t('BUY')}
-                    id={bill.index}
-                    buyFlag
-                    disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
-                  />
-                ) : (
-                  <UnlockButton sx={{ width: '100%' }} />
-                )}
-              </Flex>
-              <Flex sx={{ alignItems: 'center', height: '100%', marginLeft: '20px' }}>
-                <TooltipBubble
-                  placement="bottomRight"
-                  transformTip="translate(8%, -2%)"
-                  body={<ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} />}
-                >
-                  <InfoIcon width="20px" />
-                </TooltipBubble>
-              </Flex>
-            </>
-          )}
+          <>
+            <Flex style={{ height: '100%', alignItems: 'center', minWidth: '145px' }}>
+              {account ? (
+                <BillModal
+                  bill={bill}
+                  buttonText={disabled ? t('SOLD OUT') : t('BUY')}
+                  id={bill.index}
+                  buyFlag
+                  disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
+                />
+              ) : (
+                <UnlockButton sx={{ width: '100%' }} />
+              )}
+            </Flex>
+            <Flex sx={{ alignItems: 'center', width: '40px', justifyContent: 'flex-end' }}>
+              <TooltipBubble
+                placement="bottomRight"
+                transformTip="translate(8%, -2%)"
+                body={<ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} />}
+              >
+                <InfoIcon width="20px" />
+              </TooltipBubble>
+            </Flex>
+          </>
         </Flex>
       ),
       expandedContentSize: 150,
-      expandedContent: isSmall && (
+      expandedContent: isMobile && (
         <Flex sx={{ alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
           {account ? (
             <Flex sx={{ width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
-              {isMobile && (
-                <Flex sx={{ flexWrap: 'wrap', padding: '0 10px 10px 10px', width: '100%' }}>
-                  <ListViewContentMobile
-                    title={'Price'}
-                    value={disabled ? 'N/A' : `$${bill?.priceUsd}`}
-                    toolTip={`This is the current discounted price of the tokens.`}
-                    toolTipPlacement={'bottomLeft'}
-                    toolTipTransform={'translate(10%, 0%)'}
-                  />
-                  <ListViewContentMobile
-                    title={'Vesting Term'}
-                    value={disabled ? 'N/A' : vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
-                    toolTip={`This is how long it will take for all tokens in the Bill to fully vest.`}
-                    toolTipPlacement={'bottomLeft'}
-                    toolTipTransform={'translate(39%, 0%)'}
-                  />
-                  <ListViewContentMobile
-                    title={'Available Tokens'}
-                    value={disabled ? '0' : parseFloat(displayAvailable).toLocaleString(undefined)}
-                    toolTip={`This is the amount of available tokens for purchase.`}
-                    toolTipPlacement={'bottomLeft'}
-                    toolTipTransform={'translate(50%, 0%)'}
-                  />
-                </Flex>
-              )}
+              <Flex sx={{ flexWrap: 'wrap', padding: '0 10px 10px 10px', width: '100%' }}>
+                <ListViewContentMobile
+                  title={'Price'}
+                  value={disabled ? 'N/A' : `$${bill?.priceUsd}`}
+                  toolTip={`This is the current discounted price of the tokens.`}
+                  toolTipPlacement={'bottomLeft'}
+                  toolTipTransform={'translate(10%, 0%)'}
+                />
+                <ListViewContentMobile
+                  title={'Vesting Term'}
+                  value={disabled ? 'N/A' : vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
+                  toolTip={`This is how long it will take for all tokens in the Bill to fully vest.`}
+                  toolTipPlacement={'bottomLeft'}
+                  toolTipTransform={'translate(39%, 0%)'}
+                />
+                <ListViewContentMobile
+                  title={'Available'}
+                  value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 2)}
+                  toolTip={`This is the amount of available tokens for purchase.`}
+                  toolTipPlacement={'bottomLeft'}
+                  toolTipTransform={'translate(50%, 0%)'}
+                />
+              </Flex>
               <Flex sx={{ width: '240px', justifyContent: 'center' }}>
                 <BillModal
                   bill={bill}
