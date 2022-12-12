@@ -21,6 +21,7 @@ import {
 import { ProtocolDashboardState } from './protocolDashboard/types'
 import { ApiResponse } from './statsPage/types'
 import { InfoState } from './info/types'
+import { MigrationTimerState } from './migrationTimer/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -665,4 +666,5 @@ export interface State {
   protocolDashboard: ProtocolDashboardState
   userStats: ApiResponse
   info: InfoState
+  migrationTimer: MigrationTimerState
 }

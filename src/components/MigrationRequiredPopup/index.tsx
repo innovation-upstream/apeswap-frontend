@@ -6,10 +6,13 @@ import useIsMobile from 'hooks/useIsMobile'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useFarms } from 'state/farms/hooks'
+import { useMigrationPhase } from 'state/migrationTimer/hooks'
+import { MigrationPhases } from 'state/migrationTimer/types'
 import { useVaults } from 'state/vaults/hooks'
 
 const MigrationRequiredPopup = () => {
   const { account } = useActiveWeb3React()
+  const currentPhase = useMigrationPhase()
   const isMobile = useIsMobile()
   const farms = useFarms(account)
   const { vaults } = useVaults()
@@ -38,7 +41,7 @@ const MigrationRequiredPopup = () => {
           <Flex>
             <Svg icon="info" width={20} />
             <Text size="22px" weight={700} ml="10px">
-              Migration Required
+              {currentPhase === MigrationPhases.MIGRATE_PHASE_2 ? 'Migration Required' : 'Migration Starting Soon'}
             </Text>
           </Flex>
           <Text weight={500} size="20px" sx={{ cursor: 'pointer' }} onClick={() => setOpen(false)}>

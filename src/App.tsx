@@ -33,6 +33,7 @@ import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
 import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
 import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 import { usePollVaultsV3Data, usePollVaultV3UserData, useSetVaultsV3 } from 'state/vaultsV3/hooks'
+import { useMonitorMigrationPhase } from 'state/migrationTimer/hooks'
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -119,6 +120,7 @@ const App: React.FC = () => {
   // Loading migration data on load.
   // This should be removed after the migration process has finished
   // This has high performance impact
+  useMonitorMigrationPhase()
   useSetFarms()
   useSetFarmsV2()
   useSetVaults()
