@@ -1,15 +1,25 @@
 /** @jsxImportSource theme-ui */
-import { Text } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import useCurrentTime from 'hooks/useTimer'
 import React from 'react'
+import { useMigrationTimes } from 'state/migrationTimer/hooks'
 import getTimePeriods from 'utils/getTimePeriods'
 
 const MigrateTimer = ({ migrateTimeStart }: { migrateTimeStart: number }) => {
   const currentTime = useCurrentTime()
-  const time = getTimePeriods(migrateTimeStart - currentTime / 1000)
+  const migrateTimes = useMigrationTimes()
+  const phase0 = getTimePeriods(migrateTimes.migrate_phase_0 - currentTime / 1000)
+  const phase1 = getTimePeriods(migrateTimes.migrate_phase_1 - currentTime / 1000)
+  const phase2 = getTimePeriods(migrateTimes.migrate_phase_2 - currentTime / 1000)
 
   return (
-    <>
+    <Flex
+      sx={{
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        '@media screen and (min-width: 1130px)': { minWidth: '350px' },
+      }}
+    >
       <Text
         size="1.5vw"
         sx={{
@@ -25,14 +35,15 @@ const MigrateTimer = ({ migrateTimeStart }: { migrateTimeStart: number }) => {
         size="3vw"
         sx={{
           lineHeight: 0,
+          width: 'fit-content',
           '@media screen and (min-width: 1130px)': {
-            fontSize: '55px',
+            fontSize: '45px',
           },
         }}
       >
-        {`${time?.days}d ${time?.minutes}m ${time?.seconds.toFixed(0)}s`}
+        {`${phase2?.days}d ${phase2?.hours}h ${phase2?.minutes}m ${phase2?.seconds.toFixed(0)}s`}
       </Text>
-    </>
+    </Flex>
   )
 }
 

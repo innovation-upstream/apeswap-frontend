@@ -10,17 +10,20 @@ export const useMigrationTimes = () => {
 }
 
 export const useMonitorMigrationPhase = () => {
-  const time = useCurrentTime()
+  const time = useCurrentTime() / 1000
   const migrationPhaseTimes = useMigrationTimes()
   const dispatch = useAppDispatch()
   if (time > migrationPhaseTimes.migrate_phase_2) {
     dispatch(setMigrationPhase(MigrationPhases.MIGRATE_PHASE_2))
+    return
   }
   if (time > migrationPhaseTimes.migrate_phase_1) {
     dispatch(setMigrationPhase(MigrationPhases.MIGRATE_PHASE_1))
+    return
   }
   if (time > migrationPhaseTimes.migrate_phase_0) {
     dispatch(setMigrationPhase(MigrationPhases.MIGRATE_PHASE_0))
+    return
   }
 }
 

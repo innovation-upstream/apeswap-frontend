@@ -38,7 +38,6 @@ const MigrateMasterApeV2: React.FC = () => {
               bottom: '47.5%',
               zIndex: 10,
               flexDirection: 'column',
-              width: '30%',
               flexWrap: 'no-wrap',
               alignItems: 'flex-start',
             }}
