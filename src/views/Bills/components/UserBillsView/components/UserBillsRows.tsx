@@ -48,7 +48,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
             <ListViewContentMobile
               title={'Claimable'}
               value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
-              value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(3)})`}
+              value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
               value2Secondary
               toolTip={`This is the amount of tokens that have vested and available to claim.`}
               toolTipPlacement={'bottomLeft'}
@@ -59,7 +59,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               <ListViewContent
                 title={t('Claimable')}
                 value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
-                value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(3)})`}
+                value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
                 value2Secondary
                 valuesDirection="row"
                 style={{ maxWidth: isMobile ? '120px' : '135px', ml: '10px', height: '52.5px' }}
@@ -70,7 +70,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               <ListViewContent
                 title={t('Pending')}
                 value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
-                value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(3)})`}
+                value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
                 value2Secondary
                 valuesDirection="row"
                 style={{ maxWidth: isMobile ? '120px' : '135px', ml: '10px', height: '52.5px' }}
@@ -100,7 +100,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
             <ListViewContentMobile
               title={'Pending'}
               value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
-              value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(3)})`}
+              value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
               value2Secondary
               toolTip={`This is the amount of unvested tokens that cannot be claimed yet.`}
               toolTipPlacement={'bottomLeft'}

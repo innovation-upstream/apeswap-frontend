@@ -10,11 +10,12 @@ import { useBills } from '../../../../state/bills/hooks'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import orderBy from 'lodash/orderBy'
 import BillsRows from './components/BillsRows'
+import { useLocation } from 'react-router-dom'
 
 const BillsListView: React.FC = () => {
   const bills = useBills()
   const { chainId } = useActiveWeb3React()
-
+  const location = useLocation()
   const [query, setQuery] = useState('')
   const [filterOption, setFilterOption] = useState('filter')
   const [sortOption, setSortOption] = useState('sort')
@@ -65,7 +66,11 @@ const BillsListView: React.FC = () => {
       if (showAvailable && disabled) return
       if (!showAvailable && !disabled) return
       if (showOnlyDiscount && !discount) return
-      billsToReturn.push(bill)
+      if (location.search.includes(`id=${bill.index}`)) {
+        billsToReturn.unshift(bill)
+      } else {
+        billsToReturn.push(bill)
+      }
     })
     if (query) {
       billsToReturn = billsToReturn?.filter((bill) => {
@@ -79,7 +84,7 @@ const BillsListView: React.FC = () => {
       billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'JUNGLE Bill'.toUpperCase())
     }
     return sortBills(billsToReturn)
-  }, [bills, isSoldOut, query, showAvailable, filterOption, showOnlyDiscount, hasDiscount, sortBills])
+  }, [bills, isSoldOut, query, showAvailable, filterOption, showOnlyDiscount, hasDiscount, sortBills, location.search])
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
