@@ -37,7 +37,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
       title: singleStakeAsset ? token0.symbol : `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       expandedContentSize: 70,
       noEarnToken: true,
-      forMigratonList: true,
+      forMigrationList: true,
       id: id,
       cardContent: !isMobile ? (
         <>
@@ -62,7 +62,14 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
   })
 
   return (
-    <Flex sx={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+    <Flex
+      sx={{
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+      }}
+    >
       <Text size="22px" weight={700} mb="15px">
         {t('Approve All LPs')}
       </Text>

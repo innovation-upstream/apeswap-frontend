@@ -36,7 +36,7 @@ const Stake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> = ({ ape
       stakeLp: true,
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       noEarnToken: true,
-      forMigratonList: true,
+      forMigrationList: true,
       id: lpAddress,
       cardContent: !isMobile ? (
         <>

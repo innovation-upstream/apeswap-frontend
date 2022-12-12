@@ -41,7 +41,7 @@ export const ListCardContainer = styled(Flex)<{ backgroundColor: string; forMigr
   padding: 10px 20px 10px 20px;
   margin: 0px 10px 0px 10px;
   max-width: 500px;
-  min-width: 300px;
+  min-width: ${({ forMigrationList }) => (forMigrationList ? '250px' : '300px')};
   width: 100%;
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;

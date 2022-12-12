@@ -29,12 +29,11 @@ const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] }> = ({
       beforeTokenContent: <StatusIcons id={id} migrateLpStatus={migrateLpStatus} />,
       tokens: singleStakeAsset ? { token1: token0.symbol } : { token1: token0.symbol, token2: token1.symbol },
       backgroundColor: 'white3',
-      titleContainerWidth: isMobile ? 0 : 350,
       expandedContentSize: 70,
       stakeLp: true,
       title: singleStakeAsset ? token0.symbol : `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       noEarnToken: true,
-      forMigratonList: true,
+      forMigrationList: true,
       id: id,
       cardContent: !isMobile ? (
         <>
@@ -59,7 +58,14 @@ const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] }> = ({
   })
 
   return (
-    <Flex sx={{ flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+    <Flex
+      sx={{
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+      }}
+    >
       <Text size="22px" weight={700} mb="15px">
         {t('Stake All LPs')}
       </Text>

@@ -70,6 +70,10 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
 
   // On load and value change hooks
 
+  const loading = useMemo(() => {
+    return !(v1ProductsLoaded && v2ProductsLoaded)
+  }, [v1ProductsLoaded, v2ProductsLoaded])
+
   // Monitor is status change for active index
   // TODO: Come back to this
   useMemo(() => {
@@ -83,17 +87,13 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     //     },
     //   })
     // }
-    setActiveIndex(newActiveIndex)
-  }, [lpStatus])
-
-  const loaded = useMemo(() => {
-    return !(v1ProductsLoaded && v2ProductsLoaded)
-  }, [v1ProductsLoaded, v2ProductsLoaded])
+    setActiveIndex(loading ? 0 : newActiveIndex)
+  }, [lpStatus, loading])
 
   // Set the initial status for each LP
   useEffect(() => {
     setMigrateLpStatus(v1ApeProducts, v2ApeProducts, v2Farms, migrateMaximizers, setLpStatus, chainId)
-  }, [loaded, account, chainId])
+  }, [loading, account, chainId])
 
   // Migration loading logic
 
@@ -114,7 +114,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
         migrateMaximizers,
         migrateLpStatus: lpStatus,
         migrationCompleteLog,
-        migrationLoading: loaded,
+        migrationLoading: loading,
         v1Products,
         v2Products,
         handleActiveIndexCallback,

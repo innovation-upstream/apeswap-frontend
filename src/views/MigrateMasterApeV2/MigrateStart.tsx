@@ -35,28 +35,28 @@ const MigrateStart: React.FC = () => {
   }, [allStepsComplete, migrationCompleteLog.length])
   return (
     <>
-      {account ? (
-        migrationLoading ? (
-          <LoadingYourMigration />
-        ) : migrateLpStatus.length !== 0 ? (
-          <MigrateProgress>
+      <MigrateProgress>
+        {account ? (
+          migrationLoading ? (
+            <LoadingYourMigration />
+          ) : migrateLpStatus.length !== 0 ? (
             <Steps />
-          </MigrateProgress>
+          ) : (
+            <Flex sx={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+              <Text size="26px" weight={700}>
+                You have nothing to migrate
+              </Text>
+              <Button to="/swap" as={Link} mt="20px">
+                Return Back To Swap
+              </Button>
+            </Flex>
+          )
         ) : (
-          <Flex sx={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-            <Text size="26px" weight={700}>
-              You have nothing to migrate
-            </Text>
-            <Button to="/swap" as={Link} mt="20px">
-              Return Back To Swap
-            </Button>
+          <Flex sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+            <UnlockButton />
           </Flex>
-        )
-      ) : (
-        <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
-          <UnlockButton />
-        </Flex>
-      )}
+        )}
+      </MigrateProgress>
     </>
   )
 }

@@ -32,7 +32,7 @@ const Unstake: React.FC<{ migrateList: MasterApeProductsInterface[] }> = ({ migr
       backgroundColor: 'white3',
       title: singleStakeAsset ? token0.symbol : `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       noEarnToken: true,
-      forMigratonList: true,
+      forMigrationList: true,
       id: id,
       cardContent: !isMobile ? (
         <>

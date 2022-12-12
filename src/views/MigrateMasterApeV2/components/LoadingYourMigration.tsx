@@ -10,9 +10,7 @@ const LoadingYourMigration: React.FC = () => {
   return (
     <Flex
       sx={{
-        height: '100vh',
         width: '100%',
-        background: 'white1',
         borderRadius: '10px',
         alignItems: 'center',
         flexDirection: 'column',
@@ -20,10 +18,10 @@ const LoadingYourMigration: React.FC = () => {
         mt: isMobile ? '0px' : '20px',
       }}
     >
-      <Text size={isMobile ? '16px' : '30px'} weight={700}>
+      <Text size={isMobile ? '14px' : '25px'} weight={700}>
         Loading Your Custom Migration Experience <Dots />
       </Text>
-      <Flex sx={{ width: isMobile ? '290px' : '400px' }}>
+      <Flex sx={{ width: isMobile ? '290px' : '350px' }}>
         <Lottie animationData={typingMonkey} loop />
       </Flex>
     </Flex>

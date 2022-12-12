@@ -43,7 +43,7 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
             ttWidth={view?.ttWidth}
             backgroundColor={view?.backgroundColor}
             beforeTokenContent={view?.beforeTokenContent}
-            forMigratonList={view?.forMigratonList}
+            forMigrationList={view?.forMigrationList}
           />
         ) : (
           <ListCard

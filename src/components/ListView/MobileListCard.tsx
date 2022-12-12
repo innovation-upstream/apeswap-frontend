@@ -18,7 +18,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
   ttWidth,
   backgroundColor,
   beforeTokenContent,
-  forMigratonList,
+  forMigrationList,
 }) => {
   const [expanded, setExpanded] = useState(open)
   return (
@@ -26,7 +26,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
       <ListCardContainer
         onClick={() => setExpanded((prev) => !prev)}
         backgroundColor={backgroundColor}
-        forMigrationList={forMigratonList}
+        forMigrationList={forMigrationList}
       >
         <Flex sx={{ width: '100%', justifyContent: 'space-between' }}>
           {beforeTokenContent && <Flex>{beforeTokenContent}</Flex>}
@@ -65,7 +65,13 @@ const MobileListCard: React.FC<ListCardProps> = ({
             animate={{ opacity: 1, height: 'fit-content' }}
             exit={{ opacity: 1 }}
             transition={{ opacity: { duration: 0.4 } }}
-            sx={{ position: 'relative', width: '100%', maxWidth: '500px', minWidth: '300px', background: 'white3' }}
+            sx={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '500px',
+              minWidth: forMigrationList ? '250px' : '300px',
+              background: 'white3',
+            }}
           >
             <Flex
               sx={{
