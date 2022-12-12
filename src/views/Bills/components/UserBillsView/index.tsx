@@ -39,13 +39,17 @@ const UserBillsView: React.FC<UserBillsViewProps> = ({ handleBillsViewChange }) 
           case 'claimable':
             return orderBy(
               bills,
-              (bill) => getBalanceNumber(new BigNumber(bill.pendingRewards), bill?.bill?.earnToken?.decimals[chainId]),
+              (bill) =>
+                getBalanceNumber(new BigNumber(bill.pendingRewards), bill?.bill?.earnToken?.decimals[chainId]) *
+                bill?.bill?.earnTokenPrice,
               'desc',
             )
           case 'pending':
             return orderBy(
               bills,
-              (bill) => getBalanceNumber(new BigNumber(bill.payout), bill?.bill?.earnToken?.decimals[chainId]),
+              (bill) =>
+                getBalanceNumber(new BigNumber(bill.payout), bill?.bill?.earnToken?.decimals[chainId]) *
+                bill?.bill?.earnTokenPrice,
               'desc',
             )
           case 'vested':
