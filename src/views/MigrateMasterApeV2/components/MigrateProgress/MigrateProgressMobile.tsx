@@ -62,7 +62,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ children }) => 
           {MIGRATION_STEPS[activeIndex].description}
         </Text>
       </Flex>
-      <Flex sx={{ flexDirection: 'column', margin: '0 10px' }}>
+      <Flex sx={{ flexDirection: 'column' }}>
         <Flex sx={styles.mobileChildContainer}>
           <Flex
             sx={{ height: '100%', width: '100%', background: 'white2', borderRadius: '10px', padding: '20px 10px' }}

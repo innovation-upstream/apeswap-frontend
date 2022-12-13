@@ -5,7 +5,7 @@ import React from 'react'
 import { useMigrationTimes } from 'state/migrationTimer/hooks'
 import getTimePeriods from 'utils/getTimePeriods'
 
-const MigrateTimer = ({ migrateTimeStart }: { migrateTimeStart: number }) => {
+const MigrateTimer = () => {
   const currentTime = useCurrentTime()
   const migrateTimes = useMigrationTimes()
   const phase0 = getTimePeriods(migrateTimes.migrate_phase_0 - currentTime / 1000)

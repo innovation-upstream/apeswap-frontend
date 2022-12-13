@@ -29,7 +29,7 @@ const MigrateMasterApeV2: React.FC = () => {
         flexDirection: 'column',
       }}
     >
-      <Flex sx={{ flexDirection: 'column', maxWidth: '1200px', width: '100%' }}>
+      <Flex sx={{ flexDirection: 'column', maxWidth: '1200px', width: '100%', padding: '0px 10px' }}>
         <Flex sx={{ position: 'relative' }}>
           <Flex
             sx={{
@@ -42,7 +42,7 @@ const MigrateMasterApeV2: React.FC = () => {
               alignItems: 'flex-start',
             }}
           >
-            <MigrateTimer migrateTimeStart={1672531200} />
+            <MigrateTimer />
           </Flex>
           <Banner banner="migrate" link="" title="MasterApe Migration" margin="30px 0px 20px 0px" />
         </Flex>

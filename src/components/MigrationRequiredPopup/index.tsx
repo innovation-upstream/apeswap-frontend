@@ -3,16 +3,33 @@ import { Button, Flex, Svg, Text } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useIsMobile from 'hooks/useIsMobile'
-import useCurrentTime from 'hooks/useTimer'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useFarms } from 'state/farms/hooks'
 import { useMigrationPhase } from 'state/migrationTimer/hooks'
 import { MigrationPhases } from 'state/migrationTimer/types'
 import { useVaults } from 'state/vaults/hooks'
+import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
+import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
+import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
+import { usePollVaultsV3Data, usePollVaultV3UserData, useSetVaultsV3 } from 'state/vaultsV3/hooks'
 
 const MigrationRequiredPopup = () => {
   const { account } = useActiveWeb3React()
+  // Loading migration data on load.
+  // This should be removed after the migration process has finished
+  // This has high performance impact
+  useSetFarms()
+  useSetFarmsV2()
+  useSetVaults()
+  useSetVaultsV3()
+  usePollVaultsData()
+  usePollVaultUserData()
+  usePollVaultsV3Data()
+  usePollVaultV3UserData()
+  usePollFarms()
+  usePollFarmsV2()
+  useFarms(account)
+  useFarmsV2(account)
   const currentPhase = useMigrationPhase()
   const isMobile = useIsMobile()
   const farms = useFarms(account)

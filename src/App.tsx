@@ -28,11 +28,7 @@ import Home from './views/Homepage'
 import { ChainId } from '@ape.swap/sdk'
 import NetworkProductCheck from 'components/NetworkProductCheck'
 import MigrateMasterApeV2 from './views/MigrateMasterApeV2'
-import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
-import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
-import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
 import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
-import { usePollVaultsV3Data, usePollVaultV3UserData, useSetVaultsV3 } from 'state/vaultsV3/hooks'
 import { useMonitorMigrationPhase } from 'state/migrationTimer/hooks'
 
 declare module '@emotion/react' {
@@ -117,22 +113,7 @@ const App: React.FC = () => {
   // Hotfix for showModal. Update redux state and remove
   useCircularStaking()
 
-  // Loading migration data on load.
-  // This should be removed after the migration process has finished
-  // This has high performance impact
   useMonitorMigrationPhase()
-  useSetFarms()
-  useSetFarmsV2()
-  useSetVaults()
-  useSetVaultsV3()
-  usePollVaultsData()
-  usePollVaultUserData()
-  usePollVaultsV3Data()
-  usePollVaultV3UserData()
-  usePollFarms()
-  usePollFarmsV2()
-  useFarms(account)
-  useFarmsV2(account)
 
   const [showScrollIcon, setShowScrollIcon] = useState(false)
 

@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Svg, Text } from '@ape.swap/uikit'
+import { Flex, Svg, Text, Link } from '@ape.swap/uikit'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
 
@@ -10,7 +10,7 @@ export const AboutMigrating = () => {
       sx={{
         width: '100%',
         height: 'fit-content',
-        minHeight: '100px',
+        minHeight: '80px',
         background: 'white2',
         borderRadius: '10px',
         padding: '0px 20px',
@@ -20,8 +20,10 @@ export const AboutMigrating = () => {
       }}
       onClick={() => setExpanded((prev) => !prev)}
     >
-      <Flex sx={{ alignItems: 'center', justifyContent: 'space-between', height: '100px', width: '100%' }}>
-        <Text size="20px">ABOUT MIGRATION</Text>
+      <Flex sx={{ alignItems: 'center', justifyContent: 'space-between', height: '80px', width: '100%' }}>
+        <Text size="25px" ml="10px">
+          ABOUT MIGRATION
+        </Text>
         <Svg icon="caret" direction={expanded ? 'up' : 'down'} />
       </Flex>
       <AnimatePresence>
@@ -35,15 +37,62 @@ export const AboutMigrating = () => {
           >
             <Flex
               sx={{
-                flexDirection: 'row',
-                height: '100px',
+                flexDirection: 'column',
                 width: '100%',
-                padding: '0px 30px 0px 30px',
+                padding: '0px 10px 30px 10px',
                 flexWrap: 'no-wrap',
-                alignItems: 'center',
+                alignItems: 'flexStart',
               }}
             >
-              <Text>Some description of the migration here</Text>
+              <Text weight={500} size="14px">
+                ApeSwap is upgrading our primary smart contract (MasterApe) to MasterApe v2 on date.
+              </Text>
+              <br />
+              <Text weight={500} size="14px">
+                This upgraded contract will allow ApeSwap to:
+              </Text>
+              <Flex sx={{ flexDirection: 'column', ml: '15px' }}>
+                <ul>
+                  <li>
+                    <Text weight={500} size="14px">
+                      Implement the hard cap on BANANA that was passed through governance on date
+                    </Text>
+                  </li>
+                  <li>
+                    <Text weight={500} size="14px">
+                      Fine-tune BANANA emissions based on the recommendations of our partner, Gauntlet
+                    </Text>
+                  </li>
+                  <li>
+                    <Text weight={500} size="14px">
+                      Make any future changes to BANANA emissions in order to preserve the long-term health of the
+                      protocol
+                    </Text>
+                  </li>
+                </ul>
+              </Flex>
+              <br />
+              <Text weight={500} size="14px">
+                In order to continue earning rewards on your tokens,{' '}
+                <span sx={{ fontWeight: 800 }}>you must migrate them to MasterApe v2.</span>
+              </Text>
+              <br />
+              <Text weight={500} size="14px">
+                Follow the steps above to ensure that all of your positions are successfully migrated to the new smart
+                contract so that you can continue earning rewards.
+              </Text>
+              <Flex>
+                <Text weight={500} size="14px">
+                  Want more informations?{' '}
+                </Text>
+                <Link
+                  href="https://apeswap.gitbook.io/apeswap-finance/welcome/master"
+                  target="_blank"
+                  sx={{ textDecoration: 'underline', fontSize: '14px', ml: '5px' }}
+                >
+                  Visit our docs
+                </Link>
+              </Flex>
             </Flex>
           </motion.div>
         )}

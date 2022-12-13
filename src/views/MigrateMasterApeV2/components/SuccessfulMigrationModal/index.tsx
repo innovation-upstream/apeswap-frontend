@@ -1,5 +1,6 @@
-import { Flex, Modal, Svg, Text } from '@ape.swap/uikit'
+import { Flex, Modal, Svg, Text, Link } from '@ape.swap/uikit'
 import React from 'react'
+import { Image } from 'theme-ui'
 import { MigrationCompleteLog } from '../../provider/types'
 
 const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationCompleteLog[] }> = ({
@@ -50,6 +51,50 @@ const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationComple
             )
           })}
         </Flex>
+        <Text margin="20px 0px"> Want to earn more?</Text>
+        <Link href="/maximizers" style={{ width: '100%' }}>
+          <Flex
+            sx={{
+              backgroundImage: 'url(/images/cta/maximizers-banner.svg)',
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              width: '100%',
+              height: '100px',
+              borderRadius: '10px',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Image src="/images/cta/maximizers-icon.svg" width="100px" />
+            <Text mr="50px" mb="30px" weight={600} size="20px">
+              MAXIMIZERS
+            </Text>
+          </Flex>
+        </Link>
+        <Link href="/treasury-bills" style={{ width: '100%' }}>
+          <Flex
+            sx={{
+              mt: '20px',
+              backgroundImage: 'url(/images/new-banners/56-treasury-bills-night.svg)',
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              width: '100%',
+              height: '100px',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              borderRadius: '10px',
+            }}
+          >
+            <Flex sx={{ flexDirection: 'column', ml: '30px' }}>
+              <Text weight={600} size="20px">
+                BILLS
+              </Text>
+              <Text weight={500} size="16px">
+                Access Discounted Tokens
+              </Text>
+            </Flex>
+          </Flex>
+        </Link>
       </Flex>
     </Modal>
   )

@@ -11,7 +11,7 @@ import StatusIcons from '../StatusIcons'
 import { useMigrateAll } from '../../provider'
 import useStakeApproveAll from '../../hooks/useStakeApproveAll'
 import useIsMobile from 'hooks/useIsMobile'
-import { MasterApeProductsInterface, MasterApeV2ProductsInterface, MigrateStatus } from '../../provider/types'
+import { MasterApeV2ProductsInterface, MigrateStatus } from '../../provider/types'
 
 const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] }> = ({ apeswapWalletLps }) => {
   const { t } = useTranslation()
