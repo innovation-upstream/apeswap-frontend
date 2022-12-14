@@ -15,6 +15,7 @@ import ListView from 'components/ListViewV2'
 import EmptyListComponent, { EmptyComponentType } from '../../EmptyListComponent/EmptyList'
 import { Bills } from 'state/types'
 import { formatNumberSI } from 'utils/formatNumber'
+import DiscountContent from './DiscountContent'
 
 interface BillsRowsProps {
   billsToRender: Bills[]
@@ -52,23 +53,19 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
           title={'Discount'}
           value={disabled ? 'N/A' : `${bill?.discount}%`}
           valueColor={disabled ? null : parseFloat(bill?.discount) < 0 ? '#DF4141' : '#38A611'}
-          toolTip={`This is the percentage discount relative to the token's current market price.`}
+          toolTip={t(`This is the percentage discount relative to the token's current market price.`)}
           toolTipPlacement={'bottomLeft'}
           toolTipTransform={'translate(23%, 0%)'}
         />
       ) : (
         <Flex style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-          <ListViewContent
+          <DiscountContent
             title={t('Discount')}
             valueColor={disabled ? null : parseFloat(bill?.discount) < 0 ? '#DF4141' : '#38A611'}
             value={disabled ? 'N/A' : `${bill?.discount}%`}
-            value2={disabled ? '' : ` ($${parseFloat(bill?.priceUsd) < 0.001 ? '0.000...' : bill?.priceUsd})`}
-            value2Secondary
-            valuesDirection="row"
-            style={{ maxWidth: '130px', ml: '10px' }}
-            toolTip={`${disabled ? 'N/A' : `${t('Price:')} $${bill?.priceUsd}`}`}
-            toolTipPlacement="bottomLeft"
-            toolTipTransform={'translate(23%, 0%)'}
+            value2={disabled ? '' : bill?.priceUsd}
+            toolTip={t(`This is the percentage discount relative to the token's current market price.`)}
+            showToolTipPrice={parseFloat(bill?.priceUsd) < 0.001}
           />
           <ListViewContent
             title={t('Vesting Term')}
@@ -96,7 +93,9 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
                 disabled={!bill.discount || bill.discount.includes('NaN') || disabled}
               />
             ) : (
-              <UnlockButton sx={{ width: '100%' }} />
+              <Flex sx={{ minWidth: '145px' }}>
+                <UnlockButton sx={{ width: '100%' }} />
+              </Flex>
             )}
           </Flex>
         </Flex>
