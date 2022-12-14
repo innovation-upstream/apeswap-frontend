@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import Lottie from 'lottie-react'
 import typingMonkey from 'config/constants/lottie/typing-monkey.json'
@@ -15,13 +16,12 @@ const LoadingYourMigration: React.FC = () => {
         alignItems: 'center',
         flexDirection: 'column',
         textAlign: 'center',
-        mt: isMobile ? '0px' : '20px',
       }}
     >
-      <Text size={isMobile ? '14px' : '25px'} weight={700}>
+      <Text size={isMobile ? '12px' : '16px'} weight={700}>
         Loading Your Custom Migration Experience <Dots />
       </Text>
-      <Flex sx={{ width: isMobile ? '230px' : '300px' }}>
+      <Flex sx={{ width: isMobile ? '200px' : '250px' }}>
         <Lottie animationData={typingMonkey} loop />
       </Flex>
     </Flex>

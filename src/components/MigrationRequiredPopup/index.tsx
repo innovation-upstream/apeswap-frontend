@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useIsMobile from 'hooks/useIsMobile'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useMigrationPhase } from 'state/migrationTimer/hooks'
 import { MigrationPhases } from 'state/migrationTimer/types'
 import { useVaults } from 'state/vaults/hooks'
@@ -34,11 +34,14 @@ const MigrationRequiredPopup = () => {
   const isMobile = useIsMobile()
   const farms = useFarms(account)
   const { vaults } = useVaults()
+  const { pathname } = useLocation()
   const userHasFarmOrVault =
     [...farms, ...vaults].filter((product) => new BigNumber(product?.userData?.stakedBalance).gt(0))?.length > 0
   const [open, setOpen] = useState(true)
+  const onMigration = pathname.includes('migrate-v2')
   return (
     open &&
+    !onMigration &&
     userHasFarmOrVault && (
       <Flex
         sx={{
