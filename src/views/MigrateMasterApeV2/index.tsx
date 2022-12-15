@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex } from '@ape.swap/uikit'
+import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import { MigrateProvider } from './provider'
 // import { usePollFarms, useSetFarms } from 'state/farms/hooks'
 // import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
@@ -8,6 +8,7 @@ import MigrateStart from './MigrateStart'
 import Banner from 'components/Banner'
 import MigrateTimer from './components/MigrateTimer'
 import { AboutMigrating } from './components/AboutMigrating'
+import { useTranslation } from 'contexts/Localization'
 // import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
 
 const MigrateMasterApeV2: React.FC = () => {
@@ -20,6 +21,7 @@ const MigrateMasterApeV2: React.FC = () => {
   // usePollVaultUserData()
   // usePollFarms()
   // usePollFarmsV2()
+  const { t } = useTranslation()
   return (
     <Flex
       sx={{
@@ -46,7 +48,20 @@ const MigrateMasterApeV2: React.FC = () => {
           </Flex>
           <Banner banner="migrate" link="" title="MasterApe Migration" margin="30px 0px 20px 0px" />
         </Flex>
-        <Flex sx={{ margin: '10px 0px' }} />
+        <Flex sx={{ margin: '.5vw 0px' }} />
+        <Flex sx={{ alignItems: 'center', mb: '10px' }}>
+          <Text mr="5px"> {t('Migrate Progress')}</Text>
+          <TooltipBubble
+            placement="topLeft"
+            body={t(
+              'Follow the steps to migrate your tokens. Click on a step to navigate. Completed steps are marked in green.',
+            )}
+            transformTip="translate(-5%, 0%)"
+            width="200px"
+          >
+            <Svg icon="question" width="15px" />
+          </TooltipBubble>
+        </Flex>
         <MigrateProvider>
           <MigrateStart />
         </MigrateProvider>

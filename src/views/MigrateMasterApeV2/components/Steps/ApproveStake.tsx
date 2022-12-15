@@ -91,7 +91,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
           placement="topRight"
           body={t('Migrate to Maximizer Vaults as long as your assets have a corresponding Vault')}
           transformTip="translate(9%, 0%)"
-          width="300px"
+          width="250px"
         >
           <Svg icon="question" width="15px" />
         </TooltipBubble>

@@ -46,7 +46,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ children }) => 
                   sx={{
                     background: activeIndex > i ? 'gradient' : 'white2',
                     zIndex: 1,
-                    width: `${16 - MIGRATION_STEPS.length}%`,
+                    width: `${30 - MIGRATION_STEPS.length}%`,
                     height: '6px',
                     alignSelf: 'flex-start',
                     mt: '12px',
