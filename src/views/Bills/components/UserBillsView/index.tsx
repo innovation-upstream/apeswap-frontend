@@ -81,7 +81,7 @@ const UserBillsView: React.FC<UserBillsViewProps> = ({ handleBillsViewChange }) 
       billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'JUNGLE Bill'.toUpperCase())
     }
     const flatMapBeforeSorting = billsToReturn?.flatMap((bill) => {
-      if (bill?.userOwnedBillsData?.length < 0) return []
+      if (!bill?.userOwnedBillsData || bill?.userOwnedBillsData?.length < 0) return []
       const ownedBills = bill?.userOwnedBillsData
       return ownedBills?.flatMap((ownedBill, i) => {
         if (!showClaimed && parseFloat(ownedBill.pendingRewards) === 0 && parseFloat(ownedBill.payout) === 0) {
