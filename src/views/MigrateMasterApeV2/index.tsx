@@ -50,7 +50,7 @@ const MigrateMasterApeV2: React.FC = () => {
         </Flex>
         <Flex sx={{ margin: '.5vw 0px' }} />
         <Flex sx={{ alignItems: 'center', mb: '10px' }}>
-          <Text mr="5px"> {t('Migrate Progress')}</Text>
+          <Text mr="5px"> {t('Migration Progress')}</Text>
           <TooltipBubble
             placement="topLeft"
             body={t(
