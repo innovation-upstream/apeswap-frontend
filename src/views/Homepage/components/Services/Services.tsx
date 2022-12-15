@@ -109,7 +109,6 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                       token2={tokenImage[1]}
                       token3={stat.earnTokenName}
                       stakeLp
-                      billArrow
                       iconFill="white"
                     />
                   ) : id === 'poolDetails' ? (

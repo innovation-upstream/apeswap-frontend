@@ -86,7 +86,7 @@ export default function Pool() {
           <LiquiditySubNav />
           <Flex sx={{ flexDirection: 'column', maxWidth: '100%', width: '420px' }}>
             <Flex sx={{ ...styles.topContainer }}>
-              <Text weight={700} sx={{ textTransform: 'uppercase' }}>
+              <Text weight={700} sx={{ textTransform: 'uppercase', textAlign: 'center' }}>
                 {t('Add liquidity to receive LP tokens')}
               </Text>
               {!account && <UnlockButton mt="10px" />}
@@ -100,7 +100,7 @@ export default function Pool() {
                 {t('Find other LP tokens')}
               </Text>
               <Text mb="8px">{t('or')}</Text>
-              <Flex>
+              <Flex sx={{ flexWrap: 'wrap', justifyContent: 'center' }}>
                 <Text style={{ textDecoration: 'underline' }} mb="8px" pr="5px" as={Link} to="/apestats">
                   {t('Visit ApeStats')}
                 </Text>
