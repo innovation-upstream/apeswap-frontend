@@ -58,6 +58,10 @@ const fetchBillsCalls = (bill: BillsConfig, chainId: number): Call[] => {
       address: bill.contractAddress[chainId],
       name: 'maxTotalPayout',
     },
+    {
+      address: bill.contractAddress[chainId],
+      name: 'maxPayout',
+    },
   ]
 
   return standardCalls
