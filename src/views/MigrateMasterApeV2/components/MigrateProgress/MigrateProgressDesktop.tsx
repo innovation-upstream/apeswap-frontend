@@ -81,7 +81,9 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
           }}
         />
         <Flex sx={styles.desktopChildContainer}>
-          <Flex sx={{ height: '100%', width: '100%', background: 'white2', borderRadius: '10px', padding: '50px' }}>
+          <Flex
+            sx={{ height: '100%', width: '100%', background: 'white2', borderRadius: '10px', padding: '40px 50px' }}
+          >
             {children}
           </Flex>
         </Flex>

@@ -1,17 +1,24 @@
-import { Flex, Modal, Svg, Text, Link } from '@ape.swap/uikit'
+import { Flex, Modal, Svg, Text } from '@ape.swap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import React from 'react'
-import { Image } from 'theme-ui'
+import { Image, Link } from 'theme-ui'
 import { MigrationCompleteLog } from '../../provider/types'
 
 const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationCompleteLog[] }> = ({
   migrationCompleteLog,
 }) => {
+  const { t } = useTranslation()
   return (
     <Modal maxWidth="400px" minWidth="350px" zIndex={98} title="Successful Migration! 🎉" onDismiss={null}>
       <Flex sx={{ background: 'white2', flexDirection: 'column', width: '100%' }}>
         <Flex sx={{ margin: '10px 0px' }}>
-          <Text size="14px">Your LPs have been migrated and staked on ApeSwap.</Text>
+          <Text size="14px" weight={500}>
+            {t('Your tokens have been migrated to the MasterApe v2 smart contracts.')}
+          </Text>
         </Flex>
+        <Text mt="10px" weight={700}>
+          {t('Migration Summary')}
+        </Text>
         <Flex
           sx={{
             flexDirection: 'column',
@@ -51,8 +58,11 @@ const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationComple
             )
           })}
         </Flex>
-        <Text margin="20px 0px"> Want to earn more?</Text>
-        <Link href="/maximizers" style={{ width: '100%' }}>
+        <Text margin="30px 0px 10px 0px" weight={700}>
+          {' '}
+          {t('Want to earn more?')}
+        </Text>
+        <Link href="/maximizers" sx={{ width: '100%', color: 'primaryBright' }}>
           <Flex
             sx={{
               backgroundImage: 'url(/images/cta/maximizers-banner.svg)',
@@ -63,15 +73,21 @@ const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationComple
               borderRadius: '10px',
               alignItems: 'center',
               justifyContent: 'space-between',
+              color: 'primaryBright',
             }}
           >
             <Image src="/images/cta/maximizers-icon.svg" width="100px" />
-            <Text mr="50px" mb="30px" weight={600} size="20px">
-              MAXIMIZERS
-            </Text>
+            <Flex sx={{ flexDirection: 'column', mr: '10px', color: 'primaryBright' }}>
+              <Text mr="50px" weight={600} size="20px">
+                {t('MAXIMIZERS')}
+              </Text>
+              <Text weight={500} size="11px">
+                {t('Maximize your yields automatically')}
+              </Text>
+            </Flex>
           </Flex>
         </Link>
-        <Link href="/treasury-bills" style={{ width: '100%' }}>
+        <Link href="/treasury-bills" sx={{ width: '100%', color: 'primaryBright' }}>
           <Flex
             sx={{
               mt: '20px',
@@ -85,12 +101,12 @@ const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationComple
               borderRadius: '10px',
             }}
           >
-            <Flex sx={{ flexDirection: 'column', ml: '30px' }}>
+            <Flex sx={{ flexDirection: 'column', ml: '30px', color: 'primaryBright' }}>
               <Text weight={600} size="20px">
-                BILLS
+                {t('BILLS')}
               </Text>
-              <Text weight={500} size="16px">
-                Access Discounted Tokens
+              <Text weight={500} size="11px">
+                {t('Access Discounted Tokens')}
               </Text>
             </Flex>
           </Flex>

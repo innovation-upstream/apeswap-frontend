@@ -12,9 +12,12 @@ import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
 import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
 import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
 import { usePollVaultsV3Data, usePollVaultV3UserData, useSetVaultsV3 } from 'state/vaultsV3/hooks'
+import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
+import { useTranslation } from 'contexts/Localization'
 
 const MigrationRequiredPopup = () => {
   const { account } = useActiveWeb3React()
+  const { t } = useTranslation()
   // Loading migration data on load.
   // This should be removed after the migration process has finished
   // This has high performance impact
@@ -38,7 +41,7 @@ const MigrationRequiredPopup = () => {
   const userHasFarmOrVault =
     [...farms, ...vaults].filter((product) => new BigNumber(product?.userData?.stakedBalance).gt(0))?.length > 0
   const [open, setOpen] = useState(true)
-  const onMigration = pathname.includes('migrate-v2')
+  const onMigration = pathname.includes(CURRENT_MIGRATE_PATH)
   return (
     open &&
     !onMigration &&
@@ -71,19 +74,19 @@ const MigrationRequiredPopup = () => {
         </Flex>
         <Flex sx={{ margin: '15px 0px', flexDirection: 'column', alignSelf: 'center' }}>
           <Text size="14px" weight={400} sx={{ lineHeight: 1.35 }}>
-            In order to continue earning rewards on your LP tokens, you must migrate them to the new MasterApe V2
-            contract. The current MasterApe v1 contract will no longer grant rewards as of 1/1/1.
+            {t(`In order to continue earning rewards on your LP tokens, you must migrate them to the new MasterApe V2
+            contract. The current MasterApe v1 contract will no longer grant rewards as of 1/1/1.`)}
           </Text>
           <Text size="14px" weight={400} sx={{ lineHeight: 1.35 }}>
-            Please visit our Migration page to migrate your tokens or learn more.
+            {t('Please visit our Migration page to migrate your tokens or learn more.')}
           </Text>
         </Flex>
         <Flex>
-          <Button fullWidth mr="5px" as={Link} to="/migrate-v2" onClick={() => setOpen(false)}>
-            Migrate
+          <Button fullWidth mr="5px" as={Link} to={CURRENT_MIGRATE_PATH} onClick={() => setOpen(false)}>
+            {t('Migrate')}
           </Button>
           <Button fullWidth ml="5px" sx={{ background: 'transparent', color: 'yellow' }} as={Link} to="">
-            Learn More
+            {t('Learn More')}
           </Button>
         </Flex>
       </Flex>

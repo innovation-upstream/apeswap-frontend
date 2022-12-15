@@ -5,7 +5,6 @@ import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
-import { MigrateResult } from 'state/zapMigrator/hooks'
 import { wrappedToNative } from 'utils'
 import { useMigrateAll } from '../../provider'
 import useUnstakeAll from '../../hooks/useUnstakeAll'
@@ -65,7 +64,7 @@ const Unstake: React.FC<{ migrateList: MasterApeProductsInterface[] }> = ({ migr
         {t('Unstake LPs currently held in other protocols to free them up for staking at ApeSwap.')}
       </Text>
       <Button mb="20px" onClick={() => handleUnstakeAll(migrateList)}>
-        Unstake All
+        {t('Unstake All')}
       </Button>
       <ListView listViews={listView} />
     </Flex>

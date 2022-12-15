@@ -10,8 +10,12 @@ import StatusIcons from '../StatusIcons'
 import { useMigrateAll } from '../../provider'
 import useStakeAll from '../../hooks/useStakeAll'
 import useIsMobile from 'hooks/useIsMobile'
-import { MasterApeProductsInterface, MasterApeV2ProductsInterface, MigrateStatus } from '../../provider/types'
-const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] }> = ({ apeswapWalletLps }) => {
+import { MasterApeV2ProductsInterface, MigrateStatus } from '../../provider/types'
+import { Link } from 'react-router-dom'
+const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[]; allStepsComplete: boolean }> = ({
+  apeswapWalletLps,
+  allStepsComplete,
+}) => {
   const { migrateLpStatus, migrateMaximizers } = useMigrateAll()
   const isMobile = useIsMobile()
   const handleStakeAll = useStakeAll()
@@ -30,6 +34,7 @@ const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] }> = ({
       tokens: singleStakeAsset ? { token1: token0.symbol } : { token1: token0.symbol, token2: token1.symbol },
       backgroundColor: 'white3',
       expandedContentSize: 70,
+      titleContainerWidth: 350,
       stakeLp: true,
       title: singleStakeAsset ? token0.symbol : `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       noEarnToken: true,
@@ -67,14 +72,22 @@ const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] }> = ({
       }}
     >
       <Text size="22px" weight={700} mb="15px">
-        {t('Stake All LPs')}
+        {!allStepsComplete ? t('Stake All LPs') : t('Completed!')}
       </Text>
       <Text size="12px" weight={500} mb="15px">
-        {t('Stake your new ApeSwap LPs into Yield Farms and BANANA Maximizers.')}
+        {!allStepsComplete
+          ? t('Stake your new ApeSwap LPs into Yield Farms and BANANA Maximizers.')
+          : t('Migration completed! Thank you.')}
       </Text>
-      <Button mb="20px" onClick={() => handleStakeAll(filteredLpsForStake)}>
-        Stake All
-      </Button>
+      {!allStepsComplete ? (
+        <Button mb="20px" onClick={() => handleStakeAll(filteredLpsForStake)}>
+          {t('Stake All')}
+        </Button>
+      ) : (
+        <Button mb="20px" as={Link} to={'/apestats'}>
+          {t('Check stats page')}
+        </Button>
+      )}
       <ListView listViews={listView} />
     </Flex>
   )

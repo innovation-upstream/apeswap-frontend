@@ -1,12 +1,9 @@
 import { MenuEntry } from '@ape.swap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
+export const CURRENT_MIGRATE_PATH = 'mv2'
+
 const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
-  {
-    label: t('Migrate'),
-    href: '/migrate-v2',
-    isNew: true,
-  },
   {
     label: t('Exchange'),
     lightIcon: 'ExchangeLightImage',
@@ -44,6 +41,11 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     lightIcon: 'StakeLightImage',
     darkIcon: 'StakeDarkImage',
     items: [
+      {
+        label: t('Migrate'),
+        href: '/' + CURRENT_MIGRATE_PATH,
+        isNew: true,
+      },
       {
         label: t('Staking Pools'),
         href: '/pools',

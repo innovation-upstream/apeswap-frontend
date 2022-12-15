@@ -30,6 +30,7 @@ import NetworkProductCheck from 'components/NetworkProductCheck'
 import MigrateMasterApeV2 from './views/MigrateMasterApeV2'
 import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 import { useMonitorMigrationPhase } from 'state/migrationTimer/hooks'
+import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -208,7 +209,7 @@ const App: React.FC = () => {
             <Route exact path="/info">
               <InfoPage />
             </Route>
-            <Route path="/migrate-v2">
+            <Route path={'/' + CURRENT_MIGRATE_PATH}>
               <MigrateMasterApeV2 />
             </Route>
             {/* Redirect */}

@@ -30,7 +30,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
   desktopStepLineIndicator: {
     background: 'gradient',
-    height: '75px',
+    height: '50px',
     width: '5px',
     position: 'absolute',
     zindex: -1,
@@ -44,7 +44,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     zIndex: 1,
     background: 'gradient',
     borderRadius: '10px',
-    mt: '70px',
+    mt: '50px',
   },
   migrateText: {
     lineHeight: '2.5px',

@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Text } from '@ape.swap/uikit'
+import { Button, Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
@@ -84,10 +84,18 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
           width: 'fit-content',
         }}
       >
-        <Text size="14px" weight={500} mr="10px">
+        <Text size="14px" weight={500} mr="5px">
           {t('Migrate to maximizers?')}
         </Text>
-        <Flex>
+        <TooltipBubble
+          placement="topRight"
+          body={t('Migrate to Maximizer Vaults as long as your assets have a corresponding Vault')}
+          transformTip="translate(9%, 0%)"
+          width="300px"
+        >
+          <Svg icon="question" width="15px" />
+        </TooltipBubble>
+        <Flex sx={{ ml: '10px' }}>
           <Switch
             sx={{
               borderRadius: '8px',
@@ -102,7 +110,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
         </Flex>
       </Flex>
       <Button mb="20px" onClick={() => handleApproveAll(filteredLpsForStake)}>
-        Approve All
+        {t('Approve All')}
       </Button>
       <ListView listViews={listView} />
     </Flex>

@@ -5,8 +5,10 @@ import typingMonkey from 'config/constants/lottie/typing-monkey.json'
 import { Flex, Text } from '@ape.swap/uikit'
 import Dots from 'components/Loader/Dots'
 import useIsMobile from 'hooks/useIsMobile'
+import { useTranslation } from 'contexts/Localization'
 
 const LoadingYourMigration: React.FC = () => {
+  const { t } = useTranslation()
   const isMobile = useIsMobile()
   return (
     <Flex
@@ -19,7 +21,7 @@ const LoadingYourMigration: React.FC = () => {
       }}
     >
       <Text size={isMobile ? '12px' : '16px'} weight={700}>
-        Loading Your Custom Migration Experience <Dots />
+        {t('Loading Your Custom Migration Experience')} <Dots />
       </Text>
       <Flex sx={{ width: isMobile ? '200px' : '250px' }}>
         <Lottie animationData={typingMonkey} loop />

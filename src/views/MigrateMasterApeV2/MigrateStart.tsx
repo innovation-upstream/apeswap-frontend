@@ -2,6 +2,7 @@
 /** @jsxImportSource theme-ui */
 import { Button, Flex, Text, useModal } from '@ape.swap/uikit'
 import UnlockButton from 'components/UnlockButton'
+import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -14,6 +15,7 @@ import { MigrateStatus } from './provider/types'
 
 const MigrateStart: React.FC = () => {
   const { account } = useActiveWeb3React()
+  const { t } = useTranslation()
   const { migrationLoading, migrationCompleteLog, migrateLpStatus } = useMigrateAll()
   const allStepsComplete =
     migrateLpStatus?.flatMap((item) =>
@@ -40,14 +42,14 @@ const MigrateStart: React.FC = () => {
           migrationLoading ? (
             <LoadingYourMigration />
           ) : migrateLpStatus.length !== 0 ? (
-            <Steps />
+            <Steps allStepsComplete={allStepsComplete} />
           ) : (
             <Flex sx={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
               <Text size="26px" weight={700}>
-                You have nothing to migrate
+                {t('You have nothing to migrate')}
               </Text>
               <Button to="/swap" as={Link} mt="20px">
-                Return Back To Swap
+                {t('Return Back To Swap')}
               </Button>
             </Flex>
           )

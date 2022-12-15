@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Text } from '@ape.swap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import useCurrentTime from 'hooks/useTimer'
 import React from 'react'
 import { useMigrationTimes } from 'state/migrationTimer/hooks'
@@ -8,6 +9,7 @@ import getTimePeriods from 'utils/getTimePeriods'
 const MigrateTimer = () => {
   const currentTime = useCurrentTime()
   const migrateTimes = useMigrationTimes()
+  const { t } = useTranslation()
   const phase0 = getTimePeriods(migrateTimes.migrate_phase_0 - currentTime / 1000)
   const phase1 = getTimePeriods(migrateTimes.migrate_phase_1 - currentTime / 1000)
   const phase2 = getTimePeriods(migrateTimes.migrate_phase_2 - currentTime / 1000)
@@ -21,18 +23,19 @@ const MigrateTimer = () => {
       }}
     >
       <Text
-        size="1.5vw"
+        size="2.5vw"
         sx={{
-          lineHeight: 5,
+          lineHeight: 4,
           '@media screen and (min-width: 1130px)': {
             fontSize: '20px',
+            lineHeight: 5,
           },
         }}
       >
-        Time Until Migration
+        {t('Time Until Migration')}
       </Text>
       <Text
-        size="3vw"
+        size="3.5vw"
         sx={{
           lineHeight: 0,
           width: 'fit-content',

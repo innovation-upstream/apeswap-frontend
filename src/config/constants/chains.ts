@@ -287,6 +287,7 @@ export enum LIST_VIEW_PRODUCTS {
   FARMS = 'banana-farms',
 }
 
+// TODO: update CURRENT_MIGRATE_PATH
 export enum OTHER_PRODUCTS {
   GNANA = 'gnana',
   MIGRATE = 'migrate',
@@ -295,7 +296,7 @@ export enum OTHER_PRODUCTS {
   NFA_COLLECTION = 'nft',
   NFA_AUCTION = 'auction',
   NFA_STAKING = 'staking',
-  MIGRATE_MASTER_APE_V2 = 'migrate-v2',
+  MIGRATE_MASTER_APE_V2 = 'mv2',
 }
 
 // Products on different chains and their available chains

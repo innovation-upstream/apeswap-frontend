@@ -3,7 +3,6 @@ import { Flex, Svg, Text } from '@ape.swap/uikit'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import { Spinner } from 'theme-ui'
-import { useMigrateAll } from '../provider'
 import { MigrateLpStatus, MigrateStatus } from '../provider/types'
 
 const StatusIcons: React.FC<{ id: string; migrateLpStatus: MigrateLpStatus[] }> = ({ id, migrateLpStatus }) => {
@@ -12,7 +11,7 @@ const StatusIcons: React.FC<{ id: string; migrateLpStatus: MigrateLpStatus[] }> 
   return (
     <Flex
       sx={{
-        width: '120px',
+        width: '90px',
         transform: isMobile ? 'translate(-5px, 0px)' : 'translate(-15px, 0px)',
         alignItems: 'center',
       }}

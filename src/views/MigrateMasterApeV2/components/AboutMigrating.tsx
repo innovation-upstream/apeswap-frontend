@@ -1,10 +1,12 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Svg, Text, Link } from '@ape.swap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
 
 export const AboutMigrating = () => {
   const [expanded, setExpanded] = useState(false)
+  const { t } = useTranslation()
   return (
     <Flex
       sx={{
@@ -15,14 +17,15 @@ export const AboutMigrating = () => {
         borderRadius: '10px',
         padding: '0px 20px',
         margin: '20px 0px',
-        cursor: 'pointer',
         flexDirection: 'column',
       }}
-      onClick={() => setExpanded((prev) => !prev)}
     >
-      <Flex sx={{ alignItems: 'center', justifyContent: 'space-between', height: '80px', width: '100%' }}>
+      <Flex
+        sx={{ alignItems: 'center', justifyContent: 'space-between', height: '80px', width: '100%', cursor: 'pointer' }}
+        onClick={() => setExpanded((prev) => !prev)}
+      >
         <Text size="25px" ml="10px">
-          ABOUT MIGRATION
+          {t('ABOUT MIGRATION')}
         </Text>
         <Svg icon="caret" direction={expanded ? 'up' : 'down'} />
       </Flex>
@@ -33,7 +36,12 @@ export const AboutMigrating = () => {
             animate={{ height: 'fit-content' }}
             transition={{ opacity: { duration: 0.2 } }}
             exit={{ height: 0 }}
-            sx={{ position: 'relative', width: '100%', overflow: 'hidden' }}
+            sx={{
+              position: 'relative',
+              width: '100%',
+              overflow: 'hidden',
+              cursor: 'auto',
+            }}
           >
             <Flex
               sx={{
@@ -45,52 +53,53 @@ export const AboutMigrating = () => {
               }}
             >
               <Text weight={500} size="14px">
-                ApeSwap is upgrading our primary smart contract (MasterApe) to MasterApe v2 on date.
+                {t('ApeSwap is upgrading our primary smart contract (MasterApe) to MasterApe v2 on date.')}
               </Text>
               <br />
               <Text weight={500} size="14px">
-                This upgraded contract will allow ApeSwap to:
+                {t('This upgraded contract will allow ApeSwap to:')}
               </Text>
               <Flex sx={{ flexDirection: 'column', ml: '15px' }}>
                 <ul>
                   <li>
                     <Text weight={500} size="14px">
-                      Implement the hard cap on BANANA that was passed through governance on date
+                      {t('Implement the hard cap on BANANA that was passed through governance on date')}
                     </Text>
                   </li>
                   <li>
                     <Text weight={500} size="14px">
-                      Fine-tune BANANA emissions based on the recommendations of our partner, Gauntlet
+                      {t('Fine-tune BANANA emissions based on the recommendations of our partner, Gauntlet')}
                     </Text>
                   </li>
                   <li>
                     <Text weight={500} size="14px">
-                      Make any future changes to BANANA emissions in order to preserve the long-term health of the
-                      protocol
+                      {t(
+                        'Make any future changes to BANANA emissions in order to preserve the long-term health of the protocol',
+                      )}
                     </Text>
                   </li>
                 </ul>
               </Flex>
               <br />
               <Text weight={500} size="14px">
-                In order to continue earning rewards on your tokens,{' '}
-                <span sx={{ fontWeight: 800 }}>you must migrate them to MasterApe v2.</span>
+                {t('In order to continue earning rewards on your tokens,')}{' '}
+                <span sx={{ fontWeight: 800 }}>{t('you must migrate them to MasterApe v2.')}</span>
               </Text>
               <br />
               <Text weight={500} size="14px">
-                Follow the steps above to ensure that all of your positions are successfully migrated to the new smart
-                contract so that you can continue earning rewards.
+                {t(`Follow the steps above to ensure that all of your positions are successfully migrated to the new smart
+                contract so that you can continue earning rewards.`)}
               </Text>
               <Flex>
                 <Text weight={500} size="14px">
-                  Want more informations?{' '}
+                  {t('Want more informations?')}{' '}
                 </Text>
                 <Link
                   href="https://apeswap.gitbook.io/apeswap-finance/welcome/master"
                   target="_blank"
                   sx={{ textDecoration: 'underline', fontSize: '14px', ml: '5px' }}
                 >
-                  Visit our docs
+                  {t('Visit our docs')}
                 </Link>
               </Flex>
             </Flex>
