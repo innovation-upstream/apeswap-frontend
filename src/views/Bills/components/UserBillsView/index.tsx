@@ -7,7 +7,6 @@ import { useBills } from 'state/bills/hooks'
 import { Flex } from '@ape.swap/uikit'
 import { BillsView } from '../../index'
 import orderBy from 'lodash/orderBy'
-import useCurrentTime from 'hooks/useTimer'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -27,11 +26,11 @@ const UserBillsView: React.FC<UserBillsViewProps> = ({ handleBillsViewChange }) 
   const [showClaimed, setShowClaimed] = useState(false)
   const [listView, setListView] = useState(true)
   const noResults = !!query || filterOption !== 'all' || showClaimed
-  const currentTime = useCurrentTime(false) / 1000
   const { chainId } = useActiveWeb3React()
 
   const sortBills = useCallback(
     (billsToSort: BillsToRender[]) => {
+      const currentTime = new Date().getTime() / 1000
       const sorting = (bills) => {
         switch (sortOption) {
           case 'sort':
@@ -64,7 +63,7 @@ const UserBillsView: React.FC<UserBillsViewProps> = ({ handleBillsViewChange }) 
       }
       return sorting(billsToSort)
     },
-    [chainId, currentTime, sortOption],
+    [chainId, sortOption],
   )
 
   const billsToRender = useMemo((): BillsToRender[] => {

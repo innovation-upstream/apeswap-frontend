@@ -1,22 +1,33 @@
 import React from 'react'
 import { LpTagVariants } from '@ape.swap/uikit'
 
-export interface ListViewProps {
-  tokens?: { token1: string; token2: string; token3?: string; token4?: string }
-  id?: string | number
-  title: React.ReactNode //
-  infoContent?: React.ReactNode //
-  cardContent: React.ReactNode //
-  expandedContent?: React.ReactNode //
-  expandedContentSize?: number //
-  billArrow?: boolean //
-  stakeLp?: boolean //
-  earnLp?: boolean //
-  titleContainerWidth?: number //
-  noEarnToken?: boolean //
+export interface TokenDisplayProps {
+  token1: string
+  token2: string
+  token3?: string
+  token4?: string
+  billArrow?: boolean
+  stakeLp?: boolean
+  earnLp?: boolean
+  noEarnToken?: boolean
 }
 
-export interface ListCardProps extends ListViewProps {
+export interface ListProps {
+  id?: string | number
+  title: React.ReactNode
+  titleContainerWidth?: number
+  infoContent?: React.ReactNode
+  cardContent: React.ReactNode
+  expandedContent?: React.ReactNode
+  expandedContentSize?: number
+}
+
+export interface ListViewProps {
+  tokenDisplayProps: TokenDisplayProps
+  listProps: ListProps
+}
+
+export interface ListCardProps extends ListProps {
   serviceTokenDisplay: React.ReactNode
 }
 
