@@ -200,6 +200,7 @@ export const useHandleUpdateMigratorResults = (
           walletBalance: getFullDisplayBalance(new BigNumber(wallet.toString())),
           stakedBalance: getFullDisplayBalance(new BigNumber(staked.toString())),
           totalBalance: getFullDisplayBalance(new BigNumber(total.toString())),
+          lpPrice: migrateLpBalances.find((b) => b.lpAddress.toLowerCase() === lp.toLowerCase())?.lpPrice,
         }
       })
     })

@@ -71,11 +71,15 @@ export const getCurrencyUsdPrice = async (
   return null
 }
 
-export const getLpUsdPrice = async (chainId: number, address: string, decimals = 18, smartRouter?: SmartRouter) => {
-  const priceGetterAddress = getSmartPriceGetter(chainId, smartRouter)
+export const getLpUsdPrice = async (
+  chainId: number,
+  address: string,
+  decimals = 18,
+  smartRouter?: SmartRouter,
+): Promise<number> => {
   if (address && decimals) {
     const call = {
-      address: priceGetterAddress,
+      address: getSmartPriceGetter(chainId, smartRouter),
       name: 'getLPPrice',
       params: [address, decimals],
     }

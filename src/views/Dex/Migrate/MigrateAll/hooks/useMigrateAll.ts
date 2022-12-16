@@ -9,7 +9,6 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { calculateGasMargin } from 'utils'
 import { useMigrateAll } from '../provider'
 import track from 'utils/track'
-import { getLpUsdPrice } from 'utils/getTokenUsdPrice'
 
 const useMigrateAllLps = () => {
   const { library, chainId } = useActiveWeb3React()
@@ -22,10 +21,8 @@ const useMigrateAllLps = () => {
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
         try {
-          const { lpAddress, smartRouter, walletBalance, token0, token1, totalSupply, id } = migrateLp
+          const { lpAddress, smartRouter, walletBalance, token0, token1, totalSupply, id, lpPrice } = migrateLp
           const poolTokenPercentage = parseFloat(walletBalance) / parseFloat(totalSupply)
-
-          const lpPrice = await getLpUsdPrice(chainId, lpAddress, 18, smartRouter)
 
           const [token0Deposited, token1Deposited] = [
             parseInt((poolTokenPercentage * token0.reserves).toString()),
