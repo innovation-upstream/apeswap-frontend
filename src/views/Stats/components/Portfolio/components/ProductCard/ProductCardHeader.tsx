@@ -88,7 +88,7 @@ export const ProductCardHeader: React.FC<ProductCardHeaderProps> = ({
       </Flex>
       <StyledText>
         <Text fontWeight={500} fontSize="12px" marginRight="4px">
-          {`${t('Pending Rewards')}: `}
+          {`${t('Claimable Rewards')}: `}
         </Text>
         <CardValue fontSize="12px" fontWeight={500} value={totalEarnings} prefix="$" />
       </StyledText>
