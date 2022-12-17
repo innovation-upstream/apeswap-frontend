@@ -152,7 +152,6 @@ export interface Token {
 export interface Vesting {
   earnedBalance: number
   vestingBalance: number
-  totalVestingTime: number
   vestingTimeRemaining: number
   pending: number
 }
