@@ -9,17 +9,26 @@ import styled from 'styled-components'
 import { Swaps } from 'state/info/types'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import { RangeSelectorsWrapper } from '../styles'
+import SectionHeader from '../SectionHeader'
 
-const ROWS_PER_PAGE = 10
+interface TransactionProps {
+  token?: string
+  headerText: string
+  moreLink?: string
+  chain?: number
+  amount?: number
+  pageSize?: number
+}
 
-const Transactions = () => {
+const Transactions: React.FC<TransactionProps> = (props) => {
   const mobile = useIsMobile()
+  const { token, headerText, moreLink, chain, amount, pageSize } = props
 
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)
-  const transactions = useFetchInfoTransactions(50)
+  const transactions = useFetchInfoTransactions(amount ? amount : 50, token ? token : '', chain ? chain : null)
   const [transactionType, setTransactionType] = useState('all')
-
+  const ROWS_PER_PAGE = pageSize ? pageSize : 10
   const [activeChains] = useFetchActiveChains()
 
   const flattenedSwaps = Object.values(transactions).flatMap((row) =>
@@ -71,7 +80,7 @@ const Transactions = () => {
         'desc',
       ),
     [activeChains, getTransactions],
-  )?.slice(0, 50)
+  )?.slice(0, amount ? amount : 50)
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * ROWS_PER_PAGE) % sortedTransactions.length
@@ -79,22 +88,19 @@ const Transactions = () => {
   }
   useEffect(() => {
     setPageCount(Math.ceil(sortedTransactions.length / ROWS_PER_PAGE))
-  }, [sortedTransactions.length, dataOffset])
+  }, [sortedTransactions.length, dataOffset, ROWS_PER_PAGE])
 
   return (
-    <Flex sx={{ flexDirection: 'column', width: `${mobile ? '95vw' : '100%'}`, mt: '20px' }}>
-      <Text size="18px" weight={700}>
-        Recent Transactions
-      </Text>
+    <Flex sx={{ flexDirection: 'column', width: `${mobile ? '95vw' : '100%'}` }}>
+      <SectionHeader title={headerText} link={moreLink} />
       <Flex
         sx={{
           width: '100%',
-          height: '550px',
           background: 'white2',
           flexDirection: 'column',
           padding: '30px 10px 20px 10px',
           borderRadius: '10px',
-          mt: '20px',
+          mt: '10px',
         }}
       >
         <RangeSelectorsWrapper className="transctionSelector">

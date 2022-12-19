@@ -88,6 +88,12 @@ export interface TokenDaysData {
   dailyTxns: string
 }
 
+export interface PairDaysData {
+  id: string
+  dailyVolumeUSD: number
+  reserveUSD: number
+}
+
 export interface Block {
   id: string
   number: string
@@ -108,6 +114,7 @@ export enum InfoStateTypes {
   TOKENSDAYOLD = 'tokensDayOld',
   TOKENDAYSDATA = 'tokenDaysData',
   DAYOLDPAIRS = 'dayOldPairs',
+  PAIRDAYSDATA = 'pairDaysData',
 }
 
 export interface InfoState {
@@ -122,6 +129,9 @@ export interface InfoState {
   chartData: Record<ChainId, { data: Block; loading: boolean; initialized: boolean }>
   tokensDayOld: Record<ChainId, { data: Token[]; loading: boolean; initialized: boolean }>
   tokenDaysData: Record<ChainId, { data: TokenDaysData[]; loading: boolean; initialized: boolean }>
+  pairDaysData: Record<ChainId, { data: PairDaysData[]; loading: boolean; initialized: boolean }>
   dayOldPairs: Record<ChainId, { data: TokenDaysData[]; loading: boolean; initialized: boolean }>
   activeChains: number[]
+  favTokens: string[]
+  favPairs: string[]
 }

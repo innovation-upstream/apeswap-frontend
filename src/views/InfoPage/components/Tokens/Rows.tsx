@@ -1,13 +1,13 @@
 /** @jsxImportSource theme-ui */
 import { ChainId } from '@ape.swap/sdk'
-import { Flex, Text } from '@ape.swap/uikit'
+import { Flex, Svg, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
 import CountUp from 'react-countup'
-import { useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
+import { useFetchFavTokens, useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
 import { Token } from 'state/info/types'
 import { Grid } from 'theme-ui'
 
@@ -16,6 +16,7 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
   const nativePrice = useFetchInfoNativePrice()
   const mobile = useIsMobile()
   const dayOldTokens = useFetchInfoTokensData(20)
+  const [favs, toggleFav] = useFetchFavTokens()
 
   const get24HourVolume = (chainId: ChainId, id: string) => {
     try {
@@ -26,12 +27,15 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
     }
   }
 
+  const isFav = (token: string) => {
+    return favs !== null && favs.filter((x) => x === token).length > 0
+  }
+
   return (
     <Flex
       sx={{
         width: '100%',
         maxWidth: '1200px',
-        height: '500px',
         flexDirection: 'column',
         overflowX: 'scroll',
         overflowY: 'hidden',
@@ -44,9 +48,10 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
     >
       <Grid
         gap="0px"
-        columns={[`.25fr ${mobile ? '2.0fr' : '3.5fr'} 1.25fr 1.5fr 1.5fr`]}
+        columns={[`.25fr .25fr ${mobile ? '1.5fr' : '2.75fr'} 1.25fr 1.5fr 1.5fr`]}
         sx={{ minHeight: '40px', alignItems: 'center', minWidth: '450px' }}
       >
+        <Text></Text>
         <Text pl={3}>#</Text>
         <Text size="14px" weight={700} sx={{ alignSelf: 'center' }}>
           {t('Token Name')}
@@ -62,7 +67,7 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
         </Text>
         <span />
       </Grid>
-      <Flex sx={{ flexDirection: 'column', height: '500px' }}>
+      <Flex sx={{ flexDirection: 'column' }}>
         {tokens.map(({ derivedETH, id, name, symbol, totalLiquidity, tradeVolumeUSD, chainId }, index) => {
           const currentNativePrice = parseFloat(nativePrice[chainId]?.data.ethPrice)
           const currentAssetPrice = currentNativePrice * parseFloat(derivedETH)
@@ -71,7 +76,7 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
             <Grid
               key={id}
               gap="0px"
-              columns={[`.25fr ${mobile ? '2.0fr' : '3.5fr'} 1.25fr 1.5fr 1.5fr`]}
+              columns={[`.25fr .25fr ${mobile ? '1.5fr' : '2.75fr'} 1.25fr 1.5fr 1.5fr`]}
               sx={{
                 background: index % 2 === 0 ? 'white3' : 'white2',
                 height: '40px',
@@ -80,6 +85,9 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
                 minWidth: '450px',
               }}
             >
+              <Flex pl={6} onClick={() => toggleFav(id)} sx={{ cursor: 'pointer' }}>
+                <Svg icon="Fav" color={isFav(id) === true ? 'yellow' : 'gray'} />
+              </Flex>
               <Flex>
                 <Text size="14px" weight={400} pl={4}>
                   {index + 1 + activeIndex}
@@ -96,18 +104,16 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
                   <ServiceTokenDisplay token1={CHAIN_PARAMS[chainId].nativeCurrency.symbol} size={12} />
                 </Flex>
                 <Text size="14px" weight={400} ml="10px">
-                  {mobile ? symbol : `${name} (${symbol})`}
+                  <a href={`/info/token/${chainId}/${id}`}>{mobile ? symbol : `${name} (${symbol})`}</a>
                 </Text>
               </Flex>
               <Flex>
-                {' '}
                 <Text size="14px" weight={400}>
                   $
                   <CountUp start={currentAssetPrice} end={currentAssetPrice} decimals={3} duration={0} separator="," />
                 </Text>
               </Flex>
               <Flex>
-                {' '}
                 <Text size="14px" weight={400}>
                   $
                   <CountUp start={currentAssetLiquidity} end={currentAssetLiquidity} duration={0} separator="," />{' '}

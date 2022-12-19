@@ -7,25 +7,29 @@
 //   }
 // }
 
-export const tokensQuery = (amount: number, block: string) => {
+export const tokensQuery = (amount: number, block: string, token: string) => {
   return {
     query:
       'query { tokens(' +
+      (token !== '' ? 'where: {id:"' + token + '"}' : '') +
       (block !== '0' ? 'block: { number:' + block + '}' : '') +
       'first: ' +
       amount +
-      ', orderBy: tradeVolumeUSD orderDirection: desc) {  id name symbol tradeVolumeUSD totalLiquidity derivedETH }  }',
+      ', orderBy: tradeVolumeUSD orderDirection: desc) {  id name symbol tradeVolumeUSD totalLiquidity derivedETH }  ' +
+      '}',
   }
 }
 
-export const transactionsQuery = (amount: number) => {
+export const transactionsQuery = (amount: number, token: string) => {
   return {
     query:
       'query transactions {' +
       '    transactions(first: ' +
       amount +
-      ', orderBy: timestamp, orderDirection: desc) {' +
-      '      swaps(orderBy: timestamp, orderDirection: desc) {' +
+      ', orderBy: timestamp, orderDirection: desc' +
+      ') {' +
+      '      swaps(orderBy: timestamp, orderDirection: desc' +
+      ') {' +
       '        transaction {' +
       '          id' +
       '          timestamp' +
@@ -99,25 +103,6 @@ export const nativePricesQuery = {
   query: 'query bundles { bundles {id ethPrice }}',
 }
 
-// export const daysDataQuery = (oneDayBack: number) => {
-//   return {
-//     query:
-//       'query uniswapDayDatas {' +
-//       '    uniswapDayDatas(first: 1, skip: 0, where: { date_gt: ' +
-//       oneDayBack +
-//       ' }, orderBy: date, orderDirection: asc) {' +
-//       '      id' +
-//       '      date' +
-//       '      totalVolumeUSD' +
-//       '      dailyVolumeUSD' +
-//       '      dailyVolumeETH' +
-//       '      totalLiquidityUSD' +
-//       '      totalLiquidityETH' +
-//       '      txCount' +
-//       '    }' +
-//       '  }',
-//   }
-// }
 export const daysDataQuery = (oneDayBack: number) => {
   return {
     query:
@@ -166,15 +151,18 @@ export const uniswapFactoriesQuery = (chainId: string, block: string) => {
   }
 }
 
-export const pairsQuery = (amount: number, block: string) => {
+export const pairsQuery = (amount: number, block: string, token: string, pair: string) => {
   return {
     query:
-      'query pairs {\n' +
-      '  pairs(' +
+      'query pairs { pairs: pairs(' +
+      (pair !== '' ? 'where: {id:"' + pair + '"}' : '') +
       (block !== '0' ? 'block: { number:' + block + '}' : '') +
       'first: ' +
       amount +
-      ' orderBy: trackedReserveETH, orderDirection: desc) {\n' +
+      ', orderBy: trackedReserveETH, orderDirection: desc, ' +
+      (token !== '' ? 'where: {token0: "' + token + '"} ' : '') +
+      // (token !== '' ? 'where: {_or: [{token0: "' + token + '"}, {token1: "' + token + '"}] } ' : '') +
+      ') {\n' +
       '  id\n' +
       '  token0 {\n' +
       '    id\n' +
@@ -188,16 +176,47 @@ export const pairsQuery = (amount: number, block: string) => {
       '  }\n' +
       '  reserveUSD\n' +
       '  volumeUSD\n' +
+      '  reserve0\n' +
+      '  reserve1\n' +
       '  }\n' +
+      (token !== ''
+        ? 'pairs1: pairs(' +
+          (pair !== '' ? 'where: {id:"' + pair + '"}' : '') +
+          (block !== '0' ? 'block: { number:' + block + '}' : '') +
+          'first: ' +
+          amount +
+          ', orderBy: trackedReserveETH, orderDirection: desc, ' +
+          (token !== '' ? 'where: {token1: "' + token + '"} ' : '') +
+          // (token !== '' ? 'where: {_or: [{token0: "' + token + '"}, {token1: "' + token + '"}] } ' : '') +
+          ') {\n' +
+          '  id\n' +
+          '  token0 {\n' +
+          '    id\n' +
+          '    symbol\n' +
+          '    name\n' +
+          '  }\n' +
+          '  token1 {\n' +
+          '    id\n' +
+          '    symbol\n' +
+          '    name\n' +
+          '  }\n' +
+          '  reserveUSD\n' +
+          '  volumeUSD\n' +
+          '  reserve0\n' +
+          '  reserve1\n' +
+          '  }\n'
+        : '') +
       '}\n',
   }
 }
 
-export const tokenDaysDataQuery = (address: string) => {
+export const tokenDaysDataQuery = (address: string, amount: number) => {
   return {
     query:
       'query tokenDayDatas {\n' +
-      '  tokenDayDatas(first: 30 orderBy: date, orderDirection: desc, where: {token: "' +
+      '  tokenDayDatas(first: ' +
+      amount +
+      ' orderBy: date, orderDirection: desc, where: {token: "' +
       address +
       '"}) {\n' +
       '    id\n' +
@@ -215,6 +234,24 @@ export const tokenDaysDataQuery = (address: string) => {
       '    dailyVolumeUSD\n' +
       '    dailyTxns\n' +
       '    __typename\n' +
+      '  }\n' +
+      '}',
+  }
+}
+
+export const pairDaysDataQuery = (address: string, amount: number) => {
+  return {
+    query:
+      'query pairDayDatas {\n' +
+      '  pairDayDatas(first: ' +
+      amount +
+      ' orderBy: date, orderDirection: desc, where: {pairAddress: "' +
+      address +
+      '"}) {\n' +
+      ' id\n' +
+      '  dailyVolumeUSD\n' +
+      '  reserveUSD' +
+      '  date' +
       '  }\n' +
       '}',
   }

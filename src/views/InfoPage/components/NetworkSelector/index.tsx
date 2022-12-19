@@ -1,14 +1,19 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Text } from '@ape.swap/uikit'
+import { Flex, Input, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS, MAINNET_CHAINS } from 'config/constants/chains'
 import React from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import { useFetchActiveChains } from '../../../../state/info/hooks'
 
-const NetworkSelector = () => {
+interface NetworkSelectorProps {
+  onFilter: (event: React.ChangeEvent<HTMLInputElement>) => void
+}
+
+const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
   const mobile = useIsMobile()
   const [activeChains, toggleChain] = useFetchActiveChains()
+  const { onFilter } = props
 
   function isActive(chain) {
     // If active changes equals null it means all chains should be shown
@@ -17,11 +22,6 @@ const NetworkSelector = () => {
 
   return (
     <>
-      <Flex sx={{ flexDirection: 'column', width: `${mobile ? '95vw' : '100%'}`, mb: '20px' }}>
-        <Text size="18px" weight={700}>
-          Network Filters
-        </Text>
-      </Flex>
       <Flex
         sx={{
           width: `${mobile ? '95vw' : '100%'}`,
@@ -33,9 +33,15 @@ const NetworkSelector = () => {
           mb: '20px',
           alignItems: 'center',
           justifyContent: 'center',
-          flexDirection: 'column',
+          flexDirection: 'row',
         }}
       >
+        <Flex sx={{ flex: 1 }}>
+          <Text bold mr="15px" mt="5px" ml="20px">
+            Search
+          </Text>
+          <Input icon="search" sx={{ width: '100%' }} width="100%" onChange={onFilter} />
+        </Flex>
         <Flex>
           {MAINNET_CHAINS.map((chainId) => {
             return (
@@ -47,7 +53,7 @@ const NetworkSelector = () => {
                   borderRadius: '10px',
                   padding: '10px',
                   cursor: 'pointer',
-                  margin: '0px 20px',
+                  margin: '0px 0px 0px 10px',
                 }}
               >
                 <Flex sx={{ opacity: `${isActive(chainId) === true ? '100%' : '40%'}` }}>

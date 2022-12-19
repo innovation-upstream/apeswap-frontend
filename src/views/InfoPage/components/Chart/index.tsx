@@ -77,16 +77,11 @@ const Chart: React.FC<ChartProps> = (props) => {
   const calculate7DayVolume = useMemo(() => {
     let total = 0
 
-    mappedVolumeData
-      .reverse()
-      .slice(0, 7)
-      .forEach((item: any) => {
-        for (let i = 0; i < Object.keys(INFO_PAGE_CHAIN_PARAMS).length; i++) {
-          total += item[Object.keys(INFO_PAGE_CHAIN_PARAMS)[i]]
-            ? Number(item[Object.keys(INFO_PAGE_CHAIN_PARAMS)[i]])
-            : 0
-        }
-      })
+    mappedVolumeData.slice(0, 7).forEach((item: any) => {
+      for (let i = 0; i < Object.keys(INFO_PAGE_CHAIN_PARAMS).length; i++) {
+        total += item[Object.keys(INFO_PAGE_CHAIN_PARAMS)[i]] ? Number(item[Object.keys(INFO_PAGE_CHAIN_PARAMS)[i]]) : 0
+      }
+    })
 
     sevenDayVolume(total)
 
