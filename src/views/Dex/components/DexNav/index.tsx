@@ -76,28 +76,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
         </Text>
       </Flex>
       <Flex sx={{ ...styles.navIconContainer }}>
-        <Flex
-          sx={styles.iconCover}
-          onClick={() =>
-            history.push({
-              search: `?modal=${
-                ORDERS
-                  ? 'orders'
-                  : onLiquidity
-                  ? 'liquidity'
-                  : `${
-                      chainId === ChainId.MAINNET
-                        ? 'ethereum'
-                        : chainId === ChainId.MATIC
-                        ? 'polygon'
-                        : chainId === ChainId.TLOS
-                        ? 'telos'
-                        : 'bnb'
-                    }-dex`
-              }`,
-            })
-          }
-        >
+        <Flex sx={styles.iconCover} onClick={() => history.push({ search: `?modal=tutorial` })}>
           <Svg icon="quiz" />
         </Flex>
         <Flex sx={styles.iconCover} onClick={() => window.open('https://app.multichain.org/#/router', '_blank')}>

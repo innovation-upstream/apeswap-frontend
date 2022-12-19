@@ -16,7 +16,6 @@ import {
   SHOW_DEFAULT_MODAL_KEY,
   SET_DEF_MOD_KEY,
   SHOW_DEF_MOD_KEY,
-  TutorialModal,
 } from 'config/constants'
 import { circularRoute } from 'utils'
 // import { NETWORK_LABEL } from 'config/constants/chains'
@@ -59,10 +58,9 @@ const MarketingModalCheck = () => {
     }*/
   }, [])
 
-  const leanMore = location.search.includes('modal=learn-more')
-
+  const tutorial = location.search.includes('modal=tutorial')
   const lendingRoute = location.search.includes('modal=3')
-  const questRoute = location.search.includes('modal=tutorial')
+  const telosQuestRoute = location.search.includes('modal=telos-quests')
   const moonpayRoute = location.search.includes('modal=moonpay')
   const getGnanaRoute = location.search.includes('modal=gnana')
   const buyRoute = circularRoute(chainId, location, 'modal=circular-buy')
@@ -87,7 +85,7 @@ const MarketingModalCheck = () => {
     <LendingBody5 key="lend5" />,
   ]
 
-  return leanMore ? (
+  return tutorial ? (
     <Tutorial location={location.pathname} onDismiss={onDismiss} />
   ) : lendingRoute ? (
     <MarketingModal
@@ -113,7 +111,7 @@ const MarketingModalCheck = () => {
     <CircularModal actionType={MODAL_TYPE.GENERAL_HARVEST} onDismiss={onDismiss} />
   ) : newsletterRoute ? (
     <NewsletterModal onDismiss={onDismiss} />
-  ) : questRoute ? (
+  ) : telosQuestRoute ? (
     <SwiperProvider>
       <QuestModal onDismiss={onDismiss} />
     </SwiperProvider>

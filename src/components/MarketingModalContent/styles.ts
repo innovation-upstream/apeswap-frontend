@@ -236,17 +236,28 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     textTransform: ['uppercase', 'uppercase', 'capitalize'],
     mb: [0, 0, '10px'],
   },
-  yellow: {
-    color: 'yellow',
-    lineHeight: ['16px', '16px', '21px'],
-    textDecoration: 'underline',
-    cursor: 'pointer',
-    fontSize: ['12px', '12px', '14px'],
+  //
+  contentContainer: {
+    width: '100%',
+    mt: '5px',
+    flexWrap: 'wrap',
+  },
+  slideTitle: {
+    fontSize: ['12px', '12px', '22px'],
+    lineHeight: ['12px', '12px', '22px'],
+    fontWeight: 700,
+    textTransform: ['uppercase', 'uppercase', 'capitalize'],
+    mb: [0, 0, '10px'],
   },
   content: {
     fontSize: ['12px', '12px', '14px'],
     fontWeight: [400, 400, 500],
     lineHeight: ['16px', '16px', '21px'],
+  },
+  yellow: {
+    color: 'yellow',
+    textDecoration: 'underline',
+    cursor: 'pointer',
   },
   tipTitle: {
     fontWeight: 700,
