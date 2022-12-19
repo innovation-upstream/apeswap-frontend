@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { useTreasury } from 'hooks/useContract'
 import BigNumber from 'bignumber.js'
 import track from 'utils/track'
+import { useBananaPrice } from 'state/tokenPrices/hooks'
 
 export const buy = async (contract, amount) => {
   try {
@@ -23,8 +24,9 @@ export const sell = async (contract, amount) => {
   }
 }
 
-export const useSellGoldenBanana = (tokenValue: number) => {
+export const useSellGoldenBanana = () => {
   const treasuryContract = useTreasury()
+  const bananaPrice = useBananaPrice()
 
   const handleSell = useCallback(
     async (amount: string) => {
@@ -36,7 +38,7 @@ export const useSellGoldenBanana = (tokenValue: number) => {
           data: {
             amount,
             cat: 'sell',
-            usdAmount: parseFloat(amount) * tokenValue,
+            usdAmount: parseFloat(amount) * parseFloat(bananaPrice),
           },
         })
         return txHash
@@ -44,14 +46,15 @@ export const useSellGoldenBanana = (tokenValue: number) => {
         return false
       }
     },
-    [tokenValue, treasuryContract],
+    [bananaPrice, treasuryContract],
   )
 
   return { handleSell }
 }
 
-export const useBuyGoldenBanana = (tokenValue: number) => {
+export const useBuyGoldenBanana = () => {
   const treasuryContract = useTreasury()
+  const bananaPrice = useBananaPrice()
 
   const handleBuy = useCallback(
     async (amount: string) => {
@@ -63,7 +66,7 @@ export const useBuyGoldenBanana = (tokenValue: number) => {
           data: {
             amount,
             cat: 'buy',
-            usdAmount: parseFloat(amount) * tokenValue,
+            usdAmount: parseFloat(amount) * parseFloat(bananaPrice),
           },
         })
         return txHash
@@ -71,7 +74,7 @@ export const useBuyGoldenBanana = (tokenValue: number) => {
         return false
       }
     },
-    [tokenValue, treasuryContract],
+    [bananaPrice, treasuryContract],
   )
 
   return { handleBuy }

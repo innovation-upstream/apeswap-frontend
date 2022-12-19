@@ -31,7 +31,6 @@ import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Flex } from 'theme-ui'
 import { useUserUnlimitedGnana } from 'state/user/hooks'
-import { useBananaPrice } from 'state/tokenPrices/hooks'
 
 interface ConvertCardType {
   fromToken: string
@@ -46,7 +45,7 @@ const ConvertCard: React.FC<ConvertCardType> = ({ fromToken, toToken }) => {
   const gnanaVal = parseFloat(val) * 0.7
   const [processing, setProcessing] = useState(false)
   const treasuryContract = useTreasury()
-  const { handleBuy } = useBuyGoldenBanana(parseFloat(useBananaPrice()))
+  const { handleBuy } = useBuyGoldenBanana()
   const bananaBalance = useTokenBalance(useBananaAddress())
   const { toastSuccess } = useToast()
   const bananaContract = useBanana()

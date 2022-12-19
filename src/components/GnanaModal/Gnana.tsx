@@ -19,7 +19,6 @@ import Dots from 'components/Loader/Dots'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { gnanaStyles } from './styles'
 import { useUserUnlimitedGnana } from 'state/user/hooks'
-import { useBananaPrice } from 'state/tokenPrices/hooks'
 
 const Gnana = () => {
   const { account } = useActiveWeb3React()
@@ -35,7 +34,7 @@ const Gnana = () => {
   const [triedMore, setTriedMore] = useState(false)
 
   const [val, setVal] = useState('0')
-  const { handleBuy } = useBuyGoldenBanana(parseFloat(useBananaPrice()))
+  const { handleBuy } = useBuyGoldenBanana()
   const gnanaVal = parseFloat(val) > 0 ? parseFloat(val) * 0.7 : 0
   const { toastSuccess } = useToast()
   const bananaContract = useBanana()
