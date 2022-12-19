@@ -191,7 +191,8 @@ export function rawToProjected({ userStats, analytics }: ApiResponse) {
 
 export function calculateRoi({ amountEarned, amountInvested }) {
   const percentage = (amountEarned / amountInvested - 1) * 100
-  return percentage
+
+  return isNaN(percentage) ? 0 : percentage
 }
 
 function getUsdPeriodEarnings({ period, farmApy, stakedValue }: IPeriodEarnings) {
