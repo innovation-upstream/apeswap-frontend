@@ -90,14 +90,26 @@ export const AboutMigrating = () => {
                 {t(`Follow the steps above to ensure that all of your positions are successfully migrated to the new smart
                 contract so that you can continue earning rewards.`)}
               </Text>
-              <Flex>
+              <Flex
+                sx={{
+                  flexDirection: 'row',
+                  width: '100%',
+                  justifyContent: 'flex-start',
+                  '@media screen and (max-width: 365px)': { flexDirection: 'column' },
+                }}
+              >
                 <Text weight={500} size="14px">
                   {t('Want more informations?')}{' '}
                 </Text>
                 <Link
                   href="https://apeswap.gitbook.io/apeswap-finance/welcome/master"
                   target="_blank"
-                  sx={{ textDecoration: 'underline', fontSize: '14px', ml: '5px' }}
+                  sx={{
+                    textDecoration: 'underline',
+                    fontSize: '14px',
+                    ml: '5px',
+                    '@media screen and (max-width: 365px)': { ml: '0px', mt: '5px' },
+                  }}
                 >
                   {t('Visit our docs')}
                 </Link>

@@ -27,14 +27,12 @@ const MigrateContext = createContext<MigrateContextData>({} as MigrateContextDat
 export function MigrateProvider({ children }: MigrateProviderProps) {
   // Initial states
 
-  const [migrationLoading, setMigrationLoading] = useState<boolean>(false)
   const [migrateMaximizers, setMigrateMaximizers] = useState<boolean>(false)
   const [v1Products, setV1Products] = useState<MasterApeProductsInterface[]>([])
   const [v2Products, setV2Products] = useState<MasterApeV2ProductsInterface[]>([])
   const [migrationCompleteLog, setMigrationCompleteLog] = useState<MigrationCompleteLog[]>([])
   const [lpStatus, setLpStatus] = useState<MigrateLpStatus[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
-  const [timeReady, setTimeReady] = useState<boolean>(false)
 
   const v2Farms = useFarmsV2(null)
 
@@ -52,7 +50,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
     setV2Products(v2ApeProducts)
   }, [v2ApeProducts])
 
-  const timer = useRef(null)
   const { account, chainId } = useActiveWeb3React()
 
   // Value filters and needed variables
@@ -94,12 +91,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   useEffect(() => {
     setMigrateLpStatus(v1ApeProducts, v2ApeProducts, v2Farms, migrateMaximizers, setLpStatus, chainId)
   }, [loading, account, chainId])
-
-  // Migration loading logic
-
-  timer.current = setTimeout(() => {
-    setTimeReady(true)
-  }, 4000)
 
   // if (!apeBalancesLoading && liquidityTokens.length > 0 && timeReady) {
   //   if (migrationLoading) {

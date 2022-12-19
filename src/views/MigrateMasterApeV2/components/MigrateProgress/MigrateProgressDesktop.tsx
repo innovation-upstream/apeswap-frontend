@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { ReactNode } from 'react'
 import { useMigrateAll } from '../../provider'
 import { MIGRATION_STEPS } from '../../provider/constants'
@@ -12,10 +13,12 @@ interface MigrateProcessBarInterface {
 }
 
 const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargin, children }) => {
+  const { account } = useActiveWeb3React()
   const { activeIndex, migrateLpStatus, migrationLoading, handleActiveIndexCallback } = useMigrateAll()
   const isComplete = migrateLpStatus?.map((item) =>
     Object.entries(item.status).map((each) => each[1] === MigrateStatus.COMPLETE),
   )
+  const noAccountOrLoading = account && !migrationLoading
   return (
     <Flex sx={{ flexDirection: 'column' }}>
       <Flex sx={{ alignItems: 'center' }}>
@@ -26,7 +29,10 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
               <Flex
                 key={title}
                 onClick={() => handleActiveIndexCallback(i)}
-                sx={{ ...styles.desktopStepContainer, background: activeIndex >= i ? 'gradient' : 'white2' }}
+                sx={{
+                  ...styles.desktopStepContainer,
+                  background: activeIndex >= i && noAccountOrLoading ? 'gradient' : 'white2',
+                }}
               >
                 <Flex sx={styles.desktopProgressCircleContainer}>
                   {isIndexComplete && !migrationLoading ? (
@@ -36,7 +42,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
                   ) : (
                     <Text
                       size="35px"
-                      color={activeIndex === i ? 'smartGradient' : 'text'}
+                      color={activeIndex === i && noAccountOrLoading ? 'smartGradient' : 'text'}
                       weight={700}
                       sx={styles.migrateText}
                     >
@@ -45,7 +51,12 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
                   )}
                 </Flex>
                 <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
-                  <Text size="20px" weight={700} mr="5px" color={activeIndex >= i ? 'primaryBright' : 'text'}>
+                  <Text
+                    size="20px"
+                    weight={700}
+                    mr="5px"
+                    color={activeIndex >= i && noAccountOrLoading ? 'primaryBright' : 'text'}
+                  >
                     {title}
                   </Text>
                   <Flex sx={{ mt: '2.5px' }}>
@@ -55,7 +66,11 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
                       transformTip="translate(10%, 0%)"
                       width="200px"
                     >
-                      <Svg icon="question" width="16.5px" color={activeIndex >= i ? 'primaryBright' : 'text'} />
+                      <Svg
+                        icon="question"
+                        width="16.5px"
+                        color={activeIndex >= i && noAccountOrLoading ? 'primaryBright' : 'text'}
+                      />
                     </TooltipBubble>
                   </Flex>
                 </Flex>
@@ -63,7 +78,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
               {i !== MIGRATION_STEPS.length - 1 && (
                 <Flex
                   sx={{
-                    background: activeIndex >= i ? 'gradient' : 'white2',
+                    background: activeIndex >= i && noAccountOrLoading ? 'gradient' : 'white2',
                     width: `${10 - MIGRATION_STEPS.length}%`,
                     height: '10px',
                   }}
@@ -74,12 +89,14 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
         })}
       </Flex>
       <Flex sx={{ width: '100%', position: 'relative', flexDirection: 'column' }}>
-        <Flex
-          sx={{
-            ...styles.desktopStepLineIndicator,
-            left: `${(activeIndex / MIGRATION_STEPS.length) * 100 + activeIndex + (activeLineMargin || 15)}%`,
-          }}
-        />
+        {noAccountOrLoading && (
+          <Flex
+            sx={{
+              ...styles.desktopStepLineIndicator,
+              left: `${(activeIndex / MIGRATION_STEPS.length) * 100 + activeIndex + (activeLineMargin || 15)}%`,
+            }}
+          />
+        )}
         <Flex sx={styles.desktopChildContainer}>
           <Flex
             sx={{ height: '100%', width: '100%', background: 'white2', borderRadius: '10px', padding: '40px 50px' }}

@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { Flex, Svg, Text } from '@ape.swap/uikit'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { ReactNode } from 'react'
 import { useMigrateAll } from '../../provider'
 import { MIGRATION_STEPS } from '../../provider/constants'
@@ -12,10 +13,12 @@ interface MigrateProcessBarInterface {
 }
 
 const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ children }) => {
+  const { account } = useActiveWeb3React()
   const { activeIndex, migrateLpStatus, migrationLoading, handleActiveIndexCallback } = useMigrateAll()
   const isComplete = migrateLpStatus?.map((item) =>
     Object.entries(item.status).map((each) => each[1] === MigrateStatus.COMPLETE),
   )
+  const noAccountOrLoading = account && !migrationLoading
   return (
     <Flex sx={{ flexDirection: 'column' }}>
       <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -44,7 +47,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ children }) => 
               {i !== MIGRATION_STEPS.length - 1 && (
                 <Flex
                   sx={{
-                    background: activeIndex > i ? 'gradient' : 'white2',
+                    background: activeIndex > i && noAccountOrLoading ? 'gradient' : 'white2',
                     zIndex: 1,
                     width: `${30 - MIGRATION_STEPS.length}%`,
                     height: '6px',
