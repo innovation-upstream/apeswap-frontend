@@ -21,7 +21,7 @@ const PairPage = () => {
   const [favs, toggleFav] = useFetchFavPairs()
 
   const { chainId, pairId } = useParams<{ chainId: string; pairId: string }>()
-  const [chartInfo, setChartInfo] = useState({ type: 'volume', xField: 'date', yField: 'dailyVolumeUSD' })
+  const [chartInfo, setChartInfo] = useState({ type: 'Volume', xField: 'date', yField: 'dailyVolumeUSD' })
 
   const UpdateChartType = (type: string, xField: string, yField: string) => {
     setChartInfo({ type: type, xField: xField, yField: yField })
@@ -271,14 +271,14 @@ const PairPage = () => {
                     <RangeSelectorsWrapper>
                       <ul>
                         <li
-                          className={chartInfo.type === 'volume' && 'active'}
-                          onClick={() => UpdateChartType('volume', 'date', 'dailyVolumeUSD')}
+                          className={chartInfo.type.toLowerCase() === 'volume' && 'active'}
+                          onClick={() => UpdateChartType('Volume', 'date', 'dailyVolumeUSD')}
                         >
                           Volume
                         </li>
                         <li
-                          className={chartInfo.type === 'liquidity' && 'active'}
-                          onClick={() => UpdateChartType('liquidity', 'date', 'reserveUSD')}
+                          className={chartInfo.type.toLowerCase() === 'liquidity' && 'active'}
+                          onClick={() => UpdateChartType('Liquidity', 'date', 'reserveUSD')}
                         >
                           Liquidity
                         </li>

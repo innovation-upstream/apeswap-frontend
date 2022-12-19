@@ -30,7 +30,23 @@ const LineChart: React.FC<LineChartProps> = (props) => {
       <Section className="smallSection">
         <div className="header">
           <div className="wrapper">
-            Date: <div className="value">{moment.unix(Number(data.data.date)).format('MMM DD, YYYY').valueOf()}</div>
+            Date: <div className="value">{moment.unix(Number(data.point.data.x)).format('MMM DD, YYYY').valueOf()}</div>
+          </div>
+        </div>
+        <div className="body">
+          <div className="wrapper">
+            {type}:
+            <div className="value">
+              $
+              {(Math.round(data.point.data.y * 100) / 100).toLocaleString('en-US', {
+                style: 'decimal',
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+                useGrouping: true,
+                notation: 'compact',
+                compactDisplay: 'short',
+              })}
+            </div>
           </div>
         </div>
       </Section>
@@ -53,6 +69,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
             axisLeft={null}
             enableArea={true}
             isInteractive={true}
+            useMesh={true}
             tooltip={(data) => generateToolTip(data)}
           />
         </Flex>

@@ -22,7 +22,7 @@ const TokenPage = () => {
   const [favs, toggleFav] = useFetchFavTokens()
 
   const { chainId, tokenId } = useParams<{ chainId: string; tokenId: string }>()
-  const [chartInfo, setChartInfo] = useState({ type: 'price', xField: 'date', yField: 'priceUSD' })
+  const [chartInfo, setChartInfo] = useState({ type: 'Price', xField: 'date', yField: 'priceUSD' })
 
   const UpdateChartType = (type: string, xField: string, yField: string) => {
     setChartInfo({ type: type, xField: xField, yField: yField })
@@ -251,20 +251,20 @@ const TokenPage = () => {
                     <RangeSelectorsWrapper>
                       <ul>
                         <li
-                          className={chartInfo.type === 'price' && 'active'}
-                          onClick={() => UpdateChartType('price', 'date', 'priceUSD')}
+                          className={chartInfo.type.toLowerCase() === 'price' && 'active'}
+                          onClick={() => UpdateChartType('Price', 'date', 'priceUSD')}
                         >
                           Price
                         </li>
                         <li
-                          className={chartInfo.type === 'volume' && 'active'}
-                          onClick={() => UpdateChartType('volume', 'date', 'dailyVolumeUSD')}
+                          className={chartInfo.type.toLowerCase() === 'volume' && 'active'}
+                          onClick={() => UpdateChartType('Volume', 'date', 'dailyVolumeUSD')}
                         >
                           Volume
                         </li>
                         <li
-                          className={chartInfo.type === 'liquidity' && 'active'}
-                          onClick={() => UpdateChartType('liquidity', 'date', 'totalLiquidityUSD')}
+                          className={chartInfo.type.toLowerCase() === 'liquidity' && 'active'}
+                          onClick={() => UpdateChartType('Liquidity', 'date', 'totalLiquidityUSD')}
                         >
                           Liquidity
                         </li>
