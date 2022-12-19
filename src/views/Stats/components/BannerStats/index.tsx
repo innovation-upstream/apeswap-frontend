@@ -29,8 +29,10 @@ export const BannerStats = () => {
   const { stats, portfolioData, loading } = useStats()
   const isMobile = useIsMobile()
 
-  const calculateTotalEarnings = () => {
-    return portfolioData.reduce((acc, curr) => acc + curr.totalEarnings, 0)
+  const calculateTotalEarnings = (filterBills?: boolean) => {
+    const products = filterBills ? portfolioData.filter((product) => product.type !== 'bills') : portfolioData
+
+    return products.reduce((acc, curr) => acc + curr.totalEarnings, 0)
   }
 
   const calculateTotalPortfolio = () => {
@@ -38,7 +40,7 @@ export const BannerStats = () => {
   }
 
   const calculateTotalHoldings = () => {
-    return calculateTotalPortfolio() + calculateTotalEarnings() + stats.analytics.assets.totalWalletHoldings
+    return calculateTotalPortfolio() + calculateTotalEarnings(true) + stats.analytics.assets.totalWalletHoldings
   }
 
   return (
