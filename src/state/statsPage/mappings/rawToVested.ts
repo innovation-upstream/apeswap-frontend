@@ -6,7 +6,7 @@ export function rawToVested({ userStats }: ApiResponse) {
   const vestedEarnings: Vested[] = []
 
   userStats.forEach(({ bills, iaos, chainId }) => {
-    bills?.forEach((bill) => vestedEarnings.push({ ...bill, chain: chainId }))
+    bills?.forEach((bill) => bill.earnedBalance > 0 && vestedEarnings.push({ ...bill, chain: chainId }))
     iaos?.forEach((iao) => vestedEarnings.push({ ...iao, chain: chainId }))
   })
 

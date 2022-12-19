@@ -92,6 +92,8 @@ export function rawToPortfolio({ userStats, bananaPrice }: ApiResponse) {
     })
 
     bills?.forEach((bill) => {
+      if (bill.vestingTimeRemaining < 1 && bill.earnedBalance === 0) return
+
       const positionData = billToPosition(bill)
       const positionEarnings = positionData.rewardBalance * positionData.rewardToken.price
 
