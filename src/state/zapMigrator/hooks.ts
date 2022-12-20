@@ -261,7 +261,8 @@ export const useMigratorBalances = (
     : []
 
   // List of LP prices
-  const [lpPrices, setPrices] = useState([])
+  const [lpPrices, setPrices] = useState(null)
+  const [lpPricesLoading, setLpPricesLoading] = useState(true)
   useMemo(() => {
     const fetchPrices = async () => {
       const prices = await Promise.all(
@@ -275,8 +276,9 @@ export const useMigratorBalances = (
         }),
       )
     }
-    fetchPrices()
-  }, [chainId, loLpAddressesWithChef])
+    // Waiting until loLpAddressesWithChef is filled to fetch prices
+    if (valid && !balanceLoading) fetchPrices().then(() => setLpPricesLoading(false))
+  }, [balanceLoading, chainId, loLpAddressesWithChef, valid])
 
   const lpCallResults = useMultipleContractSingleData(loLpAddresses, PAIR_INTERFACE, 'getReserves')
   const lpTotalSupply = useMultipleContractSingleData(loLpAddresses, PAIR_INTERFACE, 'totalSupply')
@@ -340,7 +342,7 @@ export const useMigratorBalances = (
       lpCallResults[0]?.loading ||
       tokenSymbolResults[0]?.loading ||
       tokenDecimalResults[0]?.loading ||
-      lpPrices.length === 0,
+      lpPricesLoading,
     results: balanceData,
   }
 }
