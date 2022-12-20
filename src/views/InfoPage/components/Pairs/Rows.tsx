@@ -48,7 +48,9 @@ const Rows = ({ pairs, activeIndex }: { pairs: Pairs[]; activeIndex: number }) =
     >
       <Grid
         gap="0px"
-        columns={[`.25fr .25fr ${mobile ? '1.5fr' : '2.75fr'} 1.25fr 1.5fr 1.5fr`]}
+        columns={[
+          `${mobile ? '.5fr' : '.25fr'} ${mobile ? '.5fr' : '.25fr'} ${mobile ? '1.5fr' : '2.75fr'} 1.25fr 1.5fr 1.5fr`,
+        ]}
         sx={{ minHeight: '40px', alignItems: 'center', minWidth: '700px' }}
       >
         <Text></Text>

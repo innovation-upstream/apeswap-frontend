@@ -26,12 +26,12 @@ const Transactions: React.FC<TransactionProps> = (props) => {
 
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)
-  const transactions = useFetchInfoTransactions(amount ? amount : 50, token ? token : '', chain ? chain : null)
+  const transactions = useFetchInfoTransactions(amount ? amount : 100, token ? token : '', chain ? chain : null)
   const [transactionType, setTransactionType] = useState('all')
   const ROWS_PER_PAGE = pageSize ? pageSize : 10
   const [activeChains] = useFetchActiveChains()
 
-  const flattenedSwaps = Object.values(transactions).flatMap((row) =>
+  let flattenedSwaps = Object.values(transactions).flatMap((row) =>
     row.initialized
       ? row.data?.flatMap(({ swaps, chainId }) =>
           swaps.map((swap) => {
@@ -41,7 +41,7 @@ const Transactions: React.FC<TransactionProps> = (props) => {
       : [],
   ) as Swaps[]
 
-  const flattenedMints = Object.values(transactions).flatMap((row) =>
+  let flattenedMints = Object.values(transactions).flatMap((row) =>
     row.initialized
       ? row.data?.flatMap(({ mints, chainId }) =>
           mints.map((mint) => {
@@ -51,7 +51,7 @@ const Transactions: React.FC<TransactionProps> = (props) => {
       : [],
   ) as Swaps[]
 
-  const flattenedBurns = Object.values(transactions).flatMap((row) =>
+  let flattenedBurns = Object.values(transactions).flatMap((row) =>
     row.initialized
       ? row.data?.flatMap(({ burns, chainId }) =>
           burns.map((burn) => {
@@ -60,6 +60,12 @@ const Transactions: React.FC<TransactionProps> = (props) => {
         )
       : [],
   ) as Swaps[]
+
+  if (token && token !== '') {
+    flattenedSwaps = flattenedSwaps.filter((x) => x.pair.token0.id === token || x.pair.token1.id === token)
+    flattenedMints = flattenedMints.filter((x) => x.pair.token0.id === token || x.pair.token1.id === token)
+    flattenedBurns = flattenedBurns.filter((x) => x.pair.token0.id === token || x.pair.token1.id === token)
+  }
 
   const getTransactions = useMemo(() => {
     if (transactionType === 'all') {
@@ -80,7 +86,7 @@ const Transactions: React.FC<TransactionProps> = (props) => {
         'desc',
       ),
     [activeChains, getTransactions],
-  )?.slice(0, amount ? amount : 50)
+  )?.slice(0, amount ? amount : 100)
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * ROWS_PER_PAGE) % sortedTransactions.length

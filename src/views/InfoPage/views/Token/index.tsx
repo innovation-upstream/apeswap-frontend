@@ -120,7 +120,8 @@ const TokenPage = () => {
             <Flex
               sx={{
                 width: `${mobile ? '100%' : '50%'}`,
-                justifyContent: 'flex-end',
+                justifyContent: `${mobile ? 'flex-start' : 'flex-end'}`,
+                marginTop: `${mobile ? '15px' : '0px'}`,
               }}
             >
               <Button
@@ -171,6 +172,7 @@ const TokenPage = () => {
           >
             {tokenDaysData[chain].data !== null &&
             tokenData[chain].data !== null &&
+            typeof tokenData[chain].data[0] !== 'undefined' &&
             tokenData[chain].data[0] !== [] &&
             tokenDayOldData[chain].data !== null ? (
               <>

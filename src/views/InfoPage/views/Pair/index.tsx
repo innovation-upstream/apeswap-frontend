@@ -86,7 +86,7 @@ const PairPage = () => {
           </Flex>
         </Flex>
 
-        {pairDaysData[chain].data !== null && (
+        {pairData[chain].data !== null && typeof pairData[chain].data[0] !== 'undefined' && (
           <Flex
             sx={{
               width: '100%',
@@ -112,8 +112,9 @@ const PairPage = () => {
             </Flex>
             <Flex
               sx={{
-                width: '50%',
-                justifyContent: 'flex-end',
+                width: `${mobile ? '100%' : '50%'}`,
+                justifyContent: `${mobile ? 'flex-start' : 'flex-end'}`,
+                marginTop: `${mobile ? '15px' : '0px'}`,
               }}
             >
               <Button
@@ -156,8 +157,10 @@ const PairPage = () => {
           >
             {pairData[chain].data !== null &&
             pairData[chain].data[0] &&
+            typeof pairData[chain].data[0] !== 'undefined' &&
             pairDayOldData[chain].data !== null &&
             pairDayOldData[chain].data[0] &&
+            typeof pairDayOldData[chain].data[0] !== 'undefined' &&
             pairDaysData[chain].data !== null ? (
               <>
                 <Flex

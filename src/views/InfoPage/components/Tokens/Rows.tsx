@@ -48,7 +48,11 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
     >
       <Grid
         gap="0px"
-        columns={[`.25fr .25fr ${mobile ? '1.5fr' : '2.75fr'} 1.25fr 1.5fr 1.5fr`]}
+        columns={[
+          `${mobile ? '.5fr' : '.25fr'} ${mobile ? '.5fr' : '.25fr'}  ${
+            mobile ? '1.5fr' : '2.75fr'
+          } 1.25fr 1.5fr 1.5fr`,
+        ]}
         sx={{ minHeight: '40px', alignItems: 'center', minWidth: '450px' }}
       >
         <Text></Text>
@@ -69,14 +73,18 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
       </Grid>
       <Flex sx={{ flexDirection: 'column' }}>
         {tokens.map(({ derivedETH, id, name, symbol, totalLiquidity, tradeVolumeUSD, chainId }, index) => {
-          const currentNativePrice = parseFloat(nativePrice[chainId]?.data.ethPrice)
+          const currentNativePrice = parseFloat(nativePrice[chainId]?.data.ethPrice ?? '0')
           const currentAssetPrice = currentNativePrice * parseFloat(derivedETH)
           const currentAssetLiquidity = parseFloat(totalLiquidity) * currentNativePrice * parseFloat(derivedETH)
           return (
             <Grid
               key={id}
               gap="0px"
-              columns={[`.25fr .25fr ${mobile ? '1.5fr' : '2.75fr'} 1.25fr 1.5fr 1.5fr`]}
+              columns={[
+                `${mobile ? '.5fr' : '.25fr'} ${mobile ? '.5fr' : '.25fr'}  ${
+                  mobile ? '1.5fr' : '2.75fr'
+                } 1.25fr 1.5fr 1.5fr`,
+              ]}
               sx={{
                 background: index % 2 === 0 ? 'white3' : 'white2',
                 height: '40px',

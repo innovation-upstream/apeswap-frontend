@@ -33,7 +33,7 @@ const Tokens: React.FC<TokensProps> = (props) => {
   const [favsPageCount, setFavsPageCount] = useState(0)
   const ROWS_PER_PAGE = pageSize ? pageSize : 10
   const [dataOffset, setDataOffset] = useState(0)
-  const tokens = useFetchInfoTokensData(amount ? amount : 20, true)
+  const tokens = useFetchInfoTokensData(amount ? amount : 200, true)
   const nativePrice = useFetchInfoNativePrice()
   const [favs] = useFetchFavTokens()
 
