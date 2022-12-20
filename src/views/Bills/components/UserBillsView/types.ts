@@ -1,10 +1,16 @@
 import { TranslateFunction } from 'contexts/Localization'
+import { Bills, UserBill, UserBillNft } from 'state/types'
 
 export interface PLProps {
   website: string
   twitter: string
   t: TranslateFunction
   isMobile?: boolean
+}
+
+export interface BillsToRender extends UserBill {
+  filteredOwnedBillNftData: UserBillNft
+  bill: Bills
 }
 
 export type Option = {
