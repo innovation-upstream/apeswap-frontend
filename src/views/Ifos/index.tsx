@@ -39,7 +39,7 @@ const Ifos = () => {
       <Container>
         <Banner
           banner="iao"
-          link="?modal=iao"
+          link="?modal=tutorial"
           title={t('Initial Ape Offerings')}
           maxWidth={992}
           margin="30px 0px 20px 0px"

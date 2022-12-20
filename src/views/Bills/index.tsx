@@ -47,7 +47,7 @@ const Bills: React.FC = () => {
           <Banner
             banner={`${chainId}-treasury-bills` as BannerTypes}
             title={t('Treasury Bills')}
-            link="?modal=bills"
+            link="?modal=tutorial"
             listViewBreak
             maxWidth={1130}
             titleColor="primaryBright"

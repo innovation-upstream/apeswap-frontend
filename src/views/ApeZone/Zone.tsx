@@ -34,7 +34,7 @@ const Zone = () => {
       <Page width="1130px">
         <Banner
           banner="gnana"
-          link="?modal=gnana-tutorial"
+          link="?modal=tutorial"
           title={t('Golden Banana')}
           margin="0px 0px 20px 0px"
           maxWidth={1130}

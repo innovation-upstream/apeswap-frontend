@@ -13,6 +13,7 @@ export const SwapSlides = () => {
   const isMobile = useIsMobile()
   return [
     <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
       <Text sx={styles.slideTitle}>{t('Select Tokens & Amount')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>{t('Select the tokens you want to trade and enter your preferred amount.')}</Text>
@@ -28,6 +29,7 @@ export const SwapSlides = () => {
       </Flex>
     </Flex>,
     <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 2`)}</Text>
       <Text sx={styles.slideTitle}>{t('Approve Router')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>{t(`You'll need to APPROVE the router just once.`)}</Text>
@@ -76,6 +78,7 @@ export const SwapSlides = () => {
       </Flex>
     </Flex>,
     <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 3`)}</Text>
       <Text sx={styles.slideTitle}>{t('Confirm The Swap!')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>
@@ -92,7 +95,8 @@ export const FarmSlides = () => {
   const { t } = useTranslation()
   const isMobile = useIsMobile()
   return [
-    <Flex sx={styles.contentContainer} key={0}>
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
       <Text sx={styles.slideTitle}>{t('Add Liquidity')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>
@@ -111,7 +115,7 @@ export const FarmSlides = () => {
           </TooltipBubble>{' '}
           {t('and obtain liquidity provider (LP) tokens in exchange.')}
         </Text>
-        <Text sx={{ fontStyle: 'italic' }}>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
           {t('⚡NEW: You can also')}{' '}
           <TooltipBubble
             placement={'topRight'}
@@ -129,7 +133,8 @@ export const FarmSlides = () => {
         </Text>
       </Flex>
     </Flex>,
-    <Flex sx={styles.contentContainer} key={1}>
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.stepNo}>{t(`Step 2`)}</Text>
       <Text sx={styles.slideTitle}>{t('Stake')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>
@@ -139,7 +144,8 @@ export const FarmSlides = () => {
         </Text>
       </Flex>
     </Flex>,
-    <Flex sx={styles.contentContainer} key={2}>
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`Step 3`)}</Text>
       <Text sx={styles.slideTitle}>{t('Collect!')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>
@@ -152,10 +158,10 @@ export const FarmSlides = () => {
 
 export const PoolSlides = () => {
   const { t } = useTranslation()
-  const isMobile = useIsMobile()
   return [
-    <Flex sx={styles.contentContainer} key={0}>
-      <Text sx={styles.slideTitle}>{t('Get Tokens!!')}</Text>
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Get Tokens!')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>{t('Select GET BANANA or GET GNANA to acquire tokens to stake.')}</Text>
         <Text>
@@ -176,7 +182,8 @@ export const PoolSlides = () => {
         </Text>
       </Flex>
     </Flex>,
-    <Flex sx={styles.contentContainer} key={1}>
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.stepNo}>{t(`Step 2`)}</Text>
       <Text sx={styles.slideTitle}>{t('Stake')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>
@@ -184,11 +191,434 @@ export const PoolSlides = () => {
         </Text>
       </Flex>
     </Flex>,
-    <Flex sx={styles.contentContainer} key={2}>
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`Step 3`)}</Text>
       <Text sx={styles.slideTitle}>{t('Collect!')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>
           {t("Don't forget to HARVEST your earnings periodically. You can reinvest them or cash out at any time!")}
+        </Text>
+      </Flex>
+    </Flex>,
+  ]
+}
+
+export const MaximizerSlides = () => {
+  const { t } = useTranslation()
+  const isMobile = useIsMobile()
+  return [
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Get Tokens!')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            'Open the desired Maximizer and click GET LP or GET BANANA. This will allow you to easily obtain tokens to stake.',
+          )}
+        </Text>
+        <Text sx={{ fontStyle: 'italic' }}>
+          {t('⚡NEW: You can also')}{' '}
+          <TooltipBubble
+            placement={'topRight'}
+            transformTip={`translate(${isMobile ? '10%' : '6%'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t('Convert one token directly into an LP token or other product in a single transaction.')}
+              </Flex>
+            }
+            sx={{ width: ['210px', '210px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>ZAP</Text>
+          </TooltipBubble>{' '}
+          {t('to')}{' '}
+          <TooltipBubble
+            placement={'topLeft'}
+            transformTip={`translate(${isMobile ? '10%' : '0'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t('Contribute equal amounts of two tokens to the DEX to facilitate swaps between them.')}
+              </Flex>
+            }
+            sx={{ width: ['240px', '240px', '350px'] }}
+          >
+            <Text sx={{ ...styles.content, ...styles.tipTitle }}>add liquidity</Text>
+          </TooltipBubble>{' '}
+          {t('with single tokens!')}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.stepNo}>{t(`Step 2`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Stake')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            `Once you have the LP tokens or BANANA, ENABLE your desired Maximizer and then click DEPOSIT to stake and start earning.`,
+          )}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`Step 3`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Enjoy!')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t("You'll see your BANANA rewards balance grow over time. Both the 'AUTO' and 'MAX' Vaults will")}{' '}
+          <TooltipBubble
+            placement={'topRight'}
+            transformTip={`translate(${isMobile ? '10%' : '0'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t('Maximizer Vaults will automatically re-stake your earnings periodically.')}
+              </Flex>
+            }
+            sx={{ width: ['240px', '240px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>{t('auto-compound')}</Text>
+          </TooltipBubble>{' '}
+          {t('your earnings! You can HARVEST them or UNSTAKE to cash out at any time.')}
+        </Text>
+      </Flex>
+    </Flex>,
+  ]
+}
+
+export const GnanaSlides = () => {
+  const { t } = useTranslation()
+  const isMobile = useIsMobile()
+  return [
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Get BANANA')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t('In order to convert into GNANA, you must first hold BANANA.')}{' '}
+          <Text sx={styles.yellow}>
+            <a href="https://apeswap.finance/swap" target="_blank" rel="noreferrer noopener">
+              {t('Click here')}
+            </a>
+          </Text>{' '}
+          {t('to trade any of your tokens for BANANA!')}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.stepNo}>{t(`Step 2`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Convert')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            'Input the desired amount of BANANA you would like to convert, and select CONVERT. Then, confirm the transaction in your wallet.',
+          )}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`HEADS UP, APES!`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Conversion Fee!')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t('Converting from BANANA to GNANA involves paying a 28% burn fee and a 2%')}{' '}
+          <TooltipBubble
+            placement={'topLeft'}
+            transformTip={`translate(${isMobile ? '10%' : '0'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t(
+                  'A fee charged when transferring a reflect token, that is then redistributed among the token holders.',
+                )}
+              </Flex>
+            }
+            sx={{ width: ['220px', '220px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>{t('reflect fee')}</Text>
+          </TooltipBubble>{' '}
+          {t('for a total cost of 30%')}
+        </Text>
+        <Text sx={{ fontStyle: 'italic' }}>
+          <Text sx={styles.content}>{t('(For every 1 BANANA you convert, you will receive 0.7 GNANA)')}</Text>
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={4}>
+      <Text sx={styles.stepNo}>{t(`Step 3`)}</Text>
+      <Text sx={styles.slideTitle}>{t(`You're Golden!`)}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t('Enjoy your new, shiny GNANA! You can now access exclusive pools, hold them to earn')}{' '}
+          <TooltipBubble
+            placement={'topLeft'}
+            transformTip={`translate(${isMobile ? '10%' : '0'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t(
+                  'A fee charged when transferring a reflect token, that is then redistributed among the token holders.',
+                )}
+              </Flex>
+            }
+            sx={{ width: ['200px', '200px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>{t('reflect fees,')}</Text>
+          </TooltipBubble>{' '}
+          {t('or participate in GNANA IAOs.')}
+        </Text>
+        <Text sx={{ fontStyle: 'italic' }}>
+          {t('Additionally, you can now vote in the')}{' '}
+          <TooltipBubble
+            placement={isMobile ? 'topLeft' : 'topRight'}
+            transformTip={`translate(${isMobile ? '-3%' : '3%'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t(
+                  'A decentralized autonomous organization, or DAO, is a community-led entity with no central authority that is governed by computer code.',
+                )}
+              </Flex>
+            }
+            sx={{ width: ['275px', '275px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>DAO&apos;s</Text>
+          </TooltipBubble>{' '}
+          <Text sx={styles.yellow}>
+            <a
+              href="https://discuss.apeswap.finance/?_ga=2.192308074.1948993264.1666625902-2101162031.1664826138"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              {t('Governance!')}
+            </a>
+          </Text>
+        </Text>
+      </Flex>
+    </Flex>,
+  ]
+}
+
+export const BillsSlides = () => {
+  const { t } = useTranslation()
+  const isMobile = useIsMobile()
+  return [
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Select & Enable')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t('Click or tap BUY on the desired Bill and ENABLE it. Then, approve the transaction in your wallet.')}
+        </Text>
+        <Text sx={{ fontStyle: 'italic' }}>{t("You'll see the tokens' discount compared to market price.")}</Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.stepNo}>{t(`Step 2`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Add Liquidity')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t('Select GET LP - This will allow you to easily')}{' '}
+          <TooltipBubble
+            placement={isMobile ? 'topLeft' : 'topRight'}
+            transformTip="translate(0%, 2%)"
+            body={
+              <Flex sx={styles.tipBody}>
+                {t('Contribute equal amounts of two tokens to the DEX to facilitate swaps between them.')}
+              </Flex>
+            }
+            sx={{ width: ['230px', '230px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>{t('add liquidity')}</Text>{' '}
+          </TooltipBubble>{' '}
+          {t('and obtain liquidity provider (LP) tokens in exchange.')}
+        </Text>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
+          {t('⚡NEW: You can also')}{' '}
+          <TooltipBubble
+            placement={'topRight'}
+            transformTip={`translate(${isMobile ? '10%' : '6%'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t('Convert one token directly into an LP token or other product in a single transaction.')}
+              </Flex>
+            }
+            sx={{ width: ['210px', '210px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>ZAP</Text>
+          </TooltipBubble>{' '}
+          {t('to add liquidity with single tokens!')}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`Step 3`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Buy')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            'Input the desired amount of LPs to deposit and select BUY. Then, confirm the transaction in your wallet.',
+          )}
+        </Text>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
+          {t('⚡NEW: You can also')}{' '}
+          <TooltipBubble
+            placement={'topRight'}
+            transformTip={`translate(${isMobile ? '10%' : '6%'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t('Convert one token directly into an LP token or other product in a single transaction.')}
+              </Flex>
+            }
+            sx={{ width: ['210px', '210px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>ZAP</Text>
+          </TooltipBubble>{' '}
+          {t('to add liquidity with single tokens!')}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={4}>
+      <Text sx={styles.stepNo}>{t(`Step 4`)}</Text>
+      <Text sx={styles.slideTitle}>{t(`Claim!`)}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            'The tokens will vest linearly until the end of the vesting period. You can CLAIM as you earn, or all at once after fully vested.',
+          )}{' '}
+          {t('You can also')}{' '}
+          <TooltipBubble
+            placement={'topLeft'}
+            transformTip={`translate(${isMobile ? '10%' : '0'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t('Transferring a Treasury Bill NFT will also transfer any unclaimed tokens to the new holder.')}
+              </Flex>
+            }
+            sx={{ width: ['200px', '200px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>{t('TRANSFER')}</Text>
+          </TooltipBubble>{' '}
+          {t('your Bill NFTs to other wallets!')}
+        </Text>
+      </Flex>
+    </Flex>,
+  ]
+}
+
+export const IAOSlides = () => {
+  const { t } = useTranslation()
+  const isMobile = useIsMobile()
+  return [
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Prepare For Takeoff')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t('You can commit with either BNB or')}{' '}
+          <TooltipBubble
+            placement={isMobile ? 'topLeft' : 'topRight'}
+            transformTip={`translate(${isMobile ? '0' : '3%'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t("ApeSwap's governance token that also enables access to exclusive pools and IAO allocations")}
+              </Flex>
+            }
+            sx={{ width: ['270px', '270px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>GNANA</Text>
+          </TooltipBubble>{' '}
+          {t('(or both!). Select GET BNB or GET GNANA to acquire the tokens you need.')}
+        </Text>
+        <Text sx={{ fontStyle: 'italic' }}>
+          {t('Make sure you have the tokens ready for when the sale goes live!')}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.stepNo}>{t(`Step 2`)}</Text>
+      <Text sx={styles.slideTitle}>{t('3, 2, 1... Commit!')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>{t('Once the IAO goes live, input the desired amount of tokens to commit and select CONTRIBUTE.')}</Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`Keep in mind`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Overflow')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t('After the sale ends, if the IAO is')}{' '}
+          <TooltipBubble
+            placement={isMobile ? 'topLeft' : 'topRight'}
+            transformTip={`translate(${isMobile ? '0' : '-6%'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t(
+                  'When more than the target amount of funds are raised, all extra funds will be proportionally distributed to their owners.',
+                )}
+              </Flex>
+            }
+            sx={{ width: ['270px', '270px', '400px'] }}
+          >
+            <Text sx={styles.tipTitle}>{t('oversubscribed')},</Text>
+          </TooltipBubble>{' '}
+          {t("you'll automatically receive any excess overflow tokens.")}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={4}>
+      <Text sx={styles.stepNo}>{t(`Step 4`)}</Text>
+      <Text sx={styles.slideTitle}>{t(`Claim`)}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t('The tokens will')}{' '}
+          <TooltipBubble
+            placement={'topRight'}
+            transformTip={`translate(${isMobile ? '2%' : '-3%'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t(
+                  'Tokens become available incrementally over time, starting immediately after the sale, and ending when the vesting period is completed.',
+                )}
+              </Flex>
+            }
+            sx={{ width: ['210px', '210px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>{t('vest linearly')}</Text>
+          </TooltipBubble>{' '}
+          {t('until the end of the vesting period. You can CLAIM as you earn, or all at once after fully vested.')}
+        </Text>
+      </Flex>
+    </Flex>,
+  ]
+}
+
+export const OrdersSlides = () => {
+  const { t } = useTranslation()
+  const isMobile = useIsMobile()
+  return [
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Set Conditions')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            'Select the tokens you want to trade and enter your preferred amount. Then, enter the price at which you want to trade',
+          )}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.stepNo}>{t(`Step 2`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Place Your Order')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text> {t('Select APPROVE and click PLACE ORDER, then confirm the transaction in your wallet.')}</Text>
+        <Text sx={{ fontStyle: 'italic' }}>{t('You will see your open and past orders below!')}</Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`Step 3`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Hold Tight!')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>{t('Wait for your order to execute, or cancel it at any time.')}</Text>
+        <Text sx={{ fontStyle: 'italic' }}>
+          {t(
+            "Remember: you'll need to be holding the funds for the trade to be successful once the market price reaches the price you set.",
+          )}
         </Text>
       </Flex>
     </Flex>,

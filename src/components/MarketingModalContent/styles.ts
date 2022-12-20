@@ -222,6 +222,15 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     gap: '5px',
     height: ['150px', '150px', '200px'],
   },
+  stepNo: {
+    width: '100%',
+    fontSize: '10px',
+    lineHeight: '14px',
+    fontWeight: 700,
+    color: 'yellow',
+    textTransform: 'uppercase',
+    mb: '3px',
+  },
   step: {
     fontSize: '10px',
     lineHeight: '14px',

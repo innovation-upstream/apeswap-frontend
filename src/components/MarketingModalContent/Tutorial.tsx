@@ -1,20 +1,25 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, Text, TooltipBubble, TutorialModal, useWalletModal } from '@ape.swap/uikit'
+import { Flex, Text, TutorialModal, useWalletModal } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { CHAIN_PARAMS, NETWORK_LABEL } from 'config/constants/chains'
+import { NETWORK_LABEL } from 'config/constants/chains'
 import { METAMASK_LINKS } from 'config/constants'
 import { useTranslation } from 'contexts/Localization'
-import { MaximizerSlides } from './Maximizers'
-import { GnanaSlides } from './Gnana'
-import { BillSlides } from './Bills'
-import { IaoSlides } from './Iao'
 import { OrderSlides } from './Orders'
 import { LiquiditySlides } from './Liquidity'
 import { styles } from './styles'
 import useAuth from '../../hooks/useAuth'
 import useIsMobile from '../../hooks/useIsMobile'
-import { SwapSlides, FarmSlides, PoolSlides } from './TutorialSlides'
+import {
+  SwapSlides,
+  FarmSlides,
+  PoolSlides,
+  MaximizerSlides,
+  GnanaSlides,
+  BillsSlides,
+  IAOSlides,
+  OrdersSlides,
+} from './TutorialSlides'
 
 const Tutorial: React.FC<{
   location: string
@@ -30,6 +35,7 @@ const Tutorial: React.FC<{
 
   const connectWalletSlide = (
     <Flex sx={styles.contentContainer} key={0}>
+      <Text sx={styles.stepNo}>{t(`Step 0`)}</Text>
       <Text sx={styles.slideTitle}>{t('Connect Your Wallet')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text sx={styles.yellow} onClick={onPresentConnectModal}>
@@ -74,30 +80,35 @@ const Tutorial: React.FC<{
       description: 'Earn tokens by staking BANANA or GNANA!',
       slides: account ? PoolSlides() : [connectWalletSlide, ...PoolSlides()],
     },
-    'maximizers-vaults': {
+    '/maximizers': {
+      type: 'maximizers',
       title: 'Welcome to Banana Maximizers',
       description: 'Maximize your BANANA yields!',
-      slides: MaximizerSlides,
+      slides: account ? MaximizerSlides() : [connectWalletSlide, ...MaximizerSlides()],
     },
-    gnana: {
+    '/gnana': {
+      type: 'gnana',
       title: 'Welcome to Golden Banana',
       description: 'Unlock the exclusive benefits of GNANA!',
-      slides: GnanaSlides,
+      slides: account ? GnanaSlides() : [connectWalletSlide, ...GnanaSlides()],
     },
-    'treasury-bills': {
+    '/treasury-bills': {
+      type: 'treasury-bills',
       title: 'Welcome to Treasury Bills',
       description: 'Buy tokens at a discount and obtain a unique NFT!',
-      slides: BillSlides,
+      slides: account ? BillsSlides() : [connectWalletSlide, ...BillsSlides()],
     },
-    iao: {
+    '/iao': {
+      type: 'iao',
       title: 'Welcome to Initial Ape Offerings',
       description: 'Contribute BNB or GNANA to obtain newly launched tokens!',
-      slides: IaoSlides,
+      slides: account ? IAOSlides() : [connectWalletSlide, ...IAOSlides()],
     },
-    orders: {
+    '/limit-orders': {
+      type: 'orders',
       title: 'Welcome to Limit Orders',
       description: 'Trade at the price you want!',
-      slides: OrderSlides,
+      slides: account ? OrdersSlides() : [connectWalletSlide, ...OrdersSlides()],
     },
     liquidity: {
       title: "Welcome to ApeSwap's Dex Liquidity",
