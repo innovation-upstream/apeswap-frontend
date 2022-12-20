@@ -53,7 +53,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const isMobile = useIsMobile()
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
 
-  const { onStake } = useVaultStake(pid, vaultVersion)
+  const { onStake } = useVaultStake(pid, vaultVersion, stakeTokenValueUsd)
   const { onUnstake } = useVaultUnstake(pid, vaultVersion)
 
   const [onPresentDeposit] = useModal(

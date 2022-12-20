@@ -42,12 +42,15 @@ function MigrateLiquidity({
   const { t } = useTranslation()
   const [recentTransactions] = useUserRecentTransactions()
 
+  const [tradeValueUsd, setTradeValueUsd] = useState(0)
+  const setTradeValueUsdCallback = useCallback((value: number) => setTradeValueUsd(value), [setTradeValueUsd])
+
   // Set currencies
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
   // burn state
-  const { independentField, typedValue } = useZapMigratorState()
+  const { independentField, typedValue, smartRouter } = useZapMigratorState()
   const { pair, zapMigrate, parsedAmounts, error } = useDerivedZapMigratorInfo(
     currencyA ?? undefined,
     currencyB ?? undefined,
@@ -148,6 +151,7 @@ function MigrateLiquidity({
                     token1: pair.token0.getSymbol(chainId),
                     token2: pair.token1.getSymbol(chainId),
                     amount: zapMigrate.amount,
+                    usdAmount: tradeValueUsd,
                   },
                 })
                 toastSuccess(t('Migrate Successful'), {
@@ -206,6 +210,8 @@ function MigrateLiquidity({
             handleMaxInput={handleMaxInput}
             showCommonBases
             lpPair={pair}
+            smartRouter={smartRouter}
+            setTradeValueUsd={setTradeValueUsdCallback}
           />
           <PoolInfo pair={pair} parsedAmounts={parsedAmounts} chainId={chainId} />
           <Flex sx={{ height: '10px' }} />

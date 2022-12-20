@@ -23,16 +23,23 @@ interface HarvestActionsProps {
   sousId: number
   userEarnings: number
   earnTokenSymbol: string
+  earnTokenValueUsd: number
   disabled: boolean
 }
 
-const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol, disabled, userEarnings }) => {
+const HarvestAction: React.FC<HarvestActionsProps> = ({
+  sousId,
+  earnTokenSymbol,
+  disabled,
+  userEarnings,
+  earnTokenValueUsd,
+}) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
   const [pendingApeHarderTrx, setPendingApeHarderTrx] = useState(false)
   const { onHarvest } = useSousHarvest(sousId)
-  const { onStake } = useSousStake(sousId)
+  const { onStake } = useSousStake(sousId, earnTokenValueUsd)
   const bananaToken = useCurrency(useBananaAddress())
   const { showPoolHarvestModal } = useIsModalShown()
   const history = useHistory()

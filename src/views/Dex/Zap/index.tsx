@@ -55,6 +55,9 @@ function ZapLiquidity({
   const { zap, inputError: zapInputError, currencyBalances } = useDerivedZapInfo()
   const { onUserInput, onCurrencySelection } = useZapActionHandlers()
 
+  const [tradeValueUsd, setTradeValueUsd] = useState(0)
+  const setTradeValueUsdCallback = useCallback((value: number) => setTradeValueUsd(value), [setTradeValueUsd])
+
   const handleCurrencySelect = useCallback(
     (field: Field, currency: Currency[]) => {
       onCurrencySelection(field, currency)
@@ -85,6 +88,7 @@ function ZapLiquidity({
               chainId,
             )}`,
             amount: getBalanceNumber(new BigNumber(zap.currencyIn.inputAmount.toString())),
+            usdAmount: tradeValueUsd,
           },
         })
       })
@@ -94,7 +98,7 @@ function ZapLiquidity({
           txHash: undefined,
         })
       })
-  }, [chainId, zapCallback, zap])
+  }, [zapCallback, zap, chainId, tradeValueUsd])
 
   const handleDismissConfirmation = useCallback(() => {
     // clear zapState if user close the error modal
@@ -142,6 +146,7 @@ function ZapLiquidity({
               onUserInput={onUserInput}
               handleMaxInput={handleMaxInput}
               isZapInput
+              setTradeValueUsd={setTradeValueUsdCallback}
             />
             <Flex sx={{ margin: '10px', justifyContent: 'center' }}>
               <Svg icon="ZapArrow" />
