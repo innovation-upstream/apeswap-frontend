@@ -34,15 +34,22 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
           alignItems: 'center',
           justifyContent: 'center',
           flexDirection: 'row',
+          flexWrap: 'wrap',
         }}
       >
-        <Flex sx={{ flex: 1 }}>
+        <Flex sx={{ flex: `${mobile ? '0 0 100%' : '1'}`, marginTop: `${mobile ? '15px' : '0px'}` }}>
           <Text bold mr="15px" mt="5px" ml="20px">
             Search
           </Text>
-          <Input icon="search" sx={{ width: '100%' }} width="100%" onChange={onFilter} />
+          <Input icon="search" sx={{ width: '100%', marginLeft: '10px' }} width="100%" onChange={onFilter} />
         </Flex>
-        <Flex>
+        <Flex
+          sx={{
+            flex: `${mobile ? '0 0 100%' : ''}`,
+            justifyContent: `${mobile ? 'center' : 'flex-end'}`,
+            order: `${mobile ? '-1' : '1'}`,
+          }}
+        >
           {MAINNET_CHAINS.map((chainId) => {
             return (
               <div
