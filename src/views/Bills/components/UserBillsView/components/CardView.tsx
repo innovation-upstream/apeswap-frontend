@@ -14,18 +14,18 @@ const CardView: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender 
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const billsCardView = billsToRender.map((billToRender, i) => {
-    const { bill, ownedBillNftData } = billToRender
+    const { bill, filteredOwnedBillNftData } = billToRender
     const pendingRewards = getBalanceNumber(
       new BigNumber(billToRender.pendingRewards),
       bill?.earnToken?.decimals[chainId],
     )?.toFixed(4)
     return (
       <CardContainer key={i}>
-        {ownedBillNftData?.image ? (
+        {filteredOwnedBillNftData?.image ? (
           <BillModal
             bill={bill}
             billId={billToRender.id}
-            billCardImage={`${ownedBillNftData?.image + '?img-width=720'}`}
+            billCardImage={`${filteredOwnedBillNftData?.image + '?img-width=720'}`}
           />
         ) : (
           <Skeleton width="270px" height="159px" />

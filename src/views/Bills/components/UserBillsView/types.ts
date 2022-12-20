@@ -9,7 +9,7 @@ export interface PLProps {
 }
 
 export interface BillsToRender extends UserBill {
-  ownedBillNftData: UserBillNft
+  filteredOwnedBillNftData: UserBillNft
   bill: Bills
 }
 

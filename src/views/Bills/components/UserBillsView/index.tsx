@@ -87,7 +87,7 @@ const UserBillsView: React.FC<UserBillsViewProps> = ({ handleBillsViewChange }) 
           return []
         }
         const ownedBillNftData = bill?.userOwnedBillsNftData ? bill?.userOwnedBillsNftData[i] : null
-        return { ...ownedBill, ownedBillNftData, bill }
+        return { ...ownedBill, filteredOwnedBillNftData: ownedBillNftData, bill }
       })
     })
     return sortBills(flatMapBeforeSorting)
