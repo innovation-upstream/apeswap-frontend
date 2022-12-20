@@ -24,6 +24,8 @@ import OrdersActions from './components/OrdersActions'
 import OrderHistoryPanel from './components/OrderHistoryPanel'
 import OrderTradeInfo from './components/OrderTradeInfo'
 import ImportTokenWarningModal from '../Swap/components/ImportTokenWarningModal'
+import track from 'utils/track'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const Orders: React.FC = () => {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -39,6 +41,10 @@ const Orders: React.FC = () => {
     swapErrorMessage: undefined,
     txHash: undefined,
   })
+
+  const [tradeValueUsd, setTradeValueUsd] = useState(0)
+
+  const { chainId } = useActiveWeb3React()
 
   const { t } = useTranslation()
 
@@ -190,6 +196,17 @@ const Orders: React.FC = () => {
     swapCallback()
       .then(async (hash) => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
+        track({
+          event: 'orders',
+          chain: chainId,
+          data: {
+            token1: trade?.inputAmount?.currency?.getSymbol(chainId),
+            token2: trade?.outputAmount?.currency?.getSymbol(chainId),
+            token1Amount: Number(trade?.inputAmount.toSignificant(6)),
+            token2Amount: Number(trade?.outputAmount.toSignificant(6)),
+            usdAmount: tradeValueUsd,
+          },
+        })
       })
       .catch((error) => {
         setSwapState({
@@ -199,7 +216,7 @@ const Orders: React.FC = () => {
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t])
+  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, chainId, trade, tradeValueUsd])
 
   const [onPresentConfirmModal] = useModal(
     <OrderSwapModal
@@ -242,6 +259,7 @@ const Orders: React.FC = () => {
               setInputFocused(true)
             }}
             handleMaxInput={handleMaxInput}
+            setTradeValueUsd={setTradeValueUsd}
           />
           <SwapSwitchButton onClick={onSwitchTokens} />
           <DexPanel
