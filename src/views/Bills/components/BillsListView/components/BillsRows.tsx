@@ -53,24 +53,28 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
         infoContent: <ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} isMobile />,
         titleContainerWidth: 275,
         cardContent: isMobile ? (
-          <ListViewContentMobile
-            title={'Discount'}
-            value={disabled ? 'N/A' : `${bill?.discount}%`}
+          <DiscountContent
+            title={t('Discount')}
             valueColor={disabled ? null : parseFloat(bill?.discount) < 0 ? '#DF4141' : '#38A611'}
+            value={disabled ? 'N/A' : `${bill?.discount}%`}
+            value2={disabled ? '' : bill?.priceUsd}
             toolTip={t(`This is the percentage discount relative to the token's current market price.`)}
-            toolTipPlacement={'bottomLeft'}
-            toolTipTransform={'translate(23%, 0%)'}
+            showToolTipPrice={parseFloat(bill?.priceUsd) < 0.001}
+            flexDirection="row"
           />
         ) : (
           <Flex style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-            <DiscountContent
-              title={t('Discount')}
-              valueColor={disabled ? null : parseFloat(bill?.discount) < 0 ? '#DF4141' : '#38A611'}
-              value={disabled ? 'N/A' : `${bill?.discount}%`}
-              value2={disabled ? '' : bill?.priceUsd}
-              toolTip={t(`This is the percentage discount relative to the token's current market price.`)}
-              showToolTipPrice={parseFloat(bill?.priceUsd) < 0.001}
-            />
+            <Flex sx={{ width: '100%', maxWidth: '130px', ml: '10px' }}>
+              <DiscountContent
+                title={t('Discount')}
+                valueColor={disabled ? null : parseFloat(bill?.discount) < 0 ? '#DF4141' : '#38A611'}
+                value={disabled ? 'N/A' : `${bill?.discount}%`}
+                value2={disabled ? '' : bill?.priceUsd}
+                toolTip={t(`This is the percentage discount relative to the token's current market price.`)}
+                showToolTipPrice={parseFloat(bill?.priceUsd) < 0.001}
+                flexDirection="column"
+              />
+            </Flex>
             <ListViewContent
               title={t('Vesting Term')}
               value={vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
@@ -104,19 +108,12 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             </Flex>
           </Flex>
         ),
-        expandedContentSize: 150,
+        expandedContentSize: 125,
         expandedContent: isMobile && (
           <Flex sx={{ alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
             {account ? (
               <Flex sx={{ width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <Flex sx={{ flexWrap: 'wrap', padding: '0 10px 10px 10px', width: '100%' }}>
-                  <ListViewContentMobile
-                    title={'Price'}
-                    value={disabled ? 'N/A' : `$${bill?.priceUsd}`}
-                    toolTip={`This is the current discounted price of the tokens.`}
-                    toolTipPlacement={'bottomLeft'}
-                    toolTipTransform={'translate(10%, 0%)'}
-                  />
                   <ListViewContentMobile
                     title={'Vesting Term'}
                     value={disabled ? 'N/A' : vestingTime.days ? `${vestingTime.days} days` : 'NaN'}

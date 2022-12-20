@@ -11,6 +11,7 @@ interface DiscountContentProps {
   valueColor: string
   toolTip: string
   showToolTipPrice: boolean
+  flexDirection: 'column' | 'row'
 }
 
 const DiscountContent: React.FC<DiscountContentProps> = ({
@@ -20,10 +21,11 @@ const DiscountContent: React.FC<DiscountContentProps> = ({
   valueColor,
   toolTip,
   showToolTipPrice,
+  flexDirection,
 }) => {
   const { t } = useTranslation()
   return (
-    <Flex sx={{ maxWidth: '130px', ml: '10px', ...styles.listViewContainer }}>
+    <Flex sx={{ width: '100%', ml: '10px', flexDirection, justifyContent: 'space-between' }}>
       <Flex>
         <Flex alignItems="flex-start">
           <div style={{ display: 'inline-block' }}>
