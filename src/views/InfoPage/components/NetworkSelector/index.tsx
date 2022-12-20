@@ -1,10 +1,11 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Input, Text } from '@ape.swap/uikit'
+import { Button, Flex, Input, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS, MAINNET_CHAINS } from 'config/constants/chains'
 import React from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import { useFetchActiveChains } from '../../../../state/info/hooks'
+import { useHistory, useLocation } from 'react-router-dom'
 
 interface NetworkSelectorProps {
   onFilter: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -14,6 +15,8 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
   const mobile = useIsMobile()
   const [activeChains, toggleChain] = useFetchActiveChains()
   const { onFilter } = props
+  const location = useLocation()
+  const history = useHistory()
 
   function isActive(chain) {
     // If active changes equals null it means all chains should be shown
@@ -38,6 +41,44 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
         }}
       >
         <Flex sx={{ flex: `${mobile ? '0 0 100%' : '1'}`, marginTop: `${mobile ? '15px' : '0px'}` }}>
+          <Flex sx={{ width: '380px' }}>
+            <Button
+              size="sm"
+              variant={location.pathname === '/info' ? 'primary' : 'tertiary'}
+              sx={{
+                paddingRight: `${location.pathname.includes('/info/token') ? '28px' : '12px'}`,
+                zIndex: `${location.pathname === '/info' ? '100' : '20'}`,
+              }}
+              onClick={() => history.push('/info')}
+            >
+              Overview
+            </Button>
+            <Button
+              ml={-8}
+              size="sm"
+              variant={location.pathname.includes('/info/tokens') ? 'primary' : 'tertiary'}
+              sx={{
+                paddingRight: `${location.pathname.includes('/info/pairs') ? '28px' : '12px'}`,
+                paddingLeft: `${location.pathname.includes('/info/tokens') ? '12px' : '28px'}`,
+                zIndex: `${location.pathname.includes('/info/tokens') ? '100' : '10'}`,
+              }}
+              onClick={() => history.push('/info/tokens')}
+            >
+              Tokens
+            </Button>
+            <Button
+              size="sm"
+              ml={-8}
+              variant={location.pathname.includes('/info/pairs') ? 'primary' : 'tertiary'}
+              sx={{
+                paddingLeft: `${location.pathname.includes('/info/pairs') ? '12px' : '28px'}`,
+                zIndex: `${location.pathname.includes('/info/pairs') ? '100' : '0'}`,
+              }}
+              onClick={() => history.push('/info/pairs')}
+            >
+              Pairs
+            </Button>
+          </Flex>
           <Text bold mr="15px" mt="5px" ml="20px">
             Search
           </Text>

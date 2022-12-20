@@ -15,12 +15,15 @@ import { useHistory } from 'react-router-dom'
 import LineChart from 'views/InfoPage/components/LineChart'
 import { RangeSelectorsWrapper } from '../../components/styles'
 import CountUp from 'react-countup'
+import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
 
 const PairPage = () => {
   const history = useHistory()
   const [favs, toggleFav] = useFetchFavPairs()
 
-  const { chainId, pairId } = useParams<{ chainId: string; pairId: string }>()
+  const { chain, pairId } = useParams<{ chain: string; pairId: string }>()
+  const { chainId } = useActiveWeb3React()
+
   const [chartInfo, setChartInfo] = useState({ type: 'Volume', xField: 'date', yField: 'dailyVolumeUSD' })
 
   const UpdateChartType = (type: string, xField: string, yField: string) => {
@@ -31,7 +34,7 @@ const PairPage = () => {
   const [dataAmount, setDataAmount] = useState(30)
   const pairData = useFetchInfoPairs(20, 0, '', pairId)
   const pairDayOldData = useFetchInfoPairs(20, 1, '', pairId)
-  const pairDaysData = useFetchInfoPairDaysData(Number(chainId), pairId, dataAmount)
+  const pairDaysData = useFetchInfoPairDaysData(Number(chain), pairId, dataAmount)
 
   const mobile = useIsMobile()
 
@@ -60,97 +63,103 @@ const PairPage = () => {
           margin: '40px 0px',
         }}
       >
-        {pairData[chainId].data !== null &&
-        pairData[chainId].data[0] &&
-        pairDayOldData[chainId].data !== null &&
-        pairDayOldData[chainId].data[0] ? (
-          <>
+        <Flex
+          sx={{
+            width: '100%',
+            justifyContext: 'flex-start',
+          }}
+          mb={20}
+        >
+          <Flex sx={{ width: '50%' }}>
+            <a href="/info/pairs">&lt; All Pairs</a>
+          </Flex>
+          <Flex
+            pl={6}
+            onClick={() => toggleFav(pairId)}
+            sx={{
+              cursor: 'pointer',
+              justifyContent: 'flex-end',
+              width: `${mobile ? '100%' : '50%'}`,
+            }}
+          >
+            <Svg icon="Fav" color={isFav(pairId) === true ? 'yellow' : 'gray'} />
+          </Flex>
+        </Flex>
+
+        {pairDaysData[chain].data !== null && (
+          <Flex
+            sx={{
+              width: '100%',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}
+          >
             <Flex
               sx={{
-                width: '100%',
-                justifyContext: 'flex-start',
+                width: `${mobile ? '100%' : '50%'}`,
               }}
-              mb={20}
             >
-              <Flex sx={{ width: '50%' }}>
-                <a href="/info/pairs">&lt; All Pairs</a>
-              </Flex>
-              <Flex
-                pl={6}
-                onClick={() => toggleFav(pairId)}
-                sx={{
-                  cursor: 'pointer',
-                  justifyContent: 'flex-end',
-                  width: `${mobile ? '100%' : '50%'}`,
-                }}
-              >
-                <Svg icon="Fav" color={isFav(pairId) === true ? 'yellow' : 'gray'} />
-              </Flex>
+              <ServiceTokenDisplay
+                token1={pairData[chain].data[0].token0.symbol}
+                token2={pairData[chain].data[0].token1.symbol}
+                noEarnToken
+                size={25}
+                tokensMargin={-10}
+              />
+              <Text margin="10px 10px 0px 10px" weight={700} size="20px">
+                {pairData[chain].data[0].token0.symbol} - {pairData[chain].data[0].token1.symbol}
+              </Text>
             </Flex>
             <Flex
               sx={{
-                width: '100%',
-                flexDirection: 'row',
+                width: '50%',
+                justifyContent: 'flex-end',
               }}
             >
-              <Flex
-                sx={{
-                  width: `${mobile ? '100%' : '50%'}`,
-                }}
+              <Button
+                disabled={Number(chain) === chainId ? false : true}
+                onClick={() =>
+                  history.push(
+                    `/add-liquidity/${pairData[chain].data[0].token0.id}/${pairData[chain].data[0].token1.id}`,
+                  )
+                }
               >
-                <ServiceTokenDisplay
-                  token1={pairData[chainId].data[0].token0.symbol}
-                  token2={pairData[chainId].data[0].token1.symbol}
-                  noEarnToken
-                  size={25}
-                  tokensMargin={-10}
-                />
-                <Text margin="10px 10px 0px 10px" weight={700} size="20px">
-                  {pairData[chainId].data[0].token0.symbol} - {pairData[chainId].data[0].token1.symbol}
-                </Text>
-              </Flex>
-              <Flex
-                sx={{
-                  width: '50%',
-                  justifyContent: 'flex-end',
-                }}
-              >
-                <Button
-                  onClick={() =>
-                    history.push(
-                      `/add-liquidity/${pairData[chainId].data[0].token0.id}/${pairData[chainId].data[0].token1.id}`,
-                    )
-                  }
-                >
-                  Add Liquidity
-                </Button>
-                <Button onClick={() => history.push('/swap')} ml={20}>
-                  Trade
-                </Button>
-              </Flex>
+                Add Liquidity
+              </Button>
+              <Button disabled={Number(chain) === chainId ? false : true} onClick={() => history.push('/swap')} ml={20}>
+                Trade
+              </Button>
             </Flex>
+          </Flex>
+        )}
 
-            <Flex
-              sx={{
-                gap: '20px',
-                width: `${mobile ? '95vw' : '100%'}`,
-                maxWidth: '1200px',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
-              }}
-            >
-              <Flex
-                sx={{
-                  width: `${mobile ? '100%' : '300px'}`,
+        <Flex
+          sx={{
+            gap: '20px',
+            width: `${mobile ? '95vw' : '100%'}`,
+            maxWidth: '1200px',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+          }}
+        >
+          <Flex
+            sx={{
+              width: `${mobile ? '100%' : '300px'}`,
 
-                  height: '440px',
-                  background: 'white2',
-                  flexDirection: 'column',
-                  padding: '20px',
-                  borderRadius: '10px',
-                  mt: '20px',
-                }}
-              >
+              height: '440px',
+              background: 'white2',
+              flexDirection: 'column',
+              padding: '20px',
+              borderRadius: '10px',
+              mt: '20px',
+            }}
+          >
+            {pairData[chain].data !== null &&
+            pairData[chain].data[0] &&
+            pairDayOldData[chain].data !== null &&
+            pairDayOldData[chain].data[0] &&
+            pairDaysData[chain].data !== null ? (
+              <>
                 <Flex
                   sx={{
                     background: 'white3',
@@ -165,9 +174,9 @@ const PairPage = () => {
                   </Text>
                   <Flex sx={{ width: '100%' }} mb={5}>
                     <Flex sx={{ flex: 1 }}>
-                      <ServiceTokenDisplay token1={pairData[chainId].data[0].token0.symbol} size={20} />
+                      <ServiceTokenDisplay token1={pairData[chain].data[0].token0.symbol} size={20} />
                       <Text margin="1px 0px 0px 10px" weight={500} size="16px">
-                        {pairData[chainId].data[0].token0.symbol}
+                        {pairData[chain].data[0].token0.symbol}
                       </Text>
                     </Flex>
                     <Flex
@@ -177,15 +186,15 @@ const PairPage = () => {
                       }}
                     >
                       <Text margin="1px 0px 0px 10px" weight={500} size="16px">
-                        {(Math.round(pairData[chainId].data[0].reserve0 * 100) / 100).toLocaleString()}
+                        {(Math.round(pairData[chain].data[0].reserve0 * 100) / 100).toLocaleString()}
                       </Text>
                     </Flex>
                   </Flex>
                   <Flex sx={{ width: '100%' }}>
                     <Flex sx={{ flex: 1 }}>
-                      <ServiceTokenDisplay token1={pairData[chainId].data[0].token1.symbol} size={20} />
+                      <ServiceTokenDisplay token1={pairData[chain].data[0].token1.symbol} size={20} />
                       <Text margin="1px 0px 0px 10px" weight={500} size="16px">
-                        {pairData[chainId].data[0].token1.symbol}
+                        {pairData[chain].data[0].token1.symbol}
                       </Text>
                     </Flex>
                     <Flex
@@ -195,7 +204,7 @@ const PairPage = () => {
                       }}
                     >
                       <Text margin="1px 0px 0px 10px" weight={500} size="16px">
-                        {(Math.round(pairData[chainId].data[0].reserve1 * 100) / 100).toLocaleString()}
+                        {(Math.round(pairData[chain].data[0].reserve1 * 100) / 100).toLocaleString()}
                       </Text>
                     </Flex>
                   </Flex>
@@ -206,7 +215,7 @@ const PairPage = () => {
                 </Text>
                 <Text margin="5px 10px 5px 0px" weight={700} size="25px">
                   $
-                  {(Math.round(pairData[chainId].data[0].reserveUSD * 100) / 100).toLocaleString('en-US', {
+                  {(Math.round(pairData[chain].data[0].reserveUSD * 100) / 100).toLocaleString('en-US', {
                     style: 'decimal',
                     maximumFractionDigits: 2,
                     minimumFractionDigits: 2,
@@ -215,19 +224,15 @@ const PairPage = () => {
                     compactDisplay: 'short',
                   })}
                 </Text>
-                {percentageDifferenceText(
-                  pairDayOldData[chainId].data[0].reserveUSD,
-                  pairData[chainId].data[0].reserveUSD,
-                )}
+                {percentageDifferenceText(pairDayOldData[chain].data[0].reserveUSD, pairData[chain].data[0].reserveUSD)}
                 <Text margin="0px 10px 0px 0px" weight={500} size="16px" opacity={0.6}>
                   24h Trading Vol
                 </Text>
                 <Text margin="5px 10px 20px 0px" weight={700} size="25px">
                   $
                   {(
-                    Math.round(
-                      (pairData[chainId].data[0].volumeUSD - pairDayOldData[chainId].data[0].volumeUSD) * 100,
-                    ) / 100
+                    Math.round((pairData[chain].data[0].volumeUSD - pairDayOldData[chain].data[0].volumeUSD) * 100) /
+                    100
                   ).toLocaleString('en-US', {
                     style: 'decimal',
                     maximumFractionDigits: 2,
@@ -243,8 +248,7 @@ const PairPage = () => {
                 <Text margin="5px 10px 20px 0px" weight={700} size="25px">
                   $
                   {Math.round(
-                    ((pairData[chainId].data[0].volumeUSD - pairDayOldData[chainId].data[0].volumeUSD) * 0.002 * 100) /
-                      100,
+                    ((pairData[chain].data[0].volumeUSD - pairDayOldData[chain].data[0].volumeUSD) * 0.002 * 100) / 100,
                   ).toLocaleString('en-US', {
                     style: 'decimal',
                     maximumFractionDigits: 2,
@@ -254,18 +258,32 @@ const PairPage = () => {
                     compactDisplay: 'short',
                   })}
                 </Text>
-              </Flex>
+              </>
+            ) : (
               <Flex
                 sx={{
-                  flex: '1',
-                  height: '440px',
-                  background: 'white2',
-                  flexDirection: 'column',
-                  padding: '10px',
-                  borderRadius: '10px',
-                  mt: '20px',
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
+                <Spinner size={250} />
+              </Flex>
+            )}
+          </Flex>
+          <Flex
+            sx={{
+              flex: '1',
+              height: '440px',
+              background: 'white2',
+              flexDirection: 'column',
+              padding: '10px',
+              borderRadius: '10px',
+              mt: '20px',
+            }}
+          >
+            {pairDaysData[chain].data !== null ? (
+              <>
                 <Flex>
                   <Flex sx={{ width: '50%' }}>
                     <RangeSelectorsWrapper>
@@ -305,27 +323,27 @@ const PairPage = () => {
                   </Flex>
                 </Flex>
                 <LineChart
-                  data={pairDaysData[chainId].data}
+                  data={pairDaysData[chain].data}
                   xField={chartInfo.xField}
                   yField={chartInfo.yField}
                   type={chartInfo.type}
                 />
+              </>
+            ) : (
+              <Flex
+                sx={{
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Spinner size={250} />
               </Flex>
-            </Flex>
-
-            <Transactions headerText="Transactions" />
-          </>
-        ) : (
-          <Flex
-            sx={{
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Spinner size={250} />
+            )}
           </Flex>
-        )}
+        </Flex>
+
+        <Transactions headerText="Transactions" />
       </Flex>
     </Flex>
   )

@@ -16,12 +16,15 @@ import { useHistory } from 'react-router-dom'
 import LineChart from 'views/InfoPage/components/LineChart'
 import { RangeSelectorsWrapper } from '../../components/styles'
 import CountUp from 'react-countup'
+import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
 
 const TokenPage = () => {
   const history = useHistory()
   const [favs, toggleFav] = useFetchFavTokens()
 
-  const { chainId, tokenId } = useParams<{ chainId: string; tokenId: string }>()
+  const { chain, tokenId } = useParams<{ chain: string; tokenId: string }>()
+  const { chainId } = useActiveWeb3React()
+
   const [chartInfo, setChartInfo] = useState({ type: 'Price', xField: 'date', yField: 'priceUSD' })
 
   const UpdateChartType = (type: string, xField: string, yField: string) => {
@@ -30,16 +33,16 @@ const TokenPage = () => {
 
   useFetchInfoBlock()
   const [dataAmount, setDataAmount] = useState(30)
-  const tokenDaysData = useFetchInfoTokenDaysData(Number(chainId), tokenId, dataAmount)
-  const tokenData = useFetchInfoTokensData(1, true, tokenId, Number(chainId))
-  const tokenDayOldData = useFetchInfoTokensData(1, false, tokenId, Number(chainId))
+  const tokenDaysData = useFetchInfoTokenDaysData(Number(chain), tokenId, dataAmount)
+  const tokenData = useFetchInfoTokensData(1, true, tokenId, Number(chain))
+  const tokenDayOldData = useFetchInfoTokensData(1, false, tokenId, Number(chain))
   const mobile = useIsMobile()
 
   const calculate7DayVolume = () => {
     let total = 0
 
-    for (let i = tokenDaysData[chainId].data.length - 7; i < tokenDaysData[chainId].data.length; i++) {
-      total += Number(tokenDaysData[chainId].data[i].dailyVolumeUSD)
+    for (let i = tokenDaysData[chain].data.length - 7; i < tokenDaysData[chain].data.length; i++) {
+      total += Number(tokenDaysData[chain].data[i].dailyVolumeUSD)
     }
 
     return total
@@ -70,106 +73,115 @@ const TokenPage = () => {
           margin: '40px 0px',
         }}
       >
-        {tokenDaysData[chainId].data !== null &&
-        tokenData[chainId].data !== null &&
-        tokenData[chainId].data[0] !== [] &&
-        tokenDayOldData[chainId].data !== null ? (
-          <>
-            <Flex
-              sx={{
-                width: '100%',
-                justifyContext: 'flex-start',
-              }}
-              mb={20}
-            >
-              <Flex sx={{ width: '50%' }}>
-                <a href="/info/tokens">&lt; All Tokens</a>
-              </Flex>
-              <Flex
-                pl={6}
-                onClick={() => toggleFav(tokenId)}
-                sx={{
-                  cursor: 'pointer',
-                  justifyContent: 'flex-end',
-                  width: '50%',
-                }}
-              >
-                <Svg icon="Fav" color={isFav(tokenId) === true ? 'yellow' : 'gray'} />
-              </Flex>
-            </Flex>
-            <Flex
-              sx={{
-                width: '100%',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-              }}
-            >
-              <Flex
-                sx={{
-                  width: `${mobile ? '100%' : '50%'}`,
-                }}
-              >
-                <ServiceTokenDisplay token1={tokenDaysData[chainId].data[0].token.symbol} size={25} />
-                <Text margin="10px 10px 0px 10px" weight={700} size="20px">
-                  {tokenDaysData[chainId].data[0].token.name}
-                </Text>
-                <Text margin="10px 10px 0px 0px" weight={400} size="20px" opacity={0.6}>
-                  ({tokenDaysData[chainId].data[0].token.symbol})
-                </Text>
-              </Flex>
-              <Flex
-                sx={{
-                  width: `${mobile ? '100%' : '50%'}`,
-                  justifyContent: 'flex-end',
-                }}
-              >
-                <Button onClick={() => history.push(`/add-liquidity/ETH/${tokenId}`)}>Add Liquidity</Button>
-                <Button onClick={() => history.push('/swap')} ml={20}>
-                  Trade
-                </Button>
-              </Flex>
-            </Flex>
+        <Flex
+          sx={{
+            width: '100%',
+            justifyContext: 'flex-start',
+          }}
+          mb={20}
+        >
+          <Flex sx={{ width: '50%' }}>
+            <a href="/info/tokens">&lt; All Tokens</a>
+          </Flex>
+          <Flex
+            pl={6}
+            onClick={() => toggleFav(tokenId)}
+            sx={{
+              cursor: 'pointer',
+              justifyContent: 'flex-end',
+              width: '50%',
+            }}
+          >
+            <Svg icon="Fav" color={isFav(tokenId) === true ? 'yellow' : 'gray'} />
+          </Flex>
+        </Flex>
 
+        {tokenDaysData[chain].data !== null && (
+          <Flex
+            sx={{
+              width: '100%',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}
+          >
             <Flex
               sx={{
-                alignItems: 'flex-start',
-                width: '100%',
+                width: `${mobile ? '100%' : '50%'}`,
               }}
             >
-              <Text margin="20px 10px 0px 10px" weight={700} size="35px">
-                ${(Math.round(tokenDaysData[chainId].data[0].priceUSD * 100) / 100).toLocaleString()}
+              <ServiceTokenDisplay token1={tokenDaysData[chain].data[0].token.symbol} size={25} />
+              <Text margin="10px 10px 0px 10px" weight={700} size="20px">
+                {tokenDaysData[chain].data[0].token.name}
+              </Text>
+              <Text margin="10px 10px 0px 0px" weight={400} size="20px" opacity={0.6}>
+                ({tokenDaysData[chain].data[0].token.symbol})
               </Text>
             </Flex>
-
             <Flex
               sx={{
-                gap: '20px',
-                width: `${mobile ? '95vw' : '100%'}`,
-                maxWidth: '1200px',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
+                width: `${mobile ? '100%' : '50%'}`,
+                justifyContent: 'flex-end',
               }}
             >
-              <Flex
-                sx={{
-                  width: `${mobile ? '100%' : '300px'}`,
-                  height: '440px',
-                  background: 'white2',
-                  flexDirection: 'column',
-                  padding: '30px',
-                  borderRadius: '10px',
-                  mt: '20px',
-                }}
+              <Button
+                disabled={Number(chain) === chainId ? false : true}
+                onClick={() => history.push(`/add-liquidity/ETH/${tokenId}`)}
               >
+                Add Liquidity
+              </Button>
+              <Button disabled={Number(chain) === chainId ? false : true} onClick={() => history.push('/swap')} ml={20}>
+                Trade
+              </Button>
+            </Flex>
+          </Flex>
+        )}
+
+        <Flex
+          sx={{
+            alignItems: 'flex-start',
+            width: '100%',
+          }}
+        >
+          {tokenDaysData[chain].data !== null && (
+            <Text margin="20px 10px 0px 10px" weight={700} size="35px">
+              ${(Math.round(tokenDaysData[chain].data[0].priceUSD * 100) / 100).toLocaleString()}
+            </Text>
+          )}
+        </Flex>
+
+        <Flex
+          sx={{
+            gap: '20px',
+            width: `${mobile ? '95vw' : '100%'}`,
+            maxWidth: '1200px',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+          }}
+        >
+          <Flex
+            sx={{
+              width: `${mobile ? '100%' : '300px'}`,
+              height: '440px',
+              background: 'white2',
+              flexDirection: 'column',
+              padding: '30px',
+              borderRadius: '10px',
+              mt: '20px',
+            }}
+          >
+            {tokenDaysData[chain].data !== null &&
+            tokenData[chain].data !== null &&
+            tokenData[chain].data[0] !== [] &&
+            tokenDayOldData[chain].data !== null ? (
+              <>
                 <Text margin="0px 10px 0px 0px" weight={500} size="16px" opacity={0.6}>
                   Total Liquidity
                 </Text>
                 <Text margin="5px 10px 5px 0px" weight={700} size="25px">
                   $
                   {(
-                    Math.round(
-                      tokenData[chainId].data[0].totalLiquidity * tokenDaysData[chainId].data[0].priceUSD * 100,
-                    ) / 100
+                    Math.round(tokenData[chain].data[0].totalLiquidity * tokenDaysData[chain].data[0].priceUSD * 100) /
+                    100
                   ).toLocaleString('en-US', {
                     style: 'decimal',
                     maximumFractionDigits: 2,
@@ -180,8 +192,8 @@ const TokenPage = () => {
                   })}
                 </Text>
                 {percentageDifferenceText(
-                  tokenDayOldData[chainId].data[0].totalLiquidity,
-                  tokenData[chainId].data[0].totalLiquidity,
+                  tokenDayOldData[chain].data[0].totalLiquidity,
+                  tokenData[chain].data[0].totalLiquidity,
                 )}
                 <Text margin="0px 10px 0px 0px" weight={500} size="16px" opacity={0.6}>
                   24h Trading Vol
@@ -190,8 +202,7 @@ const TokenPage = () => {
                   $
                   {(
                     Math.round(
-                      (tokenData[chainId].data[0].tradeVolumeUSD - tokenDayOldData[chainId].data[0].tradeVolumeUSD) *
-                        100,
+                      (tokenData[chain].data[0].tradeVolumeUSD - tokenDayOldData[chain].data[0].tradeVolumeUSD) * 100,
                     ) / 100
                   ).toLocaleString('en-US', {
                     style: 'decimal',
@@ -221,7 +232,7 @@ const TokenPage = () => {
                 <Text margin="5px 10px 5px 0px" weight={700} size="25px">
                   $
                   {Math.round(
-                    ((tokenData[chainId].data[0].tradeVolumeUSD - tokenDayOldData[chainId].data[0].tradeVolumeUSD) *
+                    ((tokenData[chain].data[0].tradeVolumeUSD - tokenDayOldData[chain].data[0].tradeVolumeUSD) *
                       0.002 *
                       100) /
                       100,
@@ -234,18 +245,33 @@ const TokenPage = () => {
                     compactDisplay: 'short',
                   })}
                 </Text>
-              </Flex>
+              </>
+            ) : (
               <Flex
                 sx={{
-                  flex: '1',
-                  height: '440px',
-                  background: 'white2',
-                  flexDirection: 'column',
-                  padding: '10px',
-                  borderRadius: '10px',
-                  mt: '20px',
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
+                <Spinner size={250} />
+              </Flex>
+            )}
+          </Flex>
+
+          <Flex
+            sx={{
+              flex: '1',
+              height: '440px',
+              background: 'white2',
+              flexDirection: 'column',
+              padding: '10px',
+              borderRadius: '10px',
+              mt: '20px',
+            }}
+          >
+            {tokenDaysData[chain].data !== null ? (
+              <>
                 <Flex>
                   <Flex sx={{ width: '50%' }}>
                     <RangeSelectorsWrapper>
@@ -291,34 +317,35 @@ const TokenPage = () => {
                   </Flex>
                 </Flex>
                 <LineChart
-                  data={tokenDaysData[chainId].data}
+                  data={tokenDaysData[chain].data}
                   xField={chartInfo.xField}
                   yField={chartInfo.yField}
                   type={chartInfo.type}
                 />
+              </>
+            ) : (
+              <Flex
+                sx={{
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Spinner size={250} />
               </Flex>
-            </Flex>
-
-            {/*BREAK*/}
-
-            <Pairs
-              token={tokenId}
-              headerText={`${tokenDaysData[chainId].data[0].token.symbol} Pairs`}
-              chain={Number(chainId)}
-            />
-            <Transactions headerText="Transactions" token={tokenId} chain={Number(chainId)} />
-          </>
-        ) : (
-          <Flex
-            sx={{
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Spinner size={250} />
+            )}
           </Flex>
+        </Flex>
+
+        {tokenDaysData[chain].data !== null && (
+          <Pairs
+            token={tokenId}
+            headerText={`${tokenDaysData[chain].data[0].token.symbol} Pairs`}
+            chain={Number(chain)}
+          />
         )}
+
+        <Transactions headerText="Transactions" token={tokenId} chain={Number(chain)} />
       </Flex>
     </Flex>
   )

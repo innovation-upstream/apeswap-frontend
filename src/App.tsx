@@ -215,10 +215,10 @@ const App: React.FC = () => {
             <Route exact path="/info/transactions">
               <TransactionsPage />
             </Route>
-            <Route exact path="/info/token/:chainId/:tokenId">
+            <Route exact path="/info/token/:chain/:tokenId">
               <TokenPage />
             </Route>
-            <Route exact path="/info/pair/:chainId/:pairId">
+            <Route exact path="/info/pair/:chain/:pairId">
               <PairPage />
             </Route>
             {/* Redirect */}

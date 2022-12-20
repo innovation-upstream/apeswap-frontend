@@ -53,7 +53,9 @@ const Tokens: React.FC<TokensProps> = (props) => {
       orderBy(
         flattenedTokens.filter((x) => activeChains === null || activeChains.includes(x.chainId)),
         ({ totalLiquidity, chainId, derivedETH }) =>
-          parseFloat(totalLiquidity) * (parseFloat(nativePrice[chainId]?.data?.ethPrice) || 0) * parseFloat(derivedETH),
+          parseFloat(totalLiquidity) *
+          (parseFloat(nativePrice[chainId]?.data?.ethPrice ?? '0') || 0) *
+          parseFloat(derivedETH),
         'desc',
       ),
     [flattenedTokens, nativePrice, activeChains],
