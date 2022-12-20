@@ -43,6 +43,7 @@ function MigrateLiquidity({
   const [recentTransactions] = useUserRecentTransactions()
 
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
+  const setTradeValueUsdCallback = useCallback((value: number) => setTradeValueUsd(value), [setTradeValueUsd])
 
   // Set currencies
   const currencyA = useCurrency(currencyIdA)
@@ -210,7 +211,7 @@ function MigrateLiquidity({
             showCommonBases
             lpPair={pair}
             smartRouter={smartRouter}
-            setTradeValueUsd={setTradeValueUsd}
+            setTradeValueUsd={setTradeValueUsdCallback}
           />
           <PoolInfo pair={pair} parsedAmounts={parsedAmounts} chainId={chainId} />
           <Flex sx={{ height: '10px' }} />

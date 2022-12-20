@@ -56,6 +56,7 @@ function ZapLiquidity({
   const { onUserInput, onCurrencySelection } = useZapActionHandlers()
 
   const [tradeValueUsd, setTradeValueUsd] = useState(0)
+  const setTradeValueUsdCallback = useCallback((value: number) => setTradeValueUsd(value), [setTradeValueUsd])
 
   const handleCurrencySelect = useCallback(
     (field: Field, currency: Currency[]) => {
@@ -145,7 +146,7 @@ function ZapLiquidity({
               onUserInput={onUserInput}
               handleMaxInput={handleMaxInput}
               isZapInput
-              setTradeValueUsd={setTradeValueUsd}
+              setTradeValueUsd={setTradeValueUsdCallback}
             />
             <Flex sx={{ margin: '10px', justifyContent: 'center' }}>
               <Svg icon="ZapArrow" />
