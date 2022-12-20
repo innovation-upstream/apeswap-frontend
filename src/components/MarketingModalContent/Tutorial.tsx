@@ -5,7 +5,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { CHAIN_PARAMS, NETWORK_LABEL } from 'config/constants/chains'
 import { METAMASK_LINKS } from 'config/constants'
 import { useTranslation } from 'contexts/Localization'
-import { PoolSlides } from './Pool'
 import { MaximizerSlides } from './Maximizers'
 import { GnanaSlides } from './Gnana'
 import { BillSlides } from './Bills'
@@ -15,7 +14,7 @@ import { LiquiditySlides } from './Liquidity'
 import { styles } from './styles'
 import useAuth from '../../hooks/useAuth'
 import useIsMobile from '../../hooks/useIsMobile'
-import { SwapSlides, FarmSlides } from './TutorialSlides'
+import { SwapSlides, FarmSlides, PoolSlides } from './TutorialSlides'
 
 const Tutorial: React.FC<{
   location: string
@@ -48,6 +47,7 @@ const Tutorial: React.FC<{
       </Flex>
     </Flex>
   )
+  console.log(networkLabel)
 
   const tutorials = {
     '/swap': {
@@ -57,15 +57,22 @@ const Tutorial: React.FC<{
       slides: account ? SwapSlides() : [connectWalletSlide, ...SwapSlides()],
     },
     '/farms': {
-      type: `${networkLabel}-dex`,
-      title: `Welcome to ${networkLabel} Farms`,
-      description: `Earn moneeeeeeeeeeeeey`,
+      type: `${networkLabel}-farms`,
+      title: `Welcome to ${networkLabel === 'BNB' ? 'BANANA' : networkLabel} Farms`,
+      description: `Earn BANANA by staking liquidity provider (LP) tokens!`,
       slides: account ? FarmSlides() : [connectWalletSlide, ...FarmSlides()],
     },
-    pools: {
+    '/jungle-farms': {
+      type: `jungle-farms`,
+      title: `Welcome to Jungle Farms`,
+      description: `Earn Partner Tokens by Staking Liquidity!`,
+      slides: account ? FarmSlides() : [connectWalletSlide, ...FarmSlides()],
+    },
+    '/pools': {
+      type: 'pools',
       title: 'Welcome to Staking Pools',
       description: 'Earn tokens by staking BANANA or GNANA!',
-      slides: PoolSlides,
+      slides: account ? PoolSlides() : [connectWalletSlide, ...PoolSlides()],
     },
     'maximizers-vaults': {
       title: 'Welcome to Banana Maximizers',
@@ -107,6 +114,7 @@ const Tutorial: React.FC<{
       t={t}
       onDismiss={onDismiss}
       readyText={t("I'm Ready")}
+      isConnected={!!account}
     >
       {tutorials[location].slides}
     </TutorialModal>

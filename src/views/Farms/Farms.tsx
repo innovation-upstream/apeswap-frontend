@@ -176,7 +176,7 @@ const Farms: React.FC = () => {
         <ListViewLayout>
           <Banner
             banner="banana-farms"
-            link={`?modal=${chainId === 40 ? 'telos' : 'banana'}-farms`}
+            link={`?modal=tutorial`}
             title={t('Banana Farms')}
             listViewBreak
             maxWidth={1130}

@@ -1,19 +1,10 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, Text, TooltipBubble, TutorialModal, useWalletModal } from '@ape.swap/uikit'
+import { Flex, Text, TooltipBubble } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { CHAIN_PARAMS, NETWORK_LABEL } from 'config/constants/chains'
-import { METAMASK_LINKS } from 'config/constants'
 import { useTranslation } from 'contexts/Localization'
-import { PoolSlides } from './Pool'
-import { MaximizerSlides } from './Maximizers'
-import { GnanaSlides } from './Gnana'
-import { BillSlides } from './Bills'
-import { IaoSlides } from './Iao'
-import { OrderSlides } from './Orders'
-import { LiquiditySlides } from './Liquidity'
 import { styles } from './styles'
-import useAuth from '../../hooks/useAuth'
 import useIsMobile from '../../hooks/useIsMobile'
 
 export const SwapSlides = () => {
@@ -52,7 +43,7 @@ export const SwapSlides = () => {
             }
             sx={{ width: ['190px', '190px', '350px'] }}
           >
-            <Text sx={{ ...styles.content, ...styles.tipTitle }}>Ape,</Text>
+            <Text sx={styles.tipTitle}>Ape,</Text>
           </TooltipBubble>{' '}
           <TooltipBubble
             placement={'topRight'}
@@ -64,7 +55,7 @@ export const SwapSlides = () => {
             }
             sx={{ width: ['220px', '220px', '350px'] }}
           >
-            <Text sx={{ ...styles.content, ...styles.tipTitle }}>Smart,</Text>
+            <Text sx={styles.tipTitle}>Smart,</Text>
           </TooltipBubble>{' '}
           <TooltipBubble
             placement={'topRight'}
@@ -78,7 +69,7 @@ export const SwapSlides = () => {
             }
             sx={{ width: ['260px', '260px', '350px'] }}
           >
-            <Text sx={{ ...styles.content, ...styles.tipTitle }}>Bonus</Text>
+            <Text sx={styles.tipTitle}>Bonus</Text>
           </TooltipBubble>
           <Text sx={styles.content}>{t(')')}</Text>
         </Text>
@@ -99,14 +90,13 @@ export const SwapSlides = () => {
 
 export const FarmSlides = () => {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
   return [
     <Flex sx={styles.contentContainer} key={0}>
       <Text sx={styles.slideTitle}>{t('Add Liquidity')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>
-          {t('Select the desired farm and click GET LP. This will allow you to easily')}
+          {t('Select the desired farm and click GET LP. This will allow you to easily')}{' '}
           <TooltipBubble
             placement={'topRight'}
             transformTip="translate(0%, 2%)"
@@ -117,9 +107,88 @@ export const FarmSlides = () => {
             }
             sx={{ width: ['250px', '250px', '350px'] }}
           >
-            <Text sx={{ mx: '3px', ...styles.tipTitle }}>{t('add liquidity')}</Text>
-          </TooltipBubble>
+            <Text sx={styles.tipTitle}>{t('add liquidity')}</Text>
+          </TooltipBubble>{' '}
           {t('and obtain liquidity provider (LP) tokens in exchange.')}
+        </Text>
+        <Text sx={{ fontStyle: 'italic' }}>
+          {t('⚡NEW: You can also')}{' '}
+          <TooltipBubble
+            placement={'topRight'}
+            transformTip={`translate(${isMobile ? '10%' : '6%'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t('Convert one token directly into an LP token or other product in a single transaction.')}
+              </Flex>
+            }
+            sx={{ width: ['210px', '210px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>ZAP</Text>
+          </TooltipBubble>{' '}
+          {t('to add liquidity with single tokens!')}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.slideTitle}>{t('Stake')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            `Once you have the LP tokens, ENABLE your desired Farm and then click DEPOSIT to stake and start earning.`,
+          )}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.slideTitle}>{t('Collect!')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t("Don't forget to HARVEST your earnings periodically. You can reinvest them or cash out at any time!")}
+        </Text>
+      </Flex>
+    </Flex>,
+  ]
+}
+
+export const PoolSlides = () => {
+  const { t } = useTranslation()
+  const isMobile = useIsMobile()
+  return [
+    <Flex sx={styles.contentContainer} key={0}>
+      <Text sx={styles.slideTitle}>{t('Get Tokens!!')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>{t('Select GET BANANA or GET GNANA to acquire tokens to stake.')}</Text>
+        <Text>
+          {t('If you want to stake')}{' '}
+          <TooltipBubble
+            placement={'topRight'}
+            transformTip={`translate(3%, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t("ApeSwap's governance token that also enables access to exclusive pools and IAO allocations")}
+              </Flex>
+            }
+            sx={{ width: ['210px', '210px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>GNANA,</Text>
+          </TooltipBubble>{' '}
+          {t("you'll need to get BANANA First!")}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.slideTitle}>{t('Stake')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(`Once you have the tokens, ENABLE your desired Pool and then click DEPOSIT to stake and start earning.`)}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.slideTitle}>{t('Collect!')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t("Don't forget to HARVEST your earnings periodically. You can reinvest them or cash out at any time!")}
         </Text>
       </Flex>
     </Flex>,
