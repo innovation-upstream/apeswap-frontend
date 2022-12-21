@@ -208,7 +208,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
-            minHeight: `${mobile ? ' 220px' : '402px'}`,
+            height: `${mobile ? ' 220px' : '362px'}`,
           }}
         >
           <Spinner size={250} />

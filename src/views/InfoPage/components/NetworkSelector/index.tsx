@@ -1,11 +1,12 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Input, Text } from '@ape.swap/uikit'
+import { Button, Flex, Input, Link, Text, useModal } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS, MAINNET_CHAINS } from 'config/constants/chains'
 import React from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import { useFetchActiveChains } from '../../../../state/info/hooks'
 import { useHistory, useLocation } from 'react-router-dom'
+import LegacySelectModal from '../Modals/LegacySelectModal'
 
 interface NetworkSelectorProps {
   onFilter: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -20,6 +21,8 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
   const location = useLocation()
   const history = useHistory()
 
+  const [onPresentLegacySelectModal] = useModal(<LegacySelectModal onDismiss={null} />, true, true)
+
   function isActive(chain) {
     // If active changes equals null it means all chains should be shown
     return activeChains === null || activeChains.filter((x) => x === chain).length > 0
@@ -27,6 +30,19 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
 
   return (
     <>
+      <Flex
+        sx={{
+          width: `${mobile ? '95vw' : '100%'}`,
+          maxWidth: '1200px',
+          height: 'fit-content',
+          justifyContent: 'flex-end',
+          marginBottom: '15px',
+        }}
+      >
+        <Link onClick={onPresentLegacySelectModal}>
+          <Text weight={400}>View legacy info pages</Text>
+        </Link>
+      </Flex>
       <Flex
         sx={{
           width: `${mobile ? '95vw' : '100%'}`,
