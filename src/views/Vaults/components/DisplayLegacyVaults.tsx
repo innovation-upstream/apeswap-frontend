@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Svg, Text, useModal } from '@ape.swap/uikit'
+import { Button, Flex, Svg, Text, useModal } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Box } from 'theme-ui'
 import useIsMobile from 'hooks/useIsMobile'
@@ -24,6 +24,7 @@ import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from '../../../state/zap/actions'
 import Unstake from './MigrateActionsButtons/Unstake'
 import { useVaultsV3 } from 'state/vaultsV3/hooks'
+import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -106,7 +107,10 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            <Unstake pid={vault.pid} vaultVersion={vault.version} vaultV3Pid={vaultV3Pid} />
+            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+              Migrate
+            </Button>
+            {/* <Unstake pid={vault.pid} vaultVersion={vault.version} vaultV3Pid={vaultV3Pid} /> */}
           </Flex>
         </>
       ),

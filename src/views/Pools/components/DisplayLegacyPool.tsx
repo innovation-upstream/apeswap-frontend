@@ -7,7 +7,7 @@ import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useHistory, Link } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import CalcButton from 'components/RoiCalculator/CalcButton'
 import useIsMobile from 'hooks/useIsMobile'
@@ -20,6 +20,7 @@ import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
 import { StyledTag, poolStyles } from './styles'
 import Unstake from './MigrateActionsButtons/Unstake'
+import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 
 const DisplayLegacyPool: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({
   pools,
@@ -132,7 +133,10 @@ const DisplayLegacyPool: React.FC<{ pools: Pool[]; openId?: number; poolTags: Ta
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            <Unstake rawTokenAmount={rawStakedBalance} />
+            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+              Migrate
+            </Button>
+            {/* <Unstake rawTokenAmount={rawStakedBalance} /> */}
           </Flex>
         </>
       ),

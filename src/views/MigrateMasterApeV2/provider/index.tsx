@@ -98,6 +98,8 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   //   }
   // }
 
+  console.log(lpStatus)
+
   return (
     <MigrateContext.Provider
       value={{

@@ -18,7 +18,7 @@ import { getBananaAddress } from 'utils/addressHelper'
 
 const mergeLpVersions = (v1Status: MigrateLpStatus[], v2Status: MigrateLpStatus[]) => {
   const statusToReturn = [...v1Status]
-  const ye = v2Status.filter((v2) => !v1Status.find((v1) => v1.lp === v2.lp))
+  const ye = v2Status.filter((v2) => v1Status.find((v1) => v1.lp === v2.lp))
   console.log(ye)
   return []
 }
@@ -100,10 +100,17 @@ export const setMigrateLpStatus = async (
   })
   // Get rid of duplicate status
   // v1 status gets priority over v2 status
-  const mergedStatus = [
-    ...apeswapLpStatus,
-    ...apeswapV2LpStatus.filter((v2) => !apeswapLpStatus.find((v1) => v1.lp === v2.lp)),
-  ]
+
+  // The same V1 products with the same LP are getting merged together in this. Needs to be fixed
+  const mergedStatus = [...new Map([...apeswapV2LpStatus, ...apeswapLpStatus].map((item) => [item.id, item])).values()]
+  console.log(mergedStatus)
+  console.log([...new Map([...apeswapV2LpStatus, ...apeswapLpStatus].map((item) => [item.id, item])).values()])
+  console.log([...new Map([...apeswapV2LpStatus, ...apeswapLpStatus].map((item) => [item.lp, item])).values()])
+  // Get rid of duplicate status
+  // v1 status gets priority over v2 status
+  const x = [...apeswapV2LpStatus.filter((v2) => !apeswapLpStatus.find((v1) => v1.lp === v2.lp)), ...apeswapLpStatus]
+  console.log(x)
+  console.log([...apeswapV2LpStatus, ...apeswapLpStatus])
   setLpStatus(mergedStatus)
 }
 

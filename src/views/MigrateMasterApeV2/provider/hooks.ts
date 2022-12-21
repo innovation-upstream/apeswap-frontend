@@ -222,7 +222,10 @@ export const useHandleUpdateAndMergeMigrateUnstake = (
         statusText: statusText,
       }
       updatedMigrateLpStatus[lpToUpdateIndex] = lpToUpdate
-      setLpStatus([...updatedMigrateLpStatus])
+      const mergedStatus = [
+        ...new Map([...updatedMigrateLpStatus, ...lpStatus].map((item) => [item.lp, item])).values(),
+      ]
+      setLpStatus([...mergedStatus])
     },
     [setLpStatus, lpStatus, farms, vaults, chainId, migrateMaximizers],
   )

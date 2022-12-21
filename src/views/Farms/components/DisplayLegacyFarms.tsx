@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Text, Svg } from '@apeswapfinance/uikit'
-import { Flex } from '@ape.swap/uikit'
+import { Button, Flex } from '@ape.swap/uikit'
 import { useModal } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
@@ -21,6 +21,8 @@ import { Svg as Icon } from '@ape.swap/uikit'
 import { useMasterchef } from 'hooks/useContract'
 import { useFarmsV2 } from 'state/farmsV2/hooks'
 import Unstake from './MigrateActionsButtons/Unstake'
+import { Link } from 'react-router-dom'
+import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 
 const DisplayFarms: React.FC<{ farms: Farm[] }> = ({ farms }) => {
   const v2Farms = useFarmsV2(null)
@@ -88,7 +90,10 @@ const DisplayFarms: React.FC<{ farms: Farm[] }> = ({ farms }) => {
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            <Unstake pid={farm.pid} rawTokenAmount={rawStakedBalance} farmV2Pid={farmV2Pid} />
+            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+              Migrate
+            </Button>
+            {/* <Unstake pid={farm.pid} rawTokenAmount={rawStakedBalance} farmV2Pid={farmV2Pid} /> */}
           </Flex>
         </>
       ),
