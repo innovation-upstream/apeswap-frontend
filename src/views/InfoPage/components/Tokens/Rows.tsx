@@ -12,6 +12,8 @@ import { Token } from 'state/info/types'
 import { Grid } from 'theme-ui'
 
 const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number }) => {
+  console.log('COMPONENT - TOKEN ROWS')
+
   const { t } = useTranslation()
   const nativePrice = useFetchInfoNativePrice()
   const mobile = useIsMobile()

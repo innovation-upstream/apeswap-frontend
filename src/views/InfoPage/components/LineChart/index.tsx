@@ -13,6 +13,8 @@ interface LineChartProps {
 }
 
 const LineChart: React.FC<LineChartProps> = (props) => {
+  console.log('COMPONENT - LINE CHART')
+
   const { data, xField, yField, type } = props
 
   const formattedData = [

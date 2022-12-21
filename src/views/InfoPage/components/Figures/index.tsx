@@ -17,6 +17,8 @@ interface FiguresProps {
 }
 
 const Figures: React.FC<FiguresProps> = (props) => {
+  console.log('COMPONENT - FIGURES')
+
   const mobile = useIsMobile()
   const [swiper, setSwiper] = useState(null)
   const [activeSlide, setActiveSlide] = useState(0)
@@ -206,6 +208,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            minHeight: `${mobile ? ' 220px' : '402px'}`,
           }}
         >
           <Spinner size={250} />

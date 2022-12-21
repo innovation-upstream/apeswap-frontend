@@ -18,6 +18,8 @@ import CountUp from 'react-countup'
 import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
 
 const PairPage = () => {
+  console.log('PAGE - PAIR')
+
   const history = useHistory()
   const [favs, toggleFav] = useFetchFavPairs()
 
@@ -308,6 +310,7 @@ const PairPage = () => {
                   width: '100%',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  height: '440px',
                 }}
               >
                 <Spinner size={250} />
@@ -325,7 +328,7 @@ const PairPage = () => {
               mt: '20px',
             }}
           >
-            {pairDaysData[chain].data !== null ? (
+            {pairDaysData[chain].data !== null && typeof pairDaysData[chain].data[0] !== 'undefined' ? (
               <>
                 <Flex>
                   <Flex sx={{ width: '50%' }}>
@@ -378,6 +381,7 @@ const PairPage = () => {
                   width: '100%',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  height: '440px',
                 }}
               >
                 <Spinner size={250} />

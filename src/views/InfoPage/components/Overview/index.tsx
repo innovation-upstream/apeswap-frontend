@@ -6,6 +6,8 @@ import Figures from '../Figures'
 import Chart from '../Chart'
 
 const Overview = () => {
+  console.log('COMPONENT - OVERVIEW')
+
   const mobile = useIsMobile()
   const [chartType, setChartType] = useState('liquidity')
   const [sevenDayVolume, setSevenDayVolume] = useState(0)

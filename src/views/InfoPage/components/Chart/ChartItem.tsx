@@ -13,6 +13,8 @@ interface ChartItemProps {
 }
 
 const ChartItem: React.FC<ChartItemProps> = (props) => {
+  console.log('COMPONENT - CHART ITEM')
+
   const { isDark } = useTheme()
   const [activeChains] = useFetchActiveChains()
   const { chartData } = props

@@ -12,6 +12,8 @@ interface NetworkSelectorProps {
 }
 
 const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
+  console.log('COMPONENT - NETOWRK SELETOR')
+
   const mobile = useIsMobile()
   const [activeChains, toggleChain] = useFetchActiveChains()
   const { onFilter } = props

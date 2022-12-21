@@ -12,6 +12,8 @@ import getTimePeriods from 'utils/getTimePeriods'
 import { StyledLink } from '../styles'
 
 const Rows = ({ transactions }: { transactions: Swaps[] }) => {
+  console.log('COMPONENT - TRANSACTIONS ROWS')
+
   const { t } = useTranslation()
   const currentTime = useCurrentTime()
 

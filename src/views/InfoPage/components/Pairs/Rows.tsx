@@ -12,6 +12,8 @@ import { Pairs } from 'state/info/types'
 import { Grid } from 'theme-ui'
 
 const Rows = ({ pairs, activeIndex }: { pairs: Pairs[]; activeIndex: number }) => {
+  console.log('COMPONENT - PAIRS ROWS')
+
   const { t } = useTranslation()
   const mobile = useIsMobile()
   const dayOldPairs = useFetchInfoPairs(20, 1) as any

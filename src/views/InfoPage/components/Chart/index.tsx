@@ -24,6 +24,7 @@ type ChartData = {
 }
 
 const Chart: React.FC<ChartProps> = (props) => {
+  console.log('COMPONENT - CHART')
   const { chartType, sevenDayVolume, liquidity } = props
 
   const [dataAmount, setDataAmount] = useState(chartType === 'liquidity' ? 30 : 7)
@@ -142,6 +143,7 @@ const Chart: React.FC<ChartProps> = (props) => {
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            minHeight: '402px',
           }}
         >
           <Spinner size={250} />

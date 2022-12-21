@@ -27,6 +27,8 @@ const Icon = ({ name }: { name: string }) => {
 }
 
 const Figure: React.FC<FigureProps> = (props) => {
+  console.log('COMPONENT - FIGURE ITEM')
+
   const mobile = useIsMobile()
 
   return (

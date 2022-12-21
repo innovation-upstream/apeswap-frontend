@@ -9,6 +9,8 @@ interface SectionHeaderProps {
 }
 
 const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
+  console.log('COMPONENT - SECTION HEADER')
+
   const mobile = useIsMobile()
 
   return (
