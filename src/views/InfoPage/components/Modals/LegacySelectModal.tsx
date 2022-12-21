@@ -4,16 +4,17 @@ import { useTranslation } from 'contexts/Localization'
 import { Modal, Flex, Text, IconButton, WarningIcon } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS, MAINNET_CHAINS, NETWORK_INFO_LINK } from 'config/constants/chains'
+import useIsMobile from '../../../../hooks/useIsMobile'
 
 interface LegacySelectModalProps {
   onDismiss: () => void
 }
 
 const LegacySelectModal: React.FC<LegacySelectModalProps> = ({ onDismiss }) => {
-  const { t } = useTranslation()
+  const mobile = useIsMobile()
 
   return (
-    <Modal onDismiss={onDismiss} minWidth="500px" maxWidth="500px">
+    <Modal onDismiss={onDismiss} minWidth={`${mobile ? '95vw' : '500px'}`} maxWidth={`${mobile ? '95vw' : '500px'}`}>
       <Flex alignItems="center" justifyContent="center" mt="10px" mb="20px">
         <IconButton
           icon="close"
