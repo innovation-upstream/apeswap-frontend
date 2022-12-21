@@ -42,16 +42,21 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
       >
         <Flex
           sx={{
-            width: `${mobile ? '100%' : '250px'}`,
+            width: `${mobile ? '100%' : '245px'}`,
             marginTop: `${mobile ? '15px' : '0px'}`,
             justifyContent: `${mobile ? 'center' : 'flex-start'}`,
+            height: '36px',
           }}
         >
           <Button
             size="sm"
             variant={location.pathname === '/info' ? 'primary' : 'tertiary'}
             sx={{
-              paddingRight: `${location.pathname.includes('/info/token') ? '28px' : '12px'}`,
+              textTransform: 'none',
+              color: `${location.pathname === '/info' ? 'white' : 'gray'}`,
+              fontSize: '12px',
+              paddingLeft: '18px',
+              paddingRight: `${location.pathname.includes('/info/token') ? '34px' : '18px'}`,
               zIndex: `${location.pathname === '/info' ? '100' : '20'}`,
             }}
             onClick={() => history.push('/info')}
@@ -63,8 +68,11 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
             size="sm"
             variant={location.pathname.includes('/info/tokens') ? 'primary' : 'tertiary'}
             sx={{
-              paddingRight: `${location.pathname.includes('/info/pairs') ? '28px' : '12px'}`,
-              paddingLeft: `${location.pathname.includes('/info/tokens') ? '12px' : '28px'}`,
+              textTransform: 'none',
+              color: `${location.pathname.includes('/info/token') ? 'white' : 'gray'}`,
+              fontSize: '12px',
+              paddingRight: `${location.pathname.includes('/info/pairs') ? '34px' : '18px'}`,
+              paddingLeft: `${location.pathname.includes('/info/tokens') ? '18px' : '34px'}`,
               zIndex: `${location.pathname.includes('/info/tokens') ? '100' : '10'}`,
             }}
             onClick={() => history.push('/info/tokens')}
@@ -76,7 +84,11 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
             ml={-8}
             variant={location.pathname.includes('/info/pairs') ? 'primary' : 'tertiary'}
             sx={{
-              paddingLeft: `${location.pathname.includes('/info/pairs') ? '12px' : '28px'}`,
+              textTransform: 'none',
+              color: `${location.pathname.includes('/info/pairs') ? 'white' : 'gray'}`,
+              fontSize: '12px',
+              paddingLeft: `${location.pathname.includes('/info/pairs') ? '18px' : '34px'}`,
+              paddingRight: '18px',
               zIndex: `${location.pathname.includes('/info/pairs') ? '100' : '0'}`,
             }}
             onClick={() => history.push('/info/pairs')}

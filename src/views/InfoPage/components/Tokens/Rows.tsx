@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import { ChainId } from '@ape.swap/sdk'
-import { Flex, Svg, Text } from '@ape.swap/uikit'
+import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
@@ -112,7 +112,7 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
                   <ServiceTokenDisplay token1={CHAIN_PARAMS[chainId].nativeCurrency.symbol} size={12} />
                 </Flex>
                 <Text size="14px" weight={400} ml="10px">
-                  <a href={`/info/token/${chainId}/${id}`}>{mobile ? symbol : `${name} (${symbol})`}</a>
+                  <Link href={`/info/token/${chainId}/${id}`}>{mobile ? symbol : `${name} (${symbol})`}</Link>
                 </Text>
               </Flex>
               <Flex>

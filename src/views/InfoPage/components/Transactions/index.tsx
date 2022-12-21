@@ -13,16 +13,18 @@ import SectionHeader from '../SectionHeader'
 
 interface TransactionProps {
   token?: string
+  token2?: string
   headerText: string
   moreLink?: string
   chain?: number
   amount?: number
   pageSize?: number
+  filter?: string
 }
 
 const Transactions: React.FC<TransactionProps> = (props) => {
   const mobile = useIsMobile()
-  const { token, headerText, moreLink, chain, amount, pageSize } = props
+  const { token, token2, headerText, moreLink, chain, amount, pageSize } = props
 
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)
@@ -61,10 +63,30 @@ const Transactions: React.FC<TransactionProps> = (props) => {
       : [],
   ) as Swaps[]
 
+  //Token
   if (token && token !== '') {
     flattenedSwaps = flattenedSwaps.filter((x) => x.pair.token0.id === token || x.pair.token1.id === token)
     flattenedMints = flattenedMints.filter((x) => x.pair.token0.id === token || x.pair.token1.id === token)
     flattenedBurns = flattenedBurns.filter((x) => x.pair.token0.id === token || x.pair.token1.id === token)
+  }
+
+  //Pair
+  if (token && token !== '' && token2 && token2 !== '') {
+    flattenedSwaps = flattenedSwaps.filter(
+      (x) =>
+        (x.pair.token0.id === token && x.pair.token1.id === token2) ||
+        (x.pair.token0.id === token2 && x.pair.token1.id === token),
+    )
+    flattenedMints = flattenedMints.filter(
+      (x) =>
+        (x.pair.token0.id === token && x.pair.token1.id === token2) ||
+        (x.pair.token0.id === token2 && x.pair.token1.id === token),
+    )
+    flattenedBurns = flattenedBurns.filter(
+      (x) =>
+        (x.pair.token0.id === token && x.pair.token1.id === token2) ||
+        (x.pair.token0.id === token2 && x.pair.token1.id === token),
+    )
   }
 
   const getTransactions = useMemo(() => {
@@ -86,7 +108,7 @@ const Transactions: React.FC<TransactionProps> = (props) => {
         'desc',
       ),
     [activeChains, getTransactions],
-  )?.slice(0, amount ? amount : 100)
+  )?.slice(0, amount || 100)
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * ROWS_PER_PAGE) % sortedTransactions.length

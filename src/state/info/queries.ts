@@ -164,6 +164,8 @@ export const pairsQuery = (amount: number, block: string, token: string, pair: s
       // (token !== '' ? 'where: {_or: [{token0: "' + token + '"}, {token1: "' + token + '"}] } ' : '') +
       ') {\n' +
       '  id\n' +
+      'token0Price\n' +
+      '    token1Price' +
       '  token0 {\n' +
       '    id\n' +
       '    symbol\n' +
@@ -190,6 +192,8 @@ export const pairsQuery = (amount: number, block: string, token: string, pair: s
           // (token !== '' ? 'where: {_or: [{token0: "' + token + '"}, {token1: "' + token + '"}] } ' : '') +
           ') {\n' +
           '  id\n' +
+          'token0Price\n' +
+          '    token1Price' +
           '  token0 {\n' +
           '    id\n' +
           '    symbol\n' +

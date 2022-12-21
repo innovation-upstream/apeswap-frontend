@@ -32,8 +32,8 @@ const PairPage = () => {
 
   useFetchInfoBlock()
   const [dataAmount, setDataAmount] = useState(30)
-  const pairData = useFetchInfoPairs(20, 0, '', pairId)
-  const pairDayOldData = useFetchInfoPairs(20, 1, '', pairId)
+  const pairData = useFetchInfoPairs(20, 0, '', pairId, Number(chain))
+  const pairDayOldData = useFetchInfoPairs(20, 1, '', pairId, Number(chain))
   const pairDaysData = useFetchInfoPairDaysData(Number(chain), pairId, dataAmount)
 
   const mobile = useIsMobile()
@@ -97,18 +97,52 @@ const PairPage = () => {
             <Flex
               sx={{
                 width: `${mobile ? '100%' : '50%'}`,
+                flexWrap: 'wrap',
               }}
             >
-              <ServiceTokenDisplay
-                token1={pairData[chain].data[0].token0.symbol}
-                token2={pairData[chain].data[0].token1.symbol}
-                noEarnToken
-                size={25}
-                tokensMargin={-10}
-              />
-              <Text margin="10px 10px 0px 10px" weight={700} size="20px">
-                {pairData[chain].data[0].token0.symbol} - {pairData[chain].data[0].token1.symbol}
-              </Text>
+              <Flex sx={{ width: '100%' }}>
+                <ServiceTokenDisplay
+                  token1={pairData[chain].data[0].token0.symbol}
+                  token2={pairData[chain].data[0].token1.symbol}
+                  noEarnToken
+                  size={25}
+                  tokensMargin={-10}
+                />
+                <Text margin="2px 10px 0px 10px" weight={700} size="20px">
+                  {pairData[chain].data[0].token0.symbol} - {pairData[chain].data[0].token1.symbol}
+                </Text>
+              </Flex>
+              <Flex sx={{ width: '100%' }}>
+                <Flex
+                  sx={{
+                    background: 'white2',
+                    borderRadius: '10px',
+                    padding: '10px 15px',
+                    marginTop: '15px',
+                    marginRight: '15px',
+                  }}
+                >
+                  <Text weight={500} size="12px">
+                    1 {pairData[chain].data[0].token0.symbol} ={' '}
+                    {Number(pairData[chain].data[0].token1Price).toFixed(3).toLocaleString()}{' '}
+                    {pairData[chain].data[0].token1.symbol}
+                  </Text>
+                </Flex>
+                <Flex
+                  sx={{
+                    background: 'white2',
+                    borderRadius: '10px',
+                    padding: '10px 15px',
+                    marginTop: '15px',
+                  }}
+                >
+                  <Text weight={500} size="12px">
+                    1 {pairData[chain].data[0].token1.symbol} ={' '}
+                    {Number(pairData[chain].data[0].token0Price).toFixed(3).toLocaleString()}{' '}
+                    {pairData[chain].data[0].token0.symbol}
+                  </Text>
+                </Flex>
+              </Flex>
             </Flex>
             <Flex
               sx={{
@@ -152,7 +186,6 @@ const PairPage = () => {
           <Flex
             sx={{
               width: `${mobile ? '100%' : '300px'}`,
-
               height: '440px',
               background: 'white2',
               flexDirection: 'column',
@@ -167,7 +200,8 @@ const PairPage = () => {
             pairDayOldData[chain].data !== null &&
             pairDayOldData[chain].data[0] &&
             typeof pairDayOldData[chain].data[0] !== 'undefined' &&
-            pairDaysData[chain].data !== null ? (
+            pairDaysData[chain].data !== null &&
+            typeof pairDaysData[chain].data[0] !== 'undefined' ? (
               <>
                 <Flex
                   sx={{
@@ -351,8 +385,14 @@ const PairPage = () => {
             )}
           </Flex>
         </Flex>
-
-        <Transactions headerText="Transactions" />
+        {pairData[chain].data !== null && typeof pairData[chain].data[0] !== 'undefined' && (
+          <Transactions
+            headerText="Transactions"
+            token={pairData[chain].data[0].token0.id}
+            token2={pairData[chain].data[0].token1.id}
+            amount={1000}
+          />
+        )}
       </Flex>
     </Flex>
   )

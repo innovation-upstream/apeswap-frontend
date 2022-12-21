@@ -174,10 +174,12 @@ const TokenPage = () => {
             }}
           >
             {tokenDaysData[chain].data !== null &&
+            typeof tokenDaysData[chain].data[0] !== 'undefined' &&
             tokenData[chain].data !== null &&
             typeof tokenData[chain].data[0] !== 'undefined' &&
             tokenData[chain].data[0] !== [] &&
-            tokenDayOldData[chain].data !== null ? (
+            tokenDayOldData[chain].data !== null &&
+            typeof tokenDayOldData[chain].data[0] !== 'undefined' ? (
               <>
                 <Text margin="0px 10px 0px 0px" weight={500} size="16px" opacity={0.6}>
                   Total Liquidity
@@ -267,7 +269,7 @@ const TokenPage = () => {
           <Flex
             sx={{
               flex: '1',
-              height: '440px',
+              height: `${mobile ? '460px' : '440px'}`,
               background: 'white2',
               flexDirection: 'column',
               padding: '10px',
@@ -350,7 +352,7 @@ const TokenPage = () => {
           />
         )}
 
-        <Transactions headerText="Transactions" token={tokenId} chain={Number(chain)} />
+        <Transactions headerText="Transactions" token={tokenId} chain={Number(chain)} amount={1000} />
       </Flex>
     </Flex>
   )

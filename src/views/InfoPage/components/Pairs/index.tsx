@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import SectionHeader from '../SectionHeader'
 import TrendingTokens from '../TrendingTokens/TrendingTokens'
+import MonkeyImage from '../../../Dex/Orders/components/OrderHistoryPanel/MonkeyImage'
 
 interface PairsProps {
   token?: string
@@ -106,11 +107,8 @@ const Pairs: React.FC<PairsProps> = (props) => {
               </>
             ) : (
               <Flex sx={{ flexDirection: 'column', alignItems: 'center' }}>
-                <img
-                  src="/images/info/favs-placeholder.svg"
-                  alt="Your favorite tokens will appear here"
-                  width="200px"
-                />
+                <MonkeyImage />
+
                 <Text mt={10}>Your favorite pairs will appear here</Text>
               </Flex>
             )}
