@@ -16,6 +16,13 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useVaults } from 'state/vaults/hooks'
 import { getBananaAddress } from 'utils/addressHelper'
 
+const mergeLpVersions = (v1Status: MigrateLpStatus[], v2Status: MigrateLpStatus[]) => {
+  const statusToReturn = [...v1Status]
+  const ye = v2Status.filter((v2) => !v1Status.find((v1) => v1.lp === v2.lp))
+  console.log(ye)
+  return []
+}
+
 /**
  * Helper function to set the initial status of both Migrate LPs and ApeSwap LPs if they exist
  * This function should only run on render and when user LPs have been loaded
@@ -93,7 +100,10 @@ export const setMigrateLpStatus = async (
   })
   // Get rid of duplicate status
   // v1 status gets priority over v2 status
-  const mergedStatus = [...new Map([...apeswapV2LpStatus, ...apeswapLpStatus].map((item) => [item.lp, item])).values()]
+  const mergedStatus = [
+    ...apeswapLpStatus,
+    ...apeswapV2LpStatus.filter((v2) => !apeswapLpStatus.find((v1) => v1.lp === v2.lp)),
+  ]
   setLpStatus(mergedStatus)
 }
 
