@@ -107,10 +107,10 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+            {/* <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
               Migrate
-            </Button>
-            {/* <Unstake pid={vault.pid} vaultVersion={vault.version} vaultV3Pid={vaultV3Pid} /> */}
+            </Button> */}
+            <Unstake pid={vault.pid} vaultVersion={vault.version} vaultV3Pid={vaultV3Pid} />
           </Flex>
         </>
       ),

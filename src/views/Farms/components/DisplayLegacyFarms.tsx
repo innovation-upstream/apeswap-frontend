@@ -90,10 +90,10 @@ const DisplayFarms: React.FC<{ farms: Farm[] }> = ({ farms }) => {
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+            {/* <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
               Migrate
-            </Button>
-            {/* <Unstake pid={farm.pid} rawTokenAmount={rawStakedBalance} farmV2Pid={farmV2Pid} /> */}
+            </Button> */}
+            <Unstake pid={farm.pid} rawTokenAmount={rawStakedBalance} farmV2Pid={farmV2Pid} />
           </Flex>
         </>
       ),

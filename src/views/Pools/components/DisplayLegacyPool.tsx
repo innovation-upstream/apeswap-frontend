@@ -133,10 +133,10 @@ const DisplayLegacyPool: React.FC<{ pools: Pool[]; openId?: number; poolTags: Ta
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+            {/* <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
               Migrate
-            </Button>
-            {/* <Unstake rawTokenAmount={rawStakedBalance} /> */}
+            </Button> */}
+            <Unstake rawTokenAmount={rawStakedBalance} />
           </Flex>
         </>
       ),
