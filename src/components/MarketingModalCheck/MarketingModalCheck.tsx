@@ -18,16 +18,6 @@ import {
   SHOW_DEF_MOD_KEY,
 } from 'config/constants'
 import { circularRoute } from 'utils'
-// import { NETWORK_LABEL } from 'config/constants/chains'
-// import { DexSlides } from 'components/MarketingModalContent/Dex'
-// import { FarmSlides } from 'components/MarketingModalContent/Farm'
-// import { PoolSlides } from 'components/MarketingModalContent/Pool'
-// import { MaximizerSlides } from 'components/MarketingModalContent/Maximizers'
-// import { GnanaSlides } from 'components/MarketingModalContent/Gnana'
-// import { BillSlides } from 'components/MarketingModalContent/Bills'
-// import { IaoSlides } from 'components/MarketingModalContent/Iao'
-// import { OrderSlides } from 'components/MarketingModalContent/Orders'
-// import { LiquiditySlides } from 'components/MarketingModalContent/Liquidity'
 import Tutorial from 'components/MarketingModalContent/Tutorial'
 
 const MarketingModalCheck = () => {
