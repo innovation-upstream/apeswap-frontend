@@ -335,13 +335,13 @@ const PairPage = () => {
                     <RangeSelectorsWrapper>
                       <ul>
                         <li
-                          className={chartInfo.type.toLowerCase() === 'volume' && 'active'}
+                          className={chartInfo.type.toLowerCase() === 'volume' ? 'active' : ''}
                           onClick={() => UpdateChartType('Volume', 'date', 'dailyVolumeUSD')}
                         >
                           Volume
                         </li>
                         <li
-                          className={chartInfo.type.toLowerCase() === 'liquidity' && 'active'}
+                          className={chartInfo.type.toLowerCase() === 'liquidity' ? 'active' : ''}
                           onClick={() => UpdateChartType('Liquidity', 'date', 'reserveUSD')}
                         >
                           Liquidity
