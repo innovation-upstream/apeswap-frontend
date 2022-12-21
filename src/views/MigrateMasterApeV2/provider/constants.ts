@@ -1,8 +1,8 @@
 export const MIGRATION_STEPS: { title: string; description: string }[] = [
   {
-    title: 'Unstake',
-    description: 'Unstake from Master Ape V1',
+    title: 'UNSTAKE',
+    description: 'Unstake all tokens from the MasterApe v1 smart contracts',
   },
-  { title: 'Approve', description: 'Approve the new Master Ape V2 product' },
-  { title: 'Stake', description: 'Stake in new Master Ape V2 product' },
+  { title: 'APPROVE', description: 'Approve the MasterApe v2 smart contracts' },
+  { title: 'STAKE', description: 'Stake all tokens using the MasterApe v2 smart contracts' },
 ]

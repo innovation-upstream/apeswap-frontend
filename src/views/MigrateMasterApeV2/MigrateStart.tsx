@@ -44,12 +44,12 @@ const MigrateStart: React.FC = () => {
           ) : migrateLpStatus.length !== 0 ? (
             <Steps allStepsComplete={allStepsComplete} />
           ) : (
-            <Flex sx={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+            <Flex sx={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'column', width: '100%' }}>
               <Text size="26px" weight={700}>
                 {t('You have nothing to migrate')}
               </Text>
-              <Button to="/swap" as={Link} mt="20px">
-                {t('Return Back To Swap')}
+              <Button to="/" as={Link} mt="20px">
+                {t('Return To Home')}
               </Button>
             </Flex>
           )

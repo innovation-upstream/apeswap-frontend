@@ -48,6 +48,7 @@ export const setMigrateLpStatus = async (
 
   const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, lp, id, token0 }) => {
     const matchedV2Product = v2Products?.find(({ lp: v2Lp }) => v2Lp === lp)
+    console.log(filteredV1Products, matchedV2Product, v2Products)
     const idToUse = new BigNumber(stakedAmount).isGreaterThan(0) ? id : lp
     const isFarmAway = token0.symbol === 'FARMAWAY'
     // TODO: Remove when ready

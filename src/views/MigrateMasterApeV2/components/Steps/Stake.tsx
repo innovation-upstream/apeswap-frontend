@@ -72,16 +72,16 @@ const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[]; allSte
       }}
     >
       <Text size="22px" weight={700} mb="15px">
-        {!allStepsComplete ? t('Stake All LPs') : t('Completed!')}
+        {!allStepsComplete ? t('Stake') : t('Completed!')}
       </Text>
       <Text size="12px" weight={500} mb="15px">
         {!allStepsComplete
-          ? t('Stake your new ApeSwap LPs into Yield Farms and BANANA Maximizers.')
+          ? t('Stake all tokens using the MasterApe v2 smart contracts')
           : t('Migration completed! Thank you.')}
       </Text>
       {!allStepsComplete ? (
         <Button mb="20px" onClick={() => handleStakeAll(filteredLpsForStake)}>
-          {t('Stake All')}
+          Stake All ({filteredLpsForStake.length})
         </Button>
       ) : (
         <Button mb="20px" as={Link} to={'/apestats'}>

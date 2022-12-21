@@ -71,10 +71,10 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
       }}
     >
       <Text size="22px" weight={700} mb="15px">
-        {t('Approve All LPs')}
+        {t('Approve')}
       </Text>
-      <Text size="12px" weight={500} mb="15px">
-        {t('Approve the contracts of the ApeSwap products that will accept your migrated LPs.')}
+      <Text size="12px" weight={500} mb="5px">
+        {t('Approve the MasterApe v2 smart contracts')}
       </Text>
       <Flex
         sx={{
@@ -110,7 +110,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
         </Flex>
       </Flex>
       <Button mb="20px" onClick={() => handleApproveAll(filteredLpsForStake)}>
-        {t('Approve All')}
+        Approve All ({filteredLpsForStake?.length})
       </Button>
       <ListView listViews={listView} />
     </Flex>

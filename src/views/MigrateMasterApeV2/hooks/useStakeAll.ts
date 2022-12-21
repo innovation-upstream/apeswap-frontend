@@ -83,7 +83,14 @@ const useStakeAll = () => {
                 .catch((e) => handleUpdateMigrateLp(id, 'stake', MigrateStatus.INVALID, e.message)),
             )
             .catch((e) => {
-              handleUpdateMigrateLp(id, 'stake', MigrateStatus.INVALID, e.message)
+              handleUpdateMigrateLp(
+                id,
+                'stake',
+                MigrateStatus.INVALID,
+                e.message === 'MetaMask Tx Signature: User denied transaction signature.'
+                  ? 'Transaction rejected in wallet'
+                  : e.message,
+              )
             })
         } catch {
           handleUpdateMigrateLp(id, 'stake', MigrateStatus.INVALID, 'Something went wrong please try refreshing')

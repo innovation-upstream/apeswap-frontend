@@ -92,7 +92,14 @@ const useUnstakeAll = () => {
                 .catch((e) => handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, e.message)),
             )
             .catch((e) => {
-              handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, e.message)
+              handleUpdateMigrateLp(
+                id,
+                'unstake',
+                MigrateStatus.INVALID,
+                e.message === 'MetaMask Tx Signature: User denied transaction signature.'
+                  ? 'Transaction rejected in wallet'
+                  : e.message,
+              )
             })
         } catch {
           handleUpdateMigrateLp(
