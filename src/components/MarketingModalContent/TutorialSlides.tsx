@@ -1,11 +1,13 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, Text, TooltipBubble } from '@ape.swap/uikit'
+import { Flex, Text, TooltipBubble, useWalletModal } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { CHAIN_PARAMS, NETWORK_LABEL } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
 import { styles } from './styles'
 import useIsMobile from '../../hooks/useIsMobile'
+import { METAMASK_LINKS } from '../../config/constants'
+import useAuth from '../../hooks/useAuth'
 
 export const SwapSlides = () => {
   const { t } = useTranslation()
@@ -589,7 +591,6 @@ export const IAOSlides = () => {
 
 export const OrdersSlides = () => {
   const { t } = useTranslation()
-  const isMobile = useIsMobile()
   return [
     <Flex sx={styles.contentContainer} key={1}>
       <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
@@ -623,4 +624,109 @@ export const OrdersSlides = () => {
       </Flex>
     </Flex>,
   ]
+}
+
+export const LiquiditySlides = () => {
+  const { t } = useTranslation()
+  const isMobile = useIsMobile()
+  return [
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Select Tokens & Amount')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>{t('Select the tokens you want to trade and enter your preferred amount.')}</Text>
+        <Text sx={{ fontStyle: 'italic' }}>{t('Assets are always deposited in an equal 50/50 value split!')}</Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.stepNo}>{t(`Step 2`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Confirm Add Liquidity')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            'Select ADD LIQUIDITY, click CONFIRM and approve the transaction in your wallet. You will receive your liquidity provider (LP) tokes shortly.',
+          )}
+        </Text>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
+          {t('⚡NEW: You can also')}{' '}
+          <TooltipBubble
+            placement={'topRight'}
+            transformTip={`translate(${isMobile ? '10%' : '6%'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t('Convert one token directly into an LP token or other product in a single transaction.')}
+              </Flex>
+            }
+            sx={{ width: ['210px', '210px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>ZAP</Text>
+          </TooltipBubble>{' '}
+          {t('to add liquidity with single tokens!')}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`Step 3`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Enjoy The Rewards!')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t('You are now earning')}{' '}
+          <TooltipBubble
+            placement={'topRight'}
+            transformTip={`translate(${isMobile ? '8%' : '5%'}, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t(
+                  'LP token holders receive a portion of the fees charged when swaps occur between the tokens that comprise that LP.',
+                )}
+              </Flex>
+            }
+            sx={{ width: ['210px', '210px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>{t('fees')}</Text>
+          </TooltipBubble>{' '}
+          {t('for each transaction that uses this pair of tokens on the network. Some LPs can also be staked on')}{' '}
+          <Text sx={styles.yellow}>
+            <a href="https://apeswap.finance/banana-farms" target="_blank" rel="noreferrer noopener">
+              {t('Yield Farms')}
+            </a>
+          </Text>{' '}
+          {t(' or ')}{' '}
+          <Text sx={styles.yellow}>
+            <a href="https://apeswap.finance/maximizers" target="_blank" rel="noreferrer noopener">
+              {t('BANANA Maximizers')}
+            </a>
+          </Text>{' '}
+          {t('for additional rewards!')}
+        </Text>
+      </Flex>
+    </Flex>,
+  ]
+}
+
+export const ConnectWalletSlide = () => {
+  const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
+  const { login, logout } = useAuth()
+  const { onPresentConnectModal } = useWalletModal(login, logout, t)
+  return (
+    <Flex sx={styles.contentContainer} key={0}>
+      <Text sx={styles.stepNo}>{t(`Step 0`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Connect Your Wallet')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text sx={styles.yellow} onClick={onPresentConnectModal}>
+          {t('Click here')}
+        </Text>
+        <Text sx={{ ml: '3px' }}>{t('to connect your wallet to ApeSwap.')}</Text>
+        <Text sx={{ fontStyle: 'italic' }}>
+          {t(`Don’t have a wallet? A full setup guide for MetaMask on ${NETWORK_LABEL[chainId]} can be found `)}
+          <Text sx={styles.yellow}>
+            <a href={METAMASK_LINKS[NETWORK_LABEL[chainId]]} target="_blank" rel="noreferrer noopener">
+              {t('here')}
+            </a>
+          </Text>
+        </Text>
+      </Flex>
+    </Flex>
+  )
 }
