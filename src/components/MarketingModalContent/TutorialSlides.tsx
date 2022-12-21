@@ -218,7 +218,7 @@ export const MaximizerSlides = () => {
             'Open the desired Maximizer and click GET LP or GET BANANA. This will allow you to easily obtain tokens to stake.',
           )}
         </Text>
-        <Text sx={{ fontStyle: 'italic' }}>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
           {t('⚡NEW: You can also')}{' '}
           <TooltipBubble
             placement={'topRight'}
@@ -241,7 +241,7 @@ export const MaximizerSlides = () => {
                 {t('Contribute equal amounts of two tokens to the DEX to facilitate swaps between them.')}
               </Flex>
             }
-            sx={{ width: ['240px', '240px', '350px'] }}
+            sx={{ width: ['240px', '240px', '300px'] }}
           >
             <Text sx={{ ...styles.content, ...styles.tipTitle }}>add liquidity</Text>
           </TooltipBubble>{' '}
@@ -358,7 +358,7 @@ export const GnanaSlides = () => {
                 )}
               </Flex>
             }
-            sx={{ width: ['200px', '200px', '350px'] }}
+            sx={{ width: ['200px', '200px', '320px'] }}
           >
             <Text sx={styles.tipTitle}>{t('reflect fees,')}</Text>
           </TooltipBubble>{' '}
@@ -470,7 +470,7 @@ export const BillsSlides = () => {
           >
             <Text sx={styles.tipTitle}>ZAP</Text>
           </TooltipBubble>{' '}
-          {t('to add liquidity with single tokens!')}
+          {t('to buy bills with single tokens!')}
         </Text>
       </Flex>
     </Flex>,

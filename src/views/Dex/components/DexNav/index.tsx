@@ -18,7 +18,6 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
   const { chainId } = useActiveWeb3React()
   const { pathname } = history.location
 
-  const ORDERS = pathname.includes('orders')
   const onLiquidity =
     pathname?.includes('add-liquidity') ||
     pathname?.includes('liquidity') ||

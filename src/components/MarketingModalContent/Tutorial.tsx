@@ -91,7 +91,7 @@ const Tutorial: React.FC<{
       }
     return {
       type: 'liquidity',
-      title: "Welcome to ApeSwap's Dex Liquidity",
+      title: 'Welcome Dex Liquidity',
       description: 'Provide liquidity to earn trading fees!',
       slides: account ? LiquiditySlides() : [ConnectWalletSlide(), ...LiquiditySlides()],
     }

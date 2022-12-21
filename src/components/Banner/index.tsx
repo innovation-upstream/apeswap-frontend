@@ -25,7 +25,6 @@ const Banner: React.FC<{
   const loaded = useProgressiveImage(`../images/new-banners/${banner}-${isDark ? 'night' : 'day'}.svg`)
 
   const openBannerLink = (bannerLink: string) => {
-    console.log(bannerLink)
     bannerLink.includes('modal') ? history.push({ search: bannerLink }) : window.open(bannerLink, '_blank')
   }
 
