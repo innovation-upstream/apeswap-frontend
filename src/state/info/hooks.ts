@@ -116,6 +116,8 @@ export const useFetchInfoDaysData = () => {
 
 export const useFetchInfoTokensData = (amount: number, current?: boolean, token = '', chain?: number) => {
   const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+
   const blocks = useSelector((state: State) => state.info.block)
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
@@ -132,7 +134,7 @@ export const useFetchInfoTokensData = (amount: number, current?: boolean, token 
         dispatch(fetchTokens(chainId, amount, current === true ? '0' : blocks[chainId].data?.number, token))
       }
     })
-  }, [blocks, amount, current, token, chain, dispatch])
+  }, [slowRefresh, blocks, amount, current, token, chain, dispatch])
   return useSelector((state: State) => (current === true ? state.info.tokens : state.info.tokensDayOld))
 }
 
@@ -151,12 +153,14 @@ export const useFetchInfoBlock = () => {
 
 export const useFetchChartData = (amount: number) => {
   const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.CHARTDATA, chainId, loading: true }))
       dispatch(fetchChartData(chainId, amount))
     })
-  }, [dispatch, amount])
+  }, [slowRefresh, dispatch, amount])
   return useSelector((state: State) => state.info.chartData)
 }
 
@@ -213,6 +217,7 @@ export const useFetchFavPairs = (): [string[], (tokenId: string) => void] => {
 
 export const useFetchInfoUniswapFactories = (current?: boolean) => {
   const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
   const blocks = useSelector((state: State) => state.info.block)
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
@@ -226,7 +231,7 @@ export const useFetchInfoUniswapFactories = (current?: boolean) => {
         dispatch(fetchUniswapFactories(chainId, current === true ? '0' : blocks[chainId].data.number))
       }
     })
-  }, [blocks, dispatch, current])
+  }, [slowRefresh, blocks, dispatch, current])
 
   return useSelector((state: State) => (current === true ? state.info.currentDayFactories : state.info.dayOldFactories))
 }
