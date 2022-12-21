@@ -17,8 +17,6 @@ const TOKEN_DELAY = 10000
 const CATEGORIES = ['primary', 'partner', 'trending']
 
 const TrendingTokens: React.FC = () => {
-  console.log('COMPONENT - TRENDING TOKENS')
-
   const { chainId } = useActiveWeb3React()
   const [loadTokens, setLoadTokens] = useState(false)
   const [selectedCat, setSelectedCat] = useState('')

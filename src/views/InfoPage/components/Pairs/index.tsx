@@ -23,8 +23,6 @@ interface PairsProps {
 }
 
 const Pairs: React.FC<PairsProps> = (props) => {
-  console.log('COMPONENT - PAIRS')
-
   const mobile = useIsMobile()
   const [activeChains] = useFetchActiveChains()
 

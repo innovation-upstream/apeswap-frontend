@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { useTranslation } from 'contexts/Localization'
-import { Modal, Flex, Text, IconButton, WarningIcon } from '@ape.swap/uikit'
+import { Modal, Flex, Text, IconButton } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS, MAINNET_CHAINS, NETWORK_INFO_LINK } from 'config/constants/chains'
 import useIsMobile from '../../../../hooks/useIsMobile'

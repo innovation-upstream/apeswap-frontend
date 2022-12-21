@@ -19,8 +19,6 @@ import CountUp from 'react-countup'
 import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
 
 const TokenPage = () => {
-  console.log('PAGE - TOKEN')
-
   const history = useHistory()
   const [favs, toggleFav] = useFetchFavTokens()
 

@@ -26,8 +26,6 @@ interface TokensProps {
 }
 
 const Tokens: React.FC<TokensProps> = (props) => {
-  console.log('COMPONENT - TOKENS')
-
   const mobile = useIsMobile()
   const [activeChains] = useFetchActiveChains()
   const { headerText, showFavs, moreLink, filter, amount, pageSize } = props

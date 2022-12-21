@@ -18,8 +18,6 @@ import CountUp from 'react-countup'
 import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
 
 const PairPage = () => {
-  console.log('PAGE - PAIR')
-
   const history = useHistory()
   const [favs, toggleFav] = useFetchFavPairs()
 

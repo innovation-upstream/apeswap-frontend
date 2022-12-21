@@ -24,7 +24,6 @@ type ChartData = {
 }
 
 const Chart: React.FC<ChartProps> = (props) => {
-  console.log('COMPONENT - CHART')
   const { chartType, sevenDayVolume, liquidity } = props
 
   const [dataAmount, setDataAmount] = useState(chartType === 'liquidity' ? 30 : 7)

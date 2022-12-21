@@ -6,8 +6,6 @@ import { useFetchInfoBlock } from '../../../../state/info/hooks'
 import NetworkSelector from '../../components/NetworkSelector'
 
 const TokensPage = () => {
-  console.log('PAGE - TOKENS')
-
   useFetchInfoBlock()
 
   const [filter, setFilter] = useState('')

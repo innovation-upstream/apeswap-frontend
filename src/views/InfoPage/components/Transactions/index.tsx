@@ -23,8 +23,6 @@ interface TransactionProps {
 }
 
 const Transactions: React.FC<TransactionProps> = (props) => {
-  console.log('COMPONENT - TRANSACTIONS')
-
   const mobile = useIsMobile()
   const { token, token2, headerText, moreLink, chain, amount, pageSize } = props
 

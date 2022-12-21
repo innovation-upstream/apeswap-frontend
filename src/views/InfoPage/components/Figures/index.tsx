@@ -17,8 +17,6 @@ interface FiguresProps {
 }
 
 const Figures: React.FC<FiguresProps> = (props) => {
-  console.log('COMPONENT - FIGURES')
-
   const mobile = useIsMobile()
   const [swiper, setSwiper] = useState(null)
   const [activeSlide, setActiveSlide] = useState(0)

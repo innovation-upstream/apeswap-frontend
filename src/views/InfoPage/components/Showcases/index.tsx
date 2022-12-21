@@ -11,8 +11,6 @@ import ServiceTokenDisplay from '../../../../components/ServiceTokenDisplay'
 import useTheme from '../../../../hooks/useTheme'
 
 const InfoShowcases = () => {
-  console.log('COMPONENT - SHOWCASES')
-
   const mobile = useIsMobile()
   const { isDark } = useTheme()
   const [activeSlide, setActiveSlide] = useState(0)
