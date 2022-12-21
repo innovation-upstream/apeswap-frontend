@@ -31,7 +31,7 @@ const Pairs: React.FC<PairsProps> = (props) => {
   const [favsPageCount, setFavsPageCount] = useState(0)
   const ROWS_PER_PAGE = pageSize ? pageSize : 10
   const [dataOffset, setDataOffset] = useState(0)
-  const pairs = useFetchInfoPairs(amount ? amount : 200, 0, token ? token : '', '', chain ? chain : null)
+  const pairs = useFetchInfoPairs(amount || 200, 0, token || '', '', chain ? chain : null)
   const [favs] = useFetchFavPairs()
 
   let flattenedPairs = Object.values(pairs).flatMap((row) => (row.initialized ? row.data : []))
@@ -122,7 +122,6 @@ const Pairs: React.FC<PairsProps> = (props) => {
       <Flex
         sx={{
           width: '100%',
-          height: '550px',
           background: 'white2',
           flexDirection: 'column',
           padding: '30px 10px 20px 10px',

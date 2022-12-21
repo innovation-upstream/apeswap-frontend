@@ -118,6 +118,7 @@ const PairPage = () => {
               }}
             >
               <Button
+                sx={{ height: '44px' }}
                 disabled={Number(chain) === chainId ? false : true}
                 onClick={() =>
                   history.push(
@@ -127,7 +128,12 @@ const PairPage = () => {
               >
                 Add Liquidity
               </Button>
-              <Button disabled={Number(chain) === chainId ? false : true} onClick={() => history.push('/swap')} ml={20}>
+              <Button
+                sx={{ height: '44px' }}
+                disabled={Number(chain) === chainId ? false : true}
+                onClick={() => history.push('/swap')}
+                ml={20}
+              >
                 Trade
               </Button>
             </Flex>

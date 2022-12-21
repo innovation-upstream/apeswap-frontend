@@ -97,58 +97,61 @@ const TokenPage = () => {
         </Flex>
 
         {tokenDaysData[chain].data !== null && (
-          <Flex
-            sx={{
-              width: '100%',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-            }}
-          >
+          <>
             <Flex
               sx={{
-                width: `${mobile ? '100%' : '50%'}`,
+                width: '100%',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
               }}
             >
-              <ServiceTokenDisplay token1={tokenDaysData[chain].data[0].token.symbol} size={25} />
-              <Text margin="10px 10px 0px 10px" weight={700} size="20px">
-                {tokenDaysData[chain].data[0].token.name}
-              </Text>
-              <Text margin="10px 10px 0px 0px" weight={400} size="20px" opacity={0.6}>
-                ({tokenDaysData[chain].data[0].token.symbol})
-              </Text>
-            </Flex>
-            <Flex
-              sx={{
-                width: `${mobile ? '100%' : '50%'}`,
-                justifyContent: `${mobile ? 'flex-start' : 'flex-end'}`,
-                marginTop: `${mobile ? '15px' : '0px'}`,
-              }}
-            >
-              <Button
-                disabled={Number(chain) === chainId ? false : true}
-                onClick={() => history.push(`/add-liquidity/ETH/${tokenId}`)}
+              <Flex
+                sx={{
+                  width: `${mobile ? '100%' : '50%'}`,
+                  flexWrap: 'wrap',
+                }}
               >
-                Add Liquidity
-              </Button>
-              <Button disabled={Number(chain) === chainId ? false : true} onClick={() => history.push('/swap')} ml={20}>
-                Trade
-              </Button>
+                <Flex sx={{ width: '100%' }}>
+                  <ServiceTokenDisplay token1={tokenDaysData[chain].data[0].token.symbol} size={25} />
+                  <Text margin="2px 10px 0px 10px" weight={700} size="20px">
+                    {tokenDaysData[chain].data[0].token.name}
+                  </Text>
+                  <Text margin="2px 10px 0px 0px" weight={400} size="20px" opacity={0.6}>
+                    ({tokenDaysData[chain].data[0].token.symbol})
+                  </Text>
+                </Flex>
+                <Flex sx={{ width: '100%' }}>
+                  <Text margin="20px 10px 0px 10px" weight={700} size="35px">
+                    ${(Math.round(tokenDaysData[chain].data[0].priceUSD * 100) / 100).toLocaleString()}
+                  </Text>
+                </Flex>
+              </Flex>
+              <Flex
+                sx={{
+                  width: `${mobile ? '100%' : '50%'}`,
+                  justifyContent: `${mobile ? 'flex-start' : 'flex-end'}`,
+                  marginTop: `${mobile ? '15px' : '0px'}`,
+                }}
+              >
+                <Button
+                  disabled={Number(chain) === chainId ? false : true}
+                  onClick={() => history.push(`/add-liquidity/ETH/${tokenId}`)}
+                  sx={{ height: '44px' }}
+                >
+                  Add Liquidity
+                </Button>
+                <Button
+                  disabled={Number(chain) === chainId ? false : true}
+                  onClick={() => history.push('/swap')}
+                  ml={20}
+                  sx={{ height: '44px' }}
+                >
+                  Trade
+                </Button>
+              </Flex>
             </Flex>
-          </Flex>
+          </>
         )}
-
-        <Flex
-          sx={{
-            alignItems: 'flex-start',
-            width: '100%',
-          }}
-        >
-          {tokenDaysData[chain].data !== null && (
-            <Text margin="20px 10px 0px 10px" weight={700} size="35px">
-              ${(Math.round(tokenDaysData[chain].data[0].priceUSD * 100) / 100).toLocaleString()}
-            </Text>
-          )}
-        </Flex>
 
         <Flex
           sx={{

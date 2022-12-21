@@ -28,7 +28,7 @@ const TokensPage = () => {
       >
         <NetworkSelector onFilter={onFilter} />
 
-        <Tokens headerText="All Tokens" showFavs={true} filter={filter} amount={50} pageSize={20} />
+        <Tokens headerText="All Tokens" showFavs={true} filter={filter} amount={300} pageSize={30} />
       </Flex>
     </Flex>
   )

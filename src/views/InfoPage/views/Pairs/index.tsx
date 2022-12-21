@@ -27,7 +27,7 @@ const PairsPage = () => {
         }}
       >
         <NetworkSelector onFilter={onFilter} />
-        <Pairs headerText="All Pairs" showFavs={true} filter={filter} amount={50} pageSize={20} />
+        <Pairs headerText="All Pairs" showFavs={true} filter={filter} amount={300} pageSize={30} />
       </Flex>
     </Flex>
   )

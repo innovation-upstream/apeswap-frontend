@@ -71,6 +71,20 @@ const LineChart: React.FC<LineChartProps> = (props) => {
             isInteractive={true}
             useMesh={true}
             tooltip={(data) => generateToolTip(data)}
+            colors="#FFB300"
+            defs={[
+              {
+                id: 'gradient',
+                type: 'linearGradient',
+                gradientTransform: 'rotate(53.53 0.5 0.5)',
+                opacity: 0.4,
+                colors: [
+                  { offset: 15.88, color: '#E1B242', opacity: 0.4 },
+                  { offset: 92.56, color: '#A16552', opacity: 0.4 },
+                ],
+              },
+            ]}
+            fill={[{ match: '*', id: 'gradient' }]}
           />
         </Flex>
       ) : (

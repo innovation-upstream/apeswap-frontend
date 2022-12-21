@@ -15,7 +15,7 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
   const { t } = useTranslation()
   const nativePrice = useFetchInfoNativePrice()
   const mobile = useIsMobile()
-  const dayOldTokens = useFetchInfoTokensData(20)
+  const dayOldTokens = useFetchInfoTokensData(300)
   const [favs, toggleFav] = useFetchFavTokens()
 
   const get24HourVolume = (chainId: ChainId, id: string) => {
@@ -73,7 +73,7 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
       </Grid>
       <Flex sx={{ flexDirection: 'column' }}>
         {tokens.map(({ derivedETH, id, name, symbol, totalLiquidity, tradeVolumeUSD, chainId }, index) => {
-          const currentNativePrice = parseFloat(nativePrice[chainId]?.data.ethPrice ?? '0')
+          const currentNativePrice = parseFloat(nativePrice[chainId]?.data?.ethPrice ?? '0')
           const currentAssetPrice = currentNativePrice * parseFloat(derivedETH)
           const currentAssetLiquidity = parseFloat(totalLiquidity) * currentNativePrice * parseFloat(derivedETH)
           return (

@@ -26,7 +26,7 @@ const Transactions: React.FC<TransactionProps> = (props) => {
 
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)
-  const transactions = useFetchInfoTransactions(amount ? amount : 100, token ? token : '', chain ? chain : null)
+  const transactions = useFetchInfoTransactions(amount || 100, token || '', chain ? chain : null)
   const [transactionType, setTransactionType] = useState('all')
   const ROWS_PER_PAGE = pageSize ? pageSize : 10
   const [activeChains] = useFetchActiveChains()
