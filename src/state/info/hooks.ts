@@ -217,7 +217,6 @@ export const useFetchFavPairs = (): [string[], (tokenId: string) => void] => {
 
 export const useFetchInfoUniswapFactories = (current?: boolean) => {
   const dispatch = useAppDispatch()
-  const { slowRefresh } = useRefresh()
   const blocks = useSelector((state: State) => state.info.block)
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
@@ -231,7 +230,7 @@ export const useFetchInfoUniswapFactories = (current?: boolean) => {
         dispatch(fetchUniswapFactories(chainId, current === true ? '0' : blocks[chainId].data.number))
       }
     })
-  }, [slowRefresh, blocks, dispatch, current])
+  }, [blocks, dispatch, current])
 
   return useSelector((state: State) => (current === true ? state.info.currentDayFactories : state.info.dayOldFactories))
 }
