@@ -39,7 +39,7 @@ const Chart: React.FC<ChartProps> = (props) => {
     () =>
       map(groupedData, (x) => {
         const item: ChartData = {}
-        item.date = x ? x[0].date : ''
+        item.date = x && x[0] ? x[0].date : ''
         for (let i = 0; i < x.length; i++) {
           if (activeChains === null || activeChains.includes(Number(x[i].chainId))) {
             item[x[i].chainId] = x[i].totalLiquidityUSD
