@@ -17,16 +17,24 @@ import {
   fetchUniswapFactories,
   setLoading,
   updateActiveChains,
+  fetchPairDaysData,
+  fetchFavTokens,
+  updateFavTokens,
+  fetchFavPairs,
+  updateFavPairs,
 } from '.'
 import { InfoStateTypes } from './types'
 
-export const useFetchInfoPairs = (amount: number, days: number) => {
+export const useFetchInfoPairs = (amount: number, days: number, token = '', pair = '', chain?: number) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   const blocks = useSelector((state: State) => state.info.block)
 
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
+      if (chain && chainId !== chain) {
+        return
+      }
       if (days === 0) {
         dispatch(setLoading({ stateType: InfoStateTypes.PAIRS, chainId, loading: true }))
       } else {
@@ -34,36 +42,50 @@ export const useFetchInfoPairs = (amount: number, days: number) => {
       }
 
       if (blocks[chainId].initialized) {
-        dispatch(fetchPairs(chainId, amount, days === 0 ? '0' : blocks[chainId].data?.number))
+        dispatch(fetchPairs(chainId, amount, days === 0 ? '0' : blocks[chainId].data?.number, token, pair))
       }
     })
-  }, [slowRefresh, amount, blocks, days, dispatch])
+  }, [slowRefresh, amount, blocks, days, token, pair, chain, dispatch])
 
   return useSelector((state: State) => (days === 0 ? state.info.pairs : state.info.dayOldPairs))
 }
 
-export const useFetchInfoTransactions = (amount: number) => {
+export const useFetchInfoTransactions = (amount: number, token = '', chain?: number) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
 
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
+      if (chain && chainId !== chain) {
+        return
+      }
       dispatch(setLoading({ stateType: InfoStateTypes.TRANSACTIONS, chainId, loading: true }))
-      dispatch(fetchTransactions(chainId, amount))
+      dispatch(fetchTransactions(chainId, amount, token))
     })
-  }, [slowRefresh, dispatch, amount])
+  }, [slowRefresh, amount, token, chain, dispatch])
   return useSelector((state: State) => state.info.transactions)
 }
 
-export const useFetchInfoTokenDaysData = (chain: number, address: string) => {
+export const useFetchInfoTokenDaysData = (chain: number, address: string, amount = 30) => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
 
   useEffect(() => {
     dispatch(setLoading({ stateType: InfoStateTypes.TOKENDAYSDATA, chain, loading: true }))
-    dispatch(fetchTokenDaysData(chain, address))
-  }, [slowRefresh, chain, address, dispatch])
+    dispatch(fetchTokenDaysData(chain, address, amount))
+  }, [slowRefresh, chain, address, amount, dispatch])
   return useSelector((state: State) => state.info.tokenDaysData)
+}
+
+export const useFetchInfoPairDaysData = (chain: number, address: string, amount = 30) => {
+  const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+
+  useEffect(() => {
+    dispatch(setLoading({ stateType: InfoStateTypes.PAIRDAYSDATA, chain, loading: true }))
+    dispatch(fetchPairDaysData(chain, address, amount))
+  }, [slowRefresh, chain, address, amount, dispatch])
+  return useSelector((state: State) => state.info.pairDaysData)
 }
 
 export const useFetchInfoNativePrice = () => {
@@ -92,11 +114,16 @@ export const useFetchInfoDaysData = () => {
   return useSelector((state: State) => state.info.daysData)
 }
 
-export const useFetchInfoTokensData = (amount: number, current?: boolean) => {
+export const useFetchInfoTokensData = (amount: number, current?: boolean, token = '', chain?: number) => {
   const dispatch = useAppDispatch()
+  const { slowRefresh } = useRefresh()
+
   const blocks = useSelector((state: State) => state.info.block)
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
+      if (chain && chainId !== chain) {
+        return
+      }
       if (current === true) {
         dispatch(setLoading({ stateType: InfoStateTypes.TOKENS, chainId, loading: true }))
       } else {
@@ -104,10 +131,10 @@ export const useFetchInfoTokensData = (amount: number, current?: boolean) => {
       }
 
       if (blocks[chainId].initialized) {
-        dispatch(fetchTokens(chainId, amount, current === true ? '0' : blocks[chainId].data?.number))
+        dispatch(fetchTokens(chainId, amount, current === true ? '0' : blocks[chainId].data?.number, token))
       }
     })
-  }, [blocks, amount, current, dispatch])
+  }, [slowRefresh, blocks, amount, current, token, chain, dispatch])
   return useSelector((state: State) => (current === true ? state.info.tokens : state.info.tokensDayOld))
 }
 
@@ -126,6 +153,7 @@ export const useFetchInfoBlock = () => {
 
 export const useFetchChartData = (amount: number) => {
   const dispatch = useAppDispatch()
+
   useEffect(() => {
     MAINNET_CHAINS.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.CHARTDATA, chainId, loading: true }))
@@ -150,6 +178,40 @@ export const useFetchActiveChains = (): [number[], (chainId: number) => void] =>
   )
 
   return [activeChains, toggleChain]
+}
+
+export const useFetchFavTokens = (): [string[], (tokenId: string) => void] => {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(fetchFavTokens())
+  }, [dispatch])
+
+  const favTokens = useSelector((state: State) => state.info.favTokens)
+  const toggleFav = useCallback(
+    (tokenId: string) => {
+      dispatch(updateFavTokens(tokenId, favTokens))
+    },
+    [dispatch, favTokens],
+  )
+
+  return [favTokens, toggleFav]
+}
+
+export const useFetchFavPairs = (): [string[], (tokenId: string) => void] => {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(fetchFavPairs())
+  }, [dispatch])
+
+  const favPairs = useSelector((state: State) => state.info.favPairs)
+  const toggleFav = useCallback(
+    (pairId: string) => {
+      dispatch(updateFavPairs(pairId, favPairs))
+    },
+    [dispatch, favPairs],
+  )
+
+  return [favPairs, toggleFav]
 }
 
 export const useFetchInfoUniswapFactories = (current?: boolean) => {

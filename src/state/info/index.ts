@@ -11,6 +11,7 @@ import {
   getUniswapFactories,
   getChartData,
   getTokenDaysData,
+  getPairDaysData,
 } from './api'
 import { MAINNET_CHAINS } from 'config/constants/chains'
 import { ChainId } from '@ape.swap/sdk'
@@ -35,9 +36,11 @@ const initialState: InfoState = {
   tokensDayOld: dataAsNullInitialState,
   tokenDaysData: dataAsNullInitialState,
   dayOldPairs: dataAsNullInitialState,
+  pairDaysData: dataAsNullInitialState,
   activeChains: [ChainId.MAINNET, ChainId.TLOS, ChainId.BSC, ChainId.MATIC],
+  favTokens: [],
+  favPairs: [],
 }
-
 export const infoSlice = createSlice({
   name: 'info',
   initialState,
@@ -86,6 +89,10 @@ export const infoSlice = createSlice({
       const { data, chainId, loading, initialized } = action.payload
       state.tokenDaysData[chainId] = { data, loading, initialized }
     },
+    setPairDaysData: (state, action) => {
+      const { data, chainId, loading, initialized } = action.payload
+      state.pairDaysData[chainId] = { data, loading, initialized }
+    },
     setDayOldPairs: (state, action) => {
       const { data, chainId, loading, initialized } = action.payload
       state.dayOldPairs[chainId] = { data, loading, initialized }
@@ -97,6 +104,16 @@ export const infoSlice = createSlice({
     setActiveChains: (state, action) => {
       if (action.payload !== null) {
         state.activeChains = action.payload
+      }
+    },
+    setFavTokens: (state, action) => {
+      if (action.payload !== null) {
+        state.favTokens = action.payload
+      }
+    },
+    setFavPairs: (state, action) => {
+      if (action.payload !== null) {
+        state.favPairs = action.payload
       }
     },
   },
@@ -115,24 +132,28 @@ export const {
   setChartData,
   setDayOldTokens,
   setTokenDaysData,
+  setPairDaysData,
   setDayOldPairs,
   setLoading,
   setActiveChains,
+  setFavTokens,
+  setFavPairs,
 } = infoSlice.actions
 
 // Thunks
-export const fetchPairs = (chainId: ChainId, amount: number, block: string) => async (dispatch) => {
-  const data = await getInfoPairs(chainId, amount, block)
-  if (block === '0') {
-    //Block 0 means current day data
-    dispatch(setPairs({ data, chainId, loading: false, initialized: true }))
-  } else {
-    dispatch(setDayOldPairs({ data, chainId, loading: false, initialized: true }))
+export const fetchPairs =
+  (chainId: ChainId, amount: number, block: string, token: string, pair: string) => async (dispatch) => {
+    const data = await getInfoPairs(chainId, amount, block, token, pair)
+    if (block === '0') {
+      //Block 0 means current day data
+      dispatch(setPairs({ data, chainId, loading: false, initialized: true }))
+    } else {
+      dispatch(setDayOldPairs({ data, chainId, loading: false, initialized: true }))
+    }
   }
-}
 
-export const fetchTransactions = (chainId: ChainId, amount: number) => async (dispatch) => {
-  const data = await getTransactions(chainId, amount)
+export const fetchTransactions = (chainId: ChainId, amount: number, token: string) => async (dispatch) => {
+  const data = await getTransactions(chainId, amount, token)
   dispatch(setTransactions({ data, chainId, loading: false, initialized: true }))
 }
 
@@ -146,8 +167,8 @@ export const fetchDaysData = (chainId: ChainId, oneDayBack: number) => async (di
   dispatch(setDaysData({ data, chainId, loading: false, initialized: true }))
 }
 
-export const fetchTokens = (chainId: ChainId, amount: number, block: string) => async (dispatch) => {
-  const data = await getTokens(chainId, amount, block)
+export const fetchTokens = (chainId: ChainId, amount: number, block: string, token: string) => async (dispatch) => {
+  const data = await getTokens(chainId, amount, block, token)
   if (block === '0') {
     //Block 0 means current day data
     dispatch(setTokens({ data, chainId, loading: false, initialized: true }))
@@ -181,9 +202,24 @@ export const fetchActiveChains = () => async (dispatch) => {
   dispatch(setActiveChains(data))
 }
 
-export const fetchTokenDaysData = (chainId: ChainId, address: string) => async (dispatch) => {
-  const data = await getTokenDaysData(chainId, address)
+export const fetchFavTokens = () => async (dispatch) => {
+  const data = JSON.parse(localStorage.getItem('infoFavTokens'))
+  dispatch(setFavTokens(data))
+}
+
+export const fetchFavPairs = () => async (dispatch) => {
+  const data = JSON.parse(localStorage.getItem('infoFavPairs'))
+  dispatch(setFavPairs(data))
+}
+
+export const fetchTokenDaysData = (chainId: ChainId, address: string, amount: number) => async (dispatch) => {
+  const data = await getTokenDaysData(chainId, address, amount)
   dispatch(setTokenDaysData({ data, chainId, loading: false, initialized: true }))
+}
+
+export const fetchPairDaysData = (chainId: ChainId, address: string, amount: number) => async (dispatch) => {
+  const data = await getPairDaysData(chainId, address, amount)
+  dispatch(setPairDaysData({ data, chainId, loading: false, initialized: true }))
 }
 
 export const updateActiveChains = (chainId: number, data: number[]) => (dispatch) => {
@@ -210,6 +246,36 @@ export const updateActiveChains = (chainId: number, data: number[]) => (dispatch
 
   localStorage.setItem('infoActiveChains', JSON.stringify(current))
   dispatch(setActiveChains(current))
+}
+
+export const updateFavTokens = (token: string, data: string[]) => (dispatch) => {
+  let currentFavs = data.map((x) => x)
+  if (currentFavs === null) currentFavs = []
+
+  const index = currentFavs.indexOf(token, 0)
+  if (index > -1) {
+    currentFavs.splice(index, 1)
+  } else {
+    currentFavs.push(token)
+  }
+
+  localStorage.setItem('infoFavTokens', JSON.stringify(currentFavs))
+  dispatch(setFavTokens(currentFavs))
+}
+
+export const updateFavPairs = (pair: string, data: string[]) => (dispatch) => {
+  let currentFavs = data.map((x) => x)
+  if (currentFavs === null) currentFavs = []
+
+  const index = currentFavs.indexOf(pair, 0)
+  if (index > -1) {
+    currentFavs.splice(index, 1)
+  } else {
+    currentFavs.push(pair)
+  }
+
+  localStorage.setItem('infoFavPairs', JSON.stringify(currentFavs))
+  dispatch(setFavPairs(currentFavs))
 }
 
 export default infoSlice.reducer
