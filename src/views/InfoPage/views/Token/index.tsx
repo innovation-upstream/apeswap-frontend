@@ -346,7 +346,7 @@ const TokenPage = () => {
           </Flex>
         </Flex>
 
-        {tokenDaysData[chain].data !== null && (
+        {tokenDaysData[chain].data !== null && typeof tokenDaysData[chain].data[0] !== 'undefined' && (
           <Pairs
             token={tokenId}
             headerText={`${tokenDaysData[chain].data[0].token.symbol} Pairs`}
