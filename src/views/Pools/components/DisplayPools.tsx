@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { IconButton, Text, Flex, TagVariants, Button, Tag } from '@ape.swap/uikit'
+import { IconButton, Text, Flex, TagVariants, Button } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
@@ -11,7 +11,7 @@ import { useLocation, useHistory } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import CalcButton from 'components/RoiCalculator/CalcButton'
 import useIsMobile from 'hooks/useIsMobile'
-import { Pool, Tag as TagProps } from 'state/types'
+import { Pool, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
@@ -20,11 +20,7 @@ import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
 import { StyledTag, poolStyles } from './styles'
 
-const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: TagProps[] }> = ({
-  pools,
-  openId,
-  poolTags,
-}) => {
+const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
   const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
   const { pathname } = useLocation()

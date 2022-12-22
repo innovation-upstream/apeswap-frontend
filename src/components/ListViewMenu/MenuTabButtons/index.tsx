@@ -1,12 +1,10 @@
-/** @jsxImportSource theme-ui */
 import React from 'react'
 import styled from 'styled-components'
 import { useRouteMatch, useHistory } from 'react-router-dom'
-import { Toggle } from '@ape.swap/uikit'
+import { Toggle } from '@apeswapfinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const Wrapper = styled.div`
-  width: 100%;
   ${({ theme }) => theme.mediaQueries.md} {
     display: flex;
     justify-content: center;
@@ -39,13 +37,7 @@ const MenuTabButton: React.FC = () => {
 
   return (
     <Wrapper>
-      <Toggle
-        size="sm"
-        labels={[t('ACTIVE'), t('INACTIVE')]}
-        onClick={handleClick}
-        checked={!isExact}
-        sx={{ height: '36px', alignItems: 'center' }}
-      />
+      <Toggle size="md" labels={[t('ACTIVE'), t('INACTIVE')]} onClick={handleClick} checked={!isExact} />
     </Wrapper>
   )
 }
