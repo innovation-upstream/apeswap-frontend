@@ -18,7 +18,8 @@ import { useTranslation } from 'contexts/Localization'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
-import { StyledTag, poolStyles } from './styles'
+import { poolStyles } from './styles'
+import StyledTag from 'components/ListViewV2/components/StyledTag'
 
 const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
   const { chainId } = useActiveWeb3React()
@@ -62,9 +63,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
         <>
           {pTag?.pid === pool.sousId && (
             <Box sx={{ marginRight: '5px', mt: '1px' }}>
-              <StyledTag key={pTag?.pid} variant={tagColor}>
-                {pTag?.text}
-              </StyledTag>
+              <StyledTag text={pTag?.text} variant={tagColor} />
             </Box>
           )}
         </>
