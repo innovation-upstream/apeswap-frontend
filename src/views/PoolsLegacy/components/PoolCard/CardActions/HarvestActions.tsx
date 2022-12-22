@@ -32,6 +32,7 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   sousId,
   compound,
   emergencyWithdraw,
+  earningTokenPrice,
 }) => {
   const { t } = useTranslation()
   const earningTokenBalance = getBalanceNumber(earnings, tokenDecimals)
@@ -39,7 +40,7 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   const rewardRefApeHarder = useRef(null)
   const [pendingTx, setPendingTx] = useState(false)
   const { onHarvest } = useSousHarvest(sousId)
-  const onApeHarder = useReward(rewardRefApeHarder, useSousStake(sousId).onStake)
+  const onApeHarder = useReward(rewardRefApeHarder, useSousStake(sousId, earningTokenPrice).onStake)
   const onEmergencyWithdraw = useReward(rewardRef, useSousEmergencyWithdraw(sousId).onEmergencyWithdraw)
 
   const renderButton = () => {

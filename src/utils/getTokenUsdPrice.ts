@@ -70,3 +70,21 @@ export const getCurrencyUsdPrice = async (
   }
   return null
 }
+
+export const getLpUsdPrice = async (
+  chainId: number,
+  address: string,
+  decimals = 18,
+  smartRouter?: SmartRouter,
+): Promise<number> => {
+  if (address && decimals) {
+    const call = {
+      address: getSmartPriceGetter(chainId, smartRouter),
+      name: 'getLPPrice',
+      params: [address, decimals],
+    }
+    const lpPrice = await multicall(chainId, apePriceGetterABI, [call])
+    return getBalanceNumber(lpPrice[0], decimals)
+  }
+  return null
+}
