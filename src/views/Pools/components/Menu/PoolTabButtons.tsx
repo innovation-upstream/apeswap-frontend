@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   }
 `
 
-const MenuTabButton: React.FC = () => {
+const PoolTabButtons: React.FC = () => {
   const { url, isExact } = useRouteMatch()
   const history = useHistory()
   const { t } = useTranslation()
@@ -50,4 +50,4 @@ const MenuTabButton: React.FC = () => {
   )
 }
 
-export default React.memo(MenuTabButton)
+export default React.memo(PoolTabButtons)
