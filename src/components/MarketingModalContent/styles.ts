@@ -245,7 +245,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     textTransform: ['uppercase', 'uppercase', 'capitalize'],
     mb: [0, 0, '10px'],
   },
-  //
   contentContainer: {
     width: '100%',
     mt: '5px',
