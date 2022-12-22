@@ -132,16 +132,9 @@ export const StyledLink = styled(Link)`
 
 export const Section = styled.div`
   position: relative;
-  // flex: 1;
-  // display: flex;
-  // flex-wrap: wrap;
-  // justify-content: space-between;
-  // // flex-direction: column;
+
   background: ${({ theme }) => theme.colors.white2};
   border-radius: 10px;
-  // z-index: 1;
-  // padding: 15px 20px 0px 20px;
-  // align-items: center;
 
   &.smallSection {
     width: 300px;
