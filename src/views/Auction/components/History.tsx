@@ -53,8 +53,13 @@ const ColumnHeadersWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 90px;
-  padding-right: 70px;
+  padding: 0 10px;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 0 20px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 0 90px;
+  }
 `
 const HeaderText = styled(Text)`
   font-style: normal;
@@ -71,9 +76,11 @@ const BodyWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding-left: 25px;
-  padding-right: 25px;
   flex-shrink: 0;
+  padding: 0 10px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 0 25px;
+  }
 `
 
 const Row = styled.div<RowProps>`
@@ -83,9 +90,10 @@ const Row = styled.div<RowProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 45px;
-  padding-right: 45px;
   flex-shrink: 0;
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 0 45px;
+  }
 `
 
 const Column = styled.div`
@@ -203,7 +211,7 @@ const History: React.FC = () => {
           <HeaderText>{t('NFA Index')}</HeaderText>
           <HeaderText>{t('Amount')}</HeaderText>
           <HeaderText>{t('Bidder')}</HeaderText>
-          <HeaderText>{t('Block Number')}</HeaderText>
+          <HeaderText>{t('Block No.')}</HeaderText>
         </ColumnHeadersWrapper>
         <BodyWrapper>{renderRows()}</BodyWrapper>
         <ArrowsWrapper>

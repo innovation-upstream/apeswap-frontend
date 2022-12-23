@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Button, Flex, Spinner, useMatchBreakpoints } from '@ape.swap/uikit'
+import { Button, Flex, Spinner } from '@ape.swap/uikit'
 import SwiperProvider from 'contexts/SwiperProvider'
 import Banner from 'components/Banner'
 import { useAuctions, useFetchAuctions } from 'state/hooks'
@@ -15,8 +15,6 @@ const Auction: React.FC = () => {
   useFetchAuctions()
   const { auctions } = useAuctions()
   const { t } = useTranslation()
-  const { isXl, isXxl } = useMatchBreakpoints()
-  const isDesktop = isXxl || isXl
   return (
     <SwiperProvider>
       <Flex
@@ -27,7 +25,7 @@ const Auction: React.FC = () => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItem: 'center',
-          marginBottom: '80px',
+          marginBottom: '30px',
         }}
       >
         <ListViewLayout>
@@ -64,7 +62,7 @@ const Auction: React.FC = () => {
                 <Spinner size={200} />
               </Flex>
             )}
-            {isDesktop && <History />}
+            <History />
           </PageWrapper>
         </ListViewLayout>
       </Flex>
