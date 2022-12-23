@@ -87,7 +87,7 @@ const TableRow = ({ id, name, value, percentage }: TableRowProps) => {
         </Text>
       </Left>
       <Right>
-        <CardValue fontSize="12px" fontWeight={700} decimals={2} value={Number(value)} prefix="$" />
+        <CardValue fontSize="12px" fontWeight={700} decimals={2} value={Number(value)} prefix="$" enableCountUp />
         <Text fontSize="12px" fontWeight={500} style={{ width: '52px', textAlign: 'end' }}>
           {percentage} %
         </Text>

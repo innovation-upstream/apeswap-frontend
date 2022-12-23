@@ -78,7 +78,7 @@ export const ChainIndicator = styled.div`
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 100;
+  z-index: 1;
   transform: translate(-6px, 6px);
   filter: drop-shadow(0 2px 8px #414141);
 `

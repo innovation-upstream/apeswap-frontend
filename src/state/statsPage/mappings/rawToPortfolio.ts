@@ -1,3 +1,4 @@
+import { chainMap } from './chainMap'
 import { ApiResponse, Chain, Position } from '../types'
 import {
   billToPosition,
@@ -9,216 +10,125 @@ import {
   poolToPosition,
 } from './rawToPosition'
 
+export type ProductType = typeof productTypes[number]
+
 export interface PortfolioData {
   type: ProductType
-  chainData: Partial<{
-    [key in Chain]: Position[]
-  }>
+  chainData: { [key in Chain]: Position[] }
   totalValue: number
   totalEarnings: number
 }
 
-export type ProductType = 'farms' | 'pools' | 'vaults' | 'jungleFarms' | 'lending' | 'maximizers' | 'bills' | 'iaos'
+const productTypes = ['farms', 'pools', 'vaults', 'jungleFarms', 'lending', 'maximizers', 'bills', 'iaos'] as const
+
+function initProducts(): PortfolioData[] {
+  return productTypes.map((type) => ({
+    type,
+    chainData: chainMap(() => [] as Position[]),
+    totalValue: 0,
+    totalEarnings: 0,
+  }))
+}
 
 export function rawToPortfolio({ userStats, bananaPrice }: ApiResponse) {
-  const products: PortfolioData[] = []
+  const products = initProducts()
 
-  userStats.forEach((chainInfo) => {
-    if (chainInfo.farms.length > 0) {
-      chainInfo.farms.forEach((farm) => {
-        const product = products.find((p) => p.type === 'farms')
+  userStats.forEach(({ chainId, bills, farms, iaos, jungleFarms, lending, maximizers, pools }) => {
+    farms?.forEach((farm) => {
+      const positionData = farmToPosition(farm)
+      const positionEarnings = positionData.secondaryRewardBalance
+        ? positionData.rewardBalance * bananaPrice + positionData.secondaryRewardValue
+        : positionData.rewardBalance * bananaPrice
 
-        const positionData = farmToPosition(farm)
+      const product = products.find((p) => p.type === 'farms')
 
-        const positionEarnings = positionData.secondaryRewardBalance
-          ? positionData.rewardBalance * bananaPrice + positionData.secondaryRewardValue
-          : positionData.rewardBalance * bananaPrice
+      product.chainData[chainId].push(positionData)
+      product.totalValue += positionData.value
+      product.totalEarnings += positionEarnings
+    })
 
-        if (product) {
-          product.chainData[chainInfo.chainId]
-            ? product.chainData[chainInfo.chainId].push(positionData)
-            : (product.chainData[chainInfo.chainId] = [positionData])
+    pools?.forEach((pool) => {
+      const positionData = poolToPosition(pool)
+      const positionEarnings = positionData.rewardBalance * positionData.rewardToken.price
 
-          product.totalValue += positionData.value
-          product.totalEarnings += positionEarnings
-        } else
-          products.push({
-            type: 'farms',
-            chainData: { [chainInfo.chainId]: [positionData] },
-            totalValue: positionData.value,
-            totalEarnings: positionEarnings,
-          })
-      })
-    }
+      const product = products.find((p) => p.type === 'pools')
 
-    if (chainInfo.pools.length > 0) {
-      chainInfo.pools.forEach((pool) => {
-        const product = products.find((p) => p.type === 'pools')
+      product.chainData[chainId].push(positionData)
+      product.totalValue += positionData.value
+      product.totalEarnings += positionEarnings
+    })
 
-        const positionData = poolToPosition(pool)
-        const positionEarnings = positionData.rewardBalance * positionData.rewardToken.price
+    jungleFarms?.forEach((farm) => {
+      const positionData = jungleToPosition(farm)
+      const positionEarnings = positionData.rewardBalance * positionData.rewardToken.price
 
-        if (product) {
-          product.chainData[chainInfo.chainId]
-            ? product.chainData[chainInfo.chainId].push(positionData)
-            : (product.chainData[chainInfo.chainId] = [positionData])
+      const product = products.find((p) => p.type === 'jungleFarms')
 
-          product.totalValue += positionData.value
-          product.totalEarnings += positionEarnings
-        } else
-          products.push({
-            type: 'pools',
-            chainData: {
-              [chainInfo.chainId]: [positionData],
-            },
-            totalValue: positionData.value,
-            totalEarnings: positionEarnings,
-          })
-      })
-    }
+      product.chainData[chainId].push(positionData)
+      product.totalValue += positionData.value
+      product.totalEarnings += positionEarnings
+    })
 
-    if (chainInfo.jungleFarms.length > 0) {
-      chainInfo.jungleFarms.forEach((farm) => {
-        const product = products.find((p) => p.type === 'jungleFarms')
+    lending?.markets?.forEach((lendingInfo) => {
+      const positionData = lendingToPosition(lendingInfo)
 
-        const positionData = jungleToPosition(farm)
-        const positionEarnings = positionData.rewardBalance * positionData.rewardToken.price
+      const product = products.find((p) => p.type === 'lending')
 
-        if (product) {
-          product.chainData[chainInfo.chainId]
-            ? product.chainData[chainInfo.chainId].push(positionData)
-            : (product.chainData[chainInfo.chainId] = [positionData])
+      product.chainData[chainId].push(positionData)
+      product.totalValue += positionData.value
 
-          product.totalValue += positionData.value
-          product.totalEarnings += positionEarnings
-        } else
-          products.push({
-            type: 'jungleFarms',
-            chainData: {
-              [chainInfo.chainId]: [positionData],
-            },
-            totalValue: positionData.value,
-            totalEarnings: positionEarnings,
-          })
-      })
-    }
+      if (!product.totalEarnings) product.totalEarnings = lending.earnedBalance * bananaPrice
+    })
 
-    if (chainInfo.lending.markets.length > 0) {
-      chainInfo.lending.markets.forEach((lending) => {
-        const product = products.find((p) => p.type === 'lending')
+    maximizers?.forEach((vault) => {
+      const positionData = maximizerToPosition(vault)
+      const positionEarnings = positionData.rewardBalance * bananaPrice
 
-        const positionData = lendingToPosition(lending)
+      const product = products.find((p) => p.type === 'maximizers')
 
-        if (product) {
-          product.chainData[chainInfo.chainId]
-            ? product.chainData[chainInfo.chainId].push(positionData)
-            : (product.chainData[chainInfo.chainId] = [positionData])
+      product.chainData[chainId].push(positionData)
+      product.totalValue += positionData.value
+      product.totalEarnings += positionEarnings
+    })
 
-          product.totalValue += positionData.value
-        } else
-          products.push({
-            type: 'lending',
-            chainData: {
-              [chainInfo.chainId]: [positionData],
-            },
-            totalValue: positionData.value,
-            totalEarnings: chainInfo.lending.earnedBalance * bananaPrice,
-          })
-      })
-    }
+    bills?.forEach((bill) => {
+      if (bill.vestingTimeRemaining < 1 && bill.earnedBalance === 0) return
 
-    if (chainInfo.maximizers.length > 0) {
-      chainInfo.maximizers.forEach((vault) => {
-        const product = products.find((p) => p.type === 'maximizers')
+      const positionData = billToPosition(bill)
+      const positionEarnings = positionData.rewardBalance * positionData.rewardToken.price
 
-        const positionData = maximizerToPosition(vault)
-        const positionEarnings = positionData.rewardBalance * bananaPrice
+      const product = products.find((p) => p.type === 'bills')
 
-        if (product) {
-          product.chainData[chainInfo.chainId]
-            ? product.chainData[chainInfo.chainId].push(positionData)
-            : (product.chainData[chainInfo.chainId] = [positionData])
+      product.chainData[chainId].push(positionData)
+      product.totalValue += positionData.value
+      product.totalEarnings += positionEarnings
+    })
 
-          product.totalValue += positionData.value
-          product.totalEarnings += positionEarnings
-        } else
-          products.push({
-            type: 'maximizers',
-            chainData: {
-              [chainInfo.chainId]: [positionData],
-            },
-            totalValue: positionData.value,
-            totalEarnings: positionData.rewardBalance * bananaPrice,
-          })
-      })
-    }
+    iaos?.forEach((iao) => {
+      const positionData = iaoToPosition(iao)
+      const positionEarnings = positionData.rewardBalance * positionData.rewardToken.price
 
-    if (chainInfo.bills?.length > 0) {
-      chainInfo.bills.forEach((bill) => {
-        const product = products.find((p) => p.type === 'bills')
+      const product = products.find((p) => p.type === 'iaos')
 
-        const positionData = billToPosition(bill)
-        const positionEarnings = positionData.rewardBalance * positionData.rewardToken.price
-
-        if (product) {
-          product.chainData[chainInfo.chainId]
-            ? product.chainData[chainInfo.chainId].push(positionData)
-            : (product.chainData[chainInfo.chainId] = [positionData])
-
-          product.totalValue += positionData.value
-          product.totalEarnings += positionEarnings
-        } else
-          products.push({
-            type: 'bills',
-            chainData: {
-              [chainInfo.chainId]: [positionData],
-            },
-            totalValue: positionData.value,
-            totalEarnings: positionEarnings,
-          })
-      })
-    }
-
-    if (chainInfo.iaos?.length > 0) {
-      chainInfo.iaos.forEach((iao) => {
-        const product = products.find((p) => p.type === 'iaos')
-
-        const positionData = iaoToPosition(iao)
-        const positionEarnings = positionData.rewardBalance * positionData.rewardToken.price
-
-        if (product) {
-          product.chainData[chainInfo.chainId]
-            ? product.chainData[chainInfo.chainId].push(positionData)
-            : (product.chainData[chainInfo.chainId] = [positionData])
-
-          product.totalValue += positionData.value
-          product.totalEarnings += positionEarnings
-        } else
-          products.push({
-            type: 'iaos',
-            chainData: {
-              [chainInfo.chainId]: [positionData],
-            },
-            totalValue: positionData.value,
-            totalEarnings: positionEarnings,
-          })
-      })
-    }
+      product.chainData[chainId].push(positionData)
+      product.totalValue += positionData.value
+      product.totalEarnings += positionEarnings
+    })
   })
 
   return products
 }
 
+const symbolsMap = {
+  WBNB: 'BNB',
+  WETH: 'ETH',
+  WMATIC: 'MATIC',
+  eLunr: 'LUNR',
+  BTCB: 'BTC',
+  WTLOS: 'TLOS',
+  WBTC: 'BTC',
+}
+
 export function wrappedToNative(symbol: string) {
-  if (symbol.includes('WBNB')) return symbol.replace('WBNB', 'BNB')
-
-  if (symbol.includes('WETH')) return symbol.replace('WETH', 'ETH')
-
-  if (symbol.includes('WMATIC')) return symbol.replace('WMATIC', 'MATIC')
-
-  if (symbol.includes('eLunr')) return symbol.replace('eLunr', 'LUNR')
-
-  if (symbol.includes('BTCB')) return symbol.replace('BTCB', 'BTC')
-
-  return symbol
+  return symbolsMap[symbol] || symbol
 }
