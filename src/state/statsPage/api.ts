@@ -2,12 +2,14 @@ import axios from 'axios'
 import axiosRetry from 'axios-retry'
 import { initialStatsData } from './mappings'
 
+// TODO: remove test URL before launching Telos chain.
 const baseUrl = {
   local: 'http://localhost:3333/stats',
   prod: 'https://apeswap.api.pacoca.io/stats',
+  test: 'https://whale-app-mkbgq.ondigitalocean.app/stats',
 }
 
-const statsApi = axios.create({ baseURL: baseUrl.prod })
+const statsApi = axios.create({ baseURL: baseUrl.test })
 
 axiosRetry(statsApi, {
   retries: 5,

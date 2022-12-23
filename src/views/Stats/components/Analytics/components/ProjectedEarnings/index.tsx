@@ -81,6 +81,7 @@ export const ProjectedEarnings: React.FC = () => {
             decimals={2}
             value={filteredProjected?.amountStaked || 0}
             prefix="$"
+            enableCountUp
           />
         </Flex>
 

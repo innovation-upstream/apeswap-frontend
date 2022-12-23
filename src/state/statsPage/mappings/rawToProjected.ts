@@ -17,220 +17,134 @@ export interface ProjectedData {
   }
 }
 
-export function rawToProjected({ userStats, bananaPrice, analytics }: ApiResponse) {
+interface IPeriodEarnings {
+  period: number
+  farmApy: number
+  stakedValue: number
+}
+
+const stakingPeriodsInDays = [1, 7, 30, 365] as const
+
+const namedPeriods = {
+  1: 'daily',
+  7: 'weekly',
+  30: 'monthly',
+  365: 'yearly',
+} as const
+
+export function rawToProjected({ userStats, analytics }: ApiResponse) {
   const projectedProducts: ProjectedData[] = []
 
-  userStats.forEach((chainInfo) => {
-    if (chainInfo.farms.length > 0) {
-      chainInfo.farms.forEach((farm) => {
-        const farmApy = 'earnedBalance' in farm ? parseFloat(farm.bananaApr).toFixed(2) : farm.earnApr.toFixed(2)
-        const stakedValue = +farm.stakedBalance * farm.stakedToken.price
+  userStats.forEach(({ farms, pools, jungleFarms, lending, maximizers }) => {
+    farms?.forEach((farm) => {
+      const farmApy = 'earnedBalance' in farm ? +farm.bananaApr : farm.earnApr
+      const stakedValue = +farm.stakedBalance * farm.stakedToken.price
 
-        const daily = calculateUsdEarned({ numberOfDays: 1, farmApy, stakedValue, tokenPrice: bananaPrice })
-        const weekly = calculateUsdEarned({ numberOfDays: 7, farmApy, stakedValue, tokenPrice: bananaPrice })
-        const monthly = calculateUsdEarned({ numberOfDays: 30, farmApy, stakedValue, tokenPrice: bananaPrice })
-        const yearly = calculateUsdEarned({ numberOfDays: 365, farmApy, stakedValue, tokenPrice: bananaPrice })
+      const { daily, monthly, weekly, yearly } = getEarnings({ farmApy, stakedValue })
 
-        const projectedProduct = projectedProducts.find((product) => product.type === 'banana farms')
+      const projectedProduct = projectedProducts.find((product) => product.type === 'banana farms')
 
-        if (projectedProduct) {
-          projectedProduct.projectedEarnings.daily += daily
-          projectedProduct.projectedEarnings.weekly += weekly
-          projectedProduct.projectedEarnings.monthly += monthly
-          projectedProduct.projectedEarnings.yearly += yearly
-        } else {
-          projectedProducts.push({
-            type: 'banana farms',
-            projectedEarnings: { daily, weekly, monthly, yearly },
-            amountStaked: +analytics.tvl.farms.value,
-          })
-        }
+      if (projectedProduct) {
+        projectedProduct.projectedEarnings.daily += daily
+        projectedProduct.projectedEarnings.weekly += weekly
+        projectedProduct.projectedEarnings.monthly += monthly
+        projectedProduct.projectedEarnings.yearly += yearly
+      } else {
+        projectedProducts.push({
+          type: 'banana farms',
+          projectedEarnings: { daily, weekly, monthly, yearly },
+          amountStaked: +analytics.tvl.farms.value,
+        })
+      }
+    })
+
+    pools?.forEach(({ apr, stakedBalance, stakedToken }) => {
+      const { daily, monthly, weekly, yearly } = getEarnings({
+        farmApy: +apr,
+        stakedValue: +stakedBalance * stakedToken.price,
       })
-    }
 
-    if (chainInfo.pools.length > 0) {
-      chainInfo.pools.forEach((pool) => {
-        const stakedValue = +pool.stakedBalance * pool.stakedToken.price
+      const projectedProduct = projectedProducts.find((product) => product.type === 'pools')
 
-        const daily = calculateUsdEarned({
-          numberOfDays: 1,
-          farmApy: pool.apr,
-          stakedValue,
-          tokenPrice: pool.earnToken.price,
+      if (projectedProduct) {
+        projectedProduct.projectedEarnings.daily += daily
+        projectedProduct.projectedEarnings.weekly += weekly
+        projectedProduct.projectedEarnings.monthly += monthly
+        projectedProduct.projectedEarnings.yearly += yearly
+      } else {
+        projectedProducts.push({
+          type: 'pools',
+          projectedEarnings: { daily, weekly, monthly, yearly },
+          amountStaked: +analytics.tvl.pools.value,
         })
-        const weekly = calculateUsdEarned({
-          numberOfDays: 7,
-          farmApy: pool.apr,
-          stakedValue,
-          tokenPrice: pool.earnToken.price,
-        })
-        const monthly = calculateUsdEarned({
-          numberOfDays: 30,
-          farmApy: pool.apr,
-          stakedValue,
-          tokenPrice: pool.earnToken.price,
-        })
-        const yearly = calculateUsdEarned({
-          numberOfDays: 365,
-          farmApy: pool.apr,
-          stakedValue,
-          tokenPrice: pool.earnToken.price,
-        })
+      }
+    })
 
-        const projectedProduct = projectedProducts.find((product) => product.type === 'pools')
-
-        if (projectedProduct) {
-          projectedProduct.projectedEarnings.daily += daily
-          projectedProduct.projectedEarnings.weekly += weekly
-          projectedProduct.projectedEarnings.monthly += monthly
-          projectedProduct.projectedEarnings.yearly += yearly
-        } else {
-          projectedProducts.push({
-            type: 'pools',
-            projectedEarnings: { daily, weekly, monthly, yearly },
-            amountStaked: +analytics.tvl.pools.value,
-          })
-        }
+    jungleFarms?.forEach(({ apr, stakedBalance, stakedToken }) => {
+      const { daily, monthly, weekly, yearly } = getEarnings({
+        farmApy: +apr,
+        stakedValue: +stakedBalance * stakedToken.price,
       })
-    }
 
-    if (chainInfo.jungleFarms.length > 0) {
-      chainInfo.jungleFarms.forEach((farm) => {
-        const stakedValue = +farm.stakedBalance * farm.stakedToken.price
+      const projectedProduct = projectedProducts.find((product) => product.type === 'jungle farms')
 
-        const daily = calculateUsdEarned({
-          numberOfDays: 1,
-          farmApy: farm.apr,
-          stakedValue,
-          tokenPrice: farm.earnToken.price,
+      if (projectedProduct) {
+        projectedProduct.projectedEarnings.daily += daily
+        projectedProduct.projectedEarnings.weekly += weekly
+        projectedProduct.projectedEarnings.monthly += monthly
+        projectedProduct.projectedEarnings.yearly += yearly
+      } else {
+        projectedProducts.push({
+          type: 'jungle farms',
+          projectedEarnings: { daily, weekly, monthly, yearly },
+          amountStaked: +analytics.tvl.jungleFarms.value,
         })
-        const weekly = calculateUsdEarned({
-          numberOfDays: 7,
-          farmApy: farm.apr,
-          stakedValue,
-          tokenPrice: farm.earnToken.price,
-        })
-        const monthly = calculateUsdEarned({
-          numberOfDays: 30,
-          farmApy: farm.apr,
-          stakedValue,
-          tokenPrice: farm.earnToken.price,
-        })
-        const yearly = calculateUsdEarned({
-          numberOfDays: 365,
-          farmApy: farm.apr,
-          stakedValue,
-          tokenPrice: farm.earnToken.price,
-        })
+      }
+    })
 
-        const projectedProduct = projectedProducts.find((product) => product.type === 'jungle farms')
-
-        if (projectedProduct) {
-          projectedProduct.projectedEarnings.daily += daily
-          projectedProduct.projectedEarnings.weekly += weekly
-          projectedProduct.projectedEarnings.monthly += monthly
-          projectedProduct.projectedEarnings.yearly += yearly
-        } else {
-          projectedProducts.push({
-            type: 'jungle farms',
-            projectedEarnings: { daily, weekly, monthly, yearly },
-            amountStaked: +analytics.tvl.jungleFarms.value,
-          })
-        }
+    lending?.markets?.forEach(({ supplyApy, supplyBalance, token }) => {
+      const { daily, monthly, weekly, yearly } = getEarnings({
+        farmApy: supplyApy,
+        stakedValue: supplyBalance * token.price,
       })
-    }
 
-    if (chainInfo.lending.markets.length > 0) {
-      chainInfo.lending.markets.forEach((market) => {
-        const stakedValue = market.supplyBalance * market.token.price
+      const projectedProduct = projectedProducts.find((product) => product.type === 'lending')
 
-        const daily = calculateUsdEarned({
-          numberOfDays: 1,
-          farmApy: market.supplyApy,
-          stakedValue,
-          tokenPrice: bananaPrice,
+      if (projectedProduct) {
+        projectedProduct.projectedEarnings.daily += daily
+        projectedProduct.projectedEarnings.weekly += weekly
+        projectedProduct.projectedEarnings.monthly += monthly
+        projectedProduct.projectedEarnings.yearly += yearly
+      } else {
+        projectedProducts.push({
+          type: 'lending',
+          projectedEarnings: { daily, weekly, monthly, yearly },
+          amountStaked: +analytics.tvl.lending.value,
         })
-        const weekly = calculateUsdEarned({
-          numberOfDays: 7,
-          farmApy: market.supplyApy,
-          stakedValue,
-          tokenPrice: bananaPrice,
-        })
-        const monthly = calculateUsdEarned({
-          numberOfDays: 30,
-          farmApy: market.supplyApy,
-          stakedValue,
-          tokenPrice: bananaPrice,
-        })
-        const yearly = calculateUsdEarned({
-          numberOfDays: 365,
-          farmApy: market.supplyApy,
-          stakedValue,
-          tokenPrice: bananaPrice,
-        })
+      }
+    })
 
-        const projectedProduct = projectedProducts.find((product) => product.type === 'lending')
-
-        if (projectedProduct) {
-          projectedProduct.projectedEarnings.daily += daily
-          projectedProduct.projectedEarnings.weekly += weekly
-          projectedProduct.projectedEarnings.monthly += monthly
-          projectedProduct.projectedEarnings.yearly += yearly
-        } else {
-          projectedProducts.push({
-            type: 'lending',
-            projectedEarnings: { daily, weekly, monthly, yearly },
-            amountStaked: +analytics.tvl.lending.value,
-          })
-        }
+    maximizers?.forEach(({ apy, stakedBalance, stakedToken }) => {
+      const { daily, monthly, weekly, yearly } = getEarnings({
+        farmApy: +apy.yearly,
+        stakedValue: +stakedBalance * stakedToken.price,
       })
-    }
 
-    if (chainInfo.maximizers.length > 0) {
-      chainInfo.maximizers.forEach((vault) => {
-        const stakedValue = +vault.stakedBalance * vault.stakedToken.price
+      const projectedProduct = projectedProducts.find((product) => product.type === 'maximizers')
 
-        const daily = calculateUsdEarned({
-          numberOfDays: 1,
-          farmApy: vault.apy.yearly,
-          stakedValue,
-          tokenPrice: bananaPrice,
+      if (projectedProduct) {
+        projectedProduct.projectedEarnings.daily += daily
+        projectedProduct.projectedEarnings.weekly += weekly
+        projectedProduct.projectedEarnings.monthly += monthly
+        projectedProduct.projectedEarnings.yearly += yearly
+      } else {
+        projectedProducts.push({
+          type: 'maximizers',
+          projectedEarnings: { daily, weekly, monthly, yearly },
+          amountStaked: +analytics.tvl.maximizers.value,
         })
-        const weekly = calculateUsdEarned({
-          numberOfDays: 7,
-          farmApy: vault.apy.yearly,
-          stakedValue,
-          tokenPrice: bananaPrice,
-        })
-        const monthly = calculateUsdEarned({
-          numberOfDays: 30,
-          farmApy: vault.apy.yearly,
-          stakedValue,
-          tokenPrice: bananaPrice,
-        })
-        const yearly = calculateUsdEarned({
-          numberOfDays: 365,
-          farmApy: vault.apy.yearly,
-          stakedValue,
-          tokenPrice: bananaPrice,
-        })
-
-        const projectedProduct = projectedProducts.find((product) => product.type === 'maximizers')
-
-        if (projectedProduct) {
-          projectedProduct.projectedEarnings.daily += daily
-          projectedProduct.projectedEarnings.weekly += weekly
-          projectedProduct.projectedEarnings.monthly += monthly
-          projectedProduct.projectedEarnings.yearly += yearly
-        } else {
-          projectedProducts.push({
-            type: 'maximizers',
-            projectedEarnings: { daily, weekly, monthly, yearly },
-            amountStaked: +analytics.tvl.maximizers.value,
-          })
-        }
-      })
-    }
+      }
+    })
   })
 
   projectedProducts.push({
@@ -277,19 +191,36 @@ export function rawToProjected({ userStats, bananaPrice, analytics }: ApiRespons
 
 export function calculateRoi({ amountEarned, amountInvested }) {
   const percentage = (amountEarned / amountInvested - 1) * 100
-  return percentage
+
+  return isNaN(percentage) ? 0 : percentage
 }
 
-function calculateUsdEarned({ numberOfDays, farmApy, stakedValue, tokenPrice }) {
-  if (farmApy < 1e-5) return 0
+function getUsdPeriodEarnings({ period, farmApy, stakedValue }: IPeriodEarnings) {
+  /**
+   * For APYs under 1e-4 it is not worth calculating the value since
+   * the estimated return is about $0.001 in a year per $1000 staked.
+   */
+  if (farmApy < 1e-4) return 0
 
-  const timesCompounded = 365
-  const daysAsDecimalOfYear = numberOfDays / timesCompounded
+  const compoundFrequency = 365
+  const daysAsDecimalOfYear = period / compoundFrequency
   const apyAsDecimal = farmApy / 100
 
-  const initialAmount = stakedValue / tokenPrice
+  const finalAmount = stakedValue * (1 + apyAsDecimal / compoundFrequency) ** (compoundFrequency * daysAsDecimalOfYear)
 
-  const finalAmount = initialAmount * (1 + apyAsDecimal / timesCompounded) ** (timesCompounded * daysAsDecimalOfYear)
+  return finalAmount - stakedValue
+}
 
-  return (finalAmount - initialAmount) * tokenPrice
+function getEarnings(params: Omit<IPeriodEarnings, 'period'>) {
+  const totalEarnings = {
+    daily: 0,
+    weekly: 0,
+    monthly: 0,
+    yearly: 0,
+  }
+
+  for (const period of stakingPeriodsInDays)
+    totalEarnings[namedPeriods[period]] = getUsdPeriodEarnings({ period, ...params })
+
+  return totalEarnings
 }

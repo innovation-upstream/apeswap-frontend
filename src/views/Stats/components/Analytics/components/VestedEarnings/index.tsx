@@ -1,6 +1,6 @@
 import React from 'react'
-import { BinanceIcon } from '@ape.swap/uikit'
-import { Flex, POLYGON, Svg, Text } from '@apeswapfinance/uikit'
+import { Svg } from '@ape.swap/uikit'
+import { Flex, Text } from '@apeswapfinance/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import { useStats } from 'state/statsPage/hooks'
@@ -10,8 +10,8 @@ import getTimePeriods from 'utils/getTimePeriods'
 
 import { Tooltip } from '../../../Tooltip'
 import CardValue from '../../../CardValue'
+import { ChainIcon } from 'views/Stats/components/ChainIcon'
 import { NoContentPlaceholder } from 'views/Stats/components/NoContentPlaceholder'
-import { Chain } from 'state/statsPage/types'
 
 import { ChainIndicator, StyledTable, TableContainer, TableHeading } from '../../styles'
 
@@ -19,16 +19,6 @@ export const VestedEarnings: React.FC = () => {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
   const { vestedProducts } = useStats()
-
-  const renderChain = (chain: Chain) => {
-    switch (chain) {
-      case 56:
-        return <BinanceIcon width={isMobile ? 12 : 14} />
-
-      case 137:
-        return <POLYGON width={isMobile ? 12 : 14} />
-    }
-  }
 
   return vestedProducts?.length ? (
     <>
@@ -53,7 +43,9 @@ export const VestedEarnings: React.FC = () => {
               return (
                 <tr key={`${vesting.chain}-${'billId' in vesting ? vesting.billId : vesting.id}`}>
                   <td>
-                    <ChainIndicator>{renderChain(vesting.chain)}</ChainIndicator>
+                    <ChainIndicator>
+                      <ChainIcon chain={vesting.chain} width={isMobile ? 12 : 14} />
+                    </ChainIndicator>
                     {'billId' in vesting
                       ? `${vesting.type} Bill #${vesting.billId}`
                       : `${vesting.earnToken?.symbol} IAO (${vesting.type})`}
