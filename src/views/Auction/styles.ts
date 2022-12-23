@@ -7,7 +7,6 @@ export const PageWrapper = styled.div`
 `
 
 export const AuctionCardsWrapper = styled.div`
-  margin-top: 50px;
   display: flex;
   max-width: 100%;
   overflow-y: auto;
@@ -26,13 +25,11 @@ export const SplitWrapper = styled.div`
 `
 
 export const MoreInfoWrapper = styled.div`
-  position: absolute;
-  width: 100%;
-  right: 0;
-  height: 60px;
   display: flex;
-  flex-wrap: wrap-reverse;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
   justify-content: center;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 790px;
+    justify-content: flex-start;
+  }
 `

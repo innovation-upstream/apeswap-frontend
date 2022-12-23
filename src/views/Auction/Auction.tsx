@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import { Button, Flex, Spinner, useMatchBreakpoints } from '@ape.swap/uikit'
 import SwiperProvider from 'contexts/SwiperProvider'
@@ -30,8 +31,8 @@ const Auction: React.FC = () => {
           </Flex>
         </Flex>
         <PageWrapper>
-          <MoreInfoWrapper>
-            <Flex sx={{ width: '790px' }}>
+          <Flex sx={{ width: '100%', justifyContent: 'center' }}>
+            <MoreInfoWrapper>
               <Button size="sm" style={{ marginRight: '10px', height: '36px' }}>
                 <a
                   href="https://apeswap.gitbook.io/apeswap-finance/product-information/non-fungible-apes-nfas/nfa-auction-house"
@@ -42,14 +43,14 @@ const Auction: React.FC = () => {
                 </a>
               </Button>
               <ListYourNfa />
-            </Flex>
-          </MoreInfoWrapper>
+            </MoreInfoWrapper>
+          </Flex>
           {auctions ? (
             <SplitWrapper>
               <AuctionCardsWrapper>{auctions && <Positions auctions={auctions} />}</AuctionCardsWrapper>
             </SplitWrapper>
           ) : (
-            <Flex sx={{ justifyContent: 'center', marginTop: '50px' }}>
+            <Flex sx={{ justifyContent: 'center' }}>
               <Spinner size={200} />
             </Flex>
           )}
