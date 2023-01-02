@@ -1,72 +1,162 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Text } from '@ape.swap/uikit'
+import { Flex, Spinner, Text } from '@ape.swap/uikit'
 import { orderBy } from 'lodash'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useFetchActiveChains, useFetchInfoNativePrice, useFetchInfoTokensData } from 'state/info/hooks'
+import {
+  useFetchActiveChains,
+  useFetchFavTokens,
+  useFetchInfoNativePrice,
+  useFetchInfoTokensData,
+} from 'state/info/hooks'
 import ReactPaginate from 'react-paginate'
 import Rows from './Rows'
 import styled from 'styled-components'
 import useIsMobile from '../../../../hooks/useIsMobile'
+import SectionHeader from '../SectionHeader'
+import TrendingTokens from '../TrendingTokens/TrendingTokens'
+import MonkeyImage from '../../../Dex/Orders/components/OrderHistoryPanel/MonkeyImage'
 
-const ROWS_PER_PAGE = 10
+interface TokensProps {
+  headerText: string
+  showFavs?: boolean
+  moreLink?: string
+  filter?: string
+  amount?: number
+  pageSize?: number
+}
 
-const Tokens = () => {
+const Tokens: React.FC<TokensProps> = (props) => {
   const mobile = useIsMobile()
   const [activeChains] = useFetchActiveChains()
+  const { headerText, showFavs, moreLink, filter, amount, pageSize } = props
 
   const [pageCount, setPageCount] = useState(0)
+  const [favsPageCount, setFavsPageCount] = useState(0)
+  const ROWS_PER_PAGE = pageSize ? pageSize : 10
   const [dataOffset, setDataOffset] = useState(0)
-  const tokens = useFetchInfoTokensData(20, true)
+  const tokens = useFetchInfoTokensData(amount || 200, true)
   const nativePrice = useFetchInfoNativePrice()
+  const [favs] = useFetchFavTokens()
 
-  const flattenedTokens = Object.values(tokens).flatMap((row) => (row.initialized ? row.data : []))
+  let flattenedTokens = Object.values(tokens).flatMap((row) => (row.initialized ? row.data : []))
+
+  if (filter && filter !== '') {
+    flattenedTokens = flattenedTokens.filter(
+      (x) =>
+        x.name.toLowerCase().includes(filter.toLowerCase()) ||
+        x.symbol.toLowerCase().includes(filter.toLowerCase()) ||
+        x.id.toLowerCase().includes(filter.toLowerCase()),
+    )
+  }
+
   const sortedTokens = useMemo(
     () =>
       orderBy(
         flattenedTokens.filter((x) => activeChains === null || activeChains.includes(x.chainId)),
         ({ totalLiquidity, chainId, derivedETH }) =>
-          parseFloat(totalLiquidity) * (parseFloat(nativePrice[chainId]?.data?.ethPrice) || 0) * parseFloat(derivedETH),
+          parseFloat(totalLiquidity) *
+          (parseFloat(nativePrice[chainId]?.data?.ethPrice ?? '0') || 0) *
+          parseFloat(derivedETH),
         'desc',
       ),
     [flattenedTokens, nativePrice, activeChains],
   )
+  const favTokens = useMemo(() => sortedTokens.filter((x) => favs.includes(x.id)), [sortedTokens, favs])
+
   const handlePageClick = (event) => {
     const newOffset = (event.selected * ROWS_PER_PAGE) % sortedTokens.length
     setDataOffset(newOffset)
   }
+
+  const handleFavsPageClick = (event) => {
+    const newOffset = (event.selected * ROWS_PER_PAGE) % favTokens.length
+    setDataOffset(newOffset)
+  }
+
   useEffect(() => {
     setPageCount(Math.ceil(sortedTokens.length / ROWS_PER_PAGE))
-  }, [sortedTokens.length, dataOffset])
+    setFavsPageCount(Math.ceil(favTokens.length / ROWS_PER_PAGE))
+  }, [sortedTokens.length, favTokens.length, dataOffset, ROWS_PER_PAGE])
 
   return (
-    <Flex sx={{ flexDirection: 'column', width: `${mobile ? '95vw' : '100%'}`, mt: '20px' }}>
-      <Text size="18px" weight={700}>
-        Top Tokens
-      </Text>
-
-      <Flex
-        sx={{
-          width: '100%',
-          height: '550px',
-          background: 'white2',
-          flexDirection: 'column',
-          padding: '30px 10px 20px 10px',
-          borderRadius: '10px',
-          mt: '20px',
-        }}
-      >
-        <Rows tokens={sortedTokens.slice(dataOffset, dataOffset + ROWS_PER_PAGE)} activeIndex={dataOffset} />
-        <Flex sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-          <Pagination
-            previousLabel="<"
-            nextLabel=">"
-            pageCount={pageCount}
-            renderOnZeroPageCount={null}
-            onPageChange={handlePageClick}
-          />
+    <>
+      <Flex sx={{ flexDirection: 'column', width: `${mobile ? '95vw' : '100%'}` }}>
+        {showFavs === true && (
+          <>
+            <SectionHeader title="Favorite Tokens" />
+            <Flex
+              sx={{
+                width: '100%',
+                background: 'white2',
+                flexDirection: 'column',
+                padding: '30px 10px 20px 10px',
+                borderRadius: '10px',
+                mt: '10px',
+              }}
+            >
+              {favTokens.length > 0 ? (
+                <>
+                  <Rows tokens={favTokens.slice(dataOffset, dataOffset + ROWS_PER_PAGE)} activeIndex={dataOffset} />
+                  <Flex sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                    <Pagination
+                      previousLabel="<"
+                      nextLabel=">"
+                      pageCount={favsPageCount}
+                      renderOnZeroPageCount={null}
+                      onPageChange={handleFavsPageClick}
+                    />
+                  </Flex>
+                </>
+              ) : (
+                <Flex sx={{ flexDirection: 'column', alignItems: 'center' }}>
+                  <MonkeyImage />
+                  <Text mt={10}>Your favorite tokens will appear here</Text>
+                </Flex>
+              )}
+            </Flex>
+            <TrendingTokens />
+          </>
+        )}
+        <SectionHeader title={headerText} link={moreLink} />
+        <Flex
+          sx={{
+            width: '100%',
+            background: 'white2',
+            flexDirection: 'column',
+            padding: '30px 10px 20px 10px',
+            borderRadius: '10px',
+            mt: '10px',
+          }}
+        >
+          {sortedTokens.length > 0 ? (
+            <>
+              <Rows tokens={sortedTokens.slice(dataOffset, dataOffset + ROWS_PER_PAGE)} activeIndex={dataOffset} />
+              <Flex sx={{ alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+                <Pagination
+                  previousLabel="<"
+                  nextLabel=">"
+                  pageCount={pageCount}
+                  renderOnZeroPageCount={null}
+                  onPageChange={handlePageClick}
+                />
+              </Flex>
+            </>
+          ) : filter && filter !== '' ? (
+            <Text ml={10}>No results. Please try again</Text>
+          ) : (
+            <Flex
+              sx={{
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Spinner size={250} />
+            </Flex>
+          )}
         </Flex>
       </Flex>
-    </Flex>
+    </>
   )
 }
 

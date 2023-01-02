@@ -102,7 +102,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const rewardRefStake = useRef(null)
   const rewardRefUnstake = useRef(null)
 
-  const onStake = useReward(rewardRefStake, useSousStake(sousId).onStake)
+  const onStake = useReward(rewardRefStake, useSousStake(sousId, stakingToken?.price).onStake)
   const onUnstake = useReward(rewardRefUnstake, useSousUnstake(sousId).onUnstake)
 
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))

@@ -1,41 +1,34 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Text } from '@ape.swap/uikit'
+import React from 'react'
+import { Modal, Flex, Text, IconButton } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { CHAIN_PARAMS, MAINNET_CHAINS, NETWORK_INFO_LINK } from 'config/constants/chains'
-import React from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
 
-const Heading = () => {
+interface LegacySelectModalProps {
+  onDismiss: () => void
+}
+
+const LegacySelectModal: React.FC<LegacySelectModalProps> = ({ onDismiss }) => {
   const mobile = useIsMobile()
 
   return (
-    <Flex
-      sx={{
-        width: `${mobile ? '95vw' : '100%'}`,
-        maxWidth: '1200px',
-        height: 'fit-content',
-        padding: '50px',
-        background: 'white2',
-        borderRadius: '10px',
-        mb: '20px',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-      }}
-    >
-      <Flex sx={{ width: '100%', alignItems: 'center', justifyContent: 'center', mb: '20px' }}>
-        <Text size="26px" sx={{ textAlign: 'center' }}>
-          {' '}
-          {`Aggregated DEX Info Page (Beta)`}{' '}
-        </Text>
+    <Modal onDismiss={onDismiss} minWidth={`${mobile ? '95vw' : '500px'}`} maxWidth={`${mobile ? '95vw' : '500px'}`}>
+      <Flex alignItems="center" justifyContent="center" mt="10px" mb="20px">
+        <IconButton
+          icon="close"
+          color="text"
+          variant="transparent"
+          onClick={onDismiss}
+          sx={{ position: 'absolute', right: '20px', top: '25px' }}
+        />
       </Flex>
       <Flex sx={{ width: '100%', alignItems: 'center', justifyContent: 'center', mb: '20px' }}>
         <Text size="14px" sx={{ textAlign: 'center' }}>
-          {' '}
           {`Select a logo below to view that chain's previous analytics page`}{' '}
         </Text>
       </Flex>
-      <Flex>
+      <Flex sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
         {MAINNET_CHAINS.map((chainId) => {
           return (
             <a
@@ -52,8 +45,8 @@ const Heading = () => {
           )
         })}
       </Flex>
-    </Flex>
+    </Modal>
   )
 }
 
-export default Heading
+export default React.memo(LegacySelectModal)

@@ -8,9 +8,7 @@ const Portfolio: React.FC = () => {
 
   return (
     <Container>
-      {portfolioData.map((data) => (
-        <ProductCard key={data.type} productData={data} />
-      ))}
+      {portfolioData.map((data) => data.totalValue > 0 && <ProductCard key={data.type} productData={data} />)}
     </Container>
   )
 }

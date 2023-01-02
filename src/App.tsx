@@ -59,6 +59,11 @@ const MigrateLiquidity = lazy(() => import('./views/Dex/Migrate/MigrateLiquidity
 const MigrateAll = lazy(() => import('./views/Dex/Migrate/MigrateAll'))
 const UnstakeLiquidity = lazy(() => import('./views/Dex/Migrate/UnstakeLiquidity'))
 const InfoPage = lazy(() => import('./views/InfoPage'))
+const TokensPage = lazy(() => import('./views/InfoPage/views/Tokens'))
+const PairsPage = lazy(() => import('./views/InfoPage/views/Pairs'))
+const TransactionsPage = lazy(() => import('./views/InfoPage/views/Transactions'))
+const TokenPage = lazy(() => import('./views/InfoPage/views/Token'))
+const PairPage = lazy(() => import('./views/InfoPage/views/Pair'))
 
 const redirectSwap = () => import('./views/Dex/Swap/redirects')
 
@@ -200,6 +205,21 @@ const App: React.FC = () => {
             </Route>
             <Route exact path="/info">
               <InfoPage />
+            </Route>
+            <Route exact path="/info/tokens">
+              <TokensPage />
+            </Route>
+            <Route exact path="/info/pairs">
+              <PairsPage />
+            </Route>
+            <Route exact path="/info/transactions">
+              <TransactionsPage />
+            </Route>
+            <Route exact path="/info/token/:chain/:tokenId">
+              <TokenPage />
+            </Route>
+            <Route exact path="/info/pair/:chain/:pairId">
+              <PairPage />
             </Route>
             {/* Redirect */}
             <Route path="/staking">

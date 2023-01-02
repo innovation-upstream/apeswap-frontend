@@ -21,7 +21,7 @@ const useMigrateAllLps = () => {
     (migrateLps: MigrateResult[]) => {
       migrateLps.map(async (migrateLp) => {
         try {
-          const { lpAddress, smartRouter, walletBalance, token0, token1, totalSupply, id } = migrateLp
+          const { lpAddress, smartRouter, walletBalance, token0, token1, totalSupply, id, lpPrice } = migrateLp
           const poolTokenPercentage = parseFloat(walletBalance) / parseFloat(totalSupply)
 
           const [token0Deposited, token1Deposited] = [
@@ -75,6 +75,7 @@ const useMigrateAllLps = () => {
                       token1: token0.symbol,
                       token2: token1.symbol,
                       amount: walletBalance,
+                      usdAmount: parseFloat(walletBalance) * lpPrice,
                     },
                   })
                 })

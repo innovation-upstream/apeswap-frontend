@@ -8,6 +8,7 @@ import {
   transactionsQuery,
   uniswapFactoriesQuery,
   daysDataQuery,
+  pairDaysDataQuery,
 } from './queries'
 import { ChainId } from '@ape.swap/sdk'
 import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
@@ -15,33 +16,49 @@ import axiosRetry from 'axios-retry'
 import axios from 'axios'
 import { Block, DaysData, NativePrice, Pairs, Token, TokenDaysData, Transactions } from './types'
 
-export const getInfoPairs = async (chainId: ChainId, amount: number, block: string): Promise<Pairs[]> => {
+export const getInfoPairs = async (
+  chainId: ChainId,
+  amount: number,
+  block: string,
+  token: string,
+  pair: string,
+): Promise<Pairs[]> => {
   const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
     axiosRetry(axios, {
       retries: 5,
       retryCondition: () => true,
     })
-    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(pairsQuery(amount, block)))
+    const { data: responseData, status } = await axios.post(
+      graphAddress,
+      JSON.stringify(pairsQuery(amount, block, token, pair)),
+    )
     const { data } = responseData
     if (status === 500) {
       return []
     }
-    return data.pairs.map((x) => ({ ...x, chainId }))
+    if (token === '') {
+      return data.pairs.map((x) => ({ ...x, chainId }))
+    } else {
+      return data.pairs.map((x) => ({ ...x, chainId })).concat(data.pairs1.map((x) => ({ ...x, chainId })))
+    }
   } catch (error) {
     console.error(error)
     return []
   }
 }
 
-export const getTransactions = async (chainId: ChainId, amount: number): Promise<Transactions[]> => {
+export const getTransactions = async (chainId: ChainId, amount: number, token: string): Promise<Transactions[]> => {
   const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
     axiosRetry(axios, {
       retries: 5,
       retryCondition: () => true,
     })
-    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(transactionsQuery(amount)))
+    const { data: responseData, status } = await axios.post(
+      graphAddress,
+      JSON.stringify(transactionsQuery(amount, token)),
+    )
     const { data } = responseData
     if (status === 500) {
       return []
@@ -154,14 +171,17 @@ export const getUniswapFactories = async (chainId: ChainId, block: string): Prom
   }
 }
 
-export const getTokens = async (chainId: ChainId, amount: number, block: string): Promise<Token[]> => {
+export const getTokens = async (chainId: ChainId, amount: number, block: string, token: string): Promise<Token[]> => {
   const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
     axiosRetry(axios, {
       retries: 5,
       retryCondition: () => true,
     })
-    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(tokensQuery(amount, block)))
+    const { data: responseData, status } = await axios.post(
+      graphAddress,
+      JSON.stringify(tokensQuery(amount, block, token)),
+    )
     const { data } = responseData
     if (status === 500) {
       return []
@@ -173,19 +193,44 @@ export const getTokens = async (chainId: ChainId, amount: number, block: string)
   }
 }
 
-export const getTokenDaysData = async (chainId: ChainId, address: string): Promise<TokenDaysData[]> => {
+export const getTokenDaysData = async (chainId: ChainId, address: string, amount: number): Promise<TokenDaysData[]> => {
   const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
   try {
     axiosRetry(axios, {
       retries: 5,
       retryCondition: () => true,
     })
-    const { data: responseData, status } = await axios.post(graphAddress, JSON.stringify(tokenDaysDataQuery(address)))
+    const { data: responseData, status } = await axios.post(
+      graphAddress,
+      JSON.stringify(tokenDaysDataQuery(address, amount)),
+    )
     const { data } = responseData
     if (status === 500) {
       return []
     }
     return data.tokenDayDatas.map((x) => ({ ...x, chainId }))
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
+export const getPairDaysData = async (chainId: ChainId, address: string, amount: number): Promise<TokenDaysData[]> => {
+  const { graphAddress } = INFO_PAGE_CHAIN_PARAMS[chainId]
+  try {
+    axiosRetry(axios, {
+      retries: 5,
+      retryCondition: () => true,
+    })
+    const { data: responseData, status } = await axios.post(
+      graphAddress,
+      JSON.stringify(pairDaysDataQuery(address, amount)),
+    )
+    const { data } = responseData
+    if (status === 500) {
+      return []
+    }
+    return data.pairDayDatas.map((x) => ({ ...x, chainId }))
   } catch (error) {
     console.error(error)
     return []

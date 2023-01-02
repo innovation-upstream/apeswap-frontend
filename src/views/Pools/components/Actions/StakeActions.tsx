@@ -50,7 +50,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const isMobile = useIsMobile()
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
 
-  const { onStake } = useSousStake(sousId)
+  const { onStake } = useSousStake(sousId, stakeTokenValueUsd)
   const { onUnstake } = useSousUnstake(sousId)
   const { t } = useTranslation()
   const bananaToken = useCurrency(useBananaAddress())

@@ -9,20 +9,31 @@ import styled from 'styled-components'
 import { Swaps } from 'state/info/types'
 import useIsMobile from '../../../../hooks/useIsMobile'
 import { RangeSelectorsWrapper } from '../styles'
+import SectionHeader from '../SectionHeader'
 
-const ROWS_PER_PAGE = 10
+interface TransactionProps {
+  token?: string
+  token2?: string
+  headerText: string
+  moreLink?: string
+  chain?: number
+  amount?: number
+  pageSize?: number
+  filter?: string
+}
 
-const Transactions = () => {
+const Transactions: React.FC<TransactionProps> = (props) => {
   const mobile = useIsMobile()
+  const { token, token2, headerText, moreLink, chain, amount, pageSize } = props
 
   const [pageCount, setPageCount] = useState(0)
   const [dataOffset, setDataOffset] = useState(0)
-  const transactions = useFetchInfoTransactions(50)
+  const transactions = useFetchInfoTransactions(amount || 100, token || '', chain ? chain : null)
   const [transactionType, setTransactionType] = useState('all')
-
+  const ROWS_PER_PAGE = pageSize ? pageSize : 10
   const [activeChains] = useFetchActiveChains()
 
-  const flattenedSwaps = Object.values(transactions).flatMap((row) =>
+  let flattenedSwaps = Object.values(transactions).flatMap((row) =>
     row.initialized
       ? row.data?.flatMap(({ swaps, chainId }) =>
           swaps.map((swap) => {
@@ -32,7 +43,7 @@ const Transactions = () => {
       : [],
   ) as Swaps[]
 
-  const flattenedMints = Object.values(transactions).flatMap((row) =>
+  let flattenedMints = Object.values(transactions).flatMap((row) =>
     row.initialized
       ? row.data?.flatMap(({ mints, chainId }) =>
           mints.map((mint) => {
@@ -42,7 +53,7 @@ const Transactions = () => {
       : [],
   ) as Swaps[]
 
-  const flattenedBurns = Object.values(transactions).flatMap((row) =>
+  let flattenedBurns = Object.values(transactions).flatMap((row) =>
     row.initialized
       ? row.data?.flatMap(({ burns, chainId }) =>
           burns.map((burn) => {
@@ -51,6 +62,32 @@ const Transactions = () => {
         )
       : [],
   ) as Swaps[]
+
+  //Token
+  if (token && token !== '') {
+    flattenedSwaps = flattenedSwaps.filter((x) => x.pair.token0.id === token || x.pair.token1.id === token)
+    flattenedMints = flattenedMints.filter((x) => x.pair.token0.id === token || x.pair.token1.id === token)
+    flattenedBurns = flattenedBurns.filter((x) => x.pair.token0.id === token || x.pair.token1.id === token)
+  }
+
+  //Pair
+  if (token && token !== '' && token2 && token2 !== '') {
+    flattenedSwaps = flattenedSwaps.filter(
+      (x) =>
+        (x.pair.token0.id === token && x.pair.token1.id === token2) ||
+        (x.pair.token0.id === token2 && x.pair.token1.id === token),
+    )
+    flattenedMints = flattenedMints.filter(
+      (x) =>
+        (x.pair.token0.id === token && x.pair.token1.id === token2) ||
+        (x.pair.token0.id === token2 && x.pair.token1.id === token),
+    )
+    flattenedBurns = flattenedBurns.filter(
+      (x) =>
+        (x.pair.token0.id === token && x.pair.token1.id === token2) ||
+        (x.pair.token0.id === token2 && x.pair.token1.id === token),
+    )
+  }
 
   const getTransactions = useMemo(() => {
     if (transactionType === 'all') {
@@ -71,7 +108,7 @@ const Transactions = () => {
         'desc',
       ),
     [activeChains, getTransactions],
-  )?.slice(0, 50)
+  )?.slice(0, amount || 100)
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * ROWS_PER_PAGE) % sortedTransactions.length
@@ -79,22 +116,19 @@ const Transactions = () => {
   }
   useEffect(() => {
     setPageCount(Math.ceil(sortedTransactions.length / ROWS_PER_PAGE))
-  }, [sortedTransactions.length, dataOffset])
+  }, [sortedTransactions.length, dataOffset, ROWS_PER_PAGE])
 
   return (
-    <Flex sx={{ flexDirection: 'column', width: `${mobile ? '95vw' : '100%'}`, mt: '20px' }}>
-      <Text size="18px" weight={700}>
-        Recent Transactions
-      </Text>
+    <Flex sx={{ flexDirection: 'column', width: `${mobile ? '95vw' : '100%'}` }}>
+      <SectionHeader title={headerText} link={moreLink} />
       <Flex
         sx={{
           width: '100%',
-          height: '550px',
           background: 'white2',
           flexDirection: 'column',
           padding: '30px 10px 20px 10px',
           borderRadius: '10px',
-          mt: '20px',
+          mt: '10px',
         }}
       >
         <RangeSelectorsWrapper className="transctionSelector">

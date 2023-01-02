@@ -7,7 +7,7 @@ import { Contract, utils } from 'ethers'
 
 const { parseUnits } = utils
 
-const useIAODeposit = (contract: Contract, currencyAddress: string, tokenBalance: BigNumber) => {
+const useIAODeposit = (contract: Contract, currencyAddress: string, tokenBalance: BigNumber, tokenValue: number) => {
   const { chainId } = useActiveWeb3React()
   const [pendingTx, setPendingTx] = useState(false)
 
@@ -47,6 +47,7 @@ const useIAODeposit = (contract: Contract, currencyAddress: string, tokenBalance
             currency,
             cat: 'buy',
             contract: contract.address,
+            usdAmount: parseFloat(amount) * tokenValue,
           },
         })
       } catch (e) {
@@ -54,7 +55,7 @@ const useIAODeposit = (contract: Contract, currencyAddress: string, tokenBalance
       }
       setPendingTx(false)
     },
-    [contract, currencyAddress, tokenBalance, chainId],
+    [tokenBalance, currencyAddress, chainId, contract, tokenValue],
   )
 
   return {
