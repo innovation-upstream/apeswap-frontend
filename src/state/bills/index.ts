@@ -8,9 +8,9 @@ import {
 import { TokenPrices, AppThunk, BillsState, Bills } from '../types'
 import fetchBills from './fetchBills'
 import { getNewBillNftData } from './getBillNftData'
-import fetchBillsConfig from './api'
+import { bills } from '@ape.swap/apeswap-lists'
 
-const initialState: BillsState = { data: [] }
+const initialState: BillsState = { data: bills }
 
 export const billsSlice = createSlice({
   name: 'Bills',
@@ -75,10 +75,10 @@ export const {
 
 // Thunks
 
-export const setInitialBillsDataAsync = (chainId: number) => async (dispatch, getState) => {
+export const filterInitialBillsData = (chainId: number) => (dispatch, getState) => {
   try {
-    const initialBillState: Bills[] = await fetchBillsConfig()
-    const filterBillsByChainId = initialBillState.filter(
+    console.log('in dis shit')
+    const filterBillsByChainId = bills.filter(
       (bill) =>
         bill.contractAddress?.[chainId] !== '' &&
         bill.contractAddress?.[chainId] !== null &&

@@ -1,17 +1,16 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Token } from 'config/constants/types'
 import { getTokenUsdPrice } from 'utils/getTokenUsdPrice'
 import { getBananaAddress } from 'utils/addressHelper'
 import fetchPrices from './fetchPrices'
 import { TokenPricesState, TokenPrices, AppThunk } from '../types'
-import fetchTokenPriceConfig from './api'
+import { tokens } from '@ape.swap/apeswap-lists'
 
 const initialState: TokenPricesState = {
   isTokensInitialized: false,
   isInitialized: false,
   isLoading: true,
-  tokens: [],
+  tokens: Object.values(tokens),
   bananaPrice: null,
   data: null,
 }
@@ -27,10 +26,6 @@ export const tokenPricesSlice = createSlice({
       state.bananaPrice = action.payload
       state.isInitialized = true
     },
-    setIntialTokens: (state, action) => {
-      state.tokens = action.payload
-      state.isInitialized = true
-    },
     tokenPricesFetchSucceeded: (state, action: PayloadAction<TokenPrices[]>) => {
       state.data = action.payload
       state.isLoading = false
@@ -44,22 +39,8 @@ export const tokenPricesSlice = createSlice({
 })
 
 // Actions
-export const {
-  setBananaPrice,
-  setIntialTokens,
-  tokenPricesFetchStart,
-  tokenPricesFetchSucceeded,
-  tokenPricesFetchFailed,
-} = tokenPricesSlice.actions
-
-export const setInitialTokensDataAsync = () => async (dispatch) => {
-  try {
-    const initialTokensState: Token[] = await fetchTokenPriceConfig()
-    dispatch(setIntialTokens(initialTokensState || []))
-  } catch (error) {
-    console.error(error)
-  }
-}
+export const { setBananaPrice, tokenPricesFetchStart, tokenPricesFetchSucceeded, tokenPricesFetchFailed } =
+  tokenPricesSlice.actions
 
 export const fetchTokenPrices =
   (chainId, tokens): AppThunk =>

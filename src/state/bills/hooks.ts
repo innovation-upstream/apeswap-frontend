@@ -9,13 +9,17 @@ import {
   fetchBillsPublicDataAsync,
   fetchBillsUserDataAsync,
   fetchUserOwnedBillsDataAsync,
-  setInitialBillsDataAsync,
+  filterInitialBillsData,
 } from '.'
 
 export const usePollBills = () => {
+  useFetchTokenPrices()
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { tokenPrices } = useTokenPrices()
+  useEffect(() => {
+    dispatch(filterInitialBillsData(chainId))
+  }, [chainId, dispatch])
   useEffect(() => {
     dispatch(fetchBillsPublicDataAsync(chainId, tokenPrices))
   }, [dispatch, tokenPrices, chainId])
@@ -40,19 +44,4 @@ export const usePollUserBills = (): Bills[] => {
 export const useBills = (): Bills[] => {
   const bills = useSelector((state: State) => state.bills.data)
   return bills
-}
-
-let prevChainId = null
-
-export const useSetBills = () => {
-  const { chainId } = useActiveWeb3React()
-  useFetchTokenPrices()
-  const dispatch = useAppDispatch()
-  const bills = useBills()
-  useEffect(() => {
-    if (bills.length === 0 || prevChainId !== chainId) {
-      dispatch(setInitialBillsDataAsync(chainId))
-      prevChainId = chainId
-    }
-  }, [chainId, bills.length, dispatch])
 }

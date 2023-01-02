@@ -15,7 +15,7 @@ import { useMigratorBalances } from 'state/zapMigrator/hooks'
 import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import MonkeyImage from '../Orders/components/OrderHistoryPanel/MonkeyImage'
-import { useBills, useSetBills } from 'state/bills/hooks'
+import { useBills } from 'state/bills/hooks'
 import { useJungleFarms, useSetJungleFarms } from 'state/jungleFarms/hooks'
 import { Link } from 'react-router-dom'
 
@@ -23,7 +23,6 @@ export default function Migrate() {
   // Since we need to display corresponding farm data for an lp we need to pull the farm data
   useSetFarms()
   useSetJungleFarms()
-  useSetBills()
   usePollFarms()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)

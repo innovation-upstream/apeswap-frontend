@@ -9,17 +9,14 @@ import {
   fetchDualFarmRewarderEarnings,
 } from './fetchDualFarmUser'
 import { TokenPrices, DualFarm, DualFarmsState, FarmLpAprsType, AppThunk } from '../types'
-import fetchDualFarmConfig from './api'
+import { dualFarms } from '@ape.swap/apeswap-lists'
 
-const initialState: DualFarmsState = { data: [] }
+const initialState: DualFarmsState = { data: dualFarms }
 
 export const dualFarmsSlice = createSlice({
   name: 'dualFarms',
   initialState,
   reducers: {
-    setInitialDualFarmData: (state, action) => {
-      state.data = action.payload
-    },
     setDualFarmsPublicData: (state, action) => {
       const liveFarmsData: DualFarm[] = action.payload
       state.data = state.data.map((farm) => {
@@ -43,20 +40,9 @@ export const dualFarmsSlice = createSlice({
 })
 
 // Actions
-export const { setInitialDualFarmData, setDualFarmsPublicData, setDualFarmUserData, updateDualFarmUserData } =
-  dualFarmsSlice.actions
+export const { setDualFarmsPublicData, setDualFarmUserData, updateDualFarmUserData } = dualFarmsSlice.actions
 
 // Thunks
-
-export const setInitialDualFarmDataAsync = () => async (dispatch) => {
-  try {
-    const initialDualFarmState: DualFarm[] = await fetchDualFarmConfig()
-    dispatch(setInitialDualFarmData(initialDualFarmState || []))
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 export const fetchDualFarmsPublicDataAsync =
   (chainId: number, tokenPrices: TokenPrices[], bananaPrice: BigNumber, farmLpAprs: FarmLpAprsType): AppThunk =>
   async (dispatch, getState) => {
