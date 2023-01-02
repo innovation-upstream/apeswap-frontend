@@ -7,21 +7,12 @@ import {
   MasterApeV2ProductsInterface,
   MigrateLpStatus,
   MigrateStatus,
-  ProductTypes,
 } from './types'
-import { Farm, Vault } from 'state/types'
+import { Farm } from 'state/types'
 import { MIGRATION_STEPS } from './constants'
 import { useFarms } from 'state/farms/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useVaults } from 'state/vaults/hooks'
 import { getBananaAddress } from 'utils/addressHelper'
-
-const mergeLpVersions = (v1Status: MigrateLpStatus[], v2Status: MigrateLpStatus[]) => {
-  const statusToReturn = [...v1Status]
-  const ye = v2Status.filter((v2) => v1Status.find((v1) => v1.lp === v2.lp))
-  console.log(ye)
-  return []
-}
 
 /**
  * Helper function to set the initial status of both Migrate LPs and ApeSwap LPs if they exist
@@ -46,7 +37,6 @@ export const setMigrateLpStatus = async (
   // To make sure we dont have farms that wont be part of the migration we need to filter them out
   // TODO: Remove the two or conditions after testing! This is because farmaway is the banana farm
   const bananaAddress = getBananaAddress(chainId)
-  const farmAway = v2Products?.find(({ singleStakeAsset }) => singleStakeAsset)
 
   // TODO: Remove all FARMAWAY and BANANA code.
   const filteredV1Products = v1Products.filter(({ lp, token0 }) =>
@@ -101,16 +91,8 @@ export const setMigrateLpStatus = async (
   // Get rid of duplicate status
   // v1 status gets priority over v2 status
 
-  // The same V1 products with the same LP are getting merged together in this. Needs to be fixed
-  const mergedStatus = [...new Map([...apeswapV2LpStatus, ...apeswapLpStatus].map((item) => [item.id, item])).values()]
-  console.log(mergedStatus)
-  console.log([...new Map([...apeswapV2LpStatus, ...apeswapLpStatus].map((item) => [item.id, item])).values()])
-  console.log([...new Map([...apeswapV2LpStatus, ...apeswapLpStatus].map((item) => [item.lp, item])).values()])
   // Get rid of duplicate status
-  // v1 status gets priority over v2 status
-  const x = [...apeswapV2LpStatus.filter((v2) => !apeswapLpStatus.find((v1) => v1.lp === v2.lp)), ...apeswapLpStatus]
-  console.log(x)
-  console.log([...apeswapV2LpStatus, ...apeswapLpStatus])
+  const mergedStatus = [...new Map([...apeswapV2LpStatus, ...apeswapLpStatus].map((item) => [item.id, item])).values()]
   setLpStatus(mergedStatus)
 }
 

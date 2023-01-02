@@ -1,22 +1,14 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
-import {
-  ApeswapWalletLpInterface,
-  MasterApeProductsInterface,
-  MasterApeV2ProductsInterface,
-  MigrateStatus,
-} from '../provider/types'
+import { MasterApeV2ProductsInterface, MigrateStatus } from '../provider/types'
 import { useMigrateAll } from '../provider'
-import { useVaults } from 'state/vaults/hooks'
-import { useMasterchef, useMasterChefV2Contract, useVaultApeV2, useVaultApeV3 } from 'hooks/useContract'
-import { useFarms } from 'state/farms/hooks'
+import { useMasterChefV2Contract, useVaultApeV3 } from 'hooks/useContract'
 import { calculateGasMargin } from 'utils'
-import track from 'utils/track'
 import BigNumber from 'bignumber.js'
 import { useVaultsV3 } from 'state/vaultsV3/hooks'
 
 const useStakeAll = () => {
-  const { account, chainId, library } = useActiveWeb3React()
+  const { chainId, library } = useActiveWeb3React()
   const { handleUpdateMigrateLp, migrateMaximizers, handleAddMigrationCompleteLog } = useMigrateAll()
   const masterChefV2Contract = useMasterChefV2Contract()
   const vaultApeV3Contract = useVaultApeV3()

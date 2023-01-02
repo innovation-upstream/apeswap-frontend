@@ -4,12 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { useCallback } from 'react'
 import { getProviderOrSigner } from 'utils'
-import {
-  ApeswapWalletLpInterface,
-  MasterApeProductsInterface,
-  MasterApeV2ProductsInterface,
-  MigrateStatus,
-} from '../provider/types'
+import { MasterApeV2ProductsInterface, MigrateStatus } from '../provider/types'
 import { useMigrateAll } from '../provider'
 import { useVaults } from 'state/vaults/hooks'
 import { useMasterChefV2Address, useVaultApeAddressV3 } from 'hooks/useAddress'

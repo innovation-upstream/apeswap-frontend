@@ -1,7 +1,6 @@
-import { Pair, SmartRouter, Token, TokenAmount } from '@ape.swap/sdk'
+import { SmartRouter } from '@ape.swap/sdk'
 import BigNumber from 'bignumber.js'
-import { ERC20_ABI } from 'config/abi/erc20'
-import { Erc20, MigratorBalanceChecker } from 'config/abi/types'
+import { MigratorBalanceChecker } from 'config/abi/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useCallback, useMemo } from 'react'
 import { Farm, Vault } from 'state/types'
@@ -9,7 +8,6 @@ import { getContract } from 'utils'
 import { getMigratorBalanceCheckerAddress } from 'utils/addressHelper'
 import migratorBalanceChecker from 'config/abi/migratorBalanceChecker.json'
 import {
-  ApeswapWalletLpInterface,
   MasterApeProductsInterface,
   MasterApeV2ProductsInterface,
   MigrateLpStatus,
@@ -20,13 +18,9 @@ import {
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { MigrateResult } from 'state/zapMigrator/hooks'
 import { CHEF_ADDRESSES } from 'config/constants/chains'
-import { filterCurrentFarms, useUpdateApproveStakeStatus } from './utils'
-import { PairState, usePairs } from 'hooks/usePairs'
-import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
-import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
+import { filterCurrentFarms } from './utils'
 import { useFarms } from 'state/farms/hooks'
 import { useVaults } from 'state/vaults/hooks'
-import { useBananaPrice } from 'state/tokenPrices/hooks'
 import { useFarmsV2 } from 'state/farmsV2/hooks'
 import { useVaultsV3 } from 'state/vaultsV3/hooks'
 
@@ -49,27 +43,6 @@ export const useHandleMaximizerApprovalToggle = (
   const handleMaximizerApprovalToggle = useCallback(
     (apeswapLps: MasterApeV2ProductsInterface[], migrateMaximizers: boolean) => {
       setMigrateMaximizers(migrateMaximizers)
-      // apeswapLps.forEach(({ lp, id }) => {
-      //   const matchedVault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)
-      //   const matchedFarm = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lp)
-      //   const migrateVaultAvailable = migrateMaximizers && matchedVault
-      //   const lpToUpdateIndex = lpStatus.findIndex((migrateLp) => migrateLp.lp === id)
-      //   const lpToUpdate = {
-      //     ...lpStatus[lpToUpdateIndex],
-      //     status: {
-      //       ...lpStatus[lpToUpdateIndex].status,
-      //       approveStake: migrateVaultAvailable
-      //         ? new BigNumber(matchedVault?.userData?.allowance).gt(0)
-      //           ? MigrateStatus.COMPLETE
-      //           : MigrateStatus.INCOMPLETE
-      //         : new BigNumber(matchedFarm?.userData?.allowance).gt(0)
-      //         ? MigrateStatus.COMPLETE
-      //         : MigrateStatus.INCOMPLETE,
-      //     },
-      //   }
-      //   updatedMigrateLpStatus[lpToUpdateIndex] = lpToUpdate
-      // })
-      // setLpStatus([...updatedMigrateLpStatus])
     },
     [vaults, farms, lpStatus, chainId, setLpStatus, setMigrateMaximizers],
   )
@@ -257,7 +230,7 @@ export const usePullAndMergeV1Products = () => {
   const { account, chainId } = useActiveWeb3React()
   const farms = useFarms(account)
   // We want to pull the new farms to get corresponding user info and pid info
-  const { vaults, userDataLoaded } = useVaults()
+  const { vaults } = useVaults()
   // Since vaults have to use a farm we can grab token values from just farms to avoid duplicates
   // Grab all staked and wallet balances for current farms / vaults
   const userV1Farms = useMemo(
@@ -331,122 +304,6 @@ export const usePullAndMergeV1Products = () => {
   )
   const loaded = !!vaults?.[0]?.userData && !!farms?.[0]?.userData
   return { mergedProducts, loaded }
-}
-
-/**
- * Hook to get the users ApeSwap LPs for the migration
- */
-export const usePullAndMergeV2Products = (migrateMaximizers: boolean) => {
-  const { account, chainId } = useActiveWeb3React()
-  const farms = useFarmsV2(account)
-  // We want to pull the new farms to get corresponding user info and pid info
-
-  const { vaults } = useVaultsV3()
-
-  // Since vaults have to use a farm we can grab token values from just farms to avoid duplicates
-  // Grab all staked and wallet balances for current farms / vaults
-  const userV2Farms = useMemo(
-    () => farms?.filter(({ userData }) => new BigNumber(userData?.tokenBalance).isGreaterThan(0)),
-    [farms],
-  )
-
-  const userV3Vaults = useMemo(
-    () => vaults?.filter(({ userData }) => userData && new BigNumber(userData?.tokenBalance).isGreaterThan(0)),
-    [vaults],
-  )
-
-  // Standardize both farm and vaults to the same type interface to make flow easier
-  const mergedProducts: MasterApeProductsInterface[] = useMemo(
-    () => [
-      ...userV2Farms.map((farm) => {
-        // This should be updated once we know the pid for single staking
-        const singleStakeAsset = farm.pid === 0
-        const lp = farm.lpAddresses[chainId].toLowerCase()
-        return {
-          id: `${ProductTypes.FARM}-${lp}`,
-          lp,
-          pid: farm.pid,
-          type: ProductTypes.FARM,
-          singleStakeAsset,
-          token0: {
-            address: farm.tokenAddresses[chainId].toLowerCase(),
-            symbol: !singleStakeAsset ? farm.tokenSymbol : farm.lpSymbol,
-          },
-          token1: {
-            address: farm.quoteTokenAdresses[chainId].toLowerCase(),
-            symbol: farm.quoteTokenSymbol,
-          },
-          stakedAmount: getFullDisplayBalance(new BigNumber(farm.userData.stakedBalance)),
-          walletBalance: getFullDisplayBalance(new BigNumber(farm.userData.tokenBalance)),
-          allowance: farm.userData.allowance.toString(),
-          lpValueUsd: farm.lpValueUsd,
-        }
-      }),
-      ...userV3Vaults.map((vault) => {
-        const singleStakeAsset = !vault.quoteToken
-        const lp = vault.stakeToken.address[chainId].toLowerCase()
-        return {
-          // Since there is a BANANA single stake vault one LP could be the BANANA address
-          id: `${ProductTypes.VAULT}-${lp}`,
-          lp,
-          pid: vault.pid,
-          type: ProductTypes.VAULT,
-          singleStakeAsset,
-          token0: {
-            address: vault.token.address[chainId].toLowerCase(),
-            symbol: vault.token.symbol,
-          },
-          token1: {
-            address: !singleStakeAsset ? vault.quoteToken.address[chainId].toLowerCase() : '',
-            symbol: !singleStakeAsset ? vault.quoteToken.symbol : '',
-          },
-          stakedAmount: getFullDisplayBalance(new BigNumber(vault.userData.stakedBalance)),
-          walletBalance: getFullDisplayBalance(new BigNumber(vault.userData.tokenBalance)),
-          allowance: vault.userData.allowance.toString(),
-          lpValueUsd: vault.stakeTokenPrice,
-        }
-      }),
-    ],
-    [userV2Farms, userV3Vaults, chainId],
-  )
-
-  // TODO: Make usememo
-  // We need to get the unique farms with no vaults because these will always be displayed even when the user chooses to stake into vaults
-  const uniqueFarmsWithNoVaults = useMemo(
-    () =>
-      userV2Farms.filter(
-        (farm) =>
-          !userV3Vaults.find(
-            (vault) => vault.stakeToken.address[chainId].toLowerCase() === farm.lpAddresses[chainId].toLowerCase(),
-          ),
-      ),
-    [userV2Farms, chainId, userV3Vaults],
-  )
-  const filterMergedUniqueFarms = useMemo(
-    () =>
-      mergedProducts.filter((product) =>
-        uniqueFarmsWithNoVaults.find(
-          (farm) => product.type === ProductTypes.FARM && product.lp === farm.lpAddresses[chainId].toLowerCase(),
-        ),
-      ),
-    [uniqueFarmsWithNoVaults, mergedProducts, chainId],
-  )
-  // Filter the products by which vault boolean
-  const filteredProducts = useMemo(
-    () =>
-      mergedProducts.filter((product) =>
-        migrateMaximizers ? product.type === ProductTypes.VAULT : product.type === ProductTypes.FARM,
-      ),
-    [mergedProducts, migrateMaximizers],
-  )
-  const loaded = !!vaults?.[0]?.userData && !!farms?.[0]?.userData && mergedProducts
-  return {
-    mergedProducts: useMemo(
-      () => (migrateMaximizers ? [...filterMergedUniqueFarms, ...filteredProducts] : filteredProducts),
-      [filterMergedUniqueFarms, filteredProducts, migrateMaximizers],
-    ),
-    loaded,
-  }
 }
 
 export const useMergedV2Products = () => {

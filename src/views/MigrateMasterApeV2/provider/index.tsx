@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { activeIndexHelper, setMigrateLpStatus } from './utils'
 import {
@@ -8,7 +8,6 @@ import {
   useHandleUpdateMigrateLp,
   useMergedV2Products,
   usePullAndMergeV1Products,
-  usePullAndMergeV2Products,
 } from './hooks'
 import {
   MigrateLpStatus,
@@ -18,7 +17,6 @@ import {
   MasterApeProductsInterface,
   MasterApeV2ProductsInterface,
 } from './types'
-import track from 'utils/track'
 import { useFarmsV2 } from 'state/farmsV2/hooks'
 
 const MigrateContext = createContext<MigrateContextData>({} as MigrateContextData)
