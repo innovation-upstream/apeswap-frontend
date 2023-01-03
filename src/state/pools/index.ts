@@ -7,19 +7,16 @@ import {
 } from './fetchPoolsUser'
 import { PoolsState, Pool, TokenPrices, AppThunk } from '../types'
 import fetchPools from './fetchPools'
-import fetchPoolConfig from './api'
+import { pools } from '@ape.swap/apeswap-lists'
 
 const initialState: PoolsState = {
-  data: [],
+  data: pools,
 }
 
 export const PoolsSlice = createSlice({
   name: 'Pools',
   initialState,
   reducers: {
-    setInitialPoolData: (state, action) => {
-      state.data = action.payload
-    },
     setPoolsPublicData: (state, action) => {
       const livePoolsData: Pool[] = action.payload
       state.data = state.data.map((pool) => {
@@ -43,18 +40,9 @@ export const PoolsSlice = createSlice({
 })
 
 // Actions
-export const { setInitialPoolData, setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
+export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
 
 // Thunks
-
-export const setInitialPoolDataAsync = () => async (dispatch) => {
-  try {
-    const initialPoolState: Pool[] = await fetchPoolConfig()
-    dispatch(setInitialPoolData(initialPoolState || []))
-  } catch (error) {
-    console.error(error)
-  }
-}
 
 export const fetchPoolsPublicDataAsync =
   (chainId: number, tokenPrices: TokenPrices[]): AppThunk =>
