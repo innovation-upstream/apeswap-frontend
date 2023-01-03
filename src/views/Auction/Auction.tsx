@@ -10,11 +10,14 @@ import History from './components/History'
 import ListYourNfa from './components/Actions/ListYourNfa'
 import { MoreInfoWrapper, styles } from './styles'
 import ListViewLayout from '../../components/layout/ListViewLayout'
+import useIsMobile from 'hooks/useIsMobile'
 
 const Auction: React.FC = () => {
   useFetchAuctions()
   const { auctions } = useAuctions()
   const { t } = useTranslation()
+  const isMobile = useIsMobile()
+
   return (
     <SwiperProvider>
       <Flex sx={styles.mainContainer}>
@@ -46,7 +49,7 @@ const Auction: React.FC = () => {
               <Spinner size={200} />
             </Flex>
           )}
-          <History />
+          {!isMobile && <History />}
         </ListViewLayout>
       </Flex>
     </SwiperProvider>
