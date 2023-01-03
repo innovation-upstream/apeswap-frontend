@@ -1,57 +1,80 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
-import styled from 'styled-components'
+import { Flex, LinkExternal, Text } from '@ape.swap/uikit'
+import { useTranslation } from '../../contexts/Localization'
+import { styles } from './styles'
+import { BLOCK_EXPLORER } from '../../config/constants/chains'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { JungleFarm } from '../../state/types'
+import EndsInComponent from './EndsInComponent'
+import ButtonsRow from './ButtonsRow'
 
 export interface TooltipProps {
-  content: React.ReactNode
+  valueTitle?: string
+  valueContent?: string
+  value2Title?: string
+  value2Content?: string
+  tokenContract: string
+  contractAddress: string
+  contractType: 'Vault' | 'Farm' | 'Pool' | 'Bill'
+  projectLink?: string
+  twitter?: string
+  bubbleURL?: string
+  auditURL?: string
+  jungleFarm?: JungleFarm
 }
 
-const TooltipContent = styled.div`
-  padding: 16px;
-  background: ${({ theme }) => theme.colors.background};
-  border-radius: 16px;
-  color: ${({ theme }) => theme.colors.text};
-  width: max-content;
-  display: none;
-  padding: 16px;
-  font-size: 17px;
-  line-height: 25px;
-  max-height: 500px;
-  z-index: 1000;
-  position: absolute;
-  bottom: calc(100% + 16px);
-  transform: translate(34px, 0);
-  right: 0;
-  max-width: 246px;
+const Tooltip: React.FunctionComponent<TooltipProps> = ({
+  valueTitle,
+  valueContent,
+  value2Title,
+  value2Content,
+  tokenContract,
+  contractAddress,
+  contractType,
+  projectLink,
+  twitter,
+  bubbleURL,
+  auditURL,
+  jungleFarm,
+}) => {
+  const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
+  const explorerLink = BLOCK_EXPLORER[chainId]
+  const contractLink = `${explorerLink}/address/${contractAddress}`
+  const tokenLink = `${explorerLink}/address/${tokenContract}`
 
-  &:after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid grey;
-    bottom: 0;
-    position: absolute;
-    transform: translate(-34px, 9px);
-    right: 0;
-  }
-`
-
-const Container = styled.div`
-  position: relative;
-
-  &:hover ${TooltipContent}, &:focus-within ${TooltipContent} {
-    display: block;
-  }
-`
-
-const Tooltip: React.FunctionComponent<TooltipProps> = ({ content, children }) => {
   return (
-    <Container>
-      {children}
-      <TooltipContent>{content}</TooltipContent>
-    </Container>
+    <>
+      {projectLink && twitter && <ButtonsRow twitter={twitter} projectLink={projectLink} />}
+      {valueTitle && (
+        <Flex sx={styles.infoRow}>
+          <Text sx={styles.titleText}>{valueTitle}: </Text>
+          <Text sx={styles.contentText}>{valueContent}</Text>
+        </Flex>
+      )}
+      {value2Title && (
+        <Flex sx={styles.infoRow}>
+          <Text sx={styles.titleText}>{value2Title}: </Text>
+          <Text sx={styles.contentText}>{value2Content}</Text>
+        </Flex>
+      )}
+      {jungleFarm && <EndsInComponent farm={jungleFarm} />}
+      <Flex sx={{ justifyContent: 'center' }}>
+        <Flex sx={{ width: '144px', flexDirection: 'column' }}>
+          <Flex sx={styles.linkRow}>
+            <LinkExternal href={tokenLink} sx={{ fontSize: '12px', lineHeight: '14px' }}>
+              {t('View Token Contract')}
+            </LinkExternal>
+          </Flex>
+          <Flex sx={styles.linkRow}>
+            <LinkExternal href={contractLink} sx={{ fontSize: '12px', lineHeight: '14px' }}>
+              {t('View')} {contractType} {t('Contract')}
+            </LinkExternal>
+          </Flex>
+        </Flex>
+      </Flex>
+    </>
   )
 }
 

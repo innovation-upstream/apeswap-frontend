@@ -17,8 +17,8 @@ import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
-import InfoContent from '../InfoContent'
 import { StyledTag, poolStyles } from './styles'
+import Tooltip from 'components/Tooltip/Tooltip'
 
 const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
   const { chainId } = useActiveWeb3React()
@@ -72,9 +72,17 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
       tokens: { token1, token2: token2 === 'NFTY ' ? 'NFTY2' : token2 || pool?.tokenName },
       title: <Text bold>{pool?.rewardToken?.symbol || pool?.tokenName}</Text>,
       id: pool.sousId,
-      infoContent: <InfoContent pool={pool} />,
+      infoContent: (
+        <Tooltip
+          contractAddress={pool?.contractAddress[chainId]}
+          tokenContract={pool?.rewardToken?.address[chainId]}
+          contractType="Pool"
+          twitter={pool?.twitter}
+          projectLink={pool?.projectLink}
+        />
+      ),
       infoContentPosition: 'translate(8%, 0%)',
-      ttWidth: '250px',
+      ttWidth: '200px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },
       open: openId === pool.sousId,

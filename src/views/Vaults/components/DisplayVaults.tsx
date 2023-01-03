@@ -19,9 +19,9 @@ import { Container, StyledButton, ActionContainer, StyledTag } from './styles'
 import { vaultTokenDisplay } from '../helpers'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
-import InfoContent from './InfoContent'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { selectOutputCurrency } from '../../../state/zap/actions'
+import { selectOutputCurrency } from 'state/zap/actions'
+import Tooltip from 'components/Tooltip/Tooltip'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -85,9 +85,19 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       title: <Text style={{ fontSize: isMobile ? '14px' : '16px' }}>{vault.stakeToken.symbol}</Text>,
       titleContainerWidth: 400,
       id: vault.id,
-      infoContent: <InfoContent vault={vault} />,
+      infoContent: (
+        <Tooltip
+          valueTitle={t('Withdrawal Fee')}
+          valueContent={`${vault?.withdrawFee}%`}
+          value2Title={t('Performance Fee')}
+          value2Content={`${vault?.keeperFee}%`}
+          contractType="Vault"
+          contractAddress={vault?.stratAddress[chainId]}
+          tokenContract={vault?.rewardToken?.address[chainId]}
+        />
+      ),
       infoContentPosition: 'translate(8%, 0%)',
-      ttWidth: '250px',
+      ttWidth: '200px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '10px', marginRight: '10px' },
       expandedContentJustified: vault.version === 'V1' && 'center',

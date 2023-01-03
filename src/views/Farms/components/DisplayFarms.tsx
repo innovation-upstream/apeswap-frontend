@@ -18,10 +18,10 @@ import CardActions from './CardActions'
 import { Container, FarmButton, NextArrow } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
 import { ActionContainer, StyledTag } from './CardActions/styles'
-import InfoContent from '../InfoContent'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from 'state/zap/actions'
 import { Svg as Icon } from '@ape.swap/uikit'
+import Tooltip from 'components/Tooltip/Tooltip'
 
 const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] }> = ({ farms, openPid, farmTags }) => {
   const { chainId } = useActiveWeb3React()
@@ -84,7 +84,15 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
       title: <Text bold>{farm.lpSymbol}</Text>,
       open: farm.pid === openPid,
       id: farm.pid,
-      infoContent: <InfoContent farm={farm} />,
+      infoContent: (
+        <Tooltip
+          valueTitle={t('Multiplier')}
+          valueContent={farm?.multiplier}
+          contractType="Farm"
+          contractAddress={farm?.lpAddresses[chainId]}
+          tokenContract={farm?.quoteTokenAdresses[chainId]}
+        />
+      ),
       infoContentPosition: 'translate(8%, 0%)',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },

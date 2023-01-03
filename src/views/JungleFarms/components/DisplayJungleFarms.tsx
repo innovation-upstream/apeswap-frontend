@@ -14,12 +14,12 @@ import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
-import InfoContent from '../InfoContent'
 import { Container, StyledButton, ActionContainer } from './styles'
 import { StyledTag } from '../../Pools/components/styles'
 import CalcButton from 'components/RoiCalculator/CalcButton'
 import useAddLiquidityModal from '../../../components/DualAddLiquidity/hooks/useAddLiquidityModal'
 import { ZapType } from '@ape.swap/sdk'
+import Tooltip from 'components/Tooltip/Tooltip'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
   jungleFarms,
@@ -71,9 +71,18 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
       stakeLp: true,
       title: <Text bold>{farm?.tokenName}</Text>,
       id: farm.jungleId,
-      infoContent: <InfoContent farm={farm} />,
+      infoContent: (
+        <Tooltip
+          jungleFarm={farm}
+          tokenContract={farm?.rewardToken?.address[chainId]}
+          contractAddress={farm?.contractAddress[chainId]}
+          contractType="Farm"
+          projectLink={farm?.projectLink}
+          twitter={farm?.twitter}
+        />
+      ),
       infoContentPosition: 'translate(8%, 0%)',
-      ttWidth: '250px',
+      ttWidth: '200px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '10px', marginRight: '10px' },
       open: openId === farm.jungleId,

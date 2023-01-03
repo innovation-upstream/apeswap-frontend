@@ -3,7 +3,6 @@ import React from 'react'
 import getTimePeriods from 'utils/getTimePeriods'
 import BigNumber from 'bignumber.js'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
-import ProjectLinks from '../../UserBillsView/components/ProjectLinks'
 import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
 import { Flex } from '@ape.swap/uikit'
 import BillModal from '../../Modals'
@@ -16,6 +15,7 @@ import { Bills } from 'state/types'
 import { formatNumberSI } from 'utils/formatNumber'
 import DiscountContent from './DiscountContent'
 import useIsMobile from 'hooks/useIsMobile'
+import Tooltip from 'components/Tooltip/Tooltip'
 
 interface BillsRowsProps {
   billsToRender: Bills[]
@@ -50,7 +50,15 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
       listProps: {
         id: bill.index,
         title: <ListViewContent tag="ape" value={bill.lpToken.symbol} style={{ maxWidth: '150px', height: '45px' }} />,
-        infoContent: <ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} isMobile />,
+        infoContent: (
+          <Tooltip
+            tokenContract={bill?.earnToken?.address[chainId]}
+            contractAddress={bill?.contractAddress[chainId]}
+            contractType="Bill"
+            twitter={bill?.twitter}
+            projectLink={bill?.projectLink}
+          />
+        ),
         titleContainerWidth: 275,
         cardContent: isMobile ? (
           <DiscountContent
