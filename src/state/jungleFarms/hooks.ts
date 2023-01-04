@@ -6,9 +6,10 @@ import { useAppDispatch } from 'state'
 import { useNetworkChainId } from 'state/hooks'
 import { useFetchTokenPrices, useTokenPrices } from 'state/tokenPrices/hooks'
 import { JungleFarm, State, StatsState } from 'state/types'
-import { fetchJungleFarmsPublicDataAsync, fetchJungleFarmsUserDataAsync, setInitialJungleFarmDataAsync } from '.'
+import { fetchJungleFarmsPublicDataAsync, fetchJungleFarmsUserDataAsync } from '.'
 
 export const usePollJungleFarms = () => {
+  useFetchTokenPrices()
   const chainId = useNetworkChainId()
   const { tokenPrices } = useTokenPrices()
 
@@ -22,30 +23,14 @@ export const useJungleFarms = (account): JungleFarm[] => {
   const { slowRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
-  const farms = useSelector((state: State) => state.jungleFarms.data)
-
+  const farms = useSelector((state: State) => state.jungleFarms.data[chainId])
   useEffect(() => {
     if (account) {
       dispatch(fetchJungleFarmsUserDataAsync(chainId, account))
     }
-  }, [account, dispatch, slowRefresh, farms.length, chainId])
+  }, [account, dispatch, slowRefresh, chainId])
 
-  return farms
-}
-
-let prevChainId = null
-
-export const useSetJungleFarms = () => {
-  useFetchTokenPrices()
-  const { chainId } = useActiveWeb3React()
-  const dispatch = useAppDispatch()
-  const jungleFarms = useJungleFarms(null)
-  useEffect(() => {
-    if (jungleFarms.length === 0 || chainId !== prevChainId) {
-      dispatch(setInitialJungleFarmDataAsync(chainId))
-      prevChainId = chainId
-    }
-  }, [chainId, jungleFarms.length, dispatch])
+  return farms || []
 }
 
 export const useJungleFarmTags = (chainId: number) => {
