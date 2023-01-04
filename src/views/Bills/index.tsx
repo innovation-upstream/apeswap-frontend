@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import { Flex } from '@ape.swap/uikit'
 import React, { useCallback, useState } from 'react'
-import { usePollBills, usePollUserBills, useSetBills } from 'state/bills/hooks'
+import { usePollBills, usePollUserBills } from 'state/bills/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
@@ -21,7 +21,6 @@ export enum BillsView {
 }
 
 const Bills: React.FC = () => {
-  useSetBills()
   usePollBills()
   usePollUserBills()
   const { chainId } = useActiveWeb3React()
