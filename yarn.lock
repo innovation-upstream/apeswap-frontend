@@ -9,18 +9,15 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.3.tgz#0e2d1543c17bc8e65643ee69d43f5df153ca2905"
-  integrity sha512-OtdE0+DqGIJD+z1/O9/blvTitxGWHsNyyOEGn44FEMKpG54aZJtX2DUmNSmIxMacsAnVA1KHKlTTsyyyv/3GMQ==
+"@ape.swap/apeswap-lists@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.5.tgz#438a27faf011e0def622afaf499becd82ea6f664"
+  integrity sha512-dB1Q22dqoHL+PRhjwo4Y/qQuWUs7v+0Ddj4jwRvQ4pF8X4sNITh20oJhxrKPY6f4X5OSz5S3zU0a38Vs2I+Svg==
   dependencies:
     "@ape.swap/sdk" "4.3.1"
     bignumber.js "^9.0.2"
     ethers "^5.6.9"
     path "^0.12.7"
-    rimraf "^3.0.0"
-    run-func "^3.0.0"
-    tslib "^2.4.0"
 
 "@ape.swap/sdk@4.3.1":
   version "4.3.1"
@@ -72,10 +69,10 @@
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
 
-"@apeswapfinance/token-lists@1.0.328":
-  version "1.0.328"
-  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.328/40f809c0a0a1a8f73387040c7119025013a26020#40f809c0a0a1a8f73387040c7119025013a26020"
-  integrity sha512-irt3yMV70Vox4rGmD2fvX6q+Hj307/DykOT1O4xAe8+hooOm4mrsAAF75OjVy3Fgp5yG2SLwliRIvhG+NM29lA==
+"@apeswapfinance/token-lists@1.0.329":
+  version "1.0.329"
+  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.329/80879eb4412d5765d8635266fbf2b3f57e073f48#80879eb4412d5765d8635266fbf2b3f57e073f48"
+  integrity sha512-WKlWaoAF+gbtu/U8P2PNzXXkAzYE5GpP8ncrHfwhAblUV/iLYd5xXWAGhcear6Wq9Tp1tDprP0YwgTgJ+L3tqA==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
@@ -14761,11 +14758,6 @@ rsvp@^4.8.4:
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
   integrity sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==
 
-run-func@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/run-func/-/run-func-3.0.0.tgz#16b5802afdb8e92d3e0857d16e728295876005cb"
-  integrity sha512-RZwVzBrD7biV5CiAgwEUdaRGt0hLjBrhn4PqemBuNogH9Sc/8Bv8p+6F6AweU5bxZXsb3Mxltgu+/f+TGi0udA==
-
 run-parallel@^1.1.9:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/run-parallel/-/run-parallel-1.2.0.tgz#66d1368da7bdf921eb9d95bd1a9229e7f21a43ee"
@@ -16336,11 +16328,6 @@ tslib@^2.3.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
   integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
-
-tslib@^2.4.0:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.1.tgz#0d0bfbaac2880b91e22df0768e55be9753a5b17e"
-  integrity sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==
 
 tsutils@^3.17.1, tsutils@^3.21.0:
   version "3.21.0"
