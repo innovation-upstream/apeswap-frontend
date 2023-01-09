@@ -25,13 +25,13 @@ const BillsListView: React.FC = () => {
 
   const isSoldOut = useCallback(
     (bill: Bills) => {
-      const { earnToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
+      const { earnToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice, discount } = bill
       const available = new BigNumber(maxTotalPayOut)
         ?.minus(new BigNumber(totalPayoutGiven))
         ?.div(new BigNumber(10).pow(earnToken.decimals[chainId]))
 
       const threshold = new BigNumber(11).div(earnTokenPrice)
-      return available.lte(threshold)
+      return available.lte(threshold) || discount === '100.00'
     },
     [chainId],
   )
