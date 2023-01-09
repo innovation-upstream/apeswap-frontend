@@ -28,14 +28,14 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
   const isMobile = useIsMobile()
 
   const billsListView = billsToRender.map((bill) => {
-    const { earnToken, token, quoteToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice } = bill
+    const { earnToken, token, quoteToken, maxTotalPayOut, totalPayoutGiven, earnTokenPrice, discount } = bill
     const vestingTime = getTimePeriods(parseInt(bill.vestingTime), true)
     const available = new BigNumber(maxTotalPayOut)
       ?.minus(new BigNumber(totalPayoutGiven))
       ?.div(new BigNumber(10).pow(earnToken.decimals[chainId]))
 
     const threshold = new BigNumber(11).div(earnTokenPrice)
-    const disabled = new BigNumber(available).lte(threshold)
+    const disabled = new BigNumber(available).lte(threshold) || discount === '100.00'
 
     const displayAvailable = available.toFixed(0)
 
