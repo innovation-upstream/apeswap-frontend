@@ -36,4 +36,4 @@ Interested in learning more about ApeSwap.Finance? Head over to our [official do
 - 🖥 GitHub: https://github.com/ApeSwapFinance
 - 🤳 Instagram: https://instagram.com/apeswap.finance
 - 🤩 Reddit: https://www.reddit.com/r/Apeswap/
-- 👾 Discord: https://discord.gg/ApeSwapOfficial
+- 👾 Discord: https://discord.gg/apeswap
