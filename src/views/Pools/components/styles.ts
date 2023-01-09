@@ -19,6 +19,7 @@ export const poolStyles: Record<string, ThemeUIStyleObject> = {
     position: 'relative',
   },
   actionContainer: {
+    alignItems: 'center',
     width: '100%',
     justifyContent: 'space-between',
     '@media screen and (min-width: 852px)': {

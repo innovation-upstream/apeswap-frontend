@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.5.tgz#438a27faf011e0def622afaf499becd82ea6f664"
-  integrity sha512-dB1Q22dqoHL+PRhjwo4Y/qQuWUs7v+0Ddj4jwRvQ4pF8X4sNITh20oJhxrKPY6f4X5OSz5S3zU0a38Vs2I+Svg==
+"@ape.swap/apeswap-lists@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.7.tgz#da63a135340a0f7327128d119829c262ca1e0b8c"
+  integrity sha512-NPxYCNBWADJJVa5HwoWlKGzMMv276qWyUrUOdDMr6wGJdHHPfcUew14Qc1KhofGekljeprf4kFTrL4FQHQLbdQ==
   dependencies:
     "@ape.swap/sdk" "4.3.1"
     bignumber.js "^9.0.2"
@@ -33,10 +33,8 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/uikit@1.3.44":
-  version "1.3.44"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.44.tgz#ffac71ef16c6b2e02fd848a869eefb168568efb1"
-  integrity sha512-pJeoZBUgBguTd4EuEqm9g/1xl+Nb23a6IC/UDvAHrppyb43VmE7IBVuhWGS+V3Ky15RDwMlJ8q8duXErLkv+Uw==
+"@ape.swap/uikit@file:.yalc/@ape.swap/uikit":
+  version "1.3.40"
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"

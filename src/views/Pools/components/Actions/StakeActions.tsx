@@ -114,7 +114,12 @@ const StakeAction: React.FC<StakeActionsProps> = ({
     if (firstStake) {
       return (
         <CenterContainer>
-          <StyledButtonSquare onClick={onPresentDeposit} load={pendingDepositTrx} disabled={pendingDepositTrx}>
+          <StyledButtonSquare
+            onClick={onPresentDeposit}
+            load={pendingDepositTrx}
+            disabled={pendingDepositTrx}
+            minWidth={150}
+          >
             {t('DEPOSIT')}
           </StyledButtonSquare>
         </CenterContainer>

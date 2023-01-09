@@ -10,7 +10,6 @@ import VestedTimer from '../../VestedTimer'
 import BillModal from '../../Modals'
 import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
 import { Box } from 'theme-ui'
-import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { BillsToRender } from '../types'
 import { formatNumberSI } from 'utils/formatNumber'
 import ListView from 'components/ListViewV2'
@@ -37,7 +36,13 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
       },
       listProps: {
         id: billToRender.id,
-        title: <ListViewContent tag="ape" value={bill.lpToken.symbol} style={{ maxWidth: '150px', height: '45px' }} />,
+        title: (
+          <ListViewContentMobile
+            tag="ape"
+            value={bill.lpToken.symbol}
+            style={{ maxWidth: '150px', height: '35px', flexDirection: 'column' }}
+          />
+        ),
         titleContainerWidth: 260,
         cardContent: isMobile ? (
           <ListViewContentMobile
@@ -51,24 +56,22 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
           />
         ) : (
           <Flex style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-            <ListViewContent
+            <ListViewContentMobile
               title={t('Claimable')}
               value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
               value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
               value2Secondary
-              valuesDirection="row"
-              style={{ maxWidth: isMobile ? '120px' : '135px', ml: '10px', height: '52.5px' }}
+              style={{ maxWidth: '135px', ml: '10px', height: '40px', flexDirection: 'column' }}
               toolTip={t('This is the amount of tokens that have vested and available to claim.')}
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(29%, -4%)"
             />
-            <ListViewContent
+            <ListViewContentMobile
               title={t('Pending')}
               value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
               value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
               value2Secondary
-              valuesDirection="row"
-              style={{ maxWidth: isMobile ? '120px' : '135px', ml: '10px', height: '52.5px' }}
+              style={{ maxWidth: '135px', ml: '10px', height: '40px', flexDirection: 'column' }}
               toolTip={t('This is the amount of unvested tokens that cannot be claimed yet.')}
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(22%, -4%)"

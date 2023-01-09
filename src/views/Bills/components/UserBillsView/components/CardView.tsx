@@ -7,18 +7,16 @@ import { useTranslation } from 'contexts/Localization'
 import Claim from '../../Actions/Claim'
 import { BillCardsContainer, CardContainer } from '../styles'
 import BillModal from '../../Modals'
-import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { BillsToRender } from '../types'
+import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
+import { formatNumberSI } from 'utils/formatNumber'
 
 const CardView: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const billsCardView = billsToRender.map((billToRender, i) => {
     const { bill, filteredOwnedBillNftData } = billToRender
-    const pendingRewards = getBalanceNumber(
-      new BigNumber(billToRender.pendingRewards),
-      bill?.earnToken?.decimals[chainId],
-    )?.toFixed(4)
+    const claimable = getBalanceNumber(new BigNumber(billToRender.pendingRewards), bill?.earnToken?.decimals[chainId])
     return (
       <CardContainer key={i}>
         {filteredOwnedBillNftData?.image ? (
@@ -36,11 +34,17 @@ const CardView: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender 
           justifyContent="space-between"
           style={{ height: '75px', width: '100%' }}
         >
-          <ListViewContent tag="ape" value={bill.lpToken.symbol} style={{ height: '50px', width: '130px' }} />
-          <ListViewContent
+          <ListViewContentMobile
+            tag="ape"
+            value={bill.lpToken.symbol}
+            style={{ height: '35px', width: '130px', flexDirection: 'column' }}
+          />
+          <ListViewContentMobile
             title={t('Claimable')}
-            value={pendingRewards}
-            style={{ height: '50px', width: '60px', alignItems: 'flex-end !important' }}
+            value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
+            value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
+            value2Secondary
+            style={{ height: '35px', width: '60px', alignItems: 'flex-end', flexDirection: 'column' }}
           />
         </Flex>
         <Claim

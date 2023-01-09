@@ -1,8 +1,8 @@
 /** @jsxImportSource theme-ui */
+import React, { useState } from 'react'
 import { Flex, TooltipBubble, InfoIcon, Svg } from '@ape.swap/uikit'
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useState } from 'react'
-import { ContentContainer, ListCardContainer, styles } from './styles'
+import { ListCardContainer, styles } from './styles'
 import { ListCardProps } from './types'
 
 const MobileListCard: React.FC<ListCardProps> = ({
@@ -17,7 +17,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
   return (
     <>
       <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>
-        <Flex sx={{ width: '100%', justifyContent: 'space-between' }}>
+        <Flex sx={{ width: '100%', justifyContent: 'space-between', my: '5px' }}>
           <Flex sx={{ ...styles.titleContainer }}>
             {serviceTokenDisplay}
             <Flex sx={{ flexDirection: 'column', marginLeft: '10px' }}>{title}</Flex>
@@ -37,7 +37,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
             )}
           </Flex>
         </Flex>
-        {cardContent && <ContentContainer>{cardContent}</ContentContainer>}
+        {cardContent && <Flex sx={styles.cardContentContainer}>{cardContent}</Flex>}
       </ListCardContainer>
       <AnimatePresence>
         {expandedContent && expanded && (

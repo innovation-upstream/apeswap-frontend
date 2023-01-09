@@ -1,5 +1,5 @@
 import React from 'react'
-import { LpTagVariants } from '@ape.swap/uikit'
+import { ListTagVariants } from '@ape.swap/uikit'
 
 export interface TokenDisplayProps {
   token1: string
@@ -32,7 +32,7 @@ export interface ListCardProps extends ListProps {
 }
 
 export interface ListViewContentProps {
-  tag?: LpTagVariants
+  tag?: ListTagVariants
   title?: string
   value: string
   value2?: string
@@ -44,6 +44,5 @@ export interface ListViewContentProps {
   toolTipPlacement?: 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft'
   toolTipTransform?: string
   valueColor?: string
-  style: any
-  valuesDirection?: 'column' | 'row'
+  style?: any
 }

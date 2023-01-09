@@ -3,7 +3,7 @@ import { Flex, Svg, TooltipBubble } from '@ape.swap/uikit'
 import { InfoIcon } from '@apeswapfinance/uikit'
 import React, { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ContentContainer, ListCardContainer, styles } from './styles'
+import { ListCardContainer, styles } from './styles'
 import { ListCardProps } from './types'
 
 const ListCard: React.FC<ListCardProps> = ({
@@ -22,7 +22,7 @@ const ListCard: React.FC<ListCardProps> = ({
           <Flex sx={{ mr: '10px' }}>{serviceTokenDisplay}</Flex>
           <Flex sx={{ justifyContent: 'center' }}>{title}</Flex>
         </Flex>
-        <ContentContainer>{cardContent}</ContentContainer>
+        <Flex sx={styles.cardContentContainer}>{cardContent}</Flex>
         {expandedContent && (
           <span style={{ marginRight: '30px', transform: 'translate(0, -3px)' }}>
             <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="10px" />

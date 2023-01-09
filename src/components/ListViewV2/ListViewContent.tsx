@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { LpTag, TooltipBubble, Flex, HelpIcon, Text, Skeleton } from '@ape.swap/uikit'
+import { ListTag, TooltipBubble, Flex, HelpIcon, Text, Skeleton } from '@ape.swap/uikit'
 import { styles } from './styles'
 import { ListViewContentProps } from './types'
 
@@ -18,7 +18,6 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
   toolTipPlacement,
   toolTipTransform,
   style,
-  valuesDirection = 'column',
 }) => {
   return (
     <Flex sx={{ ...style, ...styles.listViewContainer }}>
@@ -43,12 +42,12 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
           </Flex>
         ) : (
           <Flex>
-            {tag ? <LpTag variant={tag} /> : <Text sx={styles.titleText}>{title}</Text>}
+            {tag ? <ListTag variant={tag} {...{ sx: { mr: '5px' } }} /> : <Text sx={styles.titleText}>{title}</Text>}
             {aprCalculator}
           </Flex>
         )}
       </Flex>
-      <Flex sx={{ flexDirection: valuesDirection }}>
+      <Flex sx={{ flexDirection: 'valuesDirection' }}>
         <Flex>
           {valueIcon && valueIcon}
           <Text sx={{ ...styles.valueText, color: valueColor }}>
@@ -59,7 +58,7 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
             )}
           </Text>
         </Flex>
-        <Flex sx={{ ml: valuesDirection === 'row' ? '5px' : 0 }}>
+        <Flex sx={{ ml: 'row' === 'row' ? '5px' : 0 }}>
           {value2Icon && value2Icon}
           {value2 && (
             <Text sx={value2Secondary ? styles.secondaryText : styles.valueText}>

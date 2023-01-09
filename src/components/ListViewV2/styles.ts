@@ -1,12 +1,14 @@
 /** @jsxImportSource theme-ui */
 import { ThemeUIStyleObject } from 'theme-ui'
-import { Flex, Text } from '@apeswapfinance/uikit'
+import { Flex } from '@apeswapfinance/uikit'
 import styled from 'styled-components'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   listViewContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      justifyContent: 'center',
+    },
     width: '100%',
   },
   titleContainer: {
@@ -36,6 +38,12 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     color: 'gray',
     lineHeight: '20px',
     fontWeight: 400,
+  },
+  cardContentContainer: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 }
 
@@ -85,13 +93,4 @@ export const ContentContainer = styled(Flex)`
   height: 100%;
   align-items: flex-end;
   justify-content: space-between;
-`
-
-export const ValueText = styled(Text)<{ value2Secondary?: boolean; valueColor?: string }>`
-  font-size: 12px;
-  color: ${({ valueColor, theme }) => valueColor || theme.colors.text};
-  line-height: 20px;
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: ${({ value2Secondary }) => (value2Secondary ? '12px' : '16px')};
-  }
 `
