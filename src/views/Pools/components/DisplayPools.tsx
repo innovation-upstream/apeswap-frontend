@@ -71,50 +71,64 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
         infoContent: <InfoContent pool={pool} />,
         titleContainerWidth: 275,
         cardContent: (
-          <>
-            <Flex sx={{ width: '90px', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-              {!isMobile && (
-                <>
+          <Flex sx={{ flexDirection: isMobile ? 'column' : 'row', width: '100%' }}>
+            {isMobile ? null : (
+              <Flex>
+                <Flex sx={{ width: '90px', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
                   <a href={pool.projectLink} target="_blank" rel="noreferrer">
                     <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
                   </a>
                   <a href={pool?.twitter} target="_blank" rel="noreferrer">
                     <IconButton icon="twitter" color="primaryBright" width={20} />
                   </a>
-                </>
-              )}
-            </Flex>
-            <ListViewContentMobile
-              title={t('APR')}
-              value={`${isActive ? pool?.apr?.toFixed(2) : '0.00'}%`}
-              style={{ maxWidth: isMobile ? '95px' : '80px', ml: '10px', flexDirection: 'column' }}
-              toolTip={t('APRs are calculated based on current value of the token, reward rate, and share of pool.')}
-              toolTipPlacement="bottomLeft"
-              toolTipTransform="translate(10%, 0%)"
-              aprCalculator={
-                <CalcButton
-                  label={pool?.stakingToken?.symbol}
-                  rewardTokenName={pool?.rewardToken?.symbol}
-                  rewardTokenPrice={pool?.rewardToken?.price}
-                  apr={pool?.apr}
-                  tokenAddress={pool.stakingToken.address[chainId]}
+                </Flex>
+                <ListViewContentMobile
+                  title={t('APR')}
+                  value={`${isActive ? pool?.apr?.toFixed(2) : '0.00'}%`}
+                  style={{
+                    width: '100%',
+                    maxWidth: isMobile ? '100%' : '80px',
+                    flexDirection: isMobile ? 'row' : 'column',
+                  }}
+                  toolTip={t(
+                    'APRs are calculated based on current value of the token, reward rate, and share of pool.',
+                  )}
+                  toolTipPlacement="bottomLeft"
+                  toolTipTransform="translate(10%, 0%)"
+                  aprCalculator={
+                    <CalcButton
+                      label={pool?.stakingToken?.symbol}
+                      rewardTokenName={pool?.rewardToken?.symbol}
+                      rewardTokenPrice={pool?.rewardToken?.price}
+                      apr={pool?.apr}
+                      tokenAddress={pool.stakingToken.address[chainId]}
+                    />
+                  }
                 />
-              }
-            />
-            <ListViewContentMobile
-              title={t('Total Staked')}
-              value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
-              style={{ maxWidth: isMobile ? '160px' : '110px', ml: '10px', flexDirection: 'column' }}
-              toolTip={t('The total value of the tokens currently staked in this pool.')}
-              toolTipPlacement="bottomRight"
-              toolTipTransform="translate(13%, 0%)"
-            />
-            <ListViewContentMobile
-              title={t('Earned')}
-              value={userEarningsUsd}
-              style={{ maxWidth: '100px', ml: '10px', flexDirection: 'column' }}
-            />
-          </>
+                <ListViewContentMobile
+                  title={t('Total Staked')}
+                  value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
+                  style={{
+                    width: '100%',
+                    maxWidth: isMobile ? '100%' : '110px',
+                    flexDirection: isMobile ? 'row' : 'column',
+                  }}
+                  toolTip={t('The total value of the tokens currently staked in this pool.')}
+                  toolTipPlacement="bottomRight"
+                  toolTipTransform="translate(13%, 0%)"
+                />
+                <ListViewContentMobile
+                  title={t('Earned')}
+                  value={userEarningsUsd}
+                  style={{
+                    width: '100%',
+                    maxWidth: isMobile ? '100%' : '100px',
+                    flexDirection: isMobile ? 'row' : 'column',
+                  }}
+                />
+              </Flex>
+            )}
+          </Flex>
         ),
         expandedContentSize: 125,
         expandedContent: (

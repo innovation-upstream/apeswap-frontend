@@ -44,9 +44,16 @@ const MobileListCard: React.FC<ListCardProps> = ({
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'fit-content' }}
-            exit={{ opacity: 1 }}
-            transition={{ opacity: { duration: 0.4 } }}
-            sx={{ position: 'relative', width: '100%', maxWidth: '500px', minWidth: '300px', background: 'white3' }}
+            transition={{ opacity: { duration: 0.2 } }}
+            exit={{ opacity: 0, height: 0 }}
+            sx={{
+              position: 'relative',
+              overflow: 'hidden',
+              width: '100%',
+              maxWidth: '500px',
+              minWidth: '300px',
+              background: 'white3',
+            }}
           >
             <Flex
               sx={{
