@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.5.tgz#438a27faf011e0def622afaf499becd82ea6f664"
-  integrity sha512-dB1Q22dqoHL+PRhjwo4Y/qQuWUs7v+0Ddj4jwRvQ4pF8X4sNITh20oJhxrKPY6f4X5OSz5S3zU0a38Vs2I+Svg==
+"@ape.swap/apeswap-lists@1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.10.tgz#cdc221f8f0709c33bd5e1499b7e093ee1e594f32"
+  integrity sha512-aWWEwPPb0aX1yHrrPjM36/aNkGrpg2AbgUooLwZ02SCLaTOf44W2/iiGv6NAPRReowW7aKBMcVrm5fwaOnjAMg==
   dependencies:
     "@ape.swap/sdk" "4.3.1"
     bignumber.js "^9.0.2"
@@ -69,10 +69,10 @@
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
 
-"@apeswapfinance/token-lists@1.0.329":
-  version "1.0.329"
-  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.329/80879eb4412d5765d8635266fbf2b3f57e073f48#80879eb4412d5765d8635266fbf2b3f57e073f48"
-  integrity sha512-WKlWaoAF+gbtu/U8P2PNzXXkAzYE5GpP8ncrHfwhAblUV/iLYd5xXWAGhcear6Wq9Tp1tDprP0YwgTgJ+L3tqA==
+"@apeswapfinance/token-lists@1.0.330":
+  version "1.0.330"
+  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.330/16102de9783f7e75e4fe28e806ae35a441d95c31#16102de9783f7e75e4fe28e806ae35a441d95c31"
+  integrity sha512-n/gS80/OT85nzWajD+WkbjnqKlFKM7O6UwkghFIAebaY/aLOg2vJWaGAu0c037ovrswzuyFfNVAn1JSPe32LLw==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
