@@ -5,15 +5,23 @@ import { ThemeUIStyleObject } from 'theme-ui'
 
 export const poolStyles: Record<string, ThemeUIStyleObject> = {
   styledBtn: {
-    borderRadius: '10px',
     fontSize: '16px',
-    fontWeight: 700,
-    padding: '10px 20px',
-    minWidth: '150px',
+    padding: '10px',
+    width: '140px',
+    minWidth: '100px',
     height: '44px',
-    '&&': {
-      width: '150px',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
     },
+  },
+  apeHarder: {
+    fontSize: '16px',
+    minWidth: '110px',
+    width: '100%',
+    '@media screen and (min-width: 852px)': {
+      width: '140px',
+    },
+    height: '44px',
   },
   container: {
     position: 'relative',
@@ -22,8 +30,36 @@ export const poolStyles: Record<string, ThemeUIStyleObject> = {
     alignItems: 'center',
     width: '100%',
     justifyContent: 'space-between',
+  },
+  expandedContent: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: '0 10px',
+    justifyContent: 'space-between',
+  },
+  harvestContainer: {
+    '@media screen and (max-width: 852px)': {
+      flexWrap: 'wrap',
+      width: '100%',
+    },
+  },
+  depositContainer: {
+    width: '140px',
+    minWidth: '100px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
+    },
+  },
+  harvestAllBtn: {
+    height: '36px',
+    lineHeight: '18px',
+    justifyContent: 'center',
+    width: '100%',
     '@media screen and (min-width: 852px)': {
-      width: 'fit-content',
+      width: '150px',
     },
   },
 }

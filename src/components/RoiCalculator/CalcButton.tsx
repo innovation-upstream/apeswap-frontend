@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { CalculateIcon } from '@apeswapfinance/uikit'
+import { Svg } from '@ape.swap/uikit'
 import { IconButton, useModal } from '@ape.swap/uikit'
 import RoiCalculatorModal from './RoiCalculatorModal'
 import styles from './styles'
@@ -28,7 +28,7 @@ const CalcButton: React.FC<CalcButtonProps> = (props) => {
 
   return (
     <IconButton variant="transparent" onClick={onPresentCalcModal} disabled={!apr} sx={styles.apyButton}>
-      <CalculateIcon color="yellow" ml="3px" />
+      <Svg icon="calculator" color="yellow" />
     </IconButton>
   )
 }

@@ -1,6 +1,4 @@
-export const NUMBER_OF_FARMS_VISIBLE = 10
-
-export const TOKEN_OPTIONS = [
+export const FILTER_OPTIONS = [
   {
     label: 'All Tokens',
     value: 'allTokens',
@@ -15,7 +13,7 @@ export const TOKEN_OPTIONS = [
   },
 ]
 
-export const OPTIONS = [
+export const SORT_OPTIONS = [
   {
     label: 'All',
     value: 'all',

@@ -11,6 +11,10 @@ const styles = {
         fill: 'primaryButtonDisable',
       },
     },
+    ml: '8px',
+    display: 'flex',
+    height: '20px',
+    alignItems: 'center',
   },
   maxButton: {
     margin: '0',

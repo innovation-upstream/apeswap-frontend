@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { useSousHarvestAll } from 'hooks/useHarvest'
 import { useToast } from 'state/hooks'
@@ -6,7 +7,8 @@ import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
-import { StyledButtonSquare } from './styles'
+import { Button } from '@ape.swap/uikit'
+import { poolStyles } from '../styles'
 
 interface HarvestActionsProps {
   sousIds: number[]
@@ -41,15 +43,15 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ sousIds, disabled }) => {
   }
 
   return (
-    <StyledButtonSquare
-      height={36}
-      minWidth={100}
+    <Button
+      size="sm"
+      sx={poolStyles.harvestAllBtn}
       disabled={disabled || pendingTrx || sousIds.length <= 0}
       onClick={handleHarvestAll}
       load={pendingTrx}
     >
       {t('HARVEST ALL')}
-    </StyledButtonSquare>
+    </Button>
   )
 }
 

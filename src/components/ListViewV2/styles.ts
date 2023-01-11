@@ -20,23 +20,24 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   titleText: {
     opacity: 0.6,
     fontSize: '12px',
-    lineHeight: '20px',
+    lineHeight: '16px',
     fontWeight: 400,
   },
   skeleton: {
     width: '60px',
-    height: '20px',
+    maxHeight: '18px',
+    minHeight: '18px',
   },
   valueText: {
     fontSize: ['12px', '12px', '16px'],
     color: 'primaryBright',
-    lineHeight: '20px',
+    lineHeight: '16px',
     fontWeight: 700,
   },
   secondaryText: {
     fontSize: '12px',
     color: 'gray',
-    lineHeight: '20px',
+    lineHeight: '16px',
     fontWeight: 400,
   },
   cardContentContainer: {
@@ -44,6 +45,20 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     height: '100%',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  animationDiv: {
+    position: 'relative',
+    width: '100%',
+    maxWidth: '500px',
+    minWidth: '300px',
+  },
+  expandedWrapper: {
+    background: 'white3',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: '15px 10px',
+    flexWrap: 'wrap',
+    alignItems: 'center',
   },
 }
 

@@ -19,7 +19,6 @@ export interface ListProps {
   infoContent?: React.ReactNode
   cardContent: React.ReactNode
   expandedContent?: React.ReactNode
-  expandedContentSize?: number
 }
 
 export interface ListViewProps {

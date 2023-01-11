@@ -1,9 +1,9 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { styles } from '../styles'
-import { Option } from '../types'
+import { styles } from '../../../views/Bills/components/BillsListView/styles'
 import { Select, SelectItem, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { Option } from './types'
 
 interface FilterSelectProps {
   selectedOption: string

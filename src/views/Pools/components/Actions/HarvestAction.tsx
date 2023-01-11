@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Button } from '@ape.swap/uikit'
+import { Button, Flex } from '@ape.swap/uikit'
 import { useHistory } from 'react-router-dom'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useIsMobile from 'hooks/useIsMobile'
@@ -13,11 +13,10 @@ import { useCurrency } from 'hooks/Tokens'
 import { useBananaAddress } from 'hooks/useAddress'
 import { useIsModalShown } from 'state/user/hooks'
 
-import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
-import { ActionContainer } from './styles'
 import { poolStyles } from '../styles'
+import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
 
 interface HarvestActionsProps {
   sousId: number
@@ -51,6 +50,8 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   const harvestBanana = earnTokenSymbol === bananaToken.symbol
   const displayPHCircular = () =>
     showPoolHarvestModal && harvestBanana && showCircular(chainId, history, '?modal=circular-ph')
+
+  const userTokenBalanceUsd = (userEarnings * earnTokenValueUsd).toFixed(2)
 
   const handleHarvest = async () => {
     setPendingTrx(true)
@@ -90,49 +91,48 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   }
 
   return (
-    <ActionContainer>
-      {isMobile && (
-        <ListViewContent
-          title={`${t('Earned')} ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(4)}
-          width={100}
-          height={50}
-          ml={10}
-        />
-      )}
-      {sousId === 0 && (
-        <Button
-          disabled={disabled || pendingApeHarderTrx}
-          onClick={handleApeHarder}
-          load={pendingApeHarderTrx}
-          mr={isMobile ? '0px' : '10px'}
-          sx={{ minWidth: isMobile && '100px', width: isMobile && '115px', padding: '0px', ...poolStyles.styledBtn }}
-        >
-          {t('APE HARDER')}
+    <Flex sx={poolStyles.harvestContainer}>
+      <Flex sx={{ width: isMobile && '100%', justifyContent: 'space-between' }}>
+        {isMobile && (
+          <ListViewContentMobile
+            title={`${t('Earned')} ${earnTokenSymbol}`}
+            value={userEarnings?.toFixed(4)}
+            value2={`$${userTokenBalanceUsd}`}
+            value2Secondary
+            value2Direction="column"
+            style={{ flexDirection: 'column' }}
+          />
+        )}
+        <Button disabled={disabled || pendingTrx} onClick={handleHarvest} load={pendingTrx} sx={poolStyles.styledBtn}>
+          {t('HARVEST')}
         </Button>
+      </Flex>
+      {sousId === 0 && (
+        <Flex sx={{ width: isMobile && '100%', margin: isMobile ? '15px 0 0 0' : '0 10px' }}>
+          <Button
+            disabled={disabled || pendingApeHarderTrx}
+            onClick={handleApeHarder}
+            load={pendingApeHarderTrx}
+            sx={poolStyles.apeHarder}
+          >
+            {t('APE HARDER')}
+          </Button>
+        </Flex>
       )}
-      <Button
-        disabled={disabled || pendingTrx}
-        onClick={handleHarvest}
-        load={pendingTrx}
-        sx={{
-          minWidth: isMobile && sousId === 0 && '100px',
-          width: isMobile && sousId === 0 && '100px',
-          ...poolStyles.styledBtn,
-        }}
-      >
-        {t('HARVEST')}
-      </Button>
       {!isMobile && (
-        <ListViewContent
+        <ListViewContentMobile
           title={`${t('Earned')} ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(4)}
-          width={150}
-          height={50}
-          ml={10}
+          value={userEarnings?.toFixed(3)}
+          style={{
+            flexDirection: 'column',
+            maxWidth: '95px',
+            marginLeft: '10px',
+            justifyContent: 'flex-start',
+            height: '48px',
+          }}
         />
       )}
-    </ActionContainer>
+    </Flex>
   )
 }
 

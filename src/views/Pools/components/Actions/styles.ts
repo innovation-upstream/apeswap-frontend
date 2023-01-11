@@ -1,34 +1,19 @@
-import { Button, Flex } from '@ape.swap/uikit'
+import { Button } from '@ape.swap/uikit'
 import styled from '@emotion/styled'
 
-export const StyledButtonSquare = styled(Button)<{ height?: number; minWidth?: number }>`
+export const StyledButtonSquare = styled(Button)<{ height?: string }>`
   border-radius: 10px;
   font-size: 16px;
   font-weight: 700;
   padding: 10px 20px;
-  min-width: ${({ minWidth }) => minWidth || 227}px;
-  height: ${({ height }) => height || 44}px;
+  width: 100%;
+  height: ${({ height }) => height || '44px'};
+  justify-content: center;
 `
 
 export const SmallButtonSquare = styled(Button)`
-  max-width: 44px;
+  max-width: 60px;
+  width: 100%;
+  min-width: 44px;
   height: 44px;
-`
-
-export const ActionContainer = styled(Flex)`
-  width: 100%;
-  justify-content: space-between;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: auto;
-    min-width: 225px;
-  }
-`
-
-export const CenterContainer = styled(Flex)`
-  width: 100%;
-  justify-content: center;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: auto;
-    justify-content: auto;
-  }
 `

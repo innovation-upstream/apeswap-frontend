@@ -11,7 +11,6 @@ const MobileListCard: React.FC<ListCardProps> = ({
   cardContent,
   expandedContent,
   infoContent,
-  expandedContentSize,
 }) => {
   const [expanded, setExpanded] = useState(false)
   return (
@@ -44,30 +43,11 @@ const MobileListCard: React.FC<ListCardProps> = ({
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'fit-content' }}
-            transition={{ opacity: { duration: 0.2 } }}
-            exit={{ opacity: 0, height: 0 }}
-            sx={{
-              position: 'relative',
-              overflow: 'hidden',
-              width: '100%',
-              maxWidth: '500px',
-              minWidth: '300px',
-              background: 'white3',
-            }}
+            transition={{ delay: 0.2 }}
+            exit={{ opacity: 0 }}
+            sx={styles.animationDiv}
           >
-            <Flex
-              sx={{
-                background: 'white3',
-                flexDirection: 'column',
-                height: expandedContentSize || '234px',
-                justifyContent: 'space-between',
-                padding: '15px 10px',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-              }}
-            >
-              {expandedContent}
-            </Flex>
+            <Flex sx={styles.expandedWrapper}>{expandedContent}</Flex>
           </motion.div>
         )}
       </AnimatePresence>

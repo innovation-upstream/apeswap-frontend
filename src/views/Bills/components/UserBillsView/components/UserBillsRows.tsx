@@ -43,7 +43,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
             style={{ maxWidth: '150px', height: '35px', flexDirection: 'column' }}
           />
         ),
-        titleContainerWidth: 260,
+        titleContainerWidth: 280,
         cardContent: isMobile ? (
           <ListViewContentMobile
             title={'Claimable'}
@@ -61,7 +61,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
               value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
               value2Secondary
-              style={{ maxWidth: '135px', ml: '10px', height: '40px', flexDirection: 'column' }}
+              style={{ maxWidth: '135px', height: '40px', flexDirection: 'column' }}
               toolTip={t('This is the amount of tokens that have vested and available to claim.')}
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(29%, -4%)"
@@ -71,7 +71,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
               value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
               value2Secondary
-              style={{ maxWidth: '135px', ml: '10px', height: '40px', flexDirection: 'column' }}
+              style={{ maxWidth: '135px', height: '40px', flexDirection: 'column' }}
               toolTip={t('This is the amount of unvested tokens that cannot be claimed yet.')}
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(22%, -4%)"
@@ -89,7 +89,6 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
             </Flex>
           </Flex>
         ),
-        expandedContentSize: 185,
         expandedContent: isMobile && (
           <Flex sx={{ width: '100%', flexWrap: 'wrap', padding: '0 10px' }}>
             <Flex sx={{ width: '100%', flexDirection: 'column' }}>
@@ -101,6 +100,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
                 toolTip={`This is the amount of unvested tokens that cannot be claimed yet.`}
                 toolTipPlacement={'bottomLeft'}
                 toolTipTransform={'translate(22%, 0%)'}
+                style={{ marginBottom: '5px' }}
               />
               <VestedTimer
                 lastBlockTimestamp={billToRender.lastBlockTimestamp}

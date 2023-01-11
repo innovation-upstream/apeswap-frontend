@@ -3,6 +3,7 @@ import React from 'react'
 import { TooltipBubble, Flex, HelpIcon, Text, Skeleton } from '@ape.swap/uikit'
 import { styles } from 'components/ListViewV2/styles'
 import { useTranslation } from 'contexts/Localization'
+import useIsMobile from '../../../../../hooks/useIsMobile'
 
 interface DiscountContentProps {
   title: string
@@ -24,8 +25,9 @@ const DiscountContent: React.FC<DiscountContentProps> = ({
   flexDirection,
 }) => {
   const { t } = useTranslation()
+  const isMobile = useIsMobile()
   return (
-    <Flex sx={{ width: '100%', ml: '10px', flexDirection, justifyContent: 'space-between' }}>
+    <Flex sx={{ width: '100%', flexDirection, justifyContent: 'space-between', height: !isMobile && '40px' }}>
       <Flex>
         <Flex alignItems="flex-start">
           <div style={{ display: 'inline-block' }}>

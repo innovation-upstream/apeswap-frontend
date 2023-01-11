@@ -14,10 +14,12 @@ import { usePollPools, usePoolOrderings, usePools, usePoolTags } from 'state/poo
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { Pool } from 'state/types'
-import PoolMenu from './components/Menu'
 import DisplayPools from './components/DisplayPools'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import ListView404 from 'components/ListView404'
+import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
+import HarvestAll from './components/Actions/HarvestAll'
+import { FILTER_OPTIONS, SORT_OPTIONS } from './poolsOptions'
 
 const NUMBER_OF_POOLS_VISIBLE = 12
 
@@ -25,10 +27,10 @@ const Pools: React.FC = () => {
   usePollPools()
   const { chainId } = useActiveWeb3React()
   const [stakedOnly, setStakedOnly] = useState(false)
-  const [tokenOption, setTokenOption] = useState('allTokens')
+  const [filterOption, setFilterOption] = useState('allTokens')
+  const [sortOption, setSortOption] = useState('all')
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
-  const [sortOption, setSortOption] = useState('all')
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { account } = useWeb3React()
   const { pathname } = useLocation()
@@ -77,6 +79,9 @@ const Pools: React.FC = () => {
   const stakedInactivePools = finishedPools.filter(
     (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
   )
+  const sousIds = [...stakedOnlyPools, ...stakedInactivePools].map((pool) => {
+    return pool.sousId
+  })
 
   const sortPools = (poolsToSort: Pool[]) => {
     switch (sortOption) {
@@ -152,8 +157,8 @@ const Pools: React.FC = () => {
       const lowercaseQuery = searchQuery.toLowerCase()
       chosenPools = chosenPools.filter((pool) => pool.tokenName.toLowerCase().includes(lowercaseQuery))
     }
-    if (tokenOption !== 'allTokens') {
-      chosenPools = chosenPools.filter((pool) => pool.stakingToken.symbol === tokenOption.toUpperCase())
+    if (filterOption !== 'allTokens') {
+      chosenPools = chosenPools.filter((pool) => pool.stakingToken.symbol === filterOption.toUpperCase())
     }
 
     return sortPools(chosenPools).slice(0, numberOfPoolsVisible)
@@ -170,17 +175,23 @@ const Pools: React.FC = () => {
         <ListViewLayout>
           <Banner banner="pools" link="?modal=2" title={t('Staking Pools')} listViewBreak maxWidth={1130} />
           <Flex flexDirection="column" alignSelf="center" style={{ maxWidth: '1130px', width: '100%' }}>
-            <PoolMenu
-              onHandleQueryChange={handleChangeQuery}
-              onSetSortOption={setSortOption}
-              onSetStake={setStakedOnly}
-              onSetTokenOption={setTokenOption}
-              pools={[...stakedOnlyPools, ...stakedInactivePools]}
-              activeOption={sortOption}
-              activeTokenOption={tokenOption}
-              stakedOnly={stakedOnly}
-              query={searchQuery}
-            />
+            <Flex style={{ marginBottom: '20px' }}>
+              <ListViewMenu
+                query={searchQuery}
+                onHandleQueryChange={handleChangeQuery}
+                setFilterOption={setFilterOption}
+                filterOption={filterOption}
+                setSortOption={setSortOption}
+                sortOption={sortOption}
+                checkboxLabel="Staked"
+                showOnlyCheckbox={stakedOnly}
+                setShowOnlyCheckbox={setStakedOnly}
+                toogleLabels={['Active', 'Inactive']}
+                filterOptions={FILTER_OPTIONS}
+                sortOptions={SORT_OPTIONS}
+                actionButton={<HarvestAll sousIds={sousIds} />}
+              />
+            </Flex>
             {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.pools.includes(chainId) ? (
               <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
             ) : (

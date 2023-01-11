@@ -56,7 +56,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
           />
         ),
         infoContent: <ProjectLinks website={bill?.projectLink} twitter={bill?.twitter} t={t} isMobile />,
-        titleContainerWidth: 275,
+        titleContainerWidth: 280,
         cardContent: isMobile ? (
           <DiscountContent
             title={t('Discount')}
@@ -83,7 +83,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             <ListViewContentMobile
               title={t('Vesting Term')}
               value={vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
-              style={{ maxWidth: '105px', ml: '10px', flexDirection: 'column' }}
+              style={{ maxWidth: '105px', height: '40px', flexDirection: 'column' }}
               toolTip={t('This is how long it will take for all tokens in the Bill to fully vest.')}
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(39%, 0%)"
@@ -91,7 +91,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             <ListViewContentMobile
               title={t('Available Tokens')}
               value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 3)}
-              style={{ maxWidth: '125px', ml: '10px', flexDirection: 'column' }}
+              style={{ maxWidth: '125px', height: '40px', flexDirection: 'column' }}
               toolTip={t('This is the amount of available tokens for purchase.')}
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(50%, 0%)"
@@ -113,7 +113,6 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             </Flex>
           </>
         ),
-        expandedContentSize: 125,
         expandedContent: isMobile && (
           <Flex sx={{ alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
             {account ? (

@@ -33,7 +33,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAdd
         <Skeleton width="100%" height="52px" />
       ) : (
         <Button
-          sx={{ minWidth: '227px', width: '227px', textAlign: 'center', ...poolStyles.styledBtn }}
+          sx={poolStyles.styledBtn}
           className="noClick"
           disabled={pendingTrx}
           onClick={async () => {

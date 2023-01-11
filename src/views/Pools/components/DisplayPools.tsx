@@ -71,9 +71,40 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
         infoContent: <InfoContent pool={pool} />,
         titleContainerWidth: 275,
         cardContent: (
-          <Flex sx={{ flexDirection: isMobile ? 'column' : 'row', width: '100%' }}>
-            {isMobile ? null : (
-              <Flex>
+          <Flex sx={{ flexDirection: isMobile ? 'column' : 'row', width: '100%', justifyContent: 'space-between' }}>
+            {isMobile ? (
+              <>
+                <ListViewContentMobile
+                  title={t('APR')}
+                  value={`${isActive ? pool?.apr?.toFixed(2) : '0.00'}%`}
+                  style={{
+                    width: '100%',
+                    maxWidth: '100%',
+                    flexDirection: 'row',
+                  }}
+                  toolTip={t(
+                    'APRs are calculated based on current value of the token, reward rate, and share of pool.',
+                  )}
+                  toolTipPlacement="bottomLeft"
+                  toolTipTransform="translate(10%, 0%)"
+                  aprCalculator={
+                    <CalcButton
+                      label={pool?.stakingToken?.symbol}
+                      rewardTokenName={pool?.rewardToken?.symbol}
+                      rewardTokenPrice={pool?.rewardToken?.price}
+                      apr={pool?.apr}
+                      tokenAddress={pool.stakingToken.address[chainId]}
+                    />
+                  }
+                />
+                <ListViewContentMobile
+                  title={t('Earned')}
+                  value={userEarningsUsd}
+                  style={{ width: '100%', maxWidth: '100%', flexDirection: 'row', marginTop: '3px' }}
+                />
+              </>
+            ) : (
+              <>
                 <Flex sx={{ width: '90px', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
                   <a href={pool.projectLink} target="_blank" rel="noreferrer">
                     <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
@@ -126,37 +157,69 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                     flexDirection: isMobile ? 'row' : 'column',
                   }}
                 />
-              </Flex>
+              </>
             )}
           </Flex>
         ),
-        expandedContentSize: 125,
-        expandedContent: (
-          <>
-            <Flex sx={poolStyles.actionContainer}>
-              {isMobile && (
-                <ListViewContentMobile
-                  title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
-                  value={userTokenBalance}
-                  value2={userTokenBalanceUsd}
-                  value2Secondary
-                  style={{ maxWidth: '190px', ml: '10px' }}
-                />
-              )}
+        expandedContent: isMobile ? (
+          <Flex sx={poolStyles.expandedContent}>
+            <ListViewContentMobile
+              title={t('Total Staked')}
+              value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
+              style={{ width: '100%', flexDirection: 'row', marginBottom: '10px' }}
+              toolTip={t('The total value of the tokens currently staked in this pool.')}
+              toolTipPlacement="bottomLeft"
+              toolTipTransform="translate(36%, 0%)"
+            />
+            <ListViewContentMobile
+              title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
+              value={userTokenBalance}
+              value2={userTokenBalanceUsd}
+              value2Secondary
+              value2Direction="column"
+              style={{ maxWidth: '50%', flexDirection: 'column' }}
+            />
+            <Flex sx={{ width: '50%', maxWidth: '130px' }}>
               <Button variant="primary" sx={poolStyles.styledBtn} onClick={openLiquidityUrl}>
                 {t('GET')} {pool?.stakingToken?.symbol}
               </Button>
-              {!isMobile && (
-                <ListViewContentMobile
-                  title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
-                  value={userTokenBalance}
-                  value2={userTokenBalanceUsd}
-                  value2Secondary
-                  style={{ maxWidth: '190px', ml: '10px', flexDirection: 'column' }}
-                />
-              )}
             </Flex>
-            {!isMobile && <NextArrow />}
+            <Flex sx={{ marginTop: '15px', width: '100%' }}>
+              <Actions
+                allowance={userAllowance?.toString()}
+                stakedBalance={pool?.userData?.stakedBalance?.toString()}
+                stakedTokenSymbol={pool?.stakingToken?.symbol}
+                stakingTokenBalance={pool?.userData?.stakingTokenBalance?.toString()}
+                stakeTokenAddress={pool?.stakingToken?.address[chainId]}
+                stakeTokenValueUsd={pool?.stakingToken?.price}
+                earnTokenSymbol={pool?.rewardToken?.symbol || pool?.tokenName}
+                sousId={pool?.sousId}
+              />
+            </Flex>
+            <Flex sx={{ marginTop: '15px', width: '100%', flexWrap: 'wrap' }}>
+              <HarvestAction
+                sousId={pool?.sousId}
+                disabled={userEarnings <= 0}
+                userEarnings={userEarnings}
+                earnTokenSymbol={pool?.rewardToken?.symbol || pool?.tokenName}
+                earnTokenValueUsd={pool?.rewardToken?.price}
+              />
+            </Flex>
+          </Flex>
+        ) : (
+          <Flex sx={poolStyles.actionContainer}>
+            <Button variant="primary" sx={poolStyles.styledBtn} onClick={openLiquidityUrl}>
+              {t('GET')} {pool?.stakingToken?.symbol}
+            </Button>
+            <ListViewContentMobile
+              title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
+              value={userTokenBalance}
+              value2={userTokenBalanceUsd}
+              value2Secondary
+              value2Direction="column"
+              style={{ maxWidth: '110px', marginLeft: '10px', flexDirection: 'column' }}
+            />
+            <NextArrow />
             <Actions
               allowance={userAllowance?.toString()}
               stakedBalance={pool?.userData?.stakedBalance?.toString()}
@@ -167,7 +230,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
               earnTokenSymbol={pool?.rewardToken?.symbol || pool?.tokenName}
               sousId={pool?.sousId}
             />
-            {!isMobile && <NextArrow />}
+            <NextArrow />
             <HarvestAction
               sousId={pool?.sousId}
               disabled={userEarnings <= 0}
@@ -175,16 +238,12 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
               earnTokenSymbol={pool?.rewardToken?.symbol || pool?.tokenName}
               earnTokenValueUsd={pool?.rewardToken?.price}
             />
-          </>
+          </Flex>
         ),
       },
     }
   })
-  return (
-    <Flex sx={poolStyles.container}>
-      <ListView listViews={poolsListView} />
-    </Flex>
-  )
+  return <ListView listViews={poolsListView} />
 }
 
 export default React.memo(DisplayPools)

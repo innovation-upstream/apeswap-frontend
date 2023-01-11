@@ -7,7 +7,7 @@ import { ClaimAllWrapper, SearchText, styles } from '../styles'
 import ClaimAll from '../../Actions/ClaimAll'
 import { Bills } from 'state/types'
 import { FILTER_OPTIONS, SORT_OPTIONS } from '../types'
-import MenuSelect from '../../BillsListView/components/MenuSelect'
+import MenuSelect from '../../../../../components/ListViewV2/ListViewMenu/MenuSelect'
 import { AnimatePresence, motion } from 'framer-motion'
 
 export interface UserBillsMenuProps {
@@ -77,8 +77,8 @@ const UserBillsMenu: React.FC<UserBillsMenuProps> = ({
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'fit-content' }}
+                transition={{ delay: 0.1 }}
                 exit={{ opacity: 0 }}
-                transition={{ opacity: { duration: 0.4 } }}
                 sx={{
                   position: 'relative',
                   width: '100%',
