@@ -206,6 +206,7 @@ const Figures: React.FC<FiguresProps> = (props) => {
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            height: `${mobile ? ' 220px' : '362px'}`,
           }}
         >
           <Spinner size={250} />

@@ -29,17 +29,18 @@ export const BannerStats = () => {
   const { stats, portfolioData, loading } = useStats()
   const isMobile = useIsMobile()
 
-  const calculateTotalEarnings = () => {
-    return portfolioData.reduce((acc, curr) => acc + curr.totalEarnings, 0)
+  const calculateTotalEarnings = (filterBills?: boolean) => {
+    const products = filterBills ? portfolioData.filter((product) => product.type !== 'bills') : portfolioData
+
+    return products.reduce((acc, curr) => acc + curr.totalEarnings, 0)
   }
 
   const calculateTotalPortfolio = () => {
-    const filteredPortfolio = portfolioData.filter((val) => val.type !== 'bills' && val.type !== 'iaos')
-    return filteredPortfolio.reduce((acc, curr) => acc + curr.totalValue, 0)
+    return portfolioData.reduce((acc, curr) => acc + curr.totalValue, 0)
   }
 
   const calculateTotalHoldings = () => {
-    return calculateTotalPortfolio() + calculateTotalEarnings() + stats.analytics.assets.totalWalletHoldings
+    return calculateTotalPortfolio() + calculateTotalEarnings(true) + stats.analytics.assets.totalWalletHoldings
   }
 
   return (
@@ -62,6 +63,7 @@ export const BannerStats = () => {
                 value={calculateTotalHoldings()}
                 decimals={2}
                 prefix="$"
+                enableCountUp
               />
             )}
             <PacocaPortfolio>
@@ -96,6 +98,7 @@ export const BannerStats = () => {
                       value={+stats.userHoldings.banana}
                       color="primaryBright"
                       decimals={2}
+                      enableCountUp
                     />
                     <Svg icon="banana_token" width={20} />
                   </>
@@ -121,6 +124,7 @@ export const BannerStats = () => {
                   color="primaryBright"
                   decimals={2}
                   prefix="$"
+                  enableCountUp
                 />
               )}
             </TranslucidCard>
@@ -138,6 +142,7 @@ export const BannerStats = () => {
                   color="primaryBright"
                   decimals={2}
                   prefix="$"
+                  enableCountUp
                 />
               )}
             </TranslucidCard>

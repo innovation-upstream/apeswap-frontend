@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { State, TokenPricesState } from 'state/types'
-import { fetchBananaPrice, fetchTokenPrices, setInitialTokensDataAsync } from '.'
+import { fetchBananaPrice, fetchTokenPrices } from '.'
 
 const ZERO = new BigNumber(0)
 
@@ -14,9 +14,6 @@ export const useFetchTokenPrices = () => {
   const { fastRefresh } = useRefresh()
   const { chainId } = useActiveWeb3React()
   const { tokens }: TokenPricesState = useSelector((state: State) => state.tokenPrices)
-  if (tokens.length === 0) {
-    dispatch(setInitialTokensDataAsync())
-  }
   useEffect(() => {
     dispatch(fetchTokenPrices(chainId, tokens))
   }, [dispatch, fastRefresh, tokens, chainId])

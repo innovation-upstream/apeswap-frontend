@@ -9,9 +9,11 @@ import { useFarmLpAprs } from 'state/hooks'
 import { useFetchLpTokenPrices } from 'state/lpPrices/hooks'
 import { useFetchTokenPrices, usePriceBananaBusd, useTokenPrices } from 'state/tokenPrices/hooks'
 import { DualFarm, State } from 'state/types'
-import { fetchDualFarmsPublicDataAsync, fetchDualFarmUserDataAsync, setInitialDualFarmDataAsync } from '.'
+import { fetchDualFarmsPublicDataAsync, fetchDualFarmUserDataAsync } from '.'
 
 export const usePollDualFarms = () => {
+  useFetchTokenPrices()
+  useFetchLpTokenPrices()
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { tokenPrices } = useTokenPrices()
@@ -34,12 +36,11 @@ export const useDualFarms = (account): DualFarm[] => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
   const farms = useSelector((state: State) => state.dualFarms.data)
-  const farmsLoaded = farms.length > 0
   useEffect(() => {
     if (account && (chainId === ChainId.MATIC || chainId === ChainId.MATIC_TESTNET)) {
       dispatch(fetchDualFarmUserDataAsync(chainId, account))
     }
-  }, [account, dispatch, slowRefresh, chainId, farmsLoaded])
+  }, [account, dispatch, slowRefresh, chainId])
   return farms
 }
 
@@ -65,15 +66,5 @@ export const useFarmUser = (pid) => {
     tokenBalance: farm?.userData ? new BigNumber(farm.userData.tokenBalance) : new BigNumber(0),
     stakedBalance: farm?.userData ? new BigNumber(farm.userData.stakedBalance) : new BigNumber(0),
     earnings: farm?.userData ? new BigNumber(farm.userData.rewarderEarnings) : new BigNumber(0),
-  }
-}
-
-export const useSetDualFarms = () => {
-  useFetchLpTokenPrices()
-  useFetchTokenPrices()
-  const dispatch = useAppDispatch()
-  const farms = useDualFarms(null)
-  if (farms.length === 0) {
-    dispatch(setInitialDualFarmDataAsync())
   }
 }

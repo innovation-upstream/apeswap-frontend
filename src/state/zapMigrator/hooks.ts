@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, JSBI, Pair, Percent, SmartRouter, TokenAmount } from '@ape.swap/sdk'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -19,6 +19,7 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import { Interface } from '@ethersproject/abi'
 import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import BigNumber from 'bignumber.js'
+import { getLpUsdPrice } from '../../utils/getTokenUsdPrice'
 
 const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)
 
@@ -219,6 +220,7 @@ export interface MigrateResult {
   pid: number
   walletBalance: string
   stakedBalance: string
+  lpPrice?: number
 }
 
 export const useMigratorBalances = (
@@ -236,12 +238,47 @@ export const useMigratorBalances = (
   const options = { gasRequired: 100000000, blocksPerFetch }
   const callResult = useSingleCallResult(migratorBalanceCheckerContract, 'getBalance', [account], options)
   const { result, valid, loading: balanceLoading, syncing } = callResult
+  // List of LP addresses with chef
+  const loLpAddressesWithChef = useMemo(
+    () =>
+      result
+        ? result.pBalances.flatMap((b) =>
+            b.balances.map((item) => {
+              return { address: item.lp, smartRouter: CHEF_ADDRESSES[chainId][b.stakingAddress] as SmartRouter }
+            }),
+          )
+        : [],
+    [chainId, result],
+  )
   // List of LP addresses
-  const loLpAddresses = result ? result.pBalances.flatMap((b) => b.balances.map((item) => item.lp)) : []
+  const loLpAddresses = useMemo(
+    () => (result ? result.pBalances.flatMap((b) => b.balances.map((item) => item.lp)) : []),
+    [result],
+  )
   // List of Token addresses
   const loTokenAddresses = result
     ? result.pBalances.flatMap((b) => b.balances.flatMap((item) => [item.token0, item.token1]))
     : []
+
+  // List of LP prices
+  const [lpPrices, setPrices] = useState(null)
+  const [lpPricesLoading, setLpPricesLoading] = useState(true)
+  useMemo(() => {
+    const fetchPrices = async () => {
+      const prices = await Promise.all(
+        loLpAddressesWithChef.map(async (lpAddress): Promise<number> => {
+          return getLpUsdPrice(chainId, lpAddress.address, 18, lpAddress.smartRouter)
+        }),
+      )
+      setPrices(
+        loLpAddressesWithChef.map((lpAddress, i) => {
+          return { address: lpAddress.address, price: prices[i] }
+        }),
+      )
+    }
+    // Waiting until loLpAddressesWithChef is filled to fetch prices
+    if (valid && !balanceLoading) fetchPrices().then(() => setLpPricesLoading(false))
+  }, [balanceLoading, chainId, loLpAddressesWithChef, valid])
 
   const lpCallResults = useMultipleContractSingleData(loLpAddresses, PAIR_INTERFACE, 'getReserves')
   const lpTotalSupply = useMultipleContractSingleData(loLpAddresses, PAIR_INTERFACE, 'totalSupply')
@@ -290,17 +327,22 @@ export const useMigratorBalances = (
               walletBalance: getFullDisplayBalance(new BigNumber(wallet.toString())),
               stakedBalance: getFullDisplayBalance(new BigNumber(staked.toString())),
               totalBalance: getFullDisplayBalance(new BigNumber(total.toString())),
+              lpPrice: lpPrices?.find((lpPrice) => lpPrice.address === lp)?.price ?? 0,
             }
           })
         })
       : []
-  }, [result, sortedReserves, chainId, sortedSymbols, sortedDecimals, sortedTotalSupply])
+  }, [result, lpPrices, chainId, sortedTotalSupply, sortedSymbols, sortedDecimals, sortedReserves])
 
   return {
     valid,
     syncing,
     loading:
-      balanceLoading || lpCallResults[0]?.loading || tokenSymbolResults[0]?.loading || tokenDecimalResults[0]?.loading,
+      balanceLoading ||
+      lpCallResults[0]?.loading ||
+      tokenSymbolResults[0]?.loading ||
+      tokenDecimalResults[0]?.loading ||
+      lpPricesLoading,
     results: balanceData,
   }
 }

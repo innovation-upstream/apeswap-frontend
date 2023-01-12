@@ -1,3 +1,5 @@
+import { supportedChains } from './mappings'
+
 export interface ApiResponse {
   userStats: UserChainInfo[]
   userHoldings: {
@@ -16,7 +18,7 @@ export interface ApiResponse {
 
 export interface IAssetBreakdown {
   address: string
-  chain: number
+  chain: Chain
   balance: string
   price: number
   amount: string
@@ -40,12 +42,12 @@ export interface ITVLBreakdownInfo {
 
 export interface UserChainInfo {
   chainId: Chain
-  farms: Array<Farm | DualFarm>
-  pools: Pool[]
-  vaults: Vault[]
-  maximizers: Vault[]
-  jungleFarms: Pool[]
-  lending: LendingInfo
+  farms?: Array<Farm | DualFarm>
+  pools?: Pool[]
+  vaults?: Vault[]
+  maximizers?: Vault[]
+  jungleFarms?: Pool[]
+  lending?: LendingInfo
 
   // Additional variables to be added post-beta launch
   bills?: Bill[]
@@ -150,7 +152,6 @@ export interface Token {
 export interface Vesting {
   earnedBalance: number
   vestingBalance: number
-  totalVestingTime: number
   vestingTimeRemaining: number
   pending: number
 }
@@ -183,6 +184,6 @@ export interface Position {
   isAuto?: boolean
 }
 
-export type Chain = 56 | 137
+export type Chain = typeof supportedChains[number]
 
-export type ChainOption = 'all' | 'bnb' | 'polygon'
+export type ChainOption = 'all' | 'bnb' | 'polygon' | 'telos'

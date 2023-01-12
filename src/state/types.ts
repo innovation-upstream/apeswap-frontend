@@ -3,25 +3,21 @@ import { AnyAction } from '@reduxjs/toolkit'
 import { Toast } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import {
-  Address,
   FarmConfig,
-  Nft,
-  Nfb,
   PoolConfig,
   NfaStakingPoolConfig,
-  Team,
   VaultConfig,
   DualFarmConfig,
   JungleFarmConfig,
-  LiveIfo,
   BillsConfig,
   Token,
-  Decimals,
-} from 'config/constants/types'
+} from '@ape.swap/apeswap-lists'
+import { Address, Nft, Nfb, Team, LiveIfo, Decimals } from 'config/constants/types'
 import { ProtocolDashboardState } from './protocolDashboard/types'
 import { ApiResponse } from './statsPage/types'
 import { InfoState } from './info/types'
 import { MigrationTimerState } from './migrationTimer/types'
+import { ChainId } from '@ape.swap/sdk'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -535,11 +531,11 @@ export interface DualFarmsState {
 }
 
 export interface JungleFarmsState {
-  data: JungleFarm[]
+  data: Partial<Record<ChainId, JungleFarm[]>>
 }
 
 export interface BillsState {
-  data: Bills[]
+  data: Partial<Record<ChainId, Bills[]>>
 }
 
 export interface NetworkState {

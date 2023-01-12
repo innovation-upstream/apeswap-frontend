@@ -76,17 +76,19 @@ export const ProductCardHeader: React.FC<ProductCardHeaderProps> = ({
           </Text>
         </LinkExternal>
         <Flex alignItems="center">
-          {!['bills', 'iaos'].includes(type) ? (
-            <CardValue fontSize={isMobile ? '14px' : '22px'} fontWeight={700} value={totalValue} prefix="$" />
-          ) : (
-            <CardValue fontSize={isMobile ? '14px' : '22px'} fontWeight={700} value={totalEarnings} prefix="$" />
-          )}
+          <CardValue
+            fontSize={isMobile ? '14px' : '22px'}
+            fontWeight={700}
+            value={totalValue}
+            prefix="$"
+            enableCountUp
+          />
           <AnimatedArrow height={isMobile ? 8 : 12} marginLeft={isMobile ? 15 : 20} isOpen={isOpen} onClick={onClick} />
         </Flex>
       </Flex>
       <StyledText>
         <Text fontWeight={500} fontSize="12px" marginRight="4px">
-          {`${t('Pending Rewards')}: `}
+          {`${t('Claimable Rewards')}: `}
         </Text>
         <CardValue fontSize="12px" fontWeight={500} value={totalEarnings} prefix="$" />
       </StyledText>

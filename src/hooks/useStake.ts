@@ -26,7 +26,7 @@ import {
 import useActiveWeb3React from './useActiveWeb3React'
 import { ChainId } from '@ape.swap/sdk'
 
-const useStake = (pid: number, v2Flag: boolean) => {
+const useStake = (pid: number, v2Flag: boolean, lpValue: number) => {
   const { chainId } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
   const masterChefContractV2 = useMasterChefV2Contract()
@@ -43,17 +43,18 @@ const useStake = (pid: number, v2Flag: boolean) => {
           cat: 'stake',
           amount,
           pid,
+          usdAmount: parseFloat(amount) * lpValue,
         },
       })
       return trxHash
     },
-    [masterChefContract, masterChefContractV2, v2Flag, pid, chainId],
+    [masterChefContract, masterChefContractV2, v2Flag, pid, lpValue, chainId],
   )
 
   return { onStake: handleStake }
 }
 
-export const useSousStake = (sousId) => {
+export const useSousStake = (sousId, tokenValue: number) => {
   const dispatch = useDispatch()
   const { account, chainId } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
@@ -78,6 +79,7 @@ export const useSousStake = (sousId) => {
           cat: 'stake',
           amount,
           pid: sousId,
+          usdAmount: parseFloat(amount) * tokenValue,
         },
       })
 
@@ -85,13 +87,13 @@ export const useSousStake = (sousId) => {
       dispatch(updateUserBalance(chainId, sousId, account))
       return trxHash
     },
-    [account, dispatch, masterChefContract, sousChefContract, sousId, masterChefContractV2, chainId],
+    [account, dispatch, masterChefContract, sousChefContract, sousId, masterChefContractV2, tokenValue, chainId],
   )
 
   return { onStake: handleStake }
 }
 
-export const useJungleStake = (jungleId) => {
+export const useJungleStake = (jungleId, lpValue: number) => {
   const jungleChefContract = useJungleChef(jungleId)
 
   const handleStake = useCallback(
@@ -105,12 +107,13 @@ export const useJungleStake = (jungleId) => {
           cat: 'stake',
           amount,
           pid: jungleId,
+          usdAmount: parseFloat(amount) * lpValue,
         },
       })
 
       return trxHash
     },
-    [jungleChefContract, jungleId],
+    [jungleChefContract, jungleId, lpValue],
   )
 
   return { onStake: handleStake }

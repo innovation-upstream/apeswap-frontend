@@ -4,7 +4,7 @@ import { Flex, Text } from '@apeswapfinance/uikit'
 import useIsMobile from 'hooks/useIsMobile'
 import getTimePeriods from 'utils/getTimePeriods'
 
-import { Position } from 'state/statsPage/types'
+import { Chain, Position } from 'state/statsPage/types'
 import { PortfolioData } from 'state/statsPage/mappings'
 
 import { ProductCardHeader } from './ProductCardHeader'
@@ -392,54 +392,57 @@ const ProductCard: React.FC<ProductCardProps> = ({ productData }) => {
       <Content isOpen={isOpen}>
         {isMobile ? null : <TableHeader>{displayLabels(productData.type)}</TableHeader>}
         <div style={{ width: '100%', marginTop: '10px', borderRadius: '10px', overflow: 'hidden' }}>
-          {Object.entries(productData.chainData).map(([chain, products], index) => (
-            <ProductChainList
-              key={index}
-              chain={chain}
-              listViews={products
-                .sort((a, b) =>
-                  isBillsOrIAOs
-                    ? a.vestingTimeRemaining > b.vestingTimeRemaining
-                      ? -1
-                      : 1
-                    : a.value > b.value
-                    ? -1
-                    : 1,
-                )
-                .map((position) => {
-                  return {
-                    id: position.id,
-                    title: (
-                      <Text fontWeight={700} fontSize={isMobile ? '12px' : '16px'}>
-                        {position.title}
-                      </Text>
-                    ),
-                    tokens: position.tokens,
-                    stakeLp: position.isLp ? true : null,
-                    earnLp: position.tokens.token4 ? true : null,
-                    billArrow: isBillsOrIAOs,
-                    cardContent: isMobile ? null : (
-                      <>
-                        {isBillsOrIAOs ? displayVestingRemainingSection(position) : displayBalanceSection(position)}
-                        {productData.type === 'lending' ? displayBorrowedSection(position) : null}
-                        {isBillsOrIAOs ? null : displayAprSection(position)}
-                        {displayRewardSection(position)}
-                        {displayValueSection(position)}
-                      </>
-                    ),
-                    expandedContent: (
-                      <Flex flexDirection="column" padding="16px" style={{ gap: '16px', width: '100%' }}>
-                        {isBillsOrIAOs ? displayVestingRemainingSection(position) : displayBalanceSection(position)}
-                        {productData.type === 'lending' ? displayBorrowedSection(position) : null}
-                        {isBillsOrIAOs ? null : displayAprSection(position)}
-                        {displayRewardSection(position)}
-                        {displayValueSection(position)}
-                      </Flex>
-                    ),
-                  }
-                })}
-            />
-          ))}
+          {Object.entries(productData.chainData).map(
+            ([chain, products], index) =>
+              products.length > 0 && (
+                <ProductChainList
+                  key={index}
+                  chain={+chain as Chain}
+                  listViews={products
+                    .sort((a, b) =>
+                      isBillsOrIAOs
+                        ? a.vestingTimeRemaining > b.vestingTimeRemaining
+                          ? -1
+                          : 1
+                        : a.value > b.value
+                        ? -1
+                        : 1,
+                    )
+                    .map((position) => {
+                      return {
+                        id: position.id,
+                        title: (
+                          <Text fontWeight={700} fontSize={isMobile ? '12px' : '16px'}>
+                            {position.title}
+                          </Text>
+                        ),
+                        tokens: position.tokens,
+                        stakeLp: position.isLp ? true : null,
+                        earnLp: position.tokens.token4 ? true : null,
+                        billArrow: isBillsOrIAOs,
+                        cardContent: isMobile ? null : (
+                          <>
+                            {isBillsOrIAOs ? displayVestingRemainingSection(position) : displayBalanceSection(position)}
+                            {productData.type === 'lending' ? displayBorrowedSection(position) : null}
+                            {isBillsOrIAOs ? null : displayAprSection(position)}
+                            {displayRewardSection(position)}
+                            {displayValueSection(position)}
+                          </>
+                        ),
+                        expandedContent: (
+                          <Flex flexDirection="column" padding="16px" style={{ gap: '16px', width: '100%' }}>
+                            {isBillsOrIAOs ? displayVestingRemainingSection(position) : displayBalanceSection(position)}
+                            {productData.type === 'lending' ? displayBorrowedSection(position) : null}
+                            {isBillsOrIAOs ? null : displayAprSection(position)}
+                            {displayRewardSection(position)}
+                            {displayValueSection(position)}
+                          </Flex>
+                        ),
+                      }
+                    })}
+                />
+              ),
+          )}
         </div>
       </Content>
     </CardInfo>

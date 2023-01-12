@@ -13,6 +13,22 @@ interface CardValueProps {
   color?: string
   width?: string
   maxWidth?: string
+  enableCountUp?: boolean
+}
+
+const getDecimals = (value: number) => {
+  if (value === 0 || value > 1e5) return 0
+  if (value < 1) return 4
+  return 2
+}
+
+const format = (value: number, decimals?: number) => {
+  if (!decimals) decimals = getDecimals(value)
+
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(value)
 }
 
 const CardValue: React.FC<CardValueProps> = ({
@@ -26,22 +42,21 @@ const CardValue: React.FC<CardValueProps> = ({
   color,
   width,
   maxWidth,
+  enableCountUp,
 }) => {
   const { countUp, update } = useCountUp({
     start: 0,
     end: value,
     duration: 1,
     separator: ',',
-    decimals:
-      // eslint-disable-next-line no-nested-ternary
-      decimals !== undefined ? decimals : value === 0 ? 0 : value < 1 ? 4 : value > 1e5 ? 0 : 2,
+    decimals: decimals || getDecimals(value),
   })
 
   const updateValue = useRef(update)
 
   useEffect(() => {
-    updateValue.current(value)
-  }, [value, updateValue])
+    if (enableCountUp) updateValue.current(value)
+  }, [value, updateValue, enableCountUp])
 
   return (
     <Text
@@ -52,7 +67,7 @@ const CardValue: React.FC<CardValueProps> = ({
       style={{ width: `${width}`, maxWidth: `${maxWidth}` }}
     >
       {prefix}
-      {countUp} {suffix}
+      {enableCountUp ? countUp : format(value, decimals)} {suffix}
     </Text>
   )
 }

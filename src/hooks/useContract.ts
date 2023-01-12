@@ -96,6 +96,7 @@ import useActiveWeb3React from './useActiveWeb3React'
 import { Zap } from 'config/abi/types/Zap'
 import { MigratorBalanceChecker } from 'config/abi/types/MigratorBalanceChecker'
 import { MasterChefV2 } from 'config/abi/types/MasterChefV2'
+import { jungleFarms, pools } from '@ape.swap/apeswap-lists'
 
 export function useContract(abi: any, address: string | undefined, withSignerIfPossible = true): Contract | null {
   const { library, account } = useActiveWeb3React()
@@ -154,16 +155,14 @@ export const useMasterchef = () => {
 export const useSousChef = (id) => {
   // Using selector to avoid circular dependecies
   const chainId = useSelector((state: State) => state.network.data.chainId)
-  const poolsConfig = useSelector((state: State) => state.pools.data)
-  const config = poolsConfig.find((pool) => pool.sousId === id)
+  const config = pools.find((pool) => pool.sousId === id)
 
   return useContract(sousChef, config.contractAddress[chainId]) as SousChef
 }
 
 export const useJungleChef = (id) => {
   const chainId = useSelector((state: State) => state.network.data.chainId)
-  const jungleFarmsConfig = useSelector((state: State) => state.jungleFarms.data)
-  const config = jungleFarmsConfig.find((pool) => pool.jungleId === id)
+  const config = jungleFarms.find((pool) => pool.jungleId === id)
 
   return useContract(jungleChef, config.contractAddress[chainId]) as JungleChef
 }

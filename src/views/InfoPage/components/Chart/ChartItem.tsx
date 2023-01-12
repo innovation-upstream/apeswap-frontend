@@ -14,9 +14,7 @@ interface ChartItemProps {
 
 const ChartItem: React.FC<ChartItemProps> = (props) => {
   const { isDark } = useTheme()
-
   const [activeChains] = useFetchActiveChains()
-
   const { chartData } = props
 
   function getBarColor(bar: any) {

@@ -52,7 +52,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
   const { showGeneralHarvestModal } = useIsModalShown()
   const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
 
-  const { onStake } = useStake(pid, v2Flag)
+  const { onStake } = useStake(pid, v2Flag, lpValueUsd)
   const { onUnstake } = useUnstake(pid, v2Flag)
 
   const [onPresentDeposit] = useModal(

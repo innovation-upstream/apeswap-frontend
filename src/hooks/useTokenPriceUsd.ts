@@ -8,7 +8,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 
 export const useTokenPriceUsd = (chainId: number, currency: Currency, lp = false, smartRouter?: SmartRouter) => {
   const isNative = currency?.symbol === 'ETH'
-  const [address, decimals] = currency instanceof Token ? [currency?.address, currency?.decimals] : ['', 18]
+  const [address] = currency instanceof Token ? [currency?.address, currency?.decimals] : ['', 18]
   const priceGetterAddress = getSmartPriceGetter(chainId, smartRouter)
   const priceGetterContract = new Contract(priceGetterAddress, apePriceGetter)
 
@@ -16,10 +16,10 @@ export const useTokenPriceUsd = (chainId: number, currency: Currency, lp = false
 
   const { result } = useSingleCallResult(currency ? priceGetterContract : undefined, lp ? 'getLPPrice' : 'getPrice', [
     isNative ? nativeTokenAddress : address,
-    decimals,
+    18,
   ])
   if (currency?.symbol === 'GNANA') {
     return parseFloat(store.getState().tokenPrices.bananaPrice) * 1.3889
   }
-  return result?.[0] ? getBalanceNumber(result[0].toString(), decimals) : 0
+  return result?.[0] ? getBalanceNumber(result[0].toString(), 18) : 0
 }

@@ -170,6 +170,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
             disabled={userEarnings <= 0}
             userEarnings={userEarnings}
             earnTokenSymbol={pool?.rewardToken?.symbol || pool?.tokenName}
+            earnTokenValueUsd={pool?.rewardToken?.price}
           />
         </>
       ),

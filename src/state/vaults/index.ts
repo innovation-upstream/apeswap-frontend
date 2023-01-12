@@ -7,17 +7,14 @@ import {
 } from './fetchVaultsUser'
 import { VaultsState, TokenPrices, Vault, FarmLpAprsType, AppThunk } from '../types'
 import fetchVaults from './fetchVaults'
-import fetchVaultConfig from './api'
+import { vaults } from '@ape.swap/apeswap-lists'
 
-const initialState: VaultsState = { data: [], loadVaultData: false, userDataLoaded: false }
+const initialState: VaultsState = { data: vaults, loadVaultData: false, userDataLoaded: false }
 
 export const vaultSlice = createSlice({
   name: 'Vaults',
   initialState,
   reducers: {
-    setInitialVaultData: (state, action) => {
-      state.data = action.payload
-    },
     setLoadVaultData: (state, action) => {
       const liveVaultsData: Vault[] = action.payload
       state.data = state.data.map((vault) => {
@@ -45,17 +42,6 @@ export const vaultSlice = createSlice({
 })
 
 // thunks
-
-export const setInitialVaultDataAsync = (chainId: number) => async (dispatch) => {
-  try {
-    const initialVaultState: Vault[] = await fetchVaultConfig()
-    const filteredVaults = initialVaultState?.filter((vault) => vault.availableChains.includes(chainId))
-    dispatch(setInitialVaultData(filteredVaults || []))
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 export const fetchVaultsPublicDataAsync =
   (chainId: number, tokenPrices: TokenPrices[], farmLpAprs: FarmLpAprsType): AppThunk =>
   async (dispatch, getState) => {
@@ -123,7 +109,6 @@ export const updateVaultUserStakedBalance =
   }
 
 // Actions
-export const { setInitialVaultData, setLoadVaultData, setVaultUserData, setVaultsLoad, updateVaultsUserData } =
-  vaultSlice.actions
+export const { setLoadVaultData, setVaultUserData, setVaultsLoad, updateVaultsUserData } = vaultSlice.actions
 
 export default vaultSlice.reducer

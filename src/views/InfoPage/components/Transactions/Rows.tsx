@@ -20,7 +20,6 @@ const Rows = ({ transactions }: { transactions: Swaps[] }) => {
       sx={{
         width: '100%',
         maxWidth: '1200px',
-        height: '500px',
         flexDirection: 'column',
         overflowX: 'scroll',
         overflowY: 'hidden',
@@ -54,7 +53,7 @@ const Rows = ({ transactions }: { transactions: Swaps[] }) => {
           {t('Time')}
         </Text>
       </Grid>
-      <Flex sx={{ flexDirection: 'column', height: '500px' }}>
+      <Flex sx={{ flexDirection: 'column' }}>
         {transactions.map(
           (
             {
@@ -100,6 +99,7 @@ const Rows = ({ transactions }: { transactions: Swaps[] }) => {
               if (transactionTime.seconds > 0) {
                 return transactionTime.seconds.toFixed(0) + ' seconds ago'
               }
+              return 'Just now'
             }
             return (
               <Grid

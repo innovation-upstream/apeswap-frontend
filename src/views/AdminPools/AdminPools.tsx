@@ -10,7 +10,7 @@ import partition from 'lodash/partition'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import useWindowSize, { Size } from 'hooks/useDimensions'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePools, useSetPools } from 'state/pools/hooks'
+import { usePools } from 'state/pools/hooks'
 import { Pool } from 'state/types'
 import Page from 'components/layout/Page'
 import { useTranslation } from 'contexts/Localization'
@@ -457,7 +457,6 @@ const AdminText = styled(Text)`
 const NUMBER_OF_POOLS_VISIBLE = 12
 
 const AdminPools: React.FC = () => {
-  useSetPools()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')

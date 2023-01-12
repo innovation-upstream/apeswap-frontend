@@ -23,24 +23,24 @@ export interface NftInfo {
 export function rawToNfts({ userHoldings, userStats }: ApiResponse) {
   const nfts: NftInfo[] = [...userHoldings.nfts]
 
-  userStats.forEach((chain) => {
-    chain.bills?.forEach((bill) => {
-      const timeUntilEnd = bill.vestingTimeRemaining > 0 ? getTimePeriods(bill.vestingTimeRemaining, true) : null
+  userStats.forEach(({ bills, chainId }) => {
+    bills?.forEach(({ billId, earnToken, imageUrl, purchaseToken, totalPayout, type, vestingTimeRemaining }) => {
+      const timeUntilEnd = vestingTimeRemaining > 0 ? getTimePeriods(vestingTimeRemaining, true) : null
 
       const tokens = {
-        token1: wrappedToNative(bill.purchaseToken.pairData.token0.symbol),
-        token2: wrappedToNative(bill.purchaseToken.pairData.token1.symbol),
-        token3: wrappedToNative(bill.earnToken.symbol),
+        token1: wrappedToNative(purchaseToken.pairData.token0.symbol),
+        token2: wrappedToNative(purchaseToken.pairData.token1.symbol),
+        token3: wrappedToNative(earnToken.symbol),
       }
 
       nfts.push({
-        chain: chain.chainId,
+        chain: chainId,
         name: `${tokens.token1}-${tokens.token2}`,
-        id: `${chain.chainId}-${bill.billId}`,
-        imageUrl: bill.imageUrl,
+        id: `${chainId}-${billId}`,
+        imageUrl,
         type: 'Bill',
-        billType: bill.type,
-        billValue: bill.totalPayout,
+        billType: type,
+        billValue: totalPayout,
         timeRemaining: timeUntilEnd
           ? `${timeUntilEnd.days}d ${timeUntilEnd.hours}h ${timeUntilEnd.minutes}m`
           : 'FULLY VESTED',

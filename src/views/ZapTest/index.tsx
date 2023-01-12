@@ -10,10 +10,9 @@ import DexPanel from 'views/Dex/components/DexPanel'
 import { ApprovalState, useApproveCallbackFromZap } from 'hooks/useApproveCallback'
 import { CurrencyLogo } from 'components/Logo'
 import { PairState } from 'hooks/usePairs'
-import { useBills, usePollBills, useSetBills } from 'state/bills/hooks'
+import { useBills, usePollBills } from 'state/bills/hooks'
 
 const ZapTest: React.FC = () => {
-  useSetBills()
   usePollBills()
 
   const bills = useBills()
