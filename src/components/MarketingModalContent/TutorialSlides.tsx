@@ -704,6 +704,80 @@ export const LiquiditySlides = () => {
   ]
 }
 
+export const MigrateSlides = () => {
+  const { t } = useTranslation()
+  return [
+    <Flex sx={styles.contentContainer} key={1}>
+      <Text sx={styles.stepNo}>{t(`Step 1`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Begin Your Migration')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            'If you have LPs to migrate, select MIGRATE ALL to start migrating. Your custom migration experience will load automatically!',
+          )}
+        </Text>
+        <Text sx={{ fontStyle: 'italic' }}>{t('You can also migrate LPs individually, if you prefer.')}</Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={2}>
+      <Text sx={styles.stepNo}>{t(`Step 2`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Unstake Your External LPs')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            `Select the UNSTAKE ALL button to unstake your positions from the other DEX. Confirm all the transactions in your wallet.`,
+          )}
+        </Text>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
+          {t(`You'll be able to see your overall migration progress!`)}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`Step 3`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Migrate LPs To ApeSwap')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            'Select APPROVE ALL to approve the ApeSwap migration contracts. Then, select MIGRATE ALL to move your LPs over to ApeSwap. Confirm all the transactions in your wallet.',
+          )}
+        </Text>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>{t(`Your LPs will now become APE-LPs!`)}</Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`Step 4`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Stake In ApeSwap')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            'Select APPROVE ALL to approve the required staking contracts. Select STAKE ALL to stake all your tokens in ApeSwap products. Confirm all the transactions in your wallet. ',
+          )}
+        </Text>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
+          {t(
+            `You can also stake in Maximizer Vaults by toggling “Migrate to Maximizers” - which will auto-compound your yields.`,
+          )}
+        </Text>
+      </Flex>
+    </Flex>,
+    <Flex sx={styles.contentContainer} key={3}>
+      <Text sx={styles.stepNo}>{t(`Congratulations`)}</Text>
+      <Text sx={styles.slideTitle}>{t('Enjoy Your Rewards!')}</Text>
+      <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
+        <Text>
+          {t(
+            `You're now ready to migrate all your LPs from external DEXs into ApeSwap to earn new yields. What are you waiting for!?`,
+          )}
+        </Text>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
+          {t(`You'll see a summary of your migrated assets after all steps are completed.`)}
+        </Text>
+      </Flex>
+    </Flex>,
+  ]
+}
+
 export const ConnectWalletSlide = () => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()

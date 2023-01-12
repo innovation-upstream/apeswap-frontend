@@ -15,6 +15,7 @@ import {
   OrdersSlides,
   LiquiditySlides,
   ConnectWalletSlide,
+  MigrateSlides,
 } from './TutorialSlides'
 
 const Tutorial: React.FC<{
@@ -88,6 +89,13 @@ const Tutorial: React.FC<{
         title: 'Welcome to Limit Orders',
         description: 'Trade at the price you want!',
         slides: account ? OrdersSlides() : [ConnectWalletSlide(), ...OrdersSlides()],
+      }
+    if (location === '/migrate')
+      return {
+        type: 'migrate',
+        title: 'Welcome to Liquidity Migration',
+        description: 'Migrate your liquidity from external DEXs into ApeSwap',
+        slides: account ? OrdersSlides() : [ConnectWalletSlide(), ...MigrateSlides()],
       }
     return {
       type: 'liquidity',
