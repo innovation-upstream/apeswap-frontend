@@ -374,7 +374,7 @@ export const useMergedV2Products = () => {
       },
     )
   }, [userV2Farms, vaults, chainId])
-  const loaded = !!vaults?.[0]?.userData && !!farms?.[0]?.userData && mergedProducts
+  const loaded = (!vaults?.[0] || !!vaults?.[0]?.userData) && !!farms?.[0]?.userData && mergedProducts
 
   return { mergedProducts, loaded }
 }

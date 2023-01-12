@@ -68,6 +68,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   const loading = useMemo(() => {
     return !(v1ProductsLoaded && v2ProductsLoaded)
   }, [v1ProductsLoaded, v2ProductsLoaded])
+  console.log(loading, v1ProductsLoaded, v2ProductsLoaded)
 
   // Monitor is status change for active index
   // TODO: Come back to this
