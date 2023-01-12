@@ -25,6 +25,7 @@ import { selectOutputCurrency } from '../../../state/zap/actions'
 import Unstake from './MigrateActionsButtons/Unstake'
 import { useVaultsV3 } from 'state/vaultsV3/hooks'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
+import { VaultVersion } from '@ape.swap/apeswap-lists'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -69,7 +70,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       ttWidth: '250px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '10px', marginRight: '10px' },
-      expandedContentJustified: vault.version === 'V1' && 'center',
+      expandedContentJustified: vault.version === VaultVersion.V1 && 'center',
       open: openId === vault.id,
       cardContent: (
         <>

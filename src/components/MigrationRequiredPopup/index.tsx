@@ -8,10 +8,10 @@ import { Link, useLocation } from 'react-router-dom'
 import { useMigrationPhase } from 'state/migrationTimer/hooks'
 import { MigrationPhases } from 'state/migrationTimer/types'
 import { useVaults } from 'state/vaults/hooks'
-import { useFarms, usePollFarms, useSetFarms } from 'state/farms/hooks'
-import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
-import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
-import { usePollVaultsV3Data, usePollVaultV3UserData, useSetVaultsV3 } from 'state/vaultsV3/hooks'
+import { useFarms, usePollFarms } from 'state/farms/hooks'
+import { useFarmsV2, usePollFarmsV2 } from 'state/farmsV2/hooks'
+import { usePollVaultsData, usePollVaultUserData } from 'state/vaults/hooks'
+import { usePollVaultsV3Data, usePollVaultV3UserData } from 'state/vaultsV3/hooks'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 import { useTranslation } from 'contexts/Localization'
 
@@ -21,10 +21,6 @@ const MigrationRequiredPopup = () => {
   // Loading migration data on load.
   // This should be removed after the migration process has finished
   // This has high performance impact
-  useSetFarms()
-  useSetFarmsV2()
-  useSetVaults()
-  useSetVaultsV3()
   usePollVaultsData()
   usePollVaultUserData()
   usePollVaultsV3Data()

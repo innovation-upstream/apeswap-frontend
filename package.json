@@ -29,7 +29,7 @@
     ]
   },
   "dependencies": {
-    "@ape.swap/apeswap-lists": "1.0.14",
+    "@ape.swap/apeswap-lists": "1.0.15-alpha.2",
     "@ape.swap/sdk": "4.3.1",
     "@ape.swap/uikit": "1.3.44",
     "@apeswapfinance/token-lists": "1.0.330",
@@ -40,6 +40,9 @@
     "@emotion/styled": "^11.8.1",
     "@ethersproject/abi": "^5.0.7",
     "@mdx-js/react": "^2.1.0",
+    "@nivo/bar": "^0.79.1",
+    "@nivo/core": "^0.79.0",
+    "@nivo/line": "^0.79.1",
     "@reduxjs/toolkit": "^1.5.0",
     "@siddomains/sidjs": "0.1.14",
     "@toruslabs/torus-embed": "^1.21.0",
@@ -92,10 +95,7 @@
     "typescript": "^4.4.3",
     "use-media": "^1.4.0",
     "web3": "^1.3.1",
-    "yalc": "^1.0.0-pre.53",
-    "@nivo/bar": "^0.79.1",
-    "@nivo/line": "^0.79.1",
-    "@nivo/core": "^0.79.0"
+    "yalc": "^1.0.0-pre.53"
   },
   "devDependencies": {
     "@apeswapfinance/eslint-config-apeswap": "1.0.0",

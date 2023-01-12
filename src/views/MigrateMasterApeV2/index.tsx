@@ -46,7 +46,7 @@ const MigrateMasterApeV2: React.FC = () => {
           >
             <MigrateTimer />
           </Flex>
-          <Banner banner="migrate" link="" title="The Migration" margin="30px 0px 20px 0px" />
+          <Banner banner="migrate" link="" title="Hardcap Contract Migration" margin="30px 0px 20px 0px" />
         </Flex>
         <Flex sx={{ margin: '.5vw 0px' }} />
         <Flex sx={{ alignItems: 'center', mb: '10px' }}>

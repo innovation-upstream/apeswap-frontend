@@ -1,5 +1,5 @@
+import { VaultConfig } from '@ape.swap/apeswap-lists'
 import { Call } from 'utils/multicall'
-import { VaultConfig } from 'config/constants/types'
 
 const fetchVaultCalls = (vault: VaultConfig, chainId: number): Call[] => {
   const stratAddress = vault.stratAddress[chainId]

@@ -8,11 +8,13 @@ import { useAppDispatch } from 'state'
 import { useFarmLpAprs } from 'state/hooks'
 import { useFetchLpTokenPrices } from 'state/lpPrices/hooks'
 import { useFetchTokenPrices, useTokenPrices } from 'state/tokenPrices/hooks'
-import { VaultsState, State, Vault, VaultsV3State } from 'state/types'
-import { fetchVaultsV3PublicDataAsync, fetchVaultV3UserDataAsync, setInitialVaultV3DataAsync } from '.'
+import { VaultsState, State, Vault } from 'state/types'
+import { fetchVaultsV3PublicDataAsync, fetchVaultV3UserDataAsync } from '.'
 
 // Vault data
 export const usePollVaultsV3Data = (includeArchive = false) => {
+  useFetchTokenPrices()
+  useFetchLpTokenPrices()
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   const { account, chainId } = useActiveWeb3React()
@@ -32,19 +34,17 @@ export const usePollVaultV3UserData = () => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   const { account, chainId } = useActiveWeb3React()
-  const vaults = useSelector((state: State) => state.vaultsV3.data)
-  const vaultsLoaded = vaults.length > 0
   useEffect(() => {
     if (account && chainId === ChainId.BSC) {
       dispatch(fetchVaultV3UserDataAsync(account, chainId))
     }
-  }, [dispatch, slowRefresh, vaultsLoaded, account, chainId])
+  }, [dispatch, slowRefresh, account, chainId])
 }
 
 // Vaults
 
 export const useVaultsV3 = () => {
-  const { loadVaultData, userDataLoaded, data }: VaultsV3State = useSelector((state: State) => state.vaultsV3)
+  const { loadVaultData, userDataLoaded, data }: VaultsState = useSelector((state: State) => state.vaultsV3)
   return { vaults: data, loadVaultData, userDataLoaded }
 }
 
@@ -61,16 +61,5 @@ export const useVaultV3User = (pid) => {
     tokenBalance: vault.userData ? new BigNumber(vault.userData.tokenBalance) : new BigNumber(0),
     stakedBalance: vault.userData ? new BigNumber(vault.userData.stakedBalance) : new BigNumber(0),
     stakedWantBalance: vault.userData ? new BigNumber(vault.userData.stakedWantBalance) : new BigNumber(0),
-  }
-}
-
-export const useSetVaultsV3 = () => {
-  useFetchTokenPrices()
-  useFetchLpTokenPrices()
-  const dispatch = useAppDispatch()
-  const { vaults } = useVaultsV3()
-  const { chainId } = useActiveWeb3React()
-  if (vaults.length === 0 && chainId === ChainId.BSC) {
-    dispatch(setInitialVaultV3DataAsync(chainId))
   }
 }

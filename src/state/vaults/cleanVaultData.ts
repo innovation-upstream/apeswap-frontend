@@ -1,5 +1,5 @@
+import { VaultConfig, VaultVersion } from '@ape.swap/apeswap-lists'
 import BigNumber from 'bignumber.js'
-import { VaultConfig } from 'config/constants/types'
 import { FarmLpAprsType, TokenPrices, Vault } from 'state/types'
 import { getFarmApr } from 'utils/apr'
 import {
@@ -70,18 +70,18 @@ const cleanVaultData = (
     let yearlyApy = 0
     let dailyApy = 0
 
-    if (vaultConfig.version === 'V2' || vaultConfig.version === 'V3') {
+    if (vaultConfig.version === VaultVersion.V2 || vaultConfig.version === VaultVersion.V3) {
       yearlyApy = tokenEarnedPerThousandDollarsCompoundingMax({
         numberOfDays: 365,
         farmApr: lpApr ? apr + lpApr : apr,
         bananaPoolApr,
-        performanceFee: vaultConfig.version === 'V2' ? keeperFeeV2 : keeperFeeV3,
+        performanceFee: vaultConfig.version === VaultVersion.V2 ? keeperFeeV2 : keeperFeeV3,
       })
       dailyApy = tokenEarnedPerThousandDollarsCompoundingMax({
         numberOfDays: 1,
         farmApr: lpApr ? apr + lpApr : apr,
         bananaPoolApr,
-        performanceFee: vaultConfig.version === 'V2' ? keeperFeeV2 : keeperFeeV3,
+        performanceFee: vaultConfig.version === VaultVersion.V2 ? keeperFeeV2 : keeperFeeV3,
       })
     } else {
       const amountEarnedYealry = tokenEarnedPerThousandDollarsCompounding({
@@ -103,15 +103,15 @@ const cleanVaultData = (
     return {
       ...vaultConfig,
       keeperFee:
-        vaultConfig.version === 'V2'
+        vaultConfig.version === VaultVersion.V2
           ? keeperFeeV2.toString()
-          : vaultConfig.version === 'V3'
+          : vaultConfig.version === VaultVersion.V3
           ? keeperFeeV3.toString()
           : '0.25',
       withdrawFee:
-        vaultConfig.version === 'V2'
+        vaultConfig.version === VaultVersion.V2
           ? withdrawFeeV2.toString()
-          : vaultConfig.version === 'V3'
+          : vaultConfig.version === VaultVersion.V3
           ? withdrawFeeV3.toString()
           : vaultConfig?.fee
           ? vaultConfig.fee

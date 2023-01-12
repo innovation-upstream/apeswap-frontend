@@ -5,19 +5,16 @@ import {
   fetchVaultUserStakedAndPendingBalances,
   fetchVaultUserTokenBalances,
 } from './fetchVaultsV3User'
-import { TokenPrices, Vault, FarmLpAprsType, AppThunk, VaultsV3State } from '../types'
-import fetchVaults from './fetchVaultsV3'
-import fetchVaultConfig from './api'
+import { VaultsState, TokenPrices, Vault, FarmLpAprsType, AppThunk } from '../types'
+import fetchVaultsV3 from './fetchVaultsV3'
+import { vaultsV3 } from '@ape.swap/apeswap-lists'
 
-const initialState: VaultsV3State = { data: [], loadVaultData: false, userDataLoaded: false }
+const initialState: VaultsState = { data: vaultsV3, loadVaultData: false, userDataLoaded: false }
 
-export const vaultV3Slice = createSlice({
+export const vaultSlice = createSlice({
   name: 'VaultsV3',
   initialState,
   reducers: {
-    setInitialVaultV3Data: (state, action) => {
-      state.data = action.payload
-    },
     setLoadVaultV3Data: (state, action) => {
       const liveVaultsData: Vault[] = action.payload
       state.data = state.data.map((vault) => {
@@ -45,23 +42,12 @@ export const vaultV3Slice = createSlice({
 })
 
 // thunks
-
-export const setInitialVaultV3DataAsync = (chainId: number) => async (dispatch) => {
-  try {
-    const initialVaultState: Vault[] = await fetchVaultConfig()
-    const filteredVaults = initialVaultState?.filter((vault) => vault.availableChains.includes(chainId))
-    dispatch(setInitialVaultV3Data(filteredVaults || []))
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 export const fetchVaultsV3PublicDataAsync =
   (chainId: number, tokenPrices: TokenPrices[], farmLpAprs: FarmLpAprsType): AppThunk =>
   async (dispatch, getState) => {
     try {
       const vaultsConfig = getState().vaultsV3.data
-      const vaults = await fetchVaults(chainId, tokenPrices, farmLpAprs, vaultsConfig)
+      const vaults = await fetchVaultsV3(chainId, tokenPrices, farmLpAprs, vaultsConfig)
       dispatch(setLoadVaultV3Data(vaults))
     } catch (error) {
       console.warn(error)
@@ -123,12 +109,6 @@ export const updateVaultV3UserStakedBalance =
   }
 
 // Actions
-export const {
-  setInitialVaultV3Data,
-  setLoadVaultV3Data,
-  setVaultV3UserData,
-  setVaultsV3Load,
-  updateVaultsV3UserData,
-} = vaultV3Slice.actions
+export const { setLoadVaultV3Data, setVaultV3UserData, setVaultsV3Load, updateVaultsV3UserData } = vaultSlice.actions
 
-export default vaultV3Slice.reducer
+export default vaultSlice.reducer

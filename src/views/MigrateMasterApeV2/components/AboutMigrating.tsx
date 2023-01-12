@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import React, { useState } from 'react'
 
 export const AboutMigrating = () => {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
   const { t } = useTranslation()
   return (
     <Flex

@@ -1,5 +1,5 @@
+import { VaultConfig } from '@ape.swap/apeswap-lists'
 import BigNumber from 'bignumber.js'
-import { VaultConfig } from 'config/constants/types'
 import { FarmLpAprsType, TokenPrices, Vault } from 'state/types'
 import { getFarmApr } from 'utils/apr'
 import { tokenEarnedPerThousandDollarsCompoundingMax } from 'utils/compoundApyHelpers'

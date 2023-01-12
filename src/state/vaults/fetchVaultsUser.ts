@@ -5,6 +5,7 @@ import vaultApeV2ABI from 'config/abi/vaultApeV2.json'
 import multicall from 'utils/multicall'
 import { getBananaAddress, getVaultApeAddressV1, getVaultApeAddressV2, getVaultApeAddressV3 } from 'utils/addressHelper'
 import { Vault } from 'state/types'
+import { VaultVersion } from '@ape.swap/apeswap-lists'
 
 export const fetchVaultUserAllowances = async (account: string, chainId: number, vaultsConfig: Vault[]) => {
   const vaultApeAddressV1 = getVaultApeAddressV1(chainId)
@@ -17,7 +18,11 @@ export const fetchVaultUserAllowances = async (account: string, chainId: number,
       name: 'allowance',
       params: [
         account,
-        vault.version === 'V1' ? vaultApeAddressV1 : vault.version === 'V2' ? vaultApeAddressV2 : vaultApeAddressV3,
+        vault.version === VaultVersion.V1
+          ? vaultApeAddressV1
+          : vault.version === VaultVersion.V2
+          ? vaultApeAddressV2
+          : vaultApeAddressV3,
       ],
     }
   })
@@ -54,14 +59,14 @@ export const fetchVaultUserStakedAndPendingBalances = async (
   const vaultApeAddressV3 = getVaultApeAddressV3(chainId)
   const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
   const calls = filteredVaults.map((vault) => {
-    return vault.version === 'V1'
+    return vault.version === VaultVersion.V1
       ? {
           address: vaultApeAddressV1,
           name: 'stakedWantTokens',
           params: [vault.pid, account],
         }
       : {
-          address: vault.version === 'V2' ? vaultApeAddressV2 : vaultApeAddressV3,
+          address: vault.version === VaultVersion.V2 ? vaultApeAddressV2 : vaultApeAddressV3,
           name: 'balanceOf',
           params: [vault.pid, account],
         }
@@ -76,7 +81,7 @@ export const fetchVaultUserStakedAndPendingBalances = async (
     return rawStakedBalance.gt(isBanana ? 10000000000000 : 10) ? rawStakedBalance.toJSON() : '0'
   })
   const parsePendingBalances = rawStakedBalances.map((stakedBalance, index) => {
-    return filteredVaults[index].version === 'V1' ? '0' : new BigNumber(stakedBalance[1]._hex).toJSON()
+    return filteredVaults[index].version === VaultVersion.V1 ? '0' : new BigNumber(stakedBalance[1]._hex).toJSON()
   })
   return { stakedBalances: parsedStakedBalances, pendingRewards: parsePendingBalances }
 }

@@ -87,7 +87,7 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
 
   // Set the initial status for each LP
   useEffect(() => {
-    setMigrateLpStatus(v1ApeProducts, v2ApeProducts, v2Farms, migrateMaximizers, setLpStatus, chainId)
+    setMigrateLpStatus(v1ApeProducts, v2ApeProducts, v2Farms, setLpStatus, chainId)
   }, [loading, account, chainId])
 
   // if (!apeBalancesLoading && liquidityTokens.length > 0 && timeReady) {
@@ -95,8 +95,6 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   //     setMigrationLoading(false)
   //   }
   // }
-
-  console.log(lpStatus)
 
   return (
     <MigrateContext.Provider

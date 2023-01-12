@@ -23,6 +23,7 @@ import { useFarms } from 'state/farms/hooks'
 import { useVaults } from 'state/vaults/hooks'
 import { useFarmsV2 } from 'state/farmsV2/hooks'
 import { useVaultsV3 } from 'state/vaultsV3/hooks'
+import { VaultVersion } from '@ape.swap/apeswap-lists'
 
 /**
  * Hook to use handleMaximizerApprovalToggle callback which checks the allowance for each farm/vault and status state
@@ -32,6 +33,8 @@ import { useVaultsV3 } from 'state/vaultsV3/hooks'
  * @param setLpStatus Action to set the Migrate Lp Status state
  * @param setMigrateMaximizers Action to set the migrate maximizer flag state
  */
+
+// TODO: Update lp status based on vault
 export const useHandleMaximizerApprovalToggle = (
   lpStatus: MigrateLpStatus[],
   setLpStatus: React.Dispatch<React.SetStateAction<MigrateLpStatus[]>>,
@@ -275,7 +278,7 @@ export const usePullAndMergeV1Products = () => {
       }),
       ...userV1StakedVaults.map((vault) => {
         const singleStakeAsset = !vault.quoteToken
-        const productType = vault.version === 'V1' ? ProductTypes.VAULT_V1 : ProductTypes.VAULT
+        const productType = vault.version === VaultVersion.V1 ? ProductTypes.VAULT_V1 : ProductTypes.VAULT
         const lp = vault.stakeToken.address[chainId].toLowerCase()
 
         return {

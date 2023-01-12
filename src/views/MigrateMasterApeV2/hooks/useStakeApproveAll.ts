@@ -9,14 +9,20 @@ import { useMigrateAll } from '../provider'
 import { useVaults } from 'state/vaults/hooks'
 import { useMasterChefV2Address, useVaultApeAddressV3 } from 'hooks/useAddress'
 import track from 'utils/track'
+import { useAppDispatch } from 'state'
+import { updateFarmV2UserAllowances } from 'state/farmsV2'
+import { updateVaultV3UserAllowance } from 'state/vaultsV3'
+import { useFarmsV2 } from 'state/farmsV2/hooks'
 
 const useStakeApproveAll = () => {
+  const dispatch = useAppDispatch()
   const { library, account, chainId } = useActiveWeb3React()
   const { handleUpdateMigrateLp, migrateMaximizers } = useMigrateAll()
   const masterChefV2Address = useMasterChefV2Address()
   // TODO: Update vaults when ready
   const vaultAddress = useVaultApeAddressV3()
   const { vaults: fetchedVaults } = useVaults()
+  const farms = useFarmsV2(null)
   const vaults = fetchedVaults.filter((vault) => !vault.inactive)
 
   const handleApproveAll = useCallback(
@@ -25,6 +31,7 @@ const useStakeApproveAll = () => {
         try {
           // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
           const matchedVault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)
+          const farmPid = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lp).pid
           const lpContract = new Contract(lp, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
           handleUpdateMigrateLp(
             id,
@@ -42,6 +49,9 @@ const useStakeApproveAll = () => {
                 .waitForTransaction(tx.hash)
                 .then(() => {
                   handleUpdateMigrateLp(id, 'approveStake', MigrateStatus.COMPLETE, 'Approval complete')
+                  matchedVault && migrateMaximizers
+                    ? dispatch(updateVaultV3UserAllowance(account, chainId, matchedVault.pid))
+                    : dispatch(updateFarmV2UserAllowances(chainId, farmPid, account))
                   track({
                     event: 'migrate_stake_approve',
                     chain: chainId,
@@ -67,7 +77,18 @@ const useStakeApproveAll = () => {
         }
       })
     },
-    [account, handleUpdateMigrateLp, library, chainId, masterChefV2Address, vaults, vaultAddress, migrateMaximizers],
+    [
+      account,
+      handleUpdateMigrateLp,
+      library,
+      farms,
+      dispatch,
+      chainId,
+      masterChefV2Address,
+      vaults,
+      vaultAddress,
+      migrateMaximizers,
+    ],
   )
   return handleApproveAll
 }

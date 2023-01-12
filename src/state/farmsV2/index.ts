@@ -7,20 +7,17 @@ import {
   fetchFarmV2UserStakedBalances,
 } from './fetchFarmV2User'
 import { Farm, LpTokenPrices, FarmLpAprsType, AppThunk, FarmsV2State } from '../types'
+import { farmsV2 } from '@ape.swap/apeswap-lists'
 import fetchFarmsV2 from './fetchFarmsV2'
-import fetchFarmV2Config from './api'
 
 const initialState: FarmsV2State = {
-  data: [],
+  data: farmsV2,
 }
 
-export const farmsV2Slice = createSlice({
+export const farmsSlice = createSlice({
   name: 'FarmsV2',
   initialState,
   reducers: {
-    setInitialFarmV2Data: (state, action) => {
-      state.data = action.payload
-    },
     setFarmsV2PublicData: (state, action) => {
       const liveFarmsData: Farm[] = action.payload
       state.data = state.data.map((farm) => {
@@ -44,11 +41,10 @@ export const farmsV2Slice = createSlice({
 })
 
 // Actions
-export const { setInitialFarmV2Data, setFarmsV2PublicData, setFarmV2UserData, updateFarmV2UserData } =
-  farmsV2Slice.actions
+export const { setFarmsV2PublicData, setFarmV2UserData, updateFarmV2UserData } = farmsSlice.actions
 
 // Thunks
-export const fetchFarmsV2PublicDataAsync =
+export const fetchFarmsPublicDataAsync =
   (chainId: number, lpPrices: LpTokenPrices[], bananaPrice: BigNumber, farmLpAprs: FarmLpAprsType): AppThunk =>
   async (dispatch, getState) => {
     try {
@@ -59,7 +55,7 @@ export const fetchFarmsV2PublicDataAsync =
       console.warn(error)
     }
   }
-export const fetchFarmV2UserDataAsync =
+export const fetchFarmUserDataAsync =
   (chainId: number, account: string): AppThunk =>
   async (dispatch, getState) => {
     try {
@@ -67,10 +63,7 @@ export const fetchFarmV2UserDataAsync =
       const userFarmAllowances = await fetchFarmV2UserAllowances(chainId, account, farms)
       const userFarmTokenBalances = await fetchFarmV2UserTokenBalances(chainId, account, farms)
       const userStakedBalances = await fetchFarmV2UserStakedBalances(chainId, account, farms)
-
-      // TODO: Figure out why this was erroring out. Probably a new call
       const userFarmEarnings = await fetchFarmV2UserEarnings(chainId, account, farms)
-      // console.log('past here 4', userFarmEarnings)
 
       const arrayOfUserDataObjects = userFarmAllowances.map((_, index) => {
         return {
@@ -86,15 +79,6 @@ export const fetchFarmV2UserDataAsync =
       console.warn(error)
     }
   }
-
-export const setInitialFarmV2DataAsync = (): AppThunk => async (dispatch) => {
-  try {
-    const initialFarmState: Farm[] = await fetchFarmV2Config()
-    dispatch(setInitialFarmV2Data(initialFarmState || []))
-  } catch (error) {
-    console.error(error)
-  }
-}
 
 export const updateFarmV2UserAllowances =
   (chainId: number, pid, account: string): AppThunk =>
@@ -128,4 +112,4 @@ export const updateFarmV2UserEarnings =
     dispatch(updateFarmV2UserData({ pid, field: 'earnings', value: pendingRewards[pid] }))
   }
 
-export default farmsV2Slice.reducer
+export default farmsSlice.reducer

@@ -18,7 +18,7 @@ import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
-import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
+import { useFarmsV2, usePollFarmsV2 } from 'state/farmsV2/hooks'
 import LegacyFarms from './LegacyFarms'
 import DisplayDepositV2Farms from './components/DisplayDepositV2Farms'
 

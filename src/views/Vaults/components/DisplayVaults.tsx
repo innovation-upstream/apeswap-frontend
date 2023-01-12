@@ -22,6 +22,7 @@ import HarvestAction from './Actions/HarvestAction'
 import InfoContent from './InfoContent'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from '../../../state/zap/actions'
+import { VaultVersion } from '@ape.swap/apeswap-lists'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -90,7 +91,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       ttWidth: '250px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '10px', marginRight: '10px' },
-      expandedContentJustified: vault.version === 'V1' && 'center',
+      expandedContentJustified: vault.version === VaultVersion.V1 && 'center',
       open: openId === vault.id,
       cardContent: (
         <>
@@ -126,8 +127,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             height={50}
           />
           <ListViewContent
-            title={vault.version === 'V1' ? t('Staked') : t('Earned')}
-            value={vault.version === 'V1' ? userStakedBalanceUsd : userEarningsUsd}
+            title={vault.version === VaultVersion.V1 ? t('Staked') : t('Earned')}
+            value={vault.version === VaultVersion.V1 ? userStakedBalanceUsd : userEarningsUsd}
             width={isMobile ? 50 : 115}
             height={50}
           />
@@ -183,7 +184,9 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
               />
             )}
           </ActionContainer>
-          {vault.version === 'V1' ? !isMobile && <NextArrow ml="30px" mr="50px" /> : !isMobile && <NextArrow />}
+          {vault.version === VaultVersion.V1
+            ? !isMobile && <NextArrow ml="30px" mr="50px" />
+            : !isMobile && <NextArrow />}
           <Actions
             allowance={userAllowance?.toString()}
             stakedBalance={vault?.userData?.stakedBalance?.toString()}
@@ -195,9 +198,9 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             pid={vault.pid}
             vaultVersion={vault.version}
           />
-          {(vault.version === 'V2' || vault.version === 'V3') && !isMobile && <NextArrow />}
-          {vault.version === 'V2' ||
-            (vault.version === 'V3' && (
+          {(vault.version === VaultVersion.V2 || vault.version === VaultVersion.V3) && !isMobile && <NextArrow />}
+          {vault.version === VaultVersion.V2 ||
+            (vault.version === VaultVersion.V3 && (
               <HarvestAction
                 pid={vault?.pid}
                 disabled={userEarnings <= 0}
