@@ -266,7 +266,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     color: 'yellow',
     textDecoration: 'underline',
     cursor: 'pointer',
-    lineHeight: ['16px', '16px', '21px'],
+    lineHeight: ['24px', '24px', '21px'],
   },
   tipTitle: {
     fontWeight: 700,

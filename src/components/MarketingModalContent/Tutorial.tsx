@@ -95,7 +95,8 @@ const Tutorial: React.FC<{
         type: 'migrate',
         title: 'Welcome to Liquidity Migration',
         description: 'Migrate your liquidity from external DEXs into ApeSwap',
-        slides: account ? OrdersSlides() : [ConnectWalletSlide(), ...MigrateSlides()],
+        slides: account ? MigrateSlides() : [ConnectWalletSlide(), ...MigrateSlides()],
+        width: '330px',
       }
     return {
       type: 'liquidity',
@@ -114,8 +115,8 @@ const Tutorial: React.FC<{
       description={tutorials?.description}
       t={t}
       onDismiss={onDismiss}
-      readyText={t("I'm Ready")}
       isConnected={!!account}
+      width={tutorials.width}
     >
       {tutorials?.slides}
     </TutorialModal>

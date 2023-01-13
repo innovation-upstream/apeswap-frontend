@@ -725,7 +725,7 @@ export const MigrateSlides = () => {
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>
           {t(
-            `Select the UNSTAKE ALL button to unstake your positions from the other DEX. Confirm all the transactions in your wallet.`,
+            'Select the UNSTAKE ALL button to unstake your positions from the other DEX. Confirm all the transactions in your wallet.',
           )}
         </Text>
         <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
@@ -751,13 +751,26 @@ export const MigrateSlides = () => {
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>
           {t(
-            'Select APPROVE ALL to approve the required staking contracts. Select STAKE ALL to stake all your tokens in ApeSwap products. Confirm all the transactions in your wallet. ',
+            'Select APPROVE ALL and then STAKE ALL to stake all your tokens in ApeSwap products. Confirm all the transactions in your wallet.',
           )}
         </Text>
         <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
-          {t(
-            `You can also stake in Maximizer Vaults by toggling “Migrate to Maximizers” - which will auto-compound your yields.`,
-          )}
+          {t('You can also stake in')}{' '}
+          <TooltipBubble
+            placement={'topRight'}
+            transformTip={`translate(5%, 2%)`}
+            body={
+              <Flex sx={styles.tipBody}>
+                {t(
+                  'LP token holders receive a portion of the fees charged when swaps occur between the tokens that comprise that LP.',
+                )}
+              </Flex>
+            }
+            sx={{ width: ['210px', '210px', '350px'] }}
+          >
+            <Text sx={styles.tipTitle}>{t('Maximizer Vaults')}</Text>
+          </TooltipBubble>{' '}
+          {t(`by toggling “Migrate to Maximizers”.`)}
         </Text>
       </Flex>
     </Flex>,
