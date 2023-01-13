@@ -517,7 +517,7 @@ export const IAOSlides = () => {
             transformTip={`translate(${isMobile ? '0' : '3%'}, 2%)`}
             body={
               <Flex sx={styles.tipBody}>
-                {t("ApeSwap's governance token that also enables access to exclusive pools and IAO allocations")}
+                {t("ApeSwap's governance token that also enables access to exclusive pools and IAO allocations.")}
               </Flex>
             }
             sx={{ width: ['270px', '270px', '350px'] }}
@@ -563,7 +563,7 @@ export const IAOSlides = () => {
       </Flex>
     </Flex>,
     <Flex sx={styles.contentContainer} key={4}>
-      <Text sx={styles.stepNo}>{t(`Step 4`)}</Text>
+      <Text sx={styles.stepNo}>{t(`Step 3`)}</Text>
       <Text sx={styles.slideTitle}>{t(`Claim`)}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
         <Text>
@@ -716,7 +716,9 @@ export const MigrateSlides = () => {
             'If you have LPs to migrate, select MIGRATE ALL to start migrating. Your custom migration experience will load automatically!',
           )}
         </Text>
-        <Text sx={{ fontStyle: 'italic' }}>{t('You can also migrate LPs individually, if you prefer.')}</Text>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
+          {t('You can also migrate LPs individually, if you prefer.')}
+        </Text>
       </Flex>
     </Flex>,
     <Flex sx={styles.contentContainer} key={2}>
@@ -801,11 +803,13 @@ export const ConnectWalletSlide = () => {
       <Text sx={styles.stepNo}>{t(`Step 0`)}</Text>
       <Text sx={styles.slideTitle}>{t('Connect Your Wallet')}</Text>
       <Flex sx={{ flexWrap: 'wrap', mt: 2, ...styles.content }}>
-        <Text sx={styles.yellow} onClick={onPresentConnectModal}>
-          {t('Click here')}
+        <Text>
+          <Text sx={styles.yellow} onClick={onPresentConnectModal}>
+            {t('Click here')}
+          </Text>{' '}
+          {t('to connect your wallet to ApeSwap.')}
         </Text>
-        <Text sx={{ ml: '3px' }}>{t('to connect your wallet to ApeSwap.')}</Text>
-        <Text sx={{ fontStyle: 'italic' }}>
+        <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>
           {t(`Don’t have a wallet? A full setup guide for MetaMask on ${NETWORK_LABEL[chainId]} can be found `)}
           <Text sx={styles.yellow}>
             <a href={METAMASK_LINKS[NETWORK_LABEL[chainId]]} target="_blank" rel="noreferrer noopener">

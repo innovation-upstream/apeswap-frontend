@@ -68,6 +68,7 @@ const Tutorial: React.FC<{
         title: 'Welcome to Golden Banana',
         description: 'Unlock the exclusive benefits of GNANA!',
         slides: account ? GnanaSlides() : [ConnectWalletSlide(), ...GnanaSlides()],
+        width: '296px',
       }
     if (location === '/treasury-bills')
       return {
@@ -82,6 +83,7 @@ const Tutorial: React.FC<{
         title: 'Welcome to Initial Ape Offerings',
         description: 'Contribute BNB or GNANA to obtain newly launched tokens!',
         slides: account ? IAOSlides() : [ConnectWalletSlide(), ...IAOSlides()],
+        width: '285px',
       }
     if (location === '/limit-orders')
       return {
