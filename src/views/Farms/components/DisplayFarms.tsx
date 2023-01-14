@@ -90,7 +90,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
           valueContent={farm?.multiplier}
           secondURL={farm?.projectLink}
           secondURLTitle={t('Learn More')}
-          tokenContract={farm?.quoteTokenAdresses[chainId]}
+          tokenContract={farm?.lpAddresses[chainId]}
         />
       ),
       infoContentPosition: 'translate(8%, 0%)',

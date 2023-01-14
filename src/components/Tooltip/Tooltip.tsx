@@ -15,8 +15,8 @@ export interface TooltipProps {
   value2Title?: string
   value2Content?: string
   tokenContract: string
-  secondURL: string
-  secondURLTitle: string
+  secondURL?: string
+  secondURLTitle?: string
   projectLink?: string
   twitter?: string
   audit?: string
