@@ -25,7 +25,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
           <Flex sx={{ alignItems: 'center' }}>
             {infoContent && (
               <div style={{ display: 'inline-block' }}>
-                <TooltipBubble body={infoContent} transformTip="translate(11%, 0%)" width="200px">
+                <TooltipBubble body={infoContent} transformTip="translate(11%, 0%)" width="205px">
                   <InfoIcon width={'18px'} />
                 </TooltipBubble>
               </div>

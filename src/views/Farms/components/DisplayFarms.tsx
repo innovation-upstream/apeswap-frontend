@@ -88,8 +88,8 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
         <Tooltip
           valueTitle={t('Multiplier')}
           valueContent={farm?.multiplier}
-          contractType="Farm"
-          contractAddress={farm?.lpAddresses[chainId]}
+          secondURL={farm?.projectLink}
+          secondURLTitle={t('Learn More')}
           tokenContract={farm?.quoteTokenAdresses[chainId]}
         />
       ),

@@ -23,7 +23,7 @@ export const styles = {
   iconButton: {
     background: 'lvl1',
     width: 'fit-content',
-    padding: '2px 4px',
+    padding: '2px 5px',
     borderRadius: '8px',
     margin: '0 5px 5px 0',
     alignItems: 'center',

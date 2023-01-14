@@ -15,12 +15,11 @@ export interface TooltipProps {
   value2Title?: string
   value2Content?: string
   tokenContract: string
-  contractAddress: string
-  contractType: 'Vault' | 'Farm' | 'Pool' | 'Bill'
+  secondURL: string
+  secondURLTitle: string
   projectLink?: string
   twitter?: string
-  bubbleURL?: string
-  auditURL?: string
+  audit?: string
   jungleFarm?: JungleFarm
 }
 
@@ -30,23 +29,23 @@ const Tooltip: React.FunctionComponent<TooltipProps> = ({
   value2Title,
   value2Content,
   tokenContract,
-  contractAddress,
-  contractType,
+  secondURL,
+  secondURLTitle,
   projectLink,
   twitter,
-  bubbleURL,
-  auditURL,
+  audit,
   jungleFarm,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const explorerLink = BLOCK_EXPLORER[chainId]
-  const contractLink = `${explorerLink}/address/${contractAddress}`
   const tokenLink = `${explorerLink}/address/${tokenContract}`
 
   return (
     <>
-      {projectLink && twitter && <ButtonsRow twitter={twitter} projectLink={projectLink} />}
+      {projectLink && twitter && (
+        <ButtonsRow twitter={twitter} projectLink={projectLink} bubble={tokenContract} audit={audit} />
+      )}
       {valueTitle && (
         <Flex sx={styles.infoRow}>
           <Text sx={styles.titleText}>{valueTitle}: </Text>
@@ -67,11 +66,13 @@ const Tooltip: React.FunctionComponent<TooltipProps> = ({
               {t('View Token Contract')}
             </LinkExternal>
           </Flex>
-          <Flex sx={styles.linkRow}>
-            <LinkExternal href={contractLink} sx={{ fontSize: '12px', lineHeight: '14px' }}>
-              {t('View')} {contractType} {t('Contract')}
-            </LinkExternal>
-          </Flex>
+          {secondURL && (
+            <Flex sx={styles.linkRow}>
+              <LinkExternal href={secondURL} sx={{ fontSize: '12px', lineHeight: '14px' }}>
+                {secondURLTitle}
+              </LinkExternal>
+            </Flex>
+          )}
         </Flex>
       </Flex>
     </>

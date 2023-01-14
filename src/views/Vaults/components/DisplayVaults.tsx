@@ -22,6 +22,7 @@ import HarvestAction from './Actions/HarvestAction'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from 'state/zap/actions'
 import Tooltip from 'components/Tooltip/Tooltip'
+import { BLOCK_EXPLORER } from '../../../config/constants/chains'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -69,6 +70,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
     const userStakedBalanceUsd = `$${((userStakedBalance || 0) * vault?.stakeTokenPrice).toFixed(2)}`
 
     const { tokenDisplay, stakeLp, earnLp } = vaultTokenDisplay(vault.stakeToken, vault.rewardToken)
+    const explorerLink = BLOCK_EXPLORER[chainId]
+    const vaultContractURL = `${explorerLink}/address/${vault?.stratAddress[chainId]}`
 
     return {
       tokens: tokenDisplay,
@@ -91,13 +94,12 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           valueContent={`${vault?.withdrawFee}%`}
           value2Title={t('Performance Fee')}
           value2Content={`${vault?.keeperFee}%`}
-          contractType="Vault"
-          contractAddress={vault?.stratAddress[chainId]}
-          tokenContract={vault?.rewardToken?.address[chainId]}
+          secondURL={vaultContractURL}
+          secondURLTitle={t('View Vault Contract')}
+          tokenContract={vault?.stakeToken?.address[chainId]}
         />
       ),
       infoContentPosition: 'translate(8%, 0%)',
-      ttWidth: '200px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '10px', marginRight: '10px' },
       expandedContentJustified: vault.version === 'V1' && 'center',

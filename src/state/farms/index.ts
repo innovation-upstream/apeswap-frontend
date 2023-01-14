@@ -8,19 +8,16 @@ import {
 } from './fetchFarmUser'
 import { FarmsState, Farm, LpTokenPrices, FarmLpAprsType, AppThunk } from '../types'
 import fetchFarms from './fetchFarms'
-import fetchFarmConfig from './api'
+import { farms } from '@ape.swap/apeswap-lists'
 
 const initialState: FarmsState = {
-  data: [],
+  data: farms,
 }
 
 export const farmsSlice = createSlice({
   name: 'Farms',
   initialState,
   reducers: {
-    setInitialFarmData: (state, action) => {
-      state.data = action.payload
-    },
     setFarmsPublicData: (state, action) => {
       const liveFarmsData: Farm[] = action.payload
       state.data = state.data.map((farm) => {
@@ -44,7 +41,7 @@ export const farmsSlice = createSlice({
 })
 
 // Actions
-export const { setInitialFarmData, setFarmsPublicData, setFarmUserData, updateFarmUserData } = farmsSlice.actions
+export const { setFarmsPublicData, setFarmUserData, updateFarmUserData } = farmsSlice.actions
 
 // Thunks
 export const fetchFarmsPublicDataAsync =
@@ -82,15 +79,6 @@ export const fetchFarmUserDataAsync =
       console.warn(error)
     }
   }
-
-export const setInitialFarmDataAsync = (): AppThunk => async (dispatch) => {
-  try {
-    const initialFarmState: Farm[] = await fetchFarmConfig()
-    dispatch(setInitialFarmData(initialFarmState || []))
-  } catch (error) {
-    console.error(error)
-  }
-}
 
 export const updateFarmUserAllowances =
   (chainId: number, pid, account: string): AppThunk =>

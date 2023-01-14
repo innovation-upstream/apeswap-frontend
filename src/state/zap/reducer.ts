@@ -24,6 +24,7 @@ export interface ZapState {
     readonly currency2: string | undefined
   }
   readonly recipient: string | null
+  // TODO: this type is incorrect since it needs to handle chainId as well.
   readonly zapInputList: { [symbol: string]: Token } | undefined
   readonly zapNewOutputList: { currencyIdA: string; currencyIdB: string }[]
 }

@@ -19,6 +19,7 @@ import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import { StyledTag, poolStyles } from './styles'
 import Tooltip from 'components/Tooltip/Tooltip'
+import { BLOCK_EXPLORER } from '../../../config/constants/chains'
 
 const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
   const { chainId } = useActiveWeb3React()
@@ -50,6 +51,8 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
 
     const pTag = poolTags?.find((tag) => tag.pid === pool.sousId)
     const tagColor = pTag?.color as TagVariants
+    const explorerLink = BLOCK_EXPLORER[chainId]
+    const poolContractURL = `${explorerLink}/address/${pool?.contractAddress[chainId]}`
 
     const openLiquidityUrl = () =>
       pool?.stakingToken?.symbol === 'GNANA'
@@ -74,15 +77,15 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
       id: pool.sousId,
       infoContent: (
         <Tooltip
-          contractAddress={pool?.contractAddress[chainId]}
           tokenContract={pool?.rewardToken?.address[chainId]}
-          contractType="Pool"
+          secondURL={poolContractURL}
+          secondURLTitle={t('View Pool Contract')}
           twitter={pool?.twitter}
           projectLink={pool?.projectLink}
+          audit={pool?.audit}
         />
       ),
       infoContentPosition: 'translate(8%, 0%)',
-      ttWidth: '200px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },
       open: openId === pool.sousId,
