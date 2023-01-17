@@ -45,3 +45,18 @@ export interface ListViewContentProps {
   valueColor?: string
   style?: any
 }
+
+export interface ListViewContentProps {
+  tag?: ListTagVariants
+  title?: string
+  value: string
+  valueColor?: string
+  toolTip?: string
+  toolTipPlacement?: 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft'
+  toolTipTransform?: string
+  value2?: string
+  value2Secondary?: boolean
+  aprCalculator?: React.ReactNode
+  style?: any
+  value2Direction?: 'column' | 'row'
+}

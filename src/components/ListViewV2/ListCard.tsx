@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Svg, TooltipBubble } from '@ape.swap/uikit'
-import { InfoIcon } from '@apeswapfinance/uikit'
 import React, { useState } from 'react'
+import { Flex } from '@ape.swap/uikit'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ListCardContainer, styles } from './styles'
+import { styles } from './styles'
 import { ListCardProps } from './types'
+import InfoContent from './components/InfoContent'
 
 const ListCard: React.FC<ListCardProps> = ({
   serviceTokenDisplay,
@@ -12,53 +12,41 @@ const ListCard: React.FC<ListCardProps> = ({
   cardContent,
   expandedContent,
   infoContent,
-  titleContainerWidth,
 }) => {
   const [expanded, setExpanded] = useState(false)
   return (
     <>
-      <ListCardContainer onClick={() => setExpanded((prev) => !prev)}>
-        <Flex sx={{ ...styles.titleContainer, maxWidth: titleContainerWidth || '290px' }}>
-          <Flex sx={{ mr: '10px' }}>{serviceTokenDisplay}</Flex>
-          <Flex sx={{ justifyContent: 'center' }}>{title}</Flex>
+      <Flex sx={styles.listCardContainer} onClick={() => setExpanded((prev) => !prev)}>
+        <Flex sx={{ width: '100%', justifyContent: 'space-between', my: '5px', maxWidth: ['100%', '100%', '290px'] }}>
+          <Flex sx={styles.titleContainer}>
+            {serviceTokenDisplay}
+            <Flex sx={{ flexDirection: 'column', marginLeft: '10px' }}>{title}</Flex>
+          </Flex>
+          <Flex sx={{ display: ['flex', 'flex', 'none'] }}>
+            <InfoContent infoContent={infoContent} expandedContent={expandedContent} expanded={expanded} />
+          </Flex>
         </Flex>
-        <Flex sx={styles.cardContentContainer}>{cardContent}</Flex>
-        {expandedContent && (
-          <span style={{ marginRight: '30px', transform: 'translate(0, -3px)' }}>
-            <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="10px" />
-          </span>
-        )}
-        {infoContent && (
-          <div style={{ display: 'inline-block' }}>
-            <TooltipBubble placement="bottomRight" body={infoContent} transformTip="translate(11%, 0%)" width="200px">
-              <InfoIcon width="15px" />
-            </TooltipBubble>
-          </div>
-        )}
-      </ListCardContainer>
+        {cardContent && <Flex sx={styles.cardContentContainer}>{cardContent}</Flex>}
+        <Flex
+          sx={{
+            display: ['none', 'none', 'flex'],
+            minWidth: expandedContent ? '49px' : '20px',
+            justifyContent: 'center',
+          }}
+        >
+          <InfoContent infoContent={infoContent} expandedContent={expandedContent} expanded={expanded} />
+        </Flex>
+      </Flex>
       <AnimatePresence>
         {expandedContent && expanded && (
           <motion.div
-            initial={{ height: 0 }}
-            animate={{ height: 'fit-content' }}
-            transition={{ opacity: { duration: 0.2 } }}
-            exit={{ height: 0 }}
-            sx={{ position: 'relative', width: '100%', overflow: 'hidden' }}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'fit-content' }}
+            transition={{ delay: 0.2 }}
+            exit={{ opacity: 0 }}
+            sx={styles.animationDiv}
           >
-            <Flex
-              sx={{
-                background: 'white3',
-                flexDirection: 'row',
-                height: '100px',
-                width: '100%',
-                justifyContent: 'space-between',
-                padding: '0px 30px 0px 30px',
-                flexWrap: 'no-wrap',
-                alignItems: 'center',
-              }}
-            >
-              {expandedContent}
-            </Flex>
+            <Flex sx={styles.expandedWrapper}>{expandedContent}</Flex>
           </motion.div>
         )}
       </AnimatePresence>

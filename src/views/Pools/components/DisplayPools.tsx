@@ -16,7 +16,7 @@ import HarvestAction from './Actions/HarvestAction'
 import InfoContent from '../InfoContent'
 import { poolStyles } from './styles'
 import ListView from 'components/ListViewV2'
-import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
+import ListViewContentMobile from 'components/ListViewV2/ListViewContent'
 
 const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
   const { chainId } = useActiveWeb3React()

@@ -1,27 +1,18 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
-import useIsMobile from 'hooks/useIsMobile'
-import ListCard from './ListCard'
-import { ListViewContainer } from './styles'
-import MobileListCard from './MobileListCard'
+import { styles } from './styles'
+import MobileListCard from './ListCard'
 import { ListViewProps } from './types'
+import { Flex } from '@ape.swap/uikit'
 
 const ListView: React.FC<{ listViews: ListViewProps[] }> = ({ listViews }) => {
-  const isMobile = useIsMobile()
-
   return (
-    <ListViewContainer>
+    <Flex sx={styles.listViewContainer}>
       {listViews.map((view: ListViewProps) => {
-        return isMobile ? (
+        return (
           <MobileListCard
-            serviceTokenDisplay={
-              <ServiceTokenDisplay {...view.tokenDisplayProps} dualEarn={view.tokenDisplayProps?.token4 != null} />
-            }
-            {...view.listProps}
-          />
-        ) : (
-          <ListCard
+            key={view.listProps.id}
             serviceTokenDisplay={
               <ServiceTokenDisplay {...view.tokenDisplayProps} dualEarn={view.tokenDisplayProps?.token4 != null} />
             }
@@ -29,7 +20,7 @@ const ListView: React.FC<{ listViews: ListViewProps[] }> = ({ listViews }) => {
           />
         )
       })}
-    </ListViewContainer>
+    </Flex>
   )
 }
 

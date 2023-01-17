@@ -16,7 +16,7 @@ import { useIsModalShown } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { poolStyles } from '../styles'
-import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
+import ListViewContentMobile from 'components/ListViewV2/ListViewContent'
 
 interface HarvestActionsProps {
   sousId: number

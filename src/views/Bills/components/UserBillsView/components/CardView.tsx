@@ -8,7 +8,7 @@ import Claim from '../../Actions/Claim'
 import { BillCardsContainer, CardContainer } from '../styles'
 import BillModal from '../../Modals'
 import { BillsToRender } from '../types'
-import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
+import ListViewContentMobile from 'components/ListViewV2/ListViewContent'
 import { formatNumberSI } from 'utils/formatNumber'
 
 const CardView: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender }) => {

@@ -1,27 +1,13 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, HelpIcon, ListTag, ListTagVariants, Skeleton, Text } from '@ape.swap/uikit'
+import { Flex, HelpIcon, ListTag, Skeleton, Text } from '@ape.swap/uikit'
 import { TooltipBubble } from '@ape.swap/uikit'
 import { ValueSkeleton } from '../ListViewContent/styles'
 import { useTranslation } from '../../contexts/Localization'
 import { styles } from './styles'
+import { ListViewContentProps } from './types'
 
-interface ListViewContentMobileProps {
-  tag?: ListTagVariants
-  title?: string
-  value: string
-  valueColor?: string
-  toolTip?: string
-  toolTipPlacement?: 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft'
-  toolTipTransform?: string
-  value2?: string
-  value2Secondary?: boolean
-  aprCalculator?: React.ReactNode
-  style?: any
-  value2Direction?: 'column' | 'row'
-}
-
-const ListViewContentMobile: React.FC<ListViewContentMobileProps> = ({
+const ListViewContent: React.FC<ListViewContentProps> = ({
   tag,
   title,
   value,
@@ -37,7 +23,7 @@ const ListViewContentMobile: React.FC<ListViewContentMobileProps> = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <Flex style={{ ...styles.listViewContainer, ...style }}>
+    <Flex style={{ ...styles.listContentContainer, ...style }}>
       <>
         {toolTip ? (
           <Flex sx={{ alignItems: 'center' }}>
@@ -83,4 +69,4 @@ const ListViewContentMobile: React.FC<ListViewContentMobileProps> = ({
   )
 }
 
-export default React.memo(ListViewContentMobile)
+export default React.memo(ListViewContent)
