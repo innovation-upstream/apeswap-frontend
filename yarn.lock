@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@1.0.16":
-  version "1.0.16"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.16.tgz#6228e0a8edcdbac146ad164c3dca67103848ceb2"
-  integrity sha512-P6XFuHrM4TPlytfbscxhrosUBjgXgbMPydP+BPCM8OirCTqWG8i9LqQupHoqVyXbZiqwz+63MQMlsPZscrKVQw==
+"@ape.swap/apeswap-lists@1.0.22":
+  version "1.0.22"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.22.tgz#450c910108e9dd86f6e31a31f091d19ffd4ce61f"
+  integrity sha512-0/sFIN0IX8CPehDwKVIsS6OzEFeQS4X9I6rR3cUJSzVkMdtBXK2T5PURjQBYniZ9hkOWgbJC4YDfCMcPLXJAug==
   dependencies:
     "@ape.swap/sdk" "4.3.1"
     bignumber.js "^9.0.2"
@@ -33,15 +33,15 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/token-lists@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.0.tgz#579ede2785c37a0ea1680200fbf395802fed80fc"
-  integrity sha512-qM4QlT80lwhdL7bBT6IzwpsRoHDAUh0d00KIp/hXweTl0WJKs3M6gWYPeqKZPlq7qbmWbUKSCrXjTBqoAJyuJQ==
+"@ape.swap/token-lists@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.1.tgz#12cabe0c5cc11b9cffafea43d6ca3075481bb3f5"
+  integrity sha512-mmSYtv67TxPOe7TlOjHef/857RRqcVIlizHIxwMhrQMAWcXU4oiE1RH+9GzONep5Bz9qjtbL5XmtPtwV8w7v+g==
 
-"@ape.swap/uikit@1.3.46-alpha-1":
-  version "1.3.46-alpha-1"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.46-alpha-1.tgz#87512032e5d7f3cb807756625aa1f90f0e73e807"
-  integrity sha512-ItZdBjnEPzrL+NCrrWpJndcDaL16oV6LABkwKc521cjTsqztWBLllzWOFCccZgxRfJD8SAhO3sGz6rQRUT+rIA==
+"@ape.swap/uikit@1.3.49":
+  version "1.3.49"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.49.tgz#313835f6c5b2c39f55ede3398ca1f120ca83c163"
+  integrity sha512-lajEiWeVP5NDzkocke/qpMwGKIYmEesugwi2bOqX3pU/Mhb2mmeTVl8arAntg6Sef+/+wDXhzMV6Y1SYg7HDzA==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
