@@ -1,4 +1,6 @@
-export const styles = {
+import { ThemeUIStyleObject } from 'theme-ui'
+
+export const styles: Record<'infoRow' | 'linkRow' | 'titleText' | 'contentText' | 'iconButton', ThemeUIStyleObject> = {
   infoRow: {
     justifyContent: 'space-between',
     width: '100%',
