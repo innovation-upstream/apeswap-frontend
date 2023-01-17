@@ -30,7 +30,7 @@ const ListCard: React.FC<ListCardProps> = ({
         )}
         {infoContent && (
           <div style={{ display: 'inline-block' }}>
-            <TooltipBubble placement="bottomRight" body={infoContent} transformTip="translate(11%, 0%)" width="200px">
+            <TooltipBubble placement="bottomRight" body={infoContent} transformTip="translate(11%, 0%)" width="205px">
               <InfoIcon width="15px" />
             </TooltipBubble>
           </div>
