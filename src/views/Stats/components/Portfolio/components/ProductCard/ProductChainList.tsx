@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
-import { BNB, Flex, POLYGON, Text } from '@apeswapfinance/uikit'
+import { Flex, Text } from '@apeswapfinance/uikit'
 import useIsMobile from 'hooks/useIsMobile'
-import { AnimatedArrow, ChainDisplay } from '../../styles'
+
 import ListView from '../ListView'
 import { ExtendedListViewProps } from '../ListView/types'
+import { ChainIcon } from 'views/Stats/components/ChainIcon'
+
+import { Chain } from 'state/statsPage/types'
+import { AnimatedArrow, ChainDisplay } from '../../styles'
 
 interface ProductChainListProps {
-  chain: string
+  chain: Chain
   listViews: ExtendedListViewProps[]
 }
 
@@ -22,14 +26,16 @@ const ProductChainList: React.FC<ProductChainListProps> = ({ chain, listViews })
     <>
       <ChainDisplay onClick={toogle}>
         <Flex alignItems="center">
-          {chain === '56' ? <BNB width={22} /> : <POLYGON width={22} />}
+          <ChainIcon chain={chain} width={22} />
           <Text
             fontWeight={500}
             marginLeft={isMobile ? '10px' : '12px'}
             textTransform="uppercase"
             fontSize={isMobile ? '12px' : '16px'}
           >
-            {chain === '56' ? 'BNB Chain' : 'Polygon Chain'}
+            {chain === 40 && 'Telos Chain'}
+            {chain === 56 && 'BNB Chain'}
+            {chain === 137 && 'Polygon Chain'}
           </Text>
         </Flex>
         <AnimatedArrow height={8} isOpen={isOpen} />

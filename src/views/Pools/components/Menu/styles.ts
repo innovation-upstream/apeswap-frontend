@@ -1,5 +1,6 @@
 import { Flex } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
+import { ThemeUIStyleObject } from 'theme-ui'
 
 export const LabelWrapper = styled.div`
   display: flex;
@@ -14,7 +15,10 @@ export const ClaimAllWrapper = styled(Flex)`
   max-width: 353px;
 `
 
-export const styles = {
+export const styles: Record<
+  'menuContainer' | 'mobileContainer' | 'expandedButton' | 'mobileRow' | 'select' | 'stakedText' | 'searchText',
+  ThemeUIStyleObject
+> = {
   menuContainer: {
     borderRadius: '10px',
     justifyContent: 'space-between',

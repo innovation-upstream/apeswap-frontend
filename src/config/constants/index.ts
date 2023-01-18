@@ -260,70 +260,8 @@ export enum SHOW_MODAL_TYPES {
   generalHarvestModal = 'showGeneralHarvestModal',
 }
 
-export enum METAMASK_LINKS {
-  BNB = 'https://docs.bnbchain.org/docs/wallet/metamask/',
-  Polygon = 'https://wiki.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/',
-  Ethereum = 'https://metamask.io/faqs/',
-  Telos = 'https://decentralizedcreator.com/add-telos-evm-network-to-metamask/',
-}
-
 export enum PRODUCT {
   FARM,
   JUNGLE_FARM,
   DUAL_FARM,
-}
-
-export const routeNames = {
-  '/': 'HOME',
-  '/jungle-farms': 'JUNGLE_FARMS',
-  '/banana-farms': 'FARMS',
-  '/farms': 'FARMS',
-  '/swap': 'SWAP',
-  '/pools': 'POOLS',
-  '/maximizers': 'MAXIMIZERS_VAULTS',
-  '/add': 'ADD_LIQUIDITY',
-  '/add-liquidity': 'ADD_LIQUIDITY',
-  '/liquidity': 'LIQUIDITY',
-  '/zap': 'LIQUIDITY',
-  '/migrate': 'LIQUIDITY',
-  '/find': 'LIQUIDITY',
-  '/remove': 'LIQUIDITY',
-  '/limit-orders': 'ORDERS',
-  '/iao': 'IAO',
-  '/gnana': 'GNANA',
-  '/treasury-bills': 'TREASURY_BILL',
-  '/nft': 'NFT',
-  '/auction': 'AUCTION',
-  '/staking': 'STAKING',
-  '/apestats': 'APESTATS',
-  '/protocol-dashboard': 'PROTOCOL_DASHBOARD',
-}
-
-export enum Farms {
-  BNB = 'bnb-chain-farms',
-  Polygon = 'polygon-farms',
-  Ethereum = '',
-  Telos = 'telos-farms',
-}
-
-export const DOC_LINKS = {
-  HOME: 'https://apeswap.gitbook.io/apeswap-finance/welcome/master',
-  JUNGLE_FARMS: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms/',
-  FARMS: `https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms/`,
-  SWAP: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/swap',
-  POOLS: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/pools',
-  MAXIMIZERS_VAULTS: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/vaults',
-  ADD_LIQUIDITY:
-    'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity/how-to-add-liquidity',
-  LIQUIDITY: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity',
-  ORDERS: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/limit-orders',
-  IAO: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/initial-ape-offerings-iaos',
-  GNANA: 'https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/gnana',
-  TREASURY_BILL: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills',
-  NFT: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/collect/non-fungible-apes-nfas',
-  AUCTION:
-    'https://apeswap.gitbook.io/apeswap-finance/product-and-features/collect/non-fungible-apes-nfas/nfa-auction-house',
-  STAKING: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake',
-  APESTATS: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/apestats',
-  PROTOCOL_DASHBOARD: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/protocol-dashboard',
 }

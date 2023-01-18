@@ -10,7 +10,7 @@ import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePollPools, usePoolOrderings, usePools, usePoolTags, useSetPools } from 'state/pools/hooks'
+import { usePollPools, usePoolOrderings, usePools, usePoolTags } from 'state/pools/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { Pool } from 'state/types'
@@ -22,7 +22,6 @@ import ListView404 from 'components/ListView404'
 const NUMBER_OF_POOLS_VISIBLE = 12
 
 const Pools: React.FC = () => {
-  useSetPools()
   usePollPools()
   const { chainId } = useActiveWeb3React()
   const [stakedOnly, setStakedOnly] = useState(false)

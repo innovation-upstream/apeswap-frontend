@@ -27,7 +27,7 @@ import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import BigNumber from 'bignumber.js'
-import fetchZapInputTokens from './api'
+import { zapInputTokens } from '@ape.swap/apeswap-lists'
 
 export function useZapState(): AppState['zap'] {
   return useSelector<AppState, AppState['zap']>((state) => state.zap)
@@ -312,12 +312,12 @@ export const useZapOutputList = (): { currencyA: Token; currencyB: Token }[] => 
 }
 
 // Hook to set the zap input list
+// TODO: The zap input type is incorrect. This needs to be changed at the state level and throughout the app
 export function useSetZapInputList() {
   const dispatch = useAppDispatch()
   useEffect(() => {
-    const getZapInputList = async () => {
-      const resp: { [symbol: string]: Token } = await fetchZapInputTokens()
-      dispatch(setInputList({ zapInputList: resp }))
+    const getZapInputList = () => {
+      dispatch(setInputList({ zapInputList: zapInputTokens as any }))
     }
     getZapInputList()
   }, [dispatch])

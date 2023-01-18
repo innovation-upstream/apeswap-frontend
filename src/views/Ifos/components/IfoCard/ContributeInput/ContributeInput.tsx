@@ -18,16 +18,24 @@ interface Props {
   currencyAddress: string
   disabled?: boolean
   tokenBalance: BigNumber
+  tokenValue: number
 }
 
-const ContributeInputComponent: React.FC<Props> = ({ currency, contract, currencyAddress, disabled, tokenBalance }) => {
+const ContributeInputComponent: React.FC<Props> = ({
+  currency,
+  contract,
+  currencyAddress,
+  disabled,
+  tokenBalance,
+  tokenValue,
+}) => {
   const [value, setValue] = useState('')
   const balance = getFullDisplayBalance(tokenBalance)
   const { t } = useTranslation()
   const history = useHistory()
   const [onPresentModal] = useModal(<MoonPayModal />)
 
-  const { pendingTx, handleDeposit, isAmountValid } = useIAODeposit(contract, currencyAddress, tokenBalance)
+  const { pendingTx, handleDeposit, isAmountValid } = useIAODeposit(contract, currencyAddress, tokenBalance, tokenValue)
 
   const useMax = () => {
     const bnbReduction = new BigNumber(0.01)

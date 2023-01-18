@@ -9,9 +9,10 @@ import { useFarmLpAprs, useLpTokenPrices } from 'state/hooks'
 import { useFetchLpTokenPrices } from 'state/lpPrices/hooks'
 import { useBananaPrice } from 'state/tokenPrices/hooks'
 import { Farm, State, StatsState } from 'state/types'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, setInitialFarmDataAsync } from '.'
+import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 
 export const usePollFarms = () => {
+  useFetchLpTokenPrices()
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { lpTokenPrices } = useLpTokenPrices()
@@ -32,12 +33,11 @@ export const useFarms = (account): Farm[] => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
   const farms = useSelector((state: State) => state.farms.data)
-  const farmsLoaded = farms?.length > 0
   useEffect(() => {
     if (account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET)) {
       dispatch(fetchFarmUserDataAsync(chainId, account))
     }
-  }, [account, dispatch, slowRefresh, chainId, farmsLoaded])
+  }, [account, dispatch, slowRefresh, chainId])
   return farms
 }
 
@@ -66,15 +66,6 @@ export const useFarmTags = (chainId: number) => {
   const { Tags }: StatsState = useSelector((state: State) => state.stats)
   const farmTags = Tags?.[`${chainId}`]?.farms
   return { farmTags }
-}
-
-export const useSetFarms = () => {
-  useFetchLpTokenPrices()
-  const dispatch = useAppDispatch()
-  const farms = useFarms(null)
-  if (farms.length === 0) {
-    dispatch(setInitialFarmDataAsync())
-  }
 }
 
 export const useFarmOrderings = (chainId: number) => {

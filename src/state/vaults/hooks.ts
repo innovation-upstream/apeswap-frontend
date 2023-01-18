@@ -9,10 +9,12 @@ import { useFarmLpAprs } from 'state/hooks'
 import { useFetchLpTokenPrices } from 'state/lpPrices/hooks'
 import { useFetchTokenPrices, useTokenPrices } from 'state/tokenPrices/hooks'
 import { VaultsState, State, Vault } from 'state/types'
-import { fetchVaultsPublicDataAsync, fetchVaultUserDataAsync, setInitialVaultDataAsync } from '.'
+import { fetchVaultsPublicDataAsync, fetchVaultUserDataAsync } from '.'
 
 // Vault data
 export const usePollVaultsData = (includeArchive = false) => {
+  useFetchTokenPrices()
+  useFetchLpTokenPrices()
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   const { account, chainId } = useActiveWeb3React()
@@ -32,13 +34,11 @@ export const usePollVaultUserData = () => {
   const dispatch = useAppDispatch()
   const { slowRefresh } = useRefresh()
   const { account, chainId } = useActiveWeb3React()
-  const vaults = useSelector((state: State) => state.vaults.data)
-  const vaultsLoaded = vaults.length > 0
   useEffect(() => {
     if (account && chainId === ChainId.BSC) {
       dispatch(fetchVaultUserDataAsync(account, chainId))
     }
-  }, [dispatch, slowRefresh, vaultsLoaded, account, chainId])
+  }, [dispatch, slowRefresh, account, chainId])
 }
 
 // Vaults
@@ -61,16 +61,5 @@ export const useVaultUser = (pid) => {
     tokenBalance: vault.userData ? new BigNumber(vault.userData.tokenBalance) : new BigNumber(0),
     stakedBalance: vault.userData ? new BigNumber(vault.userData.stakedBalance) : new BigNumber(0),
     stakedWantBalance: vault.userData ? new BigNumber(vault.userData.stakedWantBalance) : new BigNumber(0),
-  }
-}
-
-export const useSetVaults = () => {
-  useFetchTokenPrices()
-  useFetchLpTokenPrices()
-  const dispatch = useAppDispatch()
-  const { vaults } = useVaults()
-  const { chainId } = useActiveWeb3React()
-  if (vaults.length === 0 && chainId === ChainId.BSC) {
-    dispatch(setInitialVaultDataAsync(chainId))
   }
 }

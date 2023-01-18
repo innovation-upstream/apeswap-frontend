@@ -92,7 +92,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const earnings = new BigNumber(pool.userData?.pendingReward || 0)
   const isLoading = !pool.userData
 
-  const onStake = useReward(rewardRefStake, useSousStake(sousId).onStake)
+  const onStake = useReward(rewardRefStake, useSousStake(sousId, stakingToken?.price).onStake)
   const onUnstake = useReward(rewardRefUnstake, useSousUnstake(sousId).onUnstake)
 
   const addLiquidityUrl = !pool?.lpStaking

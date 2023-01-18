@@ -9,63 +9,23 @@ import { ListViewProps } from './types'
 
 const ListView: React.FC<{ listViews: ListViewProps[] }> = ({ listViews }) => {
   const isMobile = useIsMobile()
-  // TODO: This file needs to be refactored. Too many props got added
+
   return (
     <ListViewContainer>
-      {listViews.map((view) => {
+      {listViews.map((view: ListViewProps) => {
         return isMobile ? (
           <MobileListCard
             serviceTokenDisplay={
-              <ServiceTokenDisplay
-                token1={view.tokens.token1}
-                token2={view.tokens.token2}
-                token3={view.tokens?.token3}
-                token4={view.tokens?.token4}
-                billArrow={view?.billArrow}
-                earnLp={view?.earnLp}
-                stakeLp={view?.stakeLp}
-                dualEarn={view.tokens?.token4 != null}
-                noEarnToken={view?.noEarnToken}
-              />
+              <ServiceTokenDisplay {...view.tokenDisplayProps} dualEarn={view.tokenDisplayProps?.token4 != null} />
             }
-            title={view.title} //
-            cardContent={view.cardContent} //
-            expandedContent={view.expandedContent} //
-            infoContent={view.infoContent} //
-            infoContentPosition={view?.infoContentPosition} //
-            key={view.id} //
-            expandedContentSize={view?.expandedContentSize} //
-            titleContainerWidth={view?.titleContainerWidth} //
-            toolTipIconWidth={view?.toolTipIconWidth} //
-            toolTipStyle={view?.toolTipStyle} //
-            ttWidth={view?.ttWidth} //
+            {...view.listProps}
           />
         ) : (
           <ListCard
             serviceTokenDisplay={
-              <ServiceTokenDisplay
-                token1={view.tokens.token1}
-                token2={view.tokens.token2}
-                token3={view.tokens?.token3}
-                token4={view.tokens?.token4}
-                billArrow={view?.billArrow}
-                earnLp={view?.earnLp}
-                stakeLp={view?.stakeLp}
-                dualEarn={view.tokens?.token4 != null}
-                noEarnToken={view?.noEarnToken}
-              />
+              <ServiceTokenDisplay {...view.tokenDisplayProps} dualEarn={view.tokenDisplayProps?.token4 != null} />
             }
-            title={view.title} //
-            cardContent={view.cardContent} //
-            expandedContent={view.expandedContent} //
-            infoContent={view.infoContent} //
-            infoContentPosition={view?.infoContentPosition} //
-            key={view.id} //
-            expandedContentSize={view?.expandedContentSize} //
-            titleContainerWidth={view?.titleContainerWidth} //
-            toolTipIconWidth={view?.toolTipIconWidth} //
-            toolTipStyle={view?.toolTipStyle} //
-            ttWidth={view?.ttWidth} //
+            {...view.listProps}
           />
         )
       })}

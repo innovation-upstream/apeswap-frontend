@@ -17,9 +17,10 @@ import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
-import InfoContent from '../InfoContent'
 import { poolStyles } from './styles'
 import StyledTag from 'components/ListViewV2/components/StyledTag'
+import Tooltip from 'components/Tooltip/Tooltip'
+import { BLOCK_EXPLORER } from '../../../config/constants/chains'
 
 const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
   const { chainId } = useActiveWeb3React()
@@ -51,6 +52,8 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
 
     const pTag = poolTags?.find((tag) => tag.pid === pool.sousId)
     const tagColor = pTag?.color as TagVariants
+    const explorerLink = BLOCK_EXPLORER[chainId]
+    const poolContractURL = `${explorerLink}/address/${pool?.contractAddress[chainId]}`
 
     const openLiquidityUrl = () =>
       pool?.stakingToken?.symbol === 'GNANA'
@@ -71,9 +74,17 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
       tokens: { token1, token2: token2 === 'NFTY ' ? 'NFTY2' : token2 || pool?.tokenName },
       title: <Text bold>{pool?.rewardToken?.symbol || pool?.tokenName}</Text>,
       id: pool.sousId,
-      infoContent: <InfoContent pool={pool} />,
+      infoContent: (
+        <Tooltip
+          tokenContract={pool?.rewardToken?.address[chainId]}
+          secondURL={poolContractURL}
+          secondURLTitle={t('View Pool Contract')}
+          twitter={pool?.twitter}
+          projectLink={pool?.projectLink}
+          audit={pool?.audit}
+        />
+      ),
       infoContentPosition: 'translate(8%, 0%)',
-      ttWidth: '250px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },
       open: openId === pool.sousId,
@@ -169,6 +180,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
             disabled={userEarnings <= 0}
             userEarnings={userEarnings}
             earnTokenSymbol={pool?.rewardToken?.symbol || pool?.tokenName}
+            earnTokenValueUsd={pool?.rewardToken?.price}
           />
         </>
       ),

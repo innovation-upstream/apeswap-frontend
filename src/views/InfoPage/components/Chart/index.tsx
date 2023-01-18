@@ -38,8 +38,10 @@ const Chart: React.FC<ChartProps> = (props) => {
     () =>
       map(groupedData, (x) => {
         const item: ChartData = {}
-        item.date = x ? x[0].date : ''
+        item.date = x && x[0] ? x[0].date : ''
         for (let i = 0; i < x.length; i++) {
+          if (!x || !x[i]) return
+
           if (activeChains === null || activeChains.includes(Number(x[i].chainId))) {
             item[x[i].chainId] = x[i].totalLiquidityUSD
           }
@@ -53,8 +55,9 @@ const Chart: React.FC<ChartProps> = (props) => {
     () =>
       map(groupedData, (x) => {
         const item: ChartData = {}
-        item.date = x ? x[0].date : ''
+        item.date = x && x[0] ? x[0].date : ''
         for (let i = 0; i < x.length; i++) {
+          if (!x || !x[i]) return
           if (activeChains === null || activeChains.includes(Number(x[i].chainId))) {
             item[x[i].chainId] = x[i].dailyVolumeUSD
           }
@@ -77,16 +80,11 @@ const Chart: React.FC<ChartProps> = (props) => {
   const calculate7DayVolume = useMemo(() => {
     let total = 0
 
-    mappedVolumeData
-      .reverse()
-      .slice(0, 7)
-      .forEach((item: any) => {
-        for (let i = 0; i < Object.keys(INFO_PAGE_CHAIN_PARAMS).length; i++) {
-          total += item[Object.keys(INFO_PAGE_CHAIN_PARAMS)[i]]
-            ? Number(item[Object.keys(INFO_PAGE_CHAIN_PARAMS)[i]])
-            : 0
-        }
-      })
+    mappedVolumeData.slice(0, 7).forEach((item: any) => {
+      for (let i = 0; i < Object.keys(INFO_PAGE_CHAIN_PARAMS).length; i++) {
+        total += item[Object.keys(INFO_PAGE_CHAIN_PARAMS)[i]] ? Number(item[Object.keys(INFO_PAGE_CHAIN_PARAMS)[i]]) : 0
+      }
+    })
 
     sevenDayVolume(total)
 
@@ -124,16 +122,16 @@ const Chart: React.FC<ChartProps> = (props) => {
 
           <RangeSelectorsWrapper>
             <ul>
-              <li className={dataAmount === 7 && 'active'} onClick={() => UpdateChart(7)}>
+              <li className={dataAmount === 7 ? 'active' : ''} onClick={() => UpdateChart(7)}>
                 1W
               </li>
-              <li className={dataAmount === 30 && 'active'} onClick={() => UpdateChart(30)}>
+              <li className={dataAmount === 30 ? 'active' : ''} onClick={() => UpdateChart(30)}>
                 1M
               </li>
-              <li className={dataAmount === 365 && 'active'} onClick={() => UpdateChart(365)}>
+              <li className={dataAmount === 365 ? 'active' : ''} onClick={() => UpdateChart(365)}>
                 1Y
               </li>
-              <li className={dataAmount === 999 && 'active'} onClick={() => UpdateChart(999)}>
+              <li className={dataAmount === 999 ? 'active' : ''} onClick={() => UpdateChart(999)}>
                 ALL
               </li>
             </ul>
@@ -147,6 +145,7 @@ const Chart: React.FC<ChartProps> = (props) => {
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center',
+            minHeight: '402px',
           }}
         >
           <Spinner size={250} />

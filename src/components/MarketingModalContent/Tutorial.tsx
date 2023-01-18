@@ -40,6 +40,7 @@ const Tutorial: React.FC<{
         title: `Welcome to ${networkLabel === 'BNB' ? 'BANANA' : networkLabel} Farms`,
         description: `Earn BANANA by staking liquidity provider (LP) tokens!`,
         slides: account ? FarmSlides() : [ConnectWalletSlide(), ...FarmSlides()],
+        width: '300px',
       }
     if (location === '/jungle-farms')
       return {
@@ -47,6 +48,7 @@ const Tutorial: React.FC<{
         title: `Welcome to Jungle Farms`,
         description: `Earn Partner Tokens by Staking Liquidity!`,
         slides: account ? FarmSlides() : [ConnectWalletSlide(), ...FarmSlides()],
+        width: '285px',
       }
     if (location === '/pools')
       return {
@@ -98,7 +100,7 @@ const Tutorial: React.FC<{
         title: 'Welcome to Liquidity Migration',
         description: 'Migrate your liquidity from external DEXs into ApeSwap',
         slides: account ? MigrateSlides() : [ConnectWalletSlide(), ...MigrateSlides()],
-        width: '330px',
+        width: '332px',
       }
     return {
       type: 'liquidity',

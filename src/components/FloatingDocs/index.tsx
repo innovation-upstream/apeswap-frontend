@@ -1,15 +1,12 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Flex, Svg } from '@ape.swap/uikit'
-import { FloatingDocsProps } from './types'
 import { useHistory } from 'react-router-dom'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { NETWORK_LABEL } from '../../config/constants/chains'
-import { DOC_LINKS, Farms, routeNames } from '../../config/constants'
-import useIsMobile from '../../hooks/useIsMobile'
+import { DOC_LINKS, Farms, routeNames } from '../../config/constants/tutorials'
 
-export const FloatingDocs: React.FC<FloatingDocsProps> = ({ iconProps, ...props }) => {
-  const isMobile = useIsMobile()
+export const FloatingDocs = () => {
   const history = useHistory()
   const { chainId } = useActiveWeb3React()
   const getDocsLink = () => {
@@ -26,13 +23,13 @@ export const FloatingDocs: React.FC<FloatingDocsProps> = ({ iconProps, ...props 
         position: 'fixed',
         right: ['20px', '20px', '35px'],
         bottom: ['20px', '20px', '30px'],
+        width: ['40px', '40px', '50px'],
         zIndex: 5,
         cursor: 'pointer',
       }}
       onClick={() => window.open(getDocsLink(), '_blank')}
-      {...props}
     >
-      <Svg icon="docs" width={isMobile ? 40 : 50} color="primaryBright" {...iconProps} />
+      <Svg icon="docs" color="primaryBright" />
     </Flex>
   )
 }
