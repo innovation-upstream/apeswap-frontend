@@ -83,6 +83,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
           twitter={pool?.twitter}
           projectLink={pool?.projectLink}
           audit={pool?.audit}
+          pool={pool}
         />
       ),
       infoContentPosition: 'translate(8%, 0%)',
