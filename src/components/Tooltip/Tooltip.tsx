@@ -5,9 +5,10 @@ import { useTranslation } from '../../contexts/Localization'
 import { styles } from './styles'
 import { BLOCK_EXPLORER } from '../../config/constants/chains'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { JungleFarm } from '../../state/types'
-import EndsInComponent from './EndsInComponent'
+import { JungleFarm, Pool } from 'state/types'
+import JungleFarmsEndsIn from './JungleFarmsEndsIn'
 import ButtonsRow from './ButtonsRow'
+import PoolsEndsIn from './PoolsEndsIn'
 
 export interface TooltipProps {
   valueTitle?: string
@@ -21,6 +22,7 @@ export interface TooltipProps {
   twitter?: string
   audit?: string
   jungleFarm?: JungleFarm
+  pool?: Pool
 }
 
 const Tooltip: React.FunctionComponent<TooltipProps> = ({
@@ -35,6 +37,7 @@ const Tooltip: React.FunctionComponent<TooltipProps> = ({
   twitter,
   audit,
   jungleFarm,
+  pool,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
@@ -58,7 +61,8 @@ const Tooltip: React.FunctionComponent<TooltipProps> = ({
           <Text sx={styles.contentText}>{value2Content}</Text>
         </Flex>
       )}
-      {jungleFarm && <EndsInComponent farm={jungleFarm} />}
+      {jungleFarm && <JungleFarmsEndsIn farm={jungleFarm} />}
+      {pool && <PoolsEndsIn pool={pool} />}
       <Flex sx={{ justifyContent: 'center' }}>
         <Flex sx={{ width: '144px', flexDirection: 'column' }}>
           <Flex sx={styles.linkRow}>

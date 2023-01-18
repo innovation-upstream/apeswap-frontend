@@ -8,7 +8,7 @@ import getTimePeriods from 'utils/getTimePeriods'
 import { BSC_BLOCK_TIME } from 'config'
 import { styles } from './styles'
 
-const EndsInComponent: React.FC<{ farm: JungleFarm }> = ({ farm }) => {
+const JungleFarmsEndsIn: React.FC<{ farm: JungleFarm }> = ({ farm }) => {
   const { currentBlock } = useBlock()
   const currentTime = useCurrentTime()
   const timeUntilStart = farm?.rewardsPerSecond
@@ -46,4 +46,4 @@ const EndsInComponent: React.FC<{ farm: JungleFarm }> = ({ farm }) => {
   )
 }
 
-export default EndsInComponent
+export default JungleFarmsEndsIn
