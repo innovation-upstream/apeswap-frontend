@@ -546,7 +546,7 @@ export const BillsSlides = () => {
             )}{' '}
             {t('You can also')}{' '}
             <TooltipBubble
-              placement={'topLeft'}
+              placement={isMobile ? 'topRight' : 'topLeft'}
               transformTip={`translate(${isMobile ? '10%' : '0'}, 2%)`}
               body={
                 <Flex sx={styles.tipBody}>
@@ -869,9 +869,7 @@ export const MigrateSlides = () => {
               transformTip={`translate(5%, 2%)`}
               body={
                 <Flex sx={styles.tipBody}>
-                  {t(
-                    'LP token holders receive a portion of the fees charged when swaps occur between the tokens that comprise that LP.',
-                  )}
+                  {t('Maximizer Vaults will auto-compound your rewards periodically to maximize your yields.')}
                 </Flex>
               }
               sx={{ width: ['210px', '210px', '350px'] }}

@@ -17,6 +17,7 @@ import {
   ConnectWalletSlide,
   MigrateSlides,
 } from './TutorialSlides'
+import { ChainId } from '@ape.swap/sdk'
 
 const Tutorial: React.FC<{
   location: string
@@ -31,7 +32,7 @@ const Tutorial: React.FC<{
       return {
         type: `${networkLabel}-dex`,
         title: "Welcome to ApeSwap's Dex",
-        description: `Easily trade ANY token on ${networkLabel} Chain!`,
+        description: `Easily trade ANY token on ${networkLabel} ${chainId === ChainId.BSC ? 'Chain' : 'Network'}!`,
         slides: account ? SwapSlides() : [ConnectWalletSlide(), ...SwapSlides()],
       }
     if (location === '/farms')
