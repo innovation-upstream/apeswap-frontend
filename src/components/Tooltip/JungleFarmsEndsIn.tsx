@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, Text } from '@apeswapfinance/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import { JungleFarm } from 'state/types'
 import { useBlock } from 'state/block/hooks'
 import useCurrentTime from 'hooks/useTimer'

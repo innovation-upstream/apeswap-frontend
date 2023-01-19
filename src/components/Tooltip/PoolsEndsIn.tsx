@@ -17,8 +17,8 @@ const PoolsEndsIn: React.FC<{ pool: Pool }> = ({ pool }) => {
     <Flex sx={{ mt: '5px' }}>
       {pool?.endBlock > 0 && pool?.rewardToken?.symbol !== 'BANANA' && (
         <Flex sx={styles.infoRow}>
-          <Text sx={styles.titleText}>{pool?.startBlock > currentBlock ? t('Starts in') : t('Ends in')}</Text>
-          <Text sx={styles.titleText}>
+          <Text sx={styles.titleText}>{pool?.startBlock > currentBlock ? t('Starts in') : t('Ends in')}:</Text>
+          <Text sx={styles.contentText}>
             {pool?.startBlock > currentBlock
               ? `${timeUntilStart.days}d, ${timeUntilStart.hours}h, ${timeUntilStart.minutes}m`
               : `${timeUntilEnd.days}d, ${timeUntilEnd.hours}h, ${timeUntilEnd.minutes}m`}
