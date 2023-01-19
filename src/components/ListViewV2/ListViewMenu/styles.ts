@@ -1,4 +1,20 @@
 export const styles = {
+  menuContainer: {
+    borderRadius: '10px',
+    justifyContent: 'space-between',
+    padding: '10px 20px',
+    zIndex: 2,
+    backgroundColor: 'white2',
+    minWidth: '300px',
+    width: '100%',
+    marginTop: '20px',
+    alignItems: 'center',
+    flexDirection: 'column',
+    '@media screen and (min-width: 852px)': {
+      padding: '10px 10px',
+      flexDirection: 'row',
+    },
+  },
   searchText: {
     fontWeight: 700,
     fontSize: '16px !important',
@@ -9,47 +25,25 @@ export const styles = {
       margin: '0 10px',
     },
   },
-  menuContainer: {
-    borderRadius: '10px',
-    justifyContent: 'space-between',
-    padding: '10px 20px',
-    zIndex: 2,
-    backgroundColor: 'white2',
-    minWidth: '300px',
-    width: '100%',
-    marginTop: '20px',
-    '@media screen and (min-width: 852px)': {
-      padding: '10px 10px',
-    },
-  },
-  mobileContainer: {
-    width: '100%',
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
   expandedButton: {
+    display: ['flex', 'flex', 'none'],
     backgroundColor: 'lvl1',
     padding: '10px',
     borderRadius: '10px',
     cursor: 'pointer',
   },
-  mobileRow: {
-    width: '100%',
+  container: {
+    width: ['100%', '100%', 'unset'],
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     maxWidth: '353px',
-    marginTop: '15px',
+    marginTop: ['15px', '15px', '0'],
   },
-  inputContainer: {
+  selectContainer: {
     width: '50%',
     justifyContent: 'center',
   },
-  select: {
-    height: '36px',
-    display: 'flex',
-    width: '100%',
-  },
-  input: {
+  searchInput: {
     borderRadius: '10px',
     fontWeight: 800,
     border: 'none',
@@ -60,5 +54,8 @@ export const styles = {
     '@media screen and (min-width: 1000px)': {
       width: '240px',
     },
+  },
+  onlyDesktop: {
+    display: ['none', 'none', 'flex'],
   },
 }
