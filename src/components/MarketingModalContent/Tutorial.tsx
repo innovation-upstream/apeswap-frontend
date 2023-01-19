@@ -41,7 +41,9 @@ const Tutorial: React.FC<{
         return {
           type: `${networkLabel}-farms`,
           title: `Welcome to ${networkLabel === 'BNB' ? 'BANANA' : networkLabel} Farms`,
-          description: `Earn BANANA by staking liquidity provider (LP) tokens!`,
+          description: `Earn ${
+            networkLabel === 'Telos' ? 'TLOS' : 'BANANA'
+          } by staking liquidity provider (LP) tokens!`,
           slides: account ? FarmSlides() : [ConnectWalletSlide(), ...FarmSlides()],
           width: '300px',
         }
@@ -117,7 +119,7 @@ const Tutorial: React.FC<{
       default:
         return {
           type: 'liquidity',
-          title: 'Welcome Dex Liquidity',
+          title: 'Welcome to Dex Liquidity',
           description: 'Provide liquidity to earn trading fees!',
           slides: account ? LiquiditySlides() : [ConnectWalletSlide(), ...LiquiditySlides()],
         }
