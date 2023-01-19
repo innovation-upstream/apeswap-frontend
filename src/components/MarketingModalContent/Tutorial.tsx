@@ -40,9 +40,9 @@ const Tutorial: React.FC<{
       case '/farms': {
         return {
           type: `${networkLabel}-farms`,
-          title: `Welcome to ${networkLabel === 'BNB' ? 'BANANA' : networkLabel} Farms`,
+          title: `Welcome to ${chainId === ChainId.BSC ? 'BANANA' : networkLabel} Farms`,
           description: `Earn ${
-            networkLabel === 'Telos' ? 'TLOS' : 'BANANA'
+            chainId === ChainId.TLOS ? 'TLOS' : 'BANANA'
           } by staking liquidity provider (LP) tokens!`,
           slides: account ? FarmSlides() : [ConnectWalletSlide(), ...FarmSlides()],
           width: '300px',
