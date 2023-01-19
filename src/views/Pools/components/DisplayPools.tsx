@@ -17,7 +17,8 @@ import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
-import { StyledTag, poolStyles } from './styles'
+import { poolStyles } from './styles'
+import StyledTag from 'components/ListViewV2/components/StyledTag'
 import Tooltip from 'components/Tooltip/Tooltip'
 import { BLOCK_EXPLORER } from '../../../config/constants/chains'
 
@@ -65,9 +66,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
         <>
           {pTag?.pid === pool.sousId && (
             <Box sx={{ marginRight: '5px', mt: '1px' }}>
-              <StyledTag key={pTag?.pid} variant={tagColor}>
-                {pTag?.text}
-              </StyledTag>
+              <StyledTag text={pTag?.text} variant={tagColor} />
             </Box>
           )}
         </>

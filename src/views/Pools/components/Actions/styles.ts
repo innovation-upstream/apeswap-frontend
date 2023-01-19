@@ -1,12 +1,12 @@
 import { Button, Flex } from '@ape.swap/uikit'
 import styled from '@emotion/styled'
 
-export const StyledButtonSquare = styled(Button)<{ height?: number; minWidth?: number }>`
+export const StyledButtonSquare = styled(Button)<{ height?: number }>`
   border-radius: 10px;
   font-size: 16px;
   font-weight: 700;
   padding: 10px 20px;
-  min-width: ${({ minWidth }) => minWidth || 227}px;
+  width: 100%;
   height: ${({ height }) => height || 44}px;
 `
 

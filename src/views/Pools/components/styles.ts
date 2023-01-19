@@ -32,11 +32,11 @@ export const NextArrow = styled(ArrowDropUpIcon)`
 `
 
 export const StyledTag = styled(Tag)`
-  font-size: 10px;
+  font-size: 10px !important;
   padding: 0px 6px !important;
-  font-weight: 700;
-  border: none;
-  border-radius: 10px;
-  height: auto;
-  width: max-content;
+  font-weight: 700 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  height: auto !important;
+  width: max-content !important;
 `

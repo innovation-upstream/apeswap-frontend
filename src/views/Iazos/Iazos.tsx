@@ -82,7 +82,7 @@ const Iazos: React.FC = () => {
           <Banner
             banner="ssiao"
             title={t('Self Serve Offerings')}
-            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/self-serve-iao-ss-iao"
+            link="?modal=iao"
             maxWidth={856}
             listViewBreak
             margin="30px 0 0 0"

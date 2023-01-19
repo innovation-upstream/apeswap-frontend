@@ -173,7 +173,13 @@ const Farms: React.FC = () => {
         style={{ position: 'relative', top: '30px', width: '100%' }}
       >
         <ListViewLayout>
-          <Banner banner="banana-farms" link="?modal=1" title={t('Banana Farms')} listViewBreak maxWidth={1130} />
+          <Banner
+            banner="banana-farms"
+            link={`?modal=tutorial`}
+            title={t('Banana Farms')}
+            listViewBreak
+            maxWidth={1130}
+          />
           <Flex alignItems="center" justifyContent="center" mt="20px">
             <ListViewMenu
               onHandleQueryChange={handleChangeQuery}
