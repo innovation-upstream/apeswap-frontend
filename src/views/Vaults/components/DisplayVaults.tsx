@@ -15,12 +15,13 @@ import { useTranslation } from 'contexts/Localization'
 import { Vault } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
-import { Container, StyledButton, ActionContainer, StyledTag } from './styles'
+import { Container, StyledButton, ActionContainer } from './styles'
 import { vaultTokenDisplay } from '../helpers'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { selectOutputCurrency } from 'state/zap/actions'
+import { selectOutputCurrency } from '../../../state/zap/actions'
+import StyledTag from 'components/ListViewV2/components/StyledTag'
 import Tooltip from 'components/Tooltip/Tooltip'
 import { BLOCK_EXPLORER } from '../../../config/constants/chains'
 
@@ -80,9 +81,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       earnLp,
       tag: (
         <Box sx={{ marginRight: '5px', mt: '1px' }}>
-          <StyledTag key={vault?.id} variant={vault.type === 'AUTO' ? 'error' : 'success'}>
-            {t(vault?.type)}
-          </StyledTag>
+          <StyledTag variant={vault.type === 'AUTO' ? 'error' : 'success'} text={t(vault?.type)} />
         </Box>
       ),
       title: <Text style={{ fontSize: isMobile ? '14px' : '16px' }}>{vault.stakeToken.symbol}</Text>,

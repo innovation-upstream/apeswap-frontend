@@ -43,7 +43,6 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ sousIds, disabled }) => {
   return (
     <StyledButtonSquare
       height={36}
-      minWidth={100}
       disabled={disabled || pendingTrx || sousIds.length <= 0}
       onClick={handleHarvestAll}
       load={pendingTrx}

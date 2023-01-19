@@ -1,9 +1,9 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, ModalProps, LinkExternal } from '@ape.swap/uikit'
+import { Text, Flex, ModalProps } from '@ape.swap/uikit'
 import { Modal } from '@apeswapfinance/uikit'
-import { Link, Switch } from 'theme-ui'
+import { Switch } from 'theme-ui'
 
 import {
   useExpertModeManager,
@@ -70,18 +70,6 @@ const SettingsModal: React.FC<Props> = ({ onDismiss, zapSettings }) => {
         <TransactionSettings zapSettings={zapSettings} />
       ) : (
         <ScrollableContainer>
-          <Flex sx={{ justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
-            <Text
-              as={Link}
-              href="https://app.multichain.org/#/router"
-              size="16px"
-              weight={500}
-              sx={{ cursor: 'pointer' }}
-            >
-              {t('Bridge')}
-            </Text>
-            <LinkExternal href="https://app.multichain.org/#/router" />
-          </Flex>
           <Text size="18px" weight={700} margin="10px 0px">
             {t('Swap')}
           </Text>

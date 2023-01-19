@@ -24,8 +24,9 @@ const Banner: React.FC<{
   const { t } = useTranslation()
   const loaded = useProgressiveImage(`../images/new-banners/${banner}-${isDark ? 'night' : 'day'}.svg`)
 
-  const openBannerLink = (bannerLink: string) =>
+  const openBannerLink = (bannerLink: string) => {
     bannerLink.includes('modal') ? history.push({ search: bannerLink }) : window.open(bannerLink, '_blank')
+  }
 
   // Media breaks are used until tablet mode on list view is designed
   return (
@@ -66,7 +67,7 @@ const Banner: React.FC<{
             },
           }}
         >
-          {t('Learn More')} <LearnMoreArrow color={titleColor || 'text'} />
+          {link.includes('?modal') ? t('Tutorial') : t('Learn More')} <LearnMoreArrow color={titleColor || 'text'} />
         </Button>
       </Flex>
       {children}

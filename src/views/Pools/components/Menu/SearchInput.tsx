@@ -11,9 +11,6 @@ const StyledInput = styled(Input)`
   ${({ theme }) => theme.mediaQueries.md} {
     width: 180px;
   }
-  @media screen and (min-width: 900px) {
-    width: 100px;
-  }
   @media screen and (min-width: 1000px) {
     width: 200px;
   }

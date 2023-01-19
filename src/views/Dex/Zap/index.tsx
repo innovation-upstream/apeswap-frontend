@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useCallback, useEffect, useState } from 'react'
-import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
+import { Flex, Svg } from '@ape.swap/uikit'
 import DexPanel from 'views/Dex/components/DexPanel'
 import { useCurrency } from 'hooks/Tokens'
 import { Currency, CurrencyAmount } from '@ape.swap/sdk'
@@ -169,17 +169,6 @@ function ZapLiquidity({
               txHash={txHash}
               handleDismissConfirmation={handleDismissConfirmation}
             />
-            <Flex sx={{ marginTop: '10px', justifyContent: 'center' }}>
-              <Link
-                href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity"
-                target="_blank"
-                textAlign="center"
-              >
-                <Text size="12px" style={{ lineHeight: '18px', fontWeight: 400, textDecoration: 'underline' }}>
-                  Learn more{'>'}
-                </Text>
-              </Link>
-            </Flex>
           </Flex>
         </Flex>
       </Flex>
