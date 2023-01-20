@@ -251,8 +251,8 @@ const App: React.FC = () => {
       <ResetCSS />
       <GlobalStyle />
       <MarketingModalCheck />
-      <FloatingDocs />
       {loadMenu()}
+      <FloatingDocs />
       <ToastListener />
     </Router>
   )
