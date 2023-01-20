@@ -908,7 +908,6 @@ export const ConnectWalletSlide = () => {
   const { onPresentConnectModal } = useWalletModal(login, logout, t)
   return (
     <Slide
-      key={0}
       step="Step 0"
       slideTitle="Connect Your Wallet"
       slideContent={

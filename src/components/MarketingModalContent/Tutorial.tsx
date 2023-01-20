@@ -34,7 +34,7 @@ const Tutorial: React.FC<{
           type: `${networkLabel}-dex`,
           title: "Welcome to ApeSwap's Dex",
           description: `Easily trade ANY token on ${networkLabel} ${chainId === ChainId.BSC ? 'Chain' : 'Network'}!`,
-          slides: account ? SwapSlides() : [ConnectWalletSlide(), ...SwapSlides()],
+          slides: account ? SwapSlides() : [<ConnectWalletSlide key={0} />, ...SwapSlides()],
         }
       }
       case '/farms': {
@@ -44,7 +44,7 @@ const Tutorial: React.FC<{
           description: `Earn ${
             chainId === ChainId.TLOS ? 'TLOS' : 'BANANA'
           } by staking liquidity provider (LP) tokens!`,
-          slides: account ? FarmSlides() : [ConnectWalletSlide(), ...FarmSlides()],
+          slides: account ? FarmSlides() : [<ConnectWalletSlide key={0} />, ...FarmSlides()],
           width: '300px',
         }
       }
@@ -53,7 +53,7 @@ const Tutorial: React.FC<{
           type: `jungle-farms`,
           title: `Welcome to Jungle Farms`,
           description: `Earn Partner Tokens by Staking Liquidity!`,
-          slides: account ? FarmSlides() : [ConnectWalletSlide(), ...FarmSlides()],
+          slides: account ? FarmSlides() : [<ConnectWalletSlide key={0} />, ...FarmSlides()],
           width: '285px',
         }
       }
@@ -62,7 +62,7 @@ const Tutorial: React.FC<{
           type: 'pools',
           title: 'Welcome to Staking Pools',
           description: 'Earn tokens by staking BANANA or GNANA!',
-          slides: account ? PoolSlides() : [ConnectWalletSlide(), ...PoolSlides()],
+          slides: account ? PoolSlides() : [<ConnectWalletSlide key={0} />, ...PoolSlides()],
         }
       }
       case '/maximizers': {
@@ -70,7 +70,7 @@ const Tutorial: React.FC<{
           type: 'maximizers',
           title: 'Welcome to Banana Maximizers',
           description: 'Maximize your BANANA yields!',
-          slides: account ? MaximizerSlides() : [ConnectWalletSlide(), ...MaximizerSlides()],
+          slides: account ? MaximizerSlides() : [<ConnectWalletSlide key={0} />, ...MaximizerSlides()],
         }
       }
       case '/gnana': {
@@ -78,7 +78,7 @@ const Tutorial: React.FC<{
           type: 'gnana',
           title: 'Welcome to Golden Banana',
           description: 'Unlock the exclusive benefits of GNANA!',
-          slides: account ? GnanaSlides() : [ConnectWalletSlide(), ...GnanaSlides()],
+          slides: account ? GnanaSlides() : [<ConnectWalletSlide key={0} />, ...GnanaSlides()],
           width: '296px',
         }
       }
@@ -87,7 +87,7 @@ const Tutorial: React.FC<{
           type: 'treasury-bills',
           title: 'Welcome to Treasury Bills',
           description: 'Buy tokens at a discount and obtain a unique NFT!',
-          slides: account ? BillsSlides() : [ConnectWalletSlide(), ...BillsSlides()],
+          slides: account ? BillsSlides() : [<ConnectWalletSlide key={0} />, ...BillsSlides()],
         }
       }
       case '/iao': {
@@ -95,7 +95,7 @@ const Tutorial: React.FC<{
           type: 'iao',
           title: 'Welcome to Initial Ape Offerings',
           description: 'Contribute BNB or GNANA to obtain newly launched tokens!',
-          slides: account ? IAOSlides() : [ConnectWalletSlide(), ...IAOSlides()],
+          slides: account ? IAOSlides() : [<ConnectWalletSlide key={0} />, ...IAOSlides()],
           width: '285px',
         }
       }
@@ -104,7 +104,7 @@ const Tutorial: React.FC<{
           type: 'orders',
           title: 'Welcome to Limit Orders',
           description: 'Trade at the price you want!',
-          slides: account ? OrdersSlides() : [ConnectWalletSlide(), ...OrdersSlides()],
+          slides: account ? OrdersSlides() : [<ConnectWalletSlide key={0} />, ...OrdersSlides()],
         }
       }
       case '/migrate': {
@@ -112,7 +112,7 @@ const Tutorial: React.FC<{
           type: 'migrate',
           title: 'Welcome to Liquidity Migration',
           description: 'Migrate your liquidity from external DEXs into ApeSwap',
-          slides: account ? MigrateSlides() : [ConnectWalletSlide(), ...MigrateSlides()],
+          slides: account ? MigrateSlides() : [<ConnectWalletSlide key={0} />, ...MigrateSlides()],
           width: '332px',
         }
       }
@@ -121,7 +121,7 @@ const Tutorial: React.FC<{
           type: 'liquidity',
           title: 'Welcome to Dex Liquidity',
           description: 'Provide liquidity to earn trading fees!',
-          slides: account ? LiquiditySlides() : [ConnectWalletSlide(), ...LiquiditySlides()],
+          slides: account ? LiquiditySlides() : [<ConnectWalletSlide key={0} />, ...LiquiditySlides()],
         }
     }
   }
