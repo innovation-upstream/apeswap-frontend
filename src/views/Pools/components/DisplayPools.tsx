@@ -17,8 +17,10 @@ import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
-import InfoContent from '../InfoContent'
-import { StyledTag, poolStyles } from './styles'
+import { poolStyles } from './styles'
+import StyledTag from 'components/ListViewV2/components/StyledTag'
+import Tooltip from 'components/Tooltip/Tooltip'
+import { BLOCK_EXPLORER } from '../../../config/constants/chains'
 
 const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
   const { chainId } = useActiveWeb3React()
@@ -50,6 +52,8 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
 
     const pTag = poolTags?.find((tag) => tag.pid === pool?.sousId)
     const tagColor = pTag?.color as TagVariants
+    const explorerLink = BLOCK_EXPLORER[chainId]
+    const poolContractURL = `${explorerLink}/address/${pool?.contractAddress[chainId]}`
 
     const openLiquidityUrl = () =>
       pool?.stakingToken?.symbol === 'GNANA'
@@ -62,19 +66,26 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
         <>
           {pTag?.pid === pool?.sousId && (
             <Box sx={{ marginRight: '5px', mt: '1px' }}>
-              <StyledTag key={pTag?.pid} variant={tagColor}>
-                {pTag?.text}
-              </StyledTag>
+              <StyledTag text={pTag?.text} variant={tagColor} />
             </Box>
           )}
         </>
       ),
       tokens: { token1, token2: token2 === 'NFTY ' ? 'NFTY2' : token2 || pool?.tokenName },
       title: <Text bold>{pool?.rewardToken?.symbol || pool?.tokenName}</Text>,
-      id: pool?.sousId,
-      infoContent: <InfoContent pool={pool} />,
+      id: pool.sousId,
+      infoContent: (
+        <Tooltip
+          tokenContract={pool?.rewardToken?.address[chainId]}
+          secondURL={poolContractURL}
+          secondURLTitle={t('View Pool Contract')}
+          twitter={pool?.twitter}
+          projectLink={pool?.projectLink}
+          audit={pool?.audit}
+          pool={pool}
+        />
+      ),
       infoContentPosition: 'translate(8%, 0%)',
-      ttWidth: '250px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },
       open: openId === pool?.sousId,

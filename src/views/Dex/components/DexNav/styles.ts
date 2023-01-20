@@ -21,7 +21,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
 
   navIconContainer: {
     width: '100%',
-    maxWidth: '60px',
+    maxWidth: ['80px', '', 'none'],
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
@@ -37,5 +37,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     position: 'relative',
     cursor: 'pointer',
     ...textUnderlineHover,
+  },
+  iconCover: {
+    mr: ['6px', '6px', '10px'],
+    cursor: 'pointer',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }

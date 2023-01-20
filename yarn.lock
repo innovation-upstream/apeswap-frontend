@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@1.0.15-alpha.2":
-  version "1.0.15-alpha.2"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.15-alpha.2.tgz#ba483d1acc1f7c97d81480c92cd6f51be8eaf131"
-  integrity sha512-ur8wXEJDYjh9KGENi1NlDRjoC+vMjiO41MXLpzKoRlAlbB0qxZK/oRhDtU3GJultkahTAfqWxreJ+zcklHnKEg==
+"@ape.swap/apeswap-lists@1.0.24-alpha.1":
+  version "1.0.24-alpha.1"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.24-alpha.1.tgz#62481cc4ee30ca572e9547ec272eea22ccfae407"
+  integrity sha512-sFYka3NzSyk9xvreF5jPsN48zKvUqI90Cy+n/Sfci7a/BzPCzQU0NIRO7qPP76u/5TlID+UH0zpjqFwLXn+Jww==
   dependencies:
     "@ape.swap/sdk" "4.3.1"
     bignumber.js "^9.0.2"
@@ -33,10 +33,15 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/uikit@1.3.44":
-  version "1.3.44"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.44.tgz#ffac71ef16c6b2e02fd848a869eefb168568efb1"
-  integrity sha512-pJeoZBUgBguTd4EuEqm9g/1xl+Nb23a6IC/UDvAHrppyb43VmE7IBVuhWGS+V3Ky15RDwMlJ8q8duXErLkv+Uw==
+"@ape.swap/token-lists@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.1.tgz#12cabe0c5cc11b9cffafea43d6ca3075481bb3f5"
+  integrity sha512-mmSYtv67TxPOe7TlOjHef/857RRqcVIlizHIxwMhrQMAWcXU4oiE1RH+9GzONep5Bz9qjtbL5XmtPtwV8w7v+g==
+
+"@ape.swap/uikit@1.3.50":
+  version "1.3.50"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.50.tgz#a714cb4f947b872e9f05bf6e693b64eeeb3355dc"
+  integrity sha512-6I1mPZeApcPLdaSdrm4eWLuhD53M65bz7d3i7LVKuw2XJFpFWPdZoy/eJUZeh5RzWnJYg/jkZl8uK3r3OtQcxg==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
@@ -68,11 +73,6 @@
     eslint-plugin-react "^7.21.5"
     eslint-plugin-react-hooks "^4.0.0"
     typescript "4.4.3"
-
-"@apeswapfinance/token-lists@1.0.330":
-  version "1.0.330"
-  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/token-lists/1.0.330/16102de9783f7e75e4fe28e806ae35a441d95c31#16102de9783f7e75e4fe28e806ae35a441d95c31"
-  integrity sha512-n/gS80/OT85nzWajD+WkbjnqKlFKM7O6UwkghFIAebaY/aLOg2vJWaGAu0c037ovrswzuyFfNVAn1JSPe32LLw==
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"

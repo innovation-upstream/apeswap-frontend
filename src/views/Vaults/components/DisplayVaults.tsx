@@ -15,13 +15,15 @@ import { useTranslation } from 'contexts/Localization'
 import { Vault } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { NextArrow } from 'views/Farms/components/styles'
-import { Container, StyledButton, ActionContainer, StyledTag } from './styles'
+import { Container, StyledButton, ActionContainer } from './styles'
 import { vaultTokenDisplay } from '../helpers'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
-import InfoContent from './InfoContent'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from '../../../state/zap/actions'
+import StyledTag from 'components/ListViewV2/components/StyledTag'
+import Tooltip from 'components/Tooltip/Tooltip'
+import { BLOCK_EXPLORER } from '../../../config/constants/chains'
 import { VaultVersion } from '@ape.swap/apeswap-lists'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
@@ -70,6 +72,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
     const userStakedBalanceUsd = `$${((userStakedBalance || 0) * vault?.stakeTokenPrice).toFixed(2)}`
 
     const { tokenDisplay, stakeLp, earnLp } = vaultTokenDisplay(vault.stakeToken, vault.rewardToken)
+    const explorerLink = BLOCK_EXPLORER[chainId]
+    const vaultContractURL = `${explorerLink}/address/${vault?.stratAddress[chainId]}`
 
     return {
       tokens: tokenDisplay,
@@ -78,17 +82,24 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       earnLp,
       tag: (
         <Box sx={{ marginRight: '5px', mt: '1px' }}>
-          <StyledTag key={vault?.id} variant={vault.type === 'AUTO' ? 'error' : 'success'}>
-            {t(vault?.type)}
-          </StyledTag>
+          <StyledTag variant={vault.type === 'AUTO' ? 'error' : 'success'} text={t(vault?.type)} />
         </Box>
       ),
       title: <Text style={{ fontSize: isMobile ? '14px' : '16px' }}>{vault.stakeToken.symbol}</Text>,
       titleContainerWidth: 400,
       id: vault.id,
-      infoContent: <InfoContent vault={vault} />,
+      infoContent: (
+        <Tooltip
+          valueTitle={t('Withdrawal Fee')}
+          valueContent={`${vault?.withdrawFee}%`}
+          value2Title={t('Performance Fee')}
+          value2Content={`${vault?.keeperFee}%`}
+          secondURL={vaultContractURL}
+          secondURLTitle={t('View Vault Contract')}
+          tokenContract={vault?.stakeToken?.address[chainId]}
+        />
+      ),
       infoContentPosition: 'translate(8%, 0%)',
-      ttWidth: '250px',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '10px', marginRight: '10px' },
       expandedContentJustified: vault.version === VaultVersion.V1 && 'center',

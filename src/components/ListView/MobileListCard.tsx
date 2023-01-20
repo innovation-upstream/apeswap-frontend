@@ -43,7 +43,7 @@ const MobileListCard: React.FC<ListCardProps> = ({
                 <TooltipBubble
                   body={infoContent}
                   transformTip={infoContentPosition || 'translate(0%, 0%)'}
-                  width={ttWidth || '200px'}
+                  width={ttWidth || '205px'}
                 >
                   <InfoIcon width={'18px'} />
                 </TooltipBubble>

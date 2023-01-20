@@ -197,7 +197,7 @@ const DualFarms: React.FC = () => {
         <ListViewLayout>
           <Banner
             banner="polygon-farms"
-            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
+            link="?modal=tutorial"
             title={t('Polygon Farms')}
             listViewBreak
             maxWidth={1130}

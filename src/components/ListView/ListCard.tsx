@@ -53,7 +53,7 @@ const ListCard: React.FC<ListCardProps> = ({
               placement="bottomRight"
               body={infoContent}
               transformTip={infoContentPosition || 'translate(-82%, 40%)'}
-              width={ttWidth || '200px'}
+              width={ttWidth || '205px'}
             >
               <InfoIcon width={toolTipIconWidth || '25px'} />
             </TooltipBubble>

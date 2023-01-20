@@ -116,7 +116,7 @@ export function rawToPortfolio({ userStats, bananaPrice }: ApiResponse) {
     })
   })
 
-  return products
+  return products.filter((product) => product.totalEarnings || product.totalValue)
 }
 
 const symbolsMap = {

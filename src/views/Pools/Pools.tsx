@@ -184,8 +184,8 @@ const Pools: React.FC = () => {
         }}
       >
         <ListViewLayout>
-          <Banner banner="pools" link="?modal=2" title={t('Staking Pools')} listViewBreak maxWidth={1130} />
-          <Flex sx={{ maxWidth: '1130px', width: '100%', flexDirection: 'column', alignSelf: 'center' }}>
+          <Banner banner="pools" link="?modal=tutorial" title={t('Staking Pools')} listViewBreak maxWidth={1130} />
+          <Flex flexDirection="column" alignSelf="center" style={{ maxWidth: '1130px', width: '100%' }}>
             <PoolMenu
               onHandleQueryChange={handleChangeQuery}
               onSetSortOption={setSortOption}

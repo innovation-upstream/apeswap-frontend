@@ -1,82 +1,71 @@
-import { Text, Flex } from '@apeswapfinance/uikit'
-import { Button } from '@ape.swap/uikit'
+import { Flex } from '@apeswapfinance/uikit'
 import styled from '@emotion/styled'
-
-export const ControlContainer = styled(Flex)`
-  align-items: center;
-  position: relative;
-  flex-wrap: wrap;
-  border-radius: 10px;
-  justify-content: space-between;
-  flex-direction: row;
-  padding: 15px;
-  z-index: 2;
-  background-color: ${({ theme }) => theme.colors.white2};
-  min-width: 300px;
-  max-width: 500px;
-  width: 100%;
-  margin: 20px 0px;
-  align-self: center;
-  height: 250px;
-  padding: 10px 30px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    height: 180px;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-direction: row;
-    min-height: 59px;
-    height: 100%;
-    padding: 0px 50px 0px 30px;
-    align-items: center;
-    max-width: 100%;
-    height: auto;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 0px 30px 0px 30px;
-  }
-`
+import { ThemeUIStyleObject } from 'theme-ui'
 
 export const LabelWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-direction: row;
-  }
-`
-
-export const StyledText = styled(Text)`
-  font-weight: 700;
-  font-size: 16px !important;
-`
-
-export const LearnMoreButton = styled(Button)`
-  height: 36px;
-  width: 192px;
-  align-items: center;
-  padding-left: 40px;
-  color: ${({ theme }) => theme.colors.yellow};
-  border: 2px solid ${({ theme }) => theme.colors.yellow};
 `
 
 export const ClaimAllWrapper = styled(Flex)`
   align-items: center;
   justify-content: center;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: auto;
-  }
+  width: 100%;
+  max-width: 353px;
 `
 
-export const ToggleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  ${Text} {
-    margin-left: 4px;
-    ${({ theme }) => theme.mediaQueries.md} {
-      margin-left: 8px;
-    }
-  }
-`
+export const styles: Record<
+  'menuContainer' | 'mobileContainer' | 'expandedButton' | 'mobileRow' | 'select' | 'stakedText' | 'searchText',
+  ThemeUIStyleObject
+> = {
+  menuContainer: {
+    borderRadius: '10px',
+    justifyContent: 'space-between',
+    padding: '10px 20px',
+    zIndex: 2,
+    backgroundColor: 'white2',
+    minWidth: '300px',
+    width: '100%',
+    margin: '20px 0',
+    '@media screen and (min-width: 852px)': {
+      padding: '10px 10px',
+    },
+  },
+  mobileContainer: {
+    width: '100%',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  expandedButton: {
+    backgroundColor: 'lvl1',
+    padding: '10px',
+    borderRadius: '10px',
+    cursor: 'pointer',
+    minWidth: '38px',
+    marginLeft: '10px',
+  },
+  mobileRow: {
+    width: '100%',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    maxWidth: '353px',
+  },
+  select: {
+    height: '36px',
+    display: 'flex',
+    width: '100%',
+  },
+  stakedText: {
+    fontWeight: 700,
+    fontSize: '16px',
+    mx: '10px',
+  },
+  searchText: {
+    marginRight: '15px',
+    display: 'none',
+    '@media screen and (min-width: 1050px)': {
+      display: 'inherit',
+    },
+  },
+}

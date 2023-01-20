@@ -194,7 +194,7 @@ const JungleFarms: React.FC = () => {
           <Banner
             banner={`${chainId}-jungle-farms` as BannerTypes}
             title={chainId === 40 ? t('Telos Farms') : t('Jungle Farms')}
-            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
+            link={`?modal=tutorial`}
             listViewBreak
             maxWidth={1130}
           />
