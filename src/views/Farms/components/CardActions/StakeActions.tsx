@@ -1,14 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Flex,
-  AddIcon,
-  MinusIcon,
-  useModal,
-  AutoRenewIcon,
-  LinkExternal,
-  Text,
-  useMatchBreakpoints,
-} from '@apeswapfinance/uikit'
+import { Flex, AddIcon, MinusIcon, useModal, AutoRenewIcon, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useStake from 'hooks/useStake'

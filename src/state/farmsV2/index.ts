@@ -55,7 +55,7 @@ export const fetchFarmsPublicDataAsync =
       console.warn(error)
     }
   }
-export const fetchFarmUserDataAsync =
+export const fetchFarmV2UserDataAsync =
   (chainId: number, account: string): AppThunk =>
   async (dispatch, getState) => {
     try {
@@ -85,7 +85,7 @@ export const updateFarmV2UserAllowances =
   async (dispatch, getState) => {
     const farms = getState().farmsV2.data
     const allowances = await fetchFarmV2UserAllowances(chainId, account, farms)
-    dispatch(updateFarmV2UserData({ pid, field: 'allowance', value: allowances[pid] }))
+    dispatch(updateFarmV2UserData({ field: 'allowance', value: allowances[pid], pid }))
   }
 
 export const updateFarmV2UserTokenBalances =
@@ -93,7 +93,7 @@ export const updateFarmV2UserTokenBalances =
   async (dispatch, getState) => {
     const farms = getState().farmsV2.data
     const tokenBalances = await fetchFarmV2UserTokenBalances(chainId, account, farms)
-    dispatch(updateFarmV2UserData({ pid, field: 'tokenBalance', value: tokenBalances[pid] }))
+    dispatch(updateFarmV2UserData({ field: 'tokenBalance', value: tokenBalances[pid], pid }))
   }
 
 export const updateFarmV2UserStakedBalances =
@@ -101,7 +101,7 @@ export const updateFarmV2UserStakedBalances =
   async (dispatch, getState) => {
     const farms = getState().farmsV2.data
     const stakedBalances = await fetchFarmV2UserStakedBalances(chainId, account, farms)
-    dispatch(updateFarmV2UserData({ pid, field: 'stakedBalance', value: stakedBalances[pid] }))
+    dispatch(updateFarmV2UserData({ field: 'stakedBalance', value: stakedBalances[pid], pid }))
   }
 
 export const updateFarmV2UserEarnings =
@@ -109,7 +109,7 @@ export const updateFarmV2UserEarnings =
   async (dispatch, getState) => {
     const farms = getState().farmsV2.data
     const pendingRewards = await fetchFarmV2UserEarnings(chainId, account, farms)
-    dispatch(updateFarmV2UserData({ pid, field: 'earnings', value: pendingRewards[pid] }))
+    dispatch(updateFarmV2UserData({ field: 'earnings', value: pendingRewards[pid], pid }))
   }
 
 export default farmsSlice.reducer

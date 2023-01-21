@@ -2,31 +2,19 @@
 import React from 'react'
 import { Text, Svg } from '@apeswapfinance/uikit'
 import { Button, Flex } from '@ape.swap/uikit'
-import { useModal } from '@ape.swap/uikit'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
-import { Farm, Tag } from 'state/types'
+import { Farm } from 'state/types'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import useIsMobile from 'hooks/useIsMobile'
-import { Field, selectCurrency } from 'state/swap/actions'
-import { useAppDispatch } from 'state'
 import { Container } from './styles'
-import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { selectOutputCurrency } from 'state/zap/actions'
-import { Svg as Icon } from '@ape.swap/uikit'
-import { useMasterchef } from 'hooks/useContract'
-import { useFarmsV2 } from 'state/farmsV2/hooks'
-import Unstake from './MigrateActionsButtons/Unstake'
 import { Link } from 'react-router-dom'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 
 const DisplayFarms: React.FC<{ farms: Farm[] }> = ({ farms }) => {
-  const v2Farms = useFarmsV2(null)
-  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const isMobile = useIsMobile()
 
@@ -36,10 +24,6 @@ const DisplayFarms: React.FC<{ farms: Farm[] }> = ({ farms }) => {
     const [token1, token2] = farm.lpSymbol.split('-')
     const userEarnings = getBalanceNumber(farm?.userData?.earnings || new BigNumber(0))?.toFixed(2)
     const rawStakedBalance = getFullDisplayBalance(new BigNumber(farm.userData.stakedBalance))
-    const farmV2Pid = v2Farms.find(
-      (farmV2) => farm.tokenAddresses[chainId].toLowerCase() === farmV2.tokenAddresses[chainId].toLowerCase(),
-    )?.pid
-
     const userStakedBalanceUsd = `$${(
       getBalanceNumber(new BigNumber(farm?.userData.stakedBalance) || new BigNumber(0)) * farm?.lpValueUsd
     ).toFixed(2)}`
@@ -90,10 +74,9 @@ const DisplayFarms: React.FC<{ farms: Farm[] }> = ({ farms }) => {
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            {/* <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
               Migrate
-            </Button> */}
-            <Unstake pid={farm.pid} rawTokenAmount={rawStakedBalance} farmV2Pid={farmV2Pid} />
+            </Button>
           </Flex>
         </>
       ),

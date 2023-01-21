@@ -1,74 +1,31 @@
 /** @jsxImportSource theme-ui */
-import { Flex, Svg, Text, useModal } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
 import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Box } from 'theme-ui'
 import useIsMobile from 'hooks/useIsMobile'
-import { useAppDispatch } from 'state'
-import { Field, selectCurrency } from 'state/swap/actions'
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { Vault } from 'state/types'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import { NextArrow } from 'views/Farms/components/styles'
-import { Container, StyledButton, ActionContainer, StyledTag } from './styles'
+import { getFullDisplayBalance } from 'utils/formatBalance'
+import { Container } from './styles'
 import { vaultTokenDisplay } from '../helpers'
-import Actions from './Actions'
-import HarvestAction from './Actions/HarvestAction'
-import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
-import { selectOutputCurrency } from '../../../state/zap/actions'
 import Stake from './MigrateActionsButtons/Stake'
 import Approve from './MigrateActionsButtons/Approve'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
-  const dispatch = useAppDispatch()
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
   const isActive = !pathname.includes('history')
   const { t } = useTranslation()
 
-  const [onPresentAddLiquidityWidgetModal] = useModal(<DualLiquidityModal />, true, true, 'dualLiquidityModal')
-
-  const showLiquidity = (token, quoteToken, vault) => {
-    dispatch(
-      selectCurrency({
-        field: Field.INPUT,
-        currencyId: token,
-      }),
-    )
-    dispatch(
-      selectCurrency({
-        field: Field.OUTPUT,
-        currencyId: quoteToken,
-      }),
-    )
-    dispatch(
-      selectOutputCurrency({
-        currency1: vault.token.address[chainId],
-        currency2: vault.quoteToken.address[chainId],
-      }),
-    )
-    onPresentAddLiquidityWidgetModal()
-  }
-
   const vaultsListView = vaults.map((vault) => {
     const totalDollarAmountStaked = Math.round(parseFloat(vault?.totalStaked) * vault?.stakeTokenPrice * 100) / 100
     const rawTokenBalance = getFullDisplayBalance(new BigNumber(vault.userData.tokenBalance))
-    const liquidityUrl = `https://apeswap.finance/swap/`
-    const userAllowance = vault?.userData?.allowance
-    const userEarnings = getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards) || new BigNumber(0))
-    const userEarningsUsd = `$${(
-      (getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards)) || 0) * vault.rewardTokenPrice
-    ).toFixed(2)}`
-    const userTokenBalance = (getBalanceNumber(new BigNumber(vault?.userData?.tokenBalance)) || 0).toFixed(4)
-    const userTokenBalanceUsd = `$${(parseFloat(userTokenBalance || '0') * vault?.stakeTokenPrice).toFixed(2)}`
-    const userStakedBalance = getBalanceNumber(new BigNumber(vault?.userData?.stakedBalance))
-    const userStakedBalanceUsd = `$${((userStakedBalance || 0) * vault?.stakeTokenPrice).toFixed(2)}`
 
     const { tokenDisplay, stakeLp, earnLp } = vaultTokenDisplay(vault.stakeToken, vault.rewardToken)
 

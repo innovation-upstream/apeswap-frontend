@@ -17,9 +17,6 @@ import VaultMenu from './components/Menu'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import ListView404 from 'components/ListView404'
-import LegacyVaults from './LegacyVaults'
-import { Text } from '@ape.swap/uikit'
-import DisplayDepsoitVaultsV2 from './components/DisplayDepsoitVaultsV2'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
@@ -69,10 +66,6 @@ const TempLegacyVaults: React.FC = () => {
   }, [observerIsSet])
 
   const [inactiveVaults, activeVaults] = partition(allVaults, (vault) => vault.inactive)
-
-  const vaultsWithLpBalance = allVaults?.filter((vault) =>
-    new BigNumber(vault?.userData?.tokenBalance).isGreaterThan(0),
-  )
 
   const stakedOnlyVaults = activeVaults.filter(
     (vault) => vault.userData && new BigNumber(vault.userData.stakedBalance).isGreaterThan(0),

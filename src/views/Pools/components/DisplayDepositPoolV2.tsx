@@ -1,67 +1,38 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { IconButton, Text, Flex, TagVariants, Button } from '@ape.swap/uikit'
-import { Box } from 'theme-ui'
+import { IconButton, Text, Flex } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import CalcButton from 'components/RoiCalculator/CalcButton'
 import useIsMobile from 'hooks/useIsMobile'
 import { Pool, Tag } from 'state/types'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
-import Actions from './Actions'
-import HarvestAction from './Actions/HarvestAction'
-import { StyledTag, poolStyles } from './styles'
+import { poolStyles } from './styles'
 import Stake from './MigrateActionsButtons/Stake'
 import Approve from './MigrateActionsButtons/Approve'
 
-const DisplayDepositPoolV2: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({
-  pools,
-  openId,
-  poolTags,
-}) => {
+const DisplayDepositPoolV2: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId }) => {
   const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
   const { t } = useTranslation()
   const isActive = !pathname.includes('history')
-  const history = useHistory()
 
   const poolsListView = pools.map((pool) => {
     const token1 = pool?.stakingToken?.symbol
     const token2 = pool?.rewardToken?.symbol
     const totalDollarAmountStaked = Math.round(getBalanceNumber(pool?.totalStaked) * pool?.stakingToken?.price)
     const rawTokenBalance = getFullDisplayBalance(new BigNumber(pool?.userData.stakingTokenBalance))
-
-    const liquidityUrl = !pool?.lpStaking
-      ? pool?.stakingToken?.symbol === 'GNANA'
-        ? 'https://apeswap.finance/gnana'
-        : `https://apeswap.finance/swap?outputCurrency=${pool?.stakingToken?.address[chainId]}`
-      : `${BASE_ADD_LIQUIDITY_URL}/${pool?.lpTokens?.token?.address[chainId]}/${pool?.lpTokens?.quoteToken?.address[chainId]}`
-    const userAllowance = pool?.userData?.allowance
     const userEarnings = getBalanceNumber(
       pool?.userData?.pendingReward || new BigNumber(0),
       pool?.rewardToken?.decimals[chainId],
     )
     const userEarningsUsd = `$${(userEarnings * pool?.rewardToken?.price).toFixed(2)}`
-    const userTokenBalance = `${getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0))?.toFixed(6)}`
-    const userTokenBalanceUsd = `$${(
-      getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0)) * pool?.stakingToken?.price
-    ).toFixed(2)}`
-
-    const pTag = poolTags?.find((tag) => tag.pid === pool?.sousId)
-    const tagColor = pTag?.color as TagVariants
-
-    const openLiquidityUrl = () =>
-      pool?.stakingToken?.symbol === 'GNANA'
-        ? history.push({ search: '?modal=gnana' })
-        : window.open(liquidityUrl, '_blank')
 
     // Token symbol logic is here temporarily for nfty
     return {

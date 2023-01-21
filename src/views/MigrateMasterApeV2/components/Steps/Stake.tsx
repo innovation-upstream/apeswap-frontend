@@ -80,12 +80,16 @@ const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[]; allSte
           : t('Migration completed! Thank you.')}
       </Text>
       {!allStepsComplete ? (
-        <Button mb="20px" onClick={() => handleStakeAll(filteredLpsForStake)}>
+        <Button
+          mb="20px"
+          onClick={() => handleStakeAll(filteredLpsForStake)}
+          disabled={filteredLpsForStake?.length === 0}
+        >
           Stake All ({filteredLpsForStake.length})
         </Button>
       ) : (
-        <Button mb="20px" as={Link} to={'/apestats'}>
-          {t('Check stats page')}
+        <Button mb="20px" as={Link} to={'/farms'}>
+          {t('Go to Farms')}
         </Button>
       )}
       <ListView listViews={listView} />

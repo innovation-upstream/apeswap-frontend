@@ -9,7 +9,7 @@ import { useFarmLpAprs, useLpTokenPrices } from 'state/hooks'
 import { useFetchLpTokenPrices } from 'state/lpPrices/hooks'
 import { useBananaPrice } from 'state/tokenPrices/hooks'
 import { Farm, State, StatsState } from 'state/types'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
+import { fetchFarmsPublicDataAsync, fetchFarmV2UserDataAsync } from '.'
 
 export const usePollFarmsV2 = () => {
   useFetchLpTokenPrices()
@@ -35,7 +35,7 @@ export const useFarmsV2 = (account): Farm[] => {
   const farms = useSelector((state: State) => state.farmsV2.data)
   useEffect(() => {
     if (account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET)) {
-      dispatch(fetchFarmUserDataAsync(chainId, account))
+      dispatch(fetchFarmV2UserDataAsync(chainId, account))
     }
   }, [account, dispatch, slowRefresh, chainId])
   return farms

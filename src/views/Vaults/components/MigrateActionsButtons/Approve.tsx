@@ -6,7 +6,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useContract, { useVaultApeV3 } from 'hooks/useContract'
 import React, { useState } from 'react'
 import { useAppDispatch } from 'state'
-import { updateFarmV2UserAllowances } from 'state/farmsV2'
 import { updateVaultV3UserAllowance } from 'state/vaultsV3'
 import { approve } from 'utils/callHelpers'
 

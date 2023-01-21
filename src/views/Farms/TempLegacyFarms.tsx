@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Flex, Text } from '@ape.swap/uikit'
+import { Flex } from '@ape.swap/uikit'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import ListViewMenu from 'components/ListViewMenu'
 import { orderBy } from 'lodash'
@@ -18,8 +18,6 @@ import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
-import LegacyFarms from './LegacyFarms'
-import DisplayDepositV2Farms from './components/DisplayDepositV2Farms'
 
 // TODO: Delete this file once the migration has finished
 
@@ -63,10 +61,6 @@ const TempLegacyFarms: React.FC = () => {
 
   const activeFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
-
-  const farmsWithLpBalance = farmsLP?.filter(
-    (farm) => farm.pid !== 0 && new BigNumber(farm?.userData?.tokenBalance).isGreaterThan(0),
-  )
 
   const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),

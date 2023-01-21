@@ -29,9 +29,9 @@ const useUnstakeAll = () => {
     (migrateLps: MasterApeProductsInterface[]) => {
       migrateLps.map(async (migrateLp) => {
         // Get the corresponding farm pid
-        // TODO: Remove the or 0 pid after farmaway is removed
-        const v2FarmPid =
-          v2Farms.find(({ lpAddresses }) => migrateLp.lp === lpAddresses[chainId].toLowerCase())?.pid || 0
+        const v2FarmPid = v2Farms.find(({ lpAddresses }) => migrateLp.lp === lpAddresses[chainId].toLowerCase())?.pid
+        console.log(v2FarmPid)
+        console.log(migrateLp.type)
         try {
           const { pid, stakedAmount, id, type, lp } = migrateLp
           // Define contracts in the callback to avoid a new contract being initalized every render
@@ -58,7 +58,15 @@ const useUnstakeAll = () => {
               ? unstake(masterApeV1Contract, pid, stakedAmount)
               : vaultUnstakeAll(type === ProductTypes.VAULT_V1 ? vaultV1Contract : vaultV2Contract, pid)
           contractCall
-            .then((tx) =>
+            .then((tx) => {
+              // // Since getting the users token balance takes a bit longer we call it first on 8 confirmations
+              // library.waitForTransaction(tx.transactionHash).then(() => {
+              //   if (type === ProductTypes.FARM) {
+              //     dispatch(updateFarmUserStakedBalances(chainId, pid, account))
+              //   } else {
+              //     dispatch(updateVaultUserStakedBalance(account, chainId, pid))
+              //   }
+              // })
               library
                 .waitForTransaction(tx.transactionHash)
                 .then(() => {
@@ -83,8 +91,8 @@ const useUnstakeAll = () => {
                   //   },
                   // })
                 })
-                .catch((e) => handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, e.message)),
-            )
+                .catch((e) => handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, e.message))
+            })
             .catch((e) => {
               handleUpdateMigrateLp(
                 id,

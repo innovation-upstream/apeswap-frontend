@@ -1,70 +1,41 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { IconButton, Text, Flex, TagVariants, Button } from '@ape.swap/uikit'
-import { Box } from 'theme-ui'
+import { Text, Flex, Button } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import ListView from 'components/ListView'
 import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { useLocation, useHistory, Link } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import CalcButton from 'components/RoiCalculator/CalcButton'
 import useIsMobile from 'hooks/useIsMobile'
 import { Pool, Tag } from 'state/types'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
-import Actions from './Actions'
-import HarvestAction from './Actions/HarvestAction'
-import { StyledTag, poolStyles } from './styles'
-import Unstake from './MigrateActionsButtons/Unstake'
+import { poolStyles } from './styles'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 
-const DisplayLegacyPool: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({
-  pools,
-  openId,
-  poolTags,
-}) => {
+const DisplayLegacyPool: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, poolTags }) => {
   const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
   const { pathname } = useLocation()
   const { t } = useTranslation()
   const isActive = !pathname.includes('history')
-  const history = useHistory()
 
   const poolsListView = pools.map((pool) => {
     const token1 = pool?.stakingToken?.symbol
     const token2 = pool?.rewardToken?.symbol
     const totalDollarAmountStaked = Math.round(getBalanceNumber(pool?.totalStaked) * pool?.stakingToken?.price)
-    const liquidityUrl = !pool?.lpStaking
-      ? pool?.stakingToken?.symbol === 'GNANA'
-        ? 'https://apeswap.finance/gnana'
-        : `https://apeswap.finance/swap?outputCurrency=${pool?.stakingToken?.address[chainId]}`
-      : `${BASE_ADD_LIQUIDITY_URL}/${pool?.lpTokens?.token?.address[chainId]}/${pool?.lpTokens?.quoteToken?.address[chainId]}`
-    const userAllowance = pool?.userData?.allowance
+
     const userEarnings = getBalanceNumber(
       pool?.userData?.pendingReward || new BigNumber(0),
       pool?.rewardToken?.decimals[chainId],
     )
     const userEarningsUsd = `$${(userEarnings * pool?.rewardToken?.price).toFixed(2)}`
-    const userTokenBalance = `${getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0))?.toFixed(6)}`
-    const userTokenBalanceUsd = `$${(
-      getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0)) * pool?.stakingToken?.price
-    ).toFixed(2)}`
-
     const rawStakedBalance = getFullDisplayBalance(new BigNumber(pool?.userData.stakedBalance))
     const userStakedBalanceUsd = `$${(
       getBalanceNumber(new BigNumber(pool?.userData.stakedBalance) || new BigNumber(0)) * pool?.stakingToken.price
     ).toFixed(2)}`
-
-    const pTag = poolTags?.find((tag) => tag.pid === pool?.sousId)
-    const tagColor = pTag?.color as TagVariants
-
-    const openLiquidityUrl = () =>
-      pool?.stakingToken?.symbol === 'GNANA'
-        ? history.push({ search: '?modal=gnana' })
-        : window.open(liquidityUrl, '_blank')
 
     // Token symbol logic is here temporarily for nfty
     return {
@@ -73,20 +44,6 @@ const DisplayLegacyPool: React.FC<{ pools: Pool[]; openId?: number; poolTags: Ta
       id: pool?.sousId,
       cardContent: (
         <>
-          {!isMobile && (
-            <Flex sx={{ width: '90px', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-              {!isMobile && (
-                <>
-                  <a href={pool?.projectLink} target="_blank" rel="noreferrer">
-                    <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
-                  </a>
-                  <a href={pool?.twitter} target="_blank" rel="noreferrer">
-                    <IconButton icon="twitter" color="primaryBright" width={20} />
-                  </a>
-                </>
-              )}
-            </Flex>
-          )}
           {!isMobile && (
             <ListViewContent
               title={t('APR')}
@@ -132,10 +89,9 @@ const DisplayLegacyPool: React.FC<{ pools: Pool[]; openId?: number; poolTags: Ta
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            {/* <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
               Migrate
-            </Button> */}
-            <Unstake rawTokenAmount={rawStakedBalance} />
+            </Button>
           </Flex>
         </>
       ),

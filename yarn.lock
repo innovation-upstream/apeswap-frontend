@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@1.0.24-alpha.1":
-  version "1.0.24-alpha.1"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.24-alpha.1.tgz#62481cc4ee30ca572e9547ec272eea22ccfae407"
-  integrity sha512-sFYka3NzSyk9xvreF5jPsN48zKvUqI90Cy+n/Sfci7a/BzPCzQU0NIRO7qPP76u/5TlID+UH0zpjqFwLXn+Jww==
+"@ape.swap/apeswap-lists@1.0.24-alpha.2":
+  version "1.0.24-alpha.2"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.0.24-alpha.2.tgz#e98bb1394b78cfe32998a37d80d9b86617ec9581"
+  integrity sha512-ARZldb5eAO8F6VUT9wmZfAK7fFMd3BbHdBjLCGICPmIUZcqkSgNd+sQt/Zpj02LW1o0KksKA+7ZeBPDdVKaZZw==
   dependencies:
     "@ape.swap/sdk" "4.3.1"
     bignumber.js "^9.0.2"

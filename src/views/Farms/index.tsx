@@ -6,7 +6,6 @@ import TempLegacyFarms from './TempLegacyFarms'
 
 const Farms = () => {
   const currentPhase = useMigrationPhase()
-  console.log(currentPhase)
   return currentPhase === MigrationPhases.MIGRATE_PHASE_1 || currentPhase === MigrationPhases.MIGRATE_PHASE_2 ? (
     <FarmsV2 />
   ) : (

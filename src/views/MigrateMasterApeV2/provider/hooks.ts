@@ -187,13 +187,7 @@ export const useHandleUpdateAndMergeMigrateUnstake = (
         status: {
           ...lpStatus[lpToUpdateIndex].status,
           [type]: status,
-          // TODO: REMOVE BANANA LOGIC
-          approveStake:
-            lp === '0x603c7f932ED1fc6575303D8Fb018fDCBb0f39a95'.toLowerCase()
-              ? MigrateStatus.COMPLETE
-              : new BigNumber(allowance).gt(0)
-              ? MigrateStatus.COMPLETE
-              : MigrateStatus.INCOMPLETE,
+          approveStake: new BigNumber(allowance).gt(0) ? MigrateStatus.COMPLETE : MigrateStatus.INCOMPLETE,
         },
         statusText: statusText,
       }
@@ -318,7 +312,6 @@ export const useMergedV2Products = () => {
     () => farms?.filter(({ userData }) => new BigNumber(userData?.tokenBalance).isGreaterThan(0)),
     [farms],
   )
-
   const mergedProducts: MasterApeV2ProductsInterface[] = useMemo(() => {
     return userV2Farms?.map(
       ({

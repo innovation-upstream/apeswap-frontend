@@ -70,8 +70,8 @@ const MigrationRequiredPopup = () => {
         </Flex>
         <Flex sx={{ margin: '15px 0px', flexDirection: 'column', alignSelf: 'center' }}>
           <Text size="14px" weight={400} sx={{ lineHeight: 1.35 }}>
-            {t(`In order to continue earning rewards on your LP tokens, you must migrate them to the new MasterApe V2
-            contract. The current MasterApe v1 contract will no longer grant rewards as of 1/1/1.`)}
+            {t(`In order to continue earning rewards on your staked tokens, you must migrate them to the new MasterApe V2
+            contract. The current MasterApe v1 contract will no longer grant rewards as of January 26th, 22:00 UTC`)}
           </Text>
           <Text size="14px" weight={400} sx={{ lineHeight: 1.35 }}>
             {t('Please visit our Migration page to migrate your tokens or learn more.')}

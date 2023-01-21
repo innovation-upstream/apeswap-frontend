@@ -53,7 +53,9 @@ export const AboutMigrating = () => {
               }}
             >
               <Text weight={500} size="14px">
-                {t('ApeSwap is upgrading our primary smart contract (MasterApe) to MasterApe v2 on date.')}
+                {t(
+                  'ApeSwap is upgrading MasterApe, our primary smart contract, to a new MasterApeV2 smart contract on January 26th, 2023, 22:00 UTC.',
+                )}
               </Text>
               <br />
               <Text weight={500} size="14px">
@@ -68,7 +70,9 @@ export const AboutMigrating = () => {
                   </li>
                   <li>
                     <Text weight={500} size="14px">
-                      {t('Fine-tune BANANA emissions based on the recommendations of our partner, Gauntlet')}
+                      {t(
+                        'Fine-tune BANANA emissions for BANANA Farms, BANANA Maximizers, and the BANANA-BANANA Staking Pool',
+                      )}
                     </Text>
                   </li>
                   <li>
@@ -82,8 +86,10 @@ export const AboutMigrating = () => {
               </Flex>
               <br />
               <Text weight={500} size="14px">
-                {t('In order to continue earning rewards on your tokens,')}{' '}
-                <span sx={{ fontWeight: 800 }}>{t('you must migrate them to MasterApe v2.')}</span>
+                {t('In order to continue earning rewards on staked assets,')}{' '}
+                <span sx={{ fontWeight: 800 }}>
+                  {t('users must migrate them to the new MasterApeV2 smart contract.')}
+                </span>
               </Text>
               <br />
               <Text weight={500} size="14px">
@@ -99,7 +105,7 @@ export const AboutMigrating = () => {
                 }}
               >
                 <Text weight={500} size="14px">
-                  {t('Want more informations?')}{' '}
+                  {t('Want more information?')}{' '}
                 </Text>
                 <Link
                   href="https://apeswap.gitbook.io/apeswap-finance/welcome/master"

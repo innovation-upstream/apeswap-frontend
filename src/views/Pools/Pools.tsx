@@ -185,33 +185,31 @@ const Pools: React.FC = () => {
       >
         <ListViewLayout>
           <Banner banner="pools" link="?modal=tutorial" title={t('Staking Pools')} listViewBreak maxWidth={1130} />
-          <Flex flexDirection="column" alignSelf="center" style={{ maxWidth: '1130px', width: '100%' }}>
-            <PoolMenu
-              onHandleQueryChange={handleChangeQuery}
-              onSetSortOption={setSortOption}
-              onSetStake={setStakedOnly}
-              onSetTokenOption={setTokenOption}
-              pools={[...stakedOnlyPools, ...stakedInactivePools]}
-              activeOption={sortOption}
-              activeTokenOption={tokenOption}
-              stakedOnly={stakedOnly}
-              query={searchQuery}
-            />
-            {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.pools.includes(chainId) ? (
-              <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
-            ) : (
-              <>
-                {new BigNumber(legacyPool?.userData?.stakedBalance).gt(0) && (
-                  <DisplayLegacyPool pools={[legacyPool]} openId={null} poolTags={null} />
-                )}
-                {new BigNumber(v2Pool?.userData?.stakingTokenBalance).gt(0) && (
-                  <DisplayDepositPoolV2 pools={[v2Pool]} openId={null} poolTags={null} />
-                )}
-                <DisplayPools pools={renderPools()} openId={urlSearchedPool} poolTags={poolTags} />
-              </>
-            )}
-            <div ref={loadMoreRef} />
-          </Flex>
+          <PoolMenu
+            onHandleQueryChange={handleChangeQuery}
+            onSetSortOption={setSortOption}
+            onSetStake={setStakedOnly}
+            onSetTokenOption={setTokenOption}
+            pools={[...stakedOnlyPools, ...stakedInactivePools]}
+            activeOption={sortOption}
+            activeTokenOption={tokenOption}
+            stakedOnly={stakedOnly}
+            query={searchQuery}
+          />
+          {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.pools.includes(chainId) ? (
+            <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
+          ) : (
+            <>
+              {new BigNumber(legacyPool?.userData?.stakedBalance).gt(0) && (
+                <DisplayLegacyPool pools={[legacyPool]} openId={null} poolTags={null} />
+              )}
+              {new BigNumber(v2Pool?.userData?.stakingTokenBalance).gt(0) && (
+                <DisplayDepositPoolV2 pools={[v2Pool]} openId={null} poolTags={null} />
+              )}
+              <DisplayPools pools={renderPools()} openId={urlSearchedPool} poolTags={poolTags} />
+            </>
+          )}
+          <div ref={loadMoreRef} />
         </ListViewLayout>
       </Flex>
     </>

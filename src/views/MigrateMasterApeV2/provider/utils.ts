@@ -12,7 +12,6 @@ import { Farm } from 'state/types'
 import { MIGRATION_STEPS } from './constants'
 import { useFarms } from 'state/farms/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { getBananaAddress } from 'utils/addressHelper'
 
 /**
  * Helper function to set the initial status of both Migrate LPs and ApeSwap LPs if they exist
@@ -34,37 +33,25 @@ export const setMigrateLpStatus = async (
   chainId,
 ) => {
   // To make sure we dont have farms that wont be part of the migration we need to filter them out
-  // TODO: Remove the two or conditions after testing! This is because farmaway is the banana farm
-  const bananaAddress = getBananaAddress(chainId)
 
-  // TODO: Remove all FARMAWAY and BANANA code.
-  const filteredV1Products = v1Products.filter(({ lp, token0 }) =>
-    v2Farms.find(({ lpAddresses }) => lpAddresses[chainId].toLowerCase() === lp || lp === bananaAddress?.toLowerCase()),
+  const filteredV1Products = v1Products.filter(({ lp }) =>
+    v2Farms.find(({ lpAddresses }) => lpAddresses[chainId].toLowerCase() === lp),
   )
 
-  const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, lp, id, token0 }) => {
+  const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, lp, id }) => {
     const matchedV2Product = v2Products?.find(({ lp: v2Lp }) => v2Lp === lp)
     const idToUse = new BigNumber(stakedAmount).isGreaterThan(0) ? id : lp
-    const isFarmAway = token0.symbol === 'FARMAWAY'
-    // TODO: Remove when ready
-    const isV1BananaFarm = lp === bananaAddress?.toLowerCase()
     return {
       id: idToUse,
       lp,
       status: {
-        unstake: isFarmAway
-          ? MigrateStatus.COMPLETE
-          : new BigNumber(stakedAmount).isGreaterThan(0)
-          ? MigrateStatus.INCOMPLETE
-          : MigrateStatus.COMPLETE,
-        approveStake: isV1BananaFarm
-          ? MigrateStatus.COMPLETE
-          : matchedV2Product
+        unstake: new BigNumber(stakedAmount).isGreaterThan(0) ? MigrateStatus.INCOMPLETE : MigrateStatus.COMPLETE,
+        approveStake: matchedV2Product
           ? new BigNumber(matchedV2Product.farm.allowance).isGreaterThan(0)
             ? MigrateStatus.COMPLETE
             : MigrateStatus.INCOMPLETE
           : MigrateStatus.INCOMPLETE,
-        stake: isV1BananaFarm ? MigrateStatus.COMPLETE : MigrateStatus.INCOMPLETE,
+        stake: MigrateStatus.INCOMPLETE,
       },
       statusText: 'Migration Initialized',
     }

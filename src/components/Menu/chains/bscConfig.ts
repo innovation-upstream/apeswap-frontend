@@ -1,7 +1,7 @@
 import { MenuEntry } from '@ape.swap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
-export const CURRENT_MIGRATE_PATH = 'mv2'
+export const CURRENT_MIGRATE_PATH = 'the-migration'
 
 const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   {

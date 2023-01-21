@@ -4,24 +4,19 @@ import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Flex, Text } from '@ape.swap/uikit'
-import { orderBy } from 'lodash'
-import { useTranslation } from 'contexts/Localization'
-import { Farm } from 'state/types'
-import { useFarms, useFarmTags, useFarmOrderings } from 'state/farms/hooks'
-import { useSetZapOutputList } from 'state/zap/hooks'
+import { useFarms } from 'state/farms/hooks'
 import DisplayLegacyFarms from './components/DisplayLegacyFarms'
 
 const LegacyFarms: React.FC = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const { pathname } = useLocation()
-  const { t } = useTranslation()
   const farmsLP = useFarms(account)
   const { search } = window.location
   const params = new URLSearchParams(search)
   const urlSearchedFarm = parseInt(params.get('pid'))
-  const [query, setQuery] = useState('')
+  const [query] = useState('')
 
-  const [stakedOnly, setStakedOnly] = useState(true)
+  const [stakedOnly] = useState(true)
   const isActive = !pathname.includes('history')
 
   const activeFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
