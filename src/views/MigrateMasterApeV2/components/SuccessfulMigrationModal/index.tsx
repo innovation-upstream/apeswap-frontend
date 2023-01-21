@@ -43,7 +43,7 @@ const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationComple
                       padding: '0px 7.5px',
                       height: '17px',
                       borderRadius: '10px',
-                      background: location === 'farm' ? 'green' : 'orange',
+                      background: location === 'pool' ? 'blue' : location === 'farm' ? 'green' : 'orange',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}

@@ -58,8 +58,8 @@ const useStakeAll = () => {
                 .then(() => {
                   handleUpdateMigrateLp(id, 'stake', MigrateStatus.COMPLETE, 'Stake complete')
                   handleAddMigrationCompleteLog({
-                    lpSymbol: `${token0.symbol} - ${token1.symbol}`,
-                    location: migrateMaximizers && matchedVault ? 'max' : 'farm',
+                    lpSymbol: pid === 0 ? token0.symbol : `${token0.symbol} - ${token1.symbol}`,
+                    location: pid === 0 ? 'pool' : migrateMaximizers && matchedVault ? 'max' : 'farm',
                     stakeAmount: walletBalance,
                   })
                   // track({
