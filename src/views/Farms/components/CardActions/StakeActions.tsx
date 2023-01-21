@@ -6,7 +6,7 @@ import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
 import { useToast } from 'state/hooks'
 import { useAppDispatch } from 'state'
-import { fetchFarmUserDataAsync } from 'state/farms'
+import { fetchFarmV2UserDataAsync } from 'state/farmsV2'
 import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
@@ -63,7 +63,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
             console.error(e)
             setPendingDepositTrx(false)
           })
-        dispatch(fetchFarmUserDataAsync(chainId, account))
+        dispatch(fetchFarmV2UserDataAsync(chainId, account))
         setPendingDepositTrx(false)
       }}
     />,
@@ -87,7 +87,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
             console.error(e)
             setPendingWithdrawTrx(false)
           })
-        dispatch(fetchFarmUserDataAsync(chainId, account))
+        dispatch(fetchFarmV2UserDataAsync(chainId, account))
         setPendingWithdrawTrx(false)
       }}
       title={'Unstake LP tokens'}
