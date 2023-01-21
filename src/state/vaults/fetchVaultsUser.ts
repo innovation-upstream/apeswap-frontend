@@ -1,11 +1,12 @@
 import BigNumber from 'bignumber.js'
 import erc20ABI from 'config/abi/erc20.json'
-import vaultApeV1ABI from 'config/abi/vaultApeV1.json'
 import vaultApeV2ABI from 'config/abi/vaultApeV2.json'
 import multicall from 'utils/multicall'
 import { getBananaAddress, getVaultApeAddressV1, getVaultApeAddressV2, getVaultApeAddressV3 } from 'utils/addressHelper'
 import { Vault } from 'state/types'
 import { VaultVersion } from '@ape.swap/apeswap-lists'
+
+// TODO: Do the same vault refactoring as farms
 
 export const fetchVaultUserAllowances = async (account: string, chainId: number, vaultsConfig: Vault[]) => {
   const vaultApeAddressV1 = getVaultApeAddressV1(chainId)
@@ -72,7 +73,7 @@ export const fetchVaultUserStakedAndPendingBalances = async (
         }
   })
 
-  const rawStakedBalances = await multicall(chainId, [...vaultApeV1ABI, ...vaultApeV2ABI], calls)
+  const rawStakedBalances = await multicall(chainId, vaultApeV2ABI, calls)
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance, i) => {
     const isBanana =
       vaultsConfig[i].stakeToken.address[chainId].toLowerCase() === getBananaAddress(chainId).toLowerCase()

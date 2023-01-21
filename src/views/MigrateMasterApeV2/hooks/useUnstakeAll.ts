@@ -30,8 +30,6 @@ const useUnstakeAll = () => {
       migrateLps.map(async (migrateLp) => {
         // Get the corresponding farm pid
         const v2FarmPid = v2Farms.find(({ lpAddresses }) => migrateLp.lp === lpAddresses[chainId].toLowerCase())?.pid
-        console.log(v2FarmPid)
-        console.log(migrateLp.type)
         try {
           const { pid, stakedAmount, id, type, lp } = migrateLp
           // Define contracts in the callback to avoid a new contract being initalized every render
