@@ -35,6 +35,7 @@ export const useFarmsV2 = (account): Farm[] => {
   const farms = useSelector((state: State) => state.farmsV2.data)
   useEffect(() => {
     if (account && (chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET)) {
+      console.log('IN HEREHRER')
       dispatch(fetchFarmV2UserDataAsync(chainId, account))
     }
   }, [account, dispatch, slowRefresh, chainId])
