@@ -16,6 +16,7 @@ import {
   LiquiditySlides,
   ConnectWalletSlide,
   MigrateSlides,
+  TheMigrationSlides,
 } from './TutorialSlides'
 import { ChainId } from '@ape.swap/sdk'
 
@@ -113,6 +114,15 @@ const Tutorial: React.FC<{
           title: 'Welcome to Liquidity Migration',
           description: 'Migrate your liquidity from external DEXs into ApeSwap',
           slides: account ? MigrateSlides() : [<ConnectWalletSlide key={0} />, ...MigrateSlides()],
+          width: '332px',
+        }
+      }
+      case '/the-migration': {
+        return {
+          type: 'the-migration',
+          title: 'Welcome to The Migration',
+          description: 'Migrate your assets to our updated contracts to continue earning rewards!',
+          slides: account ? MigrateSlides() : [<ConnectWalletSlide key={0} />, ...TheMigrationSlides()],
           width: '332px',
         }
       }
