@@ -114,7 +114,7 @@ const contracts = {
     [ChainId.MATIC]: '',
   },
   vaultApeV3: {
-    [ChainId.BSC]: '0x4A5A1E343954672108164844b8bc43CCDFC380c0',
+    [ChainId.BSC]: '0x64443214c3d5221838e5d208db579f699be8db67',
   },
   apePriceGetter: {
     [ChainId.BSC]: '0x5e545322b83626c745FE46144a15C00C94cBD803',

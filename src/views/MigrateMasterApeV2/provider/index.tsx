@@ -42,12 +42,12 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   // V1 products
   useEffect(() => {
     setV1Products(v1ApeProducts)
-  }, [v1ApeProducts, account])
+  }, [v1ApeProducts])
 
   // V2 products
   useEffect(() => {
     setV2Products(v2ApeProducts)
-  }, [v2ApeProducts, account])
+  }, [v2ApeProducts])
 
   // Value filters and needed variables
   // Callbacks that are used on user actions

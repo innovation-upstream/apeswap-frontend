@@ -367,15 +367,15 @@ export const useMergedV2Products = () => {
                   address: !singleStakeAsset ? matchedVault.quoteToken.address[chainId]?.toLowerCase() : '',
                   symbol: !singleStakeAsset ? matchedVault.quoteToken.symbol : '',
                 },
-                stakedAmount: getFullDisplayBalance(new BigNumber(matchedVault.userData.stakedBalance)),
-                allowance: matchedVault.userData.allowance?.toString(),
+                stakedAmount: getFullDisplayBalance(new BigNumber(matchedVault?.userData?.stakedBalance)),
+                allowance: matchedVault.userData?.allowance?.toString(),
               }
             : null,
         }
       },
     )
   }, [userV2Farms, vaults, chainId])
-  const loaded = (!vaults?.[0] || !!vaults?.[0]?.userData) && !!farms?.[0]?.userData && mergedProducts
+  const loaded = !!vaults?.[0]?.userData && !!farms?.[0]?.userData && mergedProducts
 
   return { mergedProducts, loaded }
 }
