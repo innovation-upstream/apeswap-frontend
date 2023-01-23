@@ -11,10 +11,11 @@ import useUnstakeAll from '../../hooks/useUnstakeAll'
 import StatusIcons from '../StatusIcons'
 import useIsMobile from 'hooks/useIsMobile'
 import { MasterApeProductsInterface } from 'views/MigrateMasterApeV2/provider/types'
+import { useMigrateStatus } from 'state/masterApeMigration/hooks'
 
 const Unstake: React.FC<{ migrateList: MasterApeProductsInterface[] }> = ({ migrateList }) => {
   const { t } = useTranslation()
-  const { migrateLpStatus } = useMigrateAll()
+  const migrateLpStatus = useMigrateStatus()
   const handleUnstakeAll = useUnstakeAll()
   const isMobile = useIsMobile()
   const listView = migrateList?.map(({ token0, token1, id, stakedAmount, walletBalance, singleStakeAsset, pid }) => {

@@ -18,6 +18,7 @@ import { ApiResponse } from './statsPage/types'
 import { InfoState } from './info/types'
 import { MigrationTimerState } from './migrationTimer/types'
 import { ChainId } from '@ape.swap/sdk'
+import { MasterApeMigrationInterface } from './masterApeMigration/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -664,4 +665,5 @@ export interface State {
   userStats: ApiResponse
   info: InfoState
   migrationTimer: MigrationTimerState
+  masterApeMigration: MasterApeMigrationInterface
 }

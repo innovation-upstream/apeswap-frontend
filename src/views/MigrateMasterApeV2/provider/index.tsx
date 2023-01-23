@@ -33,61 +33,58 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   const [lpStatus, setLpStatus] = useState<MigrateLpStatus[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const v2Farms = useFarmsV2(null)
+  // const v2Farms = useFarmsV2(null)
 
-  // Helpful hooks used
-  const { mergedProducts: v1ApeProducts, loaded: v1ProductsLoaded } = usePullAndMergeV1Products()
-  const { mergedProducts: v2ApeProducts, loaded: v2ProductsLoaded } = useMergedV2Products()
+  // // Helpful hooks used
+  // const { mergedProducts: v1ApeProducts, loaded: v1ProductsLoaded } = usePullAndMergeV1Products()
+  // const { mergedProducts: v2ApeProducts, loaded: v2ProductsLoaded } = useMergedV2Products()
 
   // V1 products
-  useEffect(() => {
-    setV1Products(v1ApeProducts)
-  }, [v1ApeProducts])
+  // useEffect(() => {
+  //   setV1Products(v1ApeProducts)
+  // }, [v1ApeProducts])
 
-  // V2 products
-  useEffect(() => {
-    setV2Products(v2ApeProducts)
-  }, [v2ApeProducts])
+  // // V2 products
+  // useEffect(() => {
+  //   setV2Products(v2ApeProducts)
+  // }, [v2ApeProducts])
 
   // Value filters and needed variables
   // Callbacks that are used on user actions
 
-  const handleMaximizerApprovalToggle = useHandleMaximizerApprovalToggle(lpStatus, setLpStatus, setMigrateMaximizers)
-  const handleUpdateMigrateLp = useHandleUpdateMigrateLp(lpStatus, setLpStatus)
-  const handleUpdateAndMergeMigrateUnstake = useHandleUpdateAndMergeMigrateUnstake(
-    lpStatus,
-    migrateMaximizers,
-    setLpStatus,
-  )
-  const handleAddMigrationCompleteLog = useHandleAddMigrationCompleteLog(setMigrationCompleteLog)
-  const handleActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
+  // const handleMaximizerApprovalToggle = useHandleMaximizerApprovalToggle(lpStatus, setLpStatus, setMigrateMaximizers)
+  // const handleUpdateMigrateLp = useHandleUpdateMigrateLp(lpStatus, setLpStatus)
+  // const handleUpdateAndMergeMigrateUnstake = useHandleUpdateAndMergeMigrateUnstake(
+  //   lpStatus,
+  //   migrateMaximizers,
+  //   setLpStatus,
+  // )
+  // const handleAddMigrationCompleteLog = useHandleAddMigrationCompleteLog(setMigrationCompleteLog)
+  // const handleActiveIndexCallback = useCallback((activeIndex: number) => setActiveIndex(activeIndex), [])
 
   // On load and value change hooks
 
-  const loading = useMemo(() => {
-    return !(v1ProductsLoaded && v2ProductsLoaded)
-  }, [v1ProductsLoaded, v2ProductsLoaded])
-
+  const loading = false
   // Monitor is status change for active index
   // TODO: Come back to this
-  useMemo(() => {
-    const newActiveIndex = activeIndexHelper(lpStatus)
-    // if (newActiveIndex !== activeIndex && !migrationLoading) {
-    //   track({
-    //     event: 'migrate_liq',
-    //     chain: chainId,
-    //     data: {
-    //       cat: newActiveIndex,
-    //     },
-    //   })
-    // }
-    setActiveIndex(loading ? 0 : newActiveIndex)
-  }, [lpStatus, loading])
+  // useMemo(() => {
+  //   const newActiveIndex = activeIndexHelper(lpStatus)
+  //   // if (newActiveIndex !== activeIndex && !migrationLoading) {
+  //   //   track({
+  //   //     event: 'migrate_liq',
+  //   //     chain: chainId,
+  //   //     data: {
+  //   //       cat: newActiveIndex,
+  //   //     },
+  //   //   })
+  //   // }
+  //   setActiveIndex(loading ? 0 : newActiveIndex)
+  // }, [lpStatus, loading])
 
   // Set the initial status for each LP
-  useEffect(() => {
-    setMigrateLpStatus(v1ApeProducts, v2ApeProducts, v2Farms, setLpStatus, chainId)
-  }, [loading, account, chainId])
+  // useEffect(() => {
+  //   setMigrateLpStatus([], [], v2Farms, setLpStatus, chainId)
+  // }, [loading, account, chainId])
 
   // if (!apeBalancesLoading && liquidityTokens.length > 0 && timeReady) {
   //   if (migrationLoading) {
@@ -105,11 +102,11 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
         migrationLoading: loading,
         v1Products,
         v2Products,
-        handleActiveIndexCallback,
-        handleUpdateMigrateLp,
-        handleUpdateAndMergeMigrateUnstake,
-        handleMaximizerApprovalToggle,
-        handleAddMigrationCompleteLog,
+        handleActiveIndexCallback: null,
+        handleUpdateMigrateLp: null,
+        handleUpdateAndMergeMigrateUnstake: null,
+        handleMaximizerApprovalToggle: null,
+        handleAddMigrationCompleteLog: null,
       }}
     >
       {children}

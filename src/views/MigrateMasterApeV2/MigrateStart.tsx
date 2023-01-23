@@ -6,17 +6,20 @@ import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useIsMigrationLoading, useMigrateStatus } from 'state/masterApeMigration/hooks'
+import { MigrateStatus } from 'state/masterApeMigration/types'
 import LoadingYourMigration from './components/LoadingYourMigration'
 import MigrateProgress from './components/MigrateProgress'
 import Steps from './components/Steps'
 import SuccessfulMigrationModal from './components/SuccessfulMigrationModal'
 import { useMigrateAll } from './provider'
-import { MigrateStatus } from './provider/types'
 
 const MigrateStart: React.FC = () => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
-  const { migrationLoading, migrationCompleteLog, migrateLpStatus } = useMigrateAll()
+  const { migrationCompleteLog } = useMigrateAll()
+  const { allDataLoaded: migrationLoaded } = useIsMigrationLoading()
+  const migrateLpStatus = useMigrateStatus()
   const allStepsComplete =
     migrateLpStatus?.flatMap((item) =>
       Object.entries(item.status).filter(([, status]) => {
@@ -39,7 +42,7 @@ const MigrateStart: React.FC = () => {
     <>
       <MigrateProgress>
         {account ? (
-          migrationLoading ? (
+          !migrationLoaded ? (
             <LoadingYourMigration />
           ) : migrateLpStatus.length !== 0 ? (
             <Steps allStepsComplete={allStepsComplete} />

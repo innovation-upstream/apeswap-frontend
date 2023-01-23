@@ -5,9 +5,12 @@ import ApproveStake from './ApproveStake'
 import Stake from './Stake'
 import Unstake from './Unstake'
 import BigNumber from 'bignumber.js'
+import { useActiveIndex, useMergedV1Products, useMergedV2Products } from 'state/masterApeMigration/hooks'
 
 const Steps = ({ allStepsComplete }: { allStepsComplete: boolean }) => {
-  const { activeIndex, v1Products, v2Products } = useMigrateAll()
+  const activeIndex = useActiveIndex()
+  const v1Products = useMergedV1Products()
+  const v2Products = useMergedV2Products()
 
   const filteredV1StakedProducts = v1Products.filter(({ stakedAmount }) => new BigNumber(stakedAmount).gt(0))
 
@@ -19,4 +22,4 @@ const Steps = ({ allStepsComplete }: { allStepsComplete: boolean }) => {
   return stepList[activeIndex]
 }
 
-export default React.memo(Steps)
+export default Steps

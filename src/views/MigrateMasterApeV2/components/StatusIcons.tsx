@@ -2,8 +2,8 @@
 import { Flex, Svg, Text } from '@ape.swap/uikit'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
+import { MigrateLpStatus, MigrateStatus } from 'state/masterApeMigration/types'
 import { Spinner } from 'theme-ui'
-import { MigrateLpStatus, MigrateStatus } from '../provider/types'
 
 const StatusIcons: React.FC<{ id: string; migrateLpStatus: MigrateLpStatus[] }> = ({ id, migrateLpStatus }) => {
   const status = migrateLpStatus.find((status) => status.id === id)

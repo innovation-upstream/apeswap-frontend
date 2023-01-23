@@ -11,13 +11,16 @@ import StatusIcons from '../StatusIcons'
 import { useMigrateAll } from '../../provider'
 import useStakeApproveAll from '../../hooks/useStakeApproveAll'
 import useIsMobile from 'hooks/useIsMobile'
-import { MasterApeV2ProductsInterface, MigrateStatus } from '../../provider/types'
+import { MasterApeV2ProductsInterface } from '../../provider/types'
+import { useMigrateStatus } from 'state/masterApeMigration/hooks'
+import { MigrateStatus } from 'state/masterApeMigration/types'
 
 const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] }> = ({ apeswapWalletLps }) => {
   const { t } = useTranslation()
   const isMobile = useIsMobile()
 
-  const { migrateLpStatus, migrateMaximizers, handleMaximizerApprovalToggle } = useMigrateAll()
+  const { migrateMaximizers, handleMaximizerApprovalToggle } = useMigrateAll()
+  const migrateLpStatus = useMigrateStatus()
   const handleApproveAll = useStakeApproveAll()
 
   // Filter LPs that have been approved

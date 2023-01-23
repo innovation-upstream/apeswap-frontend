@@ -32,6 +32,7 @@ import protocolDashboardReducer from './protocolDashboard'
 import zapMigrator from './zapMigrator/reducer'
 import infoReducer from './info'
 import migrationTimerReducer from './migrationTimer'
+import masterApeReducer from './masterApeMigration/reducer'
 
 const reducer = combineReducers({
   farms: farmsReducer,
@@ -56,6 +57,7 @@ const reducer = combineReducers({
   nfas: nfasReducer,
   protocolDashboard: protocolDashboardReducer,
   migrationTimer: migrationTimerReducer,
+  masterApeMigration: masterApeReducer,
   multicall: multicall.reducer,
   swap,
   user,
