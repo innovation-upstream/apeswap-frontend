@@ -24,6 +24,7 @@ const MigrateContext = createContext<MigrateContextData>({} as MigrateContextDat
 /* eslint-disable react-hooks/exhaustive-deps */
 export function MigrateProvider({ children }: MigrateProviderProps) {
   // Initial states
+  const { account, chainId } = useActiveWeb3React()
 
   const [migrateMaximizers, setMigrateMaximizers] = useState<boolean>(false)
   const [v1Products, setV1Products] = useState<MasterApeProductsInterface[]>([])
@@ -41,14 +42,12 @@ export function MigrateProvider({ children }: MigrateProviderProps) {
   // V1 products
   useEffect(() => {
     setV1Products(v1ApeProducts)
-  }, [v1ApeProducts])
+  }, [v1ApeProducts, account])
 
   // V2 products
   useEffect(() => {
     setV2Products(v2ApeProducts)
-  }, [v2ApeProducts])
-
-  const { account, chainId } = useActiveWeb3React()
+  }, [v2ApeProducts, account])
 
   // Value filters and needed variables
   // Callbacks that are used on user actions

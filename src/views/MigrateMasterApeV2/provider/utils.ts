@@ -35,7 +35,7 @@ export const setMigrateLpStatus = async (
   // To make sure we dont have farms that wont be part of the migration we need to filter them out
 
   const filteredV1Products = v1Products.filter(({ lp }) =>
-    v2Farms.find(({ lpAddresses }) => lpAddresses[chainId].toLowerCase() === lp),
+    v2Farms.find(({ lpAddresses }) => lpAddresses[chainId]?.toLowerCase() === lp),
   )
 
   const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, lp, id }) => {
@@ -133,7 +133,7 @@ export const useUpdateApproveStakeStatus = (
       const updatedMigrateLpStatus = lpStatus
       const { pair, id } = apeswapLp
       const matchedFarm = farms.find(
-        (farm) => farm.lpAddresses[chainId].toLowerCase() === pair.liquidityToken.address.toLowerCase(),
+        (farm) => farm.lpAddresses[chainId]?.toLowerCase() === pair.liquidityToken.address?.toLowerCase(),
       )
       const lpToUpdateIndex = lpStatus.findIndex((migrateLp) => migrateLp.lp === id.toString())
       const lpToUpdate = {

@@ -226,6 +226,7 @@ export const useHandleAddMigrationCompleteLog = (
 export const usePullAndMergeV1Products = () => {
   const { account, chainId } = useActiveWeb3React()
   const farms = useFarms(account)
+  const farmsV2 = useFarmsV2(null)
   // We want to pull the new farms to get corresponding user info and pid info
   const { vaults } = useVaults()
   // Since vaults have to use a farm we can grab token values from just farms to avoid duplicates
@@ -244,12 +245,19 @@ export const usePullAndMergeV1Products = () => {
     [vaults],
   )
 
+  // Filter out farms that do not exists on v2Farms
+  const filteredV1V2FarmProducts = userV1Farms?.filter(({ tokenAddresses }) => {
+    return farmsV2?.find(({ tokenAddresses: tokenAddressV2 }) => {
+      return tokenAddressV2[chainId]?.toLowerCase() === tokenAddresses[chainId]?.toLowerCase()
+    })
+  })
+
   // Standardize both farm and vaults to the same type interface to make flow easier
   const mergedProducts: MasterApeProductsInterface[] = useMemo(
     () => [
-      ...userV1Farms.map((farm) => {
+      ...filteredV1V2FarmProducts.map((farm) => {
         const singleStakeAsset = farm.pid === 0
-        const lp = farm.lpAddresses[chainId].toLowerCase()
+        const lp = farm.lpAddresses[chainId]?.toLowerCase()
         return {
           id: `${ProductTypes.FARM}-${lp}`,
           lp,
@@ -257,11 +265,11 @@ export const usePullAndMergeV1Products = () => {
           type: ProductTypes.FARM,
           singleStakeAsset,
           token0: {
-            address: farm.tokenAddresses[chainId].toLowerCase(),
+            address: farm.tokenAddresses[chainId]?.toLowerCase(),
             symbol: !singleStakeAsset ? farm.tokenSymbol : farm.lpSymbol,
           },
           token1: {
-            address: farm.quoteTokenAdresses[chainId].toLowerCase(),
+            address: farm.quoteTokenAdresses[chainId]?.toLowerCase(),
             symbol: farm.quoteTokenSymbol,
           },
           stakedAmount: getFullDisplayBalance(new BigNumber(farm.userData.stakedBalance)),
@@ -273,7 +281,7 @@ export const usePullAndMergeV1Products = () => {
       ...userV1StakedVaults.map((vault) => {
         const singleStakeAsset = !vault.quoteToken
         const productType = vault.version === VaultVersion.V1 ? ProductTypes.VAULT_V1 : ProductTypes.VAULT
-        const lp = vault.stakeToken.address[chainId].toLowerCase()
+        const lp = vault.stakeToken.address[chainId]?.toLowerCase()
 
         return {
           // Since there is a BANANA single stake vault one LP could be the BANANA address
@@ -297,7 +305,7 @@ export const usePullAndMergeV1Products = () => {
         }
       }),
     ],
-    [userV1Farms, userV1StakedVaults, chainId],
+    [filteredV1V2FarmProducts, userV1StakedVaults, chainId],
   )
   const loaded = !!vaults?.[0]?.userData && !!farms?.[0]?.userData
   return { mergedProducts, loaded }
@@ -330,37 +338,37 @@ export const useMergedV2Products = () => {
         )
         const singleStakeAsset = pid === 0
         return {
-          id: lpAddresses[chainId].toLowerCase(),
-          lp: lpAddresses[chainId].toLowerCase(),
+          id: lpAddresses[chainId]?.toLowerCase(),
+          lp: lpAddresses[chainId]?.toLowerCase(),
           singleStakeAsset,
           walletBalance: getFullDisplayBalance(new BigNumber(userData.tokenBalance)),
           lpValueUsd,
           farm: {
             pid: pid,
             token0: {
-              address: tokenAddresses[chainId].toLowerCase(),
+              address: tokenAddresses[chainId]?.toLowerCase(),
               symbol: !singleStakeAsset ? tokenSymbol : lpSymbol,
             },
             token1: {
-              address: quoteTokenAdresses[chainId].toLowerCase(),
+              address: quoteTokenAdresses[chainId]?.toLowerCase(),
               symbol: quoteTokenSymbol,
             },
             stakedAmount: getFullDisplayBalance(new BigNumber(userData.stakedBalance)),
-            allowance: userData.allowance.toString(),
+            allowance: userData.allowance?.toString(),
           },
           vault: matchedVault
             ? {
                 pid: matchedVault.pid,
                 token0: {
-                  address: matchedVault.token.address[chainId].toLowerCase(),
+                  address: matchedVault.token.address[chainId]?.toLowerCase(),
                   symbol: matchedVault.token.symbol,
                 },
                 token1: {
-                  address: !singleStakeAsset ? matchedVault.quoteToken.address[chainId].toLowerCase() : '',
+                  address: !singleStakeAsset ? matchedVault.quoteToken.address[chainId]?.toLowerCase() : '',
                   symbol: !singleStakeAsset ? matchedVault.quoteToken.symbol : '',
                 },
                 stakedAmount: getFullDisplayBalance(new BigNumber(matchedVault.userData.stakedBalance)),
-                allowance: matchedVault.userData.allowance.toString(),
+                allowance: matchedVault.userData.allowance?.toString(),
               }
             : null,
         }
