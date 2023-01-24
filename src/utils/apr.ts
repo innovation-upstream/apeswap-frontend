@@ -52,3 +52,14 @@ export const getFarmApr = (poolWeight: BigNumber, bananaPriceUsd: BigNumber, poo
   const apr = yearlyBananaRewardAllocation.div(poolLiquidityUsd).times(100)
   return apr.isNaN() || !apr.isFinite() ? null : apr.toNumber()
 }
+
+export const getFarmV2Apr = (
+  poolWeight: BigNumber,
+  bananaPriceUsd: BigNumber,
+  poolLiquidityUsd: BigNumber,
+  bananaPerYear?: BigNumber,
+): number => {
+  const yearlyBananaRewardAllocation = bananaPerYear.times(poolWeight).times(bananaPriceUsd)
+  const apr = yearlyBananaRewardAllocation.div(poolLiquidityUsd).times(100)
+  return apr.isNaN() || !apr.isFinite() ? null : apr.toNumber()
+}

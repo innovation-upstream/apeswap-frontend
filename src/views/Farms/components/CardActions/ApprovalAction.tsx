@@ -13,15 +13,21 @@ import { StyledButton } from './styles'
 interface ApprovalActionProps {
   stakingTokenContractAddress: string
   pid: number
+  v2Flag?: boolean
   isLoading?: boolean
 }
 
-const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAddress, pid, isLoading = false }) => {
+const ApprovalAction: React.FC<ApprovalActionProps> = ({
+  stakingTokenContractAddress,
+  pid,
+  isLoading = false,
+  v2Flag,
+}) => {
   const { chainId, account } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const stakingTokenContract = useERC20(stakingTokenContractAddress)
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onApprove } = useApprove(stakingTokenContract)
+  const { onApprove } = useApprove(stakingTokenContract, v2Flag)
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
 

@@ -44,13 +44,13 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
       pool?.userData?.pendingReward || new BigNumber(0),
       pool?.rewardToken?.decimals[chainId],
     )
-    const userEarningsUsd = `$${(userEarnings * pool.rewardToken?.price).toFixed(2)}`
+    const userEarningsUsd = `$${(userEarnings * pool?.rewardToken?.price).toFixed(2)}`
     const userTokenBalance = `${getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0))?.toFixed(6)}`
     const userTokenBalanceUsd = `$${(
       getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0)) * pool?.stakingToken?.price
     ).toFixed(2)}`
 
-    const pTag = poolTags?.find((tag) => tag.pid === pool.sousId)
+    const pTag = poolTags?.find((tag) => tag.pid === pool?.sousId)
     const tagColor = pTag?.color as TagVariants
     const explorerLink = BLOCK_EXPLORER[chainId]
     const poolContractURL = `${explorerLink}/address/${pool?.contractAddress[chainId]}`
@@ -64,7 +64,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
     return {
       tag: (
         <>
-          {pTag?.pid === pool.sousId && (
+          {pTag?.pid === pool?.sousId && (
             <Box sx={{ marginRight: '5px', mt: '1px' }}>
               <StyledTag text={pTag?.text} variant={tagColor} />
             </Box>
@@ -88,13 +88,13 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
       infoContentPosition: 'translate(8%, 0%)',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },
-      open: openId === pool.sousId,
+      open: openId === pool?.sousId,
       cardContent: (
         <>
           <Flex sx={{ width: '90px', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
             {!isMobile && (
               <>
-                <a href={pool.projectLink} target="_blank" rel="noreferrer">
+                <a href={pool?.projectLink} target="_blank" rel="noreferrer">
                   <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
                 </a>
                 <a href={pool?.twitter} target="_blank" rel="noreferrer">
@@ -117,7 +117,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                 rewardTokenName={pool?.rewardToken?.symbol}
                 rewardTokenPrice={pool?.rewardToken?.price}
                 apr={pool?.apr}
-                tokenAddress={pool.stakingToken.address[chainId]}
+                tokenAddress={pool?.stakingToken.address[chainId]}
               />
             }
           />

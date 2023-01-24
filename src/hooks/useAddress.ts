@@ -82,6 +82,10 @@ export const useVaultApeAddressV2 = () => {
   return useAddress(addresses.vaultApeV2)
 }
 
+export const useVaultApeAddressV3 = () => {
+  return useAddress(addresses.vaultApeV3)
+}
+
 export const useMiniChefAddress = () => {
   return useAddress(addresses.miniApeV2)
 }
@@ -112,4 +116,8 @@ export const useRaffleAddress = () => {
 
 export const useMigratorBalanceCheckerAddress = () => {
   return useAddress(addresses.migratorBalanceChecker)
+}
+
+export const useMasterChefV2Address = () => {
+  return useAddress(addresses.masterChefV2)
 }

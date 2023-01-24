@@ -10,18 +10,21 @@ import Banner from 'components/Banner'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import partition from 'lodash/partition'
 import { useFetchFarmLpAprs } from 'state/hooks'
-import { useVaults, usePollVaultsData } from 'state/vaults/hooks'
 import { Vault } from 'state/types'
 import DisplayVaults from './components/DisplayVaults'
 import VaultMenu from './components/Menu'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import ListView404 from 'components/ListView404'
+import { useVaultsV3 } from 'state/vaultsV3/hooks'
+import LegacyVaults from './LegacyVaults'
+import { Text } from '@ape.swap/uikit'
+import DisplayDepsoitVaultsV2 from './components/DisplayDepsoitVaultsV2'
+import { useVaults } from 'state/vaults/hooks'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
-const Vaults: React.FC = () => {
-  usePollVaultsData()
+const VaultsV3: React.FC = () => {
   const { chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
   const { t } = useTranslation()
@@ -33,7 +36,9 @@ const Vaults: React.FC = () => {
   const [numberOfVaultsVisible, setNumberOfVaultsVisible] = useState(NUMBER_OF_VAULTS_VISIBLE)
   const { pathname } = useLocation()
   const { search } = window.location
-  const { vaults: initVaults } = useVaults()
+  const { vaults: initVaults } = useVaultsV3()
+  const { vaults: legacyVaults } = useVaults()
+
   const params = new URLSearchParams(search)
   const urlSearchedVault = parseInt(params.get('id'))
   const [allVaults, setAllVaults] = useState(initVaults)
@@ -67,6 +72,10 @@ const Vaults: React.FC = () => {
   }, [observerIsSet])
 
   const [inactiveVaults, activeVaults] = partition(allVaults, (vault) => vault.inactive)
+
+  const vaultsWithLpBalance = allVaults?.filter((vault) =>
+    new BigNumber(vault?.userData?.tokenBalance).isGreaterThan(0),
+  )
 
   const stakedOnlyVaults = activeVaults.filter(
     (vault) => vault.userData && new BigNumber(vault.userData.stakedBalance).isGreaterThan(0),
@@ -149,7 +158,7 @@ const Vaults: React.FC = () => {
           <Banner
             title={t('BANANA Maximizers')}
             banner="banana-maximizers"
-            link="?modal=tutorial"
+            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/vaults"
             titleColor="primaryBright"
             maxWidth={1130}
           />
@@ -167,7 +176,47 @@ const Vaults: React.FC = () => {
           {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.maximizers.includes(chainId) ? (
             <ListView404 product={LIST_VIEW_PRODUCTS.MAXIMIZERS} />
           ) : (
-            <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
+            <>
+              {isActive && (
+                <>
+                  <LegacyVaults />
+                  {vaultsWithLpBalance.length > 0 && (
+                    <Flex
+                      sx={{
+                        background: 'gradient',
+                        padding: '5px',
+                        borderRadius: '10px 0px 10px 10px',
+                        mt: '40px',
+                        mb: '20px',
+                        position: 'relative',
+                      }}
+                    >
+                      <Flex
+                        sx={{
+                          position: 'absolute',
+                          right: 0,
+                          top: 0,
+                          padding: '2.5px 10px',
+                          borderRadius: '10px 10px 0px 0px',
+                          background: 'rgb(221,174,66)',
+                          transform: 'translate(0px, -24px)',
+                          zIndex: 10,
+                        }}
+                      >
+                        <Text size="12px" color="primaryBright">
+                          NEW Vaults V2
+                        </Text>
+                      </Flex>
+                      <DisplayDepsoitVaultsV2 vaults={vaultsWithLpBalance} />
+                    </Flex>
+                  )}
+                </>
+              )}
+              <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
+              {!isActive && (
+                <DisplayVaults vaults={legacyVaults.slice(0, numberOfVaultsVisible)} openId={urlSearchedVault} />
+              )}
+            </>
           )}
         </ListViewLayout>
         <div ref={loadMoreRef} />
@@ -176,4 +225,4 @@ const Vaults: React.FC = () => {
   )
 }
 
-export default Vaults
+export default VaultsV3

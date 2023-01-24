@@ -36,6 +36,7 @@ import iazoFactoryAbi from 'config/abi/iazoFactory.json'
 import iazoAbi from 'config/abi/iazo.json'
 import zap from 'config/abi/zap.json'
 import migratorBalanceChecker from 'config/abi/migratorBalanceChecker.json'
+import masterChefV2 from 'config/abi/masterChefV2.json'
 
 import {
   Treasury,
@@ -77,6 +78,7 @@ import {
   useIazoFactoryAddress,
   useIazoSettingsAddress,
   useMasterChefAddress,
+  useMasterChefV2Address,
   useMigratorBalanceCheckerAddress,
   useMiniChefAddress,
   useMulticallAddress,
@@ -87,11 +89,13 @@ import {
   useTreasuryAddress,
   useVaultApeAddressV1,
   useVaultApeAddressV2,
+  useVaultApeAddressV3,
   useZapAddress,
 } from './useAddress'
 import useActiveWeb3React from './useActiveWeb3React'
 import { Zap } from 'config/abi/types/Zap'
 import { MigratorBalanceChecker } from 'config/abi/types/MigratorBalanceChecker'
+import { MasterChefV2 } from 'config/abi/types/MasterChefV2'
 import { jungleFarms, pools } from '@ape.swap/apeswap-lists'
 
 export function useContract(abi: any, address: string | undefined, withSignerIfPossible = true): Contract | null {
@@ -182,6 +186,10 @@ export const useVaultApeV2 = () => {
   return useContract(vaultApeV2, useVaultApeAddressV2()) as VaultApeV2
 }
 
+export const useVaultApeV3 = () => {
+  return useContract(vaultApeV2, useVaultApeAddressV3()) as VaultApeV2
+}
+
 export const useApePriceGetter = () => {
   return useContract(apePriceGetter, useApePriceGetterAddress()) as ApePriceGetter
 }
@@ -266,6 +274,10 @@ export function useZapContract() {
 
 export function useMigratorBalanceCheckerContract(): Contract | null {
   return useContract(migratorBalanceChecker, useMigratorBalanceCheckerAddress(), true) as MigratorBalanceChecker
+}
+
+export function useMasterChefV2Contract() {
+  return useContract(masterChefV2, useMasterChefV2Address()) as MasterChefV2
 }
 
 export default useContract

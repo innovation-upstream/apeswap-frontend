@@ -901,6 +901,144 @@ export const MigrateSlides = () => {
   ]
 }
 
+export const TheMigrationSlides = () => {
+  const { t } = useTranslation()
+  return [
+    <Slide
+      key={1}
+      step="Before we begin"
+      slideTitle="Why Do I Need To Migrate?"
+      slideContent={
+        <>
+          <Text sx={{ lineHeight: '22px' }}>
+            {t('ApeSwap has updated the smart contracts to implement the new ')}
+            <Text sx={styles.yellow}>
+              <a
+                href="https://vote.apeswap.finance/#/proposal/0x7c816da506f35d6932cf759faf81b221d566942d9472111fb795ab63150760a9"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {t('Hard Cap')}
+              </a>
+            </Text>
+            {t(
+              `. Users staking in ApeSwap products must migrate their assets to the new MasterApeV2 contract to continue earning rewards.`,
+            )}
+          </Text>
+
+          <Text sx={{ fontStyle: 'italic', fontWeight: 300 }}>{t(`Don't worry - we've made it very easy!`)}</Text>
+        </>
+      }
+    />,
+    <Slide
+      key={2}
+      step="BEFORE WE BEGIN"
+      slideTitle="When Should I Migrate?"
+      slideContent={
+        <>
+          <Text sx={{ lineHeight: '22px' }}>
+            {t(
+              'Users will no longer earn rewards on any assets staked using the original MasterApe as of January 26 22:00 UTC',
+            )}
+          </Text>
+          <Text>
+            {t(
+              `After January 26 22:00 UTC, you'll only earn rewards in the new contracts. Make sure to migrate all your assets soon!`,
+            )}
+          </Text>
+        </>
+      }
+    />,
+    <Slide
+      key={3}
+      step="Step 1"
+      slideTitle="Unstake From Old Contracts"
+      slideContent={
+        <>
+          <Text>
+            {t(
+              'Hit the UNSTAKE ALL button to unstake your positions staked in the old contract. Confirm all the transactions in your wallet.',
+            )}
+          </Text>
+          <Text
+            sx={{
+              fontStyle: 'italic',
+              fontWeight: 300,
+            }}
+          >
+            {t(`You'll be able to see your overall migration progress!`)}
+          </Text>
+        </>
+      }
+    />,
+    <Slide
+      key={4}
+      step="Step 2"
+      slideTitle="Approve New Contracts"
+      slideContent={
+        <>
+          <Text sx={{ lineHeight: '22px' }}>
+            {t(
+              `Select APPROVE ALL to approve all the new MasterApeV2 contracts. Confirm all the transactions in your wallet. `,
+            )}
+          </Text>
+          <Text
+            sx={{
+              fontStyle: 'italic',
+            }}
+          >
+            {t(
+              `You can also toggle “Migrate to Maximizers”, which will migrate  your positions automatically to a Maximizer Vault if available.`,
+            )}
+          </Text>
+        </>
+      }
+    />,
+    <Slide
+      key={4}
+      step="Step 3"
+      slideTitle="Stake Using New Contracts"
+      slideContent={
+        <>
+          <Text>
+            {t(
+              `Hit STAKE ALL to stake all your tokens in the new contracts. Confirm all the transactions in your wallet.`,
+            )}
+          </Text>
+          <Text
+            sx={{
+              fontStyle: 'italic',
+              fontWeight: 300,
+            }}
+          >
+            {t(`You're almost there!`)}
+          </Text>
+        </>
+      }
+    />,
+    <Slide
+      key={5}
+      step="Congratulations"
+      slideTitle="Your Migration Is Ready"
+      slideContent={
+        <>
+          <Text>
+            {t(`You're now ready to migrate all your assets from the old MasterApe contract to the new one.`)}
+          </Text>
+          <Text
+            sx={{
+              fontStyle: 'italic',
+              fontWeight: 300,
+            }}
+          >
+            {t(`You'll see a summary of your migration to MasterApeV2 after it's completed.`)}
+          </Text>
+        </>
+      }
+    />,
+  ]
+}
+
 export const ConnectWalletSlide = () => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()

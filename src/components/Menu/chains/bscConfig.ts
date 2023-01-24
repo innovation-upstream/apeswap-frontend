@@ -1,6 +1,8 @@
 import { MenuEntry } from '@ape.swap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
+export const CURRENT_MIGRATE_PATH = 'the-migration'
+
 const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   {
     label: t('Exchange'),
@@ -39,6 +41,11 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     lightIcon: 'StakeLightImage',
     darkIcon: 'StakeDarkImage',
     items: [
+      {
+        label: t('Migrate'),
+        href: '/' + CURRENT_MIGRATE_PATH,
+        isNew: true,
+      },
       {
         label: t('Staking Pools'),
         href: '/pools',

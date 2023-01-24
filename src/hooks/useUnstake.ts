@@ -18,6 +18,7 @@ import {
   nfaUnstake,
   miniChefUnstake,
   jungleUnstake,
+  unstakeMasterChefV2,
 } from 'utils/callHelpers'
 import {
   updateDualFarmUserEarnings,
@@ -25,20 +26,30 @@ import {
   updateDualFarmUserTokenBalances,
 } from 'state/dualFarms'
 import { useNetworkChainId } from 'state/hooks'
-import { useJungleChef, useMasterchef, useMiniChefContract, useNfaStakingChef, useSousChef } from './useContract'
+import {
+  useJungleChef,
+  useMasterchef,
+  useMasterChefV2Contract,
+  useMiniChefContract,
+  useNfaStakingChef,
+  useSousChef,
+} from './useContract'
 import useActiveWeb3React from './useActiveWeb3React'
 import { Contract } from 'ethers'
 import { Masterchef } from 'config/abi/types'
 import { getProviderOrSigner } from 'utils'
 import { CHEF_ADDRESSES } from 'config/constants/chains'
 
-const useUnstake = (pid: number) => {
+const useUnstake = (pid: number, v2Flag: boolean) => {
   const { chainId } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
+  const masterChefContractV2 = useMasterChefV2Contract()
 
   const handleUnstake = useCallback(
     async (amount: string) => {
-      const trxHash = await unstake(masterChefContract, pid, amount)
+      const trxHash = (await v2Flag)
+        ? unstakeMasterChefV2(masterChefContractV2, pid, amount)
+        : unstake(masterChefContract, pid, amount)
       track({
         event: 'farm',
         chain: chainId,
@@ -50,30 +61,26 @@ const useUnstake = (pid: number) => {
       })
       return trxHash
     },
-    [masterChefContract, pid, chainId],
+    [masterChefContract, masterChefContractV2, v2Flag, pid, chainId],
   )
 
   return { onUnstake: handleUnstake }
 }
 
-// TODO remove legacy code we don't need to support
-const SYRUPIDS = []
-
 export const useSousUnstake = (sousId) => {
   const dispatch = useDispatch()
-  // TODO switch to useActiveWeb3React. useWeb3React is legacy hook and useActiveWeb3React should be used going forward
-  const { account, chainId } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
+  const masterChefContractV2 = useMasterChefV2Contract()
   const sousChefContract = useSousChef(sousId)
-  const isOldSyrup = SYRUPIDS.includes(sousId)
 
   const handleUnstake = useCallback(
     async (amount: string) => {
       let trxHash
       if (sousId === 0) {
+        trxHash = await unstakeMasterChefV2(masterChefContractV2, 0, amount)
+      } else if (sousId === 999) {
         trxHash = await unstake(masterChefContract, 0, amount)
-      } else if (isOldSyrup) {
-        trxHash = await sousEmegencyWithdraw(sousChefContract)
       } else {
         trxHash = await sousUnstake(sousChefContract, amount)
       }
@@ -91,7 +98,7 @@ export const useSousUnstake = (sousId) => {
       })
       return trxHash
     },
-    [account, dispatch, isOldSyrup, masterChefContract, sousChefContract, sousId, chainId],
+    [account, dispatch, masterChefContract, masterChefContractV2, sousChefContract, sousId, chainId],
   )
 
   return { onUnstake: handleUnstake }

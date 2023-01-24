@@ -43,7 +43,7 @@ const Migrate: React.FC<{ migrateList: MigrateResult[]; apeswapWalletLps: { pair
       stakeLp: true,
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       noEarnToken: true,
-      forMigratonList: true,
+      forMigrationList: true,
       id: lpAddress,
       cardContent: !isMobile ? (
         <>

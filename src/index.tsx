@@ -5,11 +5,13 @@ import App from './App'
 import Providers from './Providers'
 import ListsUpdater from './state/lists/updater'
 import TransactionUpdater from './state/transactions/updater'
+import MigrateV2Updater from './state/masterApeMigration/updater'
 
 function Updaters() {
   return (
     <>
       <ListsUpdater />
+      <MigrateV2Updater />
       <TransactionUpdater />
       <MulticallUpdater />
     </>

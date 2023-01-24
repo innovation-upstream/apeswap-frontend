@@ -1,8 +1,9 @@
+/** @jsxImportSource theme-ui */
 import React, { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Flex } from '@apeswapfinance/uikit'
+import { Flex } from '@ape.swap/uikit'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import ListViewMenu from 'components/ListViewMenu'
 import { orderBy } from 'lodash'
@@ -10,7 +11,7 @@ import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
 import { Farm } from 'state/types'
-import { useFarms, useFarmTags, usePollFarms, useFarmOrderings } from 'state/farms/hooks'
+import { useFarmTags, useFarmOrderings, useFarms } from 'state/farms/hooks'
 import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
@@ -18,8 +19,9 @@ import { useSetZapOutputList } from 'state/zap/hooks'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 
-const Farms: React.FC = () => {
-  usePollFarms()
+// TODO: Delete this file once the migration has finished
+
+const TempLegacyFarms: React.FC = () => {
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
   const { pathname } = useLocation()
@@ -167,10 +169,14 @@ const Farms: React.FC = () => {
   return (
     <>
       <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
+        sx={{
+          position: 'relative',
+          top: '30px',
+          width: '100%',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          mb: '100px',
+        }}
       >
         <ListViewLayout>
           <Banner
@@ -185,7 +191,9 @@ const Farms: React.FC = () => {
               onHandleQueryChange={handleChangeQuery}
               onSetSortOption={setSortOption}
               onSetStake={setStakedOnly}
-              harvestAll={<HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} />}
+              harvestAll={
+                <HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} v2Flag={true} />
+              }
               stakedOnly={stakedOnly}
               query={query}
               activeOption={sortOption}
@@ -197,7 +205,9 @@ const Farms: React.FC = () => {
               <ListView404 product={LIST_VIEW_PRODUCTS.FARMS} />
             </Flex>
           ) : (
-            <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} />
+            <Flex sx={{ mt: '20px' }}>
+              <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={null} v2Flag={false} />
+            </Flex>
           )}
         </ListViewLayout>
       </Flex>
@@ -206,4 +216,4 @@ const Farms: React.FC = () => {
   )
 }
 
-export default React.memo(Farms)
+export default React.memo(TempLegacyFarms)

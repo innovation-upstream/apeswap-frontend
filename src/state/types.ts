@@ -16,7 +16,9 @@ import { Address, Nft, Nfb, Team, LiveIfo, Decimals } from 'config/constants/typ
 import { ProtocolDashboardState } from './protocolDashboard/types'
 import { ApiResponse } from './statsPage/types'
 import { InfoState } from './info/types'
+import { MigrationTimerState } from './migrationTimer/types'
 import { ChainId } from '@ape.swap/sdk'
+import { MasterApeMigrationInterface } from './masterApeMigration/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -317,6 +319,7 @@ export interface FarmLpAprsType {
   lpAprs: {
     pid: number
     lpApr: number
+    lpAddress?: string
   }[]
 }
 
@@ -513,6 +516,8 @@ export interface FarmsState {
   data: Farm[]
 }
 
+export interface FarmsV2State extends FarmsState {}
+
 export interface PoolsState {
   data: Pool[]
 }
@@ -546,6 +551,8 @@ export interface VaultsState {
   userDataLoaded: boolean
   data: Vault[]
 }
+
+export interface VaultsV3State extends VaultsState {}
 
 export interface NfaStakingPoolsState {
   data: NfaStakingPool[]
@@ -635,6 +642,7 @@ export interface TeamsState {
 
 export interface State {
   farms: FarmsState
+  farmsV2: FarmsV2State
   block: BlockState
   toasts: ToastsState
   pools: PoolsState
@@ -644,6 +652,7 @@ export interface State {
   teams: TeamsState
   auctions: AuctionsState
   vaults: VaultsState
+  vaultsV3: VaultsV3State
   tokenPrices: TokenPricesState
   lpTokenPrices: LpTokenPricesState
   iazos: IazosState
@@ -656,4 +665,6 @@ export interface State {
   protocolDashboard: ProtocolDashboardState
   userStats: ApiResponse
   info: InfoState
+  migrationTimer: MigrationTimerState
+  masterApeMigration: MasterApeMigrationInterface
 }

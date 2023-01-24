@@ -14,13 +14,14 @@ import { ActionContainer } from './styles'
 interface HarvestActionsProps {
   pids: number[]
   disabled: boolean
+  v2Flag: boolean
 }
 
-const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => {
+const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled, v2Flag }) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onReward } = useAllHarvest(pids, chainId)
+  const { onReward } = useAllHarvest(pids, chainId, v2Flag)
   const { t } = useTranslation()
   const history = useHistory()
   const { toastSuccess } = useToast()

@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useEffect, Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -27,6 +28,10 @@ import useCircularStaking from 'hooks/useCircularStaking'
 import Home from './views/Homepage'
 import { ChainId } from '@ape.swap/sdk'
 import NetworkProductCheck from 'components/NetworkProductCheck'
+import MigrateMasterApeV2 from './views/MigrateMasterApeV2'
+import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
+import { useMonitorMigrationPhase } from 'state/migrationTimer/hooks'
+import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -102,6 +107,8 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
+  const { account, chainId } = useActiveWeb3React()
+
   usePollBlockNumber()
   useUpdateNetwork()
   useEagerConnect()
@@ -109,16 +116,17 @@ const App: React.FC = () => {
   useFetchProfile()
   useFetchLiveIfoStatus()
   useFetchLiveTagsAndOrdering()
+
   // Hotfix for showModal. Update redux state and remove
   useCircularStaking()
-
-  const { account, chainId } = useActiveWeb3React()
 
   useEffect(() => {
     if (account) dataLayer?.push({ event: 'wallet_connect', chain: chainId, user_id: account })
     // if chainId is added to deps, it will be triggered each time users switch chain
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])
+
+  useMonitorMigrationPhase()
 
   const loadMenu = () => {
     return (
@@ -189,6 +197,9 @@ const App: React.FC = () => {
             <Route exact path="/info">
               <InfoPage />
             </Route>
+            <Route path={'/' + CURRENT_MIGRATE_PATH}>
+              <MigrateMasterApeV2 />
+            </Route>
             <Route exact path="/info/tokens">
               <TokensPage />
             </Route>
@@ -252,6 +263,7 @@ const App: React.FC = () => {
       <GlobalStyle />
       <MarketingModalCheck />
       {loadMenu()}
+      <MigrationRequiredPopup />
       <FloatingDocs />
       <ToastListener />
     </Router>
