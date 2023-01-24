@@ -16,6 +16,8 @@ import { ActionContainer, CenterContainer, SmallButton, StyledButton } from './s
 import { useHistory } from 'react-router-dom'
 import { useIsModalShown } from 'state/user/hooks'
 import WithdrawModal from '../../../../components/WithdrawModal'
+import { useMigrationPhase } from 'state/migrationTimer/hooks'
+import { MigrationPhases } from 'state/migrationTimer/types'
 
 interface StakeActionsProps {
   stakingTokenBalance: string
@@ -45,6 +47,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
 
   const { onStake } = useStake(pid, v2Flag, lpValueUsd)
   const { onUnstake } = useUnstake(pid, v2Flag)
+  const currentPhase = useMigrationPhase()
 
   const [onPresentDeposit] = useModal(
     <DepositModal
@@ -101,7 +104,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
           <StyledButton
             onClick={onPresentDeposit}
             endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
-            disabled={pendingDepositTrx || !v2Flag}
+            disabled={pendingDepositTrx || (!v2Flag && currentPhase !== MigrationPhases.MIGRATE_PHASE_0)}
           >
             {t('DEPOSIT')}
           </StyledButton>
