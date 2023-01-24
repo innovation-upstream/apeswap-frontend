@@ -57,7 +57,7 @@ export const routeNames: Record<
   '/staking': 'STAKING',
   '/apestats': 'APESTATS',
   '/protocol-dashboard': 'PROTOCOL_DASHBOARD',
-  '/the-migration': 'THE MIGRATION',
+  '/the-migration': 'THE_MIGRATION',
 }
 
 export enum Farms {
@@ -87,4 +87,5 @@ export const DOC_LINKS = {
   STAKING: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake',
   APESTATS: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/apestats',
   PROTOCOL_DASHBOARD: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/protocol-dashboard',
+  THE_MIGRATION: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/hard-cap-migration-masterapev2',
 }

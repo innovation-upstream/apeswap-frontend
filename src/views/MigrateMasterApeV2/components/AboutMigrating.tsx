@@ -65,7 +65,7 @@ export const AboutMigrating = () => {
                 <ul>
                   <li>
                     <Text weight={500} size="14px">
-                      {t('Implement the hard cap on BANANA that was passed through governance on date')}
+                      {t('Implement the hard cap on BANANA that was passed through governance on August 31, 2022')}
                     </Text>
                   </li>
                   <li>
@@ -108,7 +108,7 @@ export const AboutMigrating = () => {
                   {t('Want more information?')}{' '}
                 </Text>
                 <Link
-                  href="https://apeswap.gitbook.io/apeswap-finance/welcome/master"
+                  href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/hard-cap-migration-masterapev2"
                   target="_blank"
                   sx={{
                     textDecoration: 'underline',
