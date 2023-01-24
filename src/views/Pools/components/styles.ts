@@ -1,4 +1,3 @@
-import { ArrowDropUpIcon } from '@apeswapfinance/uikit'
 import { Tag } from '@ape.swap/uikit'
 import styled from '@emotion/styled'
 import { ThemeUIStyleObject } from 'theme-ui'
@@ -72,10 +71,6 @@ export const poolStyles: Record<string, ThemeUIStyleObject> = {
     display: ['flex', 'flex', 'none'],
   },
 }
-
-export const NextArrow = styled(ArrowDropUpIcon)`
-  transform: rotate(90deg);
-`
 
 export const StyledTag = styled(Tag)`
   font-size: 10px !important;

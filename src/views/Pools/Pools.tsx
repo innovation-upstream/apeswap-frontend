@@ -1,17 +1,17 @@
+/** @jsxImportSource theme-ui */
 import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PoolCategory } from 'config/constants/types'
 import { useWeb3React } from '@web3-react/core'
-import { Flex } from '@apeswapfinance/uikit'
+import { Flex } from '@ape.swap/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { usePollPools, usePoolOrderings, usePools, usePoolTags } from 'state/pools/hooks'
-import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { Pool } from 'state/types'
 import DisplayPools from './components/DisplayPools'
@@ -20,6 +20,8 @@ import ListView404 from 'components/ListView404'
 import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
 import HarvestAll from './components/Actions/HarvestAll'
 import { FILTER_OPTIONS, SORT_OPTIONS } from './poolsOptions'
+import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
+import { styles } from './styles'
 
 const NUMBER_OF_POOLS_VISIBLE = 12
 
@@ -165,43 +167,36 @@ const Pools: React.FC = () => {
   }
 
   return (
-    <>
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
-      >
-        <ListViewLayout>
-          <Banner banner="pools" link="?modal=tutorial" title={t('Staking Pools')} listViewBreak maxWidth={1130} />
-          <Flex flexDirection="column" alignSelf="center" style={{ maxWidth: '1130px', width: '100%' }}>
-            <Flex style={{ marginBottom: '20px' }}>
-              <ListViewMenu
-                query={searchQuery}
-                onHandleQueryChange={handleChangeQuery}
-                setFilterOption={setFilterOption}
-                filterOption={filterOption}
-                setSortOption={setSortOption}
-                sortOption={sortOption}
-                checkboxLabel="Staked"
-                showOnlyCheckbox={stakedOnly}
-                setShowOnlyCheckbox={setStakedOnly}
-                toogleLabels={['Active', 'Inactive']}
-                filterOptions={FILTER_OPTIONS}
-                sortOptions={SORT_OPTIONS}
-                actionButton={<HarvestAll sousIds={sousIds} />}
-              />
-            </Flex>
-            {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.pools.includes(chainId) ? (
-              <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
-            ) : (
-              <DisplayPools pools={renderPools()} openId={urlSearchedPool} poolTags={poolTags} />
-            )}
-            <div ref={loadMoreRef} />
+    <Flex sx={styles.poolContainer}>
+      <ListViewLayout>
+        <Banner banner="pools" link="?modal=tutorial" title={t('Staking Pools')} listViewBreak maxWidth={1130} />
+        <Flex sx={styles.poolContent}>
+          <Flex style={{ marginBottom: '20px' }}>
+            <ListViewMenu
+              query={searchQuery}
+              onHandleQueryChange={handleChangeQuery}
+              setFilterOption={setFilterOption}
+              filterOption={filterOption}
+              setSortOption={setSortOption}
+              sortOption={sortOption}
+              checkboxLabel="Staked"
+              showOnlyCheckbox={stakedOnly}
+              setShowOnlyCheckbox={setStakedOnly}
+              toogleLabels={['Active', 'Inactive']}
+              filterOptions={FILTER_OPTIONS}
+              sortOptions={SORT_OPTIONS}
+              actionButton={<HarvestAll sousIds={sousIds} />}
+            />
           </Flex>
-        </ListViewLayout>
-      </Flex>
-    </>
+          {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.pools.includes(chainId) ? (
+            <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
+          ) : (
+            <DisplayPools pools={renderPools()} openId={urlSearchedPool} poolTags={poolTags} />
+          )}
+          <div ref={loadMoreRef} />
+        </Flex>
+      </ListViewLayout>
+    </Flex>
   )
 }
 

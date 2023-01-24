@@ -16,7 +16,7 @@ import { poolStyles } from './styles'
 import ListView from 'components/ListViewV2'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 import Tooltip from 'components/Tooltip/Tooltip'
-import { BLOCK_EXPLORER } from '../../../config/constants/chains'
+import { BLOCK_EXPLORER } from 'config/constants/chains'
 
 const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, openId, poolTags }) => {
   const { chainId } = useActiveWeb3React()
