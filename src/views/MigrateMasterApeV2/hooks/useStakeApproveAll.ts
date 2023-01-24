@@ -80,7 +80,7 @@ const useStakeApproveAll = () => {
               }, 2000)
             }
           })
-        if (walletIsMetamask && isMobile) {
+        if (walletIsMetamask && !isMobile) {
           return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
         }
       } catch {
