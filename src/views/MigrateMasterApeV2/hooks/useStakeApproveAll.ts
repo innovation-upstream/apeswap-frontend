@@ -51,7 +51,7 @@ const useStakeApproveAll = () => {
               hash: tx.hash,
               id,
               type: 'approveStake',
-              v3VaultPid: matchedVault.pid,
+              v3VaultPid: matchedVault?.pid,
               v2FarmPid: farmPid,
               lpAddress: lp,
             }
