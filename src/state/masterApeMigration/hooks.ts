@@ -26,27 +26,27 @@ export const useMergedV1Products = () => {
   const dispatch = useAppDispatch()
   const { chainId, account } = useActiveWeb3React()
   const { userDataLoaded } = useIsMigrationLoading()
-  const { fastRefresh } = useRefresh()
+  const { veryFastRefresh } = useRefresh()
   const transactions = useSelector((state: State) => state.masterApeMigration.transactions)
   useEffect(() => {
     if (userDataLoaded) {
       dispatch(fetchV1Products(chainId))
     }
-  }, [chainId, userDataLoaded, account, transactions.length, fastRefresh, dispatch])
+  }, [chainId, userDataLoaded, account, transactions.length, veryFastRefresh, dispatch])
   return useSelector((state: State) => state.masterApeMigration.v1Products)
 }
 
 export const useMergedV2Products = () => {
   const dispatch = useAppDispatch()
   const { chainId, account } = useActiveWeb3React()
-  const { fastRefresh } = useRefresh()
+  const { veryFastRefresh } = useRefresh()
   const { userDataLoaded } = useIsMigrationLoading()
   const transactions = useSelector((state: State) => state.masterApeMigration.transactions)
   useEffect(() => {
     if (userDataLoaded) {
       dispatch(fetchV2Products(chainId))
     }
-  }, [chainId, userDataLoaded, account, transactions.length, fastRefresh, dispatch])
+  }, [chainId, userDataLoaded, account, transactions.length, veryFastRefresh, dispatch])
   return useSelector((state: State) => state.masterApeMigration.v2Products)
 }
 
@@ -69,11 +69,6 @@ export const useSetMigrationLoading = () => {
   const farms = useFarms(account)
   const { vaults } = useVaultsV3()
   const userDataSetFlag = !!farms?.[0]?.userData && !!farmsV2?.[0]?.userData && !!vaults?.[0]?.userData
-  // useEffect(() => {
-  //   delay(() => {
-  //     dispatch(setMigrationLoading({ mergedMigrationLoaded: false, userDataLoaded: false, allDataLoaded: false }))
-  //   }, 3000)
-  // }, [account, dispatch])
   useEffect(() => {
     dispatch(setMigrationLoading({ userDataLoaded: userDataSetFlag }))
   }, [userDataSetFlag, account, dispatch])
