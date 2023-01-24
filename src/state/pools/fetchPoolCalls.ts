@@ -42,6 +42,10 @@ export const fetchBananaPoolCall = (chainId: number): Call[] => {
       address: masterChefAddress,
       name: 'totalAllocPoint',
     },
+    {
+      address: masterChefAddress,
+      name: 'bananaPerSecond',
+    },
   ]
 }
 

@@ -203,11 +203,15 @@ const Pools: React.FC = () => {
             <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
           ) : (
             <>
-              {new BigNumber(legacyPool?.userData?.stakedBalance).gt(0) && (
-                <DisplayLegacyPool pools={[legacyPool]} openId={null} poolTags={null} />
-              )}
-              {new BigNumber(v2Pool?.userData?.stakingTokenBalance).gt(0) && (
-                <DisplayDepositPoolV2 pools={[v2Pool]} openId={null} poolTags={null} />
+              {currentPhase !== MigrationPhases.MIGRATE_PHASE_0 && (
+                <>
+                  {new BigNumber(legacyPool?.userData?.stakedBalance).gt(0) && (
+                    <DisplayLegacyPool pools={[legacyPool]} openId={null} poolTags={null} />
+                  )}
+                  {new BigNumber(v2Pool?.userData?.stakingTokenBalance).gt(0) && (
+                    <DisplayDepositPoolV2 pools={[v2Pool]} openId={null} poolTags={null} />
+                  )}
+                </>
               )}
               {currentPhase === MigrationPhases.MIGRATE_PHASE_1 || currentPhase === MigrationPhases.MIGRATE_PHASE_2 ? (
                 <>

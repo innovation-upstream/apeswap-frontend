@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { PoolConfig, Token } from 'config/constants/types'
 import { Pool, TokenPrices } from 'state/types'
-import { getFarmApr, getPoolApr } from 'utils/apr'
+import { getFarmV2Apr, getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 const cleanPoolData = (
@@ -11,6 +11,7 @@ const cleanPoolData = (
   chainId: number,
   poolsConfig: Pool[],
   bananaAlloc,
+  bananaPerYear,
 ) => {
   const data = chunkedPools.map((chunk, index) => {
     const poolConfig: PoolConfig = poolsConfig.find((pool) => pool.sousId === poolIds[index])
@@ -22,6 +23,7 @@ const cleanPoolData = (
       totalStakedFormatted,
       chainId,
       bananaAlloc,
+      bananaPerYear,
     )
     return {
       sousId: poolIds[index],
@@ -42,6 +44,7 @@ const fetchPoolTokenStatsAndApr = (
   totalStaked,
   chainId: number,
   bananaAlloc,
+  bananaPerYear,
 ): [Token, Token, number] => {
   // Get values needed to calculate apr
   const curPool = pool
@@ -56,10 +59,11 @@ const fetchPoolTokenStatsAndApr = (
   // Calculate apr
   let apr
   if (pool.sousId === 0) {
-    apr = getFarmApr(
+    apr = getFarmV2Apr(
       bananaAlloc,
       new BigNumber(stakingToken?.price),
       new BigNumber(getBalanceNumber(totalStaked) * stakingToken?.price),
+      bananaPerYear,
     )
   } else {
     apr = getPoolApr(

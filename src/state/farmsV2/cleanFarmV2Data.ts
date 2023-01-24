@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { Farm, FarmLpAprsType, LpTokenPrices } from 'state/types'
-import { getFarmApr } from 'utils/apr'
+import { getFarmV2Apr } from 'utils/apr'
 import { getRoi, tokenEarnedPerThousandDollarsCompounding } from 'utils/compoundApyHelpers'
 
 const cleanFarmV2Data = (
@@ -11,6 +11,7 @@ const cleanFarmV2Data = (
   farmLpAprs: FarmLpAprsType,
   farmsConfig: Farm[],
   chainId: number,
+  bananaPerYear: BigNumber,
 ) => {
   const data = chunkedFarms.map((chunk, index) => {
     const farmConfig = farmsConfig?.find((farm) => farm.pid === farmIds[index])
@@ -53,7 +54,7 @@ const cleanFarmV2Data = (
     alloc = poolWeight.toJSON()
     multiplier = `${allocPoint.div(100).toString()}X`
     const totalLpStakedUsd = totalLpStaked.times(filteredLpPrice?.price)
-    const apr = getFarmApr(poolWeight, bananaPrice, totalLpStakedUsd)
+    const apr = getFarmV2Apr(poolWeight, bananaPrice, totalLpStakedUsd, bananaPerYear)
     const lpApr = farmLpAprs?.lpAprs?.find((lp) => lp.pid === farmConfig.pid)?.lpApr * 100
     const amountEarned = tokenEarnedPerThousandDollarsCompounding({
       numberOfDays: 365,

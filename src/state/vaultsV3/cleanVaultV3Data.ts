@@ -1,7 +1,7 @@
 import { VaultConfig } from '@ape.swap/apeswap-lists'
 import BigNumber from 'bignumber.js'
 import { FarmLpAprsType, TokenPrices, Vault } from 'state/types'
-import { getFarmApr } from 'utils/apr'
+import { getFarmV2Apr } from 'utils/apr'
 import { tokenEarnedPerThousandDollarsCompoundingMax } from 'utils/compoundApyHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 
@@ -13,6 +13,7 @@ const cleanVaultData = (
   farmLpAprs: FarmLpAprsType,
   chainId: number,
   vaultsConfig: Vault[],
+  bananaPerYear,
 ) => {
   const keeperFeeV3 = parseFloat(vaultSettingsV3[1]) / 100
   const withdrawFeeV3 = parseFloat(vaultSettingsV3[5]) / 100
@@ -51,11 +52,17 @@ const cleanVaultData = (
     // This only works for apeswap farms
     const lpApr = farmLpAprs?.lpAprs?.find((lp) => lp.pid === vaultConfig.masterchef.pid[chainId])?.lpApr * 100
 
-    const apr = getFarmApr(poolWeight, new BigNumber(rewardTokenPriceUsd), new BigNumber(totalValueStakedInMCUsd))
-    const bananaPoolApr = getFarmApr(
+    const apr = getFarmV2Apr(
+      poolWeight,
+      new BigNumber(rewardTokenPriceUsd),
+      new BigNumber(totalValueStakedInMCUsd),
+      bananaPerYear,
+    )
+    const bananaPoolApr = getFarmV2Apr(
       bananaPoolWeight,
       new BigNumber(rewardTokenPriceUsd),
       new BigNumber(totalBananaValueStakedInMCUsd),
+      bananaPerYear,
     )
 
     const yearlyApy = tokenEarnedPerThousandDollarsCompoundingMax({
