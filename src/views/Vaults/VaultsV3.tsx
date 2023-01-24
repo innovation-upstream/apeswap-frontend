@@ -20,6 +20,7 @@ import { useVaultsV3 } from 'state/vaultsV3/hooks'
 import LegacyVaults from './LegacyVaults'
 import { Text } from '@ape.swap/uikit'
 import DisplayDepsoitVaultsV2 from './components/DisplayDepsoitVaultsV2'
+import { useVaults } from 'state/vaults/hooks'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
@@ -36,6 +37,8 @@ const VaultsV3: React.FC = () => {
   const { pathname } = useLocation()
   const { search } = window.location
   const { vaults: initVaults } = useVaultsV3()
+  const { vaults: legacyVaults } = useVaults()
+
   const params = new URLSearchParams(search)
   const urlSearchedVault = parseInt(params.get('id'))
   const [allVaults, setAllVaults] = useState(initVaults)
@@ -174,38 +177,45 @@ const VaultsV3: React.FC = () => {
             <ListView404 product={LIST_VIEW_PRODUCTS.MAXIMIZERS} />
           ) : (
             <>
-              <LegacyVaults />
-              {vaultsWithLpBalance.length > 0 && (
-                <Flex
-                  sx={{
-                    background: 'gradient',
-                    padding: '5px',
-                    borderRadius: '10px 0px 10px 10px',
-                    mt: '40px',
-                    mb: '20px',
-                    position: 'relative',
-                  }}
-                >
-                  <Flex
-                    sx={{
-                      position: 'absolute',
-                      right: 0,
-                      top: 0,
-                      padding: '2.5px 10px',
-                      borderRadius: '10px 10px 0px 0px',
-                      background: 'rgb(221,174,66)',
-                      transform: 'translate(0px, -24px)',
-                      zIndex: 10,
-                    }}
-                  >
-                    <Text size="12px" color="primaryBright">
-                      NEW Vaults V2
-                    </Text>
-                  </Flex>
-                  <DisplayDepsoitVaultsV2 vaults={vaultsWithLpBalance} />
-                </Flex>
+              {isActive && (
+                <>
+                  <LegacyVaults />
+                  {vaultsWithLpBalance.length > 0 && (
+                    <Flex
+                      sx={{
+                        background: 'gradient',
+                        padding: '5px',
+                        borderRadius: '10px 0px 10px 10px',
+                        mt: '40px',
+                        mb: '20px',
+                        position: 'relative',
+                      }}
+                    >
+                      <Flex
+                        sx={{
+                          position: 'absolute',
+                          right: 0,
+                          top: 0,
+                          padding: '2.5px 10px',
+                          borderRadius: '10px 10px 0px 0px',
+                          background: 'rgb(221,174,66)',
+                          transform: 'translate(0px, -24px)',
+                          zIndex: 10,
+                        }}
+                      >
+                        <Text size="12px" color="primaryBright">
+                          NEW Vaults V2
+                        </Text>
+                      </Flex>
+                      <DisplayDepsoitVaultsV2 vaults={vaultsWithLpBalance} />
+                    </Flex>
+                  )}
+                </>
               )}
               <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
+              {!isActive && (
+                <DisplayVaults vaults={legacyVaults.slice(0, numberOfVaultsVisible)} openId={urlSearchedVault} />
+              )}
             </>
           )}
         </ListViewLayout>
