@@ -8,32 +8,25 @@ import Banner from 'components/Banner'
 import MigrateTimer from './components/MigrateTimer'
 import { AboutMigrating } from './components/AboutMigrating'
 import { useTranslation } from 'contexts/Localization'
-import {
-  useMergedV1Products,
-  useMergedV2Products,
-  useMigrateStatus,
-  useMonitorActiveIndex,
-  useSetInitialMigrateStatus,
-  useSetMigrationLoading,
-} from 'state/masterApeMigration/hooks'
+// import {
+//   useMergedV1Products,
+//   useMergedV2Products,
+//   useMigrateStatus,
+//   useMonitorActiveIndex,
+//   useSetInitialMigrateStatus,
+//   useSetMigrationLoading,
+// } from 'state/masterApeMigration/hooks'
 // import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
 
 const MigrateMasterApeV2: React.FC = () => {
   // Fetch farms to filter lps on steps
   // TODO: Once data pulling is removed from the app we can add these back
-  // useSetFarms()
-  // useSetFarmsV2()
-  // useSetVaults()
-  // usePollVaultsData()
-  // usePollVaultUserData()
-  // usePollFarms()
-  // usePollFarmsV2()
-  useSetInitialMigrateStatus()
-  useSetMigrationLoading()
-  useMonitorActiveIndex()
-  useMergedV1Products()
-  useMergedV2Products()
-  useMigrateStatus()
+  // useSetInitialMigrateStatus()
+  // useSetMigrationLoading()
+  // useMonitorActiveIndex()
+  // useMergedV1Products()
+  // useMergedV2Products()
+  // useMigrateStatus()
   const { t } = useTranslation()
   return (
     <Flex

@@ -14,10 +14,25 @@ import { usePollVaultsData, usePollVaultUserData } from 'state/vaults/hooks'
 import { usePollVaultsV3Data, usePollVaultV3UserData } from 'state/vaultsV3/hooks'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 import { useTranslation } from 'contexts/Localization'
+import {
+  useMergedV1Products,
+  useMergedV2Products,
+  useMigrateStatus,
+  useMonitorActiveIndex,
+  useSetInitialMigrateStatus,
+  useSetMigrationLoading,
+} from 'state/masterApeMigration/hooks'
 
 const MigrationRequiredPopup = () => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
+  // TODO: Remove after the migration process
+  useSetInitialMigrateStatus()
+  useSetMigrationLoading()
+  useMonitorActiveIndex()
+  useMergedV1Products()
+  useMergedV2Products()
+  useMigrateStatus()
   // Loading migration data on load.
   // This should be removed after the migration process has finished
   // This has high performance impact
