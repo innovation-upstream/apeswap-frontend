@@ -1,4 +1,5 @@
 import { PoolConfig } from 'config/constants/types'
+import { getMasterChefV2Address } from 'utils/addressHelper'
 import { Call } from 'utils/multicall'
 
 const fetchPoolCalls = (pool: PoolConfig, chainId: number): Call[] => {
@@ -27,6 +28,21 @@ const fetchPoolCalls = (pool: PoolConfig, chainId: number): Call[] => {
     return [bananaCall]
   }
   return [...standardCalls, pool.reflect || pool.stakingToken.symbol === 'GNANA' ? gnanaCall : bananaCall]
+}
+
+export const fetchBananaPoolCall = (chainId: number): Call[] => {
+  const masterChefAddress = getMasterChefV2Address(chainId)
+  return [
+    {
+      address: masterChefAddress,
+      name: 'poolInfo',
+      params: [0],
+    },
+    {
+      address: masterChefAddress,
+      name: 'totalAllocPoint',
+    },
+  ]
 }
 
 export default fetchPoolCalls
