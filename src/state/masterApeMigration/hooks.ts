@@ -1,5 +1,6 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
+import { delay } from 'lodash'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
@@ -23,7 +24,7 @@ import { activeIndexHelper } from './utils'
  */
 export const useMergedV1Products = () => {
   const dispatch = useAppDispatch()
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
   const { userDataLoaded } = useIsMigrationLoading()
   const { fastRefresh } = useRefresh()
   const transactions = useSelector((state: State) => state.masterApeMigration.transactions)
@@ -31,13 +32,13 @@ export const useMergedV1Products = () => {
     if (userDataLoaded) {
       dispatch(fetchV1Products(chainId))
     }
-  }, [chainId, userDataLoaded, transactions.length, fastRefresh, dispatch])
+  }, [chainId, userDataLoaded, account, transactions.length, fastRefresh, dispatch])
   return useSelector((state: State) => state.masterApeMigration.v1Products)
 }
 
 export const useMergedV2Products = () => {
   const dispatch = useAppDispatch()
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
   const { fastRefresh } = useRefresh()
   const { userDataLoaded } = useIsMigrationLoading()
   const transactions = useSelector((state: State) => state.masterApeMigration.transactions)
@@ -45,20 +46,20 @@ export const useMergedV2Products = () => {
     if (userDataLoaded) {
       dispatch(fetchV2Products(chainId))
     }
-  }, [chainId, userDataLoaded, transactions.length, fastRefresh, dispatch])
+  }, [chainId, userDataLoaded, account, transactions.length, fastRefresh, dispatch])
   return useSelector((state: State) => state.masterApeMigration.v2Products)
 }
 
 export const useSetInitialMigrateStatus = () => {
   const dispatch = useAppDispatch()
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
   const { mergedMigrationLoaded } = useIsMigrationLoading()
   const migrateMaximizers = useMigrateMaximizer()
   useEffect(() => {
     if (mergedMigrationLoaded) {
       dispatch(setInitializeMigrateStatus(chainId, migrateMaximizers))
     }
-  }, [dispatch, mergedMigrationLoaded, migrateMaximizers, chainId])
+  }, [dispatch, mergedMigrationLoaded, migrateMaximizers, account, chainId])
 }
 
 export const useSetMigrationLoading = () => {
@@ -68,9 +69,14 @@ export const useSetMigrationLoading = () => {
   const farms = useFarms(account)
   const { vaults } = useVaultsV3()
   const userDataSetFlag = !!farms?.[0]?.userData && !!farmsV2?.[0]?.userData && !!vaults?.[0]?.userData
+  // useEffect(() => {
+  //   delay(() => {
+  //     dispatch(setMigrationLoading({ mergedMigrationLoaded: false, userDataLoaded: false, allDataLoaded: false }))
+  //   }, 3000)
+  // }, [account, dispatch])
   useEffect(() => {
     dispatch(setMigrationLoading({ userDataLoaded: userDataSetFlag }))
-  }, [userDataSetFlag, dispatch])
+  }, [userDataSetFlag, account, dispatch])
 }
 
 export const useMonitorActiveIndex = () => {

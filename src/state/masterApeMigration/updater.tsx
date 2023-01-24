@@ -4,11 +4,10 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { useAppDispatch } from '../index'
 import { State } from 'state/types'
-import { MigrateStatus, MigrationCompleteLog, ProductTypes } from './types'
+import { MigrateStatus, ProductTypes } from './types'
 import {
   fetchV1Products,
   fetchV2Products,
-  setAddCompletionLog,
   setRemoveTransactions,
   updateAndMergeStatus,
   updateMigrateStatus,
@@ -19,26 +18,7 @@ import { updateVaultUserBalance, updateVaultUserStakedBalance } from 'state/vaul
 import { updateVaultV3UserAllowance } from 'state/vaultsV3'
 import { delay } from 'lodash'
 
-export function shouldCheck(
-  currentBlock: number,
-  tx: { addedTime: number; receipt?: any; lastCheckedBlockNumber?: number },
-): boolean {
-  if (tx.receipt) return false
-  if (!tx.lastCheckedBlockNumber) return true
-  const blocksSinceCheck = currentBlock - tx.lastCheckedBlockNumber
-  if (blocksSinceCheck < 1) return false
-  const minutesPending = (new Date().getTime() - tx.addedTime) / 1000 / 60
-  if (minutesPending > 60) {
-    // every 10 blocks if pending for longer than an hour
-    return blocksSinceCheck > 9
-  }
-  if (minutesPending > 5) {
-    // every 3 blocks if pending more than 5 minutes
-    return blocksSinceCheck > 2
-  }
-  // otherwise every block
-  return true
-}
+const sentTxHash = []
 
 export default function Updater(): null {
   const { library, chainId, account } = useActiveWeb3React()
@@ -54,6 +34,8 @@ export default function Updater(): null {
     if (!chainId || !library || !currentBlock || transactions.length === 0) return
     transactions.forEach(
       ({ hash, migrateLpType, id, v2FarmPid, v1FarmPid, v1VaultPid, v3VaultPid, lpAddress, type }) => {
+        if (sentTxHash.includes(hash)) return
+        sentTxHash.push(hash)
         library
           .waitForTransaction(hash)
           .then((receipt) => {

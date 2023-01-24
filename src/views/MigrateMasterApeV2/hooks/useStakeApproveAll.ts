@@ -46,6 +46,7 @@ const useStakeApproveAll = () => {
         lpContract
           .approve(migrateMaximizers && matchedVault ? vaultAddress : masterChefV2Address, ethers.constants.MaxUint256)
           .then((tx) => {
+            console.log('sd')
             const transaction: MigrateTransaction = {
               hash: tx.hash,
               id,

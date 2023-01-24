@@ -32,7 +32,7 @@ export const vaultSlice = createSlice({
     updateVaultsV3UserData: (state, action) => {
       const { field, value, id } = action.payload
       const index = state.data.findIndex((v) => v.id === id)
-      state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+      state.data[index] = { ...state.data[index], userData: { ...state.data[index]?.userData, [field]: value } }
     },
 
     setVaultsV3Load: (state, action) => {
