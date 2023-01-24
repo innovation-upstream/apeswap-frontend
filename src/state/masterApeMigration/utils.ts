@@ -163,16 +163,15 @@ export const getInitialMigrateLpStatus = (
       lp,
       status: {
         unstake: new BigNumber(stakedAmount).isGreaterThan(0) ? MigrateStatus.INCOMPLETE : MigrateStatus.COMPLETE,
-        approveStake:
-          matchedV2Product && matchedV2Vault
-            ? migrateMaximizers
-              ? new BigNumber(matchedV2Product.vault.allowance).isGreaterThan(0)
-                ? MigrateStatus.COMPLETE
-                : MigrateStatus.INCOMPLETE
-              : new BigNumber(matchedV2Product.farm.allowance).isGreaterThan(0)
+        approveStake: matchedV2Product
+          ? migrateMaximizers && matchedV2Vault
+            ? new BigNumber(matchedV2Product.vault.allowance).isGreaterThan(0)
               ? MigrateStatus.COMPLETE
               : MigrateStatus.INCOMPLETE
-            : MigrateStatus.INCOMPLETE,
+            : new BigNumber(matchedV2Product.farm.allowance).isGreaterThan(0)
+            ? MigrateStatus.COMPLETE
+            : MigrateStatus.INCOMPLETE
+          : MigrateStatus.INCOMPLETE,
         stake: MigrateStatus.INCOMPLETE,
       },
       statusText: 'Migration Initialized',
