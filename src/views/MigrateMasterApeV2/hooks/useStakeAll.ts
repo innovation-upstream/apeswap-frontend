@@ -14,10 +14,12 @@ import { useMigrateMaximizer } from 'state/masterApeMigration/hooks'
 import { setAddCompletionLog, setAddTransactions, updateMigrateStatus } from 'state/masterApeMigration/reducer'
 import { useAppDispatch } from 'state'
 import useIsMobile from 'hooks/useIsMobile'
+import { delay } from 'lodash'
 
 const useStakeAll = () => {
   const isMobile = useIsMobile()
-  const { chainId } = useActiveWeb3React()
+  const { chainId, library } = useActiveWeb3React()
+  const walletIsMetamask = library?.connection?.url === 'metamask'
   const dispatch = useAppDispatch()
   const migrateMaximizers = useMigrateMaximizer()
   const masterChefV2Contract = useMasterChefV2Contract()
@@ -79,8 +81,10 @@ const useStakeAll = () => {
             dispatch(setAddTransactions(transaction))
             dispatch(setAddCompletionLog(log))
 
-            if (isMobile) {
-              return handleStakeAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
+            if (!walletIsMetamask || isMobile) {
+              delay(() => {
+                return handleStakeAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
+              }, 2000)
             }
           })
           .catch((e) => {
@@ -94,18 +98,29 @@ const useStakeAll = () => {
                   : e.message,
               ),
             )
-            if (isMobile) {
-              return handleStakeAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
+            if (!walletIsMetamask || isMobile) {
+              delay(() => {
+                return handleStakeAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
+              }, 2000)
             }
           })
-        if (!isMobile) {
+        if (walletIsMetamask && !isMobile) {
           return handleStakeAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
         }
       } catch {
         dispatch(updateMigrateStatus(id, 'stake', MigrateStatus.INVALID, 'Something went wrong please try refreshing'))
       }
     },
-    [chainId, masterChefV2Contract, vaultApeV3Contract, migrateMaximizers, isMobile, dispatch, vaults],
+    [
+      chainId,
+      masterChefV2Contract,
+      walletIsMetamask,
+      vaultApeV3Contract,
+      migrateMaximizers,
+      isMobile,
+      dispatch,
+      vaults,
+    ],
   )
   return handleStakeAll
 }

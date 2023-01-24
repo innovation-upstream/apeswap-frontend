@@ -12,12 +12,14 @@ import { setAddTransactions, updateMigrateStatus } from 'state/masterApeMigratio
 import { MasterApeV2ProductsInterface, MigrateStatus, MigrateTransaction } from 'state/masterApeMigration/types'
 import useIsMobile from 'hooks/useIsMobile'
 import { useMigrateMaximizer } from 'state/masterApeMigration/hooks'
+import { delay } from 'lodash'
 
 const useStakeApproveAll = () => {
   const isMobile = useIsMobile()
   const migrateMaximizers = useMigrateMaximizer()
   const dispatch = useAppDispatch()
   const { library, account, chainId } = useActiveWeb3React()
+  const walletIsMetamask = library?.connection?.url === 'metamask'
   const masterChefV2Address = useMasterChefV2Address()
   // TODO: Update vaults when ready
   const vaultAddress = useVaultApeAddressV3()
@@ -55,8 +57,10 @@ const useStakeApproveAll = () => {
               lpAddress: lp,
             }
             dispatch(setAddTransactions(transaction))
-            if (isMobile) {
-              return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
+            if (!walletIsMetamask || isMobile) {
+              delay(() => {
+                return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
+              }, 2000)
             }
           })
           .catch((e) => {
@@ -70,11 +74,13 @@ const useStakeApproveAll = () => {
                   : e.message,
               ),
             )
-            if (isMobile) {
-              return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
+            if (!walletIsMetamask || isMobile) {
+              delay(() => {
+                return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
+              }, 2000)
             }
           })
-        if (!isMobile) {
+        if (walletIsMetamask && isMobile) {
           return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
         }
       } catch {
@@ -86,6 +92,7 @@ const useStakeApproveAll = () => {
     [
       account,
       isMobile,
+      walletIsMetamask,
       library,
       farms,
       dispatch,

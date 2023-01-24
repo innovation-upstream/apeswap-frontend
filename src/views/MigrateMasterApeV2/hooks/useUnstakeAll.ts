@@ -18,9 +18,11 @@ import {
 } from 'state/masterApeMigration/types'
 import { setAddTransactions, updateMigrateStatus } from 'state/masterApeMigration/reducer'
 import useIsMobile from 'hooks/useIsMobile'
+import { delay } from 'lodash'
 
 const useUnstakeAll = () => {
   const { library, account, chainId } = useActiveWeb3React()
+  const walletIsMetamask = library?.connection?.url === 'metamask'
   const isMobile = useIsMobile()
   const masterChefV1Address = useMasterChefAddress()
   const vaultV2Address = useVaultApeAddressV2()
@@ -73,8 +75,10 @@ const useUnstakeAll = () => {
               v1VaultPid: pid,
             }
             dispatch(setAddTransactions(transaction))
-            if (isMobile) {
-              return handleUnstake(migrateLps.slice(1, migrateLps.length))
+            if (!walletIsMetamask || isMobile) {
+              delay(() => {
+                return handleUnstake(migrateLps.slice(1, migrateLps.length))
+              }, 2000)
             }
           })
           .catch((e) => {
@@ -88,11 +92,13 @@ const useUnstakeAll = () => {
                   : e.message,
               ),
             )
-            if (isMobile) {
-              return handleUnstake(migrateLps.slice(1, migrateLps.length))
+            if (!walletIsMetamask || isMobile) {
+              delay(() => {
+                return handleUnstake(migrateLps.slice(1, migrateLps.length))
+              }, 2000)
             }
           })
-        if (!isMobile) {
+        if (walletIsMetamask && !isMobile) {
           return handleUnstake(migrateLps.slice(1, migrateLps.length))
         }
       } catch {
@@ -106,7 +112,18 @@ const useUnstakeAll = () => {
         )
       }
     },
-    [account, dispatch, masterChefV1Address, vaultV2Address, vaultV1Address, library, chainId, v2Farms, isMobile],
+    [
+      account,
+      dispatch,
+      walletIsMetamask,
+      masterChefV1Address,
+      vaultV2Address,
+      vaultV1Address,
+      library,
+      chainId,
+      v2Farms,
+      isMobile,
+    ],
   )
 
   return handleUnstake
