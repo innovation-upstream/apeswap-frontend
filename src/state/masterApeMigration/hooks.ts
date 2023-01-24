@@ -8,6 +8,7 @@ import { useFarmsV2 } from 'state/farmsV2/hooks'
 import { State } from 'state/types'
 import { useVaultsV3 } from 'state/vaultsV3/hooks'
 import track from 'utils/track'
+import { MIGRATION_STEPS } from './constants'
 import {
   fetchV1Products,
   fetchV2Products,
@@ -91,7 +92,7 @@ export const useMonitorActiveIndex = () => {
         event: 'masterApeMigration',
         chain: chainId,
         data: {
-          cat: newActiveIndex,
+          cat: MIGRATION_STEPS[newActiveIndex],
         },
       })
     }
