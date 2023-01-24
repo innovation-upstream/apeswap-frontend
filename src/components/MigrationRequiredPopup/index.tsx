@@ -51,14 +51,14 @@ const MigrationRequiredPopup = () => {
   const { vaults } = useVaults()
   const { pathname } = useLocation()
   // Filter out farms that do not exists on v2Farms
-  const filteredFarms = farms?.filter(({ tokenAddresses }) => {
-    return v2Farms?.find(({ tokenAddresses: tokenAddressV2 }) => {
-      return tokenAddressV2[chainId]?.toLowerCase() === tokenAddresses[chainId]?.toLowerCase()
+  const filteredFarms = farms?.filter(({ lpAddresses }) => {
+    return v2Farms?.find(({ lpAddresses: lpAddressesV2 }) => {
+      return lpAddressesV2[chainId]?.toLowerCase() === lpAddresses[chainId]?.toLowerCase()
     })
   })
   const filteredVaults = vaults?.filter(({ stakeToken }) => {
-    return v2Farms?.find(({ tokenAddresses }) => {
-      return tokenAddresses[chainId]?.toLowerCase() === stakeToken[chainId]?.toLowerCase()
+    return v2Farms?.find(({ lpAddresses }) => {
+      return lpAddresses[chainId]?.toLowerCase() === stakeToken[chainId]?.toLowerCase()
     })
   })
   const userHasFarmOrVault =

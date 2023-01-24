@@ -24,9 +24,9 @@ export const mergeV1Products = (farms: Farm[], v2Farms: Farm[], v1Vaults: Vault[
   )
 
   // Filter out farms that do not exists on v2Farms
-  const filteredV1V2FarmProducts = userV1Farms?.filter(({ tokenAddresses }) => {
-    return v2Farms?.find(({ tokenAddresses: tokenAddressV2 }) => {
-      return tokenAddressV2[chainId]?.toLowerCase() === tokenAddresses[chainId]?.toLowerCase()
+  const filteredV1V2FarmProducts = userV1Farms?.filter(({ lpAddresses }) => {
+    return v2Farms?.find(({ lpAddresses: lpAddressesV2 }) => {
+      return lpAddressesV2[chainId]?.toLowerCase() === lpAddresses[chainId]?.toLowerCase()
     })
   })
 
