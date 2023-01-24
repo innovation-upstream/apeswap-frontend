@@ -155,22 +155,24 @@ export const getInitialMigrateLpStatus = (
   )
 
   const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, lp, id }) => {
-    const matchedV2Product = v2Products?.find(({ lp: v2Lp }) => v2Lp === lp)
+    const matchedV2Product: MasterApeV2ProductsInterface = v2Products?.find(({ lp: v2Lp }) => v2Lp === lp)
+    const matchedV2Vault = matchedV2Product?.vault
     const idToUse = new BigNumber(stakedAmount).isGreaterThan(0) ? id : lp
     return {
       id: idToUse,
       lp,
       status: {
         unstake: new BigNumber(stakedAmount).isGreaterThan(0) ? MigrateStatus.INCOMPLETE : MigrateStatus.COMPLETE,
-        approveStake: matchedV2Product
-          ? migrateMaximizers
-            ? new BigNumber(matchedV2Product.vault.allowance).isGreaterThan(0)
+        approveStake:
+          matchedV2Product && matchedV2Vault
+            ? migrateMaximizers
+              ? new BigNumber(matchedV2Product.vault.allowance).isGreaterThan(0)
+                ? MigrateStatus.COMPLETE
+                : MigrateStatus.INCOMPLETE
+              : new BigNumber(matchedV2Product.farm.allowance).isGreaterThan(0)
               ? MigrateStatus.COMPLETE
               : MigrateStatus.INCOMPLETE
-            : new BigNumber(matchedV2Product.farm.allowance).isGreaterThan(0)
-            ? MigrateStatus.COMPLETE
-            : MigrateStatus.INCOMPLETE
-          : MigrateStatus.INCOMPLETE,
+            : MigrateStatus.INCOMPLETE,
         stake: MigrateStatus.INCOMPLETE,
       },
       statusText: 'Migration Initialized',
@@ -187,13 +189,14 @@ export const getInitialMigrateLpStatus = (
       lp,
       status: {
         unstake: matchedV1ProductStaked ? MigrateStatus.INCOMPLETE : MigrateStatus.COMPLETE,
-        approveStake: migrateMaximizers
-          ? new BigNumber(vault.allowance).gt(0)
+        approveStake:
+          migrateMaximizers && vault
+            ? new BigNumber(vault.allowance).gt(0)
+              ? MigrateStatus.COMPLETE
+              : MigrateStatus.INCOMPLETE
+            : new BigNumber(farm.allowance).gt(0)
             ? MigrateStatus.COMPLETE
-            : MigrateStatus.INCOMPLETE
-          : new BigNumber(farm.allowance).gt(0)
-          ? MigrateStatus.COMPLETE
-          : MigrateStatus.INCOMPLETE,
+            : MigrateStatus.INCOMPLETE,
         stake: MigrateStatus.INCOMPLETE,
       },
       statusText: 'Migration Initialized',
