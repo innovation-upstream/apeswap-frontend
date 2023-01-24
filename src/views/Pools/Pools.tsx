@@ -171,7 +171,7 @@ const Pools: React.FC = () => {
       <ListViewLayout>
         <Banner banner="pools" link="?modal=tutorial" title={t('Staking Pools')} listViewBreak maxWidth={1130} />
         <Flex sx={styles.poolContent}>
-          <Flex style={{ marginBottom: '20px' }}>
+          <Flex sx={{ my: '20px' }}>
             <ListViewMenu
               query={searchQuery}
               onHandleQueryChange={handleChangeQuery}

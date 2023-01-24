@@ -1,12 +1,11 @@
+/** @jsxImportSource theme-ui */
 import React, { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Flex } from '@apeswapfinance/uikit'
+import { Flex } from '@ape.swap/uikit'
 import { useFetchFarmLpAprs } from 'state/hooks'
-import ListViewMenu from 'components/ListViewMenu'
 import { orderBy } from 'lodash'
-import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
 import { Farm } from 'state/types'
@@ -17,6 +16,10 @@ import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
+import { styles } from './styles'
+import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
+import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
+import { SORT_OPTIONS } from '../Pools/poolsOptions'
 
 const Farms: React.FC = () => {
   usePollFarms()
@@ -30,7 +33,7 @@ const Farms: React.FC = () => {
   const { search } = window.location
   const params = new URLSearchParams(search)
   const urlSearchedFarm = parseInt(params.get('pid'))
-  const [query, setQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('all')
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const { farmTags } = useFarmTags(chainId)
@@ -75,7 +78,7 @@ const Farms: React.FC = () => {
     })
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value)
+    setSearchQuery(event.target.value)
   }
 
   const renderFarms = () => {
@@ -102,9 +105,9 @@ const Farms: React.FC = () => {
       farms = isActive ? stakedOnlyFarms : stakedOnlyInactiveFarms
     }
 
-    if (query) {
+    if (searchQuery) {
       farms = farms.filter((farm) => {
-        return farm.lpSymbol.toUpperCase().includes(query.toUpperCase())
+        return farm.lpSymbol.toUpperCase().includes(searchQuery.toUpperCase())
       })
     }
 
@@ -165,30 +168,28 @@ const Farms: React.FC = () => {
   )
 
   return (
-    <>
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
-      >
-        <ListViewLayout>
-          <Banner
-            banner="banana-farms"
-            link={`?modal=tutorial`}
-            title={t('Banana Farms')}
-            listViewBreak
-            maxWidth={1130}
-          />
-          <Flex alignItems="center" justifyContent="center" mt="20px">
+    <Flex sx={styles.farmContainer}>
+      <ListViewLayout>
+        <Banner
+          banner="banana-farms"
+          link={`?modal=tutorial`}
+          title={t('Banana Farms')}
+          listViewBreak
+          maxWidth={1130}
+        />
+        <Flex sx={styles.farmContent}>
+          <Flex sx={{ my: '20px' }}>
             <ListViewMenu
+              query={searchQuery}
               onHandleQueryChange={handleChangeQuery}
-              onSetSortOption={setSortOption}
-              onSetStake={setStakedOnly}
-              harvestAll={<HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} />}
-              stakedOnly={stakedOnly}
-              query={query}
-              activeOption={sortOption}
+              setSortOption={setSortOption}
+              sortOption={sortOption}
+              checkboxLabel="Staked"
+              showOnlyCheckbox={stakedOnly}
+              setShowOnlyCheckbox={setStakedOnly}
+              toogleLabels={['Active', 'Inactive']}
+              sortOptions={SORT_OPTIONS}
+              actionButton={<HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} />}
               showMonkeyImage
             />
           </Flex>
@@ -199,10 +200,10 @@ const Farms: React.FC = () => {
           ) : (
             <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} />
           )}
-        </ListViewLayout>
-      </Flex>
-      <div ref={loadMoreRef} />
-    </>
+          <div ref={loadMoreRef} />
+        </Flex>
+      </ListViewLayout>
+    </Flex>
   )
 }
 

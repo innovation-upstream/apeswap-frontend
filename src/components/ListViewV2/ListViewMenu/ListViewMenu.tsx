@@ -2,11 +2,13 @@
 import React, { useCallback, useState } from 'react'
 import { Checkbox, Flex, Input, Svg, Text, Toggle } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { styles } from './styles'
+import { dynamicStyles, styles } from './styles'
 import MenuSelect from './MenuSelect'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ListMenuProps } from './types'
 import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useTheme } from 'styled-components'
+import { Image } from 'theme-ui'
 
 const ListViewMenu: React.FC<ListMenuProps> = ({
   query,
@@ -22,11 +24,13 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
   filterOptions,
   sortOptions,
   actionButton,
+  showMonkeyImage,
 }) => {
   const { t } = useTranslation()
   const [expanded, setExpended] = useState(false)
   const { url, isExact } = useRouteMatch()
   const history = useHistory()
+  const { isDark } = useTheme()
 
   const handleToogle = useCallback(() => {
     if (isExact) {
@@ -37,7 +41,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
   }, [history, isExact, url])
 
   return (
-    <Flex sx={styles.menuContainer}>
+    <Flex sx={dynamicStyles.menuContainer({ showMonkeyImage })}>
       <>
         <Flex>
           <Text sx={styles.searchText}>{t('Search')}</Text>
@@ -137,6 +141,12 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
           </Flex>
         </Flex>
       </>
+      {showMonkeyImage &&
+        (isDark ? (
+          <Image src="/images/farm-night-farmer.svg" sx={styles.monkey} />
+        ) : (
+          <Image src="/images/farm-day-farmer.svg" sx={styles.monkey} />
+        ))}
     </Flex>
   )
 }
