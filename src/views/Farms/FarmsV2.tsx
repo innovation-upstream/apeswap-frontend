@@ -11,7 +11,7 @@ import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
 import { Farm } from 'state/types'
-import { useFarmTags, useFarmOrderings } from 'state/farms/hooks'
+import { useFarmTags, useFarmOrderings, useFarms } from 'state/farms/hooks'
 import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
@@ -30,6 +30,7 @@ const FarmsV2: React.FC = () => {
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const farmsLP = useFarmsV2(account)
+  const legacyFarms = useFarms(account)
   const { search } = window.location
   const params = new URLSearchParams(search)
   const urlSearchedFarm = parseInt(params.get('pid'))
@@ -205,39 +206,51 @@ const FarmsV2: React.FC = () => {
             </Flex>
           ) : (
             <>
-              <LegacyFarms />
-              {farmsWithLpBalance.length > 0 && (
-                <Flex
-                  sx={{
-                    background: 'gradient',
-                    padding: '5px',
-                    borderRadius: '10px 0px 10px 10px',
-                    mt: '40px',
-                    position: 'relative',
-                  }}
-                >
-                  <Flex
-                    sx={{
-                      position: 'absolute',
-                      right: 0,
-                      top: 0,
-                      padding: '2.5px 10px',
-                      borderRadius: '10px 10px 0px 0px',
-                      background: 'rgb(221,174,66)',
-                      transform: 'translate(0px, -24px)',
-                      zIndex: 10,
-                    }}
-                  >
-                    <Text size="12px" color="primaryBright">
-                      NEW Master Ape V2
-                    </Text>
-                  </Flex>
-                  <DisplayDepositV2Farms farms={farmsWithLpBalance} openPid={null} farmTags={null} v2Flag={true} />
-                </Flex>
+              {isActive && (
+                <>
+                  <LegacyFarms />
+                  {farmsWithLpBalance.length > 0 && (
+                    <Flex
+                      sx={{
+                        background: 'gradient',
+                        padding: '5px',
+                        borderRadius: '10px 0px 10px 10px',
+                        mt: '40px',
+                        position: 'relative',
+                      }}
+                    >
+                      <Flex
+                        sx={{
+                          position: 'absolute',
+                          right: 0,
+                          top: 0,
+                          padding: '2.5px 10px',
+                          borderRadius: '10px 10px 0px 0px',
+                          background: 'rgb(221,174,66)',
+                          transform: 'translate(0px, -24px)',
+                          zIndex: 10,
+                        }}
+                      >
+                        <Text size="12px" color="primaryBright">
+                          NEW Master Ape V2
+                        </Text>
+                      </Flex>
+                      <DisplayDepositV2Farms farms={farmsWithLpBalance} openPid={null} farmTags={null} v2Flag={true} />
+                    </Flex>
+                  )}
+                </>
               )}
               <Flex sx={{ mt: '20px' }}>
                 <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={null} v2Flag={true} />
               </Flex>
+              {!isActive && (
+                <DisplayFarms
+                  farms={legacyFarms?.slice(1, numberOfFarmsVisible)}
+                  openPid={urlSearchedFarm}
+                  farmTags={null}
+                  v2Flag={false}
+                />
+              )}
             </>
           )}
         </ListViewLayout>
