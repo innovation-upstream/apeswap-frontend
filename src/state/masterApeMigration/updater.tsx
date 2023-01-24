@@ -52,8 +52,6 @@ export default function Updater(): null {
                 dispatch(updateAndMergeStatus(chainId, id, lpAddress, type, MigrateStatus.COMPLETE, 'Unstake complete'))
               }
               if (type === 'approveStake') {
-                console.log(v3VaultPid, migrateMaximizers)
-                console.log(v3VaultPid && migrateMaximizers)
                 v3VaultPid && migrateMaximizers
                   ? dispatch(updateVaultV3UserAllowance(account, chainId, v3VaultPid))
                   : dispatch(updateFarmV2UserAllowances(chainId, v2FarmPid, account))
@@ -68,6 +66,7 @@ export default function Updater(): null {
               }
               if (type === 'stake') {
                 dispatch(updateMigrateStatus(id, type, MigrateStatus.COMPLETE, 'Stake complete'))
+                dispatch(updateFarmV2UserTokenBalances(chainId, v2FarmPid, account))
               }
               dispatch(setRemoveTransactions(id))
               delay(() => {

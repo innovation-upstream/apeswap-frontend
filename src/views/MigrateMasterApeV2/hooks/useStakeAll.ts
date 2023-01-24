@@ -72,6 +72,7 @@ const useStakeAll = () => {
               id,
               type: 'stake',
               lpAddress: lp,
+              v2FarmPid: farm.pid,
             }
             const log: MigrationCompleteLog = {
               lpSymbol: pid === 0 ? token0.symbol : `${token0.symbol} - ${token1.symbol}`,

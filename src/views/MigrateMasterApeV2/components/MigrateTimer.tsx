@@ -10,8 +10,6 @@ const MigrateTimer = () => {
   const currentTime = useCurrentTime()
   const migrateTimes = useMigrationTimes()
   const { t } = useTranslation()
-  const phase0 = getTimePeriods(migrateTimes.migrate_phase_0 - currentTime / 1000)
-  const phase1 = getTimePeriods(migrateTimes.migrate_phase_1 - currentTime / 1000)
   const phase2 = getTimePeriods(migrateTimes.migrate_phase_2 - currentTime / 1000)
 
   return (

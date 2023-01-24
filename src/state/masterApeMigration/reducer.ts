@@ -3,7 +3,7 @@ import { ChainId } from '@ape.swap/sdk'
 import { createSlice } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import { AppThunk } from 'state/types'
-import { MasterApeMigrationInterface, MigrateLpStatus, MigrateStatus } from './types'
+import { MasterApeMigrationInterface, MigrateStatus } from './types'
 import { getInitialMigrateLpStatus, mergeV1Products, mergeV2Products } from './utils'
 // import { MigrationPhases, MigrationTimerState } from './types'
 
@@ -179,7 +179,6 @@ export const updateAndMergeStatus =
       const mergedStatus = [
         ...new Map([...migrateLpStatus, ...updatedMigrateLpStatus].map((item) => [item.lp, item])).values(),
       ]
-      console.log(mergedStatus)
       dispatch(setMigrateLpStatus(mergedStatus))
     } catch (error) {
       console.warn(error)
