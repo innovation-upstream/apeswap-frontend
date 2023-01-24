@@ -53,20 +53,7 @@ export default function Updater(): null {
   useEffect(() => {
     if (!chainId || !library || !currentBlock || transactions.length === 0) return
     transactions.forEach(
-      ({
-        hash,
-        migrateLpType,
-        id,
-        v2FarmPid,
-        v1FarmPid,
-        v1VaultPid,
-        v3VaultPid,
-        lpAddress,
-        type,
-        symbol,
-        location,
-        stakeAmount,
-      }) => {
+      ({ hash, migrateLpType, id, v2FarmPid, v1FarmPid, v1VaultPid, v3VaultPid, lpAddress, type }) => {
         library
           .waitForTransaction(hash)
           .then((receipt) => {
@@ -80,20 +67,23 @@ export default function Updater(): null {
                   dispatch(updateVaultUserStakedBalance(account, chainId, v1VaultPid))
                   dispatch(updateVaultUserBalance(account, chainId, v1VaultPid))
                 }
+                dispatch(updateAndMergeStatus(chainId, id, lpAddress, type, MigrateStatus.COMPLETE, 'Unstake complete'))
               }
               if (type === 'approveStake') {
                 v3VaultPid && migrateMaximizers
                   ? dispatch(updateVaultV3UserAllowance(account, chainId, v3VaultPid))
                   : dispatch(updateFarmV2UserAllowances(chainId, v2FarmPid, account))
+                dispatch(
+                  updateMigrateStatus(
+                    id,
+                    type,
+                    MigrateStatus.COMPLETE,
+                    migrateMaximizers && v3VaultPid ? 'Vault approval complete' : 'Farm approval complete',
+                  ),
+                )
               }
               if (type === 'stake') {
-                const log: MigrationCompleteLog = { lpSymbol: symbol, location, stakeAmount }
-                dispatch(setAddCompletionLog(log))
-              }
-              if (type === 'unstake') {
-                dispatch(updateAndMergeStatus(chainId, id, lpAddress, type, MigrateStatus.COMPLETE, 'Unstake complete'))
-              } else {
-                dispatch(updateMigrateStatus(id, type, MigrateStatus.COMPLETE, 'Complete'))
+                dispatch(updateMigrateStatus(id, type, MigrateStatus.COMPLETE, 'Stake complete'))
               }
               dispatch(setRemoveTransactions(id))
               delay(() => {

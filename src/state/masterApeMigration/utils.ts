@@ -145,6 +145,7 @@ export const getInitialMigrateLpStatus = (
   v1Products: MasterApeProductsInterface[],
   v2Products: MasterApeV2ProductsInterface[],
   v2Farms: Farm[],
+  migrateMaximizers: boolean,
   chainId,
 ) => {
   // To make sure we dont have farms that wont be part of the migration we need to filter them out
@@ -162,7 +163,11 @@ export const getInitialMigrateLpStatus = (
       status: {
         unstake: new BigNumber(stakedAmount).isGreaterThan(0) ? MigrateStatus.INCOMPLETE : MigrateStatus.COMPLETE,
         approveStake: matchedV2Product
-          ? new BigNumber(matchedV2Product.farm.allowance).isGreaterThan(0)
+          ? migrateMaximizers
+            ? new BigNumber(matchedV2Product.vault.allowance).isGreaterThan(0)
+              ? MigrateStatus.COMPLETE
+              : MigrateStatus.INCOMPLETE
+            : new BigNumber(matchedV2Product.farm.allowance).isGreaterThan(0)
             ? MigrateStatus.COMPLETE
             : MigrateStatus.INCOMPLETE
           : MigrateStatus.INCOMPLETE,
@@ -172,7 +177,7 @@ export const getInitialMigrateLpStatus = (
     }
   })
 
-  const apeswapV2LpStatus = v2Products?.flatMap(({ walletBalance, id, lp, farm }) => {
+  const apeswapV2LpStatus = v2Products?.flatMap(({ id, lp, farm, vault }) => {
     // If there is a matched V1 product that means we still need to unstake so make that incomplete
     const matchedV1ProductStaked = new BigNumber(
       filteredV1Products.find(({ lp: v1Lp }) => v1Lp === lp)?.stakedAmount || 0,
@@ -182,7 +187,13 @@ export const getInitialMigrateLpStatus = (
       lp,
       status: {
         unstake: matchedV1ProductStaked ? MigrateStatus.INCOMPLETE : MigrateStatus.COMPLETE,
-        approveStake: new BigNumber(farm.allowance).gt(0) ? MigrateStatus.COMPLETE : MigrateStatus.INCOMPLETE,
+        approveStake: migrateMaximizers
+          ? new BigNumber(vault.allowance).gt(0)
+            ? MigrateStatus.COMPLETE
+            : MigrateStatus.INCOMPLETE
+          : new BigNumber(farm.allowance).gt(0)
+          ? MigrateStatus.COMPLETE
+          : MigrateStatus.INCOMPLETE,
         stake: MigrateStatus.INCOMPLETE,
       },
       statusText: 'Migration Initialized',

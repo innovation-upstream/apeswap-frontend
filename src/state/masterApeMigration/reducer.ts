@@ -105,12 +105,12 @@ export const fetchV2Products =
   }
 
 export const setInitializeMigrateStatus =
-  (chainId: number): AppThunk =>
+  (chainId: number, migrateMaximizers: boolean): AppThunk =>
   (dispatch, getState) => {
     try {
       const { v1Products, v2Products } = getState().masterApeMigration
       const farmsV2 = getState().farms.data
-      const mergedLpStatus = getInitialMigrateLpStatus(v1Products, v2Products, farmsV2, chainId)
+      const mergedLpStatus = getInitialMigrateLpStatus(v1Products, v2Products, farmsV2, migrateMaximizers, chainId)
       dispatch(setMigrateLpStatus(mergedLpStatus))
       dispatch(setMigrationLoading({ allDataLoaded: true }))
     } catch (error) {
@@ -181,20 +181,6 @@ export const updateAndMergeStatus =
       ]
       console.log(mergedStatus)
       dispatch(setMigrateLpStatus(mergedStatus))
-    } catch (error) {
-      console.warn(error)
-    }
-  }
-
-export const setCompletionLog =
-  (chainId: ChainId): AppThunk =>
-  (dispatch, getState) => {
-    try {
-      const vaultsV3 = getState().vaultsV3.data
-      const farmsV2 = getState().farmsV2.data
-      const v2Products = mergeV2Products(farmsV2, vaultsV3, chainId)
-      dispatch(setV2Products(v2Products))
-      dispatch(setMigrationLoading({ mergedMigrationLoaded: true }))
     } catch (error) {
       console.warn(error)
     }

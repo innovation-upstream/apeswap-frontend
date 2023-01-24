@@ -53,11 +53,12 @@ export const useSetInitialMigrateStatus = () => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
   const { mergedMigrationLoaded } = useIsMigrationLoading()
+  const migrateMaximizers = useMigrateMaximizer()
   useEffect(() => {
     if (mergedMigrationLoaded) {
-      dispatch(setInitializeMigrateStatus(chainId))
+      dispatch(setInitializeMigrateStatus(chainId, migrateMaximizers))
     }
-  }, [dispatch, mergedMigrationLoaded, chainId])
+  }, [dispatch, mergedMigrationLoaded, migrateMaximizers, chainId])
 }
 
 export const useSetMigrationLoading = () => {
@@ -101,7 +102,6 @@ export const useActiveIndex = () => {
 }
 
 export const useMigrateStatus = (): MigrateLpStatus[] => {
-  console.log(useSelector((state: State) => state.masterApeMigration.migrateLpStatus))
   return useSelector((state: State) => state.masterApeMigration.migrateLpStatus)
 }
 

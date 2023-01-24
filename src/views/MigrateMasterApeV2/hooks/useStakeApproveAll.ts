@@ -27,68 +27,61 @@ const useStakeApproveAll = () => {
 
   const handleApproveAll = useCallback(
     (apeswapWalletLps: MasterApeV2ProductsInterface[]) => {
-      apeswapWalletLps.map(async ({ lp, id }) => {
-        try {
-          // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
-          const matchedVault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)
-          const farmPid = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lp).pid
-          const lpContract = new Contract(lp, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
-          dispatch(
-            updateMigrateStatus(
+      if (apeswapWalletLps.length === 0 || undefined) return
+      const migrateLp = apeswapWalletLps[0]
+      const { lp, id } = migrateLp
+      try {
+        // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
+        const matchedVault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)
+        const farmPid = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lp).pid
+        const lpContract = new Contract(lp, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
+        dispatch(
+          updateMigrateStatus(
+            id,
+            'approveStake',
+            MigrateStatus.PENDING,
+            `Pending ${migrateMaximizers && matchedVault ? 'Maximizer' : 'Farm'} Approval`,
+          ),
+        )
+        lpContract
+          .approve(migrateMaximizers && matchedVault ? vaultAddress : masterChefV2Address, ethers.constants.MaxUint256)
+          .then((tx) => {
+            const transaction: MigrateTransaction = {
+              hash: tx.hash,
               id,
-              'approveStake',
-              MigrateStatus.PENDING,
-              `Pending ${migrateMaximizers && matchedVault ? 'Maximizer' : 'Farm'} Approval`,
-            ),
-          )
-          lpContract
-            .approve(
-              migrateMaximizers && matchedVault ? vaultAddress : masterChefV2Address,
-              ethers.constants.MaxUint256,
-            )
-            .then((tx) => {
-              const transaction: MigrateTransaction = {
-                hash: tx.hash,
+              type: 'approveStake',
+              v3VaultPid: matchedVault.pid,
+              v2FarmPid: farmPid,
+              lpAddress: lp,
+            }
+            dispatch(setAddTransactions(transaction))
+            if (isMobile) {
+              return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
+            }
+          })
+          .catch((e) => {
+            dispatch(
+              updateMigrateStatus(
                 id,
-                type: 'approveStake',
-                v3VaultPid: matchedVault.pid,
-                v2FarmPid: farmPid,
-                lpAddress: lp,
-              }
-              dispatch(setAddTransactions(transaction))
-              if (isMobile) {
-                return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
-              }
-            })
-            .catch((e) => {
-              dispatch(
-                updateMigrateStatus(
-                  id,
-                  'approveStake',
-                  MigrateStatus.INVALID,
-                  e.message === 'MetaMask Tx Signature: User denied transaction signature.'
-                    ? 'Transaction rejected in wallet'
-                    : e.message,
-                ),
-              )
-              if (isMobile) {
-                return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
-              }
-            })
-          if (!isMobile) {
-            return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
-          }
-        } catch {
-          dispatch(
-            updateMigrateStatus(
-              id,
-              'approveStake',
-              MigrateStatus.INVALID,
-              'Something went wrong please try refreshing',
-            ),
-          )
+                'approveStake',
+                MigrateStatus.INVALID,
+                e.message === 'MetaMask Tx Signature: User denied transaction signature.'
+                  ? 'Transaction rejected in wallet'
+                  : e.message,
+              ),
+            )
+            if (isMobile) {
+              return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
+            }
+          })
+        if (!isMobile) {
+          return handleApproveAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
         }
-      })
+      } catch {
+        dispatch(
+          updateMigrateStatus(id, 'approveStake', MigrateStatus.INVALID, 'Something went wrong please try refreshing'),
+        )
+      }
     },
     [
       account,

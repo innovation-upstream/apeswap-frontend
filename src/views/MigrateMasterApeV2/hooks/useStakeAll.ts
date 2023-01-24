@@ -4,9 +4,14 @@ import { useMasterChefV2Contract, useVaultApeV3 } from 'hooks/useContract'
 import { calculateGasMargin } from 'utils'
 import BigNumber from 'bignumber.js'
 import { useVaultsV3 } from 'state/vaultsV3/hooks'
-import { MasterApeV2ProductsInterface, MigrateStatus, MigrateTransaction } from 'state/masterApeMigration/types'
+import {
+  MasterApeV2ProductsInterface,
+  MigrateStatus,
+  MigrateTransaction,
+  MigrationCompleteLog,
+} from 'state/masterApeMigration/types'
 import { useMigrateMaximizer } from 'state/masterApeMigration/hooks'
-import { setAddTransactions, updateMigrateStatus } from 'state/masterApeMigration/reducer'
+import { setAddCompletionLog, setAddTransactions, updateMigrateStatus } from 'state/masterApeMigration/reducer'
 import { useAppDispatch } from 'state'
 import useIsMobile from 'hooks/useIsMobile'
 
@@ -65,11 +70,15 @@ const useStakeAll = () => {
               id,
               type: 'stake',
               lpAddress: lp,
-              symbol: pid === 0 ? token0.symbol : `${token0.symbol} - ${token1.symbol}`,
+            }
+            const log: MigrationCompleteLog = {
+              lpSymbol: pid === 0 ? token0.symbol : `${token0.symbol} - ${token1.symbol}`,
               location: pid === 0 ? 'pool' : migrateMaximizers && matchedVault ? 'max' : 'farm',
               stakeAmount: walletBalance,
             }
             dispatch(setAddTransactions(transaction))
+            dispatch(setAddCompletionLog(log))
+
             if (isMobile) {
               return handleStakeAll(apeswapWalletLps.slice(1, apeswapWalletLps.length))
             }

@@ -27,6 +27,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
   const filteredLpsForStake = apeswapWalletLps?.filter(
     ({ id }) => migrateLpStatus?.find((status) => status.id === id)?.status.approveStake !== MigrateStatus.COMPLETE,
   )
+  console.log(filteredLpsForStake)
   const listView = filteredLpsForStake?.map(({ walletBalance, lp, farm, vault, id, singleStakeAsset }) => {
     const { token0, token1 } = migrateMaximizers && vault ? vault : farm
     const status = migrateLpStatus?.find((status) => status.id === id)
