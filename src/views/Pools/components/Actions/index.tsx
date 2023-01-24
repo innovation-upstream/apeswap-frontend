@@ -134,7 +134,7 @@ const Actions: React.FC<CardActionProps> = ({
       )}
       <Flex sx={poolStyles.depositContainer}>
         {!account ? (
-          <UnlockButton large />
+          <UnlockButton />
         ) : !new BigNumber(allowance)?.gt(0) ? (
           <ApprovalAction stakingTokenContractAddress={stakeTokenAddress} sousId={sousId} />
         ) : firstStake ? (

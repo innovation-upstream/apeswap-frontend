@@ -85,8 +85,8 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
                 sx={{ height: '36px', alignItems: 'center' }}
               />
             </Flex>
-            <Flex sx={{ alignItems: 'center' }}>
-              <Checkbox checked={showOnlyDiscount} onClick={() => setShowOnlyDiscount(!showOnlyDiscount)} />
+            <Flex sx={{ alignItems: 'center' }} onClick={() => setShowOnlyDiscount(!showOnlyDiscount)}>
+              <Checkbox checked={showOnlyDiscount} />
               <Text ml="15px" size="14px" weight={700} color="success">
                 {t('Discount')}
               </Text>
@@ -116,7 +116,10 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
               sx={{ height: '36px', alignItems: 'center', width: '100%' }}
             />
           </Flex>
-          <Flex sx={{ alignItems: 'center' }}>
+          <Flex
+            sx={{ alignItems: 'center', '&: hover': { cursor: 'pointer' } }}
+            onClick={() => setShowOnlyDiscount(!showOnlyDiscount)}
+          >
             <Checkbox checked={showOnlyDiscount} onClick={() => setShowOnlyDiscount(!showOnlyDiscount)} />
             <Text ml="15px" size="14px" weight={700} color="success">
               {t('Discount')}
