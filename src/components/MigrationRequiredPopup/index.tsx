@@ -24,7 +24,7 @@ import {
 } from 'state/masterApeMigration/hooks'
 
 const MigrationRequiredPopup = () => {
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   // TODO: Remove after the migration process
   useSetInitialMigrateStatus()
@@ -47,10 +47,23 @@ const MigrationRequiredPopup = () => {
   const currentPhase = useMigrationPhase()
   const isMobile = useIsMobile()
   const farms = useFarms(account)
+  const v2Farms = useFarmsV2(null)
   const { vaults } = useVaults()
   const { pathname } = useLocation()
+  // Filter out farms that do not exists on v2Farms
+  const filteredFarms = farms?.filter(({ tokenAddresses }) => {
+    return v2Farms?.find(({ tokenAddresses: tokenAddressV2 }) => {
+      return tokenAddressV2[chainId]?.toLowerCase() === tokenAddresses[chainId]?.toLowerCase()
+    })
+  })
+  const filteredVaults = vaults?.filter(({ stakeToken }) => {
+    return v2Farms?.find(({ tokenAddresses }) => {
+      return tokenAddresses[chainId]?.toLowerCase() === stakeToken[chainId]?.toLowerCase()
+    })
+  })
   const userHasFarmOrVault =
-    [...farms, ...vaults].filter((product) => new BigNumber(product?.userData?.stakedBalance).gt(0))?.length > 0
+    [...filteredFarms, ...filteredVaults].filter((product) => new BigNumber(product?.userData?.stakedBalance).gt(0))
+      ?.length > 0
   const [open, setOpen] = useState(true)
   const onMigration = pathname.includes(CURRENT_MIGRATE_PATH)
   return (

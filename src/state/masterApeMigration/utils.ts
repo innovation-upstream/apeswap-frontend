@@ -149,9 +149,8 @@ export const getInitialMigrateLpStatus = (
   chainId,
 ) => {
   // To make sure we dont have farms that wont be part of the migration we need to filter them out
-
   const filteredV1Products = v1Products.filter(({ lp }) =>
-    v2Farms.find(({ lpAddresses }) => lpAddresses[chainId]?.toLowerCase() === lp),
+    v2Farms.find(({ lpAddresses }) => lpAddresses[chainId]?.toLowerCase() === lp.toLowerCase()),
   )
 
   const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, lp, id }) => {
@@ -178,7 +177,12 @@ export const getInitialMigrateLpStatus = (
     }
   })
 
-  const apeswapV2LpStatus = v2Products?.flatMap(({ id, lp, farm, vault }) => {
+  // To make sure we dont have farms that wont be part of the migration we need to filter them out
+  const filteredV2Products = v2Products.filter(({ lp }) =>
+    v2Farms.find(({ lpAddresses }) => lpAddresses[chainId]?.toLowerCase() === lp.toLowerCase()),
+  )
+
+  const apeswapV2LpStatus = filteredV2Products?.flatMap(({ id, lp, farm, vault }) => {
     // If there is a matched V1 product that means we still need to unstake so make that incomplete
     const matchedV1ProductStaked = new BigNumber(
       filteredV1Products.find(({ lp: v1Lp }) => v1Lp === lp)?.stakedAmount || 0,
