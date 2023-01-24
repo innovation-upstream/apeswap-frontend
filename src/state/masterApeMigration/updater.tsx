@@ -14,7 +14,7 @@ import {
 } from './reducer'
 import { updateFarmV2UserAllowances, updateFarmV2UserTokenBalances } from 'state/farmsV2'
 import { updateFarmUserStakedBalances, updateFarmUserTokenBalances } from 'state/farms'
-import { updateVaultUserBalance, updateVaultUserStakedBalance } from 'state/vaults'
+import { fetchVaultUserDataAsync, updateVaultUserBalance, updateVaultUserStakedBalance } from 'state/vaults'
 import { updateVaultV3UserAllowance } from 'state/vaultsV3'
 import { delay } from 'lodash'
 
@@ -48,6 +48,7 @@ export default function Updater(): null {
                 } else {
                   dispatch(updateVaultUserStakedBalance(account, chainId, v1VaultPid))
                   dispatch(updateVaultUserBalance(account, chainId, v1VaultPid))
+                  dispatch(fetchVaultUserDataAsync(account, chainId))
                 }
                 dispatch(updateAndMergeStatus(chainId, id, lpAddress, type, MigrateStatus.COMPLETE, 'Unstake complete'))
               }
@@ -72,7 +73,7 @@ export default function Updater(): null {
               delay(() => {
                 dispatch(fetchV2Products(chainId))
                 dispatch(fetchV1Products(chainId))
-              }, 2000)
+              }, 1000)
             } else {
               dispatch(updateMigrateStatus(id, type, MigrateStatus.INVALID, 'Something went wrong'))
               dispatch(setRemoveTransactions(id))
