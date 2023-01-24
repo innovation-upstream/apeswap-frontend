@@ -14,18 +14,27 @@ import { Container } from './styles'
 import { vaultTokenDisplay } from '../helpers'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 import { VaultVersion } from '@ape.swap/apeswap-lists'
+import Unstake from './MigrateActionsButtons/Unstake'
+import { useVaultsV3 } from 'state/vaultsV3/hooks'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const isMobile = useIsMobile()
+  const { chainId } = useActiveWeb3React()
   const { pathname } = useLocation()
   const isActive = !pathname.includes('history')
   const { t } = useTranslation()
+  const { vaults: vaultsV3 } = useVaultsV3()
 
   const vaultsListView = vaults.map((vault) => {
     const totalDollarAmountStaked = Math.round(parseFloat(vault?.totalStaked) * vault?.stakeTokenPrice * 100) / 100
     const rawStakedBalance = getFullDisplayBalance(new BigNumber(vault.userData.stakedBalance))
     const userStakedBalance = getBalanceNumber(new BigNumber(vault?.userData?.stakedBalance))
     const userStakedBalanceUsd = `$${((userStakedBalance || 0) * vault?.stakeTokenPrice).toFixed(2)}`
+    const vaultV3Pid = vaultsV3.find(
+      (vaultV3) =>
+        vault.stakeToken.address[chainId].toLowerCase() === vaultV3.stakeToken.address[chainId].toLowerCase(),
+    )?.pid
 
     const { tokenDisplay, stakeLp, earnLp } = vaultTokenDisplay(vault.stakeToken, vault.rewardToken)
 
@@ -74,9 +83,13 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
-              Migrate
-            </Button>
+            {isMobile ? (
+              <Unstake pid={vault.pid} vaultVersion={vault.version} vaultV3Pid={vaultV3Pid} />
+            ) : (
+              <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+                Migrate
+              </Button>
+            )}
           </Flex>
         </>
       ),

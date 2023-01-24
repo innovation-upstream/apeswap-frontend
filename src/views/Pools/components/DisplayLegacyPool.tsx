@@ -14,6 +14,7 @@ import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import { poolStyles } from './styles'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
+import Unstake from './MigrateActionsButtons/Unstake'
 
 const DisplayLegacyPool: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }> = ({ pools, poolTags }) => {
   const { chainId } = useActiveWeb3React()
@@ -89,9 +90,13 @@ const DisplayLegacyPool: React.FC<{ pools: Pool[]; openId?: number; poolTags: Ta
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
-              Migrate
-            </Button>
+            {isMobile ? (
+              <Unstake rawTokenAmount={rawStakedBalance} />
+            ) : (
+              <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+                Migrate
+              </Button>
+            )}
           </Flex>
         </>
       ),

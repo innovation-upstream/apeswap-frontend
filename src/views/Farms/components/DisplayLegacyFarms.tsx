@@ -13,9 +13,14 @@ import useIsMobile from 'hooks/useIsMobile'
 import { Container } from './styles'
 import { Link } from 'react-router-dom'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
+import Unstake from './MigrateActionsButtons/Unstake'
+import { useFarmsV2 } from 'state/farmsV2/hooks'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const DisplayFarms: React.FC<{ farms: Farm[] }> = ({ farms }) => {
   const { t } = useTranslation()
+  const v2Farms = useFarmsV2(null)
+  const { chainId } = useActiveWeb3React()
   const isMobile = useIsMobile()
 
   // TODO: This can be deleted after merge. Copied component to make sure the original isnt cluttered with these changes
@@ -27,6 +32,9 @@ const DisplayFarms: React.FC<{ farms: Farm[] }> = ({ farms }) => {
     const userStakedBalanceUsd = `$${(
       getBalanceNumber(new BigNumber(farm?.userData.stakedBalance) || new BigNumber(0)) * farm?.lpValueUsd
     ).toFixed(2)}`
+    const farmV2Pid = v2Farms.find(
+      (farmV2) => farm.tokenAddresses[chainId].toLowerCase() === farmV2.tokenAddresses[chainId].toLowerCase(),
+    )?.pid
 
     return {
       tokens: { token1: farm.pid === 184 ? 'NFTY2' : token1, token2, token3: 'BANANA' },
@@ -74,9 +82,13 @@ const DisplayFarms: React.FC<{ farms: Farm[] }> = ({ farms }) => {
             ml={10}
           />
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
-            <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
-              Migrate
-            </Button>
+            {isMobile ? (
+              <Unstake pid={farm.pid} rawTokenAmount={rawStakedBalance} farmV2Pid={farmV2Pid} />
+            ) : (
+              <Button as={Link} to={CURRENT_MIGRATE_PATH} fullWidth>
+                Migrate
+              </Button>
+            )}
           </Flex>
         </>
       ),
