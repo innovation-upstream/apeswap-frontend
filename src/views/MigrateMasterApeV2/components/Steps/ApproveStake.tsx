@@ -86,7 +86,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
           width: 'fit-content',
         }}
       >
-        <Text size="14px" weight={500} mr="5px">
+        {/* <Text size="14px" weight={500} mr="5px">
           {t('Migrate to maximizers?')}
         </Text>
         <TooltipBubble
@@ -109,7 +109,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
             checked={migrateMaximizers}
             onChange={() => dispatch(setToggleMaximizer(migrateMaximizers))}
           />
-        </Flex>
+        </Flex> */}
       </Flex>
       <Button
         disabled={filteredLpsForStake?.length === 0}
