@@ -210,15 +210,14 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             vaultVersion={vault.version}
           />
           {(vault.version === VaultVersion.V2 || vault.version === VaultVersion.V3) && !isMobile && <NextArrow />}
-          {vault.version === VaultVersion.V2 ||
-            (vault.version === VaultVersion.V3 && (
-              <HarvestAction
-                pid={vault?.pid}
-                disabled={userEarnings <= 0}
-                userEarnings={userEarnings}
-                earnTokenSymbol={vault?.rewardToken?.symbol}
-              />
-            ))}
+          {(vault.version === VaultVersion.V2 || vault.version === VaultVersion.V3) && (
+            <HarvestAction
+              pid={vault?.pid}
+              disabled={userEarnings <= 0}
+              userEarnings={userEarnings}
+              earnTokenSymbol={vault?.rewardToken?.symbol}
+            />
+          )}
         </>
       ),
     } as ExtendedListViewProps
