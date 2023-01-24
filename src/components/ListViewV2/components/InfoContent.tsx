@@ -14,8 +14,8 @@ const InfoContent = ({
     <>
       {infoContent && (
         <Flex style={{ display: 'inline-block' }}>
-          <TooltipBubble body={infoContent} transformTip="translate(11%, 0%)" width="200px">
-            <InfoIcon width={'18px'} />
+          <TooltipBubble body={infoContent} transformTip="translate(11%, 0%)" width="205px">
+            <InfoIcon width={'15px'} />
           </TooltipBubble>
         </Flex>
       )}

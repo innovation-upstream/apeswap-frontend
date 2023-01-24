@@ -125,8 +125,8 @@ const Actions: React.FC<CardActionProps> = ({
       {isMobile && (
         <ListViewContentMobile
           title={`${t('Staked')} ${stakedTokenSymbol}`}
-          value={rawStakedBalance.toFixed(2)}
-          value2={userStakedBalanceUsd}
+          value={`${!account ? '0.000' : rawStakedBalance.toFixed(2)}`}
+          value2={!account ? '$0.00' : userStakedBalanceUsd}
           value2Secondary
           value2Direction="column"
           style={{ flexDirection: 'column' }}
@@ -171,8 +171,8 @@ const Actions: React.FC<CardActionProps> = ({
       {!isMobile && (
         <ListViewContentMobile
           title={`${t('Staked')} ${stakedTokenSymbol}`}
-          value={`${rawStakedBalance.toFixed(2)}`}
-          value2={userStakedBalanceUsd}
+          value={`${!account ? '0.000' : rawStakedBalance.toFixed(2)}`}
+          value2={!account ? '$0.00' : userStakedBalanceUsd}
           value2Secondary
           value2Direction="column"
           style={{ flexDirection: 'column', marginLeft: '10px', maxWidth: '110px' }}

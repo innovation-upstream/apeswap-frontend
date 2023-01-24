@@ -5,7 +5,7 @@ import useIsMobile from 'hooks/useIsMobile'
 import MobileModal from './Mobile'
 import DesktopModal from './Desktop'
 
-const QuestModal: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
+const TelosQuestModal: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
   const isMobile = useIsMobile()
   const [hideDefault, setHideDefault] = useState(false)
 
@@ -41,4 +41,4 @@ const QuestModal: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
   )
 }
 
-export default React.memo(QuestModal)
+export default React.memo(TelosQuestModal)

@@ -15,7 +15,6 @@ export interface TokenDisplayProps {
 export interface ListProps {
   id?: string | number
   title: React.ReactNode
-  titleContainerWidth?: number
   infoContent?: React.ReactNode
   cardContent: React.ReactNode
   expandedContent?: React.ReactNode

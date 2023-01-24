@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, LinkExternal, Svg, Text } from '@apeswapfinance/uikit'
+import { Svg, Text } from '@apeswapfinance/uikit'
 import { Svg as Icon, TagVariants } from '@ape.swap/uikit'
 import { Box } from 'theme-ui'
 import ListView from 'components/ListView'
@@ -19,6 +19,7 @@ import useIsMobile from 'hooks/useIsMobile'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import useAddLiquidityModal from 'components/DualAddLiquidity/hooks/useAddLiquidityModal'
 import { ZapType } from '@ape.swap/sdk'
+import Tooltip from 'components/Tooltip/Tooltip'
 
 const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags: Tag[] }> = ({
   farms,
@@ -31,7 +32,6 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
   const onAddLiquidityModal = useAddLiquidityModal(ZapType.ZAP_MINI_APE)
 
   const farmsListView = farms.map((farm, i) => {
-    const polygonScanUrl = `https://polygonscan.com/address/${farm.stakeTokenAddress}`
     const userEarningsMiniChef = getBalanceNumber(farm?.userData?.miniChefEarnings || new BigNumber(0)).toFixed(2)
     const userEarningsRewarder = getBalanceNumber(farm?.userData?.rewarderEarnings || new BigNumber(0)).toFixed(2)
     const userEarningsUsd = `$${(
@@ -78,29 +78,8 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
       open: farm.pid === openPid,
       id: farm.pid,
       infoContent: (
-        <>
-          <Flex flexDirection="column">
-            <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
-              <Text style={{ fontSize: '12px' }}>Multiplier</Text>
-              <Text bold style={{ fontSize: '12px' }}>
-                {Math.round(parseFloat(farm.multiplier) * 1000) / 100}X
-              </Text>
-            </Flex>
-            <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
-              <Text style={{ fontSize: '12px' }}>Stake</Text>
-              <Text bold style={{ fontSize: '12px' }}>
-                {farm?.stakeTokens?.token1?.symbol}-{farm?.stakeTokens?.token0?.symbol} LP
-              </Text>
-            </Flex>
-            <Flex alignItems="center" justifyContent="center" mt="15px">
-              <LinkExternal href={polygonScanUrl} style={{ fontSize: '14px' }}>
-                {t('View on PolygonScan')}
-              </LinkExternal>
-            </Flex>
-          </Flex>
-        </>
+        <Tooltip valueTitle={t('Multiplier')} valueContent={farm?.multiplier} tokenContract={farm?.stakeTokenAddress} />
       ),
-      ttWidth: '250px',
       infoContentPosition: 'translate(8%, 0%)',
       toolTipIconWidth: isMobile && '20px',
       toolTipStyle: isMobile && { marginTop: '5px', marginRight: '10px' },

@@ -37,7 +37,7 @@ const IazoPage: React.FC = () => {
         <Flex flexDirection="column">
           <Banner
             banner="ssiao"
-            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/self-serve-iao-ss-iao"
+            link="?modal=iao"
             title={t('Self-Serve Iao')}
             maxWidth={856}
             listViewBreak

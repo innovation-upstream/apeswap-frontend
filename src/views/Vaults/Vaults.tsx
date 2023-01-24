@@ -149,7 +149,7 @@ const Vaults: React.FC = () => {
           <Banner
             title={t('BANANA Maximizers')}
             banner="banana-maximizers"
-            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/vaults"
+            link="?modal=tutorial"
             titleColor="primaryBright"
             maxWidth={1130}
           />
