@@ -109,9 +109,16 @@ const MigrationRequiredPopup = () => {
           <Button fullWidth mr="5px" as={Link} to={CURRENT_MIGRATE_PATH} onClick={() => setOpen(false)}>
             {t('Migrate')}
           </Button>
-          <Button fullWidth ml="5px" sx={{ background: 'transparent', color: 'yellow' }} as={Link} to="">
-            {t('Learn More')}
-          </Button>
+          <a
+            href="https://ape-swap.medium.com/apeswap-upgrades-contracts-to-implement-hard-cap-88de5e5f4c94"
+            target="_blank"
+            rel="noreferrer noopener"
+            sx={{ width: '100%' }}
+          >
+            <Button fullWidth ml="5px" sx={{ background: 'transparent', color: 'yellow' }}>
+              {t('Learn More')}
+            </Button>
+          </a>
         </Flex>
       </Flex>
     )
