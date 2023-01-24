@@ -18,6 +18,7 @@ export const NextArrow = styled(ArrowDropUpIcon)`
 
 export const Container = styled(Flex)`
   position: relative;
+  width: 100%;
 `
 
 export const ActionContainer = styled(Flex)`

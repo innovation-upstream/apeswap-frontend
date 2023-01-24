@@ -18,7 +18,7 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
             serviceTokenDisplay={
               <ServiceTokenDisplay
                 token1={view.tokens.token1}
-                token2={view.tokens.token2}
+                token2={view.tokens?.token2}
                 token3={view.tokens?.token3}
                 token4={view.tokens?.token4}
                 billArrow={view?.billArrow}
@@ -43,14 +43,14 @@ const ListView: React.FC<{ listViews: ExtendedListViewProps[] }> = ({ listViews 
             ttWidth={view?.ttWidth}
             backgroundColor={view?.backgroundColor}
             beforeTokenContent={view?.beforeTokenContent}
-            forMigratonList={view?.forMigratonList}
+            forMigrationList={view?.forMigrationList}
           />
         ) : (
           <ListCard
             serviceTokenDisplay={
               <ServiceTokenDisplay
                 token1={view.tokens.token1}
-                token2={view.tokens.token2}
+                token2={view.tokens?.token2}
                 token3={view.tokens?.token3}
                 token4={view.tokens?.token4}
                 billArrow={view?.billArrow}

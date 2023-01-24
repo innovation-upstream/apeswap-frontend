@@ -39,7 +39,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: ApeswapWalletLpInterface[] }> =
       title: `${wrappedToNative(token0.symbol)} - ${wrappedToNative(token1.symbol)}`,
       expandedContentSize: 70,
       noEarnToken: true,
-      forMigratonList: true,
+      forMigrationList: true,
       id: lpAddress,
       cardContent: !isMobile ? (
         <>

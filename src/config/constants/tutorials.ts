@@ -30,7 +30,8 @@ export const routeNames: Record<
   | '/auction'
   | '/staking'
   | '/apestats'
-  | '/protocol-dashboard',
+  | '/protocol-dashboard'
+  | '/the-migration',
   string
 > = {
   '/': 'HOME',
@@ -56,6 +57,7 @@ export const routeNames: Record<
   '/staking': 'STAKING',
   '/apestats': 'APESTATS',
   '/protocol-dashboard': 'PROTOCOL_DASHBOARD',
+  '/the-migration': 'THE MIGRATION',
 }
 
 export enum Farms {

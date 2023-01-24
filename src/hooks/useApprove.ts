@@ -14,14 +14,16 @@ import {
   useMiniChefContract,
   useERC20,
   useJungleChef,
+  useMasterChefV2Contract,
 } from './useContract'
 
 // Approve a Farm
-export const useApprove = (lpContract) => {
+export const useApprove = (lpContract, v2Flag) => {
   const masterChefContract = useMasterchef()
+  const masterChefV2Contract = useMasterChefV2Contract()
 
   const handleApprove = useCallback(async () => {
-    const trx = await approve(lpContract, masterChefContract)
+    const trx = v2Flag ? await approve(lpContract, masterChefV2Contract) : await approve(lpContract, masterChefContract)
     track({
       event: 'farm',
       chain: 56,
@@ -31,7 +33,7 @@ export const useApprove = (lpContract) => {
       },
     })
     return trx
-  }, [lpContract, masterChefContract])
+  }, [lpContract, masterChefContract, v2Flag, masterChefV2Contract])
 
   return { onApprove: handleApprove }
 }

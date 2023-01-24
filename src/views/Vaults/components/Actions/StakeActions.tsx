@@ -17,6 +17,7 @@ import { useIsModalShown } from 'state/user/hooks'
 import { useHistory } from 'react-router-dom'
 import WithdrawModal from '../../../../components/WithdrawModal'
 import { useTranslation } from '../../../../contexts/Localization'
+import { VaultVersion } from 'config/constants/types'
 
 interface StakeActionsProps {
   stakingTokenBalance: string
@@ -25,7 +26,7 @@ interface StakeActionsProps {
   stakeTokenValueUsd: number
   withdrawFee: string
   pid: number
-  vaultVersion: 'V1' | 'V2'
+  vaultVersion: VaultVersion
 }
 
 const StakeAction: React.FC<StakeActionsProps> = ({

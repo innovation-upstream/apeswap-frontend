@@ -1,21 +1,12 @@
 import React, { useState } from 'react'
-import {
-  Flex,
-  AddIcon,
-  MinusIcon,
-  useModal,
-  AutoRenewIcon,
-  LinkExternal,
-  Text,
-  useMatchBreakpoints,
-} from '@apeswapfinance/uikit'
+import { Flex, AddIcon, MinusIcon, useModal, AutoRenewIcon, useMatchBreakpoints } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
 import { useToast } from 'state/hooks'
 import { useAppDispatch } from 'state'
-import { fetchFarmUserDataAsync } from 'state/farms'
+import { fetchFarmV2UserDataAsync } from 'state/farmsV2'
 import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
@@ -25,15 +16,18 @@ import { ActionContainer, CenterContainer, SmallButton, StyledButton } from './s
 import { useHistory } from 'react-router-dom'
 import { useIsModalShown } from 'state/user/hooks'
 import WithdrawModal from '../../../../components/WithdrawModal'
+import { useMigrationPhase } from 'state/migrationTimer/hooks'
+import { MigrationPhases } from 'state/migrationTimer/types'
 
 interface StakeActionsProps {
   stakingTokenBalance: string
   stakedBalance: string
   lpValueUsd: number
   pid: number
+  v2Flag: boolean
 }
 
-const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedBalance, lpValueUsd, pid }) => {
+const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedBalance, lpValueUsd, pid, v2Flag }) => {
   const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
   const dispatch = useAppDispatch()
   const { chainId, account } = useActiveWeb3React()
@@ -51,8 +45,9 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
   const { showGeneralHarvestModal } = useIsModalShown()
   const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
 
-  const { onStake } = useStake(pid, lpValueUsd)
-  const { onUnstake } = useUnstake(pid)
+  const { onStake } = useStake(pid, v2Flag, lpValueUsd)
+  const { onUnstake } = useUnstake(pid, v2Flag)
+  const currentPhase = useMigrationPhase()
 
   const [onPresentDeposit] = useModal(
     <DepositModal
@@ -71,7 +66,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
             console.error(e)
             setPendingDepositTrx(false)
           })
-        dispatch(fetchFarmUserDataAsync(chainId, account))
+        dispatch(fetchFarmV2UserDataAsync(chainId, account))
         setPendingDepositTrx(false)
       }}
     />,
@@ -85,19 +80,17 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
         await onUnstake(val)
           .then((resp) => {
             const trxHash = resp.transactionHash
-            toastSuccess(
-              t('Withdraw Successful'),
-              <LinkExternal href={getEtherscanLink(trxHash, 'transaction', chainId)}>
-                <Text> {t('View Transaction')} </Text>
-              </LinkExternal>,
-            )
+            toastSuccess(t('Withdraw Successful'), {
+              text: t('View Transaction'),
+              url: getEtherscanLink(trxHash, 'transaction', chainId),
+            })
             if (trxHash) displayGHCircular()
           })
           .catch((e) => {
             console.error(e)
             setPendingWithdrawTrx(false)
           })
-        dispatch(fetchFarmUserDataAsync(chainId, account))
+        dispatch(fetchFarmV2UserDataAsync(chainId, account))
         setPendingWithdrawTrx(false)
       }}
       title={'Unstake LP tokens'}
@@ -111,7 +104,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
           <StyledButton
             onClick={onPresentDeposit}
             endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
-            disabled={pendingDepositTrx}
+            disabled={pendingDepositTrx || (!v2Flag && currentPhase !== MigrationPhases.MIGRATE_PHASE_0)}
           >
             {t('DEPOSIT')}
           </StyledButton>
@@ -144,7 +137,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ stakingTokenBalance, stakedB
           <SmallButton
             onClick={onPresentDeposit}
             endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
-            disabled={pendingDepositTrx || !new BigNumber(stakingTokenBalance)?.gt(0)}
+            disabled={pendingDepositTrx || !new BigNumber(stakingTokenBalance)?.gt(0) || !v2Flag}
           >
             <AddIcon color="white" width="20px" height="20px" fontWeight={700} />
           </SmallButton>
