@@ -35,7 +35,8 @@ const useStakeApproveAll = () => {
       try {
         // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
         const matchedVault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)
-        const farmPid = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lp).pid
+        const farm = farms.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lp)
+        const farmPid = farm.pid
         const lpContract = new Contract(lp, IUniswapV2PairABI, getProviderOrSigner(library, account)) as Erc20
         dispatch(
           updateMigrateStatus(
@@ -55,6 +56,7 @@ const useStakeApproveAll = () => {
               v3VaultPid: matchedVault?.pid,
               v2FarmPid: farmPid,
               lpAddress: lp,
+              lpSymbol: migrateMaximizers && matchedVault ? matchedVault?.stakeToken?.symbol : farm?.lpSymbol,
             }
             dispatch(setAddTransactions(transaction))
             if (!walletIsMetamask || isMobile) {

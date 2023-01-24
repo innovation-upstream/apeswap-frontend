@@ -17,6 +17,7 @@ import { updateFarmUserStakedBalances, updateFarmUserTokenBalances } from 'state
 import { fetchVaultUserDataAsync, updateVaultUserBalance, updateVaultUserStakedBalance } from 'state/vaults'
 import { updateVaultV3UserAllowance } from 'state/vaultsV3'
 import { delay } from 'lodash'
+import track from 'utils/track'
 
 const sentTxHash = []
 
@@ -33,7 +34,20 @@ export default function Updater(): null {
   useEffect(() => {
     if (!chainId || !library || !currentBlock || transactions.length === 0) return
     transactions.forEach(
-      ({ hash, migrateLpType, id, v2FarmPid, v1FarmPid, v1VaultPid, v3VaultPid, lpAddress, type }) => {
+      ({
+        hash,
+        migrateLpType,
+        id,
+        v2FarmPid,
+        v1FarmPid,
+        v1VaultPid,
+        v3VaultPid,
+        lpAddress,
+        type,
+        lpValueUsd,
+        lpAmount,
+        lpSymbol,
+      }) => {
         if (sentTxHash.includes(hash)) return
         sentTxHash.push(hash)
         library
@@ -51,6 +65,18 @@ export default function Updater(): null {
                   dispatch(fetchVaultUserDataAsync(account, chainId))
                 }
                 dispatch(updateAndMergeStatus(chainId, id, lpAddress, type, MigrateStatus.COMPLETE, 'Unstake complete'))
+                track({
+                  event: 'masterApeMigration',
+                  chain: chainId,
+                  data: {
+                    cat: 'Unstake',
+                    type: migrateLpType,
+                    lpValueUsd,
+                    lpAmount,
+                    lpSymbol,
+                    hash,
+                  },
+                })
               }
               if (type === 'approveStake') {
                 v3VaultPid && migrateMaximizers
@@ -64,10 +90,30 @@ export default function Updater(): null {
                     migrateMaximizers && v3VaultPid ? 'Vault approval complete' : 'Farm approval complete',
                   ),
                 )
+                track({
+                  event: 'masterApeMigration',
+                  chain: chainId,
+                  data: {
+                    cat: migrateMaximizers && v3VaultPid ? 'Vault approval' : 'Farm approval',
+                    lpSymbol,
+                    hash,
+                  },
+                })
               }
               if (type === 'stake') {
                 dispatch(updateMigrateStatus(id, type, MigrateStatus.COMPLETE, 'Stake complete'))
                 dispatch(updateFarmV2UserTokenBalances(chainId, v2FarmPid, account))
+                track({
+                  event: 'masterApeMigration',
+                  chain: chainId,
+                  data: {
+                    cat: 'Stake Complete',
+                    lpValueUsd,
+                    lpAmount,
+                    lpSymbol,
+                    hash,
+                  },
+                })
               }
               dispatch(setRemoveTransactions(id))
               delay(() => {

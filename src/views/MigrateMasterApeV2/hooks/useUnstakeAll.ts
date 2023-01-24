@@ -37,7 +37,7 @@ const useUnstakeAll = () => {
       // Get the corresponding farm pid
       const v2FarmPid = v2Farms.find(({ lpAddresses }) => migrateLp.lp === lpAddresses[chainId].toLowerCase())?.pid
       try {
-        const { pid, stakedAmount, id, type, lp } = migrateLp
+        const { pid, stakedAmount, id, type, lp, lpValueUsd, token0, token1, singleStakeAsset } = migrateLp
         // Define contracts in the callback to avoid a new contract being initalized every render
         const masterApeV1Contract = new Contract(
           masterChefV1Address,
@@ -73,6 +73,9 @@ const useUnstakeAll = () => {
               v1FarmPid: pid,
               v2FarmPid,
               v1VaultPid: pid,
+              lpValueUsd,
+              lpSymbol: singleStakeAsset ? token0?.symbol : `${token0?.symbol} - ${token1?.symbol}`,
+              lpAmount: stakedAmount,
             }
             dispatch(setAddTransactions(transaction))
             if (!walletIsMetamask || isMobile) {

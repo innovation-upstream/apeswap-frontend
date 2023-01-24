@@ -27,6 +27,9 @@ export interface MigrateTransaction {
   v1VaultPid?: number
   v3VaultPid?: number
   statusText?: string
+  lpValueUsd?: number
+  lpAmount?: string
+  lpSymbol?: string
 }
 
 export const enum MigrateStatus {

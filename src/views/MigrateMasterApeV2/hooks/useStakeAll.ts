@@ -32,7 +32,7 @@ const useStakeAll = () => {
     async (apeswapWalletLps: MasterApeV2ProductsInterface[]) => {
       if (apeswapWalletLps.length === 0 || undefined) return
       const migrateLp = apeswapWalletLps[0]
-      const { walletBalance, lp, id, vault, farm } = migrateLp
+      const { walletBalance, lp, id, vault, farm, lpValueUsd } = migrateLp
       const { token0, token1, pid } = migrateMaximizers && vault ? vault : farm
       try {
         // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
@@ -72,6 +72,9 @@ const useStakeAll = () => {
               id,
               type: 'stake',
               lpAddress: lp,
+              lpValueUsd,
+              lpSymbol: pid === 0 ? token0.symbol : `${token0.symbol} - ${token1.symbol}`,
+              lpAmount: walletBalance,
               v2FarmPid: farm.pid,
             }
             const log: MigrationCompleteLog = {
