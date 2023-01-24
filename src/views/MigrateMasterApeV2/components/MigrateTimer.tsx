@@ -44,7 +44,9 @@ const MigrateTimer = () => {
           },
         }}
       >
-        {`${phase2?.days}d ${phase2?.hours}h ${phase2?.minutes}m ${phase2?.seconds.toFixed(0)}s`}
+        {phase2.seconds < 0
+          ? 'Migration Live!'
+          : `${phase2?.days}d ${phase2?.hours}h ${phase2?.minutes}m ${phase2?.seconds.toFixed(0)}s`}
       </Text>
     </Flex>
   )

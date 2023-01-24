@@ -54,14 +54,16 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             toolTipPlacement="bottomLeft"
             toolTipTransform="translate(25%, 0%)"
           />
-          <ListViewContent
-            title={t('Total Staked')}
-            value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
-            width={isMobile ? 100 : 100}
-            toolTip={t('The total value of the tokens currently staked in this vault.')}
-            toolTipPlacement="bottomRight"
-            toolTipTransform="translate(13%, 0%)"
-          />
+          {!isMobile && (
+            <ListViewContent
+              title={t('Total Staked')}
+              value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
+              width={isMobile ? 100 : 100}
+              toolTip={t('The total value of the tokens currently staked in this vault.')}
+              toolTipPlacement="bottomRight"
+              toolTipTransform="translate(13%, 0%)"
+            />
+          )}
           <ListViewContent
             title={t('Staked LP')}
             value={rawStakedBalance.slice(0, 8)}
