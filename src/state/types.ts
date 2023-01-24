@@ -319,6 +319,7 @@ export interface FarmLpAprsType {
   lpAprs: {
     pid: number
     lpApr: number
+    lpAddress?: string
   }[]
 }
 

@@ -1,3 +1,4 @@
+import { FarmConfig } from '@ape.swap/apeswap-lists'
 import BigNumber from 'bignumber.js'
 import { Farm, FarmLpAprsType, LpTokenPrices } from 'state/types'
 import { getFarmV2Apr } from 'utils/apr'
@@ -14,7 +15,7 @@ const cleanFarmV2Data = (
   bananaPerYear: BigNumber,
 ) => {
   const data = chunkedFarms.map((chunk, index) => {
-    const farmConfig = farmsConfig?.find((farm) => farm.pid === farmIds[index])
+    const farmConfig: FarmConfig = farmsConfig?.find((farm) => farm.pid === farmIds[index])
     const filteredLpPrice = lpPrices?.find(
       (lp) => lp.address[chainId].toLowerCase() === farmConfig.lpAddresses[chainId].toLowerCase(),
     )
@@ -55,7 +56,9 @@ const cleanFarmV2Data = (
     multiplier = `${allocPoint.div(100).toString()}X`
     const totalLpStakedUsd = totalLpStaked.times(filteredLpPrice?.price)
     const apr = getFarmV2Apr(poolWeight, bananaPrice, totalLpStakedUsd, bananaPerYear)
-    const lpApr = farmLpAprs?.lpAprs?.find((lp) => lp.pid === farmConfig.pid)?.lpApr * 100
+    const lpApr =
+      farmLpAprs?.lpAprs?.find((lp) => lp.lpAddress.toLowerCase() === farmConfig.lpAddresses[chainId].toLowerCase())
+        ?.lpApr * 100
     const amountEarned = tokenEarnedPerThousandDollarsCompounding({
       numberOfDays: 365,
       farmApr: lpApr ? apr + lpApr : apr,
