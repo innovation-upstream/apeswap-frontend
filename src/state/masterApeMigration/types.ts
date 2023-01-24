@@ -8,23 +8,28 @@ export interface MasterApeMigrationInterface {
   v2Products: MasterApeV2ProductsInterface[]
   migrateLpStatus: MigrateLpStatus[]
   migrationCompleteLog: MigrationCompleteLog[]
-  transactions: {
-    hash: string
-    id: string
-    type: 'unstake' | 'approveStake' | 'stake'
-    migrateLpType: ProductTypes
-    status: MigrateStatus
-    v2FarmPid?: number
-    v1FarmPid?: number
-    v1VaultPid?: number
-    v3VaultPid?: number
-    statusText?: string
-  }[]
+  transactions: MigrateTransaction[]
   migrationLoading: {
     userDataLoaded: boolean
     mergedMigrationLoaded: boolean
     allDataLoaded: boolean
   }
+}
+
+export interface MigrateTransaction {
+  hash: string
+  id: string
+  type: 'unstake' | 'approveStake' | 'stake'
+  migrateLpType?: ProductTypes
+  lpAddress?: string
+  v2FarmPid?: number
+  v1FarmPid?: number
+  v1VaultPid?: number
+  v3VaultPid?: number
+  statusText?: string
+  location?: string
+  symbol?: string
+  stakeAmount?: string
 }
 
 export const enum MigrateStatus {

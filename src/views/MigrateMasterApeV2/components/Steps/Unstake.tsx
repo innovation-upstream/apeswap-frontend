@@ -6,12 +6,11 @@ import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { wrappedToNative } from 'utils'
-import { useMigrateAll } from '../../provider'
 import useUnstakeAll from '../../hooks/useUnstakeAll'
 import StatusIcons from '../StatusIcons'
 import useIsMobile from 'hooks/useIsMobile'
-import { MasterApeProductsInterface } from 'views/MigrateMasterApeV2/provider/types'
 import { useMigrateStatus } from 'state/masterApeMigration/hooks'
+import { MasterApeProductsInterface } from 'state/masterApeMigration/types'
 
 const Unstake: React.FC<{ migrateList: MasterApeProductsInterface[] }> = ({ migrateList }) => {
   const { t } = useTranslation()

@@ -7,20 +7,17 @@ import { useTranslation } from 'contexts/Localization'
 import { wrappedToNative } from 'utils'
 import React from 'react'
 import StatusIcons from '../StatusIcons'
-import { useMigrateAll } from '../../provider'
 import useStakeAll from '../../hooks/useStakeAll'
 import useIsMobile from 'hooks/useIsMobile'
-import { MasterApeV2ProductsInterface } from '../../provider/types'
 import { Link } from 'react-router-dom'
-import { useMigrateStatus } from 'state/masterApeMigration/hooks'
-import { MigrateStatus } from 'state/masterApeMigration/types'
+import { useMigrateMaximizer, useMigrateStatus } from 'state/masterApeMigration/hooks'
+import { MasterApeV2ProductsInterface, MigrateStatus } from 'state/masterApeMigration/types'
 const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[]; allStepsComplete: boolean }> = ({
   apeswapWalletLps,
   allStepsComplete,
 }) => {
-  const { migrateMaximizers } = useMigrateAll()
   const migrateLpStatus = useMigrateStatus()
-
+  const migrateMaximizers = useMigrateMaximizer()
   const isMobile = useIsMobile()
   const handleStakeAll = useStakeAll()
   const { t } = useTranslation()

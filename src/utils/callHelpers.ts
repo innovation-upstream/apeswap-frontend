@@ -80,6 +80,13 @@ export const unstake = async (masterChefContract: Masterchef, pid, amount) => {
     })
 }
 
+export const unstakeWithoutWait = async (masterChefContract: Masterchef, pid, amount) => {
+  if (pid === 0) {
+    return masterChefContract.leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+  }
+  return masterChefContract.withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+}
+
 export const unstakeMasterChefV2 = async (masterChefContract: MasterChefV2, pid, amount) => {
   return masterChefContract
     .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())

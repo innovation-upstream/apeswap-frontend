@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
-import { MigrateProvider } from './provider'
 // import { usePollFarms, useSetFarms } from 'state/farms/hooks'
 // import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
 import MigrateStart from './MigrateStart'
@@ -76,9 +75,7 @@ const MigrateMasterApeV2: React.FC = () => {
             <Svg icon="question" width="15px" />
           </TooltipBubble>
         </Flex>
-        <MigrateProvider>
-          <MigrateStart />
-        </MigrateProvider>
+        <MigrateStart />
         <AboutMigrating />
       </Flex>
     </Flex>

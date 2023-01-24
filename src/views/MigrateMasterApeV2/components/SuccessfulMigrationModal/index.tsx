@@ -1,8 +1,8 @@
 import { Flex, Modal, Svg, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
+import { MigrationCompleteLog } from 'state/masterApeMigration/types'
 import { Image, Link } from 'theme-ui'
-import { MigrationCompleteLog } from '../../provider/types'
 
 const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationCompleteLog[] }> = ({
   migrationCompleteLog,

@@ -2,9 +2,11 @@
 import { Flex, Svg, Text } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { ReactNode } from 'react'
-import { useMigrateAll } from '../../provider'
-import { MIGRATION_STEPS } from '../../provider/constants'
-import { MigrateStatus } from '../../provider/types'
+import { useAppDispatch } from 'state'
+import { MIGRATION_STEPS } from 'state/masterApeMigration/constants'
+import { useActiveIndex, useIsMigrationLoading, useMigrateStatus } from 'state/masterApeMigration/hooks'
+import { setActiveIndex } from 'state/masterApeMigration/reducer'
+import { MigrateStatus } from 'state/masterApeMigration/types'
 import { styles } from './styles'
 
 interface MigrateProcessBarInterface {
@@ -14,11 +16,14 @@ interface MigrateProcessBarInterface {
 
 const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ children }) => {
   const { account } = useActiveWeb3React()
-  const { activeIndex, migrateLpStatus, migrationLoading, handleActiveIndexCallback } = useMigrateAll()
+  const dispatch = useAppDispatch()
+  const { allDataLoaded: migrationLoaded } = useIsMigrationLoading()
+  const migrateLpStatus = useMigrateStatus()
+  const activeIndex = useActiveIndex()
   const isComplete = migrateLpStatus?.map((item) =>
     Object.entries(item.status).map((each) => each[1] === MigrateStatus.COMPLETE),
   )
-  const noAccountOrLoading = account && !migrationLoading
+  const noAccountOrLoading = account && migrationLoaded
   return (
     <Flex sx={{ flexDirection: 'column' }}>
       <Flex sx={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -26,9 +31,9 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ children }) => 
           const isIndexComplete = isComplete.filter((loFlag) => !loFlag[i]).length === 0
           return (
             <>
-              <Flex key={title} onClick={() => handleActiveIndexCallback(i)} sx={styles.mobileContainer}>
+              <Flex key={title} onClick={() => dispatch(setActiveIndex(i))} sx={styles.mobileContainer}>
                 <Flex sx={{ width: '30px', background: 'primaryBright', borderRadius: '15px' }}>
-                  {isIndexComplete && !migrationLoading ? (
+                  {isIndexComplete && migrationLoaded ? (
                     <Svg icon="success" width="100%" />
                   ) : (
                     <Flex sx={styles.mobileProgressCircleContainer}>

@@ -5,21 +5,21 @@ import { ExtendedListViewProps } from 'components/ListView/types'
 import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import { wrappedToNative } from 'utils'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { Switch } from 'theme-ui'
 import StatusIcons from '../StatusIcons'
-import { useMigrateAll } from '../../provider'
 import useStakeApproveAll from '../../hooks/useStakeApproveAll'
 import useIsMobile from 'hooks/useIsMobile'
-import { MasterApeV2ProductsInterface } from '../../provider/types'
-import { useMigrateStatus } from 'state/masterApeMigration/hooks'
-import { MigrateStatus } from 'state/masterApeMigration/types'
+import { useMigrateMaximizer, useMigrateStatus } from 'state/masterApeMigration/hooks'
+import { MasterApeV2ProductsInterface, MigrateStatus } from 'state/masterApeMigration/types'
+import { useAppDispatch } from 'state'
+import { setToggleMaximizer } from 'state/masterApeMigration/reducer'
 
 const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] }> = ({ apeswapWalletLps }) => {
   const { t } = useTranslation()
   const isMobile = useIsMobile()
-
-  const { migrateMaximizers, handleMaximizerApprovalToggle } = useMigrateAll()
+  const dispatch = useAppDispatch()
+  const migrateMaximizers = useMigrateMaximizer()
   const migrateLpStatus = useMigrateStatus()
   const handleApproveAll = useStakeApproveAll()
 
@@ -107,7 +107,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
               },
             }}
             checked={migrateMaximizers}
-            onChange={() => handleMaximizerApprovalToggle(apeswapWalletLps, !migrateMaximizers)}
+            onChange={() => dispatch(setToggleMaximizer(migrateMaximizers))}
           />
         </Flex>
       </Flex>

@@ -6,18 +6,17 @@ import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useIsMigrationLoading, useMigrateStatus } from 'state/masterApeMigration/hooks'
+import { useIsMigrationLoading, useMigrateCompletionLog, useMigrateStatus } from 'state/masterApeMigration/hooks'
 import { MigrateStatus } from 'state/masterApeMigration/types'
 import LoadingYourMigration from './components/LoadingYourMigration'
 import MigrateProgress from './components/MigrateProgress'
 import Steps from './components/Steps'
 import SuccessfulMigrationModal from './components/SuccessfulMigrationModal'
-import { useMigrateAll } from './provider'
 
 const MigrateStart: React.FC = () => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
-  const { migrationCompleteLog } = useMigrateAll()
+  const migrationCompleteLog = useMigrateCompletionLog()
   const { allDataLoaded: migrationLoaded } = useIsMigrationLoading()
   const migrateLpStatus = useMigrateStatus()
   const allStepsComplete =

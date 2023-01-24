@@ -6,120 +6,31 @@ import vaultApeV1Abi from 'config/abi/vaultApeV1.json'
 import vaultApeV2Abi from 'config/abi/vaultApeV2.json'
 import { useCallback } from 'react'
 import { getProviderOrSigner } from 'utils'
-import { unstake, vaultUnstakeAll } from 'utils/callHelpers'
-import { MasterApeProductsInterface, MigrateStatus, ProductTypes } from '../provider/types'
-import { useMigrateAll } from '../provider'
+import { unstakeWithoutWait } from 'utils/callHelpers'
 import { useMasterChefAddress, useVaultApeAddressV1, useVaultApeAddressV2 } from 'hooks/useAddress'
 import { useAppDispatch } from 'state'
-import { updateFarmUserStakedBalances, updateFarmUserTokenBalances } from 'state/farms'
-import { updateVaultUserBalance, updateVaultUserStakedBalance } from 'state/vaults'
-import { updateFarmV2UserTokenBalances } from 'state/farmsV2'
 import { useFarmsV2 } from 'state/farmsV2/hooks'
+import {
+  MasterApeProductsInterface,
+  MigrateStatus,
+  MigrateTransaction,
+  ProductTypes,
+} from 'state/masterApeMigration/types'
+import { setAddTransactions, updateMigrateStatus } from 'state/masterApeMigration/reducer'
+import useIsMobile from 'hooks/useIsMobile'
 
 const useUnstakeAll = () => {
   const { library, account, chainId } = useActiveWeb3React()
-  const { handleUpdateMigrateLp, handleUpdateAndMergeMigrateUnstake } = useMigrateAll()
+  const isMobile = useIsMobile()
   const masterChefV1Address = useMasterChefAddress()
   const vaultV2Address = useVaultApeAddressV2()
   const vaultV1Address = useVaultApeAddressV1()
   const v2Farms = useFarmsV2(null)
   const dispatch = useAppDispatch()
 
-  const handleUnstakeAll = useCallback(
+  const handleUnstake = useCallback(
     (migrateLps: MasterApeProductsInterface[]) => {
-      migrateLps.map(async (migrateLp) => {
-        // Get the corresponding farm pid
-        const v2FarmPid = v2Farms.find(({ lpAddresses }) => migrateLp.lp === lpAddresses[chainId].toLowerCase())?.pid
-        try {
-          const { pid, stakedAmount, id, type, lp } = migrateLp
-          // Define contracts in the callback to avoid a new contract being initalized every render
-          const masterApeV1Contract = new Contract(
-            masterChefV1Address,
-            masterChefAbi,
-            getProviderOrSigner(library, account),
-          ) as Masterchef
-          const vaultV1Contract = new Contract(
-            vaultV1Address,
-            vaultApeV1Abi,
-            getProviderOrSigner(library, account),
-          ) as VaultApeV1
-          const vaultV2Contract = new Contract(
-            vaultV2Address,
-            vaultApeV2Abi,
-            getProviderOrSigner(library, account),
-          ) as VaultApeV2
-
-          handleUpdateMigrateLp(id, 'unstake', MigrateStatus.PENDING, 'Unstake in progress')
-
-          const contractCall =
-            type === ProductTypes.FARM
-              ? unstake(masterApeV1Contract, pid, stakedAmount)
-              : vaultUnstakeAll(type === ProductTypes.VAULT_V1 ? vaultV1Contract : vaultV2Contract, pid)
-          contractCall
-            .then((tx) => {
-              library
-                .waitForTransaction(tx.transactionHash)
-                .then(() => {
-                  if (type === ProductTypes.FARM) {
-                    dispatch(updateFarmV2UserTokenBalances(chainId, v2FarmPid, account))
-                    dispatch(updateFarmUserStakedBalances(chainId, pid, account))
-                    dispatch(updateFarmUserTokenBalances(chainId, pid, account))
-                  } else {
-                    dispatch(updateFarmV2UserTokenBalances(chainId, v2FarmPid, account))
-                    dispatch(updateVaultUserStakedBalance(account, chainId, pid))
-                    dispatch(updateVaultUserBalance(account, chainId, pid))
-                  }
-                  handleUpdateAndMergeMigrateUnstake(id, lp, 'unstake', MigrateStatus.COMPLETE, 'Unstake complete')
-                  // track({
-                  //   event: 'migrate_unstake',
-                  //   chain: chainId,
-                  //   data: {
-                  //     cat: smartRouter,
-                  //     token1: token0.symbol,
-                  //     token2: token1.symbol,
-                  //     amount: stakedBalance,
-                  //   },
-                  // })
-                })
-                .catch((e) => handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, e.message))
-            })
-            .catch((e) => {
-              handleUpdateMigrateLp(
-                id,
-                'unstake',
-                MigrateStatus.INVALID,
-                e.message === 'MetaMask Tx Signature: User denied transaction signature.'
-                  ? 'Transaction rejected in wallet'
-                  : e.message,
-              )
-            })
-        } catch {
-          handleUpdateMigrateLp(
-            migrateLp.id,
-            'unstake',
-            MigrateStatus.INVALID,
-            'Something went wrong please try refreshing',
-          )
-        }
-      })
-    },
-    [
-      account,
-      handleUpdateMigrateLp,
-      handleUpdateAndMergeMigrateUnstake,
-      dispatch,
-      masterChefV1Address,
-      vaultV2Address,
-      vaultV1Address,
-      library,
-      chainId,
-      v2Farms,
-    ],
-  )
-
-  const handleRecursiveUnstake = useCallback(
-    (migrateLps: MasterApeProductsInterface[] | any[]) => {
-      if (migrateLps.length === 0) return
+      if (migrateLps.length === 0 || undefined) return
       const migrateLp = migrateLps[0]
       // Get the corresponding farm pid
       const v2FarmPid = v2Farms.find(({ lpAddresses }) => migrateLp.lp === lpAddresses[chainId].toLowerCase())?.pid
@@ -142,77 +53,63 @@ const useUnstakeAll = () => {
           getProviderOrSigner(library, account),
         ) as VaultApeV2
 
-        handleUpdateMigrateLp(id, 'unstake', MigrateStatus.PENDING, 'Unstake in progress')
-
         const contractCall =
           type === ProductTypes.FARM
-            ? unstake(masterApeV1Contract, pid, stakedAmount)
-            : vaultUnstakeAll(type === ProductTypes.VAULT_V1 ? vaultV1Contract : vaultV2Contract, pid)
+            ? unstakeWithoutWait(masterApeV1Contract, pid, stakedAmount)
+            : type === ProductTypes.VAULT_V1
+            ? vaultV1Contract.withdrawAll(pid)
+            : vaultV2Contract.withdrawAll(pid)
+        dispatch(updateMigrateStatus(migrateLp.id, 'unstake', MigrateStatus.PENDING, 'Unstake Pending'))
         contractCall
           .then((tx) => {
-            library
-              .waitForTransaction(tx.transactionHash)
-              .then(() => {
-                if (type === ProductTypes.FARM) {
-                  dispatch(updateFarmV2UserTokenBalances(chainId, v2FarmPid, account))
-                  dispatch(updateFarmUserStakedBalances(chainId, pid, account))
-                  dispatch(updateFarmUserTokenBalances(chainId, pid, account))
-                } else {
-                  dispatch(updateFarmV2UserTokenBalances(chainId, v2FarmPid, account))
-                  dispatch(updateVaultUserStakedBalance(account, chainId, pid))
-                  dispatch(updateVaultUserBalance(account, chainId, pid))
-                }
-                handleUpdateAndMergeMigrateUnstake(id, lp, 'unstake', MigrateStatus.COMPLETE, 'Unstake complete')
-                // track({
-                //   event: 'migrate_unstake',
-                //   chain: chainId,
-                //   data: {
-                //     cat: smartRouter,
-                //     token1: token0.symbol,
-                //     token2: token1.symbol,
-                //     amount: stakedBalance,
-                //   },
-                // })
-              })
-              .catch((e) => handleUpdateMigrateLp(id, 'unstake', MigrateStatus.INVALID, e.message))
-            return handleRecursiveUnstake(migrateLps.slice(1, migrateLps.length))
+            const transaction: MigrateTransaction = {
+              hash: tx.hash,
+              id,
+              type: 'unstake',
+              migrateLpType: type,
+              lpAddress: lp,
+              v1FarmPid: pid,
+              v2FarmPid,
+              v1VaultPid: pid,
+            }
+            dispatch(setAddTransactions(transaction))
+            if (isMobile) {
+              return handleUnstake(migrateLps.slice(1, migrateLps.length))
+            }
           })
           .catch((e) => {
-            handleUpdateMigrateLp(
-              id,
-              'unstake',
-              MigrateStatus.INVALID,
-              e.message === 'MetaMask Tx Signature: User denied transaction signature.'
-                ? 'Transaction rejected in wallet'
-                : e.message,
+            dispatch(
+              updateMigrateStatus(
+                id,
+                'unstake',
+                MigrateStatus.INVALID,
+                e.message === 'MetaMask Tx Signature: User denied transaction signature.'
+                  ? 'Transaction rejected in wallet'
+                  : e.message,
+              ),
             )
-            console.log(migrateLps.slice(1, migrateLps.length))
-            return handleRecursiveUnstake(migrateLps.slice(1, migrateLps.length))
+            if (isMobile) {
+              return handleUnstake(migrateLps.slice(1, migrateLps.length))
+            }
           })
+        if (!isMobile) {
+          return handleUnstake(migrateLps.slice(1, migrateLps.length))
+        }
       } catch {
-        handleUpdateMigrateLp(
-          migrateLp.id,
-          'unstake',
-          MigrateStatus.INVALID,
-          'Something went wrong please try refreshing',
+        dispatch(
+          updateMigrateStatus(
+            migrateLp.id,
+            'unstake',
+            MigrateStatus.INVALID,
+            'Something went wrong please try refreshing',
+          ),
         )
       }
     },
-    [
-      account,
-      handleUpdateMigrateLp,
-      handleUpdateAndMergeMigrateUnstake,
-      dispatch,
-      masterChefV1Address,
-      vaultV2Address,
-      vaultV1Address,
-      library,
-      chainId,
-      v2Farms,
-    ],
+    [account, dispatch, masterChefV1Address, vaultV2Address, vaultV1Address, library, chainId, v2Farms, isMobile],
   )
 
-  return handleRecursiveUnstake
+  return handleUnstake
 }
 
 export default useUnstakeAll

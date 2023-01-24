@@ -3,11 +3,10 @@ import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React, { ReactNode } from 'react'
 import { useAppDispatch } from 'state'
+import { MIGRATION_STEPS } from 'state/masterApeMigration/constants'
 import { useActiveIndex, useIsMigrationLoading, useMigrateStatus } from 'state/masterApeMigration/hooks'
 import { setActiveIndex } from 'state/masterApeMigration/reducer'
 import { MigrateStatus } from 'state/masterApeMigration/types'
-import { useMigrateAll } from '../../provider'
-import { MIGRATION_STEPS } from '../../provider/constants'
 import { styles } from './styles'
 
 interface MigrateProcessBarInterface {
@@ -17,7 +16,7 @@ interface MigrateProcessBarInterface {
 
 const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargin, children }) => {
   const { account } = useActiveWeb3React()
-  const disptach = useAppDispatch()
+  const dispatch = useAppDispatch()
   const { allDataLoaded: migrationLoaded } = useIsMigrationLoading()
   const migrateLpStatus = useMigrateStatus()
   const activeIndex = useActiveIndex()
@@ -34,7 +33,7 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
             <>
               <Flex
                 key={title}
-                onClick={() => disptach(setActiveIndex(i))}
+                onClick={() => dispatch(setActiveIndex(i))}
                 sx={{
                   ...styles.desktopStepContainer,
                   background: activeIndex >= i && noAccountOrLoading ? 'gradient' : 'white2',

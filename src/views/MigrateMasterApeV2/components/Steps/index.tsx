@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { useMigrateAll } from '../../provider'
 import ApproveStake from './ApproveStake'
 import Stake from './Stake'
 import Unstake from './Unstake'

@@ -903,7 +903,6 @@ export const MigrateSlides = () => {
 
 export const TheMigrationSlides = () => {
   const { t } = useTranslation()
-  const isMobile = useIsMobile()
   return [
     <Slide
       key={1}

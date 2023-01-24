@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
+import { ChainId } from '@ape.swap/sdk'
 import { createSlice } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
 import { AppThunk } from 'state/types'
-import { MasterApeMigrationInterface } from './types'
+import { MasterApeMigrationInterface, MigrateLpStatus, MigrateStatus } from './types'
 import { getInitialMigrateLpStatus, mergeV1Products, mergeV2Products } from './utils'
 // import { MigrationPhases, MigrationTimerState } from './types'
 
@@ -45,8 +47,14 @@ export const masterApeMigrationSlice = createSlice({
       state.transactions = [...state.transactions, action.payload]
     },
     setRemoveTransactions: (state, action) => {
-      const newTransactionList = state.transactions.filter((tx) => tx.id !== action.payload.id)
+      const newTransactionList = state.transactions.filter((tx) => tx.id !== action.payload)
       state.transactions = newTransactionList
+    },
+    setAddCompletionLog: (state, action) => {
+      state.migrationCompleteLog = [...state.migrationCompleteLog, action.payload]
+    },
+    setToggleMaximizer: (state, action) => {
+      state.migrateMaximizers = !action.payload
     },
   },
 })
@@ -62,11 +70,13 @@ export const {
   setMigrateMaximizers,
   setAddTransactions,
   setRemoveTransactions,
+  setAddCompletionLog,
+  setToggleMaximizer,
 } = masterApeMigrationSlice.actions
 
 // Thunks
 export const fetchV1Products =
-  (chainId: number): AppThunk =>
+  (chainId: ChainId): AppThunk =>
   (dispatch, getState) => {
     try {
       const farms = getState().farms.data
@@ -81,7 +91,7 @@ export const fetchV1Products =
   }
 
 export const fetchV2Products =
-  (chainId: number): AppThunk =>
+  (chainId: ChainId): AppThunk =>
   (dispatch, getState) => {
     try {
       const vaultsV3 = getState().vaultsV3.data
@@ -103,6 +113,88 @@ export const setInitializeMigrateStatus =
       const mergedLpStatus = getInitialMigrateLpStatus(v1Products, v2Products, farmsV2, chainId)
       dispatch(setMigrateLpStatus(mergedLpStatus))
       dispatch(setMigrationLoading({ allDataLoaded: true }))
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+export const updateMigrateStatus =
+  (id: string, type: 'unstake' | 'approveStake' | 'stake', status: MigrateStatus, statusText: string): AppThunk =>
+  (dispatch, getState) => {
+    try {
+      const { migrateLpStatus } = getState().masterApeMigration
+      // const updatedMigrateLpStatus = migrateStatus
+      const lpToUpdateIndex = migrateLpStatus.findIndex((migrateLp) => migrateLp.id === id)
+      const lpToUpdate = {
+        ...migrateLpStatus[lpToUpdateIndex],
+        status: { ...migrateLpStatus[lpToUpdateIndex].status, [type]: status },
+        statusText: statusText,
+      }
+      const updatedMigrateLpStatus = migrateLpStatus.map((status, i) => {
+        if (i === lpToUpdateIndex) {
+          return lpToUpdate
+        }
+        return status
+      })
+      dispatch(setMigrateLpStatus(updatedMigrateLpStatus))
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+export const updateAndMergeStatus =
+  (
+    chainId: ChainId,
+    id: string,
+    lp: string,
+    type: 'unstake' | 'approveStake' | 'stake',
+    status: MigrateStatus,
+    statusText: string,
+  ): AppThunk =>
+  (dispatch, getState) => {
+    try {
+      const farmsV2 = getState().farmsV2.data
+      const vaultsV3 = getState().vaultsV3.data
+      const { migrateLpStatus, migrateMaximizers } = getState().masterApeMigration
+      const allowance = migrateMaximizers
+        ? vaultsV3.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)?.userData.allowance
+        : farmsV2.find((farm) => farm.lpAddresses[chainId].toLowerCase() === lp)?.userData.allowance
+      const lpToUpdateIndex = migrateLpStatus.findIndex((migrateLp) => migrateLp.id === id)
+      const lpToUpdate = {
+        ...migrateLpStatus[lpToUpdateIndex],
+        id: lp,
+        status: {
+          ...migrateLpStatus[lpToUpdateIndex].status,
+          [type]: status,
+          approveStake: new BigNumber(allowance).gt(0) ? MigrateStatus.COMPLETE : MigrateStatus.INCOMPLETE,
+        },
+        statusText: statusText,
+      }
+      const updatedMigrateLpStatus = migrateLpStatus.map((status, i) => {
+        if (i === lpToUpdateIndex) {
+          return lpToUpdate
+        }
+        return status
+      })
+      const mergedStatus = [
+        ...new Map([...migrateLpStatus, ...updatedMigrateLpStatus].map((item) => [item.lp, item])).values(),
+      ]
+      console.log(mergedStatus)
+      dispatch(setMigrateLpStatus(mergedStatus))
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+export const setCompletionLog =
+  (chainId: ChainId): AppThunk =>
+  (dispatch, getState) => {
+    try {
+      const vaultsV3 = getState().vaultsV3.data
+      const farmsV2 = getState().farmsV2.data
+      const v2Products = mergeV2Products(farmsV2, vaultsV3, chainId)
+      dispatch(setV2Products(v2Products))
+      dispatch(setMigrationLoading({ mergedMigrationLoaded: true }))
     } catch (error) {
       console.warn(error)
     }
