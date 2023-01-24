@@ -6,9 +6,9 @@ const initialState: MigrationTimerState = {
   data: {
     migrationPhase: null,
     migrationPhaseTimes: {
-      [MigrationPhases.MIGRATE_PHASE_0]: 1604619200,
-      [MigrationPhases.MIGRATE_PHASE_1]: 1624705600,
-      [MigrationPhases.MIGRATE_PHASE_2]: 1674792000,
+      [MigrationPhases.MIGRATE_PHASE_0]: 1674583200,
+      [MigrationPhases.MIGRATE_PHASE_1]: 1674585000,
+      [MigrationPhases.MIGRATE_PHASE_2]: 1674586800,
     },
   },
 }

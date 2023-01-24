@@ -69,7 +69,8 @@ const MigrationRequiredPopup = () => {
   return (
     open &&
     !onMigration &&
-    userHasFarmOrVault && (
+    userHasFarmOrVault &&
+    currentPhase !== MigrationPhases.MIGRATE_PHASE_0 && (
       <Flex
         sx={{
           position: 'fixed',
