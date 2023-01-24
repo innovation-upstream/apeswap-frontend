@@ -223,7 +223,7 @@ const Pools: React.FC = () => {
                 </>
               ) : (
                 <DisplayPools
-                  pools={[legacyPool, ...renderPools().slice(1, renderPools().length)]}
+                  pools={isActive ? [legacyPool, ...renderPools().slice(1, renderPools().length)] : renderPools()}
                   openId={urlSearchedPool}
                   poolTags={poolTags}
                 />

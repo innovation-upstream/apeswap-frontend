@@ -3,12 +3,15 @@ import { createSlice } from '@reduxjs/toolkit'
 import { MigrationPhases, MigrationTimerState } from './types'
 
 const initialState: MigrationTimerState = {
+  // [MigrationPhases.MIGRATE_PHASE_0]: 1674583776,
+  // [MigrationPhases.MIGRATE_PHASE_1]: 1674684000,
+  // [MigrationPhases.MIGRATE_PHASE_2]: 1674770400,
   data: {
     migrationPhase: null,
     migrationPhaseTimes: {
-      [MigrationPhases.MIGRATE_PHASE_0]: 1674583200,
-      [MigrationPhases.MIGRATE_PHASE_1]: 1674585000,
-      [MigrationPhases.MIGRATE_PHASE_2]: 1674586800,
+      [MigrationPhases.MIGRATE_PHASE_0]: 1674583776,
+      [MigrationPhases.MIGRATE_PHASE_1]: 1674684000,
+      [MigrationPhases.MIGRATE_PHASE_2]: 1674770400,
     },
   },
 }
