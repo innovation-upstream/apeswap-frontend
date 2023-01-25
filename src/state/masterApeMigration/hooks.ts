@@ -64,7 +64,7 @@ export const useSetInitialMigrateStatus = () => {
       }, 1000)
       delay(() => {
         dispatch(setMigrationLoading({ userDataLoaded: true }))
-      }, 5000)
+      }, 10000)
     }
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [dispatch, account])
