@@ -72,6 +72,12 @@ const useStakeAll = () => {
               id,
               type: 'stake',
               lpAddress: lp,
+              migrateLocation:
+                pid === 0 && !(migrateMaximizers && matchedVault)
+                  ? 'Pool'
+                  : migrateMaximizers && matchedVault
+                  ? 'Max'
+                  : 'Farm',
               lpValueUsd,
               lpSymbol: pid === 0 ? token0.symbol : `${token0.symbol} - ${token1.symbol}`,
               lpAmount: walletBalance,
