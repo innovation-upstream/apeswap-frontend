@@ -65,18 +65,20 @@ export default function Updater(): null {
                   dispatch(fetchVaultUserDataAsync(account, chainId))
                 }
                 dispatch(updateAndMergeStatus(chainId, id, lpAddress, type, MigrateStatus.COMPLETE, 'Unstake complete'))
-                track({
-                  event: 'masterApeMigration',
-                  chain: chainId,
-                  data: {
-                    cat: 'Unstake',
-                    type: migrateLpType,
-                    lpValueUsd,
-                    lpAmount,
-                    lpSymbol,
-                    hash,
-                  },
-                })
+                try {
+                  track({
+                    event: 'masterApeMigration',
+                    chain: chainId,
+                    data: {
+                      cat: 'Unstake',
+                      type: migrateLpType,
+                      lpValueUsd,
+                      lpAmount: parseFloat(lpAmount),
+                      lpSymbol,
+                      hash,
+                    },
+                  })
+                } catch {}
               }
               if (type === 'approveStake') {
                 v3VaultPid && migrateMaximizers
@@ -90,30 +92,34 @@ export default function Updater(): null {
                     migrateMaximizers && v3VaultPid ? 'Vault approval complete' : 'Farm approval complete',
                   ),
                 )
-                track({
-                  event: 'masterApeMigration',
-                  chain: chainId,
-                  data: {
-                    cat: migrateMaximizers && v3VaultPid ? 'Vault approval' : 'Farm approval',
-                    lpSymbol,
-                    hash,
-                  },
-                })
+                try {
+                  track({
+                    event: 'masterApeMigration',
+                    chain: chainId,
+                    data: {
+                      cat: migrateMaximizers && v3VaultPid ? 'Vault approval' : 'Farm approval',
+                      lpSymbol,
+                      hash,
+                    },
+                  })
+                } catch {}
               }
               if (type === 'stake') {
                 dispatch(updateMigrateStatus(id, type, MigrateStatus.COMPLETE, 'Stake complete'))
                 dispatch(updateFarmV2UserTokenBalances(chainId, v2FarmPid, account))
-                track({
-                  event: 'masterApeMigration',
-                  chain: chainId,
-                  data: {
-                    cat: 'Stake Complete',
-                    lpValueUsd,
-                    lpAmount,
-                    lpSymbol,
-                    hash,
-                  },
-                })
+                try {
+                  track({
+                    event: 'masterApeMigration',
+                    chain: chainId,
+                    data: {
+                      cat: 'Stake Complete',
+                      lpValueUsd,
+                      lpAmount: parseFloat(lpAmount),
+                      lpSymbol,
+                      hash,
+                    },
+                  })
+                } catch {}
               }
               dispatch(setRemoveTransactions(id))
               delay(() => {

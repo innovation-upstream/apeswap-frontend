@@ -87,7 +87,7 @@ export const useMonitorActiveIndex = () => {
         event: 'masterApeMigration',
         chain: chainId,
         data: {
-          cat: MIGRATION_STEPS[newActiveIndex],
+          cat: MIGRATION_STEPS[newActiveIndex].title,
         },
       })
     }
