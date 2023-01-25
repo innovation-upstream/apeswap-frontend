@@ -1,13 +1,23 @@
 import { Flex, Modal, Svg, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React from 'react'
 import { MigrationCompleteLog } from 'state/masterApeMigration/types'
 import { Image, Link } from 'theme-ui'
+import track from 'utils/track'
 
 const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationCompleteLog[] }> = ({
   migrationCompleteLog,
 }) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
+  track({
+    event: 'masterApeMigration',
+    chain: chainId,
+    data: {
+      cat: 'SUCCESS',
+    },
+  })
   return (
     <Modal maxWidth="400px" minWidth="350px" zIndex={98} title="Successful Migration! 🎉" onDismiss={null}>
       <Flex sx={{ background: 'white2', flexDirection: 'column', width: '100%' }}>
