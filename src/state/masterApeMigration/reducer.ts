@@ -176,9 +176,7 @@ export const updateAndMergeStatus =
         }
         return status
       })
-      const mergedStatus = [
-        ...new Map([...migrateLpStatus, ...updatedMigrateLpStatus].map((item) => [item.lp, item])).values(),
-      ]
+      const mergedStatus = [...new Map(updatedMigrateLpStatus.map((item) => [item.id, item])).values()]
       dispatch(setMigrateLpStatus(mergedStatus))
     } catch (error) {
       console.warn(error)

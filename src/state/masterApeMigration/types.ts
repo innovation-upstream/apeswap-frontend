@@ -21,6 +21,7 @@ export interface MigrateTransaction {
   id: string
   type: 'unstake' | 'approveStake' | 'stake'
   migrateLpType?: ProductTypes
+  migrateLocation?: string
   lpAddress?: string
   v2FarmPid?: number
   v1FarmPid?: number

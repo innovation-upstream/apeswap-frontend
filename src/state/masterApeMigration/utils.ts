@@ -153,7 +153,25 @@ export const getInitialMigrateLpStatus = (
     v2Farms.find(({ lpAddresses }) => lpAddresses[chainId]?.toLowerCase() === lp.toLowerCase()),
   )
 
-  const apeswapLpStatus = filteredV1Products?.flatMap(({ stakedAmount, lp, id }) => {
+  // Filter out dust left in vaults
+  const filterV1Dust = filteredV1Products.flatMap((product) => {
+    if (product.type === ProductTypes.VAULT || product.type === ProductTypes.VAULT_V1) {
+      if (product.singleStakeAsset && new BigNumber(product.stakedAmount).gt(0.5)) {
+        return product
+      } else if (
+        !product.singleStakeAsset &&
+        new BigNumber(parseFloat(product.stakedAmount) * product.lpValueUsd).gt(0.25)
+      ) {
+        return product
+      } else {
+        return []
+      }
+    } else {
+      return product
+    }
+  })
+
+  const apeswapLpStatus = filterV1Dust?.flatMap(({ stakedAmount, lp, id }) => {
     const matchedV2Product: MasterApeV2ProductsInterface = v2Products?.find(({ lp: v2Lp }) => v2Lp === lp)
     const matchedV2Vault = matchedV2Product?.vault
     const idToUse = new BigNumber(stakedAmount).isGreaterThan(0) ? id : lp
