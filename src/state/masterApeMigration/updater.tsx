@@ -38,6 +38,7 @@ export default function Updater(): null {
         hash,
         migrateLpType,
         id,
+        migrateLocation,
         v2FarmPid,
         v1FarmPid,
         v1VaultPid,
@@ -59,6 +60,7 @@ export default function Updater(): null {
                 if (migrateLpType === ProductTypes.FARM) {
                   dispatch(updateFarmUserStakedBalances(chainId, v1FarmPid, account))
                   dispatch(updateFarmUserTokenBalances(chainId, v1FarmPid, account))
+                  dispatch(fetchV1Products(chainId))
                 } else {
                   dispatch(updateVaultUserStakedBalance(account, chainId, v1VaultPid))
                   dispatch(updateVaultUserBalance(account, chainId, v1VaultPid))
@@ -112,7 +114,7 @@ export default function Updater(): null {
                     event: 'masterApeMigration',
                     chain: chainId,
                     data: {
-                      cat: 'Stake Complete',
+                      cat: `Stake ${migrateLocation} Complete`,
                       lpValueUsd,
                       lpAmount: parseFloat(lpAmount),
                       lpSymbol,

@@ -1,5 +1,6 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
+import { delay } from 'lodash'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
@@ -55,6 +56,20 @@ export const useSetInitialMigrateStatus = () => {
   const { chainId, account } = useActiveWeb3React()
   const { mergedMigrationLoaded } = useIsMigrationLoading()
   const migrateMaximizers = useMigrateMaximizer()
+  // When a user switches accounts we need to reset the initial state by timing the loads to trigger new data
+  useEffect(() => {
+    if (mergedMigrationLoaded) {
+      delay(() => {
+        dispatch(setMigrationLoading({ allDataLoaded: false, userDataLoaded: false, mergedMigrationLoaded: false }))
+      }, 1000)
+      delay(() => {
+        dispatch(setMigrationLoading({ userDataLoaded: true }))
+      }, 5000)
+    }
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [dispatch, account])
+
+  // Set initial migration status
   useEffect(() => {
     if (mergedMigrationLoaded) {
       dispatch(setInitializeMigrateStatus(chainId, migrateMaximizers))
