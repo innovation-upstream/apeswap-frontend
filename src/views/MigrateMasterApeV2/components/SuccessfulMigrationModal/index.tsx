@@ -11,13 +11,15 @@ const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationComple
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-  track({
-    event: 'masterApeMigration',
-    chain: chainId,
-    data: {
-      cat: 'SUCCESS',
-    },
-  })
+  try {
+    track({
+      event: 'masterApeMigration',
+      chain: chainId,
+      data: {
+        cat: 'SUCCESS',
+      },
+    })
+  } catch {}
   return (
     <Modal maxWidth="400px" minWidth="350px" zIndex={98} title="Successful Migration! 🎉" onDismiss={null}>
       <Flex sx={{ background: 'white2', flexDirection: 'column', width: '100%' }}>
