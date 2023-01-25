@@ -79,7 +79,12 @@ const useStakeAll = () => {
             }
             const log: MigrationCompleteLog = {
               lpSymbol: pid === 0 ? token0.symbol : `${token0.symbol} - ${token1.symbol}`,
-              location: pid === 0 ? 'pool' : migrateMaximizers && matchedVault ? 'max' : 'farm',
+              location:
+                pid === 0 && !(migrateMaximizers && matchedVault)
+                  ? 'pool'
+                  : migrateMaximizers && matchedVault
+                  ? 'max'
+                  : 'farm',
               stakeAmount: walletBalance,
             }
             dispatch(setAddTransactions(transaction))
