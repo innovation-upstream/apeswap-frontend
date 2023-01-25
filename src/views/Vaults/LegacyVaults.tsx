@@ -6,6 +6,7 @@ import { useFetchFarmLpAprs } from 'state/hooks'
 import { useVaults } from 'state/vaults/hooks'
 import { Text, Flex } from '@ape.swap/uikit'
 import DisplayLegacyVaults from './components/DisplayLegacyVaults'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 const LegacyVaults: React.FC = () => {
   const { chainId } = useActiveWeb3React()
@@ -16,8 +17,24 @@ const LegacyVaults: React.FC = () => {
     (vault) => vault.userData && new BigNumber(vault.userData.stakedBalance).isGreaterThan(0),
   )
 
+  // Filter out dust left in vaults
+  const filterV1Dust = stakedOnlyVaults.flatMap((vault) => {
+    if (vault.pid === 22) {
+      if (new BigNumber(getBalanceNumber(new BigNumber(vault.userData.stakedBalance))).gt(0.5)) {
+        return vault
+      } else {
+        return []
+      }
+    }
+    if (new BigNumber(getBalanceNumber(new BigNumber(vault.userData.stakedBalance)) * vault.stakeTokenPrice).gt(0.25)) {
+      return vault
+    } else {
+      return []
+    }
+  })
+
   return (
-    stakedOnlyVaults?.length > 0 && (
+    filterV1Dust?.length > 0 && (
       <Flex
         sx={{
           background: 'grey',
@@ -44,7 +61,7 @@ const LegacyVaults: React.FC = () => {
             OLD Vaults V1
           </Text>
         </Flex>
-        <DisplayLegacyVaults vaults={stakedOnlyVaults} />
+        <DisplayLegacyVaults vaults={filterV1Dust} />
       </Flex>
     )
   )
