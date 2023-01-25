@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
 import { Flex, InfoIcon, Svg, TooltipBubble } from '@ape.swap/uikit'
 
@@ -13,7 +14,7 @@ const InfoContent = ({
   return (
     <>
       {infoContent && (
-        <Flex style={{ display: 'inline-block' }}>
+        <Flex sx={{ display: 'inline-block' }}>
           <TooltipBubble body={infoContent} transformTip="translate(11%, 0%)" width="205px">
             <InfoIcon width={'15px'} />
           </TooltipBubble>

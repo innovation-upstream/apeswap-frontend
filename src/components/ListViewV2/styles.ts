@@ -68,6 +68,8 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     color: 'primaryBright',
     lineHeight: '16px',
     fontWeight: 700,
+    mr: '5px',
+    display: 'flex',
   },
   secondaryText: {
     fontSize: '12px',

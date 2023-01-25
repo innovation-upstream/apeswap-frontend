@@ -11,11 +11,13 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
   tag,
   title,
   value,
+  valueIcon,
   valueColor,
   toolTip,
   toolTipPlacement,
   toolTipTransform,
   value2,
+  value2Icon,
   value2Secondary,
   style,
   value2Direction = 'row',
@@ -54,8 +56,9 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
         )}
       </>
       <Flex sx={{ flexDirection: value2Direction }}>
-        <Text sx={{ ...styles.valueText, color: valueColor, mr: '5px' }}>
-          {value.includes('NaN') || value.includes('undefined') || value.includes('null') ? (
+        <Text sx={{ ...styles.valueText, color: valueColor }}>
+          {valueIcon && valueIcon}
+          {value?.includes('NaN') || value?.includes('undefined') || value?.includes('null') ? (
             <ValueSkeleton sx={styles.skeleton} />
           ) : (
             value
@@ -63,7 +66,8 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
         </Text>
         {value2 && (
           <Text sx={value2Secondary ? styles.secondaryText : styles.valueText}>
-            {value2.includes('NaN') || value2.includes('undefined') || value.includes('null') ? (
+            {value2Icon && value2Icon}
+            {value2?.includes('NaN') || value2?.includes('undefined') || value2?.includes('null') ? (
               <Skeleton sx={styles.skeleton} />
             ) : (
               value2

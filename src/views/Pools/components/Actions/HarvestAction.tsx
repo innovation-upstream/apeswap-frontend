@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { Button, Flex } from '@ape.swap/uikit'
 import { useHistory } from 'react-router-dom'
 import { useSousHarvest } from 'hooks/useHarvest'
-import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
 import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -12,7 +11,6 @@ import { fetchPoolsUserDataAsync, updateUserPendingReward } from 'state/pools'
 import { useCurrency } from 'hooks/Tokens'
 import { useBananaAddress } from 'hooks/useAddress'
 import { useIsModalShown } from 'state/user/hooks'
-
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { poolStyles } from '../styles'
@@ -44,7 +42,6 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   const history = useHistory()
 
   const { toastSuccess } = useToast()
-  const isMobile = useIsMobile()
   const { t } = useTranslation()
 
   const harvestBanana = earnTokenSymbol === bananaToken.symbol
@@ -92,8 +89,8 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
 
   return (
     <Flex sx={poolStyles.harvestContainer}>
-      <Flex sx={{ width: isMobile && '100%', justifyContent: 'space-between' }}>
-        {isMobile && (
+      <Flex sx={{ width: ['100%', '100%', 'unset'], justifyContent: 'space-between' }}>
+        <Flex sx={poolStyles.onlyMobile}>
           <ListViewContentMobile
             title={`${t('Earned')} ${earnTokenSymbol}`}
             value={userEarnings?.toFixed(4)}
@@ -102,13 +99,13 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
             value2Direction="column"
             style={{ flexDirection: 'column' }}
           />
-        )}
+        </Flex>
         <Button disabled={disabled || pendingTrx} onClick={handleHarvest} load={pendingTrx} sx={poolStyles.styledBtn}>
           {t('HARVEST')}
         </Button>
       </Flex>
       {sousId === 0 && (
-        <Flex sx={{ width: isMobile && '100%', margin: isMobile ? '15px 0 0 0' : '0 10px' }}>
+        <Flex sx={{ width: ['100%', '100%', 'unset'], margin: ['15px 0 0 0', '15px 0 0 0', '0 10px'] }}>
           <Button
             disabled={disabled || pendingApeHarderTrx}
             onClick={handleApeHarder}
@@ -119,7 +116,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
           </Button>
         </Flex>
       )}
-      {!isMobile && (
+      <Flex sx={poolStyles.onlyDesktop}>
         <ListViewContentMobile
           title={`${t('Earned')} ${earnTokenSymbol}`}
           value={userEarnings?.toFixed(3)}
@@ -131,7 +128,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
             height: '48px',
           }}
         />
-      )}
+      </Flex>
     </Flex>
   )
 }

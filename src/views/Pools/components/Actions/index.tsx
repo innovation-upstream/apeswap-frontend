@@ -4,13 +4,11 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import BigNumber from 'bignumber.js'
 import ApprovalAction from './ApprovalAction'
 import UnlockButton from 'components/UnlockButton'
-import { AddIcon, Flex, MinusIcon, useModal } from '@ape.swap/uikit'
-import { SmallButtonSquare, StyledButtonSquare } from './styles'
+import { AddIcon, Button, Flex, MinusIcon, useModal } from '@ape.swap/uikit'
 import ListViewContentMobile from 'components/ListViewV2/ListViewContent'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useAppDispatch } from 'state'
 import { useToast } from 'state/hooks'
-import useIsMobile from 'hooks/useIsMobile'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import { useTranslation } from 'contexts/Localization'
@@ -57,7 +55,6 @@ const Actions: React.FC<CardActionProps> = ({
   const [pendingWithdrawTrx, setPendingWithdrawTrx] = useState(false)
 
   const { toastSuccess } = useToast()
-  const isMobile = useIsMobile()
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
 
   const { onStake } = useSousStake(sousId, stakeTokenValueUsd)
@@ -121,8 +118,8 @@ const Actions: React.FC<CardActionProps> = ({
   )
 
   return (
-    <Flex sx={{ width: isMobile && '100%', minWidth: '205px' }}>
-      {isMobile && (
+    <Flex sx={{ width: ['100%', '100%', 'unset'], minWidth: '205px', justifyContent: 'space-between' }}>
+      <Flex sx={poolStyles.onlyMobile}>
         <ListViewContentMobile
           title={`${t('Staked')} ${stakedTokenSymbol}`}
           value={`${!account ? '0.000' : rawStakedBalance.toFixed(2)}`}
@@ -131,44 +128,46 @@ const Actions: React.FC<CardActionProps> = ({
           value2Direction="column"
           style={{ flexDirection: 'column' }}
         />
-      )}
+      </Flex>
       <Flex sx={poolStyles.depositContainer}>
         {!account ? (
           <UnlockButton />
         ) : !new BigNumber(allowance)?.gt(0) ? (
           <ApprovalAction stakingTokenContractAddress={stakeTokenAddress} sousId={sousId} />
         ) : firstStake ? (
-          <StyledButtonSquare
+          <Button
             onClick={onPresentDeposit}
             load={pendingDepositTrx}
             disabled={pendingDepositTrx}
-            minWidth={150}
+            sx={poolStyles.styledBtn}
           >
             {t('DEPOSIT')}
-          </StyledButtonSquare>
+          </Button>
         ) : (
-          <Flex sx={{ maxWidth: !isMobile && '94px', alignItems: 'center', width: '100%' }}>
-            <SmallButtonSquare
+          <Flex sx={{ maxWidth: ['', '', '94px'], alignItems: 'center', width: '100%' }}>
+            <Button
               onClick={onPresentWithdraw}
               load={pendingWithdrawTrx}
               disabled={pendingWithdrawTrx}
+              sx={poolStyles.smallBtn}
               mr="10px"
               size="sm"
             >
               {!pendingWithdrawTrx && <MinusIcon color="white" width="20px" height="20px" fontWeight={700} />}
-            </SmallButtonSquare>
-            <SmallButtonSquare
+            </Button>
+            <Button
               onClick={onPresentDeposit}
               load={pendingDepositTrx}
               disabled={pendingDepositTrx || !new BigNumber(stakingTokenBalance)?.gt(0)}
+              sx={poolStyles.smallBtn}
               size="sm"
             >
               {!pendingDepositTrx && <AddIcon color="white" width="25px" height="25px" fontWeight={700} />}
-            </SmallButtonSquare>
+            </Button>
           </Flex>
         )}
       </Flex>
-      {!isMobile && (
+      <Flex sx={poolStyles.onlyDesktop}>
         <ListViewContentMobile
           title={`${t('Staked')} ${stakedTokenSymbol}`}
           value={`${!account ? '0.000' : rawStakedBalance.toFixed(2)}`}
@@ -177,7 +176,7 @@ const Actions: React.FC<CardActionProps> = ({
           value2Direction="column"
           style={{ flexDirection: 'column', marginLeft: '10px', maxWidth: '110px' }}
         />
-      )}
+      </Flex>
     </Flex>
   )
 }

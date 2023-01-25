@@ -15,7 +15,7 @@ const MenuSelect: React.FC<FilterSelectProps> = ({ selectedOption, setOption, op
   const { t } = useTranslation()
   return (
     <Select size="xsm" onChange={(e) => setOption(e.target.value)} active={selectedOption} sx={styles.select}>
-      {options.map((option) => {
+      {options?.map((option) => {
         return (
           <SelectItem size="xsm" value={option.value} key={option.label}>
             <Text>{t(option.label)}</Text>

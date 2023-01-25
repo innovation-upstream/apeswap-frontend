@@ -117,7 +117,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                 style={{ width: '100%', maxWidth: '100%', flexDirection: 'row', marginTop: '3px' }}
               />
             </Flex>
-            <Flex sx={poolStyles.onlyDesktop}>
+            <Flex sx={{ ...poolStyles.onlyDesktop, width: '100%' }}>
               <Flex sx={{ width: '90px', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
                 <a href={pool.projectLink} target="_blank" rel="noreferrer">
                   <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />

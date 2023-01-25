@@ -54,12 +54,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   container: {
     width: ['100%', '100%', 'unset'],
     justifyContent: 'space-between',
-    flexWrap: 'wrap',
     maxWidth: '353px',
     marginTop: ['15px', '15px', '0'],
   },
   selectContainer: {
-    width: '50%',
+    width: '100%',
     justifyContent: 'center',
   },
   searchInput: {

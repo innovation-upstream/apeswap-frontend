@@ -6,12 +6,18 @@ export const poolStyles: Record<string, ThemeUIStyleObject> = {
   styledBtn: {
     fontSize: '16px',
     padding: '10px',
-    width: '140px',
+    width: '130px',
     minWidth: '100px',
     height: '44px',
     '@media screen and (max-width: 852px)': {
       minWidth: '130px',
     },
+  },
+  smallBtn: {
+    maxWidth: '60px',
+    width: '100%',
+    minWidth: '44px',
+    height: '44px',
   },
   apeHarder: {
     fontSize: '16px',
@@ -44,7 +50,7 @@ export const poolStyles: Record<string, ThemeUIStyleObject> = {
     },
   },
   depositContainer: {
-    width: '140px',
+    width: '130px',
     minWidth: '100px',
     justifyContent: 'center',
     alignItems: 'center',
@@ -62,7 +68,6 @@ export const poolStyles: Record<string, ThemeUIStyleObject> = {
     },
   },
   onlyDesktop: {
-    width: '100%',
     justifyContent: 'space-around',
     display: ['none', 'none', 'flex'],
   },

@@ -12,8 +12,9 @@ const ListCard: React.FC<ListCardProps> = ({
   cardContent,
   expandedContent,
   infoContent,
+  open,
 }) => {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(open)
   return (
     <>
       <Flex sx={styles.listCardContainer} onClick={() => setExpanded((prev) => !prev)}>
@@ -22,7 +23,12 @@ const ListCard: React.FC<ListCardProps> = ({
             {serviceTokenDisplay}
             <Flex sx={{ flexDirection: 'column', marginLeft: '10px' }}>{title}</Flex>
           </Flex>
-          <Flex sx={{ display: ['flex', 'flex', 'none'] }}>
+          <Flex
+            sx={{
+              display: ['flex', 'flex', 'none'],
+              alignItems: 'center',
+            }}
+          >
             <InfoContent infoContent={infoContent} expandedContent={expandedContent} expanded={expanded} />
           </Flex>
         </Flex>

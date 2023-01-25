@@ -66,12 +66,16 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
               }}
             >
               <Flex sx={styles.container}>
-                <Flex sx={styles.selectContainer} pr={3}>
-                  <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={sortOptions} />
-                </Flex>
-                <Flex sx={styles.selectContainer} pl={3}>
-                  <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={filterOptions} />
-                </Flex>
+                {sortOption && (
+                  <Flex sx={styles.selectContainer} pr={filterOption && 3}>
+                    <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={sortOptions} />
+                  </Flex>
+                )}
+                {filterOption && (
+                  <Flex sx={styles.selectContainer} pl={sortOption && 3}>
+                    <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={filterOptions} />
+                  </Flex>
+                )}
               </Flex>
               <Flex sx={styles.container}>
                 <Flex>

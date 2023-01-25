@@ -1,5 +1,6 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Skeleton, AutoRenewIcon } from '@apeswapfinance/uikit'
+import { Skeleton, AutoRenewIcon, Button } from '@ape.swap/uikit'
 import { useApprove } from 'hooks/useApprove'
 import { updateFarmUserAllowances } from 'state/farms'
 import { useAppDispatch } from 'state'
@@ -8,7 +9,7 @@ import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { useToast } from 'state/hooks'
-import { StyledButton } from './styles'
+import { styles } from '../styles'
 
 interface ApprovalActionProps {
   stakingTokenContractAddress: string
@@ -30,7 +31,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAdd
       {isLoading ? (
         <Skeleton width="100%" height="52px" />
       ) : (
-        <StyledButton
+        <Button
           className="noClick"
           disabled={pendingTrx}
           onClick={async () => {
@@ -51,9 +52,10 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAdd
             setPendingTrx(false)
           }}
           endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
+          sx={styles.styledBtn}
         >
           {t('ENABLE')}
-        </StyledButton>
+        </Button>
       )}
     </>
   )

@@ -194,9 +194,7 @@ const Farms: React.FC = () => {
             />
           </Flex>
           {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.FARMS].includes(chainId) ? (
-            <Flex mt="20px">
-              <ListView404 product={LIST_VIEW_PRODUCTS.FARMS} />
-            </Flex>
+            <ListView404 product={LIST_VIEW_PRODUCTS.FARMS} />
           ) : (
             <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} />
           )}
