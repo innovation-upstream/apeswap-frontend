@@ -73,7 +73,7 @@ const MigrationRequiredPopup = ({
   const migrationReminder = JSON.parse(localStorage.getItem('migrationReminder') ?? 'true')
 
   return homepage ? (
-    migrationReminder && notOnFarmsPoolsVaults ? (
+    migrationReminder && notOnFarmsPoolsVaults && currentPhase === MigrationPhases.MIGRATE_PHASE_2 ? (
       <Flex
         sx={{
           position: 'fixed',
