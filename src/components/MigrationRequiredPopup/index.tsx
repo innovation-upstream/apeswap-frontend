@@ -95,7 +95,6 @@ const MigrationRequiredPopup = ({
           <Flex>
             <Svg icon="info" width={20} />
             <Text size="22px" weight={700} ml="10px">
-              {/* {currentPhase === MigrationPhases.MIGRATE_PHASE_2 ? 'Migration Required' : 'Migration Starting Soon'} */}
               Migration Underway
             </Text>
           </Flex>
@@ -112,11 +111,11 @@ const MigrationRequiredPopup = ({
           <Text size="14px" weight={400} sx={{ lineHeight: 1.35 }}>
             Users staking on BNB Chain Yield Farms, BANANA Maximizers, and the BANANA-BANANA Staking Pool must migrate
             their staked tokens by
-            <span sx={{ fontWeight: 700 }}> Janury 26th, 22:00 UT </span>
+            <span sx={{ fontWeight: 700 }}> Janury 26th, 22:00 UTC </span>
             in order to continue earning rewards. All other chains and services are{' '}
-            <span sx={{ fontWeight: 700 }}> not affected.</span> Visit the Migration page to migrate your tokens or
-            learn more.
+            <span sx={{ fontWeight: 700 }}> not affected.</span>
           </Text>
+          <br />
           <Text size="14px" weight={400} sx={{ lineHeight: 1.35 }}>
             {t('Please visit our Migration page to migrate your tokens or learn more.')}
           </Text>
