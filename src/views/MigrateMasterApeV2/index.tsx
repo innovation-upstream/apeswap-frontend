@@ -1,32 +1,42 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
 import { Flex, Svg, Text, TooltipBubble } from '@ape.swap/uikit'
-// import { usePollFarms, useSetFarms } from 'state/farms/hooks'
-// import { usePollVaultsData, usePollVaultUserData, useSetVaults } from 'state/vaults/hooks'
+import { useFarms, usePollFarms } from 'state/farms/hooks'
+import { usePollVaultsData, usePollVaultUserData } from 'state/vaults/hooks'
 import MigrateStart from './MigrateStart'
 import Banner from 'components/Banner'
 import MigrateTimer from './components/MigrateTimer'
 import { AboutMigrating } from './components/AboutMigrating'
 import { useTranslation } from 'contexts/Localization'
-// import {
-//   useMergedV1Products,
-//   useMergedV2Products,
-//   useMigrateStatus,
-//   useMonitorActiveIndex,
-//   useSetInitialMigrateStatus,
-//   useSetMigrationLoading,
-// } from 'state/masterApeMigration/hooks'
-// import { useFarmsV2, usePollFarmsV2, useSetFarmsV2 } from 'state/farmsV2/hooks'
+import {
+  useMergedV1Products,
+  useMergedV2Products,
+  useMigrateStatus,
+  useMonitorActiveIndex,
+  useSetInitialMigrateStatus,
+  useSetMigrationLoading,
+} from 'state/masterApeMigration/hooks'
+import { useFarmsV2, usePollFarmsV2 } from 'state/farmsV2/hooks'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { usePollVaultsV3Data, usePollVaultV3UserData } from 'state/vaultsV3/hooks'
 
 const MigrateMasterApeV2: React.FC = () => {
-  // Fetch farms to filter lps on steps
-  // TODO: Once data pulling is removed from the app we can add these back
-  // useSetInitialMigrateStatus()
-  // useSetMigrationLoading()
-  // useMonitorActiveIndex()
-  // useMergedV1Products()
-  // useMergedV2Products()
-  // useMigrateStatus()
+  const { account } = useActiveWeb3React()
+  usePollFarms()
+  usePollFarmsV2()
+  useFarms(account)
+  useFarmsV2(account)
+  usePollVaultsData()
+  usePollVaultUserData()
+  usePollVaultsV3Data()
+  usePollVaultV3UserData()
+
+  useSetInitialMigrateStatus()
+  useSetMigrationLoading()
+  useMonitorActiveIndex()
+  useMergedV1Products()
+  useMergedV2Products()
+  useMigrateStatus()
   const { t } = useTranslation()
   return (
     <Flex

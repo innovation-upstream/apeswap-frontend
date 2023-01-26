@@ -29,7 +29,6 @@ import Home from './views/Homepage'
 import { ChainId } from '@ape.swap/sdk'
 import NetworkProductCheck from 'components/NetworkProductCheck'
 import MigrateMasterApeV2 from './views/MigrateMasterApeV2'
-import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 import { useMonitorMigrationPhase } from 'state/migrationTimer/hooks'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 
@@ -263,7 +262,6 @@ const App: React.FC = () => {
       <GlobalStyle />
       <MarketingModalCheck />
       {loadMenu()}
-      <MigrationRequiredPopup />
       <FloatingDocs />
       <ToastListener />
     </Router>

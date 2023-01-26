@@ -16,17 +16,24 @@ import VaultMenu from './components/Menu'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import ListView404 from 'components/ListView404'
-import { useVaultsV3 } from 'state/vaultsV3/hooks'
+import { usePollVaultsV3Data, usePollVaultV3UserData, useVaultsV3 } from 'state/vaultsV3/hooks'
 import LegacyVaults from './LegacyVaults'
 import { Text } from '@ape.swap/uikit'
 import DisplayDepsoitVaultsV2 from './components/DisplayDepsoitVaultsV2'
-import { useVaults } from 'state/vaults/hooks'
+import { usePollVaultsData, usePollVaultUserData, useVaults } from 'state/vaults/hooks'
+import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
+import { useFarmsV2, usePollFarmsV2 } from 'state/farmsV2/hooks'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
 const VaultsV3: React.FC = () => {
   const { chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
+  usePollVaultsData()
+  usePollVaultUserData()
+  usePollVaultsV3Data()
+  usePollVaultV3UserData()
+  usePollFarmsV2()
   const { t } = useTranslation()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [vaultType, setVaultType] = useState('allTypes')
@@ -36,6 +43,7 @@ const VaultsV3: React.FC = () => {
   const [numberOfVaultsVisible, setNumberOfVaultsVisible] = useState(NUMBER_OF_VAULTS_VISIBLE)
   const { pathname } = useLocation()
   const { search } = window.location
+  const v2Farms = useFarmsV2(null)
   const { vaults: initVaults } = useVaultsV3()
   const { vaults: legacyVaults } = useVaults()
 
@@ -148,6 +156,7 @@ const VaultsV3: React.FC = () => {
 
   return (
     <>
+      <MigrationRequiredPopup v2Farms={v2Farms} farms={[]} vaults={legacyVaults} />
       <Flex
         flexDirection="column"
         justifyContent="center"
