@@ -10,6 +10,7 @@ import { useIsModalShown } from 'state/user/hooks'
 import { useToast } from 'state/hooks'
 import { getEtherscanLink, showCircular } from 'utils'
 import { ActionContainer } from './styles'
+import { updateFarmV2UserEarnings } from 'state/farmsV2'
 
 interface HarvestActionsProps {
   pids: number[]
@@ -53,7 +54,7 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled, v2Fla
               setPendingTrx(false)
             })
           pids.map((pid) => {
-            return dispatch(updateFarmUserEarnings(chainId, pid, account))
+            return dispatch(updateFarmV2UserEarnings(chainId, pid, account))
           })
           setPendingTrx(false)
         }}

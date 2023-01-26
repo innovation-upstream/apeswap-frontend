@@ -6,12 +6,12 @@ import { useToast } from 'state/hooks'
 import { useIsModalShown } from 'state/user/hooks'
 import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { updateFarmUserEarnings } from 'state/farms'
 import ListViewContent from 'components/ListViewContent'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
 import { FarmButton } from '../styles'
 import { ActionContainer } from './styles'
+import { updateFarmV2UserEarnings } from 'state/farmsV2'
 
 interface HarvestActionsProps {
   pid: number
@@ -55,7 +55,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
               console.error(e)
               setPendingTrx(false)
             })
-          dispatch(updateFarmUserEarnings(chainId, pid, account))
+          dispatch(updateFarmV2UserEarnings(chainId, pid, account))
           setPendingTrx(false)
         }}
         endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
