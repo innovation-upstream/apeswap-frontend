@@ -64,7 +64,7 @@ const Unstake: React.FC<{ migrateList: MasterApeProductsInterface[] }> = ({ migr
         {t('Unstake all tokens from the MasterApe v1 smart contracts')}
       </Text>
       <Button mb="20px" onClick={() => handleUnstakeAll(migrateList)} disabled={migrateList?.length === 0}>
-        Unstake All ({migrateList?.length})
+        {t('Unstake All')} ({migrateList?.length})
       </Button>
       <ListView listViews={listView} />
     </Flex>
