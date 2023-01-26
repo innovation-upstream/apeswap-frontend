@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Skeleton, AutoRenewIcon } from '@apeswapfinance/uikit'
 import { useApprove } from 'hooks/useApprove'
-import { updateFarmUserAllowances } from 'state/farms'
 import { useAppDispatch } from 'state'
 import { useERC20 } from 'hooks/useContract'
 import { getEtherscanLink } from 'utils'
@@ -9,6 +8,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { useToast } from 'state/hooks'
 import { StyledButton } from './styles'
+import { updateFarmV2UserAllowances } from 'state/farmsV2'
 
 interface ApprovalActionProps {
   stakingTokenContractAddress: string
@@ -53,7 +53,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({
                 console.error(e)
                 setPendingTrx(false)
               })
-            dispatch(updateFarmUserAllowances(chainId, pid, account))
+            dispatch(updateFarmV2UserAllowances(chainId, pid, account))
             setPendingTrx(false)
           }}
           endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}

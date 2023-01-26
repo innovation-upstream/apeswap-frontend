@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Flex, AddIcon, MinusIcon, useModal } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { fetchVaultUserDataAsync } from 'state/vaults'
+import { fetchVaultV3UserDataAsync } from 'state/vaultsV3'
 import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
 import { useAppDispatch } from 'state'
@@ -75,7 +75,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             console.error(e)
             setPendingDepositTrx(false)
           })
-        dispatch(fetchVaultUserDataAsync(account, chainId))
+        dispatch(fetchVaultV3UserDataAsync(account, chainId))
         setPendingDepositTrx(false)
       }}
     />,
@@ -102,7 +102,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             console.error(e)
             setPendingWithdrawTrx(false)
           })
-        dispatch(fetchVaultUserDataAsync(account, chainId))
+        dispatch(fetchVaultV3UserDataAsync(account, chainId))
         setPendingWithdrawTrx(false)
       }}
     />,
