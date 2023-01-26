@@ -29,9 +29,9 @@ import Home from './views/Homepage'
 import { ChainId } from '@ape.swap/sdk'
 import NetworkProductCheck from 'components/NetworkProductCheck'
 import MigrateMasterApeV2 from './views/MigrateMasterApeV2'
-import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 import { useMonitorMigrationPhase } from 'state/migrationTimer/hooks'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
+import { useSetInitialMigrateStatus } from 'state/masterApeMigration/hooks'
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -116,6 +116,8 @@ const App: React.FC = () => {
   useFetchProfile()
   useFetchLiveIfoStatus()
   useFetchLiveTagsAndOrdering()
+  // To help with account switching load the initial migration status here
+  useSetInitialMigrateStatus()
 
   // Hotfix for showModal. Update redux state and remove
   useCircularStaking()
@@ -263,7 +265,6 @@ const App: React.FC = () => {
       <GlobalStyle />
       <MarketingModalCheck />
       {loadMenu()}
-      <MigrationRequiredPopup />
       <FloatingDocs />
       <ToastListener />
     </Router>

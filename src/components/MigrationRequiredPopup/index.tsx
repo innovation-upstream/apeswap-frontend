@@ -7,48 +7,16 @@ import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useMigrationPhase } from 'state/migrationTimer/hooks'
 import { MigrationPhases } from 'state/migrationTimer/types'
-import { useVaults } from 'state/vaults/hooks'
-import { useFarms, usePollFarms } from 'state/farms/hooks'
-import { useFarmsV2, usePollFarmsV2 } from 'state/farmsV2/hooks'
-import { usePollVaultsData, usePollVaultUserData } from 'state/vaults/hooks'
-import { usePollVaultsV3Data, usePollVaultV3UserData } from 'state/vaultsV3/hooks'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 import { useTranslation } from 'contexts/Localization'
-import {
-  useMergedV1Products,
-  useMergedV2Products,
-  useMigrateStatus,
-  useMonitorActiveIndex,
-  useSetInitialMigrateStatus,
-  useSetMigrationLoading,
-} from 'state/masterApeMigration/hooks'
+import { Farm, Vault } from 'state/types'
+import { getBalanceNumber } from 'utils/formatBalance'
 
-const MigrationRequiredPopup = () => {
-  const { account, chainId } = useActiveWeb3React()
+const MigrationRequiredPopup = ({ v2Farms, farms, vaults }: { v2Farms: Farm[]; farms: Farm[]; vaults: Vault[] }) => {
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  // TODO: Remove after the migration process
-  useSetInitialMigrateStatus()
-  useSetMigrationLoading()
-  useMonitorActiveIndex()
-  useMergedV1Products()
-  useMergedV2Products()
-  useMigrateStatus()
-  // Loading migration data on load.
-  // This should be removed after the migration process has finished
-  // This has high performance impact
-  usePollVaultsData()
-  usePollVaultUserData()
-  usePollVaultsV3Data()
-  usePollVaultV3UserData()
-  usePollFarms()
-  usePollFarmsV2()
-  useFarms(account)
-  useFarmsV2(account)
   const currentPhase = useMigrationPhase()
   const isMobile = useIsMobile()
-  const farms = useFarms(account)
-  const v2Farms = useFarmsV2(null)
-  const { vaults } = useVaults()
   const { pathname } = useLocation()
   // Filter out farms that do not exists on v2Farms
   const filteredFarms = farms?.filter(({ lpAddresses }) => {
@@ -58,12 +26,32 @@ const MigrationRequiredPopup = () => {
   })
   const filteredVaults = vaults?.filter(({ stakeToken }) => {
     return v2Farms?.find(({ lpAddresses }) => {
-      return lpAddresses[chainId]?.toLowerCase() === stakeToken[chainId]?.toLowerCase()
+      return lpAddresses[chainId]?.toLowerCase() === stakeToken?.address[chainId]?.toLowerCase()
     })
   })
+
+  const stakedVaults = filteredVaults.filter((product) => new BigNumber(product?.userData?.stakedBalance).gt(0))
+
+  // Filter out dust left in vaults
+  const filterV1Dust = stakedVaults.flatMap((vault) => {
+    if (vault.pid === 22) {
+      if (new BigNumber(getBalanceNumber(new BigNumber(vault.userData.stakedBalance))).gt(0.5)) {
+        return vault
+      } else {
+        return []
+      }
+    }
+    if (new BigNumber(getBalanceNumber(new BigNumber(vault.userData.stakedBalance)) * vault.stakeTokenPrice).gt(0.25)) {
+      return vault
+    } else {
+      return []
+    }
+  })
+
   const userHasFarmOrVault =
-    [...filteredFarms, ...filteredVaults].filter((product) => new BigNumber(product?.userData?.stakedBalance).gt(0))
+    [...filteredFarms, ...filterV1Dust].filter((product) => new BigNumber(product?.userData?.stakedBalance).gt(0))
       ?.length > 0
+
   const [open, setOpen] = useState(true)
   const onMigration = pathname.includes(CURRENT_MIGRATE_PATH)
   return (
@@ -78,7 +66,7 @@ const MigrationRequiredPopup = () => {
           padding: isMobile ? '10px' : '15px',
           maxWidth: '400px',
           alignSelf: 'center',
-          top: 100,
+          top: 50,
           right: isMobile ? 'auto' : 50,
           margin: isMobile ? '0px 5px' : 'auto',
           background: 'white3',
