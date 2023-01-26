@@ -82,7 +82,10 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       earnLp,
       tag: (
         <Box sx={{ marginRight: '5px', mt: '1px' }}>
-          <StyledTag variant={vault.type === 'AUTO' ? 'error' : 'success'} text={t(vault?.type)} />
+          <StyledTag
+            variant={vault.type === 'AUTO' || vault.pid === 0 ? 'error' : 'success'}
+            text={vault.pid === 0 ? 'AUTO' : t(vault?.type)}
+          />
         </Box>
       ),
       title: <Text style={{ fontSize: isMobile ? '14px' : '16px' }}>{vault.stakeToken.symbol}</Text>,
