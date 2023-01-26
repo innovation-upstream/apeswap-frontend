@@ -54,7 +54,7 @@ const CardActions: React.FC<CardActionProps> = ({
       <Flex sx={styles.onlyDesktop}>
         <ListViewContent
           title={t('Staked LP')}
-          value={`${rawStakedBalance.toFixed(6)} LP`}
+          value={`${rawStakedBalance ? rawStakedBalance.toFixed(6) : '0.000'} LP`}
           value2={userStakedBalanceUsd}
           value2Secondary
           value2Direction="column"

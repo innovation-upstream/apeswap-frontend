@@ -8,7 +8,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     alignItems: 'center',
     justifyContent: 'space-between',
     background: (theme) => theme.colors.white2,
-    borderBottom: 'rgba(226, 226, 226, .2)',
+    borderBottom: '1px solid rgba(226, 226, 226, .2)',
     padding: '10px 20px 10px 20px',
     margin: '0 10px 0 10px',
     maxWidth: '500px',
