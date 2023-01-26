@@ -13,7 +13,6 @@ import {
   useMergedV2Products,
   useMigrateStatus,
   useMonitorActiveIndex,
-  useSetInitialMigrateStatus,
   useSetMigrationLoading,
 } from 'state/masterApeMigration/hooks'
 import { useFarmsV2, usePollFarmsV2 } from 'state/farmsV2/hooks'
@@ -30,8 +29,6 @@ const MigrateMasterApeV2: React.FC = () => {
   usePollVaultUserData()
   usePollVaultsV3Data()
   usePollVaultV3UserData()
-
-  useSetInitialMigrateStatus()
   useSetMigrationLoading()
   useMonitorActiveIndex()
   useMergedV1Products()
