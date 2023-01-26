@@ -11,20 +11,23 @@ import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
 import { Farm } from 'state/types'
-import { useFarmTags, useFarmOrderings, useFarms } from 'state/farms/hooks'
+import { useFarmTags, useFarmOrderings, useFarms, usePollFarms } from 'state/farms/hooks'
 import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
-import { useFarmsV2 } from 'state/farmsV2/hooks'
+import { useFarmsV2, usePollFarmsV2 } from 'state/farmsV2/hooks'
 import LegacyFarms from './LegacyFarms'
 import DisplayDepositV2Farms from './components/DisplayDepositV2Farms'
+import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 
 const FarmsV2: React.FC = () => {
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
+  usePollFarms()
+  usePollFarmsV2()
   const { pathname } = useLocation()
   const { t } = useTranslation()
   const [observerIsSet, setObserverIsSet] = useState(false)
@@ -174,6 +177,7 @@ const FarmsV2: React.FC = () => {
 
   return (
     <>
+      <MigrationRequiredPopup v2Farms={farmsLP} farms={legacyFarms} vaults={[]} />
       <Flex
         sx={{
           position: 'relative',

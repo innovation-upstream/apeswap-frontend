@@ -14,7 +14,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { usePollPools, usePoolOrderings, usePools, usePoolTags } from 'state/pools/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
-import { Pool } from 'state/types'
+import { Farm, Pool } from 'state/types'
 import PoolMenu from './components/Menu'
 import DisplayPools from './components/DisplayPools'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
@@ -23,6 +23,7 @@ import DisplayLegacyPool from './components/DisplayLegacyPool'
 import DisplayDepositPoolV2 from './components/DisplayDepositPoolV2'
 import { useMigrationPhase } from 'state/migrationTimer/hooks'
 import { MigrationPhases } from 'state/migrationTimer/types'
+import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 
 const NUMBER_OF_POOLS_VISIBLE = 12
 
@@ -176,6 +177,13 @@ const Pools: React.FC = () => {
 
   return (
     <>
+      <MigrationRequiredPopup
+        /* @ts-ignore */
+        v2Farms={[{ userData: v2Pool?.userData, lpAddresses: v2Pool.stakingToken.address }]}
+        /* @ts-ignore */
+        farms={[{ userData: legacyPool?.userData, lpAddresses: legacyPool.stakingToken.address }]}
+        vaults={[]}
+      />
       <Flex
         sx={{
           position: 'relative',
