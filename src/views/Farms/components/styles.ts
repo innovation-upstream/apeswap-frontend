@@ -63,7 +63,6 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     },
   },
   onlyDesktop: {
-    width: '100%',
     justifyContent: 'space-around',
     display: ['none', 'none', 'flex'],
   },

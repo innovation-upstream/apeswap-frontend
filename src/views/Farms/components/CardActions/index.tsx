@@ -30,7 +30,7 @@ const CardActions: React.FC<CardActionProps> = ({
   const userStakedBalanceUsd = `$${(getBalanceNumber(new BigNumber(stakedBalance || 0)) * lpValueUsd).toFixed(2)}`
 
   return (
-    <Flex sx={{ width: ['100%', '100%', 'unset'], minWidth: '205px', justifyContent: 'space-between' }}>
+    <>
       <Flex sx={styles.onlyMobile}>
         <ListViewContent
           title={t('Staked LP')}
@@ -61,7 +61,7 @@ const CardActions: React.FC<CardActionProps> = ({
           style={{ flexDirection: 'column', maxWidth: '110px' }}
         />
       </Flex>
-    </Flex>
+    </>
   )
 }
 

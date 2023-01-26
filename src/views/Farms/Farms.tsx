@@ -187,7 +187,7 @@ const Farms: React.FC = () => {
               checkboxLabel="Staked"
               showOnlyCheckbox={stakedOnly}
               setShowOnlyCheckbox={setStakedOnly}
-              toogleLabels={['Active', 'Inactive']}
+              toogleLabels={['ACTIVE', 'INACTIVE']}
               sortOptions={SORT_OPTIONS}
               actionButton={<HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} />}
               showMonkeyImage

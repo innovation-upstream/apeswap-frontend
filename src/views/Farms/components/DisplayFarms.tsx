@@ -13,7 +13,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Field, selectCurrency } from 'state/swap/actions'
 import { useAppDispatch } from 'state'
 import CardActions from './CardActions'
-import { styles } from './styles'
+import { NextArrow, styles } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from 'state/zap/actions'
@@ -226,69 +226,103 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
         expandedContent: (
           <>
             <Flex sx={styles.expandedContent}>
-              <ListViewContent
-                title={t('APR')}
-                value={`${farm?.apr}%`}
-                value2={`${farm?.lpApr}%`}
-                value2Icon={
-                  <span style={{ marginRight: '7px' }}>
-                    <Svg icon="swap" width={13} color="text" />
-                  </span>
-                }
-                valueIcon={
-                  <span style={{ marginRight: '5px' }}>
-                    <Svg icon="banana_token" width={15} color="text" />
-                  </span>
-                }
-                toolTip={t(
-                  'BANANA reward APRs are calculated in real time. DEX swap fee APRs are calculated based on previous 24 hours of trading volume. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
-                )}
-                toolTipPlacement="bottomLeft"
-                toolTipTransform="translate(8%, 0%)"
-                style={{
-                  width: '100%',
-                  maxWidth: '100%',
-                  flexDirection: 'row',
-                }}
-              />
-              <ListViewContent
-                title={t('Liquidity')}
-                value={`$${Number(farm?.totalLpStakedUsd).toLocaleString(undefined)}`}
-                toolTip={t('The total value of the LP tokens currently staked in this farm.')}
-                toolTipPlacement={'bottomLeft'}
-                toolTipTransform={'translate(23%, 0%)'}
-                style={{
-                  width: '100%',
-                  maxWidth: '100%',
-                  flexDirection: 'row',
-                  marginTop: '3px',
-                }}
-              />
-              <Flex sx={{ justifyContent: 'space-between', width: '100%', mt: '10px' }}>
+              <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
+                <ListViewContent
+                  title={t('APR')}
+                  value={`${farm?.apr}%`}
+                  value2={`${farm?.lpApr}%`}
+                  value2Icon={
+                    <span style={{ marginRight: '7px' }}>
+                      <Svg icon="swap" width={13} color="text" />
+                    </span>
+                  }
+                  valueIcon={
+                    <span style={{ marginRight: '5px' }}>
+                      <Svg icon="banana_token" width={15} color="text" />
+                    </span>
+                  }
+                  toolTip={t(
+                    'BANANA reward APRs are calculated in real time. DEX swap fee APRs are calculated based on previous 24 hours of trading volume. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
+                  )}
+                  toolTipPlacement="bottomLeft"
+                  toolTipTransform="translate(8%, 0%)"
+                  style={{
+                    width: '100%',
+                    maxWidth: '100%',
+                    flexDirection: 'row',
+                  }}
+                />
+                <ListViewContent
+                  title={t('Liquidity')}
+                  value={`$${Number(farm?.totalLpStakedUsd).toLocaleString(undefined)}`}
+                  toolTip={t('The total value of the LP tokens currently staked in this farm.')}
+                  toolTipPlacement={'bottomLeft'}
+                  toolTipTransform={'translate(23%, 0%)'}
+                  style={{
+                    width: '100%',
+                    maxWidth: '100%',
+                    flexDirection: 'row',
+                    marginTop: '3px',
+                  }}
+                />
+                <Flex sx={{ justifyContent: 'space-between', width: '100%', mt: '10px' }}>
+                  <ListViewContent
+                    title={t('Available LP')}
+                    value={userTokenBalance}
+                    value2={userTokenBalanceUsd}
+                    value2Secondary
+                    value2Direction="column"
+                    style={{ maxWidth: '50%', flexDirection: 'column' }}
+                  />
+                  <Flex sx={{ width: '50%', maxWidth: '130px' }}>
+                    <Button
+                      onClick={() =>
+                        showLiquidity(
+                          farm.tokenAddresses[chainId],
+                          farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId],
+                          farm,
+                        )
+                      }
+                      sx={styles.styledBtn}
+                    >
+                      {t('GET LP')} <Icon icon="ZapIcon" color="primaryBright" />
+                    </Button>
+                  </Flex>
+                </Flex>
+                <Flex sx={{ justifyContent: 'space-between', width: '100%', mt: '10px' }}>
+                  <CardActions
+                    allowance={userAllowance?.toString()}
+                    stakedBalance={farm?.userData?.stakedBalance?.toString()}
+                    stakingTokenBalance={farm?.userData?.tokenBalance?.toString()}
+                    stakeLpAddress={farm.lpAddresses[chainId]}
+                    lpValueUsd={farm.lpValueUsd}
+                    pid={farm.pid}
+                  />
+                </Flex>
+                <HarvestAction pid={farm.pid} disabled={userEarnings === '0.00'} userEarningsUsd={userEarningsUsd} />
+              </Flex>
+              <Flex sx={{ ...styles.onlyDesktop, width: '100%' }}>
+                <Button
+                  onClick={() =>
+                    showLiquidity(
+                      farm.tokenAddresses[chainId],
+                      farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId],
+                      farm,
+                    )
+                  }
+                  sx={styles.styledBtn}
+                >
+                  {t('GET LP')} <Icon icon="ZapIcon" color="primaryBright" />
+                </Button>
                 <ListViewContent
                   title={t('Available LP')}
                   value={userTokenBalance}
                   value2={userTokenBalanceUsd}
                   value2Secondary
                   value2Direction="column"
-                  style={{ maxWidth: '50%', flexDirection: 'column' }}
+                  style={{ flexDirection: 'column', maxWidth: '120px' }}
                 />
-                <Flex sx={{ width: '50%', maxWidth: '130px' }}>
-                  <Button
-                    onClick={() =>
-                      showLiquidity(
-                        farm.tokenAddresses[chainId],
-                        farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId],
-                        farm,
-                      )
-                    }
-                    sx={styles.styledBtn}
-                  >
-                    {t('GET LP')} <Icon icon="ZapIcon" color="primaryBright" />
-                  </Button>
-                </Flex>
-              </Flex>
-              <Flex sx={{ justifyContent: 'space-between', width: '100%', mt: '10px' }}>
+                <NextArrow />
                 <CardActions
                   allowance={userAllowance?.toString()}
                   stakedBalance={farm?.userData?.stakedBalance?.toString()}
@@ -297,8 +331,9 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                   lpValueUsd={farm.lpValueUsd}
                   pid={farm.pid}
                 />
+                <NextArrow />
+                <HarvestAction pid={farm.pid} disabled={userEarnings === '0.00'} userEarningsUsd={userEarningsUsd} />
               </Flex>
-              <HarvestAction pid={farm.pid} disabled={userEarnings === '0.00'} userEarningsUsd={userEarningsUsd} />
             </Flex>
           </>
         ),
