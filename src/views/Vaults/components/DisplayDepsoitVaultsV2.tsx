@@ -61,15 +61,17 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
             toolTipTransform="translate(28%, 0%)"
             height={50}
           />
-          <ListViewContent
-            title={t('Total Staked')}
-            value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
-            width={isMobile ? 100 : 170}
-            toolTip={t('The total value of the tokens currently staked in this vault.')}
-            toolTipPlacement="bottomRight"
-            toolTipTransform="translate(13%, 0%)"
-            height={50}
-          />
+          {!isMobile && (
+            <ListViewContent
+              title={t('Total Staked')}
+              value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
+              width={isMobile ? 100 : 170}
+              toolTip={t('The total value of the tokens currently staked in this vault.')}
+              toolTipPlacement="bottomRight"
+              toolTipTransform="translate(13%, 0%)"
+              height={50}
+            />
+          )}
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
             {new BigNumber(vault?.userData.allowance).gt(0) ? (
               <Stake pid={vault.pid} rawTokenBalance={rawTokenBalance} />
