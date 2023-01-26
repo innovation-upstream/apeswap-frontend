@@ -75,7 +75,10 @@ const LaunchCalendar: React.FC = () => {
                 {sortLaunch?.map((launch, i) => {
                   const date = new Date(launch.launchTime)
                   const slide = (
-                    <SwiperSlide style={{ maxWidth: '219px', minWidth: '219px' }} key={launch?.textLine1}>
+                    <SwiperSlide
+                      style={{ maxWidth: '219px', minWidth: '219px' }}
+                      key={`${launch?.textLine1}-${launch?.launchTime}`}
+                    >
                       <LaunchCard>
                         <Flex justifyContent="center" alignItems="center" flexDirection="column">
                           <Text fontSize="30px" bold>
@@ -114,7 +117,7 @@ const LaunchCalendar: React.FC = () => {
                     return (
                       <>
                         {slide}
-                        <SwiperSlide style={{ maxWidth: '219px', minWidth: '219px' }} key={launch?.textLine1}>
+                        <SwiperSlide style={{ maxWidth: '219px', minWidth: '219px' }} key={`${launch?.textLine1}-${i}`}>
                           <LaunchCard>
                             <Flex alignItems="center" justifyContent="center" style={{ height: '100%' }}>
                               <QuestionMark fill={theme.colors.text} />
@@ -129,8 +132,8 @@ const LaunchCalendar: React.FC = () => {
               </Swiper>
             ) : (
               <SkeletonWrapper>
-                {[...Array(6)].map(() => {
-                  return <Skeleton width="219px" height="219px" key="id" />
+                {[...Array(6)].map((i) => {
+                  return <Skeleton width="219px" height="219px" key={i} />
                 })}
               </SkeletonWrapper>
             )}
