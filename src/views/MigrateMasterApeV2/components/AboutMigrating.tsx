@@ -93,8 +93,9 @@ export const AboutMigrating = () => {
               </Text>
               <br />
               <Text weight={500} size="14px">
-                {t(`Follow the steps above to ensure that all of your positions are successfully migrated to the new smart
-                contract so that you can continue earning rewards.`)}
+                {t(
+                  'Follow the steps above to ensure that all of your positions are successfully migrated to the new smart contract so that you can continue earning rewards.',
+                )}
               </Text>
               <Flex
                 sx={{
