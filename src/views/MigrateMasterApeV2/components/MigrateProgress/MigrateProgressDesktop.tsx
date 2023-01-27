@@ -8,6 +8,7 @@ import { useActiveIndex, useIsMigrationLoading, useMigrateStatus } from 'state/m
 import { setActiveIndex } from 'state/masterApeMigration/reducer'
 import { MigrateStatus } from 'state/masterApeMigration/types'
 import { styles } from './styles'
+import { useTranslation } from 'contexts/Localization'
 
 interface MigrateProcessBarInterface {
   activeLineMargin?: number
@@ -16,6 +17,7 @@ interface MigrateProcessBarInterface {
 
 const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargin, children }) => {
   const { account } = useActiveWeb3React()
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { allDataLoaded: migrationLoaded } = useIsMigrationLoading()
   const migrateLpStatus = useMigrateStatus()
@@ -62,12 +64,12 @@ const MigrateProgress: React.FC<MigrateProcessBarInterface> = ({ activeLineMargi
                     mr="5px"
                     color={activeIndex >= i && noAccountOrLoading ? 'primaryBright' : 'text'}
                   >
-                    {title}
+                    {t(`${title}`)}
                   </Text>
                   <Flex sx={{ mt: '2.5px' }}>
                     <TooltipBubble
                       placement="bottomRight"
-                      body={description}
+                      body={t(`${description}`)}
                       transformTip="translate(10%, 0%)"
                       width="200px"
                     >

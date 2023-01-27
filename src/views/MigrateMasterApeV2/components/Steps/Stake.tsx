@@ -86,7 +86,7 @@ const Stake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[]; allSte
           onClick={() => handleStakeAll(filteredLpsForStake)}
           disabled={filteredLpsForStake?.length === 0}
         >
-          Stake All ({filteredLpsForStake.length})
+          {t('Stake All')} ({filteredLpsForStake.length})
         </Button>
       ) : (
         <Button mb="20px" as={Link} to={'/farms'}>

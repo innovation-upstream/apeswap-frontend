@@ -116,7 +116,7 @@ const ApproveStake: React.FC<{ apeswapWalletLps: MasterApeV2ProductsInterface[] 
         mb="20px"
         onClick={() => handleApproveAll(filteredLpsForStake)}
       >
-        Approve All ({filteredLpsForStake?.length})
+        {t('Approve All')} ({filteredLpsForStake?.length})
       </Button>
       <ListView listViews={listView} />
     </Flex>
