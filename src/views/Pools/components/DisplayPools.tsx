@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { IconButton, Flex, Button, ListTagVariants } from '@ape.swap/uikit'
+import { IconButton, Flex, Button, ListTagVariants, Svg } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useLocation, useHistory } from 'react-router-dom'
@@ -8,7 +8,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import CalcButton from 'components/RoiCalculator/CalcButton'
 import { Pool, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
 import Actions from './Actions'
 import HarvestAction from './Actions/HarvestAction'
@@ -231,7 +230,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                 value2Direction="column"
                 style={{ maxWidth: '110px', marginLeft: '10px', flexDirection: 'column' }}
               />
-              <NextArrow />
+              <Svg icon="caret" direction="right" width="17px" />
               <Actions
                 allowance={userAllowance?.toString()}
                 stakedBalance={pool?.userData?.stakedBalance?.toString()}
@@ -242,7 +241,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                 earnTokenSymbol={pool?.rewardToken?.symbol || pool?.tokenName}
                 sousId={pool?.sousId}
               />
-              <NextArrow />
+              <Svg icon="caret" direction="right" width="17px" />
               <HarvestAction
                 sousId={pool?.sousId}
                 disabled={userEarnings <= 0}

@@ -9,7 +9,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import CalcButton from 'components/RoiCalculator/CalcButton'
 import CardActions from './CardActions'
-import { NextArrow, styles } from './styles'
+import { styles } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import useAddLiquidityModal from 'components/DualAddLiquidity/hooks/useAddLiquidityModal'
@@ -313,9 +313,9 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                   value2Direction="column"
                   style={{ flexDirection: 'column', maxWidth: '120px' }}
                 />
-                <NextArrow />
+                <Svg icon="caret" direction="right" width="17px" />
                 <CardActions lpValueUsd={lpValueUsd} farm={farm} />
-                <NextArrow />
+                <Svg icon="caret" direction="right" width="17px" />
                 <HarvestAction
                   pid={farm.pid}
                   disabled={userEarningsMiniChef === '0.00' && userEarningsRewarder === '0.00'}

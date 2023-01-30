@@ -1,29 +1,4 @@
-import { ArrowDropUpIcon } from '@apeswapfinance/uikit'
-import { Button, Flex } from '@ape.swap/uikit'
-import styled from '@emotion/styled'
 import { ThemeUIStyleObject } from 'theme-ui'
-
-export const StyledButton = styled(Button)`
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 10px 20px;
-  min-width: 129px;
-  height: 44px;
-  justify-content: space-evenly;
-`
-
-export const NextArrow = styled(ArrowDropUpIcon)`
-  transform: rotate(90deg);
-`
-
-export const ActionContainer = styled(Flex)`
-  width: 100%;
-  justify-content: space-between;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: fit-content;
-  }
-`
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   expandedContent: {

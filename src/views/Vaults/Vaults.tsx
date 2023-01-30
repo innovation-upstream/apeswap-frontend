@@ -7,16 +7,19 @@ import { Flex } from '@apeswapfinance/uikit'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from 'contexts/Localization'
 import Banner from 'components/Banner'
-import ListViewLayout from 'components/layout/ListViewLayout'
 import partition from 'lodash/partition'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import { useVaults, usePollVaultsData } from 'state/vaults/hooks'
 import { Vault } from 'state/types'
 import DisplayVaults from './components/DisplayVaults'
-import VaultMenu from './components/Menu'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import ListView404 from 'components/ListView404'
+import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
+import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
+import HarvestAll from './components/Actions/HarvestAll'
+import { FILTER_OPTIONS, SORT_OPTIONS } from './constants'
+import { styles } from './styles'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
@@ -75,6 +78,9 @@ const Vaults: React.FC = () => {
   const vaultsHasRewards = stakedOnlyVaults.filter((vault) =>
     new BigNumber(vault.userData.pendingRewards).isGreaterThan(0),
   )
+  const vaultPids = vaultsHasRewards?.map((vault) => {
+    return vault?.pid
+  })
 
   const stakedInactiveVaults = inactiveVaults.filter(
     (vault) => vault.userData && new BigNumber(vault.userData.stakedBalance).isGreaterThan(0),
@@ -138,41 +144,42 @@ const Vaults: React.FC = () => {
   )
 
   return (
-    <>
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
-      >
-        <ListViewLayout>
-          <Banner
-            title={t('BANANA Maximizers')}
-            banner="banana-maximizers"
-            link="?modal=tutorial"
-            titleColor="primaryBright"
-            maxWidth={1130}
-          />
-          <VaultMenu
-            onHandleQueryChange={handleChangeQuery}
-            onSetSortOption={setSortOption}
-            onSetStake={setStakedOnly}
-            onSetVaultType={setVaultType}
-            vaults={vaultsHasRewards}
-            activeOption={sortOption}
-            activeVaultType={vaultType}
-            stakedOnly={stakedOnly}
-            query={searchQuery}
-          />
+    <Flex sx={styles.maxiContainer}>
+      <ListViewLayout>
+        <Banner
+          title={t('BANANA Maximizers')}
+          banner="banana-maximizers"
+          link="?modal=tutorial"
+          titleColor="primaryBright"
+          maxWidth={1130}
+        />
+        <Flex sx={styles.maxiContent}>
+          <Flex sx={{ my: '20px' }}>
+            <ListViewMenu
+              query={searchQuery}
+              onHandleQueryChange={handleChangeQuery}
+              setSortOption={setSortOption}
+              sortOption={sortOption}
+              checkboxLabel="Staked"
+              showOnlyCheckbox={stakedOnly}
+              setShowOnlyCheckbox={setStakedOnly}
+              setFilterOption={setVaultType}
+              filterOption={vaultType}
+              toogleLabels={['ACTIVE', 'INACTIVE']}
+              sortOptions={SORT_OPTIONS}
+              filterOptions={FILTER_OPTIONS}
+              actionButton={<HarvestAll pids={vaultPids} />}
+            />
+          </Flex>
           {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.maximizers.includes(chainId) ? (
             <ListView404 product={LIST_VIEW_PRODUCTS.MAXIMIZERS} />
           ) : (
             <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
           )}
-        </ListViewLayout>
-        <div ref={loadMoreRef} />
-      </Flex>
-    </>
+          <div ref={loadMoreRef} />
+        </Flex>
+      </ListViewLayout>
+    </Flex>
   )
 }
 

@@ -13,7 +13,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Field, selectCurrency } from 'state/swap/actions'
 import { useAppDispatch } from 'state'
 import CardActions from './CardActions'
-import { NextArrow, styles } from './styles'
+import { styles } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from 'state/zap/actions'
@@ -332,7 +332,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                   value2Direction="column"
                   style={{ flexDirection: 'column', maxWidth: '120px' }}
                 />
-                <NextArrow />
+                <Svg icon="caret" direction="right" width="17px" />
                 <CardActions
                   allowance={userAllowance?.toString()}
                   stakedBalance={farm?.userData?.stakedBalance?.toString()}
@@ -341,7 +341,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                   lpValueUsd={farm.lpValueUsd}
                   pid={farm.pid}
                 />
-                <NextArrow />
+                <Svg icon="caret" direction="right" width="17px" />
                 <HarvestAction
                   pid={farm.pid}
                   disabled={userEarnings === '0.00'}

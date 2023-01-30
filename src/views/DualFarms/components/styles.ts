@@ -1,10 +1,4 @@
-import styled from 'styled-components'
-import { ArrowDropUpIcon } from '@apeswapfinance/uikit'
 import { ThemeUIStyleObject } from 'theme-ui'
-
-export const NextArrow = styled(ArrowDropUpIcon)`
-  transform: rotate(90deg);
-`
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   expandedContent: {

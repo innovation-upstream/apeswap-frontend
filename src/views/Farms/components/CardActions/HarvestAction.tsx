@@ -54,7 +54,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
       <Flex sx={{ width: '100%', maxWidth: '130px' }}>
         <Button
           className="noClick"
-          disabled={false}
+          disabled={disabled || pendingTrx}
           onClick={async () => {
             setPendingTrx(true)
             await onHarvest()
@@ -86,6 +86,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
           value2={userEarningsUsd}
           value2Secondary
           value2Direction="column"
+          style={{ flexDirection: 'column' }}
         />
       </Flex>
     </Flex>

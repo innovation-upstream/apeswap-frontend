@@ -1,9 +1,11 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import BigNumber from 'bignumber.js'
-import { CenterContainer, StyledUnlockButton } from './styles'
-import ApprovalAction from './ApprovalAction'
 import StakeAction from './StakeActions'
+import { styles } from '../../../Farms/components/styles'
+import { Flex } from '@ape.swap/uikit'
+import { getBalanceNumber } from 'utils/formatBalance'
+import ListViewContent from '../../../../components/ListViewV2/ListViewContent'
 
 // Changed props to type string because BigNumbers cause re-renders
 
@@ -30,32 +32,47 @@ const Actions: React.FC<CardActionProps> = ({
   pid,
   vaultVersion,
 }) => {
-  const { account } = useActiveWeb3React()
   const actionToRender = () => {
-    if (!account) {
-      return (
-        <CenterContainer>
-          <StyledUnlockButton />
-        </CenterContainer>
-      )
-    }
-    if (!new BigNumber(allowance)?.gt(0)) {
-      return (
-        <CenterContainer>
-          <ApprovalAction stakingTokenContractAddress={stakeTokenAddress} vaultVersion={vaultVersion} pid={pid} />
-        </CenterContainer>
-      )
-    }
+    const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
+    const userStakedBalanceUsd = `$${(getBalanceNumber(new BigNumber(stakedBalance || 0)) * stakeTokenValueUsd).toFixed(
+      2,
+    )}`
     return (
-      <StakeAction
-        stakedBalance={stakedBalance}
-        stakedTokenSymbol={stakedTokenSymbol}
-        stakingTokenBalance={stakingTokenBalance}
-        stakeTokenValueUsd={stakeTokenValueUsd}
-        withdrawFee={withdrawFee}
-        pid={pid}
-        vaultVersion={vaultVersion}
-      />
+      <>
+        <Flex sx={styles.onlyMobile}>
+          <ListViewContent
+            title={`Staked ${stakedTokenSymbol}`}
+            value={rawStakedBalance ? rawStakedBalance.toFixed(2) : '0.000'}
+            value2={userStakedBalanceUsd}
+            value2Secondary
+            value2Direction="column"
+            style={{ flexDirection: 'column', maxWidth: '110px' }}
+          />
+        </Flex>
+        <Flex sx={styles.depositContainer}>
+          <StakeAction
+            stakedBalance={stakedBalance}
+            stakedTokenSymbol={stakedTokenSymbol}
+            stakingTokenBalance={stakingTokenBalance}
+            stakeTokenValueUsd={stakeTokenValueUsd}
+            withdrawFee={withdrawFee}
+            pid={pid}
+            vaultVersion={vaultVersion}
+            allowance={allowance}
+            stakeTokenAddress={stakeTokenAddress}
+          />
+        </Flex>
+        <Flex sx={styles.onlyDesktop}>
+          <ListViewContent
+            title={`Staked ${stakedTokenSymbol}`}
+            value={`${rawStakedBalance ? rawStakedBalance.toFixed(2) : '0.000'}`}
+            value2={userStakedBalanceUsd}
+            value2Secondary
+            value2Direction="column"
+            style={{ flexDirection: 'column', maxWidth: '140px' }}
+          />
+        </Flex>
+      </>
     )
   }
   return actionToRender()

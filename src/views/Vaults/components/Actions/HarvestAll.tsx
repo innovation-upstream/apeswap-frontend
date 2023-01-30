@@ -1,3 +1,4 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useToast } from 'state/hooks'
@@ -7,8 +8,9 @@ import useHarvestAllMaximizer from 'views/Vaults/hooks/useHarvestAllMaximizer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAppDispatch } from 'state'
 import { useIsModalShown } from 'state/user/hooks'
-import { StyledButtonSquare } from './styles'
 import { useTranslation } from 'contexts/Localization'
+import { Button } from '@ape.swap/uikit'
+import { styles } from '../../../Farms/components/styles'
 
 interface HarvestActionsProps {
   pids: number[]
@@ -49,15 +51,16 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ pids, disabled }) => {
   }
 
   return (
-    <StyledButtonSquare
-      height={36}
+    <Button
+      size="sm"
       minWidth={100}
       disabled={disabled || pendingTrx || pids.length <= 0}
       onClick={handleHarvestAll}
       load={pendingTrx}
+      sx={styles.harvestAllBtn}
     >
-      HARVEST ALL ({pids.length})
-    </StyledButtonSquare>
+      {t('HARVEST ALL')} ({pids.length})
+    </Button>
   )
 }
 

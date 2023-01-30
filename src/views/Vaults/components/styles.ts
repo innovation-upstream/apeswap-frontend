@@ -1,6 +1,6 @@
-import { ArrowDropUpIcon } from '@apeswapfinance/uikit'
-import { Button, Flex, Tag } from '@ape.swap/uikit'
+import { Button } from '@ape.swap/uikit'
 import styled from '@emotion/styled'
+import { ThemeUIStyleObject } from 'theme-ui'
 
 export const StyledButton = styled(Button)`
   border-radius: 10px;
@@ -12,28 +12,54 @@ export const StyledButton = styled(Button)`
   justify-content: space-evenly;
 `
 
-export const NextArrow = styled(ArrowDropUpIcon)`
-  transform: rotate(90deg);
-`
-
-export const Container = styled(Flex)`
-  position: relative;
-`
-
-export const ActionContainer = styled(Flex)`
-  width: 100%;
-  justify-content: space-between;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: fit-content;
-  }
-`
-
-export const StyledTag = styled(Tag)`
-  font-size: 10px;
-  padding: 0px 6px !important;
-  font-weight: 700;
-  border: none;
-  border-radius: 10px;
-  height: auto;
-  width: max-content;
-`
+export const styles: Record<string, ThemeUIStyleObject> = {
+  expandedContent: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: '0 10px',
+    justifyContent: 'space-between',
+  },
+  styledBtn: {
+    fontSize: '16px',
+    padding: '10px',
+    width: '140px',
+    minWidth: '100px',
+    height: '44px',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
+    },
+  },
+  smallBtn: {
+    maxWidth: '60px',
+    width: '100%',
+    minWidth: '44px',
+    height: '44px',
+  },
+  depositContainer: {
+    width: '130px',
+    minWidth: '100px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
+    },
+  },
+  harvestAllBtn: {
+    height: '36px',
+    lineHeight: '18px',
+    justifyContent: 'center',
+    width: '100%',
+    '@media screen and (min-width: 852px)': {
+      width: '150px',
+    },
+  },
+  onlyDesktop: {
+    justifyContent: 'space-around',
+    display: ['none', 'none', 'flex'],
+  },
+  onlyMobile: {
+    flexDirection: 'column',
+    display: ['flex', 'flex', 'none'],
+  },
+}

@@ -1,3 +1,6 @@
+import styled from 'styled-components'
+import { Button } from '@apeswapfinance/uikit'
+
 const styles = {
   apyButton: {
     svg: {
@@ -115,3 +118,13 @@ const styles = {
   }),
 } as any
 export default styles
+
+export const FarmButton = styled(Button)`
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10px 20px;
+  min-width: 129px;
+  height: 44px;
+  justify-content: space-evenly;
+`

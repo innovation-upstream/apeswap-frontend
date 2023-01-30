@@ -1,25 +1,5 @@
-import styled from 'styled-components'
-import { Button, ArrowDropUpIcon } from '@apeswapfinance/uikit'
 import { ThemeUIStyleObject } from 'theme-ui'
 
-export const FarmButton = styled(Button)`
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 10px 20px;
-  min-width: 129px;
-  height: 44px;
-  justify-content: space-evenly;
-`
-
-export const NextArrow = styled(ArrowDropUpIcon)`
-  transform: rotate(90deg);
-  margin: 0 3px;
-  display: none;
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: inherit;
-  }
-`
 export const styles: Record<string, ThemeUIStyleObject> = {
   expandedContent: {
     width: '100%',
@@ -36,6 +16,7 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     height: '44px',
     '@media screen and (max-width: 852px)': {
       minWidth: '130px',
+      width: '130px',
     },
   },
   smallBtn: {

@@ -6,7 +6,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React from 'react'
 import { JungleFarm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { NextArrow } from 'views/Farms/components/styles'
 import { useTranslation } from 'contexts/Localization'
 import HarvestAction from './Actions/HarvestAction'
 import CalcButton from 'components/RoiCalculator/CalcButton'
@@ -268,9 +267,9 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
                   value2Direction="column"
                   style={{ flexDirection: 'column', maxWidth: '120px' }}
                 />
-                <NextArrow />
+                <Svg icon="caret" direction="right" width="17px" />
                 <StakeAction farm={farm} />
-                <NextArrow />
+                <Svg icon="caret" direction="right" width="17px" />
                 <HarvestAction
                   jungleId={farm?.jungleId}
                   disabled={userEarnings <= 0}

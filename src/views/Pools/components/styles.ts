@@ -1,5 +1,3 @@
-import { Tag } from '@ape.swap/uikit'
-import styled from '@emotion/styled'
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const poolStyles: Record<string, ThemeUIStyleObject> = {
@@ -76,13 +74,3 @@ export const poolStyles: Record<string, ThemeUIStyleObject> = {
     display: ['flex', 'flex', 'none'],
   },
 }
-
-export const StyledTag = styled(Tag)`
-  font-size: 10px !important;
-  padding: 0px 6px !important;
-  font-weight: 700 !important;
-  border: none !important;
-  border-radius: 10px !important;
-  height: auto !important;
-  width: max-content !important;
-`
