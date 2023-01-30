@@ -63,13 +63,13 @@ export const fetchVaultV3UserDataAsync =
       const userVaultAllowances = await fetchVaultUserAllowances(account, chainId, vaults)
       const userVaultTokenBalances = await fetchVaultUserTokenBalances(account, chainId, vaults)
       const userVaultBalances = await fetchVaultUserStakedAndPendingBalances(account, chainId, vaults)
-      const userData = filteredVaults.map((vault, index) => {
+      const userData = filteredVaults.map(({ pid, id }) => {
         return {
-          id: vault.id,
-          allowance: userVaultAllowances[index],
-          tokenBalance: userVaultTokenBalances[index],
-          stakedBalance: userVaultBalances.stakedBalances[index],
-          pendingRewards: userVaultBalances.pendingRewards[index],
+          id: id,
+          allowance: userVaultAllowances[pid],
+          tokenBalance: userVaultTokenBalances[pid],
+          stakedBalance: userVaultBalances.stakedBalances[pid],
+          pendingRewards: userVaultBalances.pendingRewards[pid],
         }
       })
       dispatch(setVaultV3UserData(userData))
@@ -79,33 +79,27 @@ export const fetchVaultV3UserDataAsync =
   }
 
 export const updateVaultV3UserAllowance =
-  (account: string, chainId: number, id: number): AppThunk =>
+  (account: string, chainId: number, pid: number): AppThunk =>
   async (dispatch, getState) => {
     const vaults = getState().vaultsV3.data
     const allowances = await fetchVaultUserAllowances(account, chainId, vaults)
-    const filteredVaults = vaults.filter((vault) => vault.availableChains.includes(chainId))
-    const index = filteredVaults.findIndex((v) => v.pid === id)
-    dispatch(updateVaultsV3UserData({ id, field: 'allowance', value: allowances[index] }))
+    dispatch(updateVaultsV3UserData({ pid, field: 'allowance', value: allowances[pid] }))
   }
 
 export const updateVaultV3UserBalance =
-  (account: string, chainId: number, id: number): AppThunk =>
+  (account: string, chainId: number, pid: number): AppThunk =>
   async (dispatch, getState) => {
     const vaults = getState().vaultsV3.data
     const tokenBalances = await fetchVaultUserTokenBalances(account, chainId, vaults)
-    const filteredVaults = vaults.filter((vault) => vault.availableChains.includes(chainId))
-    const index = filteredVaults.findIndex((v) => v.id === id)
-    dispatch(updateVaultsV3UserData({ id, field: 'tokenBalance', value: tokenBalances[index] }))
+    dispatch(updateVaultsV3UserData({ pid, field: 'tokenBalance', value: tokenBalances[pid] }))
   }
 
 export const updateVaultV3UserStakedBalance =
-  (account: string, chainId: number, id: number): AppThunk =>
+  (account: string, chainId: number, pid: number): AppThunk =>
   async (dispatch, getState) => {
     const vaults = getState().vaultsV3.data
     const stakedBalances = await fetchVaultUserStakedAndPendingBalances(account, chainId, vaults)
-    const filteredVaults = vaults.filter((vault) => vault.availableChains.includes(chainId))
-    const index = filteredVaults.findIndex((v) => v.id === id)
-    dispatch(updateVaultsV3UserData({ id, field: 'stakedBalance', value: stakedBalances.stakedBalances[index] }))
+    dispatch(updateVaultsV3UserData({ pid, field: 'stakedBalance', value: stakedBalances.stakedBalances[pid] }))
   }
 
 // Actions
