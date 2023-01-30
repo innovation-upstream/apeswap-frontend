@@ -11,7 +11,8 @@ export const useFetchLpTokenPrices = () => {
   const { slowRefresh } = useRefresh()
   const { chainId } = useActiveWeb3React()
   const farms = useSelector((state: State) => state.farms.data)
+  const v2Farms = useSelector((state: State) => state.farmsV2.data)
   useEffect(() => {
-    dispatch(fetchLpTokenPrices(chainId, farms))
-  }, [dispatch, farms, slowRefresh, chainId])
+    dispatch(fetchLpTokenPrices(chainId, [...farms, ...v2Farms]))
+  }, [dispatch, farms, v2Farms, slowRefresh, chainId])
 }

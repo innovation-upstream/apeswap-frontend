@@ -211,7 +211,7 @@ const Pools: React.FC = () => {
             <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
           ) : (
             <>
-              {currentPhase !== MigrationPhases.MIGRATE_PHASE_0 && (
+              {currentPhase !== MigrationPhases.MIGRATE_PHASE_0 && isActive && (
                 <>
                   {new BigNumber(legacyPool?.userData?.stakedBalance).gt(0) && (
                     <DisplayLegacyPool pools={[legacyPool]} openId={null} poolTags={null} />
