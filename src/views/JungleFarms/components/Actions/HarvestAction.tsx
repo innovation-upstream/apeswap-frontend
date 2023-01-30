@@ -1,31 +1,37 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { useJungleHarvest } from 'hooks/useHarvest'
-import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { updateJungleFarmsUserPendingReward } from 'state/jungleFarms'
-import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
-import { StyledButton } from '../styles'
-import { ActionContainer } from './styles'
+import { Button, Flex } from '@ape.swap/uikit'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
+import { styles } from '../../../Farms/components/styles'
 
 interface HarvestActionsProps {
   jungleId: number
   userEarnings: number
   earnTokenSymbol: string
   disabled: boolean
+  userEarningsUsd: string
 }
 
-const HarvestAction: React.FC<HarvestActionsProps> = ({ jungleId, earnTokenSymbol, disabled, userEarnings }) => {
+const HarvestAction: React.FC<HarvestActionsProps> = ({
+  jungleId,
+  earnTokenSymbol,
+  disabled,
+  userEarnings,
+  userEarningsUsd,
+}) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
   const { onHarvest } = useJungleHarvest(jungleId)
 
   const { toastSuccess } = useToast()
-  const isMobile = useIsMobile()
   const { t } = useTranslation()
 
   const handleHarvest = async () => {
@@ -47,34 +53,40 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ jungleId, earnTokenSymbo
   }
 
   return (
-    <ActionContainer>
-      {isMobile && (
+    <Flex
+      sx={{
+        width: ['100%', '100%', 'unset'],
+        minWidth: '235px',
+        justifyContent: 'space-between',
+        mt: ['10px', '10px', '0px'],
+      }}
+    >
+      <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
         <ListViewContent
           title={`${t('Earned')} ${earnTokenSymbol}`}
           value={userEarnings?.toFixed(4)}
-          width={100}
-          height={50}
-          ml={10}
+          value2={userEarningsUsd}
+          value2Secondary
+          value2Direction="column"
+          style={{ maxWidth: '50%', flexDirection: 'column' }}
         />
-      )}
-      <StyledButton
-        disabled={disabled || pendingTrx}
-        onClick={handleHarvest}
-        load={pendingTrx}
-        style={{ minWidth: isMobile && jungleId === 0 && '100px', width: isMobile && jungleId === 0 && '100px' }}
-      >
-        {t('HARVEST')}
-      </StyledButton>
-      {!isMobile && (
+      </Flex>
+      <Flex sx={{ width: '100%', maxWidth: '130px' }}>
+        <Button disabled={disabled || pendingTrx} onClick={handleHarvest} load={pendingTrx} sx={styles.styledBtn}>
+          {t('HARVEST')}
+        </Button>
+      </Flex>
+      <Flex sx={styles.onlyDesktop}>
         <ListViewContent
           title={`${t('Earned')} ${earnTokenSymbol}`}
           value={userEarnings?.toFixed(4)}
-          width={150}
-          height={50}
-          ml={10}
+          value2={userEarningsUsd}
+          value2Secondary
+          value2Direction="column"
+          style={{ flexDirection: 'column', maxWidth: '110px' }}
         />
-      )}
-    </ActionContainer>
+      </Flex>
+    </Flex>
   )
 }
 

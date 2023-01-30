@@ -76,6 +76,9 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   onlyDesktop: {
     display: ['none', 'none', 'flex'],
   },
+  onlyMobile: {
+    display: ['flex', 'flex', 'none'],
+  },
   monkey: {
     height: '187px',
     width: '134px',

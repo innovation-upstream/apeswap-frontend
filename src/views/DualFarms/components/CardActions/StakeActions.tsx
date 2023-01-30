@@ -1,20 +1,19 @@
+/** @jsxImportSource theme-ui */
 import React, { useCallback, useState } from 'react'
-import { Flex, AddIcon, MinusIcon, AutoRenewIcon, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { Flex, AddIcon, MinusIcon, AutoRenewIcon, useModal, Button } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { useMiniChefUnstake } from 'hooks/useUnstake'
 import { useToast } from 'state/hooks'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ListViewContent from 'components/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import DualDepositModal from 'components/DualDepositModal'
 import WithdrawModal from '../../../../components/WithdrawModal'
-import { ActionContainer, CenterContainer, SmallButton, StyledButton } from './styles'
 import { DualFarm } from 'state/types'
-import { useModal } from '@ape.swap/uikit'
 import { useDualFarmStake } from 'hooks/useStake'
 import { PRODUCT } from '../../../../config/constants'
+import UnlockButton from '../../../../components/UnlockButton'
+import { styles } from '../../../Farms/components/styles'
 
 interface StakeActionsProps {
   lpValueUsd: number
@@ -23,17 +22,11 @@ interface StakeActionsProps {
 
 const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
   const stakedBalance = farm?.userData?.stakedBalance?.toString()
-  const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
   const { t } = useTranslation()
-  const userStakedBalanceUsd = `$${(
-    getBalanceNumber(new BigNumber(stakedBalance) || new BigNumber(0)) * lpValueUsd
-  ).toFixed(2)}`
   const [pendingDepositTrx, setPendingDepositTrx] = useState(false)
   const [pendingWithdrawTrx, setPendingWithdrawTrx] = useState(false)
   const { toastSuccess, toastError } = useToast()
-  const { isXl, isLg, isXxl } = useMatchBreakpoints()
-  const isMobile = !isLg && !isXl && !isXxl
   const firstStake = !new BigNumber(stakedBalance)?.gt(0)
 
   const { onStake } = useDualFarmStake(farm?.pid)
@@ -106,63 +99,43 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
   )
 
   const renderStakingButtons = () => {
+    if (!account) {
+      return <UnlockButton />
+    }
     if (firstStake) {
       return (
-        <CenterContainer>
-          <StyledButton
-            onClick={onPresentDeposit}
-            endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
-            disabled={pendingDepositTrx}
-          >
-            {t('DEPOSIT')}
-          </StyledButton>
-        </CenterContainer>
+        <Button
+          onClick={onPresentDeposit}
+          endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
+          disabled={pendingDepositTrx}
+          sx={styles.styledBtn}
+        >
+          {t('DEPOSIT')}
+        </Button>
       )
     }
     return (
-      <ActionContainer>
-        {isMobile && (
-          <ListViewContent
-            title={t('Staked LP')}
-            value={`${rawStakedBalance.toFixed(6)} LP`}
-            value2={userStakedBalanceUsd}
-            value2Secondary
-            width={100}
-            height={50}
-            lineHeight={15}
-            ml={10}
-          />
-        )}
-        <Flex>
-          <SmallButton
-            onClick={onPresentWithdraw}
-            endIcon={pendingWithdrawTrx && <AutoRenewIcon spin color="currentColor" />}
-            disabled={pendingWithdrawTrx}
-            mr="6px"
-          >
-            {!pendingWithdrawTrx && <MinusIcon color="white" width="16px" height="20px" fontWeight={700} />}
-          </SmallButton>
-          <SmallButton
-            onClick={onPresentDeposit}
-            endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
-            disabled={pendingDepositTrx}
-          >
-            {!pendingDepositTrx && <AddIcon color="white" width="20px" height="20px" fontWeight={700} />}
-          </SmallButton>
-        </Flex>
-        {!isMobile && (
-          <ListViewContent
-            title={t('Staked LP')}
-            value={`${rawStakedBalance.toFixed(6)} LP`}
-            value2={userStakedBalanceUsd}
-            value2Secondary
-            width={100}
-            height={50}
-            lineHeight={15}
-            ml={10}
-          />
-        )}
-      </ActionContainer>
+      <Flex sx={{ maxWidth: ['', '', '94px'], alignItems: 'center', width: '100%' }}>
+        <Button
+          onClick={onPresentWithdraw}
+          endIcon={pendingWithdrawTrx && <AutoRenewIcon spin color="currentColor" />}
+          disabled={pendingWithdrawTrx}
+          mr="10px"
+          size="sm"
+          sx={styles.smallBtn}
+        >
+          {!pendingWithdrawTrx && <MinusIcon color="white" width="16px" height="20px" fontWeight={700} />}
+        </Button>
+        <Button
+          onClick={onPresentDeposit}
+          endIcon={pendingDepositTrx && <AutoRenewIcon spin color="currentColor" />}
+          disabled={pendingDepositTrx}
+          size="sm"
+          sx={styles.smallBtn}
+        >
+          {!pendingDepositTrx && <AddIcon color="white" width="20px" height="20px" fontWeight={700} />}
+        </Button>
+      </Flex>
     )
   }
 

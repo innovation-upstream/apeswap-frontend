@@ -17,9 +17,10 @@ interface HarvestActionsProps {
   pid: number
   userEarningsUsd: string
   disabled: boolean
+  userEarnings: string
 }
 
-const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarningsUsd }) => {
+const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarnings, userEarningsUsd }) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
@@ -43,14 +44,17 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
       <Flex sx={styles.onlyMobile}>
         <ListViewContent
           title={t('Earned')}
-          value={userEarningsUsd}
+          value={userEarnings}
+          value2={userEarningsUsd}
+          value2Secondary
+          value2Direction="column"
           style={{ maxWidth: '50%', flexDirection: 'column' }}
         />
       </Flex>
-      <Flex sx={{ width: '50%', maxWidth: '130px' }}>
+      <Flex sx={{ width: '100%', maxWidth: '130px' }}>
         <Button
           className="noClick"
-          disabled={disabled || pendingTrx}
+          disabled={false}
           onClick={async () => {
             setPendingTrx(true)
             await onHarvest()
@@ -78,8 +82,10 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
       <Flex sx={styles.onlyDesktop}>
         <ListViewContent
           title={t('Earned')}
-          value={userEarningsUsd}
-          style={{ flexDirection: 'column', maxWidth: '110px' }}
+          value={userEarnings}
+          value2={userEarningsUsd}
+          value2Secondary
+          value2Direction="column"
         />
       </Flex>
     </Flex>

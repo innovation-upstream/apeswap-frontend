@@ -92,7 +92,6 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
           <Flex
             sx={{
               flexDirection: 'column',
-              '@media screen and (minWidth: 852px)': { flexDirection: 'row' },
               width: '100%',
               justifyContent: 'space-between',
             }}
@@ -285,7 +284,10 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                       }
                       sx={styles.styledBtn}
                     >
-                      {t('GET LP')} <Icon icon="ZapIcon" color="primaryBright" />
+                      {t('GET LP')}
+                      <Flex sx={{ ml: '5px' }}>
+                        <Icon icon="ZapIcon" color="primaryBright" />
+                      </Flex>
                     </Button>
                   </Flex>
                 </Flex>
@@ -299,7 +301,12 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                     pid={farm.pid}
                   />
                 </Flex>
-                <HarvestAction pid={farm.pid} disabled={userEarnings === '0.00'} userEarningsUsd={userEarningsUsd} />
+                <HarvestAction
+                  pid={farm.pid}
+                  disabled={userEarnings === '0.00'}
+                  userEarnings={userEarnings}
+                  userEarningsUsd={userEarningsUsd}
+                />
               </Flex>
               <Flex sx={{ ...styles.onlyDesktop, width: '100%' }}>
                 <Button
@@ -312,7 +319,10 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                   }
                   sx={styles.styledBtn}
                 >
-                  {t('GET LP')} <Icon icon="ZapIcon" color="primaryBright" />
+                  {t('GET LP')}
+                  <Flex sx={{ ml: '5px' }}>
+                    <Icon icon="ZapIcon" color="primaryBright" />
+                  </Flex>
                 </Button>
                 <ListViewContent
                   title={t('Available LP')}
@@ -332,7 +342,12 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                   pid={farm.pid}
                 />
                 <NextArrow />
-                <HarvestAction pid={farm.pid} disabled={userEarnings === '0.00'} userEarningsUsd={userEarningsUsd} />
+                <HarvestAction
+                  pid={farm.pid}
+                  disabled={userEarnings === '0.00'}
+                  userEarnings={userEarnings}
+                  userEarningsUsd={userEarningsUsd}
+                />
               </Flex>
             </Flex>
           </>

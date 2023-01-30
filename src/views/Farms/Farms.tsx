@@ -11,7 +11,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Farm } from 'state/types'
 import { useFarms, useFarmTags, usePollFarms, useFarmOrderings } from 'state/farms/hooks'
 import DisplayFarms from './components/DisplayFarms'
-import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
+import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, SORT_OPTIONS, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import ListView404 from 'components/ListView404'
@@ -19,7 +19,6 @@ import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'conf
 import { styles } from './styles'
 import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
 import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
-import { SORT_OPTIONS } from '../Pools/poolsOptions'
 
 const Farms: React.FC = () => {
   usePollFarms()

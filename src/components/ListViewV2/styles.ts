@@ -27,14 +27,14 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     alignItems: 'center',
     width: '100%',
     zIndex: 1,
-    '& > div:first-child': {
+    '& > div:first-of-type': {
       borderRadius: '10px 10px 0 0',
     },
-    '& > div:last-child': {
+    '& > div:last-of-type': {
       borderRadius: '0 0 10px 10px',
       border: 'none',
     },
-    '& > div:first-child:last-child': {
+    '& > div:first-of-type:last-of-type': {
       borderRadius: '10px 10px 10px 10px',
       border: 'none',
     },

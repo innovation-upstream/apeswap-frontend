@@ -50,53 +50,55 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
             <Svg icon="MenuSettings" width="18px" />
           </Flex>
         </Flex>
-        {expanded && (
-          <AnimatePresence>
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'fit-content' }}
-              transition={{ delay: 0.1 }}
-              exit={{ opacity: 0 }}
-              sx={{
-                position: 'relative',
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-              }}
-            >
-              <Flex sx={styles.container}>
-                {sortOption && (
-                  <Flex sx={styles.selectContainer} pr={filterOption && 3}>
-                    <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={sortOptions} />
-                  </Flex>
-                )}
-                {filterOption && (
-                  <Flex sx={styles.selectContainer} pl={sortOption && 3}>
-                    <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={filterOptions} />
-                  </Flex>
-                )}
-              </Flex>
-              <Flex sx={styles.container}>
-                <Flex>
-                  <Toggle
-                    size="sm"
-                    labels={[t(`${toogleLabels[0]}`), t(`${toogleLabels[1]}`)]}
-                    onClick={handleToogle}
-                    checked={!isExact}
-                    sx={{ height: '36px', alignItems: 'center' }}
-                  />
+        <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
+          {expanded && (
+            <AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'fit-content' }}
+                transition={{ delay: 0.1 }}
+                exit={{ opacity: 0 }}
+                sx={{
+                  position: 'relative',
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <Flex sx={styles.container}>
+                  {sortOption && (
+                    <Flex sx={styles.selectContainer} pr={filterOption && 3}>
+                      <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={sortOptions} />
+                    </Flex>
+                  )}
+                  {filterOption && (
+                    <Flex sx={styles.selectContainer} pl={sortOption && 3}>
+                      <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={filterOptions} />
+                    </Flex>
+                  )}
                 </Flex>
-                <Flex sx={{ alignItems: 'center' }} onClick={() => setShowOnlyCheckbox(!showOnlyCheckbox)}>
-                  <Checkbox checked={showOnlyCheckbox} />
-                  <Text ml="10px" size="14px" weight={700} color="success">
-                    {t(`${checkboxLabel}`)}
-                  </Text>
+                <Flex sx={styles.container}>
+                  <Flex>
+                    <Toggle
+                      size="sm"
+                      labels={[t(`${toogleLabels[0]}`), t(`${toogleLabels[1]}`)]}
+                      onClick={handleToogle}
+                      checked={!isExact}
+                      sx={{ height: '36px', alignItems: 'center' }}
+                    />
+                  </Flex>
+                  <Flex sx={{ alignItems: 'center' }} onClick={() => setShowOnlyCheckbox(!showOnlyCheckbox)}>
+                    <Checkbox checked={showOnlyCheckbox} />
+                    <Text ml="10px" size="14px" weight={700} color="success">
+                      {t(`${checkboxLabel}`)}
+                    </Text>
+                  </Flex>
                 </Flex>
-              </Flex>
-            </motion.div>
-          </AnimatePresence>
-        )}
+              </motion.div>
+            </AnimatePresence>
+          )}
+        </Flex>
         {sortOption && (
           <Flex sx={{ minWidth: '100px', ...styles.onlyDesktop }}>
             <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={sortOptions} />
