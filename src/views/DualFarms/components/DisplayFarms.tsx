@@ -11,7 +11,6 @@ import CalcButton from 'components/RoiCalculator/CalcButton'
 import CardActions from './CardActions'
 import { NextArrow, styles } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
-import useIsMobile from 'hooks/useIsMobile'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import useAddLiquidityModal from 'components/DualAddLiquidity/hooks/useAddLiquidityModal'
 import { ZapType } from '@ape.swap/sdk'
@@ -26,7 +25,6 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
 }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const isMobile = useIsMobile()
   const onAddLiquidityModal = useAddLiquidityModal(ZapType.ZAP_MINI_APE)
 
   const farmsListView = farms.map((farm, i) => {
@@ -194,8 +192,8 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 title={t('Liquidity')}
                 value={`$${Number(farm?.totalStaked).toLocaleString(undefined)}`}
                 toolTip={t('The total value of the LP tokens currently staked in this farm.')}
-                toolTipPlacement={isMobile ? 'bottomRight' : 'bottomLeft'}
-                toolTipTransform={isMobile ? 'translate(13%, 0%)' : 'translate(23%, 0%)'}
+                toolTipPlacement="bottomLeft"
+                toolTipTransform="translate(23%, 0%)"
                 style={{
                   width: '100%',
                   maxWidth: '85px',
@@ -242,8 +240,8 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                   title={t('Liquidity')}
                   value={`$${Number(farm?.totalStaked).toLocaleString(undefined)}`}
                   toolTip={t('The total value of the LP tokens currently staked in this farm.')}
-                  toolTipPlacement={isMobile ? 'bottomRight' : 'bottomLeft'}
-                  toolTipTransform={isMobile ? 'translate(13%, 0%)' : 'translate(23%, 0%)'}
+                  toolTipPlacement="bottomRight"
+                  toolTipTransform="translate(13%, 0%)"
                   style={{
                     width: '100%',
                     maxWidth: '100%',
