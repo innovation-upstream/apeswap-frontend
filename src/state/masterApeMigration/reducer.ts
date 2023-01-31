@@ -96,7 +96,8 @@ export const fetchV2Products =
     try {
       const vaultsV3 = getState().vaultsV3.data
       const farmsV2 = getState().farmsV2.data
-      const v2Products = mergeV2Products(farmsV2, vaultsV3, chainId)
+      const farmsV1 = getState().farms.data
+      const v2Products = mergeV2Products(farmsV1, farmsV2, vaultsV3, chainId)
       dispatch(setV2Products(v2Products))
       dispatch(setMigrationLoading({ mergedMigrationLoaded: true }))
     } catch (error) {

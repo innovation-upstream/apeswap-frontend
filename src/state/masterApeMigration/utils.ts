@@ -83,8 +83,16 @@ export const mergeV1Products = (farms: Farm[], v2Farms: Farm[], v1Vaults: Vault[
   ]
 }
 
-export const mergeV2Products = (v2Farms: Farm[], v3Vaults: Vault[], chainId: ChainId) => {
-  const userV2Farms = v2Farms?.filter(({ userData }) => new BigNumber(userData?.tokenBalance).isGreaterThan(0))
+export const mergeV2Products = (v1Farms: Farm[], v2Farms: Farm[], v3Vaults: Vault[], chainId: ChainId) => {
+  // Filter out farms that do not exists on v1Farms
+  const filteredV1V2FarmProducts = v2Farms?.filter(({ lpAddresses }) => {
+    return v1Farms?.find(({ lpAddresses: lpAddressesV2 }) => {
+      return lpAddressesV2[chainId]?.toLowerCase() === lpAddresses[chainId]?.toLowerCase()
+    })
+  })
+  const userV2Farms = filteredV1V2FarmProducts?.filter(({ userData }) =>
+    new BigNumber(userData?.tokenBalance).isGreaterThan(0),
+  )
   const filteredActiveVaults = v3Vaults?.filter((vault) => !vault.inactive)
 
   return userV2Farms?.map(
