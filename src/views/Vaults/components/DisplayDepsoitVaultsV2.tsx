@@ -74,7 +74,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           )}
           <Flex sx={{ height: '100%', alignItems: 'center', justifyContent: 'center', width: '200px' }}>
             {new BigNumber(vault?.userData.allowance).gt(0) ? (
-              <Stake pid={vault.pid} rawTokenBalance={rawTokenBalance} />
+              <Stake pid={vault.pid} rawTokenBalance={rawTokenBalance} version={vault.version} />
             ) : (
               <Approve pid={vault.pid} lpAddress={vault.stakeToken.address[chainId]} />
             )}
