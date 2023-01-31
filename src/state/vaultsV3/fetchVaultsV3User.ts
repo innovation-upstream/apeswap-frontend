@@ -4,16 +4,18 @@ import vaultApeV2ABI from 'config/abi/vaultApeV2.json'
 import multicall from 'utils/multicall'
 import { getVaultApeAddressV1, getVaultApeAddressV3 } from 'utils/addressHelper'
 import { Vault } from 'state/types'
+import { VaultVersion } from '@ape.swap/apeswap-lists'
 
 export const fetchVaultUserAllowances = async (account: string, chainId: number, vaultsConfig: Vault[]) => {
   const returnObj: Record<number, string> = {}
   const vaultApeAddressV3 = getVaultApeAddressV3(chainId)
+  const vaultApeAddressV1 = getVaultApeAddressV1(chainId)
   const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
   const calls = filteredVaults.map((vault) => {
     return {
       address: vault.stakeToken.address[chainId],
       name: 'allowance',
-      params: [account, vaultApeAddressV3],
+      params: [account, vault.version === VaultVersion.V1 ? vaultApeAddressV1 : vaultApeAddressV3],
     }
   })
   const rawStakeAllowances = await multicall(chainId, erc20ABI, calls)
