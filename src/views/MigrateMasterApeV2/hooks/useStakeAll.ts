@@ -1,6 +1,6 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
-import { useMasterChefV2Contract, useVaultApeV3 } from 'hooks/useContract'
+import { useMasterChefV2Contract, useVaultApeV1, useVaultApeV3 } from 'hooks/useContract'
 import { calculateGasMargin } from 'utils'
 import BigNumber from 'bignumber.js'
 import { useVaultsV3 } from 'state/vaultsV3/hooks'
@@ -15,6 +15,7 @@ import { setAddCompletionLog, setAddTransactions, updateMigrateStatus } from 'st
 import { useAppDispatch } from 'state'
 import useIsMobile from 'hooks/useIsMobile'
 import { delay } from 'lodash'
+import { VaultVersion } from '@ape.swap/apeswap-lists'
 
 const useStakeAll = () => {
   const isMobile = useIsMobile()
@@ -24,6 +25,7 @@ const useStakeAll = () => {
   const migrateMaximizers = useMigrateMaximizer()
   const masterChefV2Contract = useMasterChefV2Contract()
   const vaultApeV3Contract = useVaultApeV3()
+  const vaultApeV1Contract = useVaultApeV1()
   const { vaults: fetchedVaults } = useVaultsV3()
   // We need to filter out the innactive vaults
   const vaults = fetchedVaults.filter((vault) => !vault.inactive)
@@ -38,25 +40,40 @@ const useStakeAll = () => {
         // If maximizers is selected we need to check if one exists first. Otherwise approve the farm
         const matchedVault = vaults.find((vault) => vault.stakeToken.address[chainId].toLowerCase() === lp)
         // Estimate gas to make sure transactions dont fail
+
+        // After adding in a V1 vault to the V3 mix we have to change deposit contracts for vaults
         const gasEstimate =
           migrateMaximizers && matchedVault
-            ? vaultApeV3Contract.estimateGas.deposit(
-                matchedVault.pid,
-                new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
-              )
+            ? matchedVault.version === VaultVersion.V3
+              ? vaultApeV3Contract.estimateGas.deposit(
+                  matchedVault.pid,
+                  new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
+                )
+              : vaultApeV1Contract.estimateGas['deposit(uint256,uint256)'](
+                  matchedVault.pid,
+                  new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
+                )
             : masterChefV2Contract.estimateGas.deposit(
                 pid,
                 new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
               )
         const call =
           migrateMaximizers && matchedVault
-            ? vaultApeV3Contract.deposit(
-                matchedVault.pid,
-                new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
-                {
-                  gasLimit: calculateGasMargin(await gasEstimate),
-                },
-              )
+            ? matchedVault.version === VaultVersion.V3
+              ? vaultApeV3Contract.deposit(
+                  matchedVault.pid,
+                  new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
+                  {
+                    gasLimit: calculateGasMargin(await gasEstimate),
+                  },
+                )
+              : vaultApeV1Contract['deposit(uint256,uint256)'](
+                  matchedVault.pid,
+                  new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
+                  {
+                    gasLimit: calculateGasMargin(await gasEstimate),
+                  },
+                )
             : masterChefV2Contract.deposit(
                 pid,
                 new BigNumber(walletBalance).times(new BigNumber(10).pow(18)).toString(),
@@ -76,7 +93,9 @@ const useStakeAll = () => {
                 pid === 0 && !(migrateMaximizers && matchedVault)
                   ? 'Pool'
                   : migrateMaximizers && matchedVault
-                  ? 'Max'
+                  ? matchedVault.version === VaultVersion.V3
+                    ? 'Max'
+                    : 'Auto'
                   : 'Farm',
               lpValueUsd,
               lpSymbol: pid === 0 ? token0.symbol : `${token0.symbol} - ${token1.symbol}`,
@@ -89,7 +108,9 @@ const useStakeAll = () => {
                 pid === 0 && !(migrateMaximizers && matchedVault)
                   ? 'pool'
                   : migrateMaximizers && matchedVault
-                  ? 'max'
+                  ? matchedVault.version === VaultVersion.V3
+                    ? 'max'
+                    : 'auto'
                   : 'farm',
               stakeAmount: walletBalance,
             }
@@ -132,6 +153,7 @@ const useStakeAll = () => {
       walletIsMetamask,
       vaultApeV3Contract,
       migrateMaximizers,
+      vaultApeV1Contract,
       isMobile,
       dispatch,
       vaults,
