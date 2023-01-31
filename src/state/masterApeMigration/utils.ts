@@ -85,6 +85,7 @@ export const mergeV1Products = (farms: Farm[], v2Farms: Farm[], v1Vaults: Vault[
 
 export const mergeV2Products = (v2Farms: Farm[], v3Vaults: Vault[], chainId: ChainId) => {
   const userV2Farms = v2Farms?.filter(({ userData }) => new BigNumber(userData?.tokenBalance).isGreaterThan(0))
+  const filteredActiveVaults = v3Vaults?.filter((vault) => !vault.inactive)
 
   return userV2Farms?.map(
     ({
@@ -98,7 +99,7 @@ export const mergeV2Products = (v2Farms: Farm[], v3Vaults: Vault[], chainId: Cha
       pid,
       lpValueUsd,
     }) => {
-      const matchedVault: Vault = v3Vaults.find(
+      const matchedVault: Vault = filteredActiveVaults.find(
         (vault) => vault.stakeToken.address[chainId].toLowerCase() === lpAddresses[chainId].toLowerCase(),
       )
       const singleStakeAsset = pid === 0
