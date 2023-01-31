@@ -3,16 +3,17 @@ import React, { useState } from 'react'
 import { Skeleton, AutoRenewIcon, Button } from '@ape.swap/uikit'
 import useApproveVault from 'views/Vaults/hooks/useApproveVault'
 import { useAppDispatch } from 'state'
-import { fetchVaultUserDataAsync } from 'state/vaults'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useToast } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { styles } from '../styles'
+import { VaultVersion } from 'config/constants/types'
+import { fetchVaultV3UserDataAsync } from 'state/vaultsV3'
 
 interface ApprovalActionProps {
   stakingTokenContractAddress: string
-  vaultVersion: 'V1' | 'V2'
+  vaultVersion: VaultVersion
   pid: number
   isLoading?: boolean
 }
@@ -51,7 +52,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({
                 console.error(e)
                 setPendingTrx(false)
               })
-            dispatch(fetchVaultUserDataAsync(account, chainId))
+            dispatch(fetchVaultV3UserDataAsync(account, chainId))
             setPendingTrx(false)
           }}
           load={pendingTrx}

@@ -9,6 +9,7 @@ const fetchPrices = async (chainId: number, tokens: Token[]) => {
   const tokensToCall = Object.fromEntries(
     Object.entries(tokens).filter(([, values]) => values.address[chainId] && values.decimals[chainId]),
   )
+
   const calls = Object.values(tokensToCall).map((token, i) => {
     if (token.lpToken) {
       return {

@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { PoolConfig, Token } from 'config/constants/types'
 import { Pool, TokenPrices } from 'state/types'
-import { getPoolApr } from 'utils/apr'
+import { getFarmV2Apr, getPoolApr } from 'utils/apr'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 const cleanPoolData = (
@@ -10,6 +10,8 @@ const cleanPoolData = (
   tokenPrices: TokenPrices[],
   chainId: number,
   poolsConfig: Pool[],
+  bananaAlloc,
+  bananaPerYear,
 ) => {
   const data = chunkedPools.map((chunk, index) => {
     const poolConfig: PoolConfig = poolsConfig.find((pool) => pool.sousId === poolIds[index])
@@ -20,6 +22,8 @@ const cleanPoolData = (
       tokenPrices,
       totalStakedFormatted,
       chainId,
+      bananaAlloc,
+      bananaPerYear,
     )
     return {
       sousId: poolIds[index],
@@ -39,6 +43,8 @@ const fetchPoolTokenStatsAndApr = (
   tokenPrices: TokenPrices[],
   totalStaked,
   chainId: number,
+  bananaAlloc,
+  bananaPerYear,
 ): [Token, Token, number] => {
   // Get values needed to calculate apr
   const curPool = pool
@@ -51,13 +57,23 @@ const fetchPoolTokenStatsAndApr = (
     ? tokenPrices.find((token) => token?.address?.[chainId] === pool?.stakingToken?.address?.[chainId])
     : pool?.stakingToken
   // Calculate apr
-  const apr = getPoolApr(
-    chainId,
-    stakingToken?.price,
-    rewardToken?.price,
-    getBalanceNumber(totalStaked),
-    curPool?.tokenPerBlock,
-  )
+  let apr
+  if (pool.sousId === 0) {
+    apr = getFarmV2Apr(
+      bananaAlloc,
+      new BigNumber(stakingToken?.price),
+      new BigNumber(getBalanceNumber(totalStaked) * stakingToken?.price),
+      bananaPerYear,
+    )
+  } else {
+    apr = getPoolApr(
+      chainId,
+      stakingToken?.price,
+      rewardToken?.price,
+      getBalanceNumber(totalStaked),
+      curPool?.tokenPerBlock,
+    )
+  }
   return [stakingToken, rewardToken, apr]
 }
 

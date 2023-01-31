@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { Flex, AddIcon, MinusIcon, useModal, Button } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
-import { fetchVaultUserDataAsync } from 'state/vaults'
+import { fetchVaultV3UserDataAsync } from 'state/vaultsV3'
 import { useToast } from 'state/hooks'
 import { useAppDispatch } from 'state'
 import { useVaultStake } from 'views/Vaults/hooks/useVaultStake'
@@ -17,6 +17,7 @@ import { useTranslation } from '../../../../contexts/Localization'
 import ApprovalAction from './ApprovalAction'
 import UnlockButton from '../../../../components/UnlockButton'
 import { styles } from '../../../Farms/components/styles'
+import { VaultVersion } from 'config/constants/types'
 
 interface StakeActionsProps {
   stakingTokenBalance: string
@@ -25,7 +26,7 @@ interface StakeActionsProps {
   stakeTokenValueUsd: number
   withdrawFee: string
   pid: number
-  vaultVersion: 'V1' | 'V2'
+  vaultVersion: VaultVersion
   allowance: string
   stakeTokenAddress: string
 }
@@ -73,7 +74,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             console.error(e)
             setPendingDepositTrx(false)
           })
-        dispatch(fetchVaultUserDataAsync(account, chainId))
+        dispatch(fetchVaultV3UserDataAsync(account, chainId))
         setPendingDepositTrx(false)
       }}
     />,
@@ -100,7 +101,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             console.error(e)
             setPendingWithdrawTrx(false)
           })
-        dispatch(fetchVaultUserDataAsync(account, chainId))
+        dispatch(fetchVaultV3UserDataAsync(account, chainId))
         setPendingWithdrawTrx(false)
       }}
     />,

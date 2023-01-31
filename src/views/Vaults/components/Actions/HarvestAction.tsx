@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useToast } from 'state/hooks'
 import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { fetchVaultUserDataAsync } from 'state/vaults'
+import { fetchVaultV3UserDataAsync } from 'state/vaultsV3'
 import useHarvestMaximizer from 'views/Vaults/hooks/useHarvestMaximizer'
 import { useAppDispatch } from 'state'
 import { useIsModalShown } from 'state/user/hooks'
@@ -47,7 +47,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, earnTokenSymbol, di
         console.error(e)
         setPendingTrx(false)
       })
-    dispatch(fetchVaultUserDataAsync(account, chainId))
+    dispatch(fetchVaultV3UserDataAsync(account, chainId))
     setPendingTrx(false)
   }
 

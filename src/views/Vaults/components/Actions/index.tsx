@@ -6,8 +6,7 @@ import { styles } from '../../../Farms/components/styles'
 import { Flex } from '@ape.swap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import ListViewContent from '../../../../components/ListViewV2/ListViewContent'
-
-// Changed props to type string because BigNumbers cause re-renders
+import { VaultVersion } from 'config/constants/types'
 
 interface CardActionProps {
   allowance: string
@@ -18,7 +17,7 @@ interface CardActionProps {
   stakeTokenAddress: string
   withdrawFee: string
   pid: number
-  vaultVersion: 'V1' | 'V2'
+  vaultVersion: VaultVersion
 }
 
 const Actions: React.FC<CardActionProps> = ({

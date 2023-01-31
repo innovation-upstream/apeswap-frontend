@@ -22,7 +22,7 @@ export interface ListViewProps {
   noEarnToken?: boolean
   backgroundColor?: string
   beforeTokenContent?: React.ReactNode
-  forMigratonList?: boolean
+  forMigrationList?: boolean
 }
 
 export interface ListCardProps extends ListViewProps {

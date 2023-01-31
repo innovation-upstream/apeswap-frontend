@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useToast } from 'state/hooks'
-import { fetchVaultUserDataAsync } from 'state/vaults'
+import { fetchVaultV3UserDataAsync } from 'state/vaultsV3'
 import { getEtherscanLink, showCircular } from 'utils'
 import useHarvestAllMaximizer from 'views/Vaults/hooks/useHarvestAllMaximizer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -46,7 +46,7 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ pids, disabled }) => {
         console.error(e)
         setPendingTrx(false)
       })
-    dispatch(fetchVaultUserDataAsync(account, chainId))
+    dispatch(fetchVaultV3UserDataAsync(account, chainId))
     setPendingTrx(false)
   }
 

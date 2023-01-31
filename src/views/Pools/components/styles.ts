@@ -28,6 +28,7 @@ export const poolStyles: Record<string, ThemeUIStyleObject> = {
   },
   container: {
     position: 'relative',
+    width: '100%',
   },
   actionContainer: {
     alignItems: 'center',

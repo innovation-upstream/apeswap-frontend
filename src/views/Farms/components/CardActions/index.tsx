@@ -15,6 +15,7 @@ interface CardActionProps {
   lpValueUsd: number
   stakeLpAddress: string
   pid: number
+  v2Flag: boolean
 }
 
 const CardActions: React.FC<CardActionProps> = ({
@@ -24,6 +25,7 @@ const CardActions: React.FC<CardActionProps> = ({
   lpValueUsd,
   stakeLpAddress,
   pid,
+  v2Flag,
 }) => {
   const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
   const { t } = useTranslation()
@@ -49,6 +51,7 @@ const CardActions: React.FC<CardActionProps> = ({
           pid={pid}
           allowance={allowance}
           stakeLpAddress={stakeLpAddress}
+          v2Flag={v2Flag}
         />
       </Flex>
       <Flex sx={styles.onlyDesktop}>

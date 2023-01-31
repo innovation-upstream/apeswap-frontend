@@ -22,11 +22,17 @@ import HarvestAll from './components/Actions/HarvestAll'
 import { FILTER_OPTIONS, SORT_OPTIONS } from './poolsOptions'
 import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
 import { styles } from './styles'
+import DisplayLegacyPool from './components/DisplayLegacyPool'
+import DisplayDepositPoolV2 from './components/DisplayDepositPoolV2'
+import { useMigrationPhase } from 'state/migrationTimer/hooks'
+import { MigrationPhases } from 'state/migrationTimer/types'
+import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 
 const NUMBER_OF_POOLS_VISIBLE = 12
 
 const Pools: React.FC = () => {
   usePollPools()
+  const currentPhase = useMigrationPhase()
   const { chainId } = useActiveWeb3React()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [filterOption, setFilterOption] = useState('allTokens')
@@ -68,9 +74,18 @@ const Pools: React.FC = () => {
     }
   }, [observerIsSet])
 
-  const allNonAdminPools = allPools.filter((pool) => !pool.forAdmins && pool?.poolCategory !== PoolCategory.JUNGLE)
+  const allNonAdminPools = allPools.filter(
+    (pool) => !pool.forAdmins && pool?.poolCategory !== PoolCategory.JUNGLE && pool.sousId !== 999,
+  )
+
+  const legacyPool = allPools.find((pool) => pool.sousId === 999)
+  const v2Pool = allPools.find((pool) => pool.sousId === 0)
+
   const curPools = allNonAdminPools.map((pool) => {
-    return { ...pool, isFinished: pool.sousId === 0 ? false : pool.isFinished || currentBlock > pool.endBlock }
+    return {
+      ...pool,
+      isFinished: pool.sousId === 0 || pool.sousId === 999 ? false : pool.isFinished || currentBlock > pool.endBlock,
+    }
   })
 
   const [finishedPools, openPools] = partition(curPools, (pool) => pool.isFinished)
@@ -168,6 +183,13 @@ const Pools: React.FC = () => {
 
   return (
     <Flex sx={styles.poolContainer}>
+      <MigrationRequiredPopup
+        /* @ts-ignore */
+        v2Farms={[{ userData: v2Pool?.userData, lpAddresses: v2Pool.stakingToken.address }]}
+        /* @ts-ignore */
+        farms={[{ userData: legacyPool?.userData, lpAddresses: legacyPool.stakingToken.address }]}
+        vaults={[]}
+      />
       <ListViewLayout>
         <Banner banner="pools" link="?modal=tutorial" title={t('Staking Pools')} listViewBreak maxWidth={1130} />
         <Flex sx={styles.poolContent}>
@@ -191,7 +213,33 @@ const Pools: React.FC = () => {
           {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.pools.includes(chainId) ? (
             <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
           ) : (
-            <DisplayPools pools={renderPools()} openId={urlSearchedPool} poolTags={poolTags} />
+            <>
+              {currentPhase !== MigrationPhases.MIGRATE_PHASE_0 && isActive && (
+                <>
+                  {new BigNumber(legacyPool?.userData?.stakedBalance).gt(0) && (
+                    <DisplayLegacyPool pools={[legacyPool]} openId={null} poolTags={null} />
+                  )}
+                  {new BigNumber(v2Pool?.userData?.stakingTokenBalance).gt(0) && (
+                    <DisplayDepositPoolV2 pools={[v2Pool]} openId={null} poolTags={null} />
+                  )}
+                </>
+              )}
+              {currentPhase === MigrationPhases.MIGRATE_PHASE_1 || currentPhase === MigrationPhases.MIGRATE_PHASE_2 ? (
+                <>
+                  <DisplayPools
+                    pools={isActive ? renderPools() : [legacyPool, ...renderPools()]}
+                    openId={urlSearchedPool}
+                    poolTags={poolTags}
+                  />
+                </>
+              ) : (
+                <DisplayPools
+                  pools={isActive ? [legacyPool, ...renderPools().slice(1, renderPools().length)] : renderPools()}
+                  openId={urlSearchedPool}
+                  poolTags={poolTags}
+                />
+              )}
+            </>
           )}
           <div ref={loadMoreRef} />
         </Flex>

@@ -16,6 +16,9 @@ const contracts = {
     [ChainId.BSC_TESTNET]: '0xbbC5e1cD3BA8ED639b00927115e5f0e0040aA613',
     [ChainId.BSC]: '0x5c8D727b265DBAfaba67E050f2f739cAeEB4A6F9',
   },
+  masterChefV2: {
+    [ChainId.BSC]: '0x71354AC3c695dfB1d3f595AfA5D4364e9e06339B',
+  },
   sousChef: {
     [ChainId.BSC_TESTNET]: '0xAf1B22cBDbB502B2089885bcd230255f8B80243b',
     [ChainId.BSC]: '0x54aff400858Dcac39797a81894D9920f16972D1D',
@@ -109,6 +112,9 @@ const contracts = {
     [ChainId.BSC]: '0x38f010F1005fC70239d6Bc2173896CA35D624e8d',
     [ChainId.BSC_TESTNET]: '0x29436C9fd14d9692012262Be4917712D4097D4B3',
     [ChainId.MATIC]: '',
+  },
+  vaultApeV3: {
+    [ChainId.BSC]: '0xe5C27CD5981B727d25D37B155aBF9Aa152CEaDBe',
   },
   apePriceGetter: {
     [ChainId.BSC]: '0x5e545322b83626c745FE46144a15C00C94cBD803',

@@ -20,7 +20,12 @@ import { selectOutputCurrency } from 'state/zap/actions'
 import { Svg as Icon } from '@ape.swap/uikit'
 import Tooltip from 'components/Tooltip/Tooltip'
 
-const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] }> = ({ farms, openPid, farmTags }) => {
+const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[]; v2Flag: boolean }> = ({
+  farms,
+  openPid,
+  farmTags,
+  v2Flag,
+}) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -299,6 +304,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                     stakeLpAddress={farm.lpAddresses[chainId]}
                     lpValueUsd={farm.lpValueUsd}
                     pid={farm.pid}
+                    v2Flag={v2Flag}
                   />
                 </Flex>
                 <HarvestAction
@@ -306,6 +312,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                   disabled={userEarnings === '0.00'}
                   userEarnings={userEarnings}
                   userEarningsUsd={userEarningsUsd}
+                  v2Flag={v2Flag}
                 />
               </Flex>
               <Flex sx={{ ...styles.onlyDesktop, width: '100%' }}>
@@ -340,6 +347,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                   stakeLpAddress={farm.lpAddresses[chainId]}
                   lpValueUsd={farm.lpValueUsd}
                   pid={farm.pid}
+                  v2Flag={v2Flag}
                 />
                 <Svg icon="caret" direction="right" width="17px" />
                 <HarvestAction
@@ -347,6 +355,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
                   disabled={userEarnings === '0.00'}
                   userEarnings={userEarnings}
                   userEarningsUsd={userEarningsUsd}
+                  v2Flag={v2Flag}
                 />
               </Flex>
             </Flex>

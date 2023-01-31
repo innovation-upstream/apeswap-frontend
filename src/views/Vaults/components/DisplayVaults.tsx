@@ -19,6 +19,7 @@ import { BLOCK_EXPLORER } from 'config/constants/chains'
 import ListView from 'components/ListViewV2'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { styles } from './styles'
+import { VaultVersion } from '@ape.swap/apeswap-lists'
 
 const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults, openId }) => {
   const { chainId } = useActiveWeb3React()
@@ -176,8 +177,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                 }}
               />
               <ListViewContent
-                title={vault.version === 'V1' ? t('Staked') : t('Earned')}
-                value={vault.version === 'V1' ? userStakedBalanceUsd : userEarningsUsd}
+                title={vault.version === VaultVersion.V1 ? t('Staked') : t('Earned')}
+                value={vault.version === VaultVersion.V1 ? userStakedBalanceUsd : userEarningsUsd}
                 style={{
                   width: '100%',
                   maxWidth: '1150px',
@@ -266,12 +267,14 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                     vaultVersion={vault.version}
                   />
                 </Flex>
-                <HarvestAction
-                  pid={vault?.pid}
-                  disabled={userEarnings <= 0}
-                  userEarnings={userEarnings}
-                  earnTokenSymbol={vault?.rewardToken?.symbol}
-                />
+                {(vault.version === VaultVersion.V2 || vault.version === VaultVersion.V3) && (
+                  <HarvestAction
+                    pid={vault?.pid}
+                    disabled={userEarnings <= 0}
+                    userEarnings={userEarnings}
+                    earnTokenSymbol={vault?.rewardToken?.symbol}
+                  />
+                )}
               </Flex>
               <Flex sx={{ ...styles.onlyDesktop, width: '100%' }}>
                 {vault.stakeToken?.lpToken ? (
@@ -317,13 +320,17 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                   pid={vault.pid}
                   vaultVersion={vault.version}
                 />
-                <Svg icon="caret" direction="right" width="17px" />
-                <HarvestAction
-                  pid={vault?.pid}
-                  disabled={userEarnings <= 0}
-                  userEarnings={userEarnings}
-                  earnTokenSymbol={vault?.rewardToken?.symbol}
-                />
+                {(vault.version === VaultVersion.V2 || vault.version === VaultVersion.V3) && (
+                  <>
+                    <Svg icon="caret" direction="right" width="17px" />
+                    <HarvestAction
+                      pid={vault?.pid}
+                      disabled={userEarnings <= 0}
+                      userEarnings={userEarnings}
+                      earnTokenSymbol={vault?.rewardToken?.symbol}
+                    />
+                  </>
+                )}
               </Flex>
             </Flex>
           </>

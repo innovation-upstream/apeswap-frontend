@@ -39,12 +39,12 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
       pool?.rewardToken?.decimals[chainId],
     )
     const userEarningsUsd = `$${(userEarnings * pool.rewardToken?.price).toFixed(2)}`
-    const userTokenBalance = `${getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0))?.toFixed(3)}`
+    const userTokenBalance = `${getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0))?.toFixed(6)}`
     const userTokenBalanceUsd = `$${(
       getBalanceNumber(pool?.userData?.stakingTokenBalance || new BigNumber(0)) * pool?.stakingToken?.price
     ).toFixed(2)}`
 
-    const pTag = poolTags?.find((tag) => tag.pid === pool.sousId)
+    const pTag = poolTags?.find((tag) => tag?.pid === pool?.sousId)
     const explorerLink = BLOCK_EXPLORER[chainId]
     const poolContractURL = `${explorerLink}/address/${pool?.contractAddress[chainId]}`
 
@@ -63,7 +63,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
         id: pool.sousId,
         title: (
           <ListViewContent
-            tag={pTag?.pid === pool.sousId ? (pTag?.text.toLowerCase() as ListTagVariants) : null}
+            tag={pTag?.pid === pool?.sousId ? (pTag?.text.toLowerCase() as ListTagVariants) : null}
             value={pool?.rewardToken?.symbol || pool?.tokenName}
             style={{ maxWidth: '150px' }}
           />
@@ -142,7 +142,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                     rewardTokenName={pool?.rewardToken?.symbol}
                     rewardTokenPrice={pool?.rewardToken?.price}
                     apr={pool?.apr}
-                    tokenAddress={pool.stakingToken.address[chainId]}
+                    tokenAddress={pool?.stakingToken?.address[chainId]}
                   />
                 }
               />

@@ -7,24 +7,25 @@ import { useToast } from 'state/hooks'
 import { useIsModalShown } from 'state/user/hooks'
 import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { updateFarmUserEarnings } from 'state/farms'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
 import { styles } from '../styles'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
+import { updateFarmV2UserEarnings } from 'state/farmsV2'
 
 interface HarvestActionsProps {
   pid: number
   userEarningsUsd: string
   disabled: boolean
   userEarnings: string
+  v2Flag: boolean
 }
 
-const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarnings, userEarningsUsd }) => {
+const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarningsUsd, userEarnings, v2Flag }) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onHarvest } = useHarvest(pid)
+  const { onHarvest } = useHarvest(pid, v2Flag)
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const history = useHistory()
@@ -70,7 +71,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
                 console.error(e)
                 setPendingTrx(false)
               })
-            dispatch(updateFarmUserEarnings(chainId, pid, account))
+            dispatch(updateFarmV2UserEarnings(chainId, pid, account))
             setPendingTrx(false)
           }}
           endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
