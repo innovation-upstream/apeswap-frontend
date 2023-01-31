@@ -13,7 +13,7 @@ import useAddLiquidityModal from '../../../components/DualAddLiquidity/hooks/use
 import { ZapType } from '@ape.swap/sdk'
 import Tooltip from 'components/Tooltip/Tooltip'
 import { BLOCK_EXPLORER } from '../../../config/constants/chains'
-import ListView from '../../../components/ListViewV2'
+import ListView from '../../../components/ListViewV2/ListView'
 import ListViewContent from '../../../components/ListViewV2/ListViewContent'
 import StakeAction from './Actions/StakeActions'
 import { styles } from './styles'

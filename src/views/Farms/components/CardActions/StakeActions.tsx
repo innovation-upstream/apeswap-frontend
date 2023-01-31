@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Flex, AddIcon, MinusIcon, useModal, AutoRenewIcon, LinkExternal, Text, Button } from '@ape.swap/uikit'
+import { Flex, AddIcon, MinusIcon, useModal, AutoRenewIcon, Button } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
@@ -122,7 +122,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       )
     }
     return (
-      <Flex sx={{ maxWidth: ['', '', '94px'], alignItems: 'center', width: '100%' }}>
+      <Flex sx={styles.stakeAction}>
         <Button
           onClick={onPresentWithdraw}
           endIcon={pendingWithdrawTrx && <AutoRenewIcon spin color="currentColor" />}

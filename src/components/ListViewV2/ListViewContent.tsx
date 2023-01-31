@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, HelpIcon, ListTag, Skeleton, Text } from '@ape.swap/uikit'
-import { TooltipBubble } from '@ape.swap/uikit'
+import { Flex, HelpIcon, ListTag, Skeleton, Text, TooltipBubble } from '@ape.swap/uikit'
 import { ValueSkeleton } from '../ListViewContent/styles'
 import { useTranslation } from '../../contexts/Localization'
 import { styles } from './styles'
@@ -65,7 +64,7 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
           )}
         </Text>
         {value2 && (
-          <Text sx={value2Secondary ? styles.secondaryText : styles.valueText}>
+          <Text sx={value2Secondary ? styles.secondaryText : { ...styles.valueText, color: valueColor }}>
             {value2Icon && value2Icon}
             {value2?.includes('NaN') || value2?.includes('undefined') || value2?.includes('null') ? (
               <Skeleton sx={styles.skeleton} />

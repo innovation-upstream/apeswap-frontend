@@ -2,11 +2,11 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import StakeAction from './StakeActions'
-import { styles } from '../../../Farms/components/styles'
 import { Flex } from '@ape.swap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
-import ListViewContent from '../../../../components/ListViewV2/ListViewContent'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { VaultVersion } from 'config/constants/types'
+import { styles } from '../styles'
 
 interface CardActionProps {
   allowance: string

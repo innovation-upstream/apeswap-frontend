@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { styles } from '../../../views/Bills/components/BillsListView/styles'
 import { Select, SelectItem, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Option } from './types'
@@ -14,7 +13,16 @@ interface FilterSelectProps {
 const MenuSelect: React.FC<FilterSelectProps> = ({ selectedOption, setOption, options }) => {
   const { t } = useTranslation()
   return (
-    <Select size="xsm" onChange={(e) => setOption(e.target.value)} active={selectedOption} sx={styles.select}>
+    <Select
+      size="xsm"
+      onChange={(e) => setOption(e.target.value)}
+      active={selectedOption}
+      sx={{
+        height: '36px',
+        display: 'flex',
+        width: '100%',
+      }}
+    >
       {options?.map((option) => {
         return (
           <SelectItem size="xsm" value={option.value} key={option.label}>

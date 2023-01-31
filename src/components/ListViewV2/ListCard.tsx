@@ -18,17 +18,12 @@ const ListCard: React.FC<ListCardProps> = ({
   return (
     <>
       <Flex sx={styles.listCardContainer} onClick={() => setExpanded((prev) => !prev)}>
-        <Flex sx={{ width: '100%', justifyContent: 'space-between', my: '5px', maxWidth: ['100%', '100%', '290px'] }}>
-          <Flex sx={styles.titleContainer}>
+        <Flex sx={styles.titleContainer}>
+          <Flex sx={styles.tokensContainer}>
             {serviceTokenDisplay}
             <Flex sx={{ flexDirection: 'column', marginLeft: '10px' }}>{title}</Flex>
           </Flex>
-          <Flex
-            sx={{
-              display: ['flex', 'flex', 'none'],
-              alignItems: 'center',
-            }}
-          >
+          <Flex sx={styles.infoContentMobile}>
             <InfoContent infoContent={infoContent} expandedContent={expandedContent} expanded={expanded} />
           </Flex>
         </Flex>

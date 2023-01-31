@@ -16,7 +16,7 @@ import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from 'state/zap/actions'
 import Tooltip from 'components/Tooltip/Tooltip'
 import { BLOCK_EXPLORER } from 'config/constants/chains'
-import ListView from 'components/ListViewV2'
+import ListView from 'components/ListViewV2/ListView'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { styles } from './styles'
 import { VaultVersion } from '@ape.swap/apeswap-lists'
@@ -181,7 +181,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                 value={vault.version === VaultVersion.V1 ? userStakedBalanceUsd : userEarningsUsd}
                 style={{
                   width: '100%',
-                  maxWidth: '1150px',
+                  maxWidth: '115px',
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                 }}

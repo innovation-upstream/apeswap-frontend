@@ -9,7 +9,7 @@ import { useAppDispatch } from 'state'
 import { useIsModalShown } from 'state/user/hooks'
 import { useHistory } from 'react-router-dom'
 import { AutoRenewIcon, Button, Flex } from '@ape.swap/uikit'
-import ListViewContent from '../../../../components/ListViewV2/ListViewContent'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import { styles } from '../styles'
 

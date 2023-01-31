@@ -10,7 +10,7 @@ import { useAppDispatch } from 'state'
 import { useIsModalShown } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { Button } from '@ape.swap/uikit'
-import { styles } from '../../../Farms/components/styles'
+import { styles } from '../styles'
 
 interface HarvestActionsProps {
   pids: number[]

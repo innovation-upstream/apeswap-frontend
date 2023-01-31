@@ -1,13 +1,28 @@
 /** @jsxImportSource theme-ui */
 import { ThemeUIStyleObject } from 'theme-ui'
 
-export const styles: Record<string, ThemeUIStyleObject> = {
+export const styles: Record<
+  | 'listCardContainer'
+  | 'listViewContainer'
+  | 'listContentContainer'
+  | 'titleContainer'
+  | 'infoContentMobile'
+  | 'tokensContainer'
+  | 'titleText'
+  | 'skeleton'
+  | 'valueText'
+  | 'secondaryText'
+  | 'cardContentContainer'
+  | 'animationDiv'
+  | 'expandedWrapper',
+  ThemeUIStyleObject
+> = {
   listCardContainer: {
     borderRadius: 0,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    background: (theme) => theme.colors.white2,
+    background: (theme) => theme?.colors?.white2,
     borderBottom: '1px solid rgba(226, 226, 226, .2)',
     padding: '10px 20px 10px 20px',
     margin: '0 10px 0 10px',
@@ -47,6 +62,16 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     width: '100%',
   },
   titleContainer: {
+    width: '100%',
+    justifyContent: 'space-between',
+    my: '5px',
+    maxWidth: ['100%', '100%', '290px'],
+  },
+  infoContentMobile: {
+    display: ['flex', 'flex', 'none'],
+    alignItems: 'center',
+  },
+  tokensContainer: {
     alignItems: 'center',
     height: '100%',
     maxWidth: '290px',

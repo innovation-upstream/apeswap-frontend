@@ -2,11 +2,11 @@
 import React from 'react'
 import StakeAction from './StakeActions'
 import { DualFarm } from 'state/types'
-import { getBalanceNumber } from '../../../../utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { useTranslation } from '../../../../contexts/Localization'
+import { useTranslation } from 'contexts/Localization'
 import { Flex } from '@ape.swap/uikit'
-import ListViewContent from '../../../../components/ListViewV2/ListViewContent'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { styles } from '../styles'
 
 interface CardActionProps {

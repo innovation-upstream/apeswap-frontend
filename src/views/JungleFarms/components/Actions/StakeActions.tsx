@@ -9,7 +9,7 @@ import useStakeModals from './useStakeModals'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
-import { styles } from '../../../Farms/components/styles'
+import { styles } from '../styles'
 
 interface StakeActionsProps {
   farm: JungleFarm

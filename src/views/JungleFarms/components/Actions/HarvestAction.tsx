@@ -9,7 +9,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { Button, Flex } from '@ape.swap/uikit'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
-import { styles } from '../../../Farms/components/styles'
+import { styles } from '../styles'
 
 interface HarvestActionsProps {
   jungleId: number
@@ -53,14 +53,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   }
 
   return (
-    <Flex
-      sx={{
-        width: ['100%', '100%', 'unset'],
-        minWidth: '235px',
-        justifyContent: 'space-between',
-        mt: ['10px', '10px', '0px'],
-      }}
-    >
+    <Flex sx={styles.harvestAction}>
       <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
         <ListViewContent
           title={`${t('Earned')} ${earnTokenSymbol}`}

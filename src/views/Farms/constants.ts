@@ -14,7 +14,7 @@ export const SORT_OPTIONS = [
     value: 'stables',
   },
   {
-    label: 'APY',
+    label: 'APR',
     value: 'apr',
   },
   {

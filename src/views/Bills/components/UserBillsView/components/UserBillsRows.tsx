@@ -8,11 +8,11 @@ import { useTranslation } from 'contexts/Localization'
 import Claim from '../../Actions/Claim'
 import VestedTimer from '../../VestedTimer'
 import BillModal from '../../Modals'
-import ListViewContentMobile from 'components/ListViewV2/ListViewContent'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { Box } from 'theme-ui'
 import { BillsToRender } from '../types'
 import { formatNumberSI } from 'utils/formatNumber'
-import ListView from 'components/ListViewV2'
+import ListView from 'components/ListViewV2/ListView'
 import useIsMobile from 'hooks/useIsMobile'
 
 const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender }) => {
@@ -37,7 +37,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
       listProps: {
         id: billToRender.id,
         title: (
-          <ListViewContentMobile
+          <ListViewContent
             tag="ape"
             value={bill.lpToken.symbol}
             style={{ maxWidth: '150px', height: '35px', flexDirection: 'column' }}
@@ -45,7 +45,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
         ),
         titleContainerWidth: 280,
         cardContent: isMobile ? (
-          <ListViewContentMobile
+          <ListViewContent
             title={'Claimable'}
             value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
             value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
@@ -56,7 +56,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
           />
         ) : (
           <Flex style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
-            <ListViewContentMobile
+            <ListViewContent
               title={t('Claimable')}
               value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
               value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
@@ -66,7 +66,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(29%, -4%)"
             />
-            <ListViewContentMobile
+            <ListViewContent
               title={t('Pending')}
               value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
               value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
@@ -92,7 +92,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
         expandedContent: isMobile && (
           <Flex sx={{ width: '100%', flexWrap: 'wrap', padding: '0 10px' }}>
             <Flex sx={{ width: '100%', flexDirection: 'column' }}>
-              <ListViewContentMobile
+              <ListViewContent
                 title={'Pending'}
                 value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
                 value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}

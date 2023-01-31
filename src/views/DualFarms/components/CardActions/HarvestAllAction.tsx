@@ -4,7 +4,7 @@ import { useAllHarvest } from 'hooks/useHarvest'
 import { AutoRenewIcon, Button } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { styles } from '../../../Farms/components/styles'
+import { styles } from '../styles'
 
 interface HarvestActionsProps {
   pids: number[]

@@ -33,14 +33,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, farm }) =
   const userEarningsRewarder = getBalanceNumber(farm?.userData?.rewarderEarnings || new BigNumber(0)).toFixed(2)
 
   return (
-    <Flex
-      sx={{
-        width: ['100%', '100%', 'unset'],
-        minWidth: '205px',
-        justifyContent: 'space-between',
-        mt: ['10px', '10px', '0px'],
-      }}
-    >
+    <Flex sx={styles.harvestAction}>
       <Flex sx={styles.onlyMobile}>
         <ListViewContent
           title={t('Earned')}

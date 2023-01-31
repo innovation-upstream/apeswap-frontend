@@ -34,14 +34,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
   const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
 
   return (
-    <Flex
-      sx={{
-        width: ['100%', '100%', 'unset'],
-        minWidth: '205px',
-        justifyContent: 'space-between',
-        mt: ['10px', '10px', '0px'],
-      }}
-    >
+    <Flex sx={styles.harvestAction}>
       <Flex sx={styles.onlyMobile}>
         <ListViewContent
           title={t('Earned')}

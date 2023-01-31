@@ -1,6 +1,20 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
-export const poolStyles: Record<string, ThemeUIStyleObject> = {
+export const poolStyles: Record<
+  | 'styledBtn'
+  | 'smallBtn'
+  | 'apeHarder'
+  | 'container'
+  | 'actionContainer'
+  | 'expandedContent'
+  | 'harvestContainer'
+  | 'depositContainer'
+  | 'harvestAllBtn'
+  | 'actionWrapper'
+  | 'onlyDesktop'
+  | 'onlyMobile',
+  ThemeUIStyleObject
+> = {
   styledBtn: {
     fontSize: '16px',
     padding: '10px',
@@ -65,6 +79,11 @@ export const poolStyles: Record<string, ThemeUIStyleObject> = {
     '@media screen and (min-width: 852px)': {
       width: '150px',
     },
+  },
+  actionWrapper: {
+    width: ['100%', '100%', 'unset'],
+    minWidth: '205px',
+    justifyContent: 'space-between',
   },
   onlyDesktop: {
     justifyContent: 'space-around',

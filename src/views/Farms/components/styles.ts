@@ -1,6 +1,17 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
-export const styles: Record<string, ThemeUIStyleObject> = {
+export const styles: Record<
+  | 'expandedContent'
+  | 'styledBtn'
+  | 'smallBtn'
+  | 'depositContainer'
+  | 'harvestAllBtn'
+  | 'harvestAction'
+  | 'stakeAction'
+  | 'onlyDesktop'
+  | 'onlyMobile',
+  ThemeUIStyleObject
+> = {
   expandedContent: {
     width: '100%',
     flexDirection: 'row',
@@ -42,6 +53,17 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     '@media screen and (min-width: 852px)': {
       width: '150px',
     },
+  },
+  harvestAction: {
+    width: ['100%', '100%', 'unset'],
+    minWidth: '205px',
+    justifyContent: 'space-between',
+    mt: ['10px', '10px', '0px'],
+  },
+  stakeAction: {
+    maxWidth: ['', '', '94px'],
+    alignItems: 'center',
+    width: '100%',
   },
   onlyDesktop: {
     justifyContent: 'space-around',

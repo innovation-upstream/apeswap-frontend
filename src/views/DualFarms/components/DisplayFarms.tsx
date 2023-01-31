@@ -15,7 +15,7 @@ import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import useAddLiquidityModal from 'components/DualAddLiquidity/hooks/useAddLiquidityModal'
 import { ZapType } from '@ape.swap/sdk'
 import Tooltip from 'components/Tooltip/Tooltip'
-import ListView from 'components/ListViewV2'
+import ListView from 'components/ListViewV2/ListView'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 
 const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags: Tag[] }> = ({

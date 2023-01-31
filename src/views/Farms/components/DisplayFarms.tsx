@@ -2,7 +2,7 @@
 import React from 'react'
 import { Svg } from '@apeswapfinance/uikit'
 import { Button, Flex, ListTagVariants, useModal } from '@ape.swap/uikit'
-import ListView from 'components/ListViewV2'
+import ListView from 'components/ListViewV2/ListView'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { Farm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'

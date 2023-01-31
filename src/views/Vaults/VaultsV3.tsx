@@ -24,6 +24,7 @@ import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
 import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
 import { FILTER_OPTIONS, SORT_OPTIONS } from './constants'
 import HarvestAll from './components/Actions/HarvestAll'
+import { styles } from './styles'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
@@ -183,22 +184,17 @@ const VaultsV3: React.FC = () => {
   )
 
   return (
-    <>
+    <Flex sx={styles.maxiContainer}>
       <MigrationRequiredPopup v2Farms={v2Farms} farms={[]} vaults={legacyVaults} />
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
-      >
-        <ListViewLayout>
-          <Banner
-            title={t('BANANA Maximizers')}
-            banner="banana-maximizers"
-            link="?modal=tutorial"
-            titleColor="primaryBright"
-            maxWidth={1130}
-          />
+      <ListViewLayout>
+        <Banner
+          title={t('BANANA Maximizers')}
+          banner="banana-maximizers"
+          link="?modal=tutorial"
+          titleColor="primaryBright"
+          maxWidth={1130}
+        />
+        <Flex sx={{ alignItems: 'center', justifyContent: 'center', mt: '20px' }}>
           <ListViewMenu
             query={searchQuery}
             onHandleQueryChange={handleChangeQuery}
@@ -214,53 +210,53 @@ const VaultsV3: React.FC = () => {
             filterOptions={FILTER_OPTIONS}
             actionButton={<HarvestAll pids={vaultPids} />}
           />
-          {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.maximizers.includes(chainId) ? (
-            <ListView404 product={LIST_VIEW_PRODUCTS.MAXIMIZERS} />
-          ) : (
-            <>
-              {isActive && (
-                <>
-                  <LegacyVaults />
-                  {vaultsWithLpBalance.length > 0 && (
+        </Flex>
+        {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.maximizers.includes(chainId) ? (
+          <ListView404 product={LIST_VIEW_PRODUCTS.MAXIMIZERS} />
+        ) : (
+          <>
+            {isActive && (
+              <>
+                <LegacyVaults />
+                {vaultsWithLpBalance.length > 0 && (
+                  <Flex
+                    sx={{
+                      background: 'gradient',
+                      padding: '5px',
+                      borderRadius: '10px 0px 10px 10px',
+                      mt: '40px',
+                      mb: '20px',
+                      position: 'relative',
+                    }}
+                  >
                     <Flex
                       sx={{
-                        background: 'gradient',
-                        padding: '5px',
-                        borderRadius: '10px 0px 10px 10px',
-                        mt: '40px',
-                        mb: '20px',
-                        position: 'relative',
+                        position: 'absolute',
+                        right: 0,
+                        top: 0,
+                        padding: '2.5px 10px',
+                        borderRadius: '10px 10px 0px 0px',
+                        background: 'rgb(221,174,66)',
+                        transform: 'translate(0px, -24px)',
+                        zIndex: 10,
                       }}
                     >
-                      <Flex
-                        sx={{
-                          position: 'absolute',
-                          right: 0,
-                          top: 0,
-                          padding: '2.5px 10px',
-                          borderRadius: '10px 10px 0px 0px',
-                          background: 'rgb(221,174,66)',
-                          transform: 'translate(0px, -24px)',
-                          zIndex: 10,
-                        }}
-                      >
-                        <Text size="12px" color="primaryBright">
-                          NEW Vaults V2
-                        </Text>
-                      </Flex>
-                      <DisplayDepsoitVaultsV2 vaults={vaultsWithLpBalance} />
+                      <Text size="12px" color="primaryBright">
+                        NEW Vaults V2
+                      </Text>
                     </Flex>
-                  )}
-                </>
-              )}
-              <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
-              {!isActive && <DisplayVaults vaults={renderLegacyVaults()} openId={urlSearchedVault} />}
-            </>
-          )}
-        </ListViewLayout>
+                    <DisplayDepsoitVaultsV2 vaults={vaultsWithLpBalance} />
+                  </Flex>
+                )}
+              </>
+            )}
+            <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
+            {!isActive && <DisplayVaults vaults={renderLegacyVaults()} openId={urlSearchedVault} />}
+          </>
+        )}
         <div ref={loadMoreRef} />
-      </Flex>
-    </>
+      </ListViewLayout>
+    </Flex>
   )
 }
 

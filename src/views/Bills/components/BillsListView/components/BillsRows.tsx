@@ -2,20 +2,20 @@
 import React from 'react'
 import getTimePeriods from 'utils/getTimePeriods'
 import BigNumber from 'bignumber.js'
-import ListViewContentMobile from 'components/ListViewV2/ListViewContent'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { Flex } from '@ape.swap/uikit'
 import BillModal from '../../Modals'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import ListView from 'components/ListViewV2'
+import ListView from 'components/ListViewV2/ListView'
 import EmptyListComponent, { EmptyComponentType } from '../../EmptyListComponent/EmptyList'
 import { Bills } from 'state/types'
 import { formatNumberSI } from 'utils/formatNumber'
 import DiscountContent from './DiscountContent'
 import useIsMobile from 'hooks/useIsMobile'
 import Tooltip from 'components/Tooltip/Tooltip'
-import { BLOCK_EXPLORER } from '../../../../../config/constants/chains'
+import { BLOCK_EXPLORER } from 'config/constants/chains'
 
 interface BillsRowsProps {
   billsToRender: Bills[]
@@ -53,7 +53,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
       listProps: {
         id: bill.index,
         title: (
-          <ListViewContentMobile
+          <ListViewContent
             tag="ape"
             value={bill.lpToken.symbol}
             style={{ maxWidth: '150px', flexDirection: 'column' }}
@@ -93,7 +93,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
                 flexDirection="column"
               />
             </Flex>
-            <ListViewContentMobile
+            <ListViewContent
               title={t('Vesting Term')}
               value={vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
               style={{ maxWidth: '105px', height: '40px', flexDirection: 'column' }}
@@ -101,7 +101,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(39%, 0%)"
             />
-            <ListViewContentMobile
+            <ListViewContent
               title={t('Available Tokens')}
               value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 3)}
               style={{ maxWidth: '125px', height: '40px', flexDirection: 'column' }}
@@ -131,14 +131,14 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             {account ? (
               <Flex sx={{ width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <Flex sx={{ flexWrap: 'wrap', padding: '0 10px 10px 10px', width: '100%' }}>
-                  <ListViewContentMobile
+                  <ListViewContent
                     title={'Vesting Term'}
                     value={disabled ? 'N/A' : vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
                     toolTip={`This is how long it will take for all tokens in the Bill to fully vest.`}
                     toolTipPlacement={'bottomLeft'}
                     toolTipTransform={'translate(39%, 0%)'}
                   />
-                  <ListViewContentMobile
+                  <ListViewContent
                     title={'Available Tokens'}
                     value={disabled ? '0' : formatNumberSI(parseFloat(displayAvailable), 2)}
                     toolTip={`This is the amount of available tokens for purchase.`}

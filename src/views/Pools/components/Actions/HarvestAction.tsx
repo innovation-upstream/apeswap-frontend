@@ -14,7 +14,7 @@ import { useIsModalShown } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { poolStyles } from '../styles'
-import ListViewContentMobile from 'components/ListViewV2/ListViewContent'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
 
 interface HarvestActionsProps {
   sousId: number
@@ -91,7 +91,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
     <Flex sx={poolStyles.harvestContainer}>
       <Flex sx={{ width: ['100%', '100%', 'unset'], justifyContent: 'space-between' }}>
         <Flex sx={poolStyles.onlyMobile}>
-          <ListViewContentMobile
+          <ListViewContent
             title={`${t('Earned')} ${earnTokenSymbol}`}
             value={userEarnings?.toFixed(4)}
             value2={`$${userTokenBalanceUsd}`}
@@ -117,7 +117,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
         </Flex>
       )}
       <Flex sx={poolStyles.onlyDesktop}>
-        <ListViewContentMobile
+        <ListViewContent
           title={`${t('Earned')} ${earnTokenSymbol}`}
           value={userEarnings?.toFixed(3)}
           style={{

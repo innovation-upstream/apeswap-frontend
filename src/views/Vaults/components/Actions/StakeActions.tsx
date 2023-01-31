@@ -12,12 +12,12 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import DepositModal from '../Modals/DepositModal'
 import { useIsModalShown } from 'state/user/hooks'
 import { useHistory } from 'react-router-dom'
-import WithdrawModal from '../../../../components/WithdrawModal'
-import { useTranslation } from '../../../../contexts/Localization'
+import WithdrawModal from 'components/WithdrawModal'
+import { useTranslation } from 'contexts/Localization'
 import ApprovalAction from './ApprovalAction'
-import UnlockButton from '../../../../components/UnlockButton'
-import { styles } from '../../../Farms/components/styles'
+import UnlockButton from 'components/UnlockButton'
 import { VaultVersion } from 'config/constants/types'
+import { styles } from '../styles'
 
 interface StakeActionsProps {
   stakingTokenBalance: string
@@ -122,7 +122,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       )
     }
     return (
-      <Flex sx={{ maxWidth: ['', '', '94px'], alignItems: 'center', width: '100%' }}>
+      <Flex sx={styles.stakeActions}>
         <Button
           onClick={onPresentWithdraw}
           load={pendingWithdrawTrx}

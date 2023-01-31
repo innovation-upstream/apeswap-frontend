@@ -18,7 +18,19 @@ export const dynamicStyles: Record<'menuContainer', (props: { showMonkeyImage?: 
   }),
 }
 
-export const styles: Record<string, ThemeUIStyleObject> = {
+export const styles: Record<
+  | 'menuContainer'
+  | 'toogle'
+  | 'searchText'
+  | 'expandedButton'
+  | 'container'
+  | 'selectContainer'
+  | 'searchInput'
+  | 'onlyDesktop'
+  | 'onlyMobile'
+  | 'monkey',
+  ThemeUIStyleObject
+> = {
   menuContainer: {
     borderRadius: '10px',
     justifyContent: 'space-between',
@@ -33,6 +45,12 @@ export const styles: Record<string, ThemeUIStyleObject> = {
       padding: '10px 10px',
       flexDirection: 'row',
     },
+  },
+  toogle: {
+    height: '36px',
+    alignItems: 'center',
+    width: '100%',
+    '& div': { width: '75px', textAlign: 'center' },
   },
   searchText: {
     fontWeight: 700,

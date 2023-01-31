@@ -8,12 +8,12 @@ import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import DualDepositModal from 'components/DualDepositModal'
-import WithdrawModal from '../../../../components/WithdrawModal'
+import WithdrawModal from 'components/WithdrawModal'
 import { DualFarm } from 'state/types'
 import { useDualFarmStake } from 'hooks/useStake'
-import { PRODUCT } from '../../../../config/constants'
-import UnlockButton from '../../../../components/UnlockButton'
-import { styles } from '../../../Farms/components/styles'
+import { PRODUCT } from 'config/constants'
+import UnlockButton from 'components/UnlockButton'
+import { styles } from '../styles'
 
 interface StakeActionsProps {
   lpValueUsd: number
@@ -115,7 +115,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
       )
     }
     return (
-      <Flex sx={{ maxWidth: ['', '', '94px'], alignItems: 'center', width: '100%' }}>
+      <Flex sx={styles.stakeAction}>
         <Button
           onClick={onPresentWithdraw}
           endIcon={pendingWithdrawTrx && <AutoRenewIcon spin color="currentColor" />}

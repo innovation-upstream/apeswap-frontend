@@ -1,5 +1,6 @@
 import React from 'react'
 import { ListTagVariants } from '@ape.swap/uikit'
+import { ThemeUIStyleObject } from 'theme-ui'
 
 export interface TokenDisplayProps {
   token1: string
@@ -34,29 +35,15 @@ export interface ListViewContentProps {
   tag?: ListTagVariants
   title?: string
   value: string
-  value2?: string
-  value2Secondary?: boolean
   valueIcon?: React.ReactNode
-  value2Icon?: React.ReactNode
-  toolTip?: string
-  aprCalculator?: React.ReactNode
-  toolTipPlacement?: 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft'
-  toolTipTransform?: string
   valueColor?: string
-  style?: any
-}
-
-export interface ListViewContentProps {
-  tag?: ListTagVariants
-  title?: string
-  value: string
-  valueColor?: string
-  toolTip?: string
-  toolTipPlacement?: 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft'
-  toolTipTransform?: string
   value2?: string
+  value2Icon?: React.ReactNode
   value2Secondary?: boolean
-  aprCalculator?: React.ReactNode
-  style?: any
   value2Direction?: 'column' | 'row'
+  toolTip?: string
+  aprCalculator?: React.ReactNode
+  toolTipPlacement?: 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft'
+  toolTipTransform?: string
+  style?: ThemeUIStyleObject
 }

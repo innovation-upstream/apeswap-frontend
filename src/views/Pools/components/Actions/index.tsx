@@ -22,8 +22,6 @@ import { fetchPoolsUserDataAsync } from 'state/pools'
 import WithdrawModal from 'components/WithdrawModal'
 import { poolStyles } from '../styles'
 
-// Changed props to type string because BigNumbers cause re-renders
-
 interface CardActionProps {
   allowance: string
   stakingTokenBalance: string
@@ -118,7 +116,7 @@ const Actions: React.FC<CardActionProps> = ({
   )
 
   return (
-    <Flex sx={{ width: ['100%', '100%', 'unset'], minWidth: '205px', justifyContent: 'space-between' }}>
+    <Flex sx={poolStyles.actionWrapper}>
       <Flex sx={poolStyles.onlyMobile}>
         <ListViewContentMobile
           title={`${t('Staked')} ${stakedTokenSymbol}`}

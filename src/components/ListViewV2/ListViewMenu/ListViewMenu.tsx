@@ -7,8 +7,7 @@ import MenuSelect from './MenuSelect'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ListMenuProps } from './types'
 import { useHistory, useRouteMatch } from 'react-router-dom'
-import { useTheme } from 'styled-components'
-import { Image } from 'theme-ui'
+import { Image, useColorMode } from 'theme-ui'
 
 const ListViewMenu: React.FC<ListMenuProps> = ({
   query,
@@ -30,7 +29,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
   const [expanded, setExpended] = useState(false)
   const { url, isExact } = useRouteMatch()
   const history = useHistory()
-  const { isDark } = useTheme()
+  const [colorMode] = useColorMode()
 
   const handleToogle = useCallback(() => {
     if (isExact) {
@@ -115,12 +114,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
             labels={[t(`${toogleLabels[0]}`), t(`${toogleLabels[1]}`)]}
             onClick={handleToogle}
             checked={!isExact}
-            sx={{
-              height: '36px',
-              alignItems: 'center',
-              width: '100%',
-              '& div': { width: '75px', textAlign: 'center' },
-            }}
+            sx={styles.toogle}
           />
         </Flex>
         <Flex
@@ -133,22 +127,11 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
           </Text>
         </Flex>
         <Flex sx={styles.container}>
-          <Flex sx={{ width: '100%' }}>
-            {/* replace this in bills
-                    '& span': { width: '100%', textAlign: 'left' }
-                    <NetworkButton
-                      switchNetwork={switchNetwork}
-                      chainId={chainId}
-                      t={t}
-                      supportedChains={AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS]}
-                    />
-                    */}
-            {actionButton}
-          </Flex>
+          <Flex sx={{ width: '100%' }}>{actionButton}</Flex>
         </Flex>
       </>
       {showMonkeyImage &&
-        (isDark ? (
+        (colorMode === 'dark' ? (
           <Image src="/images/farm-night-farmer.svg" sx={styles.monkey} />
         ) : (
           <Image src="/images/farm-day-farmer.svg" sx={styles.monkey} />

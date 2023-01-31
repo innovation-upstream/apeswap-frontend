@@ -1,18 +1,16 @@
-import { Button } from '@ape.swap/uikit'
-import styled from '@emotion/styled'
 import { ThemeUIStyleObject } from 'theme-ui'
 
-export const StyledButton = styled(Button)`
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 10px 20px;
-  min-width: 129px;
-  height: 44px;
-  justify-content: space-evenly;
-`
-
-export const styles: Record<string, ThemeUIStyleObject> = {
+export const styles: Record<
+  | 'expandedContent'
+  | 'styledBtn'
+  | 'smallBtn'
+  | 'depositContainer'
+  | 'harvestAllBtn'
+  | 'stakeActions'
+  | 'onlyDesktop'
+  | 'onlyMobile',
+  ThemeUIStyleObject
+> = {
   expandedContent: {
     width: '100%',
     flexDirection: 'row',
@@ -53,6 +51,11 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     '@media screen and (min-width: 852px)': {
       width: '150px',
     },
+  },
+  stakeActions: {
+    maxWidth: ['', '', '94px'],
+    alignItems: 'center',
+    width: '100%',
   },
   onlyDesktop: {
     justifyContent: 'space-around',
