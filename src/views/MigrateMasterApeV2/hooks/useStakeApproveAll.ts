@@ -5,7 +5,7 @@ import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.
 import { useCallback } from 'react'
 import { getProviderOrSigner } from 'utils'
 import { useVaults } from 'state/vaults/hooks'
-import { useMasterChefV2Address, useVaultApeAddressV3 } from 'hooks/useAddress'
+import { useMasterChefV2Address, useVaultApeAddressV1, useVaultApeAddressV3 } from 'hooks/useAddress'
 import { useAppDispatch } from 'state'
 import { useFarmsV2 } from 'state/farmsV2/hooks'
 import { setAddTransactions, updateMigrateStatus } from 'state/masterApeMigration/reducer'
@@ -13,6 +13,7 @@ import { MasterApeV2ProductsInterface, MigrateStatus, MigrateTransaction } from 
 import useIsMobile from 'hooks/useIsMobile'
 import { useMigrateMaximizer } from 'state/masterApeMigration/hooks'
 import { delay } from 'lodash'
+import { VaultVersion } from '@ape.swap/apeswap-lists'
 
 const useStakeApproveAll = () => {
   const isMobile = useIsMobile()
@@ -22,7 +23,8 @@ const useStakeApproveAll = () => {
   const walletIsMetamask = library?.connection?.url === 'metamask'
   const masterChefV2Address = useMasterChefV2Address()
   // TODO: Update vaults when ready
-  const vaultAddress = useVaultApeAddressV3()
+  const vaultV3Address = useVaultApeAddressV3()
+  const vaultV1Address = useVaultApeAddressV1()
   const { vaults: fetchedVaults } = useVaults()
   const farms = useFarmsV2(null)
   const vaults = fetchedVaults.filter((vault) => !vault.inactive)
@@ -47,7 +49,14 @@ const useStakeApproveAll = () => {
           ),
         )
         lpContract
-          .approve(migrateMaximizers && matchedVault ? vaultAddress : masterChefV2Address, ethers.constants.MaxUint256)
+          .approve(
+            migrateMaximizers && matchedVault
+              ? matchedVault.version === VaultVersion.V1
+                ? vaultV1Address
+                : vaultV3Address
+              : masterChefV2Address,
+            ethers.constants.MaxUint256,
+          )
           .then((tx) => {
             const transaction: MigrateTransaction = {
               hash: tx.hash,
@@ -101,7 +110,8 @@ const useStakeApproveAll = () => {
       chainId,
       masterChefV2Address,
       vaults,
-      vaultAddress,
+      vaultV3Address,
+      vaultV1Address,
       migrateMaximizers,
     ],
   )

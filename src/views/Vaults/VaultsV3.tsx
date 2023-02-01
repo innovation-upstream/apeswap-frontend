@@ -83,7 +83,7 @@ const VaultsV3: React.FC = () => {
 
   const [inactiveVaults, activeVaults] = partition(allVaults, (vault) => vault.inactive)
 
-  const vaultsWithLpBalance = allVaults?.filter((vault) =>
+  const vaultsWithLpBalance = activeVaults?.filter((vault) =>
     new BigNumber(vault?.userData?.tokenBalance).isGreaterThan(0),
   )
 
@@ -250,7 +250,10 @@ const VaultsV3: React.FC = () => {
                 )}
               </>
             )}
-            <DisplayVaults vaults={renderVaults()} openId={urlSearchedVault} />
+            <DisplayVaults
+              vaults={isActive ? renderVaults() : [...renderVaults(), ...renderLegacyVaults()]}
+              openId={urlSearchedVault}
+            />
             {!isActive && <DisplayVaults vaults={renderLegacyVaults()} openId={urlSearchedVault} />}
           </>
         )}

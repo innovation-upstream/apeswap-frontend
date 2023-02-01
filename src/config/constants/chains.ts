@@ -347,7 +347,7 @@ export const INFO_PAGE_CHAIN_PARAMS: Partial<
   >
 > = {
   [ChainId.BSC]: {
-    graphAddress: 'https://bnb.apeswapgraphs.com/subgraphs/name/ape-swap/apeswap-subgraph',
+    graphAddress: 'https://api.thegraph.com/subgraphs/name/apeswapfinance/bsc-dex',
     explorer: BLOCK_EXPLORER[ChainId.BSC],
     blockGraph: 'https://api.thegraph.com/subgraphs/name/matthewlilley/bsc-blocks',
     id: '0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6',
