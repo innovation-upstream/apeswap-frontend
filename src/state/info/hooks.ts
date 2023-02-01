@@ -226,7 +226,7 @@ export const useFetchInfoUniswapFactories = (current?: boolean) => {
       }
 
       if (blocks[chainId].initialized) {
-        dispatch(fetchUniswapFactories(chainId, current === true ? '0' : blocks[chainId].data.number))
+        dispatch(fetchUniswapFactories(chainId, current === true ? '0' : blocks[chainId].data?.number))
       }
     })
   }, [blocks, dispatch, current])
