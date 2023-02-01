@@ -56,7 +56,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
     const totalDollarAmountStaked = Math.round(parseFloat(vault?.totalStaked) * vault?.stakeTokenPrice * 100) / 100
     const liquidityUrl = `https://apeswap.finance/swap/`
     const userAllowance = vault?.userData?.allowance
-    const userEarnings = getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards) || new BigNumber(0))
+    const userEarnings = getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards || 0))
     const userEarningsUsd = `$${(
       (getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards)) || 0) * vault.rewardTokenPrice
     ).toFixed(2)}`
@@ -85,7 +85,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           <ListViewContent
             tag={vault.type.toLowerCase() as ListTagVariants}
             value={vault.stakeToken.symbol}
-            style={{ maxWidth: '170px' }}
+            style={{ maxWidth: '180px' }}
           />
         ),
         infoContent: (
@@ -100,39 +100,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
           />
         ),
         cardContent: (
-          <Flex
-            sx={{
-              flexDirection: 'column',
-              width: '100%',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Flex sx={styles.onlyMobile}>
-              <ListViewContent
-                title={t('APY')}
-                value={`${isActive ? vault?.apy?.yearly?.toFixed(2) : '0.00'}%`}
-                toolTip={t(
-                  'Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.',
-                )}
-                toolTipPlacement="bottomLeft"
-                toolTipTransform="translate(28%, 0%)"
-                style={{
-                  width: '100%',
-                  maxWidth: '100%',
-                  flexDirection: 'row',
-                }}
-              />
-              <ListViewContent
-                title={vault.version === 'V1' ? t('Staked') : t('Earned')}
-                value={vault.version === 'V1' ? userStakedBalanceUsd : userEarningsUsd}
-                style={{
-                  width: '100%',
-                  maxWidth: '100%',
-                  flexDirection: 'row',
-                }}
-              />
-            </Flex>
-            <Flex sx={styles.onlyDesktop}>
+          <Flex sx={styles.cardContent}>
+            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '100px', width: '100%' }}>
               <ListViewContent
                 title={t('Daily APY')}
                 value={`${isActive ? vault?.apy?.daily?.toFixed(2) : '0.00'}%`}
@@ -141,28 +110,20 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                 )}
                 toolTipPlacement="bottomLeft"
                 toolTipTransform="translate(25%, 0%)"
-                style={{
-                  width: '100%',
-                  maxWidth: '140px',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                }}
+                style={styles.farmInfo}
               />
-              <ListViewContent
-                title={t('APY')}
-                value={`${isActive ? vault?.apy?.yearly?.toFixed(2) : '0.00'}%`}
-                toolTip={t(
-                  'Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.',
-                )}
-                toolTipPlacement="bottomLeft"
-                toolTipTransform="translate(28%, 0%)"
-                style={{
-                  width: '100%',
-                  maxWidth: '155px',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                }}
-              />
+            </Flex>
+            <ListViewContent
+              title={t('APY')}
+              value={`${isActive ? vault?.apy?.yearly?.toFixed(2) : '0.00'}%`}
+              toolTip={t(
+                'Annual APY includes annualized BANANA rewards (calculated based on token value, reward rate, and percentage of vault owned) and DEX swap fees, compounded daily.',
+              )}
+              toolTipPlacement="bottomLeft"
+              toolTipTransform="translate(28%, 0%)"
+              style={styles.farmInfo}
+            />
+            <Flex sx={{ ...styles.onlyDesktop, minWidth: '120px', maxWidth: '120px', width: '100%' }}>
               <ListViewContent
                 title={t('Liquidity')}
                 value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
@@ -170,23 +131,18 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                 toolTipPlacement="bottomRight"
                 toolTipTransform="translate(13%, 0%)"
                 style={{
-                  width: '100%',
-                  maxWidth: '170px',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                }}
-              />
-              <ListViewContent
-                title={vault.version === VaultVersion.V1 ? t('Staked') : t('Earned')}
-                value={vault.version === VaultVersion.V1 ? userStakedBalanceUsd : userEarningsUsd}
-                style={{
-                  width: '100%',
-                  maxWidth: '115px',
+                  maxWidth: '120px',
+                  minWidth: '120px',
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                 }}
               />
             </Flex>
+            <ListViewContent
+              title={vault.version === 'V1' ? t('Staked') : t('Earned')}
+              value={vault.version === 'V1' ? userStakedBalanceUsd : userEarningsUsd}
+              style={styles.farmInfo}
+            />
           </Flex>
         ),
         expandedContent: (
@@ -201,11 +157,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                   )}
                   toolTipPlacement="bottomLeft"
                   toolTipTransform="translate(25%, 0%)"
-                  style={{
-                    width: '100%',
-                    maxWidth: '100%',
-                    flexDirection: 'row',
-                  }}
+                  style={styles.farmInfo}
                 />
                 <ListViewContent
                   title={t('Liquidity')}
@@ -213,91 +165,10 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                   toolTip={t('The total value of the tokens currently staked in this vault.')}
                   toolTipPlacement="bottomRight"
                   toolTipTransform="translate(13%, 0%)"
-                  style={{
-                    width: '100%',
-                    maxWidth: '100%',
-                    flexDirection: 'row',
-                  }}
+                  style={styles.farmInfo}
                 />
-                <Flex sx={{ justifyContent: 'space-between', width: '100%', mt: '10px' }}>
-                  <ListViewContent
-                    title={t('Available %stakeTokenSymbol%', {
-                      stakeTokenSymbol: vault.stakeToken.lpToken ? 'LP' : vault?.stakeToken?.symbol,
-                    })}
-                    value={userTokenBalance}
-                    value2={userTokenBalanceUsd}
-                    value2Secondary
-                    value2Direction="column"
-                    style={{ maxWidth: '50%', flexDirection: 'column' }}
-                  />
-                  <Flex sx={{ width: '50%', maxWidth: '130px' }}>
-                    {vault.stakeToken?.lpToken ? (
-                      <Button
-                        onClick={() =>
-                          showLiquidity(
-                            vault.token.symbol === 'BNB' ? 'ETH' : vault.token.address[chainId],
-                            vault.quoteToken.symbol === 'BNB' ? 'ETH' : vault.quoteToken.address[chainId],
-                            vault,
-                          )
-                        }
-                        sx={styles.styledBtn}
-                      >
-                        {t('GET LP')}
-                        <Flex sx={{ ml: '5px' }}>
-                          <Svg icon="ZapIcon" color="primaryBright" />
-                        </Flex>
-                      </Button>
-                    ) : (
-                      <a href={liquidityUrl} target="_blank" rel="noopener noreferrer" style={{ width: '100%' }}>
-                        <Button sx={styles.styledBtn}>GET {vault?.stakeToken?.symbol}</Button>
-                      </a>
-                    )}
-                  </Flex>
-                </Flex>
-                <Flex sx={{ justifyContent: 'space-between', width: '100%', mt: '10px' }}>
-                  <Actions
-                    allowance={userAllowance?.toString()}
-                    stakedBalance={vault?.userData?.stakedBalance?.toString()}
-                    stakedTokenSymbol={vault?.stakeToken?.symbol}
-                    stakingTokenBalance={vault?.userData?.tokenBalance?.toString()}
-                    stakeTokenAddress={vault?.stakeToken?.address[chainId]}
-                    stakeTokenValueUsd={vault?.stakeTokenPrice}
-                    withdrawFee={vault?.withdrawFee}
-                    pid={vault.pid}
-                    vaultVersion={vault.version}
-                  />
-                </Flex>
-                {(vault.version === VaultVersion.V2 || vault.version === VaultVersion.V3) && (
-                  <HarvestAction
-                    pid={vault?.pid}
-                    disabled={userEarnings <= 0}
-                    userEarnings={userEarnings}
-                    earnTokenSymbol={vault?.rewardToken?.symbol}
-                  />
-                )}
               </Flex>
-              <Flex sx={{ ...styles.onlyDesktop, width: '100%' }}>
-                {vault.stakeToken?.lpToken ? (
-                  <Button
-                    onClick={() =>
-                      showLiquidity(
-                        vault.token.symbol === 'BNB' ? 'ETH' : vault.token.address[chainId],
-                        vault.quoteToken.symbol === 'BNB' ? 'ETH' : vault.quoteToken.address[chainId],
-                        vault,
-                      )
-                    }
-                    sx={styles.styledBtn}
-                  >
-                    {t('GET LP')}
-                    <Flex sx={{ ml: '5px' }}>
-                      <Svg icon="ZapIcon" color="primaryBright" />
-                    </Flex>
-                  </Button>
-                ) : (
-                  <a href={liquidityUrl} target="_blank" rel="noopener noreferrer">
-                    <Button sx={styles.styledBtn}>GET {vault?.stakeToken?.symbol}</Button>
-                  </a>
-                )}
+              <Flex sx={styles.actionContainer}>
                 <ListViewContent
                   title={t('Available %stakeTokenSymbol%', {
                     stakeTokenSymbol: vault.stakeToken.lpToken ? 'LP' : vault?.stakeToken?.symbol,
@@ -306,32 +177,64 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                   value2={userTokenBalanceUsd}
                   value2Secondary
                   value2Direction="column"
-                  style={{ flexDirection: 'column', maxWidth: '120px' }}
+                  style={styles.columnView}
                 />
-                <Svg icon="caret" direction="right" width="17px" />
-                <Actions
-                  allowance={userAllowance?.toString()}
-                  stakedBalance={vault?.userData?.stakedBalance?.toString()}
-                  stakedTokenSymbol={vault?.stakeToken?.symbol}
-                  stakingTokenBalance={vault?.userData?.tokenBalance?.toString()}
-                  stakeTokenAddress={vault?.stakeToken?.address[chainId]}
-                  stakeTokenValueUsd={vault?.stakeTokenPrice}
-                  withdrawFee={vault?.withdrawFee}
-                  pid={vault.pid}
-                  vaultVersion={vault.version}
-                />
-                {(vault.version === VaultVersion.V2 || vault.version === VaultVersion.V3) && (
-                  <>
-                    <Svg icon="caret" direction="right" width="17px" />
-                    <HarvestAction
-                      pid={vault?.pid}
-                      disabled={userEarnings <= 0}
-                      userEarnings={userEarnings}
-                      earnTokenSymbol={vault?.rewardToken?.symbol}
-                    />
-                  </>
-                )}
+                <Flex sx={{ width: '100%', maxWidth: ['130px', '130px', '140px'] }}>
+                  {vault.stakeToken?.lpToken ? (
+                    <Button
+                      onClick={() =>
+                        showLiquidity(
+                          vault.token.symbol === 'BNB' ? 'ETH' : vault.token.address[chainId],
+                          vault.quoteToken.symbol === 'BNB' ? 'ETH' : vault.quoteToken.address[chainId],
+                          vault,
+                        )
+                      }
+                      sx={styles.styledBtn}
+                    >
+                      {t('GET LP')}
+                      <Flex sx={{ ml: '5px' }}>
+                        <Svg icon="ZapIcon" color="primaryBright" />
+                      </Flex>
+                    </Button>
+                  ) : (
+                    <a
+                      href={liquidityUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ width: '100%', maxWidth: '130px' }}
+                    >
+                      <Button sx={styles.styledBtn}>GET {vault?.stakeToken?.symbol}</Button>
+                    </a>
+                  )}
+                </Flex>
               </Flex>
+              <Flex sx={{ ...styles.onlyDesktop, mx: '10px' }}>
+                <Svg icon="caret" direction="right" width="50px" />
+              </Flex>
+              <Actions
+                allowance={userAllowance?.toString()}
+                stakedBalance={vault?.userData?.stakedBalance?.toString()}
+                stakedTokenSymbol={vault?.stakeToken?.symbol}
+                stakingTokenBalance={vault?.userData?.tokenBalance?.toString()}
+                stakeTokenAddress={vault?.stakeToken?.address[chainId]}
+                stakeTokenValueUsd={vault?.stakeTokenPrice}
+                withdrawFee={vault?.withdrawFee}
+                pid={vault.pid}
+                vaultVersion={vault.version}
+              />
+              {(vault.version === VaultVersion.V2 || vault.version === VaultVersion.V3) && (
+                <>
+                  <Flex sx={{ ...styles.onlyDesktop, mx: '10px' }}>
+                    <Svg icon="caret" direction="right" width="50px" />
+                  </Flex>
+                  <HarvestAction
+                    pid={vault?.pid}
+                    disabled={userEarnings <= 0}
+                    userEarnings={userEarnings}
+                    earnTokenSymbol={vault?.rewardToken?.symbol}
+                  />
+                </>
+              )}
             </Flex>
           </>
         ),

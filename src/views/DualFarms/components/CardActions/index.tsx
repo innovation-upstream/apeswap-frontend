@@ -21,31 +21,19 @@ const CardActions: React.FC<CardActionProps> = ({ lpValueUsd, farm }) => {
   const { t } = useTranslation()
 
   return (
-    <>
-      <Flex sx={styles.onlyMobile}>
-        <ListViewContent
-          title={t('Staked LP')}
-          value={`${rawStakedBalance ? rawStakedBalance.toFixed(6) : '0.000'} LP`}
-          value2={userStakedBalanceUsd}
-          value2Secondary
-          value2Direction="column"
-          style={{ flexDirection: 'column', maxWidth: '110px' }}
-        />
-      </Flex>
+    <Flex sx={styles.actionContainer}>
+      <ListViewContent
+        title={t('Staked LP')}
+        value={`${rawStakedBalance ? rawStakedBalance.toFixed(6) : '0.000'} LP`}
+        value2={userStakedBalanceUsd}
+        value2Secondary
+        value2Direction="column"
+        style={styles.columnView}
+      />
       <Flex sx={styles.depositContainer}>
         <StakeAction lpValueUsd={lpValueUsd} farm={farm} />
       </Flex>
-      <Flex sx={styles.onlyDesktop}>
-        <ListViewContent
-          title={t('Staked LP')}
-          value={`${rawStakedBalance.toFixed(6)} LP`}
-          value2={userStakedBalanceUsd}
-          value2Secondary
-          value2Direction="column"
-          style={{ flexDirection: 'column', maxWidth: '110px' }}
-        />
-      </Flex>
-    </>
+    </Flex>
   )
 }
 

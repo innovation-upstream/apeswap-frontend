@@ -24,7 +24,7 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <Flex style={{ ...styles.listContentContainer, ...style }}>
+    <Flex sx={style}>
       <>
         {toolTip ? (
           <Flex sx={{ alignItems: 'center' }}>

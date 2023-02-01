@@ -40,6 +40,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   const bananaToken = useCurrency(useBananaAddress())
   const { showPoolHarvestModal } = useIsModalShown()
   const history = useHistory()
+  const bananaBananaPool = sousId === 0
 
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
@@ -88,25 +89,27 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   }
 
   return (
-    <Flex sx={poolStyles.harvestContainer}>
-      <Flex sx={{ width: ['100%', '100%', 'unset'], justifyContent: 'space-between' }}>
-        <Flex sx={poolStyles.onlyMobile}>
-          <ListViewContent
-            title={`${t('Earned')} ${earnTokenSymbol}`}
-            value={userEarnings?.toFixed(4)}
-            value2={`$${userTokenBalanceUsd}`}
-            value2Secondary
-            value2Direction="column"
-            style={{ flexDirection: 'column' }}
-          />
-        </Flex>
-        <Button disabled={disabled || pendingTrx} onClick={handleHarvest} load={pendingTrx} sx={poolStyles.styledBtn}>
-          {t('HARVEST')}
-        </Button>
-      </Flex>
-      {sousId === 0 && (
+    <Flex sx={{ ...poolStyles.actionContainer, minWidth: bananaBananaPool && '350px' }}>
+      <ListViewContent
+        title={`${t('Earned')} ${earnTokenSymbol}`}
+        value={userEarnings?.toFixed(4)}
+        value2={`$${userTokenBalanceUsd}`}
+        value2Secondary
+        value2Direction="column"
+        style={poolStyles.columnView}
+      />
+      <Button
+        disabled={disabled || pendingTrx}
+        onClick={handleHarvest}
+        load={pendingTrx}
+        sx={bananaBananaPool ? poolStyles.fixedSizedBtn : poolStyles.styledBtn}
+      >
+        {t('HARVEST')}
+      </Button>
+      {bananaBananaPool && (
         <Flex sx={{ width: ['100%', '100%', 'unset'], margin: ['15px 0 0 0', '15px 0 0 0', '0 10px'] }}>
           <Button
+            size="md"
             disabled={disabled || pendingApeHarderTrx}
             onClick={handleApeHarder}
             load={pendingApeHarderTrx}
@@ -116,19 +119,6 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
           </Button>
         </Flex>
       )}
-      <Flex sx={poolStyles.onlyDesktop}>
-        <ListViewContent
-          title={`${t('Earned')} ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(3)}
-          style={{
-            flexDirection: 'column',
-            maxWidth: '95px',
-            marginLeft: '10px',
-            justifyContent: 'flex-start',
-            height: '48px',
-          }}
-        />
-      </Flex>
     </Flex>
   )
 }

@@ -32,17 +32,15 @@ const CardActions: React.FC<CardActionProps> = ({
   const userStakedBalanceUsd = `$${(getBalanceNumber(new BigNumber(stakedBalance || 0)) * lpValueUsd).toFixed(2)}`
 
   return (
-    <>
-      <Flex sx={styles.onlyMobile}>
-        <ListViewContent
-          title={t('Staked LP')}
-          value={`${rawStakedBalance ? rawStakedBalance.toFixed(6) : '0.000'} LP`}
-          value2={userStakedBalanceUsd}
-          value2Secondary
-          value2Direction="column"
-          style={{ flexDirection: 'column', maxWidth: '110px' }}
-        />
-      </Flex>
+    <Flex sx={styles.actionContainer}>
+      <ListViewContent
+        title={t('Staked LP')}
+        value={`${rawStakedBalance ? rawStakedBalance.toFixed(6) : '0.000'} LP`}
+        value2={userStakedBalanceUsd}
+        value2Secondary
+        value2Direction="column"
+        style={styles.columnView}
+      />
       <Flex sx={styles.depositContainer}>
         <StakeAction
           stakedBalance={stakedBalance}
@@ -54,17 +52,7 @@ const CardActions: React.FC<CardActionProps> = ({
           v2Flag={v2Flag}
         />
       </Flex>
-      <Flex sx={styles.onlyDesktop}>
-        <ListViewContent
-          title={t('Staked LP')}
-          value={`${rawStakedBalance ? rawStakedBalance.toFixed(6) : '0.000'} LP`}
-          value2={userStakedBalanceUsd}
-          value2Secondary
-          value2Direction="column"
-          style={{ flexDirection: 'column', maxWidth: '110px' }}
-        />
-      </Flex>
-    </>
+    </Flex>
   )
 }
 

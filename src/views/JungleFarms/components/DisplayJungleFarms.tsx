@@ -9,13 +9,13 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import HarvestAction from './Actions/HarvestAction'
 import CalcButton from 'components/RoiCalculator/CalcButton'
-import useAddLiquidityModal from '../../../components/DualAddLiquidity/hooks/useAddLiquidityModal'
+import useAddLiquidityModal from 'components/DualAddLiquidity/hooks/useAddLiquidityModal'
 import { ZapType } from '@ape.swap/sdk'
 import Tooltip from 'components/Tooltip/Tooltip'
-import { BLOCK_EXPLORER } from '../../../config/constants/chains'
-import ListView from '../../../components/ListViewV2/ListView'
-import ListViewContent from '../../../components/ListViewV2/ListViewContent'
-import StakeAction from './Actions/StakeActions'
+import { BLOCK_EXPLORER } from 'config/constants/chains'
+import ListView from 'components/ListViewV2/ListView'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
+import Actions from './Actions'
 import { styles } from './styles'
 
 const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number; jungleFarmTags: Tag[] }> = ({
@@ -77,44 +77,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
           />
         ),
         cardContent: (
-          <Flex
-            sx={{
-              flexDirection: 'column',
-              width: '100%',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Flex sx={styles.onlyMobile}>
-              <ListViewContent
-                title={t('APR')}
-                value={`${isActive ? farm?.apr?.toFixed(2) : '0.00'}%`}
-                toolTip={t(
-                  'APRs are calculated in real time. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
-                )}
-                toolTipPlacement="bottomLeft"
-                toolTipTransform="translate(8%, 0%)"
-                aprCalculator={
-                  <CalcButton
-                    label={farm.tokenName}
-                    rewardTokenName={farm?.rewardToken?.symbol}
-                    rewardTokenPrice={farm?.rewardToken?.price}
-                    apr={farm?.apr}
-                    lpAddress={farm?.stakingToken?.address[chainId]}
-                    isLp
-                    lpPrice={farm?.stakingToken?.price}
-                    tokenAddress={farm?.lpTokens?.token?.address[chainId]}
-                    quoteTokenAddress={
-                      farm?.lpTokens?.quoteToken?.address[chainId] === 'TLOS'
-                        ? 'ETH'
-                        : farm?.lpTokens?.quoteToken?.address[chainId]
-                    }
-                    lpCurr1={farm?.lpTokens?.token?.address[chainId]}
-                    lpCurr2={farm?.lpTokens?.quoteToken?.address[chainId]}
-                  />
-                }
-              />
-              <ListViewContent title={t('Earned')} value={userEarningsUsd} />
-            </Flex>
+          <Flex sx={styles.cardContent}>
             <Flex sx={styles.onlyDesktop}>
               <Flex sx={{ width: '85px', justifyContent: 'flex-start' }}>
                 {farm.projectLink && (
@@ -128,65 +91,47 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
                   </a>
                 )}
               </Flex>
-              <ListViewContent
-                title={t('APR')}
-                value={`${isActive ? farm?.apr?.toFixed(2) : '0.00'}%`}
-                toolTip={t(
-                  'APRs are calculated in real time. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
-                )}
-                toolTipPlacement="bottomLeft"
-                toolTipTransform="translate(8%, 0%)"
-                aprCalculator={
-                  <CalcButton
-                    label={farm.tokenName}
-                    rewardTokenName={farm?.rewardToken?.symbol}
-                    rewardTokenPrice={farm?.rewardToken?.price}
-                    apr={farm?.apr}
-                    lpAddress={farm?.stakingToken?.address[chainId]}
-                    isLp
-                    lpPrice={farm?.stakingToken?.price}
-                    tokenAddress={farm?.lpTokens?.token?.address[chainId]}
-                    quoteTokenAddress={
-                      farm?.lpTokens?.quoteToken?.address[chainId] === 'TLOS'
-                        ? 'ETH'
-                        : farm?.lpTokens?.quoteToken?.address[chainId]
-                    }
-                    lpCurr1={farm?.lpTokens?.token?.address[chainId]}
-                    lpCurr2={farm?.lpTokens?.quoteToken?.address[chainId]}
-                  />
-                }
-                style={{
-                  width: '100%',
-                  maxWidth: '85px',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                }}
-              />
+            </Flex>
+            <ListViewContent
+              title={t('APR')}
+              value={`${isActive ? farm?.apr?.toFixed(2) : '0.00'}%`}
+              toolTip={t(
+                'APRs are calculated in real time. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
+              )}
+              toolTipPlacement="bottomLeft"
+              toolTipTransform="translate(8%, 0%)"
+              aprCalculator={
+                <CalcButton
+                  label={farm.tokenName}
+                  rewardTokenName={farm?.rewardToken?.symbol}
+                  rewardTokenPrice={farm?.rewardToken?.price}
+                  apr={farm?.apr}
+                  lpAddress={farm?.stakingToken?.address[chainId]}
+                  isLp
+                  lpPrice={farm?.stakingToken?.price}
+                  tokenAddress={farm?.lpTokens?.token?.address[chainId]}
+                  quoteTokenAddress={
+                    farm?.lpTokens?.quoteToken?.address[chainId] === 'TLOS'
+                      ? 'ETH'
+                      : farm?.lpTokens?.quoteToken?.address[chainId]
+                  }
+                  lpCurr1={farm?.lpTokens?.token?.address[chainId]}
+                  lpCurr2={farm?.lpTokens?.quoteToken?.address[chainId]}
+                />
+              }
+              style={styles.farmInfo}
+            />
+            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '100px', width: '100%' }}>
               <ListViewContent
                 title={t('Liquidity')}
                 value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
-                //width={isMobile ? 160 : 110}
                 toolTip={t('The total value of the LP tokens currently staked in this farm.')}
                 toolTipPlacement={'bottomLeft'}
                 toolTipTransform={'translate(23%, 0%)'}
-                style={{
-                  width: '100%',
-                  maxWidth: '85px',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                }}
-              />
-              <ListViewContent
-                title={t('Earned')}
-                value={userEarningsUsd}
-                style={{
-                  width: '100%',
-                  maxWidth: '85px',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                }}
+                style={styles.farmInfo}
               />
             </Flex>
+            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={styles.farmInfo} />
           </Flex>
         ),
         expandedContent: (
@@ -196,88 +141,55 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
                 <ListViewContent
                   title={t('Liquidity')}
                   value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
-                  //width={isMobile ? 160 : 110}
                   toolTip={t('The total value of the LP tokens currently staked in this farm.')}
                   toolTipPlacement={'bottomLeft'}
                   toolTipTransform={'translate(23%, 0%)'}
-                />
-                <Flex sx={{ justifyContent: 'space-between', width: '100%', mt: '10px' }}>
-                  <ListViewContent
-                    title={`${t('Available LP')}`}
-                    value={userTokenBalance}
-                    value2={userTokenBalanceUsd}
-                    value2Secondary
-                    value2Direction="column"
-                    style={{ maxWidth: '50%', flexDirection: 'column' }}
-                  />
-                  <Flex sx={{ width: '50%', maxWidth: '130px' }}>
-                    <Button
-                      onClick={() =>
-                        onAddLiquidityModal(
-                          farm?.lpTokens?.token,
-                          farm?.lpTokens?.quoteToken,
-                          farm?.contractAddress[chainId],
-                          farm?.jungleId?.toString(),
-                          isZapable,
-                        )
-                      }
-                      sx={styles.styledBtn}
-                    >
-                      {t('GET LP')}
-                      <Flex sx={{ ml: '5px' }}>
-                        <Svg icon="ZapIcon" color="primaryBright" />
-                      </Flex>
-                    </Button>
-                  </Flex>
-                </Flex>
-                <Flex sx={{ justifyContent: 'space-between', width: '100%', mt: '10px' }}>
-                  <StakeAction farm={farm} />
-                </Flex>
-                <HarvestAction
-                  jungleId={farm?.jungleId}
-                  disabled={userEarnings <= 0}
-                  userEarnings={userEarnings}
-                  userEarningsUsd={userEarningsUsd}
-                  earnTokenSymbol={farm?.rewardToken?.symbol || farm?.tokenName}
+                  style={styles.farmInfo}
                 />
               </Flex>
-              <Flex sx={{ ...styles.onlyDesktop, width: '100%' }}>
-                <Button
-                  onClick={() =>
-                    onAddLiquidityModal(
-                      farm?.lpTokens?.token,
-                      farm?.lpTokens?.quoteToken,
-                      farm?.contractAddress[chainId],
-                      farm?.jungleId?.toString(),
-                      isZapable,
-                    )
-                  }
-                  sx={styles.styledBtn}
-                >
-                  {t('GET LP')}
-                  <Flex sx={{ ml: '5px' }}>
-                    <Svg icon="ZapIcon" color="primaryBright" />
-                  </Flex>
-                </Button>
+              <Flex sx={styles.actionContainer}>
                 <ListViewContent
                   title={`${t('Available LP')}`}
                   value={userTokenBalance}
                   value2={userTokenBalanceUsd}
                   value2Secondary
                   value2Direction="column"
-                  style={{ flexDirection: 'column', maxWidth: '120px' }}
+                  style={styles.columnView}
                 />
-                <Svg icon="caret" direction="right" width="17px" />
-                <StakeAction farm={farm} />
-                <Svg icon="caret" direction="right" width="17px" />
-                <HarvestAction
-                  jungleId={farm?.jungleId}
-                  disabled={userEarnings <= 0}
-                  userEarnings={userEarnings}
-                  userEarningsUsd={userEarningsUsd}
-                  earnTokenSymbol={farm?.rewardToken?.symbol || farm?.tokenName}
-                />
+                <Flex sx={{ width: '100%', maxWidth: ['130px', '130px', '140px'] }}>
+                  <Button
+                    onClick={() =>
+                      onAddLiquidityModal(
+                        farm?.lpTokens?.token,
+                        farm?.lpTokens?.quoteToken,
+                        farm?.contractAddress[chainId],
+                        farm?.jungleId?.toString(),
+                        isZapable,
+                      )
+                    }
+                    sx={styles.styledBtn}
+                  >
+                    {t('GET LP')}
+                    <Flex sx={{ ml: '5px' }}>
+                      <Svg icon="ZapIcon" color="primaryBright" />
+                    </Flex>
+                  </Button>
+                </Flex>
               </Flex>
+              <Flex sx={{ ...styles.onlyDesktop, mx: '10px' }}>
+                <Svg icon="caret" direction="right" width="50px" />
+              </Flex>
+              <Actions farm={farm} />
+              <Flex sx={{ ...styles.onlyDesktop, mx: '10px' }}>
+                <Svg icon="caret" direction="right" width="50px" />
+              </Flex>
+              <HarvestAction
+                jungleId={farm?.jungleId}
+                disabled={userEarnings <= 0}
+                userEarnings={userEarnings}
+                userEarningsUsd={userEarningsUsd}
+                earnTokenSymbol={farm?.rewardToken?.symbol || farm?.tokenName}
+              />
             </Flex>
           </>
         ),

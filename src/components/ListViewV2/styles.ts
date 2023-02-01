@@ -4,7 +4,6 @@ import { ThemeUIStyleObject } from 'theme-ui'
 export const styles: Record<
   | 'listCardContainer'
   | 'listViewContainer'
-  | 'listContentContainer'
   | 'titleContainer'
   | 'infoContentMobile'
   | 'tokensContainer'
@@ -54,18 +53,11 @@ export const styles: Record<
       border: 'none',
     },
   },
-  listContentContainer: {
-    justifyContent: 'space-between',
-    '@media screen and (min-width: 852px)': {
-      justifyContent: 'center',
-    },
-    width: '100%',
-  },
   titleContainer: {
     width: '100%',
     justifyContent: 'space-between',
     my: '5px',
-    maxWidth: ['100%', '100%', '290px'],
+    maxWidth: ['100%', '100%', '275px', '340px'],
   },
   infoContentMobile: {
     display: ['flex', 'flex', 'none'],
@@ -74,7 +66,7 @@ export const styles: Record<
   tokensContainer: {
     alignItems: 'center',
     height: '100%',
-    maxWidth: '290px',
+    maxWidth: '310px',
     width: '100%',
   },
   titleText: {

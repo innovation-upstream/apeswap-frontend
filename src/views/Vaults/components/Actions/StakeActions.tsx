@@ -109,7 +109,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
 
   const renderStakingButtons = () => {
     if (!account) {
-      return <UnlockButton />
+      return <UnlockButton sx={{ width: '100%' }} />
     }
     if (!new BigNumber(allowance)?.gt(0)) {
       return <ApprovalAction stakingTokenContractAddress={stakeTokenAddress} vaultVersion={vaultVersion} pid={pid} />

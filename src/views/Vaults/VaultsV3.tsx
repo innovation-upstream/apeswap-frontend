@@ -194,7 +194,7 @@ const VaultsV3: React.FC = () => {
           titleColor="primaryBright"
           maxWidth={1130}
         />
-        <Flex sx={{ alignItems: 'center', justifyContent: 'center', mt: '20px' }}>
+        <Flex sx={{ alignItems: 'center', justifyContent: 'center', my: '20px' }}>
           <ListViewMenu
             query={searchQuery}
             onHandleQueryChange={handleChangeQuery}

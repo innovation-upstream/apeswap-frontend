@@ -1,28 +1,77 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const poolStyles: Record<
-  | 'styledBtn'
-  | 'smallBtn'
-  | 'apeHarder'
   | 'container'
+  | 'farmInfo'
+  | 'cardContent'
   | 'actionContainer'
   | 'expandedContent'
-  | 'harvestContainer'
+  | 'styledBtn'
+  | 'smallBtn'
   | 'depositContainer'
+  | 'columnView'
+  | 'stakeActions'
   | 'harvestAllBtn'
-  | 'actionWrapper'
+  | 'apeHarder'
+  | 'fixedSizedBtn'
+  | 'onlyBigScreen'
   | 'onlyDesktop'
   | 'onlyMobile',
   ThemeUIStyleObject
 > = {
+  container: {
+    position: 'relative',
+    width: '100%',
+  },
+  farmInfo: {
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '100px',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    },
+  },
+  cardContent: {
+    flexDirection: 'column',
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      flexDirection: 'row',
+    },
+  },
+  actionContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    mt: '10px',
+    flexWrap: 'wrap',
+    '@media screen and (min-width: 852px)': {
+      mt: '0',
+      flexDirection: 'row-reverse',
+      justifyContent: 'space-around',
+      flexWrap: 'nowrap',
+    },
+  },
+  expandedContent: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: '0 10px',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      flexWrap: 'nowrap',
+    },
+  },
   styledBtn: {
     fontSize: '16px',
     padding: '10px',
-    width: '130px',
+    width: '140px',
     minWidth: '100px',
     height: '44px',
     '@media screen and (max-width: 852px)': {
       minWidth: '130px',
+      width: '130px',
     },
   },
   smallBtn: {
@@ -31,45 +80,24 @@ export const poolStyles: Record<
     minWidth: '44px',
     height: '44px',
   },
-  apeHarder: {
-    fontSize: '16px',
-    minWidth: '110px',
-    width: '100%',
-    '@media screen and (min-width: 852px)': {
-      width: '140px',
-    },
-    height: '44px',
-  },
-  container: {
-    position: 'relative',
-    width: '100%',
-  },
-  actionContainer: {
-    alignItems: 'center',
-    width: '100%',
-    justifyContent: 'space-between',
-  },
-  expandedContent: {
-    width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    padding: '0 10px',
-    justifyContent: 'space-between',
-  },
-  harvestContainer: {
-    '@media screen and (max-width: 852px)': {
-      flexWrap: 'wrap',
-      width: '100%',
-    },
-  },
   depositContainer: {
-    width: '130px',
-    minWidth: '100px',
+    width: '100%',
+    maxWidth: '130px',
     justifyContent: 'center',
     alignItems: 'center',
-    '@media screen and (max-width: 852px)': {
-      minWidth: '130px',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '140px',
     },
+  },
+  columnView: {
+    maxWidth: '50%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  stakeActions: {
+    maxWidth: ['', '', '94px'],
+    alignItems: 'center',
+    width: '100%',
   },
   harvestAllBtn: {
     height: '36px',
@@ -80,10 +108,30 @@ export const poolStyles: Record<
       width: '150px',
     },
   },
-  actionWrapper: {
-    width: ['100%', '100%', 'unset'],
-    minWidth: '205px',
-    justifyContent: 'space-between',
+  apeHarder: {
+    fontSize: '16px',
+    padding: '10px',
+    minWidth: '125px',
+    width: '125px',
+    height: '44px',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
+      width: '100%',
+    },
+  },
+  fixedSizedBtn: {
+    fontSize: '16px',
+    padding: '10px',
+    minWidth: '125px',
+    width: '125px',
+    height: '44px',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
+      width: '130px',
+    },
+  },
+  onlyBigScreen: {
+    display: ['none', 'none', 'none', 'flex'],
   },
   onlyDesktop: {
     justifyContent: 'space-around',

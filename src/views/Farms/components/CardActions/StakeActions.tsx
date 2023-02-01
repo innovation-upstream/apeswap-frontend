@@ -104,10 +104,10 @@ const StakeAction: React.FC<StakeActionsProps> = ({
 
   const renderStakingButtons = () => {
     if (!account) {
-      return <UnlockButton />
+      return <UnlockButton sx={{ width: '100%' }} />
     }
     if (!new BigNumber(allowance)?.gt(0)) {
-      return <ApprovalAction stakingTokenContractAddress={stakeLpAddress} pid={pid} />
+      return <ApprovalAction stakingTokenContractAddress={stakeLpAddress} pid={pid} v2Flag={v2Flag} />
     }
     if (firstStake) {
       return (
@@ -122,7 +122,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
       )
     }
     return (
-      <Flex sx={styles.stakeAction}>
+      <Flex sx={styles.stakeActions}>
         <Button
           onClick={onPresentWithdraw}
           endIcon={pendingWithdrawTrx && <AutoRenewIcon spin color="currentColor" />}

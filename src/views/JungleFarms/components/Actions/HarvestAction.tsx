@@ -53,31 +53,19 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   }
 
   return (
-    <Flex sx={styles.harvestAction}>
-      <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
-        <ListViewContent
-          title={`${t('Earned')} ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(4)}
-          value2={userEarningsUsd}
-          value2Secondary
-          value2Direction="column"
-          style={{ maxWidth: '50%', flexDirection: 'column' }}
-        />
-      </Flex>
-      <Flex sx={{ width: '100%', maxWidth: '130px' }}>
+    <Flex sx={styles.actionContainer}>
+      <ListViewContent
+        title={`${t('Earned')} ${earnTokenSymbol}`}
+        value={userEarnings?.toFixed(4)}
+        value2={userEarningsUsd}
+        value2Secondary
+        value2Direction="column"
+        style={styles.columnView}
+      />
+      <Flex sx={styles.depositContainer}>
         <Button disabled={disabled || pendingTrx} onClick={handleHarvest} load={pendingTrx} sx={styles.styledBtn}>
           {t('HARVEST')}
         </Button>
-      </Flex>
-      <Flex sx={styles.onlyDesktop}>
-        <ListViewContent
-          title={`${t('Earned')} ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(4)}
-          value2={userEarningsUsd}
-          value2Secondary
-          value2Direction="column"
-          style={{ flexDirection: 'column', maxWidth: '110px' }}
-        />
       </Flex>
     </Flex>
   )

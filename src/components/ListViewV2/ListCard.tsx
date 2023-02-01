@@ -20,7 +20,7 @@ const ListCard: React.FC<ListCardProps> = ({
       <Flex sx={styles.listCardContainer} onClick={() => setExpanded((prev) => !prev)}>
         <Flex sx={styles.titleContainer}>
           <Flex sx={styles.tokensContainer}>
-            {serviceTokenDisplay}
+            <Flex sx={{ minWidth: ['', '', '117px'], justifyContent: 'flex-end' }}>{serviceTokenDisplay}</Flex>
             <Flex sx={{ flexDirection: 'column', marginLeft: '10px' }}>{title}</Flex>
           </Flex>
           <Flex sx={styles.infoContentMobile}>

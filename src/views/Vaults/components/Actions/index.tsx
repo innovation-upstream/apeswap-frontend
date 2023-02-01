@@ -37,17 +37,15 @@ const Actions: React.FC<CardActionProps> = ({
       2,
     )}`
     return (
-      <>
-        <Flex sx={styles.onlyMobile}>
-          <ListViewContent
-            title={`Staked ${stakedTokenSymbol}`}
-            value={rawStakedBalance ? rawStakedBalance.toFixed(2) : '0.000'}
-            value2={userStakedBalanceUsd}
-            value2Secondary
-            value2Direction="column"
-            style={{ flexDirection: 'column', maxWidth: '110px' }}
-          />
-        </Flex>
+      <Flex sx={styles.actionContainer}>
+        <ListViewContent
+          title={`Staked ${stakedTokenSymbol}`}
+          value={rawStakedBalance ? rawStakedBalance.toFixed(2) : '0.000'}
+          value2={userStakedBalanceUsd}
+          value2Secondary
+          value2Direction="column"
+          style={styles.columnView}
+        />
         <Flex sx={styles.depositContainer}>
           <StakeAction
             stakedBalance={stakedBalance}
@@ -61,17 +59,7 @@ const Actions: React.FC<CardActionProps> = ({
             stakeTokenAddress={stakeTokenAddress}
           />
         </Flex>
-        <Flex sx={styles.onlyDesktop}>
-          <ListViewContent
-            title={`Staked ${stakedTokenSymbol}`}
-            value={`${rawStakedBalance ? rawStakedBalance.toFixed(2) : '0.000'}`}
-            value2={userStakedBalanceUsd}
-            value2Secondary
-            value2Direction="column"
-            style={{ flexDirection: 'column', maxWidth: '140px' }}
-          />
-        </Flex>
-      </>
+      </Flex>
     )
   }
   return actionToRender()

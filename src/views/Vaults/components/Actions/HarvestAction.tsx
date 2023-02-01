@@ -52,22 +52,9 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, earnTokenSymbol, di
   }
 
   return (
-    <Flex
-      sx={{
-        width: ['100%', '100%', 'unset'],
-        minWidth: '205px',
-        justifyContent: 'space-between',
-        mt: ['10px', '10px', '0px'],
-      }}
-    >
-      <Flex sx={styles.onlyMobile}>
-        <ListViewContent
-          title={`Earned ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(4)}
-          style={{ maxWidth: '50%', flexDirection: 'column' }}
-        />
-      </Flex>
-      <Flex sx={{ width: '100%', maxWidth: '130px' }}>
+    <Flex sx={styles.actionContainer}>
+      <ListViewContent title={`Earned ${earnTokenSymbol}`} value={userEarnings?.toFixed(4)} style={styles.columnView} />
+      <Flex sx={styles.depositContainer}>
         <Button
           disabled={disabled || pendingTrx}
           onClick={handleHarvest}
@@ -77,13 +64,6 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, earnTokenSymbol, di
         >
           {t('HARVEST')}
         </Button>
-      </Flex>
-      <Flex sx={styles.onlyDesktop}>
-        <ListViewContent
-          title={`Earned ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(4)}
-          style={{ flexDirection: 'column', maxWidth: '110px', justifyContent: 'flex-start' }}
-        />
       </Flex>
     </Flex>
   )

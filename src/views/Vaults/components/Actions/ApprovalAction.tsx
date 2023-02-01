@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Skeleton, AutoRenewIcon, Button } from '@ape.swap/uikit'
+import { Skeleton, Button } from '@ape.swap/uikit'
 import useApproveVault from 'views/Vaults/hooks/useApproveVault'
 import { useAppDispatch } from 'state'
 import { getEtherscanLink } from 'utils'
@@ -56,7 +56,6 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({
             setPendingTrx(false)
           }}
           load={pendingTrx}
-          endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
           sx={styles.styledBtn}
         >
           {t('ENABLE')}

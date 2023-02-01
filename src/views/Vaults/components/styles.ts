@@ -1,22 +1,57 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const styles: Record<
+  | 'farmInfo'
+  | 'cardContent'
+  | 'actionContainer'
   | 'expandedContent'
   | 'styledBtn'
   | 'smallBtn'
   | 'depositContainer'
+  | 'columnView'
   | 'harvestAllBtn'
   | 'stakeActions'
   | 'onlyDesktop'
   | 'onlyMobile',
   ThemeUIStyleObject
 > = {
+  farmInfo: {
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '100px',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    },
+  },
+  cardContent: {
+    flexDirection: 'column',
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      flexDirection: 'row',
+    },
+  },
+  actionContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    mt: '10px',
+    '@media screen and (min-width: 852px)': {
+      mt: '0',
+      flexDirection: 'row-reverse',
+      justifyContent: 'space-around',
+    },
+  },
   expandedContent: {
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     padding: '0 10px',
     justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      flexWrap: 'nowrap',
+    },
   },
   styledBtn: {
     fontSize: '16px',
@@ -26,6 +61,7 @@ export const styles: Record<
     height: '44px',
     '@media screen and (max-width: 852px)': {
       minWidth: '130px',
+      width: '130px',
     },
   },
   smallBtn: {
@@ -35,13 +71,18 @@ export const styles: Record<
     height: '44px',
   },
   depositContainer: {
-    width: '130px',
-    minWidth: '100px',
+    width: '100%',
+    maxWidth: '130px',
     justifyContent: 'center',
     alignItems: 'center',
-    '@media screen and (max-width: 852px)': {
-      minWidth: '130px',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '140px',
     },
+  },
+  columnView: {
+    maxWidth: '50%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
   },
   harvestAllBtn: {
     height: '36px',

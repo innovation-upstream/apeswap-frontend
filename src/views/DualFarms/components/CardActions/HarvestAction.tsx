@@ -25,37 +25,31 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, farm }) =
   const [pendingTrx, setPendingTrx] = useState(false)
   const { onReward } = useMiniChefHarvest(pid)
   const { toastSuccess } = useToast()
-  const userEarningsUsd = `$${(
-    getBalanceNumber(farm?.userData?.miniChefEarnings || new BigNumber(0)) * farm?.rewardToken0Price +
-    getBalanceNumber(farm?.userData?.rewarderEarnings || new BigNumber(0)) * farm?.rewardToken1Price
-  ).toFixed(2)}`
   const userEarningsMiniChef = getBalanceNumber(farm?.userData?.miniChefEarnings || new BigNumber(0)).toFixed(2)
   const userEarningsRewarder = getBalanceNumber(farm?.userData?.rewarderEarnings || new BigNumber(0)).toFixed(2)
 
   return (
-    <Flex sx={styles.harvestAction}>
-      <Flex sx={styles.onlyMobile}>
-        <ListViewContent
-          title={t('Earned')}
-          value={userEarningsMiniChef}
-          valueIcon={
+    <Flex sx={styles.actionContainer}>
+      <ListViewContent
+        title={t('Earned')}
+        value={userEarningsMiniChef}
+        valueIcon={
+          <Flex sx={{ height: '20px', alignItems: 'center', mr: '3px' }}>
+            <ServiceTokenDisplay token1={farm?.rewardTokens.token0.symbol} size={13} />
+          </Flex>
+        }
+        value2={farm?.dualImage !== false ? `${userEarningsRewarder}` : ''}
+        value2Direction="column"
+        value2Icon={
+          farm?.dualImage !== false ? (
             <Flex sx={{ height: '20px', alignItems: 'center', mr: '3px' }}>
-              <ServiceTokenDisplay token1={farm?.rewardTokens.token0.symbol} size={13} />
+              <ServiceTokenDisplay token1={farm.pid === 11 ? 'NFTY2' : farm?.rewardTokens.token1.symbol} size={13} />
             </Flex>
-          }
-          value2={farm?.dualImage !== false ? `${userEarningsRewarder}` : ''}
-          value2Direction="column"
-          value2Icon={
-            farm?.dualImage !== false ? (
-              <Flex sx={{ height: '20px', alignItems: 'center', mr: '3px' }}>
-                <ServiceTokenDisplay token1={farm.pid === 11 ? 'NFTY2' : farm?.rewardTokens.token1.symbol} size={13} />
-              </Flex>
-            ) : null
-          }
-          style={{ width: '150px', flexDirection: 'column' }}
-        />
-      </Flex>
-      <Flex sx={{ width: '100%', maxWidth: '130px' }}>
+          ) : null
+        }
+        style={{ width: '150px', flexDirection: 'column' }}
+      />
+      <Flex sx={styles.depositContainer}>
         <Button
           className="noClick"
           disabled={disabled || pendingTrx}
@@ -80,13 +74,6 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, farm }) =
         >
           {t('HARVEST')}
         </Button>
-      </Flex>
-      <Flex sx={styles.onlyDesktop}>
-        <ListViewContent
-          title={t('Earned')}
-          value={userEarningsUsd}
-          style={{ flexDirection: 'column', maxWidth: '110px', justifyContent: 'flex-start' }}
-        />
       </Flex>
     </Flex>
   )

@@ -34,18 +34,16 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
   const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
 
   return (
-    <Flex sx={styles.harvestAction}>
-      <Flex sx={styles.onlyMobile}>
-        <ListViewContent
-          title={t('Earned')}
-          value={userEarnings}
-          value2={userEarningsUsd}
-          value2Secondary
-          value2Direction="column"
-          style={{ maxWidth: '50%', flexDirection: 'column' }}
-        />
-      </Flex>
-      <Flex sx={{ width: '100%', maxWidth: '130px' }}>
+    <Flex sx={styles.actionContainer}>
+      <ListViewContent
+        title={t('Earned')}
+        value={userEarnings}
+        value2={userEarningsUsd}
+        value2Secondary
+        value2Direction="column"
+        style={styles.columnView}
+      />
+      <Flex sx={styles.depositContainer}>
         <Button
           className="noClick"
           disabled={disabled || pendingTrx}
@@ -72,16 +70,6 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
         >
           {t('HARVEST')}
         </Button>
-      </Flex>
-      <Flex sx={styles.onlyDesktop}>
-        <ListViewContent
-          title={t('Earned')}
-          value={userEarnings}
-          value2={userEarningsUsd}
-          value2Secondary
-          value2Direction="column"
-          style={{ flexDirection: 'column' }}
-        />
       </Flex>
     </Flex>
   )

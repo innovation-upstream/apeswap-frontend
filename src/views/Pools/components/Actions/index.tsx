@@ -116,20 +116,18 @@ const Actions: React.FC<CardActionProps> = ({
   )
 
   return (
-    <Flex sx={poolStyles.actionWrapper}>
-      <Flex sx={poolStyles.onlyMobile}>
-        <ListViewContentMobile
-          title={`${t('Staked')} ${stakedTokenSymbol}`}
-          value={`${!account ? '0.000' : rawStakedBalance.toFixed(2)}`}
-          value2={!account ? '$0.00' : userStakedBalanceUsd}
-          value2Secondary
-          value2Direction="column"
-          style={{ flexDirection: 'column' }}
-        />
-      </Flex>
+    <Flex sx={poolStyles.actionContainer}>
+      <ListViewContentMobile
+        title={`${t('Staked')} ${stakedTokenSymbol}`}
+        value={`${!account ? '0.000' : rawStakedBalance.toFixed(2)}`}
+        value2={!account ? '$0.00' : userStakedBalanceUsd}
+        value2Secondary
+        value2Direction="column"
+        style={{ flexDirection: 'column' }}
+      />
       <Flex sx={poolStyles.depositContainer}>
         {!account ? (
-          <UnlockButton />
+          <UnlockButton sx={{ width: '100%' }} />
         ) : !new BigNumber(allowance)?.gt(0) ? (
           <ApprovalAction stakingTokenContractAddress={stakeTokenAddress} sousId={sousId} />
         ) : firstStake ? (
@@ -142,7 +140,7 @@ const Actions: React.FC<CardActionProps> = ({
             {t('DEPOSIT')}
           </Button>
         ) : (
-          <Flex sx={{ maxWidth: ['', '', '94px'], alignItems: 'center', width: '100%' }}>
+          <Flex sx={poolStyles.stakeActions}>
             <Button
               onClick={onPresentWithdraw}
               load={pendingWithdrawTrx}
@@ -164,16 +162,6 @@ const Actions: React.FC<CardActionProps> = ({
             </Button>
           </Flex>
         )}
-      </Flex>
-      <Flex sx={poolStyles.onlyDesktop}>
-        <ListViewContentMobile
-          title={`${t('Staked')} ${stakedTokenSymbol}`}
-          value={`${!account ? '0.000' : rawStakedBalance.toFixed(2)}`}
-          value2={!account ? '$0.00' : userStakedBalanceUsd}
-          value2Secondary
-          value2Direction="column"
-          style={{ flexDirection: 'column', marginLeft: '10px', maxWidth: '110px' }}
-        />
       </Flex>
     </Flex>
   )

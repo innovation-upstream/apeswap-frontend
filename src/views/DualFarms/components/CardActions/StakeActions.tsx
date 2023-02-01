@@ -100,7 +100,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
 
   const renderStakingButtons = () => {
     if (!account) {
-      return <UnlockButton />
+      return <UnlockButton sx={{ width: '100%' }} />
     }
     if (firstStake) {
       return (
@@ -115,7 +115,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({ lpValueUsd, farm }) => {
       )
     }
     return (
-      <Flex sx={styles.stakeAction}>
+      <Flex sx={styles.stakeActions}>
         <Button
           onClick={onPresentWithdraw}
           endIcon={pendingWithdrawTrx && <AutoRenewIcon spin color="currentColor" />}

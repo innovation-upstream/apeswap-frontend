@@ -1,22 +1,56 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const styles: Record<
+  | 'farmInfo'
+  | 'cardContent'
+  | 'actionContainer'
   | 'expandedContent'
   | 'styledBtn'
   | 'smallBtn'
   | 'depositContainer'
-  | 'harvestAllBtn'
-  | 'harvestAction'
+  | 'columnView'
+  | 'stakeActions'
   | 'onlyDesktop'
   | 'onlyMobile',
   ThemeUIStyleObject
 > = {
+  farmInfo: {
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '100px',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    },
+  },
+  cardContent: {
+    flexDirection: 'column',
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      flexDirection: 'row',
+    },
+  },
+  actionContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    mt: '10px',
+    '@media screen and (min-width: 852px)': {
+      mt: '0',
+      flexDirection: 'row-reverse',
+      justifyContent: 'space-around',
+    },
+  },
   expandedContent: {
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
     padding: '0 10px',
     justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      flexWrap: 'nowrap',
+    },
   },
   styledBtn: {
     fontSize: '16px',
@@ -35,28 +69,23 @@ export const styles: Record<
     height: '44px',
   },
   depositContainer: {
-    width: '130px',
-    minWidth: '100px',
+    width: '100%',
+    maxWidth: '130px',
     justifyContent: 'center',
     alignItems: 'center',
-    '@media screen and (max-width: 852px)': {
-      minWidth: '130px',
-    },
-  },
-  harvestAllBtn: {
-    height: '36px',
-    lineHeight: '18px',
-    justifyContent: 'center',
-    width: '100%',
     '@media screen and (min-width: 852px)': {
-      width: '150px',
+      maxWidth: '140px',
     },
   },
-  harvestAction: {
-    width: ['100%', '100%', 'unset'],
-    minWidth: '235px',
-    justifyContent: 'space-between',
-    mt: ['10px', '10px', '0px'],
+  columnView: {
+    maxWidth: '50%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  stakeActions: {
+    maxWidth: ['', '', '94px'],
+    alignItems: 'center',
+    width: '100%',
   },
   onlyDesktop: {
     justifyContent: 'space-around',
