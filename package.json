@@ -29,9 +29,9 @@
     ]
   },
   "dependencies": {
-    "@ape.swap/apeswap-lists": "1.1.12",
+    "@ape.swap/apeswap-lists": "1.1.14",
     "@ape.swap/sdk": "4.3.1",
-    "@ape.swap/token-lists": "1.0.4",
+    "@ape.swap/token-lists": "1.0.5",
     "@ape.swap/uikit": "1.3.50",
     "@apeswapfinance/uikit": "0.11.3",
     "@autonomylabs/limit-stop-orders": "0.0.6",
