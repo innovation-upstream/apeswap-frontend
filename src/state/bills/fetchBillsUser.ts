@@ -1,10 +1,10 @@
 import erc20ABI from 'config/abi/erc20.json'
 import billAbi from 'config/abi/bill.json'
-import { BillsConfig } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import BigNumber from 'bignumber.js'
 import { UserBill } from 'state/types'
 import getBillNftData from './getBillNftData'
+import { BillsConfig, BillVersion } from '@ape.swap/apeswap-lists'
 
 export const fetchBillsAllowance = async (chainId: number, account: string, bills: BillsConfig[]) => {
   const calls = bills.map((b) => ({
@@ -59,7 +59,7 @@ export const fetchUserOwnedBills = async (
         billDataCalls.push({ address: bills[index].contractAddress[chainId], name: 'billNft' }),
         billsPendingRewardCall.push({
           address: bills[index].contractAddress[chainId],
-          name: 'pendingPayoutFor',
+          name: bills[index].billVersion === BillVersion.V2 ? 'pendingPayout' : 'pendingPayoutFor',
           params: [id],
         })),
     ),
