@@ -22,17 +22,12 @@ import HarvestAll from './components/Actions/HarvestAll'
 import { FILTER_OPTIONS, SORT_OPTIONS } from './poolsOptions'
 import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
 import { styles } from './styles'
-import DisplayLegacyPool from './components/DisplayLegacyPool'
-import DisplayDepositPoolV2 from './components/DisplayDepositPoolV2'
-import { useMigrationPhase } from 'state/migrationTimer/hooks'
-import { MigrationPhases } from 'state/migrationTimer/types'
 import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 
 const NUMBER_OF_POOLS_VISIBLE = 12
 
 const Pools: React.FC = () => {
   usePollPools()
-  const currentPhase = useMigrationPhase()
   const { chainId } = useActiveWeb3React()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [filterOption, setFilterOption] = useState('allTokens')
@@ -197,33 +192,11 @@ const Pools: React.FC = () => {
           {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.pools.includes(chainId) ? (
             <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
           ) : (
-            <>
-              {currentPhase !== MigrationPhases.MIGRATE_PHASE_0 && isActive && (
-                <>
-                  {new BigNumber(legacyPool?.userData?.stakedBalance).gt(0) && (
-                    <DisplayLegacyPool pools={[legacyPool]} openId={null} poolTags={null} />
-                  )}
-                  {new BigNumber(v2Pool?.userData?.stakingTokenBalance).gt(0) && (
-                    <DisplayDepositPoolV2 pools={[v2Pool]} openId={null} poolTags={null} />
-                  )}
-                </>
-              )}
-              {currentPhase === MigrationPhases.MIGRATE_PHASE_1 || currentPhase === MigrationPhases.MIGRATE_PHASE_2 ? (
-                <>
-                  <DisplayPools
-                    pools={isActive ? renderPools() : [legacyPool, ...renderPools()]}
-                    openId={urlSearchedPool}
-                    poolTags={poolTags}
-                  />
-                </>
-              ) : (
-                <DisplayPools
-                  pools={isActive ? [legacyPool, ...renderPools().slice(1, renderPools().length)] : renderPools()}
-                  openId={urlSearchedPool}
-                  poolTags={poolTags}
-                />
-              )}
-            </>
+            <DisplayPools
+              pools={isActive ? renderPools() : [legacyPool, ...renderPools()]}
+              openId={urlSearchedPool}
+              poolTags={poolTags}
+            />
           )}
           <div ref={loadMoreRef} />
         </Flex>

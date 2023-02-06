@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Flex, Text } from '@ape.swap/uikit'
+import { Flex } from '@ape.swap/uikit'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import { orderBy } from 'lodash'
 import Banner from 'components/Banner'
@@ -17,8 +17,6 @@ import { useSetZapOutputList } from 'state/zap/hooks'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import { useFarmsV2, usePollFarmsV2 } from 'state/farmsV2/hooks'
-import LegacyFarms from './LegacyFarms'
-import DisplayDepositV2Farms from './components/DisplayDepositV2Farms'
 import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 import { styles } from './styles'
 import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
@@ -66,10 +64,6 @@ const FarmsV2: React.FC = () => {
 
   const activeFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
   const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
-
-  const farmsWithLpBalance = farmsLP?.filter(
-    (farm) => farm.pid !== 0 && new BigNumber(farm?.userData?.tokenBalance).isGreaterThan(0),
-  )
 
   const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
@@ -202,40 +196,6 @@ const FarmsV2: React.FC = () => {
           </Flex>
         ) : (
           <>
-            {isActive && (
-              <>
-                <LegacyFarms />
-                {farmsWithLpBalance.length > 0 && (
-                  <Flex
-                    sx={{
-                      background: 'gradient',
-                      padding: '5px',
-                      borderRadius: '10px 0px 10px 10px',
-                      mt: '40px',
-                      position: 'relative',
-                    }}
-                  >
-                    <Flex
-                      sx={{
-                        position: 'absolute',
-                        right: 0,
-                        top: 0,
-                        padding: '2.5px 10px',
-                        borderRadius: '10px 10px 0px 0px',
-                        background: 'rgb(221,174,66)',
-                        transform: 'translate(0px, -24px)',
-                        zIndex: 10,
-                      }}
-                    >
-                      <Text size="12px" color="primaryBright">
-                        NEW Master Ape V2
-                      </Text>
-                    </Flex>
-                    <DisplayDepositV2Farms farms={farmsWithLpBalance} openPid={null} farmTags={null} v2Flag={true} />
-                  </Flex>
-                )}
-              </>
-            )}
             <Flex sx={{ mt: '20px' }}>
               <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={null} v2Flag={true} />
             </Flex>

@@ -116,7 +116,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
           onClick={() => setShowOnlyCheckbox(!showOnlyCheckbox)}
         >
           <Checkbox checked={showOnlyCheckbox} />
-          <Text ml="10px" size="14px" weight={700} color="success">
+          <Text ml="10px" size="14px" weight={700}>
             {t(`${checkboxLabel}`)}
           </Text>
         </Flex>
