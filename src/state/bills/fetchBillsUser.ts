@@ -77,12 +77,19 @@ export const fetchUserOwnedBills = async (
 
   for (let i = 0; i < billsPendingRewardCall.length; i++) {
     const billDataPos = i === 0 ? 0 : i * 2
+    // console.log(
+    //   new BigNumber(billData[billDataPos][0]?.payout.toString())
+    //     .minus(billData[billDataPos][0]?.payoutClaimed)
+    //     .toString(),
+    // )
     const data =
       billVersions[i] === BillVersion.V2
         ? {
             address: billsPendingRewardCall[i].address,
             id: billsPendingRewardCall[i].params[0].toString(),
-            payout: billData[billDataPos][0]?.payout.toString(),
+            payout: new BigNumber(billData[billDataPos][0]?.payout.toString())
+              .minus(billData[billDataPos][0]?.payoutClaimed.toString())
+              .toString(),
             billNftAddress: billData[billDataPos + 1][0].toString(),
             vesting: billData[billDataPos][0]?.vesting.toString(),
             lastBlockTimestamp: billData[billDataPos][0]?.lastClaimTimestamp.toString(),
