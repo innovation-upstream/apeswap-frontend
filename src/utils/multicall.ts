@@ -29,7 +29,7 @@ export const multicallForBalances = async (chainId: number, abi: any[], calls: C
   const multi = new ethers.Contract(multicallAddress, multicallABI, provider)
   const itf = new Interface(abi)
   const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
-  const { returnData } = await multi.aggregate(calldata)
+  const { returnData } = await multi.callStatic.multicall(calldata)
   const res = returnData.map((call, i) => (call === '0x' ? null : itf.decodeFunctionResult(calls[i].name, call)))
   return res
 }
