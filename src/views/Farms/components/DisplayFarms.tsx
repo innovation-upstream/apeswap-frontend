@@ -163,14 +163,14 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[];
             <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
               <ListViewContent
                 title={t('APR')}
-                value={`${farm?.apr}%`}
-                value2={`${farm?.lpApr}%`}
-                value2Icon={
+                value={`${farm?.lpApr}%`}
+                valueIcon={
                   <span style={{ marginRight: '7px' }}>
                     <Svg icon="swap" width={13} color="text" />
                   </span>
                 }
-                valueIcon={
+                value2={`${farm?.apr}%`}
+                value2Icon={
                   <span style={{ marginRight: '5px' }}>
                     <Svg icon="banana_token" width={15} color="text" />
                   </span>
@@ -193,7 +193,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[];
             </Flex>
             <Flex sx={styles.actionContainer}>
               <ListViewContent
-                title={t('Available LP')}
+                title={t('Available')}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary

@@ -130,13 +130,14 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
           <Flex sx={{ alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
             {account ? (
               <Flex sx={{ width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Flex sx={{ flexWrap: 'wrap', padding: '0 10px 10px 10px', width: '100%' }}>
+                <Flex sx={{ flexWrap: 'wrap', padding: '0 10px 10px 10px', width: '100%', flexDirection: 'column' }}>
                   <ListViewContent
                     title={'Vesting Term'}
                     value={disabled ? 'N/A' : vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
                     toolTip={`This is how long it will take for all tokens in the Bill to fully vest.`}
                     toolTipPlacement={'bottomLeft'}
                     toolTipTransform={'translate(39%, 0%)'}
+                    style={{ width: '100%', justifyContent: 'space-between' }}
                   />
                   <ListViewContent
                     title={'Available Tokens'}
@@ -144,6 +145,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
                     toolTip={`This is the amount of available tokens for purchase.`}
                     toolTipPlacement={'bottomLeft'}
                     toolTipTransform={'translate(50%, 0%)'}
+                    style={{ width: '100%', justifyContent: 'space-between' }}
                   />
                 </Flex>
                 <Flex sx={{ width: '240px', justifyContent: 'center' }}>

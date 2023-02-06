@@ -23,7 +23,7 @@ const Actions: React.FC<StakeActionsProps> = ({ farm }) => {
   return (
     <Flex sx={styles.actionContainer}>
       <ListViewContent
-        title={`${t('Staked LP')}`}
+        title={`${t('Staked')}`}
         value={
           rawStakedBalance > 0 ? (rawStakedBalance.toFixed(2) === '0.00' ? '> 0' : rawStakedBalance.toFixed(2)) : '0.00'
         }

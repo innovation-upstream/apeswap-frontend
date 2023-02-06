@@ -5,6 +5,7 @@ import React from 'react'
 import getTimePeriods from 'utils/getTimePeriods'
 import { StyledHeadingText } from './Modals/styles'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
+import { styles } from './UserBillsView/components/styles'
 
 const VestedTimer: React.FC<{
   lastBlockTimestamp: string
@@ -36,12 +37,13 @@ const VestedTimer: React.FC<{
       toolTip={`This is the time remaining until all tokens from the bill are available to claim.`}
       toolTipPlacement={'bottomLeft'}
       toolTipTransform={'translate(34%, 0%)'}
+      style={{ width: '100%', justifyContent: 'space-between' }}
     />
   ) : (
     <ListViewContent
       title={t('Fully Vested')}
       value={`${vestingTime.days}d, ${vestingTime.hours}h, ${vestingTime.minutes}m`}
-      style={{ maxWidth: '135px', height: '40px', ml: '10px', flexDirection: 'column' }}
+      style={styles.billInfo}
       toolTip={t('This is the time remaining until all tokens from the bill are available to claim.')}
       toolTipPlacement={'bottomLeft'}
       toolTipTransform={'translate(34%, -4%)'}

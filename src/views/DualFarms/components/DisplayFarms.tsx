@@ -104,18 +104,18 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
               <ListViewContent
                 title={t('APR')}
                 value={`${farm?.apr ? farm?.apr.toFixed(2) : 0}%`}
-                value2={`${parseFloat(farm?.lpApr).toFixed(2)}%`}
-                value2Direction="column"
-                value2Icon={
-                  <span style={{ marginRight: '7px' }}>
-                    <Svg icon="swap" width={13} color="text" />
-                  </span>
-                }
                 valueIcon={
                   <span style={{ marginRight: '5px' }}>
                     <Svg icon="banana_token" width={15} color="text" />
                   </span>
                 }
+                value2={`${parseFloat(farm?.lpApr).toFixed(2)}%`}
+                value2Icon={
+                  <span style={{ marginRight: '7px' }}>
+                    <Svg icon="swap" width={13} color="text" />
+                  </span>
+                }
+                value2Direction="column"
                 toolTip={t(
                   'BANANA reward APRs are calculated in real time. DEX swap fee APRs are calculated based on previous 24 hours of trading volume. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
                 )}
@@ -142,19 +142,19 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
             <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
               <ListViewContent
                 title={t('APR')}
-                value={`${farm?.apr ? farm?.apr.toFixed(2) : 0}%`}
-                value2={`${parseFloat(farm?.lpApr).toFixed(2)}%`}
-                value2Direction="row"
-                value2Icon={
+                value={`${parseFloat(farm?.lpApr).toFixed(2)}%`}
+                valueIcon={
                   <span style={{ marginRight: '7px' }}>
                     <Svg icon="swap" width={13} color="text" />
                   </span>
                 }
-                valueIcon={
+                value2={`${farm?.apr ? farm?.apr.toFixed(2) : 0}%`}
+                value2Icon={
                   <span style={{ marginRight: '5px' }}>
                     <Svg icon="banana_token" width={15} color="text" />
                   </span>
                 }
+                value2Direction="row"
                 toolTip={t(
                   'BANANA reward APRs are calculated in real time. DEX swap fee APRs are calculated based on previous 24 hours of trading volume. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
                 )}
@@ -175,7 +175,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
             </Flex>
             <Flex sx={styles.actionContainer}>
               <ListViewContent
-                title={t('Available LP')}
+                title={t('Available')}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary

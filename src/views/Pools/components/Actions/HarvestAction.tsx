@@ -13,8 +13,9 @@ import { useBananaAddress } from 'hooks/useAddress'
 import { useIsModalShown } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
-import { poolStyles } from '../styles'
+import { dynamicStyles, poolStyles } from '../styles'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
+import ServiceTokenDisplay from '../../../../components/ServiceTokenDisplay'
 
 interface HarvestActionsProps {
   sousId: number
@@ -40,7 +41,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   const bananaToken = useCurrency(useBananaAddress())
   const { showPoolHarvestModal } = useIsModalShown()
   const history = useHistory()
-  const bananaBananaPool = sousId === 0
+  const isBananaBanana = sousId === 0
 
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
@@ -89,10 +90,15 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   }
 
   return (
-    <Flex sx={{ ...poolStyles.actionContainer, minWidth: bananaBananaPool && '350px' }}>
+    <Flex sx={dynamicStyles.actionContainer(isBananaBanana)}>
       <ListViewContent
-        title={`${t('Earned')} ${earnTokenSymbol}`}
+        title={t('Earned')}
         value={userEarnings?.toFixed(4)}
+        valueIcon={
+          <Flex sx={{ height: '20px', alignItems: 'center', mr: '3px' }}>
+            <ServiceTokenDisplay token1={earnTokenSymbol} size={13} />
+          </Flex>
+        }
         value2={`$${userTokenBalanceUsd}`}
         value2Secondary
         value2Direction="column"
@@ -102,11 +108,11 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
         disabled={disabled || pendingTrx}
         onClick={handleHarvest}
         load={pendingTrx}
-        sx={bananaBananaPool ? poolStyles.fixedSizedBtn : poolStyles.styledBtn}
+        sx={isBananaBanana ? poolStyles.fixedSizedBtn : poolStyles.styledBtn}
       >
         {t('HARVEST')}
       </Button>
-      {bananaBananaPool && (
+      {isBananaBanana && (
         <Flex sx={{ width: ['100%', '100%', 'unset'], margin: ['15px 0 0 0', '15px 0 0 0', '0 10px'] }}>
           <Button
             size="md"

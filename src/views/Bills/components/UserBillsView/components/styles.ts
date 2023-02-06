@@ -1,7 +1,8 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const styles: Record<
-  | 'farmInfo'
+  | 'container'
+  | 'billInfo'
   | 'cardContent'
   | 'actionContainer'
   | 'expandedContent'
@@ -9,18 +10,26 @@ export const styles: Record<
   | 'smallBtn'
   | 'depositContainer'
   | 'columnView'
-  | 'harvestAllBtn'
   | 'stakeActions'
+  | 'harvestAllBtn'
+  | 'apeHarder'
+  | 'fixedSizedBtn'
+  | 'onlyBigScreen'
   | 'onlyDesktop'
   | 'onlyMobile',
   ThemeUIStyleObject
 > = {
-  farmInfo: {
+  container: {
+    position: 'relative',
+    width: '100%',
+  },
+  billInfo: {
     width: '100%',
     justifyContent: 'space-between',
     '@media screen and (min-width: 852px)': {
-      maxWidth: '100px',
+      maxWidth: '135px',
       flexDirection: 'column',
+      height: '40px',
       justifyContent: 'flex-start',
     },
   },
@@ -37,10 +46,12 @@ export const styles: Record<
     alignItems: 'center',
     width: '100%',
     mt: '10px',
+    flexWrap: 'wrap',
     '@media screen and (min-width: 852px)': {
       mt: '0',
       flexDirection: 'row-reverse',
       justifyContent: 'space-around',
+      flexWrap: 'nowrap',
     },
   },
   expandedContent: {
@@ -90,6 +101,11 @@ export const styles: Record<
     flexDirection: 'column',
     justifyContent: 'flex-start',
   },
+  stakeActions: {
+    maxWidth: ['', '', '94px'],
+    alignItems: 'center',
+    width: '100%',
+  },
   harvestAllBtn: {
     height: '36px',
     lineHeight: '18px',
@@ -99,10 +115,30 @@ export const styles: Record<
       width: '150px',
     },
   },
-  stakeActions: {
-    maxWidth: ['', '', '94px'],
-    alignItems: 'center',
-    width: '100%',
+  apeHarder: {
+    fontSize: '16px',
+    padding: '10px',
+    minWidth: '125px',
+    width: '125px',
+    height: '44px',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
+      width: '100%',
+    },
+  },
+  fixedSizedBtn: {
+    fontSize: '16px',
+    padding: '10px',
+    minWidth: '125px',
+    width: '125px',
+    height: '44px',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
+      width: '130px',
+    },
+  },
+  onlyBigScreen: {
+    display: ['none', 'none', 'none', 'flex'],
   },
   onlyDesktop: {
     justifyContent: 'space-around',

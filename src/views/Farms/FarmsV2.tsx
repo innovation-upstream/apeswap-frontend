@@ -9,7 +9,7 @@ import { orderBy } from 'lodash'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
 import { Farm } from 'state/types'
-import { useFarmTags, useFarmOrderings, useFarms, usePollFarms } from 'state/farms/hooks'
+import { useFarmOrderings, useFarms, usePollFarms } from 'state/farms/hooks'
 import DisplayFarms from './components/DisplayFarms'
 import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, SORT_OPTIONS, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
@@ -41,7 +41,6 @@ const FarmsV2: React.FC = () => {
   const [query, setQuery] = useState('')
   const [sortOption, setSortOption] = useState('all')
   const loadMoreRef = useRef<HTMLDivElement>(null)
-  const { farmTags } = useFarmTags(chainId)
   const { farmOrderings } = useFarmOrderings(chainId)
 
   useEffect(() => {
@@ -142,22 +141,6 @@ const FarmsV2: React.FC = () => {
           .slice(0, numberOfFarmsVisible)
       case 'liquidity':
         return orderBy(farms, (farm: Farm) => parseFloat(farm.totalLpStakedUsd), 'desc').slice(0, numberOfFarmsVisible)
-      case 'hot':
-        return farmTags
-          ? orderBy(
-              farms,
-              (farm: Farm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'hot'),
-              'asc',
-            ).slice(0, numberOfFarmsVisible)
-          : farms.slice(0, numberOfFarmsVisible)
-      case 'new':
-        return farmTags
-          ? orderBy(
-              farms,
-              (farm: Farm) => farmTags?.find((tag) => tag.pid === farm.pid && tag.text.toLowerCase() === 'new'),
-              'asc',
-            ).slice(0, numberOfFarmsVisible)
-          : farms.slice(0, numberOfFarmsVisible)
       default:
         return farmOrderings
           ? orderBy(

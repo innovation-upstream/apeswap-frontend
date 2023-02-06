@@ -21,14 +21,6 @@ export const SORT_OPTIONS = [
     label: 'Liquidity',
     value: 'liquidity',
   },
-  {
-    label: 'Hot',
-    value: 'hot',
-  },
-  {
-    label: 'New',
-    value: 'new',
-  },
 ]
 
 export const STABLES = ['DAI', 'USDT', 'BUSD', 'USDC', 'MOR', 'FRAX', 'TOR']

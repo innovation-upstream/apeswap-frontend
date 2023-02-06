@@ -7,6 +7,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { VaultVersion } from 'config/constants/types'
 import { styles } from '../styles'
+import { useTranslation } from '../../../../contexts/Localization'
 
 interface CardActionProps {
   allowance: string
@@ -31,6 +32,8 @@ const Actions: React.FC<CardActionProps> = ({
   pid,
   vaultVersion,
 }) => {
+  const { t } = useTranslation()
+
   const actionToRender = () => {
     const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
     const userStakedBalanceUsd = `$${(getBalanceNumber(new BigNumber(stakedBalance || 0)) * stakeTokenValueUsd).toFixed(
@@ -39,7 +42,7 @@ const Actions: React.FC<CardActionProps> = ({
     return (
       <Flex sx={styles.actionContainer}>
         <ListViewContent
-          title={`Staked ${stakedTokenSymbol}`}
+          title={t('Staked')}
           value={rawStakedBalance ? rawStakedBalance.toFixed(2) : '0.000'}
           value2={userStakedBalanceUsd}
           value2Secondary

@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import ApprovalAction from './ApprovalAction'
 import UnlockButton from 'components/UnlockButton'
 import { AddIcon, Button, Flex, MinusIcon, useModal } from '@ape.swap/uikit'
-import ListViewContentMobile from 'components/ListViewV2/ListViewContent'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useAppDispatch } from 'state'
 import { useToast } from 'state/hooks'
@@ -117,8 +117,8 @@ const Actions: React.FC<CardActionProps> = ({
 
   return (
     <Flex sx={poolStyles.actionContainer}>
-      <ListViewContentMobile
-        title={`${t('Staked')} ${stakedTokenSymbol}`}
+      <ListViewContent
+        title={t('Staked')}
         value={`${!account ? '0.000' : rawStakedBalance.toFixed(2)}`}
         value2={!account ? '$0.00' : userStakedBalanceUsd}
         value2Secondary

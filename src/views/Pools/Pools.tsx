@@ -121,22 +121,6 @@ const Pools: React.FC = () => {
           (pool: Pool) => getBalanceNumber(pool.totalStaked) * pool.stakingToken?.price,
           'desc',
         )
-      case 'hot':
-        return poolTags
-          ? orderBy(
-              poolsToSort,
-              (pool: Pool) => poolTags?.find((tag) => tag.pid === pool.sousId && tag.text.toLowerCase() === 'hot'),
-              'asc',
-            )
-          : poolsToSort
-      case 'new':
-        return poolTags
-          ? orderBy(
-              poolsToSort,
-              (pool: Pool) => poolTags?.find((tag) => tag.pid === pool.sousId && tag.text.toLowerCase() === 'new'),
-              'asc',
-            )
-          : poolsToSort
       default:
         return poolOrderings
           ? orderBy(

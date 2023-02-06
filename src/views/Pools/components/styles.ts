@@ -73,12 +73,18 @@ export const poolStyles: Record<
       minWidth: '130px',
       width: '130px',
     },
+    '&:disabled': {
+      background: 'white4',
+    },
   },
   smallBtn: {
     maxWidth: '60px',
     width: '100%',
     minWidth: '44px',
     height: '44px',
+    '&:disabled': {
+      background: 'white4',
+    },
   },
   depositContainer: {
     width: '100%',
@@ -141,4 +147,21 @@ export const poolStyles: Record<
     flexDirection: 'column',
     display: ['flex', 'flex', 'none'],
   },
+}
+
+export const dynamicStyles: Record<'actionContainer', (isBananaBanana: boolean) => ThemeUIStyleObject> = {
+  actionContainer: (isBananaBanana) => ({
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    mt: '10px',
+    flexWrap: 'wrap',
+    '@media screen and (min-width: 852px)': {
+      mt: '0',
+      flexDirection: 'row-reverse',
+      justifyContent: 'space-around',
+      flexWrap: 'nowrap',
+      minWidth: isBananaBanana && '350px',
+    },
+  }),
 }

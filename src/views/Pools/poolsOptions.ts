@@ -19,14 +19,6 @@ export const SORT_OPTIONS = [
     value: 'all',
   },
   {
-    label: 'Hot',
-    value: 'hot',
-  },
-  {
-    label: 'New',
-    value: 'new',
-  },
-  {
     label: 'APR',
     value: 'apr',
   },

@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Flex, Text } from '@ape.swap/uikit'
+import { Flex } from '@ape.swap/uikit'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from 'contexts/Localization'
 import Banner from 'components/Banner'
@@ -15,8 +15,6 @@ import { useSetZapOutputList } from 'state/zap/hooks'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import ListView404 from 'components/ListView404'
 import { usePollVaultsV3Data, usePollVaultV3UserData, useVaultsV3 } from 'state/vaultsV3/hooks'
-import LegacyVaults from './LegacyVaults'
-import DisplayDepsoitVaultsV2 from './components/DisplayDepsoitVaultsV2'
 import { usePollVaultsData, usePollVaultUserData, useVaults } from 'state/vaults/hooks'
 import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 import { useFarmsV2, usePollFarmsV2 } from 'state/farmsV2/hooks'
@@ -25,6 +23,7 @@ import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
 import { FILTER_OPTIONS, SORT_OPTIONS } from './constants'
 import HarvestAll from './components/Actions/HarvestAll'
 import { styles } from './styles'
+import { BLUE_CHIPS, STABLES } from '../Farms/constants'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
@@ -38,7 +37,7 @@ const VaultsV3: React.FC = () => {
   usePollFarmsV2()
   const { t } = useTranslation()
   const [stakedOnly, setStakedOnly] = useState(false)
-  const [vaultType, setVaultType] = useState('allTypes')
+  const [filterOption, setFilterOption] = useState('all')
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
@@ -82,10 +81,6 @@ const VaultsV3: React.FC = () => {
   }, [observerIsSet])
 
   const [inactiveVaults, activeVaults] = partition(allVaults, (vault) => vault.inactive)
-
-  const vaultsWithLpBalance = activeVaults?.filter((vault) =>
-    new BigNumber(vault?.userData?.tokenBalance).isGreaterThan(0),
-  )
 
   const stakedOnlyVaults = activeVaults.filter(
     (vault) => vault.userData && new BigNumber(vault.userData.stakedBalance).isGreaterThan(0),
@@ -138,8 +133,19 @@ const VaultsV3: React.FC = () => {
       chosenVaults = isActive ? stakedOnlyVaults : stakedInactiveVaults
     }
 
-    if (vaultType !== 'allTypes') {
-      chosenVaults = chosenVaults.filter((vault) => vault.type === vaultType.toUpperCase())
+    if (filterOption !== 'all') {
+      switch (filterOption) {
+        case 'stables':
+          return chosenVaults.filter(
+            (vault) => STABLES.includes(vault?.token?.symbol) && STABLES.includes(vault?.quoteToken?.symbol),
+          )
+        case 'blueChips':
+          return chosenVaults.filter(
+            (vault) => BLUE_CHIPS.includes(vault?.token?.symbol) || BLUE_CHIPS.includes(vault?.quoteToken?.symbol),
+          )
+        default:
+          return chosenVaults
+      }
     }
 
     if (searchQuery) {
@@ -162,8 +168,8 @@ const VaultsV3: React.FC = () => {
       )
     }
 
-    if (vaultType !== 'allTypes') {
-      chosenVaults = chosenVaults.filter((vault) => vault.type === vaultType.toUpperCase())
+    if (filterOption !== 'all') {
+      chosenVaults = chosenVaults.filter((vault) => vault.type === filterOption.toUpperCase())
     }
 
     if (searchQuery) {
@@ -203,8 +209,8 @@ const VaultsV3: React.FC = () => {
             checkboxLabel="Staked"
             showOnlyCheckbox={stakedOnly}
             setShowOnlyCheckbox={setStakedOnly}
-            setFilterOption={setVaultType}
-            filterOption={vaultType}
+            setFilterOption={setFilterOption}
+            filterOption={filterOption}
             toogleLabels={['ACTIVE', 'INACTIVE']}
             sortOptions={SORT_OPTIONS}
             filterOptions={FILTER_OPTIONS}
@@ -215,41 +221,6 @@ const VaultsV3: React.FC = () => {
           <ListView404 product={LIST_VIEW_PRODUCTS.MAXIMIZERS} />
         ) : (
           <>
-            {isActive && (
-              <>
-                <LegacyVaults />
-                {vaultsWithLpBalance.length > 0 && (
-                  <Flex
-                    sx={{
-                      background: 'gradient',
-                      padding: '5px',
-                      borderRadius: '10px 0px 10px 10px',
-                      mt: '40px',
-                      mb: '20px',
-                      position: 'relative',
-                    }}
-                  >
-                    <Flex
-                      sx={{
-                        position: 'absolute',
-                        right: 0,
-                        top: 0,
-                        padding: '2.5px 10px',
-                        borderRadius: '10px 10px 0px 0px',
-                        background: 'rgb(221,174,66)',
-                        transform: 'translate(0px, -24px)',
-                        zIndex: 10,
-                      }}
-                    >
-                      <Text size="12px" color="primaryBright">
-                        NEW Vaults V2
-                      </Text>
-                    </Flex>
-                    <DisplayDepsoitVaultsV2 vaults={vaultsWithLpBalance} />
-                  </Flex>
-                )}
-              </>
-            )}
             <DisplayVaults
               vaults={isActive ? renderVaults() : [...renderVaults(), ...renderLegacyVaults()]}
               openId={urlSearchedVault}

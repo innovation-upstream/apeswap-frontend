@@ -14,6 +14,7 @@ import { BillsToRender } from '../types'
 import { formatNumberSI } from 'utils/formatNumber'
 import ListView from 'components/ListViewV2/ListView'
 import useIsMobile from 'hooks/useIsMobile'
+import { styles } from './styles'
 
 const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender }) => {
   const { chainId } = useActiveWeb3React()
@@ -53,6 +54,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
             toolTip={`This is the amount of tokens that have vested and available to claim.`}
             toolTipPlacement={'bottomLeft'}
             toolTipTransform={'translate(29%, 0%)'}
+            style={{ width: '100%', justifyContent: 'space-between' }}
           />
         ) : (
           <Flex style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -61,7 +63,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
               value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
               value2Secondary
-              style={{ maxWidth: '135px', height: '40px', flexDirection: 'column' }}
+              style={styles.billInfo}
               toolTip={t('This is the amount of tokens that have vested and available to claim.')}
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(29%, -4%)"
@@ -71,7 +73,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
               value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
               value2Secondary
-              style={{ maxWidth: '135px', height: '40px', flexDirection: 'column' }}
+              style={styles.billInfo}
               toolTip={t('This is the amount of unvested tokens that cannot be claimed yet.')}
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(22%, -4%)"
@@ -100,7 +102,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
                 toolTip={`This is the amount of unvested tokens that cannot be claimed yet.`}
                 toolTipPlacement={'bottomLeft'}
                 toolTipTransform={'translate(22%, 0%)'}
-                style={{ marginBottom: '5px' }}
+                style={{ width: '100%', justifyContent: 'space-between', marginBottom: '5px' }}
               />
               <VestedTimer
                 lastBlockTimestamp={billToRender.lastBlockTimestamp}

@@ -14,18 +14,11 @@ import { styles } from '../styles'
 interface HarvestActionsProps {
   jungleId: number
   userEarnings: number
-  earnTokenSymbol: string
   disabled: boolean
   userEarningsUsd: string
 }
 
-const HarvestAction: React.FC<HarvestActionsProps> = ({
-  jungleId,
-  earnTokenSymbol,
-  disabled,
-  userEarnings,
-  userEarningsUsd,
-}) => {
+const HarvestAction: React.FC<HarvestActionsProps> = ({ jungleId, disabled, userEarnings, userEarningsUsd }) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
@@ -55,7 +48,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   return (
     <Flex sx={styles.actionContainer}>
       <ListViewContent
-        title={`${t('Earned')} ${earnTokenSymbol}`}
+        title={t('Earned')}
         value={userEarnings?.toFixed(4)}
         value2={userEarningsUsd}
         value2Secondary

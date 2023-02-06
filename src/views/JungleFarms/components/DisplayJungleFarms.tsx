@@ -149,7 +149,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
               </Flex>
               <Flex sx={styles.actionContainer}>
                 <ListViewContent
-                  title={`${t('Available LP')}`}
+                  title={`${t('Available')}`}
                   value={userTokenBalance}
                   value2={userTokenBalanceUsd}
                   value2Secondary
@@ -188,7 +188,6 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
                 disabled={userEarnings <= 0}
                 userEarnings={userEarnings}
                 userEarningsUsd={userEarningsUsd}
-                earnTokenSymbol={farm?.rewardToken?.symbol || farm?.tokenName}
               />
             </Flex>
           </>

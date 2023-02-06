@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, ListTagVariants, Svg, useModal } from '@ape.swap/uikit'
+import { Button, Flex, Svg, useModal } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
 import { useLocation } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -81,13 +81,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       listProps: {
         id: vault.id,
         open: openId === vault.id,
-        title: (
-          <ListViewContent
-            tag={vault.type.toLowerCase() as ListTagVariants}
-            value={vault.stakeToken.symbol}
-            style={{ maxWidth: '180px' }}
-          />
-        ),
+        title: <ListViewContent value={vault.stakeToken.symbol} style={{ maxWidth: '180px' }} />,
         infoContent: (
           <Tooltip
             valueTitle={t('Withdrawal Fee')}
@@ -170,9 +164,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
               </Flex>
               <Flex sx={styles.actionContainer}>
                 <ListViewContent
-                  title={t('Available %stakeTokenSymbol%', {
-                    stakeTokenSymbol: vault.stakeToken.lpToken ? 'LP' : vault?.stakeToken?.symbol,
-                  })}
+                  title={t('Available')}
                   value={userTokenBalance}
                   value2={userTokenBalanceUsd}
                   value2Secondary

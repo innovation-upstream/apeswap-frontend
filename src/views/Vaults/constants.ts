@@ -1,15 +1,15 @@
 export const FILTER_OPTIONS = [
   {
-    label: 'All Types',
-    value: 'allTypes',
+    label: 'All',
+    value: 'all',
   },
   {
-    label: 'Max',
-    value: 'max',
+    label: 'Bluechips',
+    value: 'bluechips',
   },
   {
-    label: 'Auto',
-    value: 'auto',
+    label: 'Stables',
+    value: 'stables',
   },
 ]
 

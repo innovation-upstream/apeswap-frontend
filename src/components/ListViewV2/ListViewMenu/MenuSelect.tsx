@@ -21,6 +21,7 @@ const MenuSelect: React.FC<FilterSelectProps> = ({ selectedOption, setOption, op
         height: '36px',
         display: 'flex',
         width: '100%',
+        paddingRight: '4px',
       }}
     >
       {options?.map((option) => {

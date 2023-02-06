@@ -23,7 +23,7 @@ const CardActions: React.FC<CardActionProps> = ({ lpValueUsd, farm }) => {
   return (
     <Flex sx={styles.actionContainer}>
       <ListViewContent
-        title={t('Staked LP')}
+        title={t('Staked')}
         value={`${rawStakedBalance ? rawStakedBalance.toFixed(6) : '0.000'} LP`}
         value2={userStakedBalanceUsd}
         value2Secondary

@@ -62,12 +62,18 @@ export const styles: Record<
     '@media screen and (max-width: 852px)': {
       minWidth: '130px',
     },
+    '&:disabled': {
+      background: 'white4',
+    },
   },
   smallBtn: {
     maxWidth: '60px',
     width: '100%',
     minWidth: '44px',
     height: '44px',
+    '&:disabled': {
+      background: 'white4',
+    },
   },
   depositContainer: {
     width: '100%',

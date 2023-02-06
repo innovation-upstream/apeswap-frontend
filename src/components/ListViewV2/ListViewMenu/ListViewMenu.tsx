@@ -50,20 +50,14 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
           </Flex>
         </Flex>
         <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
-          {expanded && (
-            <AnimatePresence>
+          <AnimatePresence>
+            {expanded && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'fit-content' }}
-                transition={{ delay: 0.1 }}
-                exit={{ opacity: 0 }}
-                sx={{
-                  position: 'relative',
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  flexWrap: 'wrap',
-                }}
+                initial={{ height: 0 }}
+                animate={{ height: 'fit-content', transitionEnd: { overflow: 'visible' } }}
+                transition={{ opacity: { duration: 0.2 } }}
+                exit={{ height: 0, overflow: 'hidden' }}
+                sx={{ position: 'relative', width: '100%', overflow: 'hidden' }}
               >
                 <Flex sx={styles.container}>
                   {sortOption && (
@@ -81,7 +75,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
                   <Flex>
                     <Toggle
                       size="sm"
-                      labels={[t(`${toogleLabels[0]}`), t(`${toogleLabels[1]}`)]}
+                      labels={[t(`${toogleLabels[0]}`).toUpperCase(), t(`${toogleLabels[1]}`).toUpperCase()]}
                       onClick={handleToogle}
                       checked={!isExact}
                       sx={{ height: '36px', alignItems: 'center' }}
@@ -89,14 +83,14 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
                   </Flex>
                   <Flex sx={{ alignItems: 'center' }} onClick={() => setShowOnlyCheckbox(!showOnlyCheckbox)}>
                     <Checkbox checked={showOnlyCheckbox} />
-                    <Text ml="10px" size="14px" weight={700} color="success">
+                    <Text ml="10px" size="14px" weight={700}>
                       {t(`${checkboxLabel}`)}
                     </Text>
                   </Flex>
                 </Flex>
               </motion.div>
-            </AnimatePresence>
-          )}
+            )}
+          </AnimatePresence>
         </Flex>
         {sortOption && (
           <Flex sx={{ minWidth: '100px', ...styles.onlyDesktop }}>
@@ -111,7 +105,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
         <Flex sx={{ minWidth: '150px', ...styles.onlyDesktop }}>
           <Toggle
             size="sm"
-            labels={[t(`${toogleLabels[0]}`), t(`${toogleLabels[1]}`)]}
+            labels={[t(`${toogleLabels[0]}`).toUpperCase(), t(`${toogleLabels[1]}`).toUpperCase()]}
             onClick={handleToogle}
             checked={!isExact}
             sx={styles.toogle}

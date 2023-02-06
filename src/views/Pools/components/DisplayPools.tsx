@@ -110,7 +110,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
             />
             <Flex sx={{ ...poolStyles.onlyDesktop, width: '100%' }}>
               <ListViewContent
-                title={t('Liquidity')}
+                title={t('Total Staked')}
                 value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
                 toolTip={t('The total value of the tokens currently staked in this pool.')}
                 toolTipPlacement="bottomLeft"
@@ -126,7 +126,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
             <Flex sx={poolStyles.expandedContent}>
               <Flex sx={{ ...poolStyles.onlyMobile, width: '100%' }}>
                 <ListViewContent
-                  title={t('Liquidity')}
+                  title={t('Total Staked')}
                   value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
                   toolTip={t('The total value of the tokens currently staked in this pool.')}
                   toolTipPlacement="bottomLeft"
@@ -136,7 +136,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
               </Flex>
               <Flex sx={poolStyles.actionContainer}>
                 <ListViewContent
-                  title={`${t('Available')} ${pool?.stakingToken?.symbol}`}
+                  title={t('Available')}
                   value={userTokenBalance}
                   value2={userTokenBalanceUsd}
                   value2Secondary
