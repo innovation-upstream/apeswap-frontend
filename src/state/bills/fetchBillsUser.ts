@@ -77,11 +77,6 @@ export const fetchUserOwnedBills = async (
 
   for (let i = 0; i < billsPendingRewardCall.length; i++) {
     const billDataPos = i === 0 ? 0 : i * 2
-    // console.log(
-    //   new BigNumber(billData[billDataPos][0]?.payout.toString())
-    //     .minus(billData[billDataPos][0]?.payoutClaimed)
-    //     .toString(),
-    // )
     const data =
       billVersions[i] === BillVersion.V2
         ? {
