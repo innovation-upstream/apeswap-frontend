@@ -64,7 +64,7 @@ export const fetchUserOwnedBills = async (
         billDataCalls.push({ address: bills[index].contractAddress[chainId], name: 'billNft' }),
         billsPendingRewardCall.push({
           address: bills[index].contractAddress[chainId],
-          name: bills[index].billVersion === BillVersion.V2 ? 'pendingVesting' : 'pendingPayoutFor',
+          name: bills[index].billVersion === BillVersion.V2 ? 'claimablePayout' : 'pendingPayoutFor',
           params: [id],
         }),
         billVersions.push(bills[index].billVersion)),

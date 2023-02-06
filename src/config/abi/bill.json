@@ -439,5 +439,12 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_billId", "type": "uint256" }],
+    "name": "claimablePayout",
+    "outputs": [{ "internalType": "uint256", "name": "claimablePayout_", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]
