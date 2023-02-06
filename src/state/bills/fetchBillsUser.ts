@@ -64,7 +64,7 @@ export const fetchUserOwnedBills = async (
         })),
     ),
   )
-  const billData = await multicall(chainId, billAbi, billDataCalls)
+  const billData = await multicall(chainId, billAbi, billDataCalls, true)
   const pendingRewardsCall = await multicall(chainId, billAbi, billsPendingRewardCall)
 
   const result = []
