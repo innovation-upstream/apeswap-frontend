@@ -63,7 +63,7 @@ const DiscountContent: React.FC<DiscountContentProps> = ({
                 <Skeleton sx={styles.skeleton} />
               ) : showToolTipPrice ? (
                 <TooltipBubble
-                  placement="bottomLeft"
+                  placement={isMobile ? 'bottomRight' : 'bottomLeft'}
                   transformTip="translate(5%, 0%)"
                   body={
                     <Flex>

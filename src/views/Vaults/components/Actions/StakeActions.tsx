@@ -42,6 +42,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   allowance,
   stakeTokenAddress,
 }) => {
+  const lpText = vaultVersion === VaultVersion.V1 ? 'BANANA' : 'LP tokens'
   const { showGeneralHarvestModal } = useIsModalShown()
   const dispatch = useAppDispatch()
   const history = useHistory()
@@ -84,7 +85,7 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
       max={stakedBalance}
-      title={t('Unstake LP tokens')}
+      title={t(`Unstake ${lpText}`)}
       withdrawFee={withdrawFee}
       onConfirm={async (val) => {
         setPendingWithdrawTrx(true)

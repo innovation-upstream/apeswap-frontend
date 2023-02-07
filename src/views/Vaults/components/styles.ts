@@ -35,8 +35,10 @@ export const styles: Record<
   actionContainer: {
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
     mt: '10px',
+    '@media screen and (max-width: 852px)': {
+      width: '100%',
+    },
     '@media screen and (min-width: 852px)': {
       mt: '0',
       flexDirection: 'row-reverse',
@@ -48,7 +50,6 @@ export const styles: Record<
     flexDirection: 'row',
     flexWrap: 'wrap',
     padding: '0 10px',
-    justifyContent: 'space-between',
     '@media screen and (min-width: 852px)': {
       flexWrap: 'nowrap',
     },

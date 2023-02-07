@@ -220,13 +220,10 @@ const VaultsV3: React.FC = () => {
         {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.maximizers.includes(chainId) ? (
           <ListView404 product={LIST_VIEW_PRODUCTS.MAXIMIZERS} />
         ) : (
-          <>
-            <DisplayVaults
-              vaults={isActive ? renderVaults() : [...renderVaults(), ...renderLegacyVaults()]}
-              openId={urlSearchedVault}
-            />
-            {!isActive && <DisplayVaults vaults={renderLegacyVaults()} openId={urlSearchedVault} />}
-          </>
+          <DisplayVaults
+            vaults={isActive ? renderVaults() : [...renderVaults(), ...renderLegacyVaults()]}
+            openId={urlSearchedVault}
+          />
         )}
         <div ref={loadMoreRef} />
       </ListViewLayout>

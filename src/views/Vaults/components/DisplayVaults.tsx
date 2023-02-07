@@ -53,6 +53,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
   }
 
   const vaultsListView = vaults.map((vault) => {
+    const isBananaBanana = vault.version === VaultVersion.V1
     const totalDollarAmountStaked = Math.round(parseFloat(vault?.totalStaked) * vault?.stakeTokenPrice * 100) / 100
     const liquidityUrl = `https://apeswap.finance/swap/`
     const userAllowance = vault?.userData?.allowance
@@ -61,7 +62,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
       (getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards)) || 0) * vault.rewardTokenPrice
     ).toFixed(2)}`
     const userTokenBalance = `${(getBalanceNumber(new BigNumber(vault?.userData?.tokenBalance)) || 0).toFixed(4)}
-    ${vault?.version === VaultVersion.V1 ? '' : ' LP'}`
+    ${vault?.version === VaultVersion.V1 ? 'BANANA' : ' LP'}`
     const userTokenBalanceUsd = `$${(parseFloat(userTokenBalance || '0') * vault?.stakeTokenPrice).toFixed(2)}`
     const userStakedBalance = getBalanceNumber(new BigNumber(vault?.userData?.stakedBalance))
     const userStakedBalanceUsd = `$${((userStakedBalance || 0) * vault?.stakeTokenPrice).toFixed(2)}`
@@ -80,7 +81,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
         earnLp,
       },
       listProps: {
-        id: vault.id,
+        // there are two vaults with the same ID, so it is important to use different id's here, otherwise react renders them again and again
+        id: `${vault.id} ${vault?.inactive}`,
         open: openId === vault.id,
         title: <ListViewContent value={vault.stakeToken.symbol} style={{ maxWidth: '180px' }} />,
         titleWidth: '400px',
@@ -152,7 +154,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
         ),
         expandedContent: (
           <>
-            <Flex sx={styles.expandedContent}>
+            <Flex sx={{ ...styles.expandedContent, justifyContent: isBananaBanana ? 'center' : 'space-between' }}>
               <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
                 <ListViewContent
                   title={t('Daily APY')}
@@ -173,7 +175,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                   style={styles.farmInfo}
                 />
               </Flex>
-              <Flex sx={styles.actionContainer}>
+              <Flex sx={{ ...styles.actionContainer, width: isBananaBanana ? '320px' : '100%' }}>
                 <ListViewContent
                   title={t('Available')}
                   value={userTokenBalance}

@@ -53,7 +53,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, earnTokenSymbol, di
   }
 
   return (
-    <Flex sx={styles.actionContainer}>
+    <Flex sx={{ ...styles.actionContainer, width: '100%' }}>
       <ListViewContent
         title={t('Earned')}
         value={userEarnings?.toFixed(4)}
