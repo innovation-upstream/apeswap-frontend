@@ -84,6 +84,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[];
             style={{ maxWidth: '170px' }}
           />
         ),
+        titleWidth: '290px',
         infoContent: (
           <Tooltip
             valueTitle={t('Multiplier')}
@@ -119,9 +120,9 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[];
                   lpCurr2={farm?.quoteTokenAdresses[chainId]}
                 />
               }
-              style={styles.farmInfo}
+              style={styles.apyInfo}
             />
-            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '100px', width: '100%' }}>
+            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '180px', width: '100%' }}>
               <ListViewContent
                 title={t('APR')}
                 value={`${farm?.apr}%`}
@@ -145,7 +146,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[];
                 style={styles.farmInfo}
               />
             </Flex>
-            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '100px', width: '100%' }}>
+            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '180px', width: '100%' }}>
               <ListViewContent
                 title={t('Liquidity')}
                 value={`$${Number(farm?.totalLpStakedUsd).toLocaleString(undefined)}`}
@@ -155,7 +156,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[];
                 style={styles.farmInfo}
               />
             </Flex>
-            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={styles.farmInfo} />
+            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={styles.earnedInfo} />
           </Flex>
         ),
         expandedContent: (

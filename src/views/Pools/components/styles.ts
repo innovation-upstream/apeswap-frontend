@@ -1,8 +1,11 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const poolStyles: Record<
+  | 'buttonsContainer'
   | 'container'
   | 'farmInfo'
+  | 'aprInfo'
+  | 'earnedColumn'
   | 'cardContent'
   | 'actionContainer'
   | 'expandedContent'
@@ -19,6 +22,12 @@ export const poolStyles: Record<
   | 'onlyMobile',
   ThemeUIStyleObject
 > = {
+  buttonsContainer: {
+    justifyContent: 'space-around',
+    width: '100%',
+    display: ['none', 'none', 'flex'],
+    maxWidth: ['', '', '90px'],
+  },
   container: {
     position: 'relative',
     width: '100%',
@@ -27,7 +36,25 @@ export const poolStyles: Record<
     width: '100%',
     justifyContent: 'space-between',
     '@media screen and (min-width: 852px)': {
-      maxWidth: '100px',
+      maxWidth: '110px',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    },
+  },
+  aprInfo: {
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '80px',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    },
+  },
+  earnedColumn: {
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '150px',
       flexDirection: 'column',
       justifyContent: 'flex-start',
     },
@@ -36,6 +63,7 @@ export const poolStyles: Record<
     flexDirection: 'column',
     width: '100%',
     justifyContent: 'space-between',
+    maxWidth: 'unset',
     '@media screen and (min-width: 852px)': {
       flexDirection: 'row',
     },
@@ -167,7 +195,7 @@ export const dynamicStyles: Record<'actionContainer', (isBananaBanana: boolean) 
       flexDirection: 'row-reverse',
       justifyContent: 'space-around',
       flexWrap: 'nowrap',
-      minWidth: isBananaBanana && '350px',
+      minWidth: isBananaBanana && '380px',
     },
   }),
 }

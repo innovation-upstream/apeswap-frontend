@@ -68,6 +68,8 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
             style={{ maxWidth: '150px' }}
           />
         ),
+        titleWidth: '290px',
+        iconsContainer: '94px',
         infoContent: (
           <Tooltip
             tokenContract={pool?.rewardToken?.address[chainId]}
@@ -81,7 +83,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
         ),
         cardContent: (
           <Flex sx={poolStyles.cardContent}>
-            <Flex sx={{ ...poolStyles.onlyDesktop, width: '100%' }}>
+            <Flex sx={poolStyles.buttonsContainer}>
               <Flex sx={{ width: '90px', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
                 <a href={pool.projectLink} target="_blank" rel="noreferrer">
                   <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
@@ -106,9 +108,9 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                   tokenAddress={pool.stakingToken.address[chainId]}
                 />
               }
-              style={poolStyles.farmInfo}
+              style={poolStyles.aprInfo}
             />
-            <Flex sx={{ ...poolStyles.onlyDesktop, width: '100%' }}>
+            <Flex sx={{ ...poolStyles.onlyDesktop }}>
               <ListViewContent
                 title={t('Total Staked')}
                 value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
@@ -118,7 +120,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                 style={poolStyles.farmInfo}
               />
             </Flex>
-            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={poolStyles.farmInfo} />
+            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={poolStyles.earnedColumn} />
           </Flex>
         ),
         expandedContent: (
@@ -134,7 +136,7 @@ const DisplayPools: React.FC<{ pools: Pool[]; openId?: number; poolTags: Tag[] }
                   style={poolStyles.farmInfo}
                 />
               </Flex>
-              <Flex sx={poolStyles.actionContainer}>
+              <Flex sx={{ ...poolStyles.actionContainer, minWidth: '220px' }}>
                 <ListViewContent
                   title={t('Available')}
                   value={userTokenBalance}

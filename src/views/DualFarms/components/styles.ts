@@ -1,7 +1,9 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
 export const styles: Record<
-  | 'farmInfo'
+  | 'apyInfo'
+  | 'aprInfo'
+  | 'earnedInfo'
   | 'cardContent'
   | 'actionContainer'
   | 'expandedContent'
@@ -15,11 +17,30 @@ export const styles: Record<
   | 'onlyMobile',
   ThemeUIStyleObject
 > = {
-  farmInfo: {
+  apyInfo: {
     width: '100%',
     justifyContent: 'space-between',
     '@media screen and (min-width: 852px)': {
-      maxWidth: '100px',
+      ml: '20px',
+      maxWidth: '150px',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    },
+  },
+  aprInfo: {
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '180px',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    },
+  },
+  earnedInfo: {
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '120px',
       flexDirection: 'column',
       justifyContent: 'flex-start',
     },

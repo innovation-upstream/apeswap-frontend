@@ -9,6 +9,8 @@ import InfoContent from './components/InfoContent'
 const ListCard: React.FC<ListCardProps> = ({
   serviceTokenDisplay,
   title,
+  titleWidth = '310px',
+  iconsContainer = '117px',
   cardContent,
   expandedContent,
   infoContent,
@@ -18,9 +20,9 @@ const ListCard: React.FC<ListCardProps> = ({
   return (
     <>
       <Flex sx={styles.listCardContainer} onClick={() => setExpanded((prev) => !prev)}>
-        <Flex sx={styles.titleContainer}>
+        <Flex sx={{ ...styles.titleContainer, maxWidth: ['100%', '100%', '275px', titleWidth] }}>
           <Flex sx={styles.tokensContainer}>
-            <Flex sx={{ minWidth: ['', '', '117px'], justifyContent: 'flex-end' }}>{serviceTokenDisplay}</Flex>
+            <Flex sx={{ minWidth: ['', '', iconsContainer], justifyContent: 'flex-end' }}>{serviceTokenDisplay}</Flex>
             <Flex sx={{ flexDirection: 'column', marginLeft: '10px' }}>{title}</Flex>
           </Flex>
           <Flex sx={styles.infoContentMobile}>

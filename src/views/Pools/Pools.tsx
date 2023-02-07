@@ -128,7 +128,7 @@ const Pools: React.FC = () => {
   }
 
   const renderPools = () => {
-    let chosenPools = isActive ? openPools : finishedPools
+    let chosenPools = isActive ? openPools : [legacyPool, ...finishedPools]
     if (urlSearchedPool) {
       const poolCheck =
         openPools?.find((pool) => {
@@ -192,11 +192,7 @@ const Pools: React.FC = () => {
           {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS.pools.includes(chainId) ? (
             <ListView404 product={LIST_VIEW_PRODUCTS.POOLS} />
           ) : (
-            <DisplayPools
-              pools={isActive ? renderPools() : [legacyPool, ...renderPools()]}
-              openId={urlSearchedPool}
-              poolTags={poolTags}
-            />
+            <DisplayPools pools={renderPools()} openId={urlSearchedPool} poolTags={poolTags} />
           )}
           <div ref={loadMoreRef} />
         </Flex>

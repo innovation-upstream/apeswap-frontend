@@ -19,7 +19,7 @@ export const styles: Record<
     width: '100%',
     justifyContent: 'space-between',
     '@media screen and (min-width: 852px)': {
-      maxWidth: '100px',
+      maxWidth: '140px',
       flexDirection: 'column',
       justifyContent: 'flex-start',
     },

@@ -67,6 +67,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
             style={{ maxWidth: '170px' }}
           />
         ),
+        titleWidth: '290px',
         infoContent: (
           <Tooltip
             jungleFarm={farm}
@@ -81,7 +82,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
         cardContent: (
           <Flex sx={styles.cardContent}>
             <Flex sx={styles.onlyDesktop}>
-              <Flex sx={{ width: '85px', justifyContent: 'flex-start' }}>
+              <Flex sx={{ width: '90px', justifyContent: 'space-between' }}>
                 {farm.projectLink && (
                   <a href={farm.projectLink} target="_blank" rel="noreferrer" style={{ marginRight: '5px' }}>
                     <IconButton icon="website" color="primaryBright" width={20} style={{ padding: '8.5px 10px' }} />
@@ -121,9 +122,9 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
                   lpCurr2={farm?.lpTokens?.quoteToken?.address[chainId]}
                 />
               }
-              style={styles.farmInfo}
+              style={styles.aprInfo}
             />
-            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '100px', width: '100%' }}>
+            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '110px', width: '100%' }}>
               <ListViewContent
                 title={t('Liquidity')}
                 value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
@@ -133,7 +134,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
                 style={styles.farmInfo}
               />
             </Flex>
-            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={styles.farmInfo} />
+            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={styles.earnedInfo} />
           </Flex>
         ),
         expandedContent: (

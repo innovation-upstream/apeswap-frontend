@@ -60,7 +60,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
     const userEarningsUsd = `$${(
       (getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards)) || 0) * vault.rewardTokenPrice
     ).toFixed(2)}`
-    const userTokenBalance = `${(getBalanceNumber(new BigNumber(vault?.userData?.tokenBalance)) || 0).toFixed(4)} LP`
+    const userTokenBalance = `${(getBalanceNumber(new BigNumber(vault?.userData?.tokenBalance)) || 0).toFixed(4)}
+    ${vault?.version === VaultVersion.V1 ? '' : ' LP'}`
     const userTokenBalanceUsd = `$${(parseFloat(userTokenBalance || '0') * vault?.stakeTokenPrice).toFixed(2)}`
     const userStakedBalance = getBalanceNumber(new BigNumber(vault?.userData?.stakedBalance))
     const userStakedBalanceUsd = `$${((userStakedBalance || 0) * vault?.stakeTokenPrice).toFixed(2)}`
@@ -82,6 +83,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
         id: vault.id,
         open: openId === vault.id,
         title: <ListViewContent value={vault.stakeToken.symbol} style={{ maxWidth: '180px' }} />,
+        titleWidth: '400px',
+        iconsContainer: '130px',
         infoContent: (
           <Tooltip
             valueTitle={t('Withdrawal Fee')}
@@ -95,7 +98,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
         ),
         cardContent: (
           <Flex sx={styles.cardContent}>
-            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '100px', width: '100%' }}>
+            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '140px', width: '100%' }}>
               <ListViewContent
                 title={t('Daily APY')}
                 value={`${isActive ? vault?.apy?.daily?.toFixed(2) : '0.00'}%`}
@@ -117,7 +120,15 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
               toolTipTransform="translate(28%, 0%)"
               style={styles.farmInfo}
             />
-            <Flex sx={{ ...styles.onlyDesktop, minWidth: '120px', maxWidth: '120px', width: '100%' }}>
+            <Flex
+              sx={{
+                ...styles.onlyDesktop,
+                minWidth: '140px',
+                maxWidth: '170px',
+                width: '100%',
+                justifyContent: 'flex-start',
+              }}
+            >
               <ListViewContent
                 title={t('Liquidity')}
                 value={`$${totalDollarAmountStaked.toLocaleString(undefined)}`}
@@ -125,8 +136,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                 toolTipPlacement="bottomRight"
                 toolTipTransform="translate(13%, 0%)"
                 style={{
-                  maxWidth: '120px',
-                  minWidth: '120px',
+                  maxWidth: '170px',
+                  minWidth: '140px',
                   flexDirection: 'column',
                   justifyContent: 'flex-start',
                 }}

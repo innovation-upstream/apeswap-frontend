@@ -62,6 +62,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
             style={{ maxWidth: '170px' }}
           />
         ),
+        titleWidth: '290px',
         infoContent: (
           <Tooltip
             valueTitle={t('Multiplier')}
@@ -98,9 +99,9 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                   lpCurr2={farm.stakeTokens.token0.address[chainId]}
                 />
               }
-              style={styles.farmInfo}
+              style={styles.apyInfo}
             />
-            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '100px', width: '100%' }}>
+            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '180px', width: '100%' }}>
               <ListViewContent
                 title={t('APR')}
                 value={`${farm?.apr ? farm?.apr.toFixed(2) : 0}%`}
@@ -121,20 +122,20 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 )}
                 toolTipPlacement={i === farms.length - 1 && i !== 0 ? 'topLeft' : 'bottomLeft'}
                 toolTipTransform={i === farms.length - 1 && i !== 0 ? 'translate(-8%, 0%)' : 'translate(8%, 0%)'}
-                style={styles.farmInfo}
+                style={styles.aprInfo}
               />
             </Flex>
-            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '100px', width: '100%' }}>
+            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '180px', width: '100%' }}>
               <ListViewContent
                 title={t('Liquidity')}
                 value={`$${Number(farm?.totalStaked).toLocaleString(undefined)}`}
                 toolTip={t('The total value of the LP tokens currently staked in this farm.')}
                 toolTipPlacement="bottomLeft"
                 toolTipTransform="translate(23%, 0%)"
-                style={styles.farmInfo}
+                style={styles.aprInfo}
               />
             </Flex>
-            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={styles.farmInfo} />
+            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={styles.earnedInfo} />
           </Flex>
         ),
         expandedContent: (
@@ -160,7 +161,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 )}
                 toolTipPlacement={i === farms.length - 1 && i !== 0 ? 'topLeft' : 'bottomLeft'}
                 toolTipTransform={i === farms.length - 1 && i !== 0 ? 'translate(-8%, 0%)' : 'translate(8%, 0%)'}
-                style={styles.farmInfo}
+                style={styles.aprInfo}
               />
             </Flex>
             <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
@@ -170,7 +171,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 toolTip={t('The total value of the LP tokens currently staked in this farm.')}
                 toolTipPlacement="bottomRight"
                 toolTipTransform="translate(13%, 0%)"
-                style={styles.farmInfo}
+                style={styles.aprInfo}
               />
             </Flex>
             <Flex sx={styles.actionContainer}>

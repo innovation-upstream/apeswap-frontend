@@ -57,7 +57,6 @@ export const styles: Record<
     width: '100%',
     justifyContent: 'space-between',
     my: '5px',
-    maxWidth: ['100%', '100%', '275px', '340px'],
   },
   infoContentMobile: {
     display: ['flex', 'flex', 'none'],
@@ -66,7 +65,6 @@ export const styles: Record<
   tokensContainer: {
     alignItems: 'center',
     height: '100%',
-    maxWidth: '310px',
     width: '100%',
   },
   titleText: {
@@ -98,7 +96,7 @@ export const styles: Record<
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
   animationDiv: {
     position: 'relative',

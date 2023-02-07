@@ -69,7 +69,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             audit={bill?.audit}
           />
         ),
-        titleContainerWidth: 280,
+        titleWidth: '278px',
         cardContent: isMobile ? (
           <DiscountContent
             title={t('Discount')}
@@ -81,7 +81,16 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
             flexDirection="row"
           />
         ) : (
-          <>
+          <Flex
+            sx={{
+              flexDirection: 'column',
+              width: '100%',
+              justifyContent: 'space-between',
+              '@media screen and (min-width: 852px)': {
+                flexDirection: 'row',
+              },
+            }}
+          >
             <Flex sx={{ width: '100%', maxWidth: '130px', ml: '10px' }}>
               <DiscountContent
                 title={t('Discount')}
@@ -124,7 +133,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
                 </Flex>
               )}
             </Flex>
-          </>
+          </Flex>
         ),
         expandedContent: isMobile && (
           <Flex sx={{ alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
