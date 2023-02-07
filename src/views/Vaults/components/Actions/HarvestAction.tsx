@@ -12,6 +12,7 @@ import { AutoRenewIcon, Button, Flex } from '@ape.swap/uikit'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { useTranslation } from 'contexts/Localization'
 import { styles } from '../styles'
+import ServiceTokenDisplay from '../../../../components/ServiceTokenDisplay'
 
 interface HarvestActionsProps {
   pid: number
@@ -53,7 +54,16 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, earnTokenSymbol, di
 
   return (
     <Flex sx={styles.actionContainer}>
-      <ListViewContent title={t('Earned')} value={userEarnings?.toFixed(4)} style={styles.columnView} />
+      <ListViewContent
+        title={t('Earned')}
+        value={userEarnings?.toFixed(4)}
+        valueIcon={
+          <Flex sx={{ height: '16px', alignItems: 'center', mr: '3px' }}>
+            <ServiceTokenDisplay token1="BANANA" size={13} />
+          </Flex>
+        }
+        style={styles.columnView}
+      />
       <Flex sx={styles.depositContainer}>
         <Button
           disabled={disabled || pendingTrx}

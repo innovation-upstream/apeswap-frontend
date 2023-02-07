@@ -35,6 +35,7 @@ const Actions: React.FC<CardActionProps> = ({
   const { t } = useTranslation()
 
   const actionToRender = () => {
+    const lpText = vaultVersion === VaultVersion.V1 ? '' : ' LP'
     const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
     const userStakedBalanceUsd = `$${(getBalanceNumber(new BigNumber(stakedBalance || 0)) * stakeTokenValueUsd).toFixed(
       2,
@@ -43,7 +44,7 @@ const Actions: React.FC<CardActionProps> = ({
       <Flex sx={styles.actionContainer}>
         <ListViewContent
           title={t('Staked')}
-          value={rawStakedBalance ? rawStakedBalance.toFixed(2) : '0.000'}
+          value={rawStakedBalance ? `${rawStakedBalance.toFixed(2)}${lpText}` : `0.000${lpText}`}
           value2={userStakedBalanceUsd}
           value2Secondary
           value2Direction="column"

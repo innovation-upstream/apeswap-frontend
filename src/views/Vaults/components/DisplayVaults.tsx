@@ -60,7 +60,7 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
     const userEarningsUsd = `$${(
       (getBalanceNumber(new BigNumber(vault?.userData?.pendingRewards)) || 0) * vault.rewardTokenPrice
     ).toFixed(2)}`
-    const userTokenBalance = (getBalanceNumber(new BigNumber(vault?.userData?.tokenBalance)) || 0).toFixed(4)
+    const userTokenBalance = `${(getBalanceNumber(new BigNumber(vault?.userData?.tokenBalance)) || 0).toFixed(4)} LP`
     const userTokenBalanceUsd = `$${(parseFloat(userTokenBalance || '0') * vault?.stakeTokenPrice).toFixed(2)}`
     const userStakedBalance = getBalanceNumber(new BigNumber(vault?.userData?.stakedBalance))
     const userStakedBalanceUsd = `$${((userStakedBalance || 0) * vault?.stakeTokenPrice).toFixed(2)}`
@@ -200,8 +200,8 @@ const DisplayVaults: React.FC<{ vaults: Vault[]; openId?: number }> = ({ vaults,
                   )}
                 </Flex>
               </Flex>
-              <Flex sx={{ ...styles.onlyDesktop, mx: '10px' }}>
-                <Svg icon="caret" direction="right" width="50px" />
+              <Flex sx={{ ...styles.onlyDesktop, mx: '10px', minWidth: '35px' }}>
+                <Svg icon="caret" direction="right" width="15px" />
               </Flex>
               <Actions
                 allowance={userAllowance?.toString()}

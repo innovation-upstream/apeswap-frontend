@@ -155,7 +155,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[];
                 style={styles.farmInfo}
               />
             </Flex>
-            <ListViewContent title={t('Earned')} value={userEarnings} style={styles.farmInfo} />
+            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={styles.farmInfo} />
           </Flex>
         ),
         expandedContent: (

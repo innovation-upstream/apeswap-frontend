@@ -40,7 +40,9 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
       farm?.rewardToken?.decimals[chainId],
     )
     const userEarningsUsd = `$${(userEarnings * farm.rewardToken?.price).toFixed(2)}`
-    const userTokenBalance = `${getBalanceNumber(farm?.userData?.stakingTokenBalance || new BigNumber(0))?.toFixed(6)}`
+    const userTokenBalance = `${getBalanceNumber(farm?.userData?.stakingTokenBalance || new BigNumber(0))?.toFixed(
+      6,
+    )} LP`
     const userTokenBalanceUsd = `$${(
       getBalanceNumber(farm?.userData?.stakingTokenBalance || new BigNumber(0)) * farm?.stakingToken?.price
     ).toFixed(2)}`
@@ -188,6 +190,7 @@ const DisplayJungleFarms: React.FC<{ jungleFarms: JungleFarm[]; openId?: number;
                 disabled={userEarnings <= 0}
                 userEarnings={userEarnings}
                 userEarningsUsd={userEarningsUsd}
+                earnTokenSymbol={farm?.rewardToken?.symbol === 'LC' ? 'LC2' : farm?.rewardToken?.symbol}
               />
             </Flex>
           </>

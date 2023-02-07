@@ -12,6 +12,7 @@ import { useTranslation } from 'contexts/Localization'
 import { styles } from '../styles'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { updateFarmV2UserEarnings } from 'state/farmsV2'
+import ServiceTokenDisplay from '../../../../components/ServiceTokenDisplay'
 
 interface HarvestActionsProps {
   pid: number
@@ -38,6 +39,11 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, userEarni
       <ListViewContent
         title={t('Earned')}
         value={userEarnings}
+        valueIcon={
+          <Flex sx={{ height: '16px', alignItems: 'center', mr: '3px' }}>
+            <ServiceTokenDisplay token1="BANANA" size={13} />
+          </Flex>
+        }
         value2={userEarningsUsd}
         value2Secondary
         value2Direction="column"

@@ -124,6 +124,9 @@ export const poolStyles: Record<
       minWidth: '130px',
       width: '100%',
     },
+    '&:disabled': {
+      background: 'white4',
+    },
   },
   fixedSizedBtn: {
     fontSize: '16px',
@@ -134,6 +137,9 @@ export const poolStyles: Record<
     '@media screen and (max-width: 852px)': {
       minWidth: '130px',
       width: '130px',
+    },
+    '&:disabled': {
+      background: 'white4',
     },
   },
   onlyBigScreen: {

@@ -10,15 +10,23 @@ import { useAppDispatch } from 'state'
 import { Button, Flex } from '@ape.swap/uikit'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { styles } from '../styles'
+import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 
 interface HarvestActionsProps {
   jungleId: number
   userEarnings: number
   disabled: boolean
   userEarningsUsd: string
+  earnTokenSymbol: string
 }
 
-const HarvestAction: React.FC<HarvestActionsProps> = ({ jungleId, disabled, userEarnings, userEarningsUsd }) => {
+const HarvestAction: React.FC<HarvestActionsProps> = ({
+  jungleId,
+  disabled,
+  userEarnings,
+  userEarningsUsd,
+  earnTokenSymbol,
+}) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
@@ -50,6 +58,11 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ jungleId, disabled, user
       <ListViewContent
         title={t('Earned')}
         value={userEarnings?.toFixed(4)}
+        valueIcon={
+          <Flex sx={{ height: '16px', alignItems: 'center', mr: '3px' }}>
+            <ServiceTokenDisplay token1={earnTokenSymbol} size={13} />
+          </Flex>
+        }
         value2={userEarningsUsd}
         value2Secondary
         value2Direction="column"

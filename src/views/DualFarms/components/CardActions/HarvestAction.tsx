@@ -34,7 +34,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, farm }) =
         title={t('Earned')}
         value={userEarningsMiniChef}
         valueIcon={
-          <Flex sx={{ height: '20px', alignItems: 'center', mr: '3px' }}>
+          <Flex sx={{ height: '16px', alignItems: 'center', mr: '3px' }}>
             <ServiceTokenDisplay token1={farm?.rewardTokens.token0.symbol} size={13} />
           </Flex>
         }
@@ -42,12 +42,12 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, disabled, farm }) =
         value2Direction="column"
         value2Icon={
           farm?.dualImage !== false ? (
-            <Flex sx={{ height: '20px', alignItems: 'center', mr: '3px' }}>
+            <Flex sx={{ height: '16px', alignItems: 'center', mr: '3px' }}>
               <ServiceTokenDisplay token1={farm.pid === 11 ? 'NFTY2' : farm?.rewardTokens.token1.symbol} size={13} />
             </Flex>
           ) : null
         }
-        style={{ width: '150px', flexDirection: 'column' }}
+        style={styles.columnView}
       />
       <Flex sx={styles.depositContainer}>
         <Button

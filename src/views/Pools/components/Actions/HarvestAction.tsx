@@ -95,7 +95,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
         title={t('Earned')}
         value={userEarnings?.toFixed(4)}
         valueIcon={
-          <Flex sx={{ height: '20px', alignItems: 'center', mr: '3px' }}>
+          <Flex sx={{ height: '16px', alignItems: 'center', mr: '3px' }}>
             <ServiceTokenDisplay token1={earnTokenSymbol} size={13} />
           </Flex>
         }

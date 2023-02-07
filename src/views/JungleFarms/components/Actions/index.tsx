@@ -25,7 +25,11 @@ const Actions: React.FC<StakeActionsProps> = ({ farm }) => {
       <ListViewContent
         title={`${t('Staked')}`}
         value={
-          rawStakedBalance > 0 ? (rawStakedBalance.toFixed(2) === '0.00' ? '> 0' : rawStakedBalance.toFixed(2)) : '0.00'
+          rawStakedBalance > 0
+            ? rawStakedBalance.toFixed(2) === '0.00'
+              ? '> 0 LP'
+              : `${rawStakedBalance.toFixed(2)} LP`
+            : '0.00 LP'
         }
         value2={userStakedBalanceUsd}
         value2Secondary
