@@ -45,16 +45,11 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
           <AnimatePresence>
             {expanded && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'fit-content' }}
-                transition={{ delay: 0.1 }}
-                exit={{ opacity: 0 }}
-                sx={{
-                  position: 'relative',
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
+                initial={{ height: 0 }}
+                animate={{ height: 'fit-content', transitionEnd: { overflow: 'visible' } }}
+                transition={{ opacity: { duration: 0.2 } }}
+                exit={{ height: 0, overflow: 'hidden' }}
+                sx={{ position: 'relative', width: '100%', overflow: 'hidden' }}
               >
                 <Flex sx={styles.mobileRow}>
                   <Flex sx={styles.inputContainer} pr={3}>

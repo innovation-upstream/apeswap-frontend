@@ -57,7 +57,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
                 animate={{ height: 'fit-content', transitionEnd: { overflow: 'visible' } }}
                 transition={{ opacity: { duration: 0.2 } }}
                 exit={{ height: 0, overflow: 'hidden' }}
-                sx={{ position: 'relative', width: '100%', overflow: 'hidden' }}
+                sx={styles.expandedContainer}
               >
                 <Flex sx={styles.container}>
                   {sortOption && (
@@ -74,7 +74,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
                 <Flex sx={styles.container}>
                   <Flex>
                     <Toggle
-                      size="sm"
+                      size="md"
                       labels={[t(`${toogleLabels[0]}`).toUpperCase(), t(`${toogleLabels[1]}`).toUpperCase()]}
                       onClick={handleToogle}
                       checked={!isExact}
@@ -83,7 +83,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
                   </Flex>
                   <Flex sx={{ alignItems: 'center' }} onClick={() => setShowOnlyCheckbox(!showOnlyCheckbox)}>
                     <Checkbox checked={showOnlyCheckbox} />
-                    <Text ml="10px" size="14px" weight={700}>
+                    <Text ml="10px" size="16px" weight={700}>
                       {t(`${checkboxLabel}`)}
                     </Text>
                   </Flex>
@@ -104,7 +104,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
         )}
         <Flex sx={{ minWidth: '150px', ...styles.onlyDesktop }}>
           <Toggle
-            size="sm"
+            size="md"
             labels={[t(`${toogleLabels[0]}`).toUpperCase(), t(`${toogleLabels[1]}`).toUpperCase()]}
             onClick={handleToogle}
             checked={!isExact}
@@ -116,7 +116,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
           onClick={() => setShowOnlyCheckbox(!showOnlyCheckbox)}
         >
           <Checkbox checked={showOnlyCheckbox} />
-          <Text ml="10px" size="14px" weight={700}>
+          <Text ml="10px" size="16px" weight={700}>
             {t(`${checkboxLabel}`)}
           </Text>
         </Flex>

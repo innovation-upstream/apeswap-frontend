@@ -26,6 +26,7 @@ export const styles: Record<
   | 'container'
   | 'selectContainer'
   | 'searchInput'
+  | 'expandedContainer'
   | 'onlyDesktop'
   | 'onlyMobile'
   | 'monkey',
@@ -50,14 +51,14 @@ export const styles: Record<
     height: '36px',
     alignItems: 'center',
     width: '100%',
-    '& div': { width: '75px', textAlign: 'center' },
+    '& div': { width: '90px', textAlign: 'center' },
   },
   searchText: {
     fontWeight: 700,
     fontSize: '16px !important',
     display: 'none',
     alignItems: 'center',
-    '@media screen and (min-width: 1050px)': {
+    '@media screen and (min-width: 1100px)': {
       display: 'inherit',
       margin: '0 10px',
     },
@@ -85,11 +86,19 @@ export const styles: Record<
     border: 'none',
     width: '100%',
     '@media screen and (min-width: 852px)': {
-      width: '150px',
+      width: '120px',
     },
     '@media screen and (min-width: 1000px)': {
       width: '240px',
     },
+  },
+  expandedContainer: {
+    position: 'relative',
+    width: '100%',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    display: 'flex',
+    flexWrap: 'wrap',
   },
   onlyDesktop: {
     display: ['none', 'none', 'flex'],

@@ -120,8 +120,9 @@ export const styles: Record<
     lineHeight: '18px',
     justifyContent: 'center',
     width: '100%',
+    fontSize: '16px',
     '@media screen and (min-width: 852px)': {
-      width: '150px',
+      width: '180px',
     },
   },
   onlyDesktop: {

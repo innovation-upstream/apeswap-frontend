@@ -50,7 +50,7 @@ const HarvestAll: React.FC<HarvestActionsProps> = ({ sousIds, disabled }) => {
       onClick={handleHarvestAll}
       load={pendingTrx}
     >
-      {t('HARVEST ALL')}
+      {t('HARVEST ALL')} ({sousIds?.length})
     </Button>
   )
 }
