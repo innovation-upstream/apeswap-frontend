@@ -11,15 +11,15 @@ export interface Call {
   params?: any[] // Function params
 }
 
-const multicall = async (chainId: number, abi: any[], calls: Call[], batch?: boolean) => {
+const multicall = async (chainId: number, abi: any[], calls: Call[], batch?: boolean, batchSize?: number) => {
   const multicallAddress = getMulticallAddress(chainId)
   const provider = getProvider(chainId)
   const multi = new ethers.Contract(multicallAddress, multicallABI, provider)
   const itf = new Interface(abi)
   const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
   if (batch) {
-    const chunkedCalls = chunk(calldata, 150)
-    const chunkedCallNames = chunk(calls, 150)
+    const chunkedCalls = chunk(calldata, batchSize)
+    const chunkedCallNames = chunk(calls, batchSize)
     const chunkedData = chunkedCalls.flatMap(async (chunkedCallSet, i) => {
       const { returnData } = await multi.aggregate(chunkedCallSet)
       return returnData.map((call, j) => itf.decodeFunctionResult(chunkedCallNames[i][j].name, call))
