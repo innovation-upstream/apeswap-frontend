@@ -3,7 +3,7 @@ import React from 'react'
 import { TooltipBubble, Flex, HelpIcon, Text, Skeleton } from '@ape.swap/uikit'
 import { styles } from 'components/ListViewV2/styles'
 import { useTranslation } from 'contexts/Localization'
-import useIsMobile from '../../../../../hooks/useIsMobile'
+import useIsMobile from 'hooks/useIsMobile'
 
 interface DiscountContentProps {
   title: string

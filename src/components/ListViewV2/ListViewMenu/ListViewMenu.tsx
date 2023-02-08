@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from 'react'
 import { Checkbox, Flex, Input, Svg, Text, Toggle } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { dynamicStyles, styles } from './styles'
+import { styles } from './styles'
 import MenuSelect from './MenuSelect'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ListMenuProps } from './types'
@@ -40,7 +40,14 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
   }, [history, isExact, url])
 
   return (
-    <Flex sx={dynamicStyles.menuContainer({ showMonkeyImage })}>
+    <Flex
+      sx={{
+        ...styles.menuContainer,
+        padding: showMonkeyImage
+          ? ['10px 20px', '10px 20px', '10px 120px 10px 10px']
+          : ['10px 20px', '10px 20px', '10px'],
+      }}
+    >
       <>
         <Flex>
           <Text sx={styles.searchText}>{t('Search')}</Text>

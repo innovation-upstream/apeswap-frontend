@@ -1,23 +1,5 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
-export const dynamicStyles: Record<'menuContainer', (props: { showMonkeyImage?: boolean }) => ThemeUIStyleObject> = {
-  menuContainer: ({ showMonkeyImage }: { showMonkeyImage?: boolean }) => ({
-    borderRadius: '10px',
-    justifyContent: 'space-between',
-    padding: '10px 20px',
-    zIndex: 2,
-    backgroundColor: 'white2',
-    minWidth: '300px',
-    width: '100%',
-    alignItems: 'center',
-    flexDirection: 'column',
-    '@media screen and (min-width: 852px)': {
-      padding: showMonkeyImage ? '10px 120px 10px 10px' : '10px 10px',
-      flexDirection: 'row',
-    },
-  }),
-}
-
 export const styles: Record<
   | 'menuContainer'
   | 'toogle'
@@ -41,11 +23,7 @@ export const styles: Record<
     minWidth: '300px',
     width: '100%',
     alignItems: 'center',
-    flexDirection: 'column',
-    '@media screen and (min-width: 852px)': {
-      padding: '10px 10px',
-      flexDirection: 'row',
-    },
+    flexDirection: ['column', 'column', 'row'],
   },
   toogle: {
     height: '36px',
