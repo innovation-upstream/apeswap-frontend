@@ -4,12 +4,12 @@ export const FILTER_OPTIONS = [
     value: 'all',
   },
   {
-    label: 'Bluechips',
-    value: 'bluechips',
+    label: 'Banana',
+    value: 'banana',
   },
   {
-    label: 'Stables',
-    value: 'stables',
+    label: 'Blue Chips',
+    value: 'blueChips',
   },
 ]
 

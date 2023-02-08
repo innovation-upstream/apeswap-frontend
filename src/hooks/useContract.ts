@@ -162,8 +162,7 @@ export const useSousChef = (id) => {
 
 export const useJungleChef = (id) => {
   const chainId = useSelector((state: State) => state.network.data.chainId)
-  const config = jungleFarms.find((pool) => pool.jungleId === id)
-
+  const config = jungleFarms.find((pool) => pool?.jungleId === id && pool?.network === chainId)
   return useContract(jungleChef, config.contractAddress[chainId]) as JungleChef
 }
 

@@ -23,11 +23,11 @@ import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
 import { FILTER_OPTIONS, SORT_OPTIONS } from './constants'
 import HarvestAll from './components/Actions/HarvestAll'
 import { styles } from './styles'
-import { BLUE_CHIPS, STABLES } from '../Farms/constants'
+import { BLUE_CHIPS } from '../Farms/constants'
 
 const NUMBER_OF_VAULTS_VISIBLE = 12
 
-const VaultsV3: React.FC = () => {
+const Vaults: React.FC = () => {
   const { chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
   usePollVaultsData()
@@ -135,9 +135,10 @@ const VaultsV3: React.FC = () => {
 
     if (filterOption !== 'all') {
       switch (filterOption) {
-        case 'stables':
+        case 'banana':
           return chosenVaults.filter(
-            (vault) => STABLES.includes(vault?.token?.symbol) && STABLES.includes(vault?.quoteToken?.symbol),
+            (vault) =>
+              vault?.token?.symbol?.toLowerCase() === 'banana' || vault?.quoteToken?.symbol?.toLowerCase() === 'banana',
           )
         case 'blueChips':
           return chosenVaults.filter(
@@ -231,4 +232,4 @@ const VaultsV3: React.FC = () => {
   )
 }
 
-export default VaultsV3
+export default Vaults
