@@ -113,10 +113,12 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
   )
 
   const searchForBillId = useCallback(
-    (resp) => {
-      const billId = resp.events[6]?.args?.billId?.toString()
-      const { transactionHash } = resp
-      onBillId(billId, transactionHash)
+    (resp, billNftAddress) => {
+      const { logs, transactionHash } = resp
+      const findBillNftLog = logs.find((log) => log.address.toLowerCase() === billNftAddress.toLowerCase())
+      const getBillNftIndex = findBillNftLog.topics[findBillNftLog.topics.length - 1]
+      const convertHexId = parseInt(getBillNftIndex, 16)
+      onBillId(convertHexId.toString(), transactionHash)
     },
     [onBillId],
   )
@@ -128,7 +130,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
       await onBuyBill()
         .then((resp) => {
           const trxHash = resp.transactionHash
-          searchForBillId(resp)
+          searchForBillId(resp, billNftAddress)
           toastSuccess(t('Buy Successful'), {
             text: t('View Transaction'),
             url: getEtherscanLink(trxHash, 'transaction', chainId),
