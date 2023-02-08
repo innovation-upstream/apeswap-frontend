@@ -22,7 +22,7 @@ import { styles } from './styles'
 import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
 import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
 
-const FarmsV2: React.FC = () => {
+const Farms: React.FC = () => {
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
   usePollFarms()
@@ -210,4 +210,4 @@ const FarmsV2: React.FC = () => {
   )
 }
 
-export default React.memo(FarmsV2)
+export default React.memo(Farms)

@@ -39,7 +39,7 @@ declare module '@emotion/react' {
 }
 
 // Route-based code splitting
-const Farms = lazy(() => import('./views/Farms/FarmsV2'))
+const Farms = lazy(() => import('./views/Farms'))
 const Pools = lazy(() => import('./views/Pools'))
 const JungleFarms = lazy(() => import('./views/JungleFarms'))
 const Ifos = lazy(() => import('./views/Ifos'))
