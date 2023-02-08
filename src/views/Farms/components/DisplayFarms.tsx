@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Svg } from '@apeswapfinance/uikit'
 import { Button, Flex, ListTagVariants, useModal } from '@ape.swap/uikit'
 import ListView from 'components/ListViewV2/ListView'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
@@ -17,7 +16,7 @@ import { styles } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
 import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
 import { selectOutputCurrency } from 'state/zap/actions'
-import { Svg as Icon } from '@ape.swap/uikit'
+import { Svg } from '@ape.swap/uikit'
 import Tooltip from 'components/Tooltip/Tooltip'
 
 const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[]; v2Flag: boolean }> = ({
@@ -128,8 +127,8 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[];
                 value={`${farm?.apr}%`}
                 value2={`${farm?.lpApr}%`}
                 value2Icon={
-                  <span style={{ marginRight: '7px' }}>
-                    <Svg icon="swap" width={13} color="text" />
+                  <span style={{ marginRight: '7px', transform: 'rotate(45deg)' }}>
+                    <Svg icon="swapArrows" width={13} color="text" />
                   </span>
                 }
                 valueIcon={
@@ -166,8 +165,8 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[];
                 title={t('APR')}
                 value={`${farm?.lpApr}%`}
                 valueIcon={
-                  <span style={{ marginRight: '7px' }}>
-                    <Svg icon="swap" width={13} color="text" />
+                  <span style={{ marginRight: '7px', transform: 'rotate(45deg)' }}>
+                    <Svg icon="swapArrows" width={13} color="text" />
                   </span>
                 }
                 value2={`${farm?.apr}%`}
@@ -214,7 +213,7 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[];
                 >
                   {t('GET LP')}
                   <Flex sx={{ ml: '5px' }}>
-                    <Icon icon="ZapIcon" color="primaryBright" />
+                    <Svg icon="ZapIcon" color="primaryBright" />
                   </Flex>
                 </Button>
               </Flex>

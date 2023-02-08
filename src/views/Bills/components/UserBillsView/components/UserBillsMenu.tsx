@@ -7,7 +7,7 @@ import { ClaimAllWrapper, SearchText, styles } from '../styles'
 import ClaimAll from '../../Actions/ClaimAll'
 import { Bills } from 'state/types'
 import { FILTER_OPTIONS, SORT_OPTIONS } from '../types'
-import MenuSelect from '../../../../../components/ListViewV2/ListViewMenu/MenuSelect'
+import MenuSelect from 'components/ListViewV2/ListViewMenu/MenuSelect'
 import { AnimatePresence, motion } from 'framer-motion'
 
 export interface UserBillsMenuProps {

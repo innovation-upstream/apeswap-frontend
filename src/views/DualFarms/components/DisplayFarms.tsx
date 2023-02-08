@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Svg } from '@apeswapfinance/uikit'
-import { Svg as Icon, Flex, ListTagVariants, Button } from '@ape.swap/uikit'
+import { Svg, Flex, ListTagVariants, Button } from '@ape.swap/uikit'
 import { DualFarm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
@@ -112,8 +111,8 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 }
                 value2={`${parseFloat(farm?.lpApr).toFixed(2)}%`}
                 value2Icon={
-                  <span style={{ marginRight: '7px' }}>
-                    <Svg icon="swap" width={13} color="text" />
+                  <span style={{ marginRight: '7px', transform: 'rotate(45deg)' }}>
+                    <Svg icon="swapArrows" width={13} color="text" />
                   </span>
                 }
                 value2Direction="column"
@@ -145,8 +144,8 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 title={t('APR')}
                 value={`${parseFloat(farm?.lpApr).toFixed(2)}%`}
                 valueIcon={
-                  <span style={{ marginRight: '7px' }}>
-                    <Svg icon="swap" width={13} color="text" />
+                  <span style={{ marginRight: '7px', transform: 'rotate(45deg)' }}>
+                    <Svg icon="swapArrows" width={13} color="text" />
                   </span>
                 }
                 value2={`${farm?.apr ? farm?.apr.toFixed(2) : 0}%`}
@@ -198,7 +197,7 @@ const DisplayFarms: React.FC<{ farms: DualFarm[]; openPid?: number; dualFarmTags
                 >
                   {t('GET LP')}
                   <Flex sx={{ ml: '5px' }}>
-                    <Icon icon="ZapIcon" color="primaryBright" />
+                    <Svg icon="ZapIcon" color="primaryBright" />
                   </Flex>
                 </Button>
               </Flex>
