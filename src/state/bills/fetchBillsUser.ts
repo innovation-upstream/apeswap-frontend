@@ -48,7 +48,7 @@ export const fetchUserOwnedBills = async (
     name: 'getBillIds',
     params: [account],
   }))
-  const billIds = await multicall(chainId, billAbi, billIdCalls)
+  const billIds = await multicall(chainId, billAbi, billIdCalls, true, 15)
   const billsPendingRewardCall = []
   const billDataCalls = []
   const billVersions = []
@@ -70,7 +70,7 @@ export const fetchUserOwnedBills = async (
         billVersions.push(bills[index].billVersion)),
     ),
   )
-  const billData = await multicall(chainId, billAbi, billDataCalls)
+  const billData = await multicall(chainId, billAbi, billDataCalls, true, 150)
   const pendingRewardsCall = await multicall(chainId, billAbi, billsPendingRewardCall)
 
   const result = []
