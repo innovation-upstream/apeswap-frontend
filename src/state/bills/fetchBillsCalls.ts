@@ -1,4 +1,4 @@
-import { BillsConfig } from 'config/constants/types'
+import { BillsConfig, BillVersion } from '@ape.swap/apeswap-lists'
 import { Call } from 'utils/multicall'
 
 const fetchBillsCalls = (bill: BillsConfig, chainId: number): Call[] => {
@@ -56,7 +56,7 @@ const fetchBillsCalls = (bill: BillsConfig, chainId: number): Call[] => {
     },
     {
       address: bill.contractAddress[chainId],
-      name: 'maxTotalPayout',
+      name: bill.billVersion === BillVersion.V2 ? 'getMaxTotalPayout' : 'maxTotalPayout',
     },
     {
       address: bill.contractAddress[chainId],

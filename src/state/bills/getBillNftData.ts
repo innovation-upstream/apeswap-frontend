@@ -1,4 +1,4 @@
-import { apiBaseUrl } from 'hooks/api'
+import { apiV2BaseUrl } from 'hooks/api'
 import axiosRetry from 'axios-retry'
 import axios from 'axios'
 
@@ -8,7 +8,7 @@ const getBillNftData = async (billNftId: string, billNftAddress: string, chainId
       retries: 5,
       retryCondition: () => true,
     })
-    const response = await axios.get(`${apiBaseUrl}/bills/${chainId}/${billNftAddress}/${billNftId}`)
+    const response = await axios.get(`${apiV2BaseUrl}/bills/${chainId}/${billNftAddress}/${billNftId}`)
     const billNftDataResp = await response.data
     if (billNftDataResp.statusCode === 500) {
       return null
@@ -27,7 +27,7 @@ export const getNewBillNftData = async (billNftId: string, transactionHash: stri
       retries: 5,
       retryCondition: () => true,
     })
-    const response = await axios.get(`${apiBaseUrl}/bills/${chainId}/${billNftId}/${transactionHash}`)
+    const response = await axios.get(`${apiV2BaseUrl}/bills/${chainId}/${billNftId}/${transactionHash}`)
     const billNftDataResp = await response.data
     if (billNftDataResp.statusCode === 500) {
       return null

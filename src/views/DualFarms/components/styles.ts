@@ -1,5 +1,5 @@
 import { ThemeUIStyleObject } from 'theme-ui'
-import { FLEX_DIRECTION_BREAKPOINTS, JUSTIFY_CONTENT_BREAKPOINTS } from '../../../style/StylesBreakpoints'
+import { FLEX_DIRECTION_BREAKPOINTS, JUSTIFY_CONTENT_BREAKPOINTS } from 'style/StylesBreakpoints'
 
 export const styles: Record<
   | 'apyInfo'

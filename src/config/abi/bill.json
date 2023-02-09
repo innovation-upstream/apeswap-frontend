@@ -396,5 +396,55 @@
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMaxTotalPayout",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_billId", "type": "uint256" }],
+    "name": "pendingPayout",
+    "outputs": [{ "internalType": "uint256", "name": "pendingPayout_", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_billId", "type": "uint256" }],
+    "name": "pendingVesting",
+    "outputs": [{ "internalType": "uint256", "name": "pendingVesting_", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "billId", "type": "uint256" }],
+    "name": "getBillInfo",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "payout", "type": "uint256" },
+          { "internalType": "uint256", "name": "payoutClaimed", "type": "uint256" },
+          { "internalType": "uint256", "name": "vesting", "type": "uint256" },
+          { "internalType": "uint256", "name": "vestingTerm", "type": "uint256" },
+          { "internalType": "uint256", "name": "vestingStartTimestamp", "type": "uint256" },
+          { "internalType": "uint256", "name": "lastClaimTimestamp", "type": "uint256" },
+          { "internalType": "uint256", "name": "truePricePaid", "type": "uint256" }
+        ],
+        "internalType": "struct ICustomBill.Bill",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_billId", "type": "uint256" }],
+    "name": "claimablePayout",
+    "outputs": [{ "internalType": "uint256", "name": "claimablePayout_", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]
