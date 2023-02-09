@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Flex, Text } from '@ape.swap/uikit'
+import { Text } from '@ape.swap/uikit'
 import { Select, SelectItem } from '@apeswapfinance/uikit'
 
 import { useTranslation } from 'contexts/Localization'
@@ -95,29 +95,7 @@ const Stats: React.FC = () => {
 
       <Page width="1220px">
         <TabNavStats activeTab={activeTab} onChangeActiveTab={handleChangeActiveTab} />
-        <Flex
-          sx={{
-            background: 'white3',
-            marginTop: '20px',
-            padding: '30px',
-            borderRadius: '10px',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-            justifyContent: 'center',
-            border: '3px solid',
-            borderColor: 'yellow',
-          }}
-        >
-          <Text size="26px" weight={700}>
-            {t('Attention!')}
-          </Text>
-          <Text sx={{ mt: '20px' }}>
-            {t(
-              'Assets staked in MasterApeV2 will not be included in your ApeStats data until the next update. Thanks for your patience!',
-            )}
-          </Text>
-        </Flex>
+
         <StatsContent>
           {!account ? (
             <>
