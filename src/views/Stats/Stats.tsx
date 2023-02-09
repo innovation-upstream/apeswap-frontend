@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Text } from '@ape.swap/uikit'
+import { Flex, Text } from '@ape.swap/uikit'
 import { Select, SelectItem } from '@apeswapfinance/uikit'
 
 import { useTranslation } from 'contexts/Localization'
@@ -99,10 +99,10 @@ const Stats: React.FC = () => {
         <StatsContent>
           {!account ? (
             <>
-              <div style={{ marginBottom: '144px' }}>
-                <Text sx={{ margin: '128px 0 16px 0', textTransform: 'uppercase' }}>{t('You are not connected')}</Text>
+              <Flex sx={{ flexDirection: 'column', margin: '128px 0', gap: '16px' }}>
+                <Text sx={{ textTransform: 'uppercase' }}>{t('You are not connected')}</Text>
                 <ConnectButton />
-              </div>
+              </Flex>
             </>
           ) : loading ? (
             <PageLoader />
