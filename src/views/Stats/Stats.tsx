@@ -80,7 +80,7 @@ const Stats: React.FC = () => {
             {displayChainOptions.map((option) => {
               return (
                 <SelectItem key={option.label} value={option.value} size="sm">
-                  <Text size="12px" fontWeight={500}>
+                  <Text size="12px" fontWeight={500} style={{ lineHeight: 1.5 }}>
                     {t(option.label)}
                   </Text>
                 </SelectItem>
