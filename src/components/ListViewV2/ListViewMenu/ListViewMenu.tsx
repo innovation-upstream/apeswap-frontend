@@ -8,6 +8,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ListMenuProps } from './types'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { Image, useColorMode } from 'theme-ui'
+import track from 'utils/track'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const ListViewMenu: React.FC<ListMenuProps> = ({
   query,
@@ -25,19 +27,63 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
   actionButton,
   showMonkeyImage,
 }) => {
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const [expanded, setExpended] = useState(false)
   const { url, isExact } = useRouteMatch()
   const history = useHistory()
   const [colorMode] = useColorMode()
+  const [usedSearch, setUsedSearch] = useState(false)
+
+  const handleTracking = useCallback(
+    (type: string) => {
+      track({
+        event: 'list-menu',
+        chain: chainId,
+        data: {
+          cat: type,
+        },
+      })
+    },
+    [chainId],
+  )
 
   const handleToogle = useCallback(() => {
+    handleTracking('active')
     if (isExact) {
       history.push(`${url}/history`)
     } else {
       history.push(url)
     }
-  }, [history, isExact, url])
+  }, [handleTracking, history, isExact, url])
+
+  const handleExpandedBtn = () => {
+    setExpended(!expanded)
+    handleTracking('expanded')
+  }
+
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onHandleQueryChange(e)
+    if (!usedSearch) {
+      setUsedSearch(true)
+      handleTracking('search')
+    }
+  }
+
+  const handleSortChange = (value: string) => {
+    setSortOption(value)
+    handleTracking('sort')
+  }
+
+  const handleFilterChange = (value: string) => {
+    setFilterOption(value)
+    handleTracking('filter')
+  }
+
+  const handleCheckBox = () => {
+    setShowOnlyCheckbox(!showOnlyCheckbox)
+    handleTracking('checkbox')
+  }
 
   return (
     <Flex
@@ -51,8 +97,8 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
       <>
         <Flex>
           <Text sx={styles.searchText}>{t('Search')}</Text>
-          <Input value={query} onChange={onHandleQueryChange} icon="search" sx={styles.searchInput} />
-          <Flex sx={styles.expandedButton} onClick={() => setExpended(!expanded)}>
+          <Input value={query} onChange={handleQueryChange} icon="search" sx={styles.searchInput} />
+          <Flex sx={styles.expandedButton} onClick={handleExpandedBtn}>
             <Svg icon="MenuSettings" width="18px" />
           </Flex>
         </Flex>
@@ -69,12 +115,16 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
                 <Flex sx={styles.container}>
                   {sortOption && (
                     <Flex sx={styles.selectContainer} pr={filterOption && 3}>
-                      <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={sortOptions} />
+                      <MenuSelect selectedOption={sortOption} setOption={handleSortChange} options={sortOptions} />
                     </Flex>
                   )}
                   {filterOption && (
                     <Flex sx={styles.selectContainer} pl={sortOption && 3}>
-                      <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={filterOptions} />
+                      <MenuSelect
+                        selectedOption={filterOption}
+                        setOption={handleFilterChange}
+                        options={filterOptions}
+                      />
                     </Flex>
                   )}
                 </Flex>
@@ -88,7 +138,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
                       sx={{ height: '36px', alignItems: 'center' }}
                     />
                   </Flex>
-                  <Flex sx={{ alignItems: 'center' }} onClick={() => setShowOnlyCheckbox(!showOnlyCheckbox)}>
+                  <Flex sx={{ alignItems: 'center' }} onClick={handleCheckBox}>
                     <Checkbox checked={showOnlyCheckbox} />
                     <Text ml="10px" size="16px" weight={700}>
                       {t(`${checkboxLabel}`)}
@@ -101,12 +151,12 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
         </Flex>
         {sortOption && (
           <Flex sx={{ minWidth: '100px', ...styles.onlyDesktop }}>
-            <MenuSelect selectedOption={sortOption} setOption={setSortOption} options={sortOptions} />
+            <MenuSelect selectedOption={sortOption} setOption={handleSortChange} options={sortOptions} />
           </Flex>
         )}
         {filterOption && (
           <Flex sx={{ minWidth: '100px', ...styles.onlyDesktop }}>
-            <MenuSelect selectedOption={filterOption} setOption={setFilterOption} options={filterOptions} />
+            <MenuSelect selectedOption={filterOption} setOption={handleFilterChange} options={filterOptions} />
           </Flex>
         )}
         <Flex sx={{ minWidth: '150px', ...styles.onlyDesktop }}>
@@ -120,7 +170,7 @@ const ListViewMenu: React.FC<ListMenuProps> = ({
         </Flex>
         <Flex
           sx={{ alignItems: 'center', '&: hover': { cursor: 'pointer' }, ...styles.onlyDesktop }}
-          onClick={() => setShowOnlyCheckbox(!showOnlyCheckbox)}
+          onClick={handleCheckBox}
         >
           <Checkbox checked={showOnlyCheckbox} />
           <Text ml="10px" size="16px" weight={700}>
