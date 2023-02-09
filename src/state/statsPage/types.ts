@@ -14,6 +14,7 @@ export interface ApiResponse {
       totalWalletHoldings: number
     }
   }
+  hasPositionsToMigrate: boolean
 }
 
 export interface IAssetBreakdown {
