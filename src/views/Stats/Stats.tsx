@@ -19,6 +19,7 @@ import PageLoader from '../../components/PageLoader'
 import { BannerStats } from './components/BannerStats'
 import { TabOption, TabNavStats } from './components/TabNavStats'
 import { ShareButton } from './components/ShareButton'
+import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 
 import { Pacoca, PacocaCard, StatsContent, StyledFlex, TopContent } from './styles'
 import { Flex, Text } from '@ape.swap/uikit'
@@ -46,7 +47,7 @@ const Stats: React.FC = () => {
   const { t } = useTranslation()
   const isMobile = useIsMobile()
   const { account } = useActiveWeb3React()
-  const { selectedChain, handleChangeSelectedChain, loading } = useStats()
+  const { selectedChain, handleChangeSelectedChain, loading, stats } = useStats()
   const [activeTab, setActiveTab] = useState<TabOption>(TabOption.ANALYTICS)
 
   const tabMenuMap = {
@@ -61,6 +62,12 @@ const Stats: React.FC = () => {
 
   return (
     <>
+      <MigrationRequiredPopup
+        v2Farms={[]}
+        farms={[]}
+        vaults={[]}
+        hasPositionsToMigrate={stats?.hasPositionsToMigrate}
+      />
       <TopContent>
         <StyledFlex loading={loading}>
           <Select
