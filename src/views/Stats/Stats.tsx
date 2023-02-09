@@ -1,5 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
+import { Flex, Text } from '@ape.swap/uikit'
 import { Select, SelectItem } from '@apeswapfinance/uikit'
 
 import { useTranslation } from 'contexts/Localization'
@@ -22,7 +23,6 @@ import { ShareButton } from './components/ShareButton'
 import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 
 import { Pacoca, PacocaCard, StatsContent, StyledFlex, TopContent } from './styles'
-import { Flex, Text } from '@ape.swap/uikit'
 
 const displayChainOptions = [
   {
