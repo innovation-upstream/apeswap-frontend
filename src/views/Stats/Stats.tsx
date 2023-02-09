@@ -17,7 +17,7 @@ import Analytics from './components/Analytics'
 import Portfolio from './components/Portfolio'
 import PageLoader from '../../components/PageLoader'
 import { BannerStats } from './components/BannerStats'
-import { TabNavStats } from './components/TabNavStats'
+import { TabOption, TabNavStats } from './components/TabNavStats'
 import { ShareButton } from './components/ShareButton'
 
 import { Pacoca, PacocaCard, StatsContent, StyledFlex, TopContent } from './styles'
@@ -47,7 +47,7 @@ const Stats: React.FC = () => {
   const isMobile = useIsMobile()
   const { account } = useActiveWeb3React()
   const { selectedChain, handleChangeSelectedChain, loading } = useStats()
-  const [activeTab, setActiveTab] = useState('Analytics')
+  const [activeTab, setActiveTab] = useState<TabOption>(TabOption.ANALYTICS)
 
   const tabMenuMap = {
     Portfolio: <Portfolio />,
@@ -55,7 +55,7 @@ const Stats: React.FC = () => {
     NFT: <NFT />,
   }
 
-  const handleChangeActiveTab = (tab: string) => {
+  const handleChangeActiveTab = (tab: TabOption) => {
     setActiveTab(tab)
   }
 
