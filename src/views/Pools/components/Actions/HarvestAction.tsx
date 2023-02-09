@@ -13,9 +13,9 @@ import { useBananaAddress } from 'hooks/useAddress'
 import { useIsModalShown } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
-import { dynamicStyles, poolStyles } from '../styles'
+import { poolStyles } from '../styles'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
-import ServiceTokenDisplay from '../../../../components/ServiceTokenDisplay'
+import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 
 interface HarvestActionsProps {
   sousId: number
@@ -90,7 +90,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({
   }
 
   return (
-    <Flex sx={dynamicStyles.actionContainer(isBananaBanana)}>
+    <Flex sx={{ ...poolStyles.actionContainer, minWidth: isBananaBanana && ['', '', '380px'] }}>
       <ListViewContent
         title={t('Earned')}
         value={userEarnings?.toFixed(4)}

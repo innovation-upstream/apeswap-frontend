@@ -1,4 +1,5 @@
 import { ThemeUIStyleObject } from 'theme-ui'
+import { FLEX_DIRECTION_BREAKPOINTS, JUSTIFY_CONTENT_BREAKPOINTS } from '../../../style/StylesBreakpoints'
 
 export const styles: Record<
   | 'farmInfo'
@@ -17,53 +18,34 @@ export const styles: Record<
 > = {
   farmInfo: {
     width: '100%',
-    justifyContent: 'space-between',
-    '@media screen and (min-width: 852px)': {
-      maxWidth: '140px',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-    },
+    justifyContent: JUSTIFY_CONTENT_BREAKPOINTS,
+    flexDirection: FLEX_DIRECTION_BREAKPOINTS,
+    maxWidth: ['', '', '140px'],
   },
   cardContent: {
-    flexDirection: 'column',
+    flexDirection: ['column', 'column', 'row'],
     width: '100%',
     justifyContent: 'space-between',
-    '@media screen and (min-width: 852px)': {
-      flexDirection: 'row',
-    },
   },
   actionContainer: {
-    justifyContent: 'space-between',
+    justifyContent: ['space-between', 'space-between', 'space-around'],
     alignItems: 'center',
-    mt: '10px',
-    '@media screen and (max-width: 852px)': {
-      width: '100%',
-    },
-    '@media screen and (min-width: 852px)': {
-      mt: '0',
-      flexDirection: 'row-reverse',
-      justifyContent: 'space-around',
-    },
+    mt: ['10px', '10px', '0'],
+    width: ['100%', '100%', ''],
+    flexDirection: ['row', 'row', 'row-reverse'],
   },
   expandedContent: {
     width: '100%',
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: ['wrap', 'wrap', 'nowrap'],
     padding: '0 10px',
-    '@media screen and (min-width: 852px)': {
-      flexWrap: 'nowrap',
-    },
   },
   styledBtn: {
     fontSize: '16px',
     padding: '10px',
-    width: '140px',
-    minWidth: '100px',
+    width: ['130px', '130px', '140px'],
+    minWidth: ['130px', '130px', '100px'],
     height: '44px',
-    '@media screen and (max-width: 852px)': {
-      minWidth: '130px',
-      width: '130px',
-    },
     '&:disabled': {
       background: 'white4',
     },
@@ -79,12 +61,9 @@ export const styles: Record<
   },
   depositContainer: {
     width: '100%',
-    maxWidth: '130px',
+    maxWidth: ['130px', '130px', '140px'],
     justifyContent: 'center',
     alignItems: 'center',
-    '@media screen and (min-width: 852px)': {
-      maxWidth: '140px',
-    },
   },
   columnView: {
     maxWidth: '50%',
@@ -95,11 +74,8 @@ export const styles: Record<
     height: '36px',
     lineHeight: '18px',
     justifyContent: 'center',
-    width: '100%',
+    width: ['100%', '100%', '180px'],
     fontSize: '16px',
-    '@media screen and (min-width: 852px)': {
-      width: '180px',
-    },
   },
   stakeActions: {
     maxWidth: ['', '', '94px'],

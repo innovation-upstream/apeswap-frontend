@@ -1,4 +1,5 @@
 import { ThemeUIStyleObject } from 'theme-ui'
+import { FLEX_DIRECTION_BREAKPOINTS, JUSTIFY_CONTENT_BREAKPOINTS } from '../../../style/StylesBreakpoints'
 
 export const styles: Record<
   | 'aprInfo'
@@ -18,69 +19,47 @@ export const styles: Record<
 > = {
   aprInfo: {
     width: '100%',
-    justifyContent: 'space-between',
-    '@media screen and (min-width: 852px)': {
-      maxWidth: '80px',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-    },
+    justifyContent: JUSTIFY_CONTENT_BREAKPOINTS,
+    maxWidth: ['', '', '80px'],
+    flexDirection: FLEX_DIRECTION_BREAKPOINTS,
   },
   earnedInfo: {
     width: '100%',
-    justifyContent: 'space-between',
-    '@media screen and (min-width: 852px)': {
-      maxWidth: '150px',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-    },
+    justifyContent: JUSTIFY_CONTENT_BREAKPOINTS,
+    flexDirection: FLEX_DIRECTION_BREAKPOINTS,
+    maxWidth: ['', '', '150px'],
   },
   farmInfo: {
     width: '100%',
-    justifyContent: 'space-between',
-    '@media screen and (min-width: 852px)': {
-      maxWidth: '110px',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-    },
+    justifyContent: JUSTIFY_CONTENT_BREAKPOINTS,
+    flexDirection: FLEX_DIRECTION_BREAKPOINTS,
+    maxWidth: ['', '', '110px'],
   },
   cardContent: {
-    flexDirection: 'column',
+    flexDirection: ['column', 'column', 'row'],
     width: '100%',
     justifyContent: 'space-between',
-    '@media screen and (min-width: 852px)': {
-      flexDirection: 'row',
-    },
   },
   actionContainer: {
-    justifyContent: 'space-between',
+    justifyContent: ['space-between', 'space-between', 'space-around'],
     alignItems: 'center',
     width: '100%',
-    mt: '10px',
-    '@media screen and (min-width: 852px)': {
-      mt: '0',
-      flexDirection: 'row-reverse',
-      justifyContent: 'space-around',
-    },
+    mt: ['10px', '10px', '0'],
+    flexDirection: ['row', 'row', 'row-reverse'],
   },
   expandedContent: {
     width: '100%',
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: ['wrap', 'wrap', 'nowrap'],
     padding: '0 10px',
     justifyContent: 'space-between',
-    '@media screen and (min-width: 852px)': {
-      flexWrap: 'nowrap',
-    },
   },
   styledBtn: {
     fontSize: '16px',
     padding: '10px',
-    width: '140px',
+    width: ['130px', '130px', '140px'],
     minWidth: '100px',
     height: '44px',
-    '@media screen and (max-width: 852px)': {
-      minWidth: '130px',
-    },
     '&:disabled': {
       background: 'white4',
     },
@@ -96,12 +75,9 @@ export const styles: Record<
   },
   depositContainer: {
     width: '100%',
-    maxWidth: '130px',
+    maxWidth: ['130px', '130px', '140px'],
     justifyContent: 'center',
     alignItems: 'center',
-    '@media screen and (min-width: 852px)': {
-      maxWidth: '140px',
-    },
   },
   columnView: {
     maxWidth: '50%',
