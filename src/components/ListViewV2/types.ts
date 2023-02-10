@@ -1,5 +1,6 @@
 import React from 'react'
-import { LpTagVariants } from '@ape.swap/uikit'
+import { ListTagVariants } from '@ape.swap/uikit'
+import { ThemeUIStyleObject } from 'theme-ui'
 
 export interface TokenDisplayProps {
   token1: string
@@ -15,11 +16,12 @@ export interface TokenDisplayProps {
 export interface ListProps {
   id?: string | number
   title: React.ReactNode
-  titleContainerWidth?: number
+  titleWidth?: string
+  iconsContainer?: string
   infoContent?: React.ReactNode
   cardContent: React.ReactNode
   expandedContent?: React.ReactNode
-  expandedContentSize?: number
+  open?: boolean
 }
 
 export interface ListViewProps {
@@ -32,18 +34,18 @@ export interface ListCardProps extends ListProps {
 }
 
 export interface ListViewContentProps {
-  tag?: LpTagVariants
+  tag?: ListTagVariants
   title?: string
   value: string
-  value2?: string
-  value2Secondary?: boolean
   valueIcon?: React.ReactNode
+  valueColor?: string
+  value2?: string
   value2Icon?: React.ReactNode
+  value2Secondary?: boolean
+  value2Direction?: 'column' | 'row'
   toolTip?: string
   aprCalculator?: React.ReactNode
   toolTipPlacement?: 'topLeft' | 'topRight' | 'bottomRight' | 'bottomLeft'
   toolTipTransform?: string
-  valueColor?: string
-  style: any
-  valuesDirection?: 'column' | 'row'
+  style?: ThemeUIStyleObject
 }

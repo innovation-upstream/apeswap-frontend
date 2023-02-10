@@ -1,5 +1,6 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Skeleton, AutoRenewIcon } from '@apeswapfinance/uikit'
+import { Skeleton, AutoRenewIcon, Button } from '@ape.swap/uikit'
 import { useApprove } from 'hooks/useApprove'
 import { useAppDispatch } from 'state'
 import { useERC20 } from 'hooks/useContract'
@@ -7,7 +8,7 @@ import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { useToast } from 'state/hooks'
-import { StyledButton } from './styles'
+import { styles } from '../styles'
 import { updateFarmV2UserAllowances } from 'state/farmsV2'
 
 interface ApprovalActionProps {
@@ -36,7 +37,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({
       {isLoading ? (
         <Skeleton width="100%" height="52px" />
       ) : (
-        <StyledButton
+        <Button
           className="noClick"
           disabled={pendingTrx}
           onClick={async () => {
@@ -57,9 +58,10 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({
             setPendingTrx(false)
           }}
           endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
+          sx={styles.styledBtn}
         >
           {t('ENABLE')}
-        </StyledButton>
+        </Button>
       )}
     </>
   )

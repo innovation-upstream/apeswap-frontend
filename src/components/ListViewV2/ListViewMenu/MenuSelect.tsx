@@ -1,9 +1,8 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { styles } from '../styles'
-import { Option } from '../types'
 import { Select, SelectItem, Text } from '@ape.swap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { Option } from './types'
 
 interface FilterSelectProps {
   selectedOption: string
@@ -14,8 +13,18 @@ interface FilterSelectProps {
 const MenuSelect: React.FC<FilterSelectProps> = ({ selectedOption, setOption, options }) => {
   const { t } = useTranslation()
   return (
-    <Select size="xsm" onChange={(e) => setOption(e.target.value)} active={selectedOption} sx={styles.select}>
-      {options.map((option) => {
+    <Select
+      size="xsm"
+      onChange={(e) => setOption(e.target.value)}
+      active={selectedOption}
+      sx={{
+        height: '36px',
+        display: 'flex',
+        width: '100%',
+        paddingRight: '4px',
+      }}
+    >
+      {options?.map((option) => {
         return (
           <SelectItem size="xsm" value={option.value} key={option.label}>
             <Text>{t(option.label)}</Text>

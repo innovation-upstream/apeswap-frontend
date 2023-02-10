@@ -7,7 +7,7 @@ import { SearchText, styles } from '../styles'
 import useSelectNetwork from 'hooks/useSelectNetwork'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import { BillsListMenuProps, FILTER_OPTIONS, SORT_OPTIONS } from '../types'
-import MenuSelect from './MenuSelect'
+import MenuSelect from 'components/ListViewV2/ListViewMenu/MenuSelect'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const BillsListMenu: React.FC<BillsListMenuProps> = ({
@@ -45,16 +45,11 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
           <AnimatePresence>
             {expanded && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'fit-content' }}
-                exit={{ opacity: 0 }}
-                transition={{ opacity: { duration: 0.4 } }}
-                sx={{
-                  position: 'relative',
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
+                initial={{ height: 0 }}
+                animate={{ height: 'fit-content', transitionEnd: { overflow: 'visible' } }}
+                transition={{ opacity: { duration: 0.2 } }}
+                exit={{ height: 0, overflow: 'hidden' }}
+                sx={{ position: 'relative', width: '100%', overflow: 'hidden' }}
               >
                 <Flex sx={styles.mobileRow}>
                   <Flex sx={styles.inputContainer} pr={3}>
@@ -85,8 +80,8 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
                 sx={{ height: '36px', alignItems: 'center' }}
               />
             </Flex>
-            <Flex sx={{ alignItems: 'center' }}>
-              <Checkbox checked={showOnlyDiscount} onClick={() => setShowOnlyDiscount(!showOnlyDiscount)} />
+            <Flex sx={{ alignItems: 'center' }} onClick={() => setShowOnlyDiscount(!showOnlyDiscount)}>
+              <Checkbox checked={showOnlyDiscount} />
               <Text ml="15px" size="14px" weight={700} color="success">
                 {t('Discount')}
               </Text>
@@ -116,7 +111,10 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
               sx={{ height: '36px', alignItems: 'center', width: '100%' }}
             />
           </Flex>
-          <Flex sx={{ alignItems: 'center' }}>
+          <Flex
+            sx={{ alignItems: 'center', '&: hover': { cursor: 'pointer' } }}
+            onClick={() => setShowOnlyDiscount(!showOnlyDiscount)}
+          >
             <Checkbox checked={showOnlyDiscount} onClick={() => setShowOnlyDiscount(!showOnlyDiscount)} />
             <Text ml="15px" size="14px" weight={700} color="success">
               {t('Discount')}

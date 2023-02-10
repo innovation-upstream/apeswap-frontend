@@ -1,19 +1,18 @@
+/** @jsxImportSource theme-ui */
 import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Flex } from '@apeswapfinance/uikit'
+import { Flex } from '@ape.swap/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import { useBlock } from 'state/block/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { usePollJungleFarms, useJungleFarms, useJungleFarmTags, useJungleFarmOrderings } from 'state/jungleFarms/hooks'
-import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { JungleFarm } from 'state/types'
 import DisplayJungleFarms from './components/DisplayJungleFarms'
-import ListViewMenu from '../../components/ListViewMenu'
 import HarvestAll from './components/Actions/HarvestAll'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useSetZapOutputList } from 'state/zap/hooks'
@@ -21,6 +20,10 @@ import useCurrentTime from 'hooks/useTimer'
 import ListView404 from 'components/ListView404'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import { BannerTypes } from 'components/Banner/types'
+import { styles } from './styles'
+import ListViewLayout from 'components/ListViewV2/ListViewLayout'
+import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
+import { SORT_OPTIONS } from './constants'
 
 const NUMBER_OF_FARMS_VISIBLE = 10
 
@@ -183,32 +186,29 @@ const JungleFarms: React.FC = () => {
   )
 
   return (
-    <>
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
-      >
-        <ListViewLayout>
-          <Banner
-            banner={`${chainId}-jungle-farms` as BannerTypes}
-            title={chainId === 40 ? t('Telos Farms') : t('Jungle Farms')}
-            link={`?modal=tutorial`}
-            listViewBreak
-            maxWidth={1130}
-          />
-          <Flex alignItems="center" justifyContent="center" mt="20px">
+    <Flex sx={styles.farmContainer}>
+      <ListViewLayout>
+        <Banner
+          banner={`${chainId}-jungle-farms` as BannerTypes}
+          title={chainId === 40 ? t('Telos Farms') : t('Jungle Farms')}
+          link={`?modal=tutorial`}
+          listViewBreak
+          maxWidth={1130}
+        />
+        <Flex sx={styles.farmContent}>
+          <Flex sx={{ my: '20px' }}>
             <ListViewMenu
-              onHandleQueryChange={handleChangeQuery}
-              onSetSortOption={setSortOption}
-              onSetStake={setStakedOnly}
-              harvestAll={<HarvestAll jungleIds={harvestJungleIds} disabled={harvestJungleIds.length === 0} />}
-              stakedOnly={stakedOnly}
               query={searchQuery}
-              activeOption={sortOption}
+              onHandleQueryChange={handleChangeQuery}
+              setSortOption={setSortOption}
+              sortOption={sortOption}
+              sortOptions={SORT_OPTIONS}
+              checkboxLabel="Staked"
+              showOnlyCheckbox={stakedOnly}
+              setShowOnlyCheckbox={setStakedOnly}
+              toogleLabels={['ACTIVE', 'INACTIVE']}
+              actionButton={<HarvestAll jungleIds={harvestJungleIds} disabled={harvestJungleIds.length === 0} />}
               showMonkeyImage
-              isJungle
             />
           </Flex>
           {isJungleFarms ? (
@@ -234,10 +234,10 @@ const JungleFarms: React.FC = () => {
               jungleFarmTags={jungleFarmTags}
             />
           )}
-        </ListViewLayout>
-      </Flex>
-      <div ref={loadMoreRef} />
-    </>
+          <div ref={loadMoreRef} />
+        </Flex>
+      </ListViewLayout>
+    </Flex>
   )
 }
 

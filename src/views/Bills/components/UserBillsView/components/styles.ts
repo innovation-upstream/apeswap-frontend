@@ -1,12 +1,8 @@
 import { ThemeUIStyleObject } from 'theme-ui'
-import { FLEX_DIRECTION_BREAKPOINTS, JUSTIFY_CONTENT_BREAKPOINTS } from 'style/StylesBreakpoints'
 
-export const poolStyles: Record<
-  | 'buttonsContainer'
+export const styles: Record<
   | 'container'
-  | 'farmInfo'
-  | 'aprInfo'
-  | 'earnedColumn'
+  | 'billInfo'
   | 'cardContent'
   | 'actionContainer'
   | 'expandedContent'
@@ -23,61 +19,61 @@ export const poolStyles: Record<
   | 'onlyMobile',
   ThemeUIStyleObject
 > = {
-  buttonsContainer: {
-    justifyContent: 'space-around',
-    width: '100%',
-    display: ['none', 'none', 'flex'],
-    maxWidth: ['', '', '90px'],
-  },
   container: {
     position: 'relative',
     width: '100%',
   },
-  farmInfo: {
-    width: '100%',
-    justifyContent: JUSTIFY_CONTENT_BREAKPOINTS,
-    flexDirection: FLEX_DIRECTION_BREAKPOINTS,
-    maxWidth: ['', '', '110px'],
-  },
-  aprInfo: {
-    width: '100%',
-    justifyContent: JUSTIFY_CONTENT_BREAKPOINTS,
-    flexDirection: FLEX_DIRECTION_BREAKPOINTS,
-    maxWidth: ['', '', '80px'],
-  },
-  earnedColumn: {
-    width: '100%',
-    justifyContent: JUSTIFY_CONTENT_BREAKPOINTS,
-    flexDirection: FLEX_DIRECTION_BREAKPOINTS,
-    maxWidth: ['', '', '150px'],
-  },
-  cardContent: {
-    flexDirection: ['column', 'column', 'row'],
+  billInfo: {
     width: '100%',
     justifyContent: 'space-between',
-    maxWidth: 'unset',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '135px',
+      flexDirection: 'column',
+      height: '40px',
+      justifyContent: 'flex-start',
+    },
+  },
+  cardContent: {
+    flexDirection: 'column',
+    width: '100%',
+    justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      flexDirection: 'row',
+    },
   },
   actionContainer: {
-    justifyContent: ['space-between', 'space-between', 'space-around'],
+    justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    mt: ['10px', '10px', '0'],
-    flexWrap: ['wrap', 'wrap', 'nowrap'],
-    flexDirection: ['row', 'row', 'row-reverse'],
+    mt: '10px',
+    flexWrap: 'wrap',
+    '@media screen and (min-width: 852px)': {
+      mt: '0',
+      flexDirection: 'row-reverse',
+      justifyContent: 'space-around',
+      flexWrap: 'nowrap',
+    },
   },
   expandedContent: {
     width: '100%',
     flexDirection: 'row',
-    flexWrap: ['wrap', 'wrap', 'nowrap'],
+    flexWrap: 'wrap',
     padding: '0 10px',
     justifyContent: 'space-between',
+    '@media screen and (min-width: 852px)': {
+      flexWrap: 'nowrap',
+    },
   },
   styledBtn: {
     fontSize: '16px',
     padding: '10px',
-    width: ['130px', '130px', '140px'],
-    minWidth: ['130px', '130px', '100px'],
+    width: '140px',
+    minWidth: '100px',
     height: '44px',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
+      width: '130px',
+    },
     '&:disabled': {
       background: 'white4',
     },
@@ -93,9 +89,12 @@ export const poolStyles: Record<
   },
   depositContainer: {
     width: '100%',
-    maxWidth: ['130px', '130px', '140px'],
+    maxWidth: '130px',
     justifyContent: 'center',
     alignItems: 'center',
+    '@media screen and (min-width: 852px)': {
+      maxWidth: '140px',
+    },
   },
   columnView: {
     maxWidth: '50%',
@@ -111,27 +110,31 @@ export const poolStyles: Record<
     height: '36px',
     lineHeight: '18px',
     justifyContent: 'center',
-    width: ['100%', '100%', '180px'],
-    fontSize: '16px',
+    width: '100%',
+    '@media screen and (min-width: 852px)': {
+      width: '150px',
+    },
   },
   apeHarder: {
     fontSize: '16px',
     padding: '10px',
-    minWidth: ['130px', '130px', '125px'],
-    width: ['100%', '100%', '125px'],
+    minWidth: '125px',
+    width: '125px',
     height: '44px',
-    '&:disabled': {
-      background: 'white4',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
+      width: '100%',
     },
   },
   fixedSizedBtn: {
     fontSize: '16px',
     padding: '10px',
-    minWidth: ['130px', '130px', '125px'],
-    width: ['130px', '130px', '125px'],
+    minWidth: '125px',
+    width: '125px',
     height: '44px',
-    '&:disabled': {
-      background: 'white4',
+    '@media screen and (max-width: 852px)': {
+      minWidth: '130px',
+      width: '130px',
     },
   },
   onlyBigScreen: {

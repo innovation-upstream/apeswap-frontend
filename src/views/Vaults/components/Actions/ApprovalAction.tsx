@@ -1,11 +1,13 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Skeleton } from '@apeswapfinance/uikit'
+import { Skeleton, Button } from '@ape.swap/uikit'
 import useApproveVault from 'views/Vaults/hooks/useApproveVault'
 import { useAppDispatch } from 'state'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useToast } from 'state/hooks'
-import { StyledButton } from '../styles'
+import { useTranslation } from 'contexts/Localization'
+import { styles } from '../styles'
 import { VaultVersion } from 'config/constants/types'
 import { fetchVaultV3UserDataAsync } from 'state/vaultsV3'
 
@@ -26,14 +28,14 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({
   const dispatch = useAppDispatch()
   const { onApprove } = useApproveVault(stakingTokenContractAddress, vaultVersion)
   const { toastSuccess } = useToast()
+  const { t } = useTranslation()
 
   return (
     <>
       {isLoading ? (
         <Skeleton width="100%" height="52px" />
       ) : (
-        <StyledButton
-          sx={{ minWidth: '227px', width: '227px', textAlign: 'center' }}
+        <Button
           className="noClick"
           disabled={pendingTrx}
           onClick={async () => {
@@ -54,9 +56,10 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({
             setPendingTrx(false)
           }}
           load={pendingTrx}
+          sx={styles.styledBtn}
         >
-          ENABLE
-        </StyledButton>
+          {t('ENABLE')}
+        </Button>
       )}
     </>
   )
