@@ -1,10 +1,13 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { CenterContainer } from './styles'
 import StakeAction from './StakeActions'
-import UnlockButton from 'components/UnlockButton'
 import { DualFarm } from 'state/types'
+import { getBalanceNumber } from 'utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { useTranslation } from 'contexts/Localization'
+import { Flex } from '@ape.swap/uikit'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
+import { styles } from '../styles'
 
 interface CardActionProps {
   lpValueUsd: number
@@ -12,18 +15,25 @@ interface CardActionProps {
 }
 
 const CardActions: React.FC<CardActionProps> = ({ lpValueUsd, farm }) => {
-  const { account } = useActiveWeb3React()
+  const stakedBalance = farm?.userData?.stakedBalance?.toString()
+  const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
+  const userStakedBalanceUsd = `$${(getBalanceNumber(new BigNumber(stakedBalance || 0)) * lpValueUsd).toFixed(2)}`
+  const { t } = useTranslation()
 
   return (
-    <>
-      {!account ? (
-        <CenterContainer>
-          <UnlockButton table />
-        </CenterContainer>
-      ) : (
+    <Flex sx={styles.actionContainer}>
+      <ListViewContent
+        title={t('Staked')}
+        value={`${rawStakedBalance ? rawStakedBalance.toFixed(6) : '0.000'} LP`}
+        value2={userStakedBalanceUsd}
+        value2Secondary
+        value2Direction="column"
+        style={styles.columnView}
+      />
+      <Flex sx={styles.depositContainer}>
         <StakeAction lpValueUsd={lpValueUsd} farm={farm} />
-      )}
-    </>
+      </Flex>
+    </Flex>
   )
 }
 

@@ -1,23 +1,25 @@
+/** @jsxImportSource theme-ui */
 import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
-import { Flex } from '@apeswapfinance/uikit'
+import { Flex } from '@ape.swap/uikit'
 import { useFetchFarmLpAprs } from 'state/hooks'
 import { useDualFarms, usePollDualFarms } from 'state/dualFarms/hooks'
 import { useFarmOrderings, useFarmTags } from 'state/farms/hooks'
 import { DualFarm } from 'state/types'
 import { orderBy } from 'lodash'
-import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
-import ListViewMenu from '../../components/ListViewMenu'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
 import DisplayFarms from './components/DisplayFarms'
-import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from '../Farms/constants'
+import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, SORT_OPTIONS, STABLES } from '../Farms/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useSetZapOutputList } from 'state/zap/hooks'
 import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 import ListView404 from 'components/ListView404'
+import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
+import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
+import { styles } from './styles'
 
 const { search } = window.location
 const params = new URLSearchParams(search)
@@ -187,30 +189,28 @@ const DualFarms: React.FC = () => {
   )
 
   return (
-    <>
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
-      >
-        <ListViewLayout>
-          <Banner
-            banner="polygon-farms"
-            link="?modal=tutorial"
-            title={t('Polygon Farms')}
-            listViewBreak
-            maxWidth={1130}
-          />
-          <Flex alignItems="center" justifyContent="center" mt="20px">
+    <Flex sx={styles.farmContainer}>
+      <ListViewLayout>
+        <Banner
+          banner="polygon-farms"
+          link="?modal=tutorial"
+          title={t('Polygon Farms')}
+          listViewBreak
+          maxWidth={1130}
+        />
+        <Flex sx={styles.farmContent}>
+          <Flex sx={{ my: '20px' }}>
             <ListViewMenu
-              onHandleQueryChange={handleChangeQuery}
-              onSetSortOption={setSortOption}
-              onSetStake={setStakedOnly}
-              harvestAll={<HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} />}
-              stakedOnly={stakedOnly}
               query={query}
-              activeOption={sortOption}
+              onHandleQueryChange={handleChangeQuery}
+              setSortOption={setSortOption}
+              sortOption={sortOption}
+              checkboxLabel="Staked"
+              showOnlyCheckbox={stakedOnly}
+              setShowOnlyCheckbox={setStakedOnly}
+              toogleLabels={['ACTIVE', 'INACTIVE']}
+              sortOptions={SORT_OPTIONS}
+              actionButton={<HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} />}
               showMonkeyImage
             />
           </Flex>
@@ -219,10 +219,10 @@ const DualFarms: React.FC = () => {
           ) : (
             <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} dualFarmTags={farmTags} />
           )}
-        </ListViewLayout>
-      </Flex>
-      <div ref={loadMoreRef} />
-    </>
+          <div ref={loadMoreRef} />
+        </Flex>
+      </ListViewLayout>
+    </Flex>
   )
 }
 

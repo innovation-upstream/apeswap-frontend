@@ -1,16 +1,18 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
 import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ListViewContent from 'components/ListViewContent'
 import { fetchVaultV3UserDataAsync } from 'state/vaultsV3'
 import useHarvestMaximizer from 'views/Vaults/hooks/useHarvestMaximizer'
 import { useAppDispatch } from 'state'
-import { StyledButton } from '../styles'
-import { ActionContainer } from './styles'
 import { useIsModalShown } from 'state/user/hooks'
 import { useHistory } from 'react-router-dom'
+import { AutoRenewIcon, Button, Flex } from '@ape.swap/uikit'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
+import { useTranslation } from 'contexts/Localization'
+import { styles } from '../styles'
+import ServiceTokenDisplay from '../../../../components/ServiceTokenDisplay'
 
 interface HarvestActionsProps {
   pid: number
@@ -25,8 +27,8 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, earnTokenSymbol, di
   const [pendingTrx, setPendingTrx] = useState(false)
   const { onHarvest } = useHarvestMaximizer(pid)
   const { toastSuccess } = useToast()
-  const isMobile = useIsMobile()
   const history = useHistory()
+  const { t } = useTranslation()
 
   const { showGeneralHarvestModal } = useIsModalShown()
   const displayGHCircular = () => showGeneralHarvestModal && showCircular(chainId, history, '?modal=circular-gh')
@@ -51,29 +53,29 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ pid, earnTokenSymbol, di
   }
 
   return (
-    <ActionContainer>
-      {isMobile && (
-        <ListViewContent
-          title={`Earned ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(4)}
-          width={100}
-          height={50}
-          ml={10}
-        />
-      )}
-      <StyledButton disabled={disabled || pendingTrx} onClick={handleHarvest} load={pendingTrx}>
-        HARVEST
-      </StyledButton>
-      {!isMobile && (
-        <ListViewContent
-          title={`Earned ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(4)}
-          width={150}
-          height={50}
-          ml={10}
-        />
-      )}
-    </ActionContainer>
+    <Flex sx={{ ...styles.actionContainer, width: '100%' }}>
+      <ListViewContent
+        title={t('Earned')}
+        value={userEarnings?.toFixed(4)}
+        valueIcon={
+          <Flex sx={{ height: '16px', alignItems: 'center', mr: '3px' }}>
+            <ServiceTokenDisplay token1="BANANA" size={13} />
+          </Flex>
+        }
+        style={styles.columnView}
+      />
+      <Flex sx={styles.depositContainer}>
+        <Button
+          disabled={disabled || pendingTrx}
+          onClick={handleHarvest}
+          load={pendingTrx}
+          endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
+          sx={styles.styledBtn}
+        >
+          {t('HARVEST')}
+        </Button>
+      </Flex>
+    </Flex>
   )
 }
 

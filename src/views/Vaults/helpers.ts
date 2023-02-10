@@ -3,7 +3,7 @@ import { Token } from 'config/constants/types'
 export const vaultTokenDisplay = (token1: Token, token2: Token) => {
   let stakeLp = false
   let earnLp = false
-  let tokenDisplay = {}
+  let tokenDisplay: { token1?: string; token2?: string; token3?: string; token4?: string } = {}
   if (!token1.lpToken && !token2.lpToken) {
     tokenDisplay = { token1: token1.symbol, token2: token2.symbol }
   }

@@ -1,11 +1,11 @@
-import { Skeleton, Text, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { Skeleton, Text } from '@apeswapfinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useCurrentTime from 'hooks/useTimer'
 import React from 'react'
 import getTimePeriods from 'utils/getTimePeriods'
 import { StyledHeadingText } from './Modals/styles'
-import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
-import ListViewContent from '../../../components/ListViewV2/ListViewContent'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
+import { styles } from './UserBillsView/components/styles'
 
 const VestedTimer: React.FC<{
   lastBlockTimestamp: string
@@ -14,9 +14,7 @@ const VestedTimer: React.FC<{
   transferModalFlag?: boolean
   mobileFlag?: boolean
 }> = ({ lastBlockTimestamp, vesting, userModalFlag, transferModalFlag, mobileFlag }) => {
-  const { isXl, isLg, isXxl } = useMatchBreakpoints()
   const { t } = useTranslation()
-  const isMobile = !isLg && !isXl && !isXxl
   const currentTime = useCurrentTime() / 1000
   const vestingTime = getTimePeriods(parseInt(lastBlockTimestamp) + parseInt(vesting) - currentTime, true)
 
@@ -33,21 +31,22 @@ const VestedTimer: React.FC<{
       )}
     </StyledHeadingText>
   ) : mobileFlag ? (
-    <ListViewContentMobile
+    <ListViewContent
       title={'Fully Vested'}
       value={`${vestingTime.days}d, ${vestingTime.hours}h, ${vestingTime.minutes}m`}
       toolTip={`This is the time remaining until all tokens from the bill are available to claim.`}
       toolTipPlacement={'bottomLeft'}
       toolTipTransform={'translate(34%, 0%)'}
+      style={{ width: '100%', justifyContent: 'space-between' }}
     />
   ) : (
     <ListViewContent
       title={t('Fully Vested')}
       value={`${vestingTime.days}d, ${vestingTime.hours}h, ${vestingTime.minutes}m`}
-      style={{ maxWidth: isMobile ? '200px' : '135px', height: '52.5px', ml: '10px' }}
+      style={styles.billInfo}
       toolTip={t('This is the time remaining until all tokens from the bill are available to claim.')}
-      toolTipPlacement={isMobile ? 'bottomRight' : 'bottomLeft'}
-      toolTipTransform={isMobile ? 'translate(-75%, 65%)' : 'translate(34%, -4%)'}
+      toolTipPlacement={'bottomLeft'}
+      toolTipTransform={'translate(34%, -4%)'}
     />
   )
 }

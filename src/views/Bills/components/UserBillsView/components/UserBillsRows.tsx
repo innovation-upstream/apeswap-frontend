@@ -8,13 +8,13 @@ import { useTranslation } from 'contexts/Localization'
 import Claim from '../../Actions/Claim'
 import VestedTimer from '../../VestedTimer'
 import BillModal from '../../Modals'
-import ListViewContentMobile from 'components/ListViewV2/ListViewContentMobile'
-import { Box } from 'theme-ui'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
+import { Box } from 'theme-ui'
 import { BillsToRender } from '../types'
 import { formatNumberSI } from 'utils/formatNumber'
-import ListView from 'components/ListViewV2'
+import ListView from 'components/ListViewV2/ListView'
 import useIsMobile from 'hooks/useIsMobile'
+import { styles } from './styles'
 
 const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender }) => {
   const { chainId } = useActiveWeb3React()
@@ -37,10 +37,16 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
       },
       listProps: {
         id: billToRender.id,
-        title: <ListViewContent tag="ape" value={bill.lpToken.symbol} style={{ maxWidth: '150px', height: '45px' }} />,
-        titleContainerWidth: 260,
+        title: (
+          <ListViewContent
+            tag="ape"
+            value={bill.lpToken.symbol}
+            style={{ maxWidth: '150px', height: '35px', flexDirection: 'column' }}
+          />
+        ),
+        titleContainerWidth: 280,
         cardContent: isMobile ? (
-          <ListViewContentMobile
+          <ListViewContent
             title={'Claimable'}
             value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
             value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
@@ -48,6 +54,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
             toolTip={`This is the amount of tokens that have vested and available to claim.`}
             toolTipPlacement={'bottomLeft'}
             toolTipTransform={'translate(29%, 0%)'}
+            style={{ width: '100%', justifyContent: 'space-between' }}
           />
         ) : (
           <Flex style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -56,8 +63,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               value={formatNumberSI(parseFloat(claimable.toFixed(0)), 3)}
               value2={`($${(claimable * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
               value2Secondary
-              valuesDirection="row"
-              style={{ maxWidth: isMobile ? '120px' : '135px', ml: '10px', height: '52.5px' }}
+              style={styles.billInfo}
               toolTip={t('This is the amount of tokens that have vested and available to claim.')}
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(29%, -4%)"
@@ -67,8 +73,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
               value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
               value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
               value2Secondary
-              valuesDirection="row"
-              style={{ maxWidth: isMobile ? '120px' : '135px', ml: '10px', height: '52.5px' }}
+              style={styles.billInfo}
               toolTip={t('This is the amount of unvested tokens that cannot be claimed yet.')}
               toolTipPlacement="bottomLeft"
               toolTipTransform="translate(22%, -4%)"
@@ -86,11 +91,10 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
             </Flex>
           </Flex>
         ),
-        expandedContentSize: 185,
         expandedContent: isMobile && (
           <Flex sx={{ width: '100%', flexWrap: 'wrap', padding: '0 10px' }}>
             <Flex sx={{ width: '100%', flexDirection: 'column' }}>
-              <ListViewContentMobile
+              <ListViewContent
                 title={'Pending'}
                 value={formatNumberSI(parseFloat(pending.toFixed(0)), 3)}
                 value2={`($${(pending * billToRender?.bill?.earnTokenPrice).toFixed(2)})`}
@@ -98,6 +102,7 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
                 toolTip={`This is the amount of unvested tokens that cannot be claimed yet.`}
                 toolTipPlacement={'bottomLeft'}
                 toolTipTransform={'translate(22%, 0%)'}
+                style={{ width: '100%', justifyContent: 'space-between', marginBottom: '5px' }}
               />
               <VestedTimer
                 lastBlockTimestamp={billToRender.lastBlockTimestamp}

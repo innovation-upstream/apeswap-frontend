@@ -1,14 +1,10 @@
 export const NUMBER_OF_FARMS_VISIBLE = 10
 
-export const OPTIONS = [
+export const SORT_OPTIONS = [
   {
     label: 'All',
     value: 'all',
   },
-  // {
-  //   label: 'New',
-  //   value: 'new',
-  // },
   {
     label: 'Blue Chips',
     value: 'blueChips',
