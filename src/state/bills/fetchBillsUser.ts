@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import { UserBill } from 'state/types'
 import getBillNftData from './getBillNftData'
 import { BillsConfig, BillVersion } from '@ape.swap/apeswap-lists'
+import { ChainId } from '@ape.swap/sdk'
 
 export const fetchBillsAllowance = async (chainId: number, account: string, bills: BillsConfig[]) => {
   const calls = bills.map((b) => ({
@@ -48,7 +49,7 @@ export const fetchUserOwnedBills = async (
     name: 'getBillIds',
     params: [account],
   }))
-  const billIds = await multicall(chainId, billAbi, billIdCalls, true, 15)
+  const billIds = await multicall(chainId, billAbi, billIdCalls, true, chainId === ChainId.TLOS ? 5 : 15)
   const billsPendingRewardCall = []
   const billDataCalls = []
   const billVersions = []
@@ -70,7 +71,7 @@ export const fetchUserOwnedBills = async (
         billVersions.push(bills[index].billVersion)),
     ),
   )
-  const billData = await multicall(chainId, billAbi, billDataCalls, true, 150)
+  const billData = await multicall(chainId, billAbi, billDataCalls, true, chainId === ChainId.TLOS ? 50 : 150)
   const pendingRewardsCall = await multicall(chainId, billAbi, billsPendingRewardCall)
 
   const result = []
