@@ -8,7 +8,7 @@ import styles from './styles'
 const ConnectButton = () => {
   const { t } = useTranslation()
   const { login, logout } = useAuth()
-  const { onPresentConnectModal } = useWalletModal(login, logout, t)
+  const { onPresentConnectModal } = useWalletModal(login, logout, t, false)
 
   return (
     <Button onClick={onPresentConnectModal} csx={styles.button}>
