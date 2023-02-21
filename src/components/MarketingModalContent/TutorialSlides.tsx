@@ -1043,7 +1043,7 @@ export const ConnectWalletSlide = () => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const { login, logout } = useAuth()
-  const { onPresentConnectModal } = useWalletModal(login, logout, t, false)
+  const { onPresentConnectModal } = useWalletModal(login, logout, t)
   return (
     <Slide
       step="Step 0"

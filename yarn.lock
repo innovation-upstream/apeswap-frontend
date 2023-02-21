@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@1.1.22":
-  version "1.1.22"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.22.tgz#e44e76b2db103b0000837de6cdb53121e9799a10"
-  integrity sha512-wGJIVYgXjydQBPlPVvAD/AdOPPA5UL4NrEvSvaYrohuSEUD6jPb37ABRLS8+/jcVOEbmhYmhrONt3uzYTOWEjw==
+"@ape.swap/apeswap-lists@1.1.28":
+  version "1.1.28"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.28.tgz#0d4fab7a4e3633e84d894d48b280538ab24db6cc"
+  integrity sha512-o2GKH3GxZAGSPYIaHhpkBQjqxvUfMGDzDkN6XdsbSWC/esLmFMphl+WGzU6ZyziEQ/oAX8Go2yhP0atN9l4kXg==
   dependencies:
     "@ape.swap/sdk" "4.3.1"
     bignumber.js "^9.0.2"
@@ -33,15 +33,15 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/token-lists@1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.6.tgz#b87dd0894bf61b500d255ea2f8b7022d7beea84c"
-  integrity sha512-ysbVF+wzF59ZAe4V+YufHKJgWEzvSIGx5pSazzg+XeYJ3bXEnwGuSrG6Sd85PsV7JhmyOUf3pj1D3AI8XTtW9A==
+"@ape.swap/token-lists@1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.8.tgz#1e0e487bc3f268470c558cc8eabc2734ca59047c"
+  integrity sha512-456g7CeNDACGCC2hgnr7djFgW3A0rZSlZWDBdvFCqNRY6iVF9q5rEq+S+uHBiI3K0d/C4PaV76u8WUbKLzsZ7g==
 
-"@ape.swap/uikit@1.3.53-alpha.2":
-  version "1.3.53-alpha.2"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.53-alpha.2.tgz#82c0b6de3fcf6a4c0864bc68dcd109f89cc68073"
-  integrity sha512-KneMiNm6D4jn71UQYHM6x5S3bMsNptS6yK4L8MPCdtxBor2lSD97jiFb19d+iu4yNfjEnH2+QsKmwz3TDL0kxA==
+"@ape.swap/uikit@1.3.53-alpha.3":
+  version "1.3.53-alpha.3"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.53-alpha.3.tgz#697ae4da711077f7c7ff8b79d1a2fbd1ad411c7d"
+  integrity sha512-Sd8h/zyHfu2Lg5iTUyz9o+KYEAkvZKvEGqhqpq7RdwaMXfVEu6gbuB1pwf1dKznGr0pjSZMilH+B0OVI6K3mSw==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
