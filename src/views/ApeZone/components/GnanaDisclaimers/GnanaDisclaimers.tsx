@@ -116,7 +116,11 @@ export const GnanaDisclaimers: React.FC = () => {
               'The 2% reflect fee applies to all GNANA transactions, including transfers, staking in pools, unstaking from pools, and IAO participation',
             )}
           />
-          <Info content={t('You do not accumulate reflect fees when your GNANA is staked in a pool')} />
+          <Info
+            content={t(
+              'You do not accumulate reflect fees when your GNANA is staked in a pool. Instead, those fees are accrued by pool smart contracts and utilized via governance proposals.',
+            )}
+          />
         </InfoSect1>
       </Main2>
 
