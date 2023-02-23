@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@1.1.27":
-  version "1.1.27"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.27.tgz#e2f93b1a3debe26d292f88ff241ec4e115859f46"
-  integrity sha512-mWZ1QK7CNdcw23gYMPLrtVO3QFx86GMUB0S9qRLjlsyv4+lEoH3ps8Yb5hklehUZDZovOhf9dNblkgDCA8awow==
+"@ape.swap/apeswap-lists@1.1.30":
+  version "1.1.30"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.30.tgz#b3b86e7399b5d723ab700e0f1ed8325af8a67907"
+  integrity sha512-OFXHVz49nrbDoba37fZG00ZKw4vXgdpm/C4wgx0HKBwwA/TXQANyb+98xhzfpAIpbQQnyiApx0rbtCG089eWAg==
   dependencies:
     "@ape.swap/sdk" "4.3.1"
     bignumber.js "^9.0.2"
@@ -17858,8 +17858,3 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
-
-zod@^3.20.6:
-  version "3.20.6"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.20.6.tgz#2f2f08ff81291d47d99e86140fedb4e0db08361a"
-  integrity sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==

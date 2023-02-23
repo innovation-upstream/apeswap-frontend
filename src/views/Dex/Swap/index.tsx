@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAllTokens, useCurrency } from 'hooks/Tokens'
 import { Field, SwapDelay } from 'state/swap/actions'
-import { Flex, Text, useModal } from '@ape.swap/uikit'
+import { Flex, useModal } from '@ape.swap/uikit'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { computeTradePriceBreakdown } from 'utils/prices'
@@ -33,8 +33,7 @@ import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithout
 import RecentTransactions from '../components/RecentTransactions'
 import { useBananaAddress } from 'hooks/useAddress'
 import { showCircular } from 'utils'
-import { Box } from 'theme-ui'
-import Risk from './components/Risk'
+import Risk from './components/Risk/Risk'
 
 const Swap: React.FC = () => {
   const { showBuyModal } = useIsModalShown()
@@ -266,8 +265,8 @@ const Swap: React.FC = () => {
             independentField={independentField}
             disabled={fetchingBestRoute}
           />
-          <Flex sx={{ width: '100%', justifyContent: 'space-between' }}>
-            <Flex sx={{ width: '90px' }} />
+          <Flex sx={{ width: '100%', justifyContent: 'space-between', height: '50px', alignItems: 'center' }}>
+            <div />
             <SwapSwitchButton onClick={onSwitchTokens} />
             <Risk chainId={chainId} currency={outputCurrency} />
           </Flex>
