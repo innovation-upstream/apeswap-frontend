@@ -5,7 +5,9 @@ import BigNumber from 'bignumber.js'
 
 // List of mainnet chains
 // This is currently used for the info page
-export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET]
+export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET]
+
+export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS]
 
 // Network labels
 export const NETWORK_LABEL: Partial<Record<ChainId, string>> = {
