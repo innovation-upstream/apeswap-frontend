@@ -32,7 +32,7 @@
     "@ape.swap/apeswap-lists": "1.1.28",
     "@ape.swap/sdk": "4.3.1",
     "@ape.swap/token-lists": "1.0.8",
-    "@ape.swap/uikit": "1.3.53-alpha.5",
+    "@ape.swap/uikit": "1.3.53-alpha.6",
     "@apeswapfinance/uikit": "0.11.3",
     "@autonomylabs/limit-stop-orders": "0.0.6",
     "@binance-chain/bsc-connector": "^1.0.0",
