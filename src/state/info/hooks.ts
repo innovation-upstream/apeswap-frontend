@@ -1,4 +1,4 @@
-import { MAINNET_CHAINS } from 'config/constants/chains'
+import { MAINNET_CHAINS_INFOPAGE } from 'config/constants/chains'
 import useRefresh from 'hooks/useRefresh'
 import { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -31,7 +31,7 @@ export const useFetchInfoPairs = (amount: number, days: number, token = '', pair
   const blocks = useSelector((state: State) => state.info.block)
 
   useEffect(() => {
-    MAINNET_CHAINS.forEach((chainId) => {
+    MAINNET_CHAINS_INFOPAGE.forEach((chainId) => {
       if (chain && chainId !== chain) {
         return
       }
@@ -55,7 +55,7 @@ export const useFetchInfoTransactions = (amount: number, token = '', chain?: num
   const { slowRefresh } = useRefresh()
 
   useEffect(() => {
-    MAINNET_CHAINS.forEach((chainId) => {
+    MAINNET_CHAINS_INFOPAGE.forEach((chainId) => {
       if (chain && chainId !== chain) {
         return
       }
@@ -93,7 +93,7 @@ export const useFetchInfoNativePrice = () => {
   const { slowRefresh } = useRefresh()
 
   useEffect(() => {
-    MAINNET_CHAINS.forEach((chainId) => {
+    MAINNET_CHAINS_INFOPAGE.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.NATIVE_PRICE, chainId, loading: true }))
       dispatch(fetchNativePrice(chainId))
     })
@@ -106,7 +106,7 @@ export const useFetchInfoDaysData = () => {
   const { slowRefresh } = useRefresh()
 
   useEffect(() => {
-    MAINNET_CHAINS.forEach((chainId) => {
+    MAINNET_CHAINS_INFOPAGE.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.DAYS_DATA, chainId, loading: true }))
       dispatch(fetchDaysData(chainId, 1))
     })
@@ -120,7 +120,7 @@ export const useFetchInfoTokensData = (amount: number, current?: boolean, token 
 
   const blocks = useSelector((state: State) => state.info.block)
   useEffect(() => {
-    MAINNET_CHAINS.forEach((chainId) => {
+    MAINNET_CHAINS_INFOPAGE.forEach((chainId) => {
       if (chain && chainId !== chain) {
         return
       }
@@ -143,7 +143,7 @@ export const useFetchInfoBlock = () => {
   const { slowRefresh } = useRefresh()
   useEffect(() => {
     const currentTime = Math.round(new Date().getTime() / 1000)
-    MAINNET_CHAINS.forEach((chainId) => {
+    MAINNET_CHAINS_INFOPAGE.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.BLOCK, chainId, loading: true }))
       dispatch(fetchBlock(chainId, currentTime - 24 * 60 * 60, currentTime))
     })
@@ -155,7 +155,7 @@ export const useFetchChartData = (amount: number) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    MAINNET_CHAINS.forEach((chainId) => {
+    MAINNET_CHAINS_INFOPAGE.forEach((chainId) => {
       dispatch(setLoading({ stateType: InfoStateTypes.CHARTDATA, chainId, loading: true }))
       dispatch(fetchChartData(chainId, amount))
     })
@@ -218,7 +218,7 @@ export const useFetchInfoUniswapFactories = (current?: boolean) => {
   const dispatch = useAppDispatch()
   const blocks = useSelector((state: State) => state.info.block)
   useEffect(() => {
-    MAINNET_CHAINS.forEach((chainId) => {
+    MAINNET_CHAINS_INFOPAGE.forEach((chainId) => {
       if (current === true) {
         dispatch(setLoading({ stateType: InfoStateTypes.CURRENTDAYFACTORIES, chainId, loading: true }))
       } else {

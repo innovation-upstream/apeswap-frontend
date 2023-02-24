@@ -10,7 +10,7 @@
 export const tokensQuery = (amount: number, block: string, token: string) => {
   return {
     query:
-      'query { tokens(' +
+      'query { tokens(subgraphError: allow, ' +
       (token !== '' ? 'where: {id:"' + token + '"}' : '') +
       (block !== '0' ? 'block: { number:' + block + '}' : '') +
       'first: ' +
@@ -24,7 +24,7 @@ export const transactionsQuery = (amount: number, token: string) => {
   return {
     query:
       'query transactions {' +
-      '    transactions(first: ' +
+      '    transactions(subgraphError: allow, first: ' +
       amount +
       ', orderBy: timestamp, orderDirection: desc' +
       ') {' +
@@ -100,14 +100,14 @@ export const transactionsQuery = (amount: number, token: string) => {
 }
 
 export const nativePricesQuery = {
-  query: 'query bundles { bundles {id ethPrice }}',
+  query: 'query bundles { bundles(subgraphError: allow) {id ethPrice }}',
 }
 
 export const daysDataQuery = (oneDayBack: number) => {
   return {
     query:
       'query uniswapDayDatas {' +
-      '    uniswapDayDatas(first: 1, skip: 0, where: { date_gt: ' +
+      '    uniswapDayDatas(subgraphError: allow, first: 1, skip: 0, where: { date_gt: ' +
       oneDayBack +
       ' }, orderBy: date, orderDirection: asc) {' +
       '      id' +
@@ -126,7 +126,7 @@ export const daysDataQuery = (oneDayBack: number) => {
 export const blocksQuery = (startTimestamp: number, currentTimestamp: number) => {
   return {
     query:
-      'query blocks { blocks(first: 1 orderBy: timestamp orderDirection: asc where: { timestamp_gt: ' +
+      'query blocks { blocks(subgraphError: allow, first: 1 orderBy: timestamp orderDirection: asc where: { timestamp_gt: ' +
       startTimestamp +
       ', timestamp_lt: ' +
       currentTimestamp +
@@ -143,7 +143,7 @@ export const blocksQuery = (startTimestamp: number, currentTimestamp: number) =>
 export const uniswapFactoriesQuery = (chainId: string, block: string) => {
   return {
     query:
-      'query uniswapFactories { uniswapFactories(' +
+      'query uniswapFactories { uniswapFactories(subgraphError: allow, ' +
       (block !== '0' ? 'block: { number:' + block + '}' : '') +
       ' where: {id: "' +
       chainId +
@@ -154,7 +154,7 @@ export const uniswapFactoriesQuery = (chainId: string, block: string) => {
 export const pairsQuery = (amount: number, block: string, token: string, pair: string) => {
   return {
     query:
-      'query pairs { pairs: pairs(' +
+      'query pairs { pairs: pairs(subgraphError: allow, ' +
       (pair !== '' ? 'where: {id:"' + pair + '"}' : '') +
       (block !== '0' ? 'block: { number:' + block + '}' : '') +
       'first: ' +
@@ -218,7 +218,7 @@ export const tokenDaysDataQuery = (address: string, amount: number) => {
   return {
     query:
       'query tokenDayDatas {\n' +
-      '  tokenDayDatas(first: ' +
+      '  tokenDayDatas(subgraphError: allow, first: ' +
       amount +
       ' orderBy: date, orderDirection: desc, where: {token: "' +
       address +
@@ -247,7 +247,7 @@ export const pairDaysDataQuery = (address: string, amount: number) => {
   return {
     query:
       'query pairDayDatas {\n' +
-      '  pairDayDatas(first: ' +
+      '  pairDayDatas(subgraphError: allow, first: ' +
       amount +
       ' orderBy: date, orderDirection: desc, where: {pairAddress: "' +
       address +
@@ -264,7 +264,7 @@ export const pairDaysDataQuery = (address: string, amount: number) => {
 export const graphQuery = (amount: number) => {
   return {
     query:
-      'query uniswapDayDatas { uniswapDayDatas(orderBy: date, orderDirection: desc first: ' +
+      'query uniswapDayDatas { uniswapDayDatas(subgraphError: allow, orderBy: date, orderDirection: desc first: ' +
       amount +
       ') {id date totalVolumeUSD dailyVolumeUSD dailyVolumeETH totalLiquidityUSD totalLiquidityETH } }',
   }

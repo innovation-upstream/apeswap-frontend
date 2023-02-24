@@ -13,12 +13,12 @@ import {
   getTokenDaysData,
   getPairDaysData,
 } from './api'
-import { MAINNET_CHAINS } from 'config/constants/chains'
+import { MAINNET_CHAINS_INFOPAGE } from 'config/constants/chains'
 import { ChainId } from '@ape.swap/sdk'
 
 const dataAsListInitialState = {} as Record<ChainId, { data: []; loading: boolean; initialized: boolean }>
 const dataAsNullInitialState = {} as Record<ChainId, { data: null; loading: boolean; initialized: boolean }>
-MAINNET_CHAINS.forEach((chainId) => {
+MAINNET_CHAINS_INFOPAGE.forEach((chainId) => {
   dataAsListInitialState[chainId] = { data: [], loading: false, initialized: false }
   dataAsNullInitialState[chainId] = { data: null, loading: false, initialized: false }
 })
@@ -227,9 +227,9 @@ export const updateActiveChains = (chainId: number, data: number[]) => (dispatch
 
   if (current === null) {
     current = []
-    for (let i = 0; i < MAINNET_CHAINS.length; i++) {
-      if (MAINNET_CHAINS[i] !== chainId) {
-        current.push(MAINNET_CHAINS[i])
+    for (let i = 0; i < MAINNET_CHAINS_INFOPAGE.length; i++) {
+      if (MAINNET_CHAINS_INFOPAGE[i] !== chainId) {
+        current.push(MAINNET_CHAINS_INFOPAGE[i])
       }
     }
   } else {
@@ -238,7 +238,7 @@ export const updateActiveChains = (chainId: number, data: number[]) => (dispatch
     if (index > -1) {
       current.splice(index, 1)
       //If this makes active Chains = 0 then add all
-      if (current.length === 0) current = MAINNET_CHAINS
+      if (current.length === 0) current = MAINNET_CHAINS_INFOPAGE
     } else {
       current.push(chainId)
     }
