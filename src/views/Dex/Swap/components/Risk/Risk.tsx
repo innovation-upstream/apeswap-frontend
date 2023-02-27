@@ -51,6 +51,7 @@ const Risk = ({ chainId, currency }: { chainId: number; currency: Currency }) =>
         <Flex sx={{ minWidth: '150px', justifyContent: 'flex-end' }}>
           <TooltipBubble
             placement="bottomRight"
+            transformTip="translate(0%, -4%)"
             width="226px"
             style={{ padding: ' 10px' }}
             body={
