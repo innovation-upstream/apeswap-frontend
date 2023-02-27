@@ -27,6 +27,14 @@ export const TOKEN_RISK_VALUES = {
   [TOKEN_RISK.VERY_HIGH]: 'Very High Risk',
 }
 
+export const TAG_TOKEN_RISK_VALUES = {
+  [TOKEN_RISK.VERY_LOW]: 'Low Risk',
+  [TOKEN_RISK.LOW]: 'Low Risk',
+  [TOKEN_RISK.MEDIUM]: 'Medium Risk',
+  [TOKEN_RISK.HIGH]: 'High Risk',
+  [TOKEN_RISK.VERY_HIGH]: 'High Risk',
+}
+
 const host = 'https://avengerdao.org'
 const url = '/api/v1/address-security'
 const endpoint = host + url

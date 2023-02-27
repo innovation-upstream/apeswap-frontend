@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
 import { Flex, Text, TooltipBubble } from '@ape.swap/uikit'
-import { parsedRiskData, TOKEN_RISK, TOKEN_RISK_VALUES } from './helpers'
+import { parsedRiskData, TAG_TOKEN_RISK_VALUES, TOKEN_RISK, TOKEN_RISK_VALUES } from './helpers'
 import { ChainId, Currency, Token } from '@ape.swap/sdk'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
@@ -101,7 +101,7 @@ const Risk = ({ chainId, currency }: { chainId: number; currency: Currency }) =>
           >
             <Flex sx={{ ...styles.tag, borderColor: getTagColor() }}>
               <Text sx={{ ...styles.text, color: getTagColor() }}>
-                {TOKEN_RISK_VALUES[risk] ? TOKEN_RISK_VALUES[risk] : 'Scanning ...'}
+                {TOKEN_RISK_VALUES[risk] ? TAG_TOKEN_RISK_VALUES[risk] : 'Scanning ...'}
               </Text>
             </Flex>
           </TooltipBubble>
