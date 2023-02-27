@@ -21,7 +21,7 @@ const Risk = ({ chainId, currency }: { chainId: number; currency: Currency }) =>
     if (isToken && isChainSupported) {
       setHide(false)
       parsedRiskData(chainId, token?.address).then((res) => {
-        setRisk(res.risk)
+        setRisk(res?.risk)
       })
     } else {
       setHide(true)
@@ -30,13 +30,19 @@ const Risk = ({ chainId, currency }: { chainId: number; currency: Currency }) =>
 
   const getTagColor = () => {
     switch (risk) {
-      case TOKEN_RISK.VERY_LOW || TOKEN_RISK.LOW: {
+      case TOKEN_RISK.VERY_LOW: {
+        return '#38A611'
+      }
+      case TOKEN_RISK.LOW: {
         return '#38A611'
       }
       case TOKEN_RISK.MEDIUM: {
         return '#FFB300'
       }
-      case TOKEN_RISK.HIGH || TOKEN_RISK.VERY_HIGH: {
+      case TOKEN_RISK.HIGH: {
+        return '#DF4141'
+      }
+      case TOKEN_RISK.VERY_HIGH: {
         return '#DF4141'
       }
       default: {
@@ -80,7 +86,11 @@ const Risk = ({ chainId, currency }: { chainId: number; currency: Currency }) =>
                 <Text sx={styles.title}>
                   {t('Learn more about risk rating')}{' '}
                   <Text sx={styles.yellow}>
-                    <a href="https://www.avengerdao.org/" target="_blank" rel="noreferrer noopener">
+                    <a
+                      href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
                       {t('here')}
                     </a>
                   </Text>
