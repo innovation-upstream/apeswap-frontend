@@ -1039,6 +1039,50 @@ export const TheMigrationSlides = () => {
   ]
 }
 
+export const DefaultSlides = () => {
+  const { t } = useTranslation()
+  return [
+    <Slide
+      key={1}
+      step="TIP #1"
+      slideTitle="Bookmark Our Website"
+      slideContent={
+        <Text>
+          {t(
+            `Do not enter ApeSwap through search engines, Google Ads, or any links shared through social media like Telegram or Twitter. Always make sure you\'re at the correct URL (`,
+          )}
+          <Text sx={{ fontWeight: 700 }}>apeswap.finance</Text>
+          {t(`) before connecting your wallet to avoid phishing scams.`)}
+        </Text>
+      }
+    />,
+    <Slide
+      key={2}
+      step="TIP #2"
+      slideTitle="Never Share Your Keys"
+      slideContent={
+        <Text>
+          {t(
+            `No one from ApeSwap will ever ask you for your wallet keys or seed phrase. Beware of scammers on social media representing themselves as being affiliated with ApeSwap or asking you to send them funds.`,
+          )}
+        </Text>
+      }
+    />,
+    <Slide
+      key={3}
+      step="TIP #3"
+      slideTitle="Do Your Own Research"
+      slideContent={
+        <Text>
+          {t(
+            `Before buying any tokens or using any products offered by ApeSwap, always do your own research. Make sure you read the documentation and tutorials to understand each product.`,
+          )}
+        </Text>
+      }
+    />,
+  ]
+}
+
 export const ConnectWalletSlide = () => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
