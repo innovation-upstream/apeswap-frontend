@@ -5,6 +5,8 @@ import BigNumber from 'bignumber.js'
 
 // List of mainnet chains
 // This is currently used for the info page
+export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET]
+
 export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS]
 
 // Network labels
@@ -369,13 +371,5 @@ export const INFO_PAGE_CHAIN_PARAMS: Partial<
     id: '0xBAe5dc9B19004883d0377419FeF3c2C8832d7d7B',
     fee: 0.002,
     color: '#637DEA',
-  },
-  [ChainId.TLOS]: {
-    graphAddress: 'https://telos.apeswapgraphs.com/subgraphs/name/ape-swap/apeswap-graph',
-    explorer: BLOCK_EXPLORER[ChainId.TLOS],
-    blockGraph: 'https://telos.apeswapgraphs.com/subgraphs/name/ape-swap/telos-blocks',
-    id: '0x411172Dfcd5f68307656A1ff35520841C2F7fAec',
-    fee: 0.002,
-    color: '#9D68E8',
   },
 }

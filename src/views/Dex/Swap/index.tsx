@@ -282,7 +282,6 @@ const Swap: React.FC = () => {
             independentField={independentField}
             disabled={fetchingBestRoute}
           />
-
           <ExpertModeRecipient
             recipient={recipient}
             showWrap={showWrap}
