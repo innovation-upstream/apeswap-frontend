@@ -3,8 +3,10 @@ import { Token } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import { getApePriceGetterAddress } from 'utils/addressHelper'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { tokens } from '@ape.swap/apeswap-lists'
 
 const fetchPrices = async (chainId: number, tokens: Token[]) => {
+  console.log(tokens)
   const apePriceGetterAddress = getApePriceGetterAddress(chainId)
   const tokensToCall = Object.fromEntries(
     Object.entries(tokens).filter(([, values]) => values.address[chainId] && values.decimals[chainId]),

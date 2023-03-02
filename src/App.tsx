@@ -259,7 +259,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <NetworkProductCheck />
+      {/*<NetworkProductCheck />*/}
       <PageMeta />
       <ResetScroll />
       <ResetCSS />

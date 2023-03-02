@@ -1049,7 +1049,7 @@ export const DefaultSlides = () => {
       slideContent={
         <Text>
           {t(
-            `Do not enter ApeSwap through search engines, Google Ads, or any links shared through social media like Telegram or Twitter. Always make sure you\'re at the correct URL (`,
+            `Do not enter ApeSwap through search engines, Google Ads, or any links shared through social media like Telegram or Twitter. Always make sure you're at the correct URL (`,
           )}
           <Text sx={{ fontWeight: 700 }}>apeswap.finance</Text>
           {t(`) before connecting your wallet to avoid phishing scams.`)}

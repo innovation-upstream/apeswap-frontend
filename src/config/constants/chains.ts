@@ -7,7 +7,7 @@ import BigNumber from 'bignumber.js'
 // This is currently used for the info page
 export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET]
 
-export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS]
+export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS, ChainId.ARBITRUM]
 
 // Network labels
 export const NETWORK_LABEL: Partial<Record<ChainId, string>> = {
@@ -17,6 +17,7 @@ export const NETWORK_LABEL: Partial<Record<ChainId, string>> = {
   [ChainId.MATIC_TESTNET]: 'Polygon Testnet',
   [ChainId.MAINNET]: 'Ethereum',
   [ChainId.TLOS]: 'Telos',
+  [ChainId.ARBITRUM]: 'Arbitrum',
 }
 
 export const NETWORK_INFO_LINK: Partial<Record<ChainId, string>> = {
@@ -40,6 +41,7 @@ export const NETWORK_RPC: Partial<Record<ChainId, string[]>> = {
   [ChainId.MATIC_TESTNET]: ['https://matic-mumbai.chainstacklabs.com'],
   [ChainId.MAINNET]: ['https://eth-mainnet.nodereal.io/v1/43f9100965104de49b580d1fa1ab28c0'],
   [ChainId.TLOS]: ['https://mainnet.telos.net/evm'],
+  [ChainId.ARBITRUM]: ['https://arb1.arbitrum.io/rpc'],
 }
 
 // Network block explorers
@@ -50,6 +52,7 @@ export const BLOCK_EXPLORER: Partial<Record<ChainId, string>> = {
   [ChainId.MATIC_TESTNET]: 'https://mumbai.polygonscan.com/',
   [ChainId.MAINNET]: 'https://etherscan.io/',
   [ChainId.TLOS]: 'https://www.teloscan.io',
+  [ChainId.ARBITRUM]: 'https://arbiscan.io',
 }
 
 export const CHAIN_PARAMS: Partial<
@@ -130,6 +133,17 @@ export const CHAIN_PARAMS: Partial<
     rpcUrls: NETWORK_RPC[ChainId.TLOS],
     blockExplorerUrls: [BLOCK_EXPLORER[ChainId.TLOS]],
   },
+  [ChainId.ARBITRUM]: {
+    chainId: '0xa4b1',
+    chainName: 'Arbitrum',
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: NETWORK_RPC[ChainId.ARBITRUM],
+    blockExplorerUrls: [BLOCK_EXPLORER[ChainId.ARBITRUM]],
+  },
 }
 
 // Ape price impact cutoff
@@ -143,6 +157,7 @@ export const PRIORITY_SMART_ROUTERS: Partial<Record<ChainId, SmartRouter[]>> = {
   [ChainId.MATIC]: [SmartRouter.APE, SmartRouter.QUICKSWAP],
   [ChainId.BSC_TESTNET]: [SmartRouter.APE],
   [ChainId.TLOS]: [SmartRouter.APE],
+  [ChainId.ARBITRUM]: [SmartRouter.APE],
 }
 
 // Wallchain Configs
@@ -233,6 +248,9 @@ export const SMART_PRICE_GETTERS: Partial<Record<ChainId, Partial<Record<SmartRo
   },
   [ChainId.TLOS]: {
     [SmartRouter.APE]: '0x29392efed565c13a0901aeb88e32bf58eeb8a067',
+  },
+  [ChainId.ARBITRUM]: {
+    [SmartRouter.APE]: '0x920b3b1f73ec435167da68b07b4b77d718638587',
   },
 }
 
