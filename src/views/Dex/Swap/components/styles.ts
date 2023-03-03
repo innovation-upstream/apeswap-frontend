@@ -2,13 +2,9 @@ import { ThemeUIStyleObject } from 'theme-ui'
 import { buttonHover } from 'views/Dex/styles'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
-  swapSwitchContainer: {
-    width: '100%',
-    height: '50px',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   swapSwitchButton: {
+    position: 'absolute',
+    right: 'calc(50% - 15px)',
     background: 'yellow',
     height: '30px',
     width: '30px',

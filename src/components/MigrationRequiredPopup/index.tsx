@@ -17,11 +17,13 @@ const MigrationRequiredPopup = ({
   farms,
   vaults,
   homepage,
+  hasPositionsToMigrate,
 }: {
   v2Farms: Farm[]
   farms: Farm[]
   vaults: Vault[]
   homepage?: boolean
+  hasPositionsToMigrate?: boolean
 }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -59,6 +61,7 @@ const MigrationRequiredPopup = ({
   })
 
   const userHasFarmOrVault =
+    hasPositionsToMigrate ||
     [...filteredFarms, ...filterV1Dust].filter((product) => new BigNumber(product?.userData?.stakedBalance).gt(0))
       ?.length > 0
 
