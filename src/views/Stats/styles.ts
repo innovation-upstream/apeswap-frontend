@@ -89,7 +89,6 @@ export const PacocaCard = styled(Link)`
 
   padding: 16px 32px;
   margin: 0 auto !important;
-  max-width: 260px;
 
   background: ${({ theme }) => theme.colors.white2};
   border-radius: 10px;
