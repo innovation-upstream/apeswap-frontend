@@ -265,8 +265,7 @@ const Swap: React.FC = () => {
             independentField={independentField}
             disabled={fetchingBestRoute}
           />
-          <Flex sx={{ width: '100%', justifyContent: 'space-between', height: '50px', alignItems: 'center' }}>
-            <div />
+          <Flex sx={{ width: '100%', justifyContent: 'flex-end', height: '50px', alignItems: 'center' }}>
             <SwapSwitchButton onClick={onSwitchTokens} />
             <Risk chainId={chainId} currency={outputCurrency} />
           </Flex>

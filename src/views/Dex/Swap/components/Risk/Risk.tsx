@@ -1,15 +1,15 @@
 /** @jsxImportSource theme-ui */
 import React, { useEffect, useState } from 'react'
 import { Flex, Text, TooltipBubble } from '@ape.swap/uikit'
-import { parsedRiskData, TAG_TOKEN_RISK_VALUES, TOKEN_RISK, TOKEN_RISK_VALUES } from './helpers'
-import { ChainId, Currency, Token } from '@ape.swap/sdk'
+import { parsedRiskData } from './helpers'
+import { Currency, Token } from '@ape.swap/sdk'
 import { styles } from './styles'
 import { useTranslation } from 'contexts/Localization'
-
-const supportedChains = [ChainId.BSC]
+import { riskSupportedChains, TAG_COLOR, TAG_TOKEN_RISK_VALUES, TOKEN_RISK_VALUES } from './constants'
+import Dots from 'components/Loader/Dots'
 
 const Risk = ({ chainId, currency }: { chainId: number; currency: Currency }) => {
-  const isChainSupported = supportedChains.includes(chainId)
+  const isChainSupported = riskSupportedChains.includes(chainId)
   const [risk, setRisk] = useState(null)
   const [hide, setHide] = useState(isChainSupported)
   const { t } = useTranslation()
@@ -28,86 +28,71 @@ const Risk = ({ chainId, currency }: { chainId: number; currency: Currency }) =>
     }
   }, [chainId, currency, isChainSupported])
 
-  const getTagColor = () => {
-    switch (risk) {
-      case TOKEN_RISK.VERY_LOW: {
-        return '#38A611'
-      }
-      case TOKEN_RISK.LOW: {
-        return '#38A611'
-      }
-      case TOKEN_RISK.MEDIUM: {
-        return '#FFB300'
-      }
-      case TOKEN_RISK.HIGH: {
-        return '#DF4141'
-      }
-      case TOKEN_RISK.VERY_HIGH: {
-        return '#DF4141'
-      }
-      default: {
-        return '#A09F9C'
-      }
-    }
-  }
-
   return (
-    <Flex sx={styles.riskContainer}>
+    <>
       {!hide && (
-        <Flex sx={{ minWidth: '150px', justifyContent: 'flex-end' }}>
-          <TooltipBubble
-            placement="bottomRight"
-            transformTip="translate(0%, -4%)"
-            width="226px"
-            style={{ padding: ' 10px' }}
-            body={
-              <Flex sx={{ flexWrap: 'wrap' }}>
-                <Text
-                  sx={{
-                    ...styles.title,
-                    fontWeight: 700,
-                  }}
-                >
-                  {TOKEN_RISK_VALUES[risk] ? TOKEN_RISK_VALUES[risk] : 'Scanning ...'}
-                </Text>
-                <Text sx={styles.title}>
-                  {t('Risk scan results are provided by a third party')}{' '}
-                  <Text sx={styles.yellow}>
-                    <a href="https://www.avengerdao.org/" target="_blank" rel="noreferrer noopener">
-                      Avenger DAO
-                    </a>
+        <Flex sx={styles.riskContainer}>
+          <Flex sx={{ minWidth: '150px', justifyContent: 'flex-end' }}>
+            <TooltipBubble
+              placement="bottomRight"
+              transformTip="translate(0%, -4%)"
+              width="226px"
+              style={{ padding: ' 10px' }}
+              body={
+                <Flex sx={{ flexWrap: 'wrap' }}>
+                  <Text
+                    sx={{
+                      ...styles.title,
+                      fontWeight: 700,
+                    }}
+                  >
+                    {TOKEN_RISK_VALUES[risk] ? TOKEN_RISK_VALUES[risk] : 'Scanning ...'}
                   </Text>
-                </Text>
-                <Text sx={styles.title}>
-                  {t(
-                    'It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.',
+                  <Text sx={styles.title}>
+                    {t('Risk scan results are provided by a third party')}{' '}
+                    <Text sx={styles.yellow}>
+                      <a href="https://www.avengerdao.org/" target="_blank" rel="noreferrer noopener">
+                        Avenger DAO
+                      </a>
+                    </Text>
+                  </Text>
+                  <Text sx={styles.title}>
+                    {t(
+                      'It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.',
+                    )}
+                  </Text>
+                  <Text sx={styles.title}>
+                    {t('Learn more about risk rating')}{' '}
+                    <Text sx={styles.yellow}>
+                      <a
+                        href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        {t('here')}
+                      </a>
+                    </Text>
+                    .
+                  </Text>
+                </Flex>
+              }
+            >
+              <Flex sx={{ ...styles.tag, borderColor: TAG_COLOR[risk] }}>
+                <Text sx={{ ...styles.text, color: TAG_COLOR[risk] }}>
+                  {TOKEN_RISK_VALUES[risk] ? (
+                    TAG_TOKEN_RISK_VALUES[risk]
+                  ) : (
+                    <>
+                      Scanning <Dots />
+                    </>
                   )}
                 </Text>
-                <Text sx={styles.title}>
-                  {t('Learn more about risk rating')}{' '}
-                  <Text sx={styles.yellow}>
-                    <a
-                      href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand"
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      {t('here')}
-                    </a>
-                  </Text>
-                  .
-                </Text>
               </Flex>
-            }
-          >
-            <Flex sx={{ ...styles.tag, borderColor: getTagColor() }}>
-              <Text sx={{ ...styles.text, color: getTagColor() }}>
-                {TOKEN_RISK_VALUES[risk] ? TAG_TOKEN_RISK_VALUES[risk] : 'Scanning ...'}
-              </Text>
-            </Flex>
-          </TooltipBubble>
+            </TooltipBubble>
+          </Flex>
         </Flex>
       )}
-    </Flex>
+    </>
   )
 }
 

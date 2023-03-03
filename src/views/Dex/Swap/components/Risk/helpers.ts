@@ -2,38 +2,7 @@ import { v4 as uuid } from 'uuid'
 import HmacSHA256 from 'crypto-js/hmac-sha256'
 import EncodeHex from 'crypto-js/enc-hex'
 import { ChainId } from '@ape.swap/sdk'
-
-export const TOKEN_RISK = {
-  VERY_LOW: 0,
-  LOW: 1,
-  MEDIUM: 2,
-  HIGH: 3,
-  VERY_HIGH: 4,
-}
-
-export const TOKEN_RISK_MAPPING = {
-  '5/5': TOKEN_RISK.VERY_LOW,
-  '4/5': TOKEN_RISK.LOW,
-  '3/5': TOKEN_RISK.MEDIUM,
-  '2/5': TOKEN_RISK.HIGH,
-  '1/5': TOKEN_RISK.VERY_HIGH,
-}
-
-export const TOKEN_RISK_VALUES = {
-  [TOKEN_RISK.VERY_LOW]: 'Very Low Risk',
-  [TOKEN_RISK.LOW]: 'Low Risk',
-  [TOKEN_RISK.MEDIUM]: 'Medium Risk',
-  [TOKEN_RISK.HIGH]: 'High Risk',
-  [TOKEN_RISK.VERY_HIGH]: 'Very High Risk',
-}
-
-export const TAG_TOKEN_RISK_VALUES = {
-  [TOKEN_RISK.VERY_LOW]: 'Low Risk',
-  [TOKEN_RISK.LOW]: 'Low Risk',
-  [TOKEN_RISK.MEDIUM]: 'Medium Risk',
-  [TOKEN_RISK.HIGH]: 'High Risk',
-  [TOKEN_RISK.VERY_HIGH]: 'High Risk',
-}
+import { TOKEN_RISK_MAPPING } from './constants'
 
 const host = 'https://avengerdao.org'
 const url = '/api/v1/address-security'

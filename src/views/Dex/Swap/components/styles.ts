@@ -3,6 +3,8 @@ import { buttonHover } from 'views/Dex/styles'
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   swapSwitchButton: {
+    position: 'absolute',
+    right: 'calc(50% - 15px)',
     background: 'yellow',
     height: '30px',
     width: '30px',
