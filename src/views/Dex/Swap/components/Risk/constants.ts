@@ -8,7 +8,6 @@ export const TOKEN_RISK = {
   MEDIUM: 2,
   HIGH: 3,
   VERY_HIGH: 4,
-  UNKNOWN: null,
 }
 
 export const TOKEN_RISK_MAPPING = {
@@ -25,7 +24,6 @@ export const TAG_COLOR: Record<number, string> = {
   [TOKEN_RISK.MEDIUM]: '#FFB300',
   [TOKEN_RISK.HIGH]: '#DF4141',
   [TOKEN_RISK.VERY_HIGH]: '#DF4141',
-  [TOKEN_RISK.UNKNOWN]: '#A09F9C',
 }
 
 export const TOKEN_RISK_VALUES = {

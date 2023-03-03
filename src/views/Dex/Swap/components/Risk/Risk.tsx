@@ -46,7 +46,13 @@ const Risk = ({ chainId, currency }: { chainId: number; currency: Currency }) =>
                       fontWeight: 700,
                     }}
                   >
-                    {TOKEN_RISK_VALUES[risk] ? TOKEN_RISK_VALUES[risk] : 'Scanning ...'}
+                    {TOKEN_RISK_VALUES[risk] ? (
+                      TAG_TOKEN_RISK_VALUES[risk]
+                    ) : (
+                      <>
+                        Scanning <Dots />
+                      </>
+                    )}
                   </Text>
                   <Text sx={styles.title}>
                     {t('Risk scan results are provided by a third party')}{' '}
@@ -77,8 +83,8 @@ const Risk = ({ chainId, currency }: { chainId: number; currency: Currency }) =>
                 </Flex>
               }
             >
-              <Flex sx={{ ...styles.tag, borderColor: TAG_COLOR[risk] }}>
-                <Text sx={{ ...styles.text, color: TAG_COLOR[risk] }}>
+              <Flex sx={{ ...styles.tag, borderColor: risk ? TAG_COLOR[risk] : '#A09F9C' }}>
+                <Text sx={{ ...styles.text, color: risk ? TAG_COLOR[risk] : '#A09F9C' }}>
                   {TOKEN_RISK_VALUES[risk] ? (
                     TAG_TOKEN_RISK_VALUES[risk]
                   ) : (
