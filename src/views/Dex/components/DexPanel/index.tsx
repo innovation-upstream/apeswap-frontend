@@ -45,7 +45,6 @@ const DexPanel: React.FC<DexPanelProps> = ({
   const { t } = useTranslation()
 
   const usdVal = useTokenPriceUsd(chainId, lpPair?.liquidityToken || currency, isRemoveLiquidity, smartRouter)
-  console.log('usdVal', usdVal)
 
   useEffect(() => {
     if (setTradeValueUsd) {

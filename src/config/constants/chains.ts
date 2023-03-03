@@ -325,7 +325,7 @@ export enum OTHER_PRODUCTS {
 
 // These products are list view components that have a specific chain redirect component
 export const AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS: Record<LIST_VIEW_PRODUCTS, ChainId[]> = {
-  [LIST_VIEW_PRODUCTS.BILLS]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  [LIST_VIEW_PRODUCTS.BILLS]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS, ChainId.ARBITRUM],
   [LIST_VIEW_PRODUCTS.FARMS]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
   [LIST_VIEW_PRODUCTS.MAXIMIZERS]: [ChainId.BSC],
   [LIST_VIEW_PRODUCTS.JUNGLE_FARMS]: [ChainId.BSC],
@@ -337,7 +337,7 @@ export const AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS: Record<LIST_VIEW_PRODUCTS, 
 export const AVAILABLE_CHAINS_ON_PRODUCTS: Record<OTHER_PRODUCTS, ChainId[]> = {
   [OTHER_PRODUCTS.GNANA]: [ChainId.BSC],
   [OTHER_PRODUCTS.MIGRATE]: [ChainId.BSC],
-  [OTHER_PRODUCTS.ZAP]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  [OTHER_PRODUCTS.ZAP]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS, ChainId.ARBITRUM],
   [OTHER_PRODUCTS.IAO]: [ChainId.BSC],
   [OTHER_PRODUCTS.NFA_COLLECTION]: [ChainId.BSC],
   [OTHER_PRODUCTS.NFA_AUCTION]: [ChainId.BSC],
