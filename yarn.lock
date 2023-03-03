@@ -33,10 +33,10 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/sdk@4.3.4-alpha.2":
-  version "4.3.4-alpha.2"
-  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.3.4-alpha.2.tgz#016f9afea93927bec206b0a36f5c58aae584adf7"
-  integrity sha512-MdyHjx4+RoiLqMIOVl4/22KMQhW3YOM7HAgxYU1eb29pPLw4sxRbTlZSPUIOxYrA/0IEaX5iTK7/gHK+3QznVQ==
+"@ape.swap/sdk@4.3.4-alpha.3":
+  version "4.3.4-alpha.3"
+  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.3.4-alpha.3.tgz#a5defdd5bde31d664f1667a0d86441b60d6b65a3"
+  integrity sha512-+rruEFNKs2xjSPBfRtTwj8An2Pzpjhk3WB74U/C0ThyrcmMMh6TExfWa6Yr3xRpI8xSg0bB2NrK+t/tbjpP9rQ==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"

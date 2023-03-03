@@ -275,6 +275,9 @@ export const SMART_LP_FEES: Partial<Record<ChainId, Partial<Record<SmartRouter, 
   [ChainId.TLOS]: {
     [SmartRouter.APE]: 20,
   },
+  [ChainId.ARBITRUM]: {
+    [SmartRouter.APE]: 20,
+  },
 }
 
 // Block times

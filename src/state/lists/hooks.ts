@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { createSelector } from '@reduxjs/toolkit'
 import { fromPairs, groupBy, uniqBy } from 'lodash'
 import DEFAULT_TOKEN_LIST from '@ape.swap/token-lists/lists/apeswap.json'
-import { UNSUPPORTED_LIST_URLS, DEFAULT_LIST_OF_LISTS } from 'config/constants/lists'
+import { DEFAULT_LIST_OF_LISTS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import UNSUPPORTED_TOKEN_LIST from 'config/constants/token-lists/sushiswap-v2-unsupported.tokenlist.json'
 import { AppState } from '../index'
 
@@ -114,6 +114,14 @@ const combineTokenMapsWithDefault = (lists: AppState['lists']['byUrl'], urls: st
         chainId: ChainId.ARBITRUM,
         decimals: 18,
         logoURI: 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/WETH.svg',
+      },
+      {
+        name: 'Tether',
+        symbol: 'USDT',
+        address: '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
+        chainId: ChainId.ARBITRUM,
+        decimals: 6,
+        logoURI: 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/USDT.svg',
       },
     ],
   }
