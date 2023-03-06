@@ -79,53 +79,7 @@ const listCache: WeakMap<TokenList, TokenAddressMap> | null =
   typeof WeakMap !== 'undefined' ? new WeakMap<TokenList, TokenAddressMap>() : null
 
 const combineTokenMapsWithDefault = (lists: AppState['lists']['byUrl'], urls: string[]) => {
-  const DEFAULT_TOKEN_LIST2 = {
-    name: 'ApeSwap Default List',
-    timestamp: '2021-06-20T15:41:29.665Z',
-    version: {
-      major: 2,
-      minor: 4,
-      patch: 2,
-    },
-    tags: {},
-    logoURI: 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/apeswap-ape.svg',
-    keywords: ['apeswap', 'default'],
-    tokens: [
-      {
-        name: 'USD Coin',
-        symbol: 'USDC',
-        address: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
-        chainId: ChainId.ARBITRUM,
-        decimals: 6,
-        logoURI: 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/USDC.svg',
-      },
-      {
-        name: 'Wrapped BTC',
-        symbol: 'WBTC',
-        address: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
-        chainId: ChainId.ARBITRUM,
-        decimals: 8,
-        logoURI: 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/BTCB.svg',
-      },
-      {
-        name: 'Wrapped ETH',
-        symbol: 'WETH',
-        address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
-        chainId: ChainId.ARBITRUM,
-        decimals: 18,
-        logoURI: 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/WETH.svg',
-      },
-      {
-        name: 'Tether',
-        symbol: 'USDT',
-        address: '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
-        chainId: ChainId.ARBITRUM,
-        decimals: 6,
-        logoURI: 'https://raw.githubusercontent.com/ApeSwapFinance/apeswap-token-lists/main/assets/USDT.svg',
-      },
-    ],
-  }
-  const defaultTokenMap = listToTokenMap(DEFAULT_TOKEN_LIST2)
+  const defaultTokenMap = listToTokenMap(DEFAULT_TOKEN_LIST)
   if (!urls) return defaultTokenMap
   return combineMaps(combineTokenMaps(lists, urls), defaultTokenMap)
 }
