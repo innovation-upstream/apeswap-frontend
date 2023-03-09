@@ -125,7 +125,7 @@ const contracts = {
     [ChainId.MATIC]: '0x05D6C73D7de6E02B3f57677f849843c03320681c',
     [ChainId.MAINNET]: '0x5fbFd1955EeA2F62F1AfD6d6E92223Ae859F7887',
     [ChainId.TLOS]: '0x29392efed565c13a0901aeb88e32bf58eeb8a067',
-    [ChainId.ARBITRUM]: '0x920b3b1f73ec435167da68b07b4b77d718638587',
+    [ChainId.ARBITRUM]: '0x62F8F67d499f7a204cf593649bA625d013982D16',
   },
   miniApeV2: {
     [ChainId.BSC]: '',

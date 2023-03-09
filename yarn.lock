@@ -33,10 +33,10 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/sdk@4.3.4-alpha.3":
-  version "4.3.4-alpha.3"
-  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.3.4-alpha.3.tgz#a5defdd5bde31d664f1667a0d86441b60d6b65a3"
-  integrity sha512-+rruEFNKs2xjSPBfRtTwj8An2Pzpjhk3WB74U/C0ThyrcmMMh6TExfWa6Yr3xRpI8xSg0bB2NrK+t/tbjpP9rQ==
+"@ape.swap/sdk@4.3.4-alpha.4":
+  version "4.3.4-alpha.4"
+  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.3.4-alpha.4.tgz#fc76eec06f26f0fc737a27ba580c1ec52b3803ce"
+  integrity sha512-BDFLUM6QTbmfXy2vF2Mi3UUxsh+3qu8ZNmHmcuR/hKmP3Hcb336ZPJX8leHzRi/k4iBwbPAV5DWwLP3n8Ivk9g==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"
@@ -52,10 +52,10 @@
   resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.12.tgz#ae2d05fc90af08df7a1d81ad4c683569139675a9"
   integrity sha512-86ZzEWtd1PbKkBAxm+UUCLCfD6WfLqwysXeA4ZQI0f0Bcg8ZT96nzyrsjAE9GmxRaQMIBOrIiA2MaKpJFyMv3A==
 
-"@ape.swap/uikit@1.3.54-alpha.1":
-  version "1.3.54-alpha.1"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.54-alpha.1.tgz#6ac408ca2e3319764f5d57b2402d95b484c624f6"
-  integrity sha512-E/eAO/3PQGL0pkoybQxU139i6VeII2ZRTrHGEu3WmJw8YTbKhZfZvao3nQBM9w+EkR2kVacTGXQXmLTopp1CQQ==
+"@ape.swap/uikit@1.3.54-alpha.2":
+  version "1.3.54-alpha.2"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.54-alpha.2.tgz#6eeab69a64e844aff343372389694c0b6ebc486d"
+  integrity sha512-2Mha2XFkTjaWBHv6E/ykjObIYwHO6aMvwduEfVc8m8O/hOcAfpYV+Hk3+IdZsB8AMtyRka7F8NjLVigryUY9iA==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
