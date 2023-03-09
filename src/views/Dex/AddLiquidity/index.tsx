@@ -68,6 +68,7 @@ function AddLiquidity({
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
 
   const { onUserInput } = useMintActionHandlers(noLiquidity)
+  console.log('asd')
 
   // Handle currency selection
   const handleCurrencySelect = useCallback(
