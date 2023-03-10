@@ -250,7 +250,7 @@ export const SMART_PRICE_GETTERS: Partial<Record<ChainId, Partial<Record<SmartRo
     [SmartRouter.APE]: '0x29392efed565c13a0901aeb88e32bf58eeb8a067',
   },
   [ChainId.ARBITRUM]: {
-    [SmartRouter.APE]: '0x62F8F67d499f7a204cf593649bA625d013982D16',
+    [SmartRouter.APE]: '0x128c8F223544028DE9db9D8A377280Dcf8Df60B3',
   },
 }
 

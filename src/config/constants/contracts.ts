@@ -7,6 +7,7 @@ const contracts = {
     [ChainId.MATIC]: '0x5d47baba0d66083c52009271faf3f50dcc01023c',
     [ChainId.MAINNET]: '0x92df60c51c710a1b1c20e42d85e221f3a1bfc7f2',
     [ChainId.TLOS]: '0x667fd83e24ca1d935d36717d305d54fa0cac991c',
+    [ChainId.ARBITRUM]: '0xd978f8489e1245568704407a479a71fcce2afe8f',
   },
   syrup: {
     [ChainId.BSC_TESTNET]: '0xAf1B22cBDbB502B2089885bcd230255f8B80243b',
@@ -125,7 +126,7 @@ const contracts = {
     [ChainId.MATIC]: '0x05D6C73D7de6E02B3f57677f849843c03320681c',
     [ChainId.MAINNET]: '0x5fbFd1955EeA2F62F1AfD6d6E92223Ae859F7887',
     [ChainId.TLOS]: '0x29392efed565c13a0901aeb88e32bf58eeb8a067',
-    [ChainId.ARBITRUM]: '0x62F8F67d499f7a204cf593649bA625d013982D16',
+    [ChainId.ARBITRUM]: '0x128c8F223544028DE9db9D8A377280Dcf8Df60B3',
   },
   miniApeV2: {
     [ChainId.BSC]: '',
