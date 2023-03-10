@@ -157,7 +157,7 @@ export const PRIORITY_SMART_ROUTERS: Partial<Record<ChainId, SmartRouter[]>> = {
   [ChainId.MATIC]: [SmartRouter.APE, SmartRouter.QUICKSWAP],
   [ChainId.BSC_TESTNET]: [SmartRouter.APE],
   [ChainId.TLOS]: [SmartRouter.APE],
-  [ChainId.ARBITRUM]: [SmartRouter.APE],
+  [ChainId.ARBITRUM]: [SmartRouter.APE, SmartRouter.SUSHISWAP],
 }
 
 // Wallchain Configs
@@ -270,13 +270,14 @@ export const SMART_LP_FEES: Partial<Record<ChainId, Partial<Record<SmartRouter, 
   [ChainId.MAINNET]: {
     [SmartRouter.APE]: 20,
     [SmartRouter.UNISWAP]: 30,
-    [SmartRouter.SUSHISWAP]: 25,
+    [SmartRouter.SUSHISWAP]: 30,
   },
   [ChainId.TLOS]: {
     [SmartRouter.APE]: 20,
   },
   [ChainId.ARBITRUM]: {
     [SmartRouter.APE]: 20,
+    [SmartRouter.SUSHISWAP]: 30,
   },
 }
 

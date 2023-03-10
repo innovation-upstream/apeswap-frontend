@@ -5,12 +5,17 @@ import store from 'state'
 import { getNativeWrappedAddress, getSmartPriceGetter } from 'utils/addressHelper'
 import apePriceGetter from 'config/abi/apePriceGetter.json'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { SMART_PRICE_GETTERS } from '../config/constants/chains'
 
 export const useTokenPriceUsd = (chainId: number, currency: Currency, lp = false, smartRouter?: SmartRouter) => {
   const isNative = currency?.symbol === 'ETH'
   const [address] = currency instanceof Token ? [currency?.address, currency?.decimals] : ['', 18]
   const priceGetterAddress = getSmartPriceGetter(chainId, smartRouter)
-  const priceGetterContract = new Contract(priceGetterAddress, apePriceGetter)
+  //revert this line once we have sushi's pricegetter
+  const priceGetterContract = new Contract(
+    priceGetterAddress ?? SMART_PRICE_GETTERS[chainId][SmartRouter.APE],
+    apePriceGetter,
+  )
 
   const nativeTokenAddress = getNativeWrappedAddress(chainId)
 
