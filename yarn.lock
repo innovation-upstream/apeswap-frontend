@@ -9,29 +9,15 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@1.1.32":
-  version "1.1.32"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.32.tgz#e86c1eb5f6333425bd5f9008273245f33cf244da"
-  integrity sha512-mfK1MjVBvEh6x33a2IAt8y3yT3fCQ8pHPRBHqSpwGzQmVj3JosUPLY8ZXPw/XnThOXANNSFR/s/ZeUh92dpyHA==
+"@ape.swap/apeswap-lists@1.1.39-alpha.0":
+  version "1.1.39-alpha.0"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.39-alpha.0.tgz#5c5ad43d0e82af1a3a01ed6431ac6f9d3bf0f9c2"
+  integrity sha512-hGXsn/iRnyYF6aBetuezpqkJDpmmYpAWdW70dHZzhKsAUoq7xT4crsvfGj8hH2uY1uzPezksaA9mBonVh/I/CQ==
   dependencies:
-    "@ape.swap/sdk" "4.3.1"
+    "@ape.swap/sdk" "4.3.4-alpha.7"
     bignumber.js "^9.0.2"
     ethers "^5.6.9"
     path "^0.12.7"
-
-"@ape.swap/sdk@4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.3.1.tgz#43c35e3556b86e5e4836d66db8807d3a93b6f218"
-  integrity sha512-IRezVj7okTTAK5Fmretn/H+HjZSDu1iI0pK49SEAHw1avG0dLlONL2khzqByqcwiFsJmkNaa7TGWyXK/DBQ4fg==
-  dependencies:
-    "@uniswap/v2-core" "^1.0.0"
-    big.js "^5.2.2"
-    decimal.js-light "^2.5.0"
-    jsbi "^3.1.1"
-    tiny-invariant "^1.1.0"
-    tiny-warning "^1.0.3"
-    toformat "^2.0.0"
-    yalc "^1.0.0-pre.53"
 
 "@ape.swap/sdk@4.3.4-alpha.7":
   version "4.3.4-alpha.7"
