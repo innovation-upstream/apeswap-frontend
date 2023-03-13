@@ -5,6 +5,7 @@ export const MetamaskLinks = {
   [ChainId.MATIC]: 'https://wiki.polygon.technology/docs/develop/metamask/config-polygon-on-metamask/',
   [ChainId.MAINNET]: 'https://metamask.io/faqs/',
   [ChainId.TLOS]: 'https://decentralizedcreator.com/add-telos-evm-network-to-metamask/',
+  [ChainId.ARBITRUM]: 'https://academy.binance.com/en/articles/how-to-add-arbitrum-to-metamask',
 }
 
 export const routeNames: Record<
