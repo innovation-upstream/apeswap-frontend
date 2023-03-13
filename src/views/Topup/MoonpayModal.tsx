@@ -8,7 +8,7 @@ import { NETWORK_LABEL } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
 
 // Supported chains for moonpay
-const SUPPORTED_CHAINS = [ChainId.BSC, ChainId.MAINNET, ChainId.MATIC]
+const SUPPORTED_CHAINS = [ChainId.BSC, ChainId.MAINNET, ChainId.MATIC, ChainId.ARBITRUM]
 
 export default function MoonPayModal({ onDismiss }: ModalProps) {
   const [accept, setAccept] = useState(false)
