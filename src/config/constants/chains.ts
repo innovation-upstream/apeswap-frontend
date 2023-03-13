@@ -251,6 +251,7 @@ export const SMART_PRICE_GETTERS: Partial<Record<ChainId, Partial<Record<SmartRo
   },
   [ChainId.ARBITRUM]: {
     [SmartRouter.APE]: '0x128c8F223544028DE9db9D8A377280Dcf8Df60B3',
+    [SmartRouter.SUSHISWAP]: '0x520c6a13e43354470a9521fa6d69e9ba45fa97c1',
   },
 }
 
