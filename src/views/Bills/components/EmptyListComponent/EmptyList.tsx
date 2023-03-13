@@ -19,6 +19,7 @@ export enum EmptyComponentType {
   USER_BILLS,
   AVAILABLE_BILLS,
   NO_RESULTS,
+  COMING_SOON,
 }
 
 interface EmptyListComponentProps {
@@ -44,6 +45,7 @@ const EmptyList: React.FC<EmptyListComponentProps> = ({ type, handleBillsViewCha
               t(`All Treasury Bills on ${NETWORK_LABEL[chainId]} are sold out.`)}
             {type === EmptyComponentType.USER_BILLS && t(`You don't have any bills`)}
             {type === EmptyComponentType.NO_RESULTS && t('No results found')}
+            {type === EmptyComponentType.COMING_SOON && t('Bills coming soon')}
           </Text>
         </Flex>
         <Text size="12px" sx={{ marginTop: '15px', opacity: '.5', textAlign: 'center' }}>
