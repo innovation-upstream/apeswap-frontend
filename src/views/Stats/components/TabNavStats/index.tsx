@@ -3,17 +3,23 @@ import { Bar, Container, Indicator, StyledTabNavStats, Tab } from './styles'
 
 interface TabNavProps {
   activeTab: string
-  onChangeActiveTab: (tab: string) => void
+  onChangeActiveTab: (tab: TabOption) => void
 }
 
-const tabOptions = ['Portfolio', 'Analytics', 'NFT']
+export enum TabOption {
+  PORTFOLIO = 'Portfolio',
+  ANALYTICS = 'Analytics',
+  NFT = 'NFT',
+}
+
+const tabOptions = Object.values(TabOption)
 
 export const TabNavStats: React.FC<TabNavProps> = ({ activeTab, onChangeActiveTab }) => {
   const [width, setWidth] = useState(0)
   const [left, setLeft] = useState(0)
   const refs = useRef([])
 
-  const handleActiveTab = (el: HTMLDivElement, tab: string) => {
+  const handleActiveTab = (el: HTMLDivElement, tab: TabOption) => {
     setLeft(el.offsetLeft)
     setWidth(el.offsetWidth)
 

@@ -33,6 +33,7 @@ import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithout
 import RecentTransactions from '../components/RecentTransactions'
 import { useBananaAddress } from 'hooks/useAddress'
 import { showCircular } from 'utils'
+import Risk from './components/Risk/Risk'
 
 const Swap: React.FC = () => {
   const { showBuyModal } = useIsModalShown()
@@ -264,7 +265,10 @@ const Swap: React.FC = () => {
             independentField={independentField}
             disabled={fetchingBestRoute}
           />
-          <SwapSwitchButton onClick={onSwitchTokens} />
+          <Flex sx={{ width: '100%', justifyContent: 'flex-end', height: '50px', alignItems: 'center' }}>
+            <SwapSwitchButton onClick={onSwitchTokens} />
+            <Risk chainId={chainId} currency={outputCurrency} />
+          </Flex>
           <DexPanel
             value={formattedAmounts[Field.OUTPUT]}
             panelText="To"
