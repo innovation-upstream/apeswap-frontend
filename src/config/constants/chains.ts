@@ -224,7 +224,7 @@ export const WALLCHAIN_PARAMS: Partial<
       apiUrl: '',
       apiKey: '',
     },
-  }
+  },
 }
 
 // Dont use bonus router if the bonus is lower than the cutoff
