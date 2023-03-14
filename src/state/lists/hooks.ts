@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { createSelector } from '@reduxjs/toolkit'
 import { fromPairs, groupBy, uniqBy } from 'lodash'
 import DEFAULT_TOKEN_LIST from '@ape.swap/token-lists/lists/apeswap.json'
-import { DEFAULT_LIST_OF_LISTS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
+import { UNSUPPORTED_LIST_URLS, DEFAULT_LIST_OF_LISTS } from 'config/constants/lists'
 import UNSUPPORTED_TOKEN_LIST from 'config/constants/token-lists/sushiswap-v2-unsupported.tokenlist.json'
 import { AppState } from '../index'
 

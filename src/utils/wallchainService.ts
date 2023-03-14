@@ -57,7 +57,7 @@ export default function callWallchainAPI(
 
   // If the initial call fails APE router will be the default router
   return fetch(
-    `${WALLCHAIN_PARAMS[chainId]?.[smartRouter]?.apiUrl}?key=${WALLCHAIN_PARAMS[chainId]?.[smartRouter]?.apiKey}`,
+    `${WALLCHAIN_PARAMS[chainId][smartRouter].apiUrl}?key=${WALLCHAIN_PARAMS[chainId][smartRouter].apiKey}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

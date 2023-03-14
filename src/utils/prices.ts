@@ -13,7 +13,7 @@ import { basisPointsToPercent } from './index'
 const ONE_HUNDRED_PERCENT = new Percent(JSBI.BigInt(10000), JSBI.BigInt(10000))
 
 const getInputFractionAfterFee = (chainId: number, smartRouter: SmartRouter) => {
-  const baseFee = new Percent(JSBI.BigInt(SMART_LP_FEES[chainId]?.[smartRouter]), JSBI.BigInt(10000))
+  const baseFee = new Percent(JSBI.BigInt(SMART_LP_FEES[chainId][smartRouter]), JSBI.BigInt(10000))
   return ONE_HUNDRED_PERCENT.subtract(baseFee)
 }
 

@@ -9,18 +9,20 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@file:.yalc/@ape.swap/apeswap-lists":
-  version "1.1.39-alpha.0"
+"@ape.swap/apeswap-lists@1.1.39":
+  version "1.1.39"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.39.tgz#f3b9cf5ce79edd15bea08e15e6e1e8f73b2ee6bb"
+  integrity sha512-7Me59+zv+sJs/q+fBtfCYtjMxCZbUgWbKRyWftDkGnz4DiQJGGbObjAJv41085N+1AzfnLqe7VrmvFPwa7wCZw==
   dependencies:
-    "@ape.swap/sdk" "4.3.4-alpha.7"
+    "@ape.swap/sdk" "4.4.0"
     bignumber.js "^9.0.2"
     ethers "^5.6.9"
     path "^0.12.7"
 
-"@ape.swap/sdk@4.3.4-alpha.7":
-  version "4.3.4-alpha.7"
-  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.3.4-alpha.7.tgz#641ada087ae4c45786acff01143ddba96358f7c1"
-  integrity sha512-0qkCNXc6UtNht1fkdnzCHaZChmeoG2Qud0mpAqGiK6hFifYm/cp8wIM8D8ej3xq92Z8aGTq4A0BtOys5lQ6BAQ==
+"@ape.swap/sdk@4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@ape.swap/sdk/-/sdk-4.4.0.tgz#9e4270eb3e6e3702e35114d35708ee0a8eb80447"
+  integrity sha512-rjr3ZXUbRDPkfn4WIsI/gvCfEJy48R4Lb+vznf/W5eFlpmilVZZusswc/E05Y/Sa3TlCsKhDnyrJb9mziAeMjw==
   dependencies:
     "@uniswap/v2-core" "^1.0.0"
     big.js "^5.2.2"
@@ -31,15 +33,15 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/token-lists@1.0.15-alpha.1":
-  version "1.0.15-alpha.1"
-  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.15-alpha.1.tgz#3a968e47362cf25551a84b105344537be79eb800"
-  integrity sha512-XfVSPEuHQ0v8oIFdU57N5VZWi778qh6kPhMysGw2SLFbnZZ797emeV4GIc+mlDELopy9vv6w3FFDpBJIHMU9UQ==
+"@ape.swap/token-lists@1.0.15":
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.15.tgz#dbb0932031fbca2baa5df18538e8e4ac1e4dec31"
+  integrity sha512-nHnRfXoIUhdIb1yw9vYF8ZR9zuuW+LVTr4MwMVDSrLxueNzKZPzamt2pxBXLHDl+sqhXZMdE9CamBQN8jBT0TQ==
 
-"@ape.swap/uikit@1.3.54-alpha.2":
-  version "1.3.54-alpha.2"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.54-alpha.2.tgz#6eeab69a64e844aff343372389694c0b6ebc486d"
-  integrity sha512-2Mha2XFkTjaWBHv6E/ykjObIYwHO6aMvwduEfVc8m8O/hOcAfpYV+Hk3+IdZsB8AMtyRka7F8NjLVigryUY9iA==
+"@ape.swap/uikit@1.3.54":
+  version "1.3.54"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.54.tgz#990f1634de89136376a2edcabf3192e84058c638"
+  integrity sha512-OF/+x+DZLD9o2hgmMr20/YdmKiSkeU9i4+k/XLuhjqxO6tW/f1SwS0Q+OpneeAhVNk79gavo1gcD0zKV+HQ7Rg==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"

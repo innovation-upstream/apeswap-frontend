@@ -215,6 +215,16 @@ export const WALLCHAIN_PARAMS: Partial<
       apiKey: '1717a226-bb5a-42c4-ad37-6de5229f9e28',
     },
   },
+  [ChainId.ARBITRUM]: {
+    [SmartRouter.APE]: {
+      apiUrl: '',
+      apiKey: '',
+    },
+    [SmartRouter.SUSHISWAP]: {
+      apiUrl: '',
+      apiKey: '',
+    },
+  }
 }
 
 // Dont use bonus router if the bonus is lower than the cutoff
