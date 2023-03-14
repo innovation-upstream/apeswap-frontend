@@ -19,6 +19,7 @@ export const WRAPPED_NATIVE_ONLY: ChainTokenList = {
   [ChainId.BSC]: [WETH[ChainId.BSC]],
   [ChainId.BSC_TESTNET]: [WETH[ChainId.BSC_TESTNET]],
   [ChainId.TLOS]: [WETH[ChainId.TLOS]],
+  [ChainId.ARBITRUM]: [WETH[ChainId.ARBITRUM]],
 }
 
 export const MIN_BNB: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 BNB

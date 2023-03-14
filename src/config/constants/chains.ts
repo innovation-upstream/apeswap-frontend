@@ -7,7 +7,7 @@ import BigNumber from 'bignumber.js'
 // This is currently used for the info page
 export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET]
 
-export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS]
+export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS, ChainId.ARBITRUM]
 
 // Network labels
 export const NETWORK_LABEL: Partial<Record<ChainId, string>> = {
@@ -17,6 +17,7 @@ export const NETWORK_LABEL: Partial<Record<ChainId, string>> = {
   [ChainId.MATIC_TESTNET]: 'Polygon Testnet',
   [ChainId.MAINNET]: 'Ethereum',
   [ChainId.TLOS]: 'Telos',
+  [ChainId.ARBITRUM]: 'Arbitrum',
 }
 
 export const NETWORK_INFO_LINK: Partial<Record<ChainId, string>> = {
@@ -40,6 +41,7 @@ export const NETWORK_RPC: Partial<Record<ChainId, string[]>> = {
   [ChainId.MATIC_TESTNET]: ['https://matic-mumbai.chainstacklabs.com'],
   [ChainId.MAINNET]: ['https://eth-mainnet.nodereal.io/v1/43f9100965104de49b580d1fa1ab28c0'],
   [ChainId.TLOS]: ['https://mainnet.telos.net/evm'],
+  [ChainId.ARBITRUM]: ['https://arb1.arbitrum.io/rpc'],
 }
 
 // Network block explorers
@@ -50,6 +52,7 @@ export const BLOCK_EXPLORER: Partial<Record<ChainId, string>> = {
   [ChainId.MATIC_TESTNET]: 'https://mumbai.polygonscan.com/',
   [ChainId.MAINNET]: 'https://etherscan.io/',
   [ChainId.TLOS]: 'https://www.teloscan.io',
+  [ChainId.ARBITRUM]: 'https://arbiscan.io',
 }
 
 export const CHAIN_PARAMS: Partial<
@@ -130,6 +133,17 @@ export const CHAIN_PARAMS: Partial<
     rpcUrls: NETWORK_RPC[ChainId.TLOS],
     blockExplorerUrls: [BLOCK_EXPLORER[ChainId.TLOS]],
   },
+  [ChainId.ARBITRUM]: {
+    chainId: '0xa4b1',
+    chainName: 'Arbitrum',
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: NETWORK_RPC[ChainId.ARBITRUM],
+    blockExplorerUrls: [BLOCK_EXPLORER[ChainId.ARBITRUM]],
+  },
 }
 
 // Ape price impact cutoff
@@ -143,6 +157,7 @@ export const PRIORITY_SMART_ROUTERS: Partial<Record<ChainId, SmartRouter[]>> = {
   [ChainId.MATIC]: [SmartRouter.APE, SmartRouter.QUICKSWAP],
   [ChainId.BSC_TESTNET]: [SmartRouter.APE],
   [ChainId.TLOS]: [SmartRouter.APE],
+  [ChainId.ARBITRUM]: [SmartRouter.APE, SmartRouter.SUSHISWAP],
 }
 
 // Wallchain Configs
@@ -200,6 +215,16 @@ export const WALLCHAIN_PARAMS: Partial<
       apiKey: '1717a226-bb5a-42c4-ad37-6de5229f9e28',
     },
   },
+  [ChainId.ARBITRUM]: {
+    [SmartRouter.APE]: {
+      apiUrl: '',
+      apiKey: '',
+    },
+    [SmartRouter.SUSHISWAP]: {
+      apiUrl: '',
+      apiKey: '',
+    },
+  },
 }
 
 // Dont use bonus router if the bonus is lower than the cutoff
@@ -215,7 +240,7 @@ export const BONUS_CUTOFF_AMOUNT: Partial<Record<ChainId, number>> = {
 // Routers in prioirty list must be in here
 export const SMART_PRICE_GETTERS: Partial<Record<ChainId, Partial<Record<SmartRouter, string>>>> = {
   [ChainId.BSC]: {
-    [SmartRouter.APE]: '0x5e545322b83626c745FE46144a15C00C94cBD803',
+    [SmartRouter.APE]: '0x8448833236B17AD6D2ACe9bC099428bF16e980BD',
     [SmartRouter.PANCAKE]: '0xF724471B00B5fACBA78D195bD241d090350a04Bd',
     [SmartRouter.BISWAP]: '0x1828e426fF3ec9E037cff888CB13f84d5e95F4eF',
   },
@@ -233,6 +258,10 @@ export const SMART_PRICE_GETTERS: Partial<Record<ChainId, Partial<Record<SmartRo
   },
   [ChainId.TLOS]: {
     [SmartRouter.APE]: '0x29392efed565c13a0901aeb88e32bf58eeb8a067',
+  },
+  [ChainId.ARBITRUM]: {
+    [SmartRouter.APE]: '0x128c8F223544028DE9db9D8A377280Dcf8Df60B3',
+    [SmartRouter.SUSHISWAP]: '0x520c6a13e43354470a9521fa6d69e9ba45fa97c1',
   },
 }
 
@@ -252,10 +281,14 @@ export const SMART_LP_FEES: Partial<Record<ChainId, Partial<Record<SmartRouter, 
   [ChainId.MAINNET]: {
     [SmartRouter.APE]: 20,
     [SmartRouter.UNISWAP]: 30,
-    [SmartRouter.SUSHISWAP]: 25,
+    [SmartRouter.SUSHISWAP]: 30,
   },
   [ChainId.TLOS]: {
     [SmartRouter.APE]: 20,
+  },
+  [ChainId.ARBITRUM]: {
+    [SmartRouter.APE]: 20,
+    [SmartRouter.SUSHISWAP]: 30,
   },
 }
 
@@ -304,7 +337,7 @@ export enum OTHER_PRODUCTS {
 
 // These products are list view components that have a specific chain redirect component
 export const AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS: Record<LIST_VIEW_PRODUCTS, ChainId[]> = {
-  [LIST_VIEW_PRODUCTS.BILLS]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  [LIST_VIEW_PRODUCTS.BILLS]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS, ChainId.ARBITRUM],
   [LIST_VIEW_PRODUCTS.FARMS]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
   [LIST_VIEW_PRODUCTS.MAXIMIZERS]: [ChainId.BSC],
   [LIST_VIEW_PRODUCTS.JUNGLE_FARMS]: [ChainId.BSC],
@@ -316,7 +349,7 @@ export const AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS: Record<LIST_VIEW_PRODUCTS, 
 export const AVAILABLE_CHAINS_ON_PRODUCTS: Record<OTHER_PRODUCTS, ChainId[]> = {
   [OTHER_PRODUCTS.GNANA]: [ChainId.BSC],
   [OTHER_PRODUCTS.MIGRATE]: [ChainId.BSC],
-  [OTHER_PRODUCTS.ZAP]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS],
+  [OTHER_PRODUCTS.ZAP]: [ChainId.BSC, ChainId.MATIC, ChainId.TLOS, ChainId.ARBITRUM],
   [OTHER_PRODUCTS.IAO]: [ChainId.BSC],
   [OTHER_PRODUCTS.NFA_COLLECTION]: [ChainId.BSC],
   [OTHER_PRODUCTS.NFA_AUCTION]: [ChainId.BSC],

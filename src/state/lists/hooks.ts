@@ -10,6 +10,7 @@ import UNSUPPORTED_TOKEN_LIST from 'config/constants/token-lists/sushiswap-v2-un
 import { AppState } from '../index'
 
 type TagDetails = Tags[keyof Tags]
+
 export interface TagInfo extends TagDetails {
   id: string
 }
@@ -71,6 +72,7 @@ const EMPTY_LIST: TokenAddressMap = {
   [ChainId.BSC]: {},
   [ChainId.BSC_TESTNET]: {},
   [ChainId.TLOS]: {},
+  [ChainId.ARBITRUM]: {},
 }
 
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =
@@ -190,6 +192,7 @@ function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddress
     [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2[ChainId.BSC] }, // bsc
     [ChainId.BSC_TESTNET]: { ...map1[ChainId.BSC_TESTNET], ...map2[ChainId.BSC_TESTNET] }, // bsc testnet
     [ChainId.TLOS]: { ...map1[ChainId.TLOS], ...map2[ChainId.TLOS] },
+    [ChainId.ARBITRUM]: { ...map1[ChainId.ARBITRUM], ...map2[ChainId.ARBITRUM] },
   }
 }
 
@@ -224,6 +227,7 @@ export function useDefaultTokenList(): TokenAddressMap {
 export function useUnsupportedTokenList(): TokenAddressMap {
   return useSelector(combinedTokenMapFromUnsupportedUrlsSelector)
 }
+
 export function useIsListActive(url: string): boolean {
   const activeListUrls = useActiveListUrls()
   return useMemo(() => Boolean(activeListUrls?.includes(url)), [activeListUrls, url])

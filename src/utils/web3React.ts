@@ -21,6 +21,7 @@ const supportedChains = [
   ChainId.MATIC_TESTNET,
   ChainId.MAINNET,
   ChainId.TLOS,
+  ChainId.ARBITRUM,
 ]
 
 const injected = new InjectedConnector({

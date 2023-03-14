@@ -1,4 +1,4 @@
-import { SmartRouter } from '@ape.swap/sdk'
+import { ChainId, SmartRouter } from '@ape.swap/sdk'
 import { RouterTypes } from 'config/constants'
 import { SwapDelay, Field } from 'state/swap/actions'
 import { tryParseAmount, useSwapActionHandlers, useSwapState } from 'state/swap/hooks'
@@ -60,8 +60,13 @@ const useFindBestRoute = () => {
   if (swapDelay !== SwapDelay.SWAP_COMPLETE) {
     return { v2Trade, bestTradeExactIn, bestTradeExactOut }
   }
-  if (bonusRouterDisabled) {
-    onBestRoute({ routerType: currentRouterType, smartRouter: currentSmartRouter })
+
+  // temp fix until we get the bonus router configs for arbitrum
+  if (bonusRouterDisabled || chainId === ChainId.ARBITRUM) {
+    onBestRoute({
+      routerType: currentRouterType,
+      smartRouter: currentSmartRouter,
+    })
     onSetSwapDelay(SwapDelay.SWAP_REFRESH)
     return { v2Trade, bestTradeExactIn, bestTradeExactOut }
   }
