@@ -16,6 +16,7 @@ import DiscountContent from './DiscountContent'
 import useIsMobile from 'hooks/useIsMobile'
 import Tooltip from 'components/Tooltip/Tooltip'
 import { BLOCK_EXPLORER } from 'config/constants/chains'
+import { ChainId } from '@ape.swap/sdk'
 
 interface BillsRowsProps {
   billsToRender: Bills[]
@@ -139,7 +140,14 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
           <Flex sx={{ alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
             {account ? (
               <Flex sx={{ width: '100%', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Flex sx={{ flexWrap: 'wrap', padding: '0 10px 10px 10px', width: '100%', flexDirection: 'column' }}>
+                <Flex
+                  sx={{
+                    flexWrap: 'wrap',
+                    padding: '0 10px 10px 10px',
+                    width: '100%',
+                    flexDirection: 'column',
+                  }}
+                >
                   <ListViewContent
                     title={'Vesting Term'}
                     value={disabled ? 'N/A' : vestingTime.days ? `${vestingTime.days} days` : 'NaN'}
@@ -183,7 +191,15 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
       {billsListView?.length ? (
         <ListView listViews={billsListView} />
       ) : (
-        <EmptyListComponent type={noResults ? EmptyComponentType.NO_RESULTS : EmptyComponentType.AVAILABLE_BILLS} />
+        <EmptyListComponent
+          type={
+            chainId === ChainId.ARBITRUM
+              ? EmptyComponentType.COMING_SOON
+              : noResults
+              ? EmptyComponentType.NO_RESULTS
+              : EmptyComponentType.AVAILABLE_BILLS
+          }
+        />
       )}
     </>
   )

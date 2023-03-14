@@ -21,6 +21,7 @@ import iframeConfig from './chains/iframeConfig'
 import MoonPayModal from '../../views/Topup/MoonpayModal'
 import { getSidContract } from 'utils'
 import { mailChimpUrl } from 'config/constants'
+import arbitrumConfig from './chains/arbitrumConfig'
 
 const Menu = (props) => {
   let isIframe = false
@@ -54,6 +55,9 @@ const Menu = (props) => {
     }
     if (chainId === ChainId.TLOS && isIframe !== true) {
       return tlosConfig(translate)
+    }
+    if (chainId === ChainId.ARBITRUM && isIframe !== true) {
+      return arbitrumConfig(translate)
     }
     if (isIframe === true) {
       return iframeConfig(translate)

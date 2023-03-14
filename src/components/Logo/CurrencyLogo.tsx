@@ -78,7 +78,7 @@ export default function CurrencyLogo({
         />
       )
     }
-    if (chainId === ChainId.MAINNET) {
+    if (chainId === ChainId.MAINNET || chainId === ChainId.ARBITRUM) {
       return (
         <StyledNativeCurrencyLogo
           size={size}

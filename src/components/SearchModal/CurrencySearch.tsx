@@ -101,7 +101,7 @@ function CurrencySearch({
 
   const zapInputList = useMemo(() => {
     const addresses = []
-    if (rawZapInputList) {
+    if (rawZapInputList && rawZapInputList[chainId]) {
       const listByChain = rawZapInputList[chainId]
       for (const res of Object.values(listByChain)) {
         if (res.address[chainId]) {
