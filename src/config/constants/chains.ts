@@ -240,7 +240,7 @@ export const BONUS_CUTOFF_AMOUNT: Partial<Record<ChainId, number>> = {
 // Routers in prioirty list must be in here
 export const SMART_PRICE_GETTERS: Partial<Record<ChainId, Partial<Record<SmartRouter, string>>>> = {
   [ChainId.BSC]: {
-    [SmartRouter.APE]: '0x5e545322b83626c745FE46144a15C00C94cBD803',
+    [SmartRouter.APE]: '0xBe87a01F5eC8b809C8c28946d08f50bDB6Def195',
     [SmartRouter.PANCAKE]: '0xF724471B00B5fACBA78D195bD241d090350a04Bd',
     [SmartRouter.BISWAP]: '0x1828e426fF3ec9E037cff888CB13f84d5e95F4eF',
   },
