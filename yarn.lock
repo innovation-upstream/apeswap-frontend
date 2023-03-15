@@ -76,7 +76,7 @@
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/uikit/0.11.3/34816976a003ba86c800bfba03f28b4207b61e1fa0d54ac10260a2cebb2e9f0b#147116f12458392a4469b1faa5e6b965d325e991"
+  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/uikit/0.11.3/147116f12458392a4469b1faa5e6b965d325e991#147116f12458392a4469b1faa5e6b965d325e991"
   integrity sha512-JT9T41yhRq0MBElfNv7NpokpavN0HLJv6207asYx+xmBpTigV1oHLc86GLxrH1qOdbLJ8SHz43yZ/cPjAxc+Gw==
   dependencies:
     "@emotion/react" "^11.7.1"
