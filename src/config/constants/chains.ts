@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 
 // List of mainnet chains
 // This is currently used for the info page
-export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET]
+export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.ARBITRUM]
 
 export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS, ChainId.ARBITRUM]
 
@@ -404,5 +404,13 @@ export const INFO_PAGE_CHAIN_PARAMS: Partial<
     id: '0xBAe5dc9B19004883d0377419FeF3c2C8832d7d7B',
     fee: 0.002,
     color: '#637DEA',
+  },
+  [ChainId.ARBITRUM]: {
+    graphAddress: 'https://api.thegraph.com/subgraphs/name/prof-sd/arbitrum-dex',
+    explorer: BLOCK_EXPLORER[ChainId.ARBITRUM],
+    blockGraph: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
+    id: '0xCf083Be4164828f00cAE704EC15a36D711491284',
+    fee: 0.002,
+    color: '#2D374A',
   },
 }
