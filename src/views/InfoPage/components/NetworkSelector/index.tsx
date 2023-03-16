@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Input, Link, Svg, Text, useModal, IconProps, LegacySvg, icons } from '@ape.swap/uikit'
+import { Button, Flex, Input, Link, Svg, Text, useModal } from '@ape.swap/uikit'
 import { INFO_PAGE_CHAIN_PARAMS, MAINNET_CHAINS } from 'config/constants/chains'
 import React from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'

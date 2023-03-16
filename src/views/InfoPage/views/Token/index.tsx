@@ -41,7 +41,10 @@ const TokenPage = () => {
   const calculate7DayVolume = () => {
     let total = 0
 
-    for (let i = tokenDaysData[chain].data.length - 7; i < tokenDaysData[chain].data.length; i++) {
+    // This is to account for new data that isn't 7 days old yet
+    const daysCount = tokenDaysData[chain].data.length > 6 ? 7 : tokenDaysData[chain].data.length
+
+    for (let i = tokenDaysData[chain].data.length - daysCount; i < tokenDaysData[chain].data.length; i++) {
       total += Number(tokenDaysData[chain].data[i].dailyVolumeUSD)
     }
 
