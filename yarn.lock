@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@1.1.40":
-  version "1.1.40"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.40.tgz#8387ad3c32cab340c6aa6e988724f6deceb66336"
-  integrity sha512-WPOOSraStnY0RgYNv19rAx3/xBzH46YhL9UEUNONuEakxySpsAATPfE/u51zTURQat2SUtLMRMNq697R2zG9PA==
+"@ape.swap/apeswap-lists@1.1.41":
+  version "1.1.41"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.41.tgz#226f05d057304399cb612a6ceed43286de0c339e"
+  integrity sha512-dxu+JE2iek7lnVCgfe0hLjuapvPPMdg9QKNlkh0W2kqv7VeVh/n7167bsNIKd9qw+7jLkXEu5vxz/ClDle1peQ==
   dependencies:
     "@ape.swap/sdk" "4.4.0"
     bignumber.js "^9.0.2"
@@ -76,7 +76,7 @@
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/uikit/0.11.3/34816976a003ba86c800bfba03f28b4207b61e1fa0d54ac10260a2cebb2e9f0b#147116f12458392a4469b1faa5e6b965d325e991"
+  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/uikit/0.11.3/147116f12458392a4469b1faa5e6b965d325e991#147116f12458392a4469b1faa5e6b965d325e991"
   integrity sha512-JT9T41yhRq0MBElfNv7NpokpavN0HLJv6207asYx+xmBpTigV1oHLc86GLxrH1qOdbLJ8SHz43yZ/cPjAxc+Gw==
   dependencies:
     "@emotion/react" "^11.7.1"
