@@ -6,6 +6,7 @@ import useIsMobile from '../../../../hooks/useIsMobile'
 import { useFetchActiveChains } from '../../../../state/info/hooks'
 import { useHistory, useLocation } from 'react-router-dom'
 import LegacySelectModal from '../Modals/LegacySelectModal'
+import { ChainId } from '@ape.swap/sdk'
 
 interface NetworkSelectorProps {
   onFilter: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -146,7 +147,7 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
                   <Svg
                     width={30}
                     height={30}
-                    icon={chainId === 40 ? 'tlos_token' : INFO_PAGE_CHAIN_PARAMS[chainId].icon}
+                    icon={chainId === ChainId.TLOS ? 'tlos_token' : INFO_PAGE_CHAIN_PARAMS[chainId].icon}
                   />
                 </Flex>
               </div>
