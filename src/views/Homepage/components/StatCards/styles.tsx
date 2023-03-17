@@ -22,7 +22,7 @@ export const CardWrapper = styled.div`
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
-  margin: 0px 40px 0px 40px;
+  margin: 0px 30px;
   align-items: center;
   max-width: 1412px;
   z-index: 2;

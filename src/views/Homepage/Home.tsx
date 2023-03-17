@@ -9,14 +9,12 @@ import StatCards from './components/StatCards/StatCards'
 import TrendingTokens from './components/TrendingTokens/TrendingTokens'
 import Values from './components/Values/Values'
 import WelcomeContent from './components/WelcomeContent/WelcomeContent'
-import { Banner } from './styles'
 
 const Home: React.FC = () => {
   const { chainId } = useActiveWeb3React()
 
   return (
     <>
-      <Banner />
       <WelcomeContent />
       <StatCards />
       <TrendingTokens />
