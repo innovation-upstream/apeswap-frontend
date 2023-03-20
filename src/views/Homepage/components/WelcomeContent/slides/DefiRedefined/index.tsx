@@ -20,15 +20,15 @@ const DefiRedefined = () => {
     >
       <Text
         sx={{
-          fontSize: ['29px', '29px', '64px'],
-          lineHeight: ['40px', '40px', '80px'],
+          fontSize: ['45px', '45px', '64px'],
+          lineHeight: ['48px', '48px', '80px'],
           fontWeight: 700,
           background: 'var(--theme-ui-colors-home-title)',
           webkitBackgroundClip: 'text',
           webkitTextFillColor: 'transparent',
           backgroundClip: 'text',
           textFillColor: 'transparent',
-          maxWidth: ['225px', '225px', '325px'],
+          maxWidth: ['235px', '235px', '325px'],
         }}
       >
         DeFi, Redefined
