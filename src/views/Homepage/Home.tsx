@@ -15,7 +15,9 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <WelcomeContent />
+      <SwiperProvider>
+        <WelcomeContent />
+      </SwiperProvider>
       <StatCards />
       <TrendingTokens />
       <SwiperProvider>

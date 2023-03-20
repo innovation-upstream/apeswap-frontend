@@ -19,7 +19,6 @@ const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       return !prevState
     })
   }
-  console.log(Apeswap)
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>

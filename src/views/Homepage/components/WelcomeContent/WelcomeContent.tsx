@@ -1,143 +1,111 @@
 /** @jsxImportSource theme-ui */
-import React from 'react'
-import { Button, Flex, Text } from '@ape.swap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import React, { useState } from 'react'
+import { Flex } from '@ape.swap/uikit'
 import DefiRedefined from './slides/DefiRedefined'
 import { Box } from 'theme-ui'
-import { easeOut } from 'polished'
+import { styles } from './styles'
+import BackgroundCircles from './BackgroundCircles'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper.min.css'
+import useSwiper from '../../../../hooks/useSwiper'
+import SwiperCore from 'swiper'
+import { getDotPos } from '../../../../utils/getDotPos'
+import DummySlide from './slides/DefiRedefined/DummySlide'
+import { Bubble } from '../News/styles'
+
+const slides = [<DefiRedefined key={0} />, <DummySlide key={1} />]
 
 const WelcomeContent: React.FC = () => {
-  const { t } = useTranslation()
+  const [activeSlide, setActiveSlide] = useState(0)
+  const { swiper, setSwiper } = useSwiper()
+  const handleSlide = (event: SwiperCore) => {
+    const slideNumber = getDotPos(event.activeIndex, 2)
+    setActiveSlide(slideNumber)
+  }
+
+  const slideTo = (index: number) => {
+    setActiveSlide(index)
+    swiper.slideTo(slides.length + index)
+  }
 
   return (
-    <Flex
-      sx={{
-        position: 'relative',
-        width: '100%',
-        justifyContent: 'center',
-        flexDirection: 'column',
-      }}
-    >
-      <Flex sx={{ width: '100%', height: '600px', justifyContent: 'center', overflow: 'hidden', position: 'relative' }}>
-        <Flex
-          sx={{
-            padding: '100px 0 0 0',
-            maxWidth: '1412px',
-            zIndex: 2,
-            width: '95vw',
-          }}
-        >
-          <DefiRedefined />
-          <Flex sx={{ width: '70%', position: 'relative', justifyContent: 'center' }}>
-            <Flex
-              sx={{
-                marginTop: '50px',
-                position: 'absolute',
-                width: '543px',
-                height: '305px',
-                background: 'lvl1',
-                zIndex: 10,
-                padding: '10px',
-                borderRadius: '15px',
-                // animate div on hover
-                // Mouse enter
-
-                transition: 'all 0.5s ease-out',
-                transform: 'matrix(1, 0.04, -0.34, 0.94, 0, 0)',
-                '&:hover': {
-                  transform: 'none',
-                  scale: '1.2',
-                  boxShadow: '0px 4px 134px rgba(255, 168, 0, 0.25)',
-                  cursor: 'pointer',
-                },
-              }}
-            >
-              <Box
+    <Flex sx={styles.mainContainer}>
+      <Flex
+        sx={{
+          position: 'absolute',
+          width: '737px',
+          height: '552px',
+          left: '-298px',
+          top: '-291px',
+          background: 'linear-gradient(99.09deg, #A16552 0%, #FFB300 106.96%)',
+          opacity: 0.15,
+          filter: 'blur(250px)',
+        }}
+      />
+      <Flex sx={styles.centeredContainer}>
+        <Flex sx={styles.slideContainer}>
+          {slides.length > 1 ? (
+            <>
+              <Swiper
+                id="homeSwiper"
+                autoplay={{
+                  delay: 300000,
+                  disableOnInteraction: false,
+                }}
+                loop
+                onSwiper={setSwiper}
+                slidesPerView="auto"
+                centeredSlides
+                lazy
+                preloadImages={false}
+                onSlideChange={handleSlide}
+              >
+                {slides.map((slide, index) => {
+                  return (
+                    <SwiperSlide
+                      style={{
+                        width: '100%',
+                        padding: '1px',
+                        height: 'fit-content',
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                      key={index}
+                    >
+                      {slide}
+                    </SwiperSlide>
+                  )
+                })}
+              </Swiper>
+              <Flex
                 sx={{
-                  backgroundImage: `url('/images/homepageBill.jpg')`,
-                  borderRadius: '6px',
+                  position: 'absolute',
+                  bottom: '50px',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  zIndex: 10,
                   width: '100%',
-                  height: '100%',
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
+                  padding: ['0 10px', '0 10px', '0'],
                 }}
-              />
-            </Flex>
-            <Flex
-              sx={{
-                width: '1200px',
-                height: '600px',
-                position: 'relative',
-                margin: '0 auto',
-                opacity: '.9',
-              }}
-            >
-              <Flex
-                //3
-                sx={{
-                  position: 'absolute',
-                  borderRadius: '50%',
-                  width: '1200px',
-                  height: '1200px',
-                  top: '-300px',
-                  left: 0,
-                  background: 'var(--theme-ui-colors-home-c3)',
-                  boxShadow: 'none',
-                }}
-              />
-              <Flex
-                //2
-                sx={{
-                  position: 'absolute',
-                  borderRadius: '50%',
-                  width: '900px',
-                  height: '900px',
-                  top: '-150px',
-                  background: 'var(--theme-ui-colors-home-c2)',
-                  left: '150px',
-                  boxShadow: 'var(--theme-ui-colors-homeCircles-cShadow)',
-                }}
-              />
-              <Flex
-                //1
-                sx={{
-                  position: 'absolute',
-                  borderRadius: '50%',
-                  width: '600px',
-                  height: '600px',
-                  left: '300px',
-                  top: '0px',
-                  background: 'var(--theme-ui-colors-home-c1)',
-                  boxShadow: 'var(--theme-ui-colors-home-cShadow)',
-                }}
-              />
-            </Flex>
-            <Flex
-              sx={{
-                position: 'absolute',
-                bottom: '-200px',
-                width: '1200px',
-                height: '200px',
-                boxShadow: 'var(--theme-ui-colors-home-hideCircles)',
-                zIndex: 5,
-              }}
-            />
-            <Flex
-              sx={{
-                position: 'absolute',
-                width: '200px',
-                height: '1130px',
-                right: '-468px',
-                top: '-100px',
-                boxShadow: 'var(--theme-ui-colors-home-hideCircles)',
-                transform: 'rotate(-180deg)',
-              }}
-            />
+              >
+                {[...Array(slides.length)].map((_, i) => {
+                  return <Bubble isActive={i === activeSlide} onClick={() => slideTo(i)} key={i} />
+                })}
+              </Flex>
+            </>
+          ) : (
+            slides[0]
+          )}
+        </Flex>
+        <Flex sx={styles.imageContainer}>
+          <Flex sx={styles.imageWrapper}>
+            <Box sx={{ ...styles.image, backgroundImage: `url('/images/homepage-${activeSlide}.jpg')` }} />
           </Flex>
+          <BackgroundCircles />
         </Flex>
       </Flex>
     </Flex>
   )
 }
 
-export default React.memo(WelcomeContent)
+export default WelcomeContent
