@@ -7,17 +7,20 @@ import { styles } from './styles'
 import BackgroundCircles from './BackgroundCircles'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper.min.css'
-import useSwiper from '../../../../hooks/useSwiper'
+import useSwiper from 'hooks/useSwiper'
 import SwiperCore from 'swiper'
-import { getDotPos } from '../../../../utils/getDotPos'
+import { getDotPos } from 'utils/getDotPos'
 import DummySlide from './slides/DefiRedefined/DummySlide'
 import { Bubble } from '../News/styles'
+import { useHistory } from 'react-router-dom'
 
 const slides = [<DefiRedefined key={0} />, <DummySlide key={1} />]
 
 const WelcomeContent: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0)
   const { swiper, setSwiper } = useSwiper()
+  const history = useHistory()
+
   const handleSlide = (event: SwiperCore) => {
     const slideNumber = getDotPos(event.activeIndex, 2)
     setActiveSlide(slideNumber)
@@ -30,26 +33,15 @@ const WelcomeContent: React.FC = () => {
 
   return (
     <Flex sx={styles.mainContainer}>
-      <Flex
-        sx={{
-          position: 'absolute',
-          width: '737px',
-          height: '552px',
-          left: '-298px',
-          top: '-291px',
-          background: 'linear-gradient(99.09deg, #A16552 0%, #FFB300 106.96%)',
-          opacity: 0.15,
-          filter: 'blur(250px)',
-        }}
-      />
+      <Flex sx={styles.yellowShadow} />
       <Flex sx={styles.centeredContainer}>
         <Flex sx={styles.slideContainer}>
           {slides.length > 1 ? (
-            <>
+            <Flex sx={{ flexDirection: 'column' }}>
               <Swiper
                 id="homeSwiper"
                 autoplay={{
-                  delay: 300000,
+                  delay: 100000,
                   disableOnInteraction: false,
                 }}
                 loop
@@ -59,6 +51,7 @@ const WelcomeContent: React.FC = () => {
                 lazy
                 preloadImages={false}
                 onSlideChange={handleSlide}
+                style={{ width: '100%' }}
               >
                 {slides.map((slide, index) => {
                   return (
@@ -77,30 +70,21 @@ const WelcomeContent: React.FC = () => {
                   )
                 })}
               </Swiper>
-              <Flex
-                sx={{
-                  position: 'absolute',
-                  bottom: '50px',
-                  justifyContent: 'center',
-                  alignContent: 'center',
-                  zIndex: 10,
-                  width: '100%',
-                  padding: ['0 10px', '0 10px', '0'],
-                }}
-              >
+              <Flex sx={styles.bubbleContainer}>
                 {[...Array(slides.length)].map((_, i) => {
                   return <Bubble isActive={i === activeSlide} onClick={() => slideTo(i)} key={i} />
                 })}
               </Flex>
-            </>
+            </Flex>
           ) : (
             slides[0]
           )}
         </Flex>
         <Flex sx={styles.imageContainer}>
-          <Flex sx={styles.imageWrapper}>
+          <Flex sx={styles.imageWrapper} onClick={() => history.push('/treasury-bills')}>
             <Box sx={{ ...styles.image, backgroundImage: `url('/images/homepage-${activeSlide}.jpg')` }} />
           </Flex>
+
           <BackgroundCircles />
         </Flex>
       </Flex>

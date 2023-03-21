@@ -38,10 +38,10 @@
   resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.15.tgz#dbb0932031fbca2baa5df18538e8e4ac1e4dec31"
   integrity sha512-nHnRfXoIUhdIb1yw9vYF8ZR9zuuW+LVTr4MwMVDSrLxueNzKZPzamt2pxBXLHDl+sqhXZMdE9CamBQN8jBT0TQ==
 
-"@ape.swap/uikit@1.3.57-alpha.0":
-  version "1.3.57-alpha.0"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.57-alpha.0.tgz#82047e7bf329801473a9e520c4e4ea4ba7e59682"
-  integrity sha512-V94xaum4JCxm+hpY/1k5VcQ9bm/qztVV50cWSHlEXuBjw+Y/ykOFm4kfVkV1tudqkkfHQzzxy63ruCQc6OAkBw==
+"@ape.swap/uikit@1.3.57-alpha.1":
+  version "1.3.57-alpha.1"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.57-alpha.1.tgz#3bd6fdb9197560eeff306f500a13e451a01dbfa2"
+  integrity sha512-rAt6x++O1AG0uxlJskRsqk28l4wDFK2Ja8xQK+1+ytNT7wQqvOeyfynU16LdFM2JGqipVfLz8b5nGjNLskFCVw==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"

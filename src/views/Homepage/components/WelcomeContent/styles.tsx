@@ -1,31 +1,52 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 
-export const styles: Record<string, ThemeUIStyleObject> = {
+export const styles: Record<
+  | 'mainContainer'
+  | 'yellowShadow'
+  | 'centeredContainer'
+  | 'slideContainer'
+  | 'imageContainer'
+  | 'imageWrapper'
+  | 'image'
+  | 'bubbleContainer',
+  ThemeUIStyleObject
+> = {
   mainContainer: {
     width: '100%',
-    height: '600px',
+    height: ['620px', '400px', '550px'],
     justifyContent: 'center',
     overflow: 'hidden',
     position: 'relative',
   },
+  yellowShadow: {
+    position: 'absolute',
+    zIndex: 3,
+    width: '737px',
+    height: '552px',
+    left: '-398px',
+    top: '-391px',
+    background: 'linear-gradient(99.09deg, #A16552 0%, #FFB300 106.96%)',
+    opacity: 0.15,
+    filter: 'blur(250px)',
+  },
   centeredContainer: {
-    paddingTop: ['50px', '50px', '100px'],
+    paddingTop: ['50px', '50px', '65px'],
     maxWidth: '1412px',
     zIndex: 2,
     width: '95vw',
   },
   slideContainer: {
-    width: ['100%', '100%', '36%'],
+    width: ['100%', '50%', '36%'],
     minWidth: ['0', '0', '328px'],
     zIndex: 6,
   },
   imageContainer: {
-    width: [0, 0, '64%'],
+    width: [0, '50%', '64%'],
     position: 'relative',
     justifyContent: 'center',
   },
   imageWrapper: {
-    display: ['none', 'none', 'flex'],
+    display: ['none', 'flex'],
     marginTop: '50px',
     position: 'absolute',
     background: 'lvl1',
@@ -34,8 +55,16 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     borderRadius: '15px',
     transition: 'all 0.3s ease-out',
     transform: 'matrix(1, 0.04, -0.34, 0.94, 0, 0)',
-    width: '375px',
-    height: '220px',
+    width: ['256px', '256px'],
+    height: ['153px', '153px'],
+    '@media screen and (min-width: 700px)': {
+      width: '300px',
+      height: '179px',
+    },
+    '@media screen and (min-width: 852px)': {
+      width: '375px',
+      height: '220px',
+    },
     '@media screen and (min-width: 1024px)': {
       width: '529px',
       height: '305px',
@@ -54,5 +83,12 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     maxWidth: ['325px', '325px', 'none'],
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
+  },
+  bubbleContainer: {
+    justifyContent: ['center', 'center', 'flex-start'],
+    alignContent: 'center',
+    width: '100%',
+    padding: ['0 10px', '0 10px', '0'],
+    mt: ['30px', '30px', '35px'],
   },
 }

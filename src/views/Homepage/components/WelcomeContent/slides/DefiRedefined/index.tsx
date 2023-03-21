@@ -5,91 +5,55 @@ import Bnb from './grayChains/bnb'
 import Poly from './grayChains/poly'
 import Tlos from './grayChains/Tlos'
 import Arbitrum from './grayChains/Arbitrum'
-import { styles } from '../../styles'
+import { styles } from './styles'
 import { Box } from 'theme-ui'
+import { useHomepageStats } from 'state/hooks'
+import CountUp from 'react-countup'
+import { useTranslation } from 'contexts/Localization'
+import { Link } from 'react-router-dom'
 
 const DefiRedefined = () => {
+  const rawStats = useHomepageStats()
+  const { t } = useTranslation()
+
   return (
-    <Flex
-      sx={{
-        width: '100%',
-        flexDirection: 'column',
-        padding: ['0 10px', '0 10px', '0'],
-        maxWidth: ['325px', '325px', 'none'],
-      }}
-    >
-      <Text
-        sx={{
-          fontSize: ['45px', '45px', '64px'],
-          lineHeight: ['48px', '48px', '80px'],
-          fontWeight: 700,
-          background: 'var(--theme-ui-colors-home-title)',
-          webkitBackgroundClip: 'text',
-          webkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          textFillColor: 'transparent',
-          maxWidth: ['235px', '235px', '325px'],
-        }}
-      >
-        DeFi, Redefined
-      </Text>
-      <Text
-        sx={{
-          marginTop: '25px',
-          fontWeight: 500,
-          lineHeight: ['15px', '15px', '25px'],
-          fontSize: ['12px', '12px', '18px'],
-          maxWidth: ['325px', '325px', 'none'],
-        }}
-      >
-        Join our growing network of 25 communities that are building project-owned liquidity through Treasury Bills.
+    <Flex sx={styles.slideContainer}>
+      <Text sx={styles.slideTitle}>{t('DeFi, Redefined')}</Text>
+      <Text sx={styles.slideSubtitle}>
+        {t('Join our growing network of')}{' '}
+        {rawStats?.partnerCount && (
+          <Text sx={styles.counterText}>
+            <CountUp end={rawStats?.partnerCount} decimals={0} duration={1} separator="," />{' '}
+          </Text>
+        )}
+        {t('communities that are building project-owned liquidity through Treasury Bills.')}
       </Text>
       <Flex sx={{ alignItems: 'center', marginTop: ['25px', '25px', '30px'] }}>
-        <Text
-          sx={{
-            fontWeight: 300,
-            fontSize: '12px',
-            lineHeight: '18px',
-            textTransform: 'uppercase',
-            marginRight: '10px',
-          }}
-        >
-          BILLS AVAILABLE ON
-        </Text>
+        <Text sx={styles.availableBills}>{t('BILLS AVAILABLE ON')}</Text>
         <Bnb sx={{ marginRight: '10px' }} />
         <Poly sx={{ marginRight: '10px' }} />
         <Tlos sx={{ marginRight: '10px' }} />
         <Arbitrum />
       </Flex>
-      <Flex
-        sx={{
-          width: '100%',
-          height: '182px',
-          display: ['flex', 'flex', 'none'],
-          marginTop: ['25px', '25px', 0],
-          justifyContent: ['center', 'flex-start', 'flex-start'],
-        }}
-      >
+      <Flex sx={styles.billImage}>
         <Box sx={{ ...styles.image, backgroundImage: `url('/images/homepage-0.jpg')` }} />
       </Flex>
-      <Flex
-        sx={{
-          width: '100%',
-          marginTop: ['20px', '20px', '30px'],
-          justifyContent: ['space-around', 'flex-start', 'flex-start'],
-        }}
-      >
+      <Flex sx={styles.buttonContainer}>
         <Button
           variant="secondary"
-          sx={{
-            marginRight: ['0', '20px', '20px'],
-            background: 'background',
-            fontSize: ['16px', '16px', '18px'],
-          }}
+          sx={styles.learnMoreButton}
+          onClick={() =>
+            window.open(
+              'https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills',
+              '_blank',
+            )
+          }
         >
-          Learn more
+          {t('Learn more')}
         </Button>
-        <Button sx={{ fontSize: ['16px', '16px', '18px'] }}>Buy a bill</Button>
+        <Link to="/treasury-bills">
+          <Button sx={{ fontSize: ['16px', '14px', '18px'], width: '137px' }}>{t('Buy a bill')}</Button>
+        </Link>
       </Flex>
     </Flex>
   )
