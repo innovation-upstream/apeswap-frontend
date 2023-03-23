@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Button, Flex, Text } from '@ape.swap/uikit'
 import Bnb from './grayChains/bnb'
 import Poly from './grayChains/poly'
@@ -12,10 +12,16 @@ import CountUp from 'react-countup'
 import { useTranslation } from 'contexts/Localization'
 import { Link } from 'react-router-dom'
 import { ChainId } from '@ape.swap/sdk'
+import { slidesData } from '../WelcomeContent'
 
 const DefiRedefined = () => {
   const rawStats = useHomepageStats()
   const { t } = useTranslation()
+  const { imageCount } = slidesData[0]
+
+  const randomImage = useMemo(() => {
+    return Math.floor(Math.random() * (imageCount + 1))
+  }, [imageCount])
 
   return (
     <Flex sx={styles.slideContainer}>
@@ -46,7 +52,7 @@ const DefiRedefined = () => {
       </Flex>
       <Link to="/treasury-bills">
         <Flex sx={styles.billImage}>
-          <Box sx={{ ...styles.image, backgroundImage: `url('/images/homepage-0.jpg')` }} />
+          <Box sx={{ ...styles.image, backgroundImage: `url('/images/homepage/treasury-bills-${randomImage}.jpg')` }} />
         </Flex>
       </Link>
       <Flex sx={styles.buttonContainer}>
@@ -63,7 +69,7 @@ const DefiRedefined = () => {
           {t('Learn more')}
         </Button>
         <Link to="/treasury-bills">
-          <Button sx={{ fontSize: ['16px', '14px', '18px'], width: '137px' }}>{t('Buy a bill')}</Button>
+          <Button sx={{ fontSize: ['14px', '14px', '16px'], width: '138px' }}>{t('Buy a bill')}</Button>
         </Link>
       </Flex>
     </Flex>

@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Flex } from '@ape.swap/uikit'
-import { Box } from 'theme-ui'
+import { Image } from 'theme-ui'
 import { styles } from './styles'
 import BackgroundCircles from './BackgroundCircles'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -18,12 +18,14 @@ const slides = [<DefiRedefined key={0} />, <ApeSwapV3 key={1} />]
 
 export const slidesData = [
   {
-    title: 'defiRedefined',
-    imageCount: 2,
+    product: 'treasury-bills',
+    imageCount: 10,
+    format: 'jpg',
   },
   {
-    title: 'apeswapv3',
-    imageCount: 1,
+    product: 'add-liquidity',
+    imageCount: 0,
+    format: 'png',
   },
 ]
 
@@ -31,6 +33,7 @@ const WelcomeContent: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0)
   const { swiper, setSwiper } = useSwiper()
   const history = useHistory()
+  const slideData = slidesData[activeSlide]
 
   const handleSlide = (event: SwiperCore) => {
     const slideNumber = getDotPos(event.activeIndex, 2)
@@ -42,7 +45,9 @@ const WelcomeContent: React.FC = () => {
     swiper.slideTo(slides.length + index)
   }
 
-  //write a function to get a random integer between 0 and a given number
+  const randomImage = useMemo(() => {
+    return Math.floor(Math.random() * (slideData.imageCount + 1))
+  }, [slideData.imageCount])
 
   return (
     <Flex sx={styles.mainContainer}>
@@ -96,14 +101,9 @@ const WelcomeContent: React.FC = () => {
         <Flex sx={styles.imageContainer}>
           <Flex
             sx={{ ...styles.imageWrapper, background: activeSlide ? 'none' : 'lvl1' }}
-            onClick={() => history.push('/treasury-bills')}
+            onClick={() => history.push(`/${slidesData[activeSlide]?.product}`)}
           >
-            <Box
-              sx={{
-                ...styles.image,
-                backgroundImage: `url('/images/homepage/${slidesData[activeSlide].title}-${activeSlide}.jpg')`,
-              }}
-            />
+            <Image src={`/images/homepage/${slideData.product}-${randomImage}.${slideData.format}`} sx={styles.image} />
           </Flex>
           <BackgroundCircles />
         </Flex>

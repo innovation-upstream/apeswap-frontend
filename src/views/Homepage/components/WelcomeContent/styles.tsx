@@ -13,7 +13,7 @@ export const styles: Record<
 > = {
   mainContainer: {
     width: '100%',
-    height: ['620px', '400px', '550px'],
+    height: ['620px', '430px', '550px'],
     justifyContent: 'center',
     overflow: 'hidden',
     position: 'relative',
@@ -71,8 +71,8 @@ export const styles: Record<
     '&:hover': {
       transform: 'none',
       scale: '1.2',
-      boxShadow: '0px 4px 134px rgba(255, 168, 0, 0.25)',
       cursor: 'pointer',
+      filter: 'drop-shadow(0px 4px 134px rgba(255, 168, 0, 0.25))',
     },
   },
   image: {

@@ -21,17 +21,19 @@ export const styles: Record<
   slideTitle: {
     fontSize: ['45px', '45px', '64px'],
     lineHeight: ['48px', '48px', '80px'],
+    minHeight: ['none', 'none', '160px'],
     fontWeight: 700,
     background: 'var(--theme-ui-colors-home-title)',
     webkitBackgroundClip: 'text',
     webkitTextFillColor: 'transparent',
     backgroundClip: 'text',
     textFillColor: 'transparent',
-    maxWidth: ['235px', '235px', '326px'],
+    maxWidth: ['none', 'none', '326px'],
   },
   slideSubtitle: {
     marginTop: '25px',
     fontWeight: 500,
+    minHeight: ['45px', '45px', '100px'],
     lineHeight: ['15px', '15px', '25px'],
     fontSize: ['12px', '12px', '18px'],
     maxWidth: ['325px', '325px', 'none'],
@@ -71,7 +73,7 @@ export const styles: Record<
   learnMoreButton: {
     marginRight: ['0', '0', '20px'],
     background: 'background',
-    fontSize: ['16px', '14px', '18px'],
-    minWidth: '137px',
+    fontSize: ['14px', '14px', '16px'],
+    minWidth: ['125px', '125px', '138px'],
   },
 }
