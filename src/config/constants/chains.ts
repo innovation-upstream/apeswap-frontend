@@ -423,7 +423,7 @@ export const INFO_PAGE_CHAIN_PARAMS: Partial<
     blockGraph: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
     id: '0xCf083Be4164828f00cAE704EC15a36D711491284',
     fee: 0.002,
-    color: '#2D374A',
+    color: '#28A0F0',
     icon: 'arbitrum_chain',
   },
 }
