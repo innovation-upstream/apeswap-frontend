@@ -49,7 +49,6 @@ export const styles: Record<
     display: ['none', 'flex'],
     marginTop: '50px',
     position: 'absolute',
-    background: 'lvl1',
     zIndex: 10,
     padding: '10px',
     borderRadius: '15px',

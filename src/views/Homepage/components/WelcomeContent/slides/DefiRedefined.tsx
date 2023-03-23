@@ -11,6 +11,7 @@ import { useHomepageStats } from 'state/hooks'
 import CountUp from 'react-countup'
 import { useTranslation } from 'contexts/Localization'
 import { Link } from 'react-router-dom'
+import { ChainId } from '@ape.swap/sdk'
 
 const DefiRedefined = () => {
   const rawStats = useHomepageStats()
@@ -21,23 +22,33 @@ const DefiRedefined = () => {
       <Text sx={styles.slideTitle}>{t('DeFi, Redefined')}</Text>
       <Text sx={styles.slideSubtitle}>
         {t('Join our growing network of')}{' '}
-        {rawStats?.partnerCount && (
+        {rawStats?.bondingPartnerCount && (
           <Text sx={styles.counterText}>
-            <CountUp end={rawStats?.partnerCount} decimals={0} duration={1} separator="," />{' '}
+            <CountUp end={rawStats?.bondingPartnerCount} decimals={0} duration={1} separator="," />{' '}
           </Text>
         )}
         {t('communities that are building project-owned liquidity through Treasury Bills.')}
       </Text>
       <Flex sx={{ alignItems: 'center', marginTop: ['25px', '25px', '30px'] }}>
         <Text sx={styles.availableBills}>{t('BILLS AVAILABLE ON')}</Text>
-        <Bnb sx={{ marginRight: '10px' }} />
-        <Poly sx={{ marginRight: '10px' }} />
-        <Tlos sx={{ marginRight: '10px' }} />
-        <Arbitrum />
+        <Link to={`/treasury-bills?chain=${ChainId.BSC}`}>
+          <Bnb sx={{ marginRight: '10px' }} />
+        </Link>
+        <Link to={`/treasury-bills?chain=${ChainId.MATIC}`}>
+          <Poly sx={{ marginRight: '10px' }} />
+        </Link>
+        <Link to={`/treasury-bills?chain=${ChainId.TLOS}`}>
+          <Tlos sx={{ marginRight: '10px' }} />
+        </Link>
+        <Link to={`/treasury-bills?chain=${ChainId.ARBITRUM}`}>
+          <Arbitrum />
+        </Link>
       </Flex>
-      <Flex sx={styles.billImage}>
-        <Box sx={{ ...styles.image, backgroundImage: `url('/images/homepage-0.jpg')` }} />
-      </Flex>
+      <Link to="/treasury-bills">
+        <Flex sx={styles.billImage}>
+          <Box sx={{ ...styles.image, backgroundImage: `url('/images/homepage-0.jpg')` }} />
+        </Flex>
+      </Link>
       <Flex sx={styles.buttonContainer}>
         <Button
           variant="secondary"

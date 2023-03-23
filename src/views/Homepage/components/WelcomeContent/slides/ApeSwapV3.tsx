@@ -1,7 +1,7 @@
 import React from 'react'
 
-const DummySlide = () => {
+const ApeSwapV3 = () => {
   return <div>This is a dummy slide. Obie is hot</div>
 }
 
-export default DummySlide
+export default ApeSwapV3

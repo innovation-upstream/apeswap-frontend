@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { Flex } from '@ape.swap/uikit'
-import DefiRedefined from './slides/DefiRedefined'
 import { Box } from 'theme-ui'
 import { styles } from './styles'
 import BackgroundCircles from './BackgroundCircles'
@@ -10,11 +9,23 @@ import 'swiper/swiper.min.css'
 import useSwiper from 'hooks/useSwiper'
 import SwiperCore from 'swiper'
 import { getDotPos } from 'utils/getDotPos'
-import DummySlide from './slides/DefiRedefined/DummySlide'
+import ApeSwapV3 from './slides/ApeSwapV3'
 import { Bubble } from '../News/styles'
 import { useHistory } from 'react-router-dom'
+import DefiRedefined from './slides/DefiRedefined'
 
-const slides = [<DefiRedefined key={0} />, <DummySlide key={1} />]
+const slides = [<DefiRedefined key={0} />, <ApeSwapV3 key={1} />]
+
+export const slidesData = [
+  {
+    title: 'defiRedefined',
+    imageCount: 2,
+  },
+  {
+    title: 'apeswapv3',
+    imageCount: 1,
+  },
+]
 
 const WelcomeContent: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0)
@@ -30,6 +41,8 @@ const WelcomeContent: React.FC = () => {
     setActiveSlide(index)
     swiper.slideTo(slides.length + index)
   }
+
+  //write a function to get a random integer between 0 and a given number
 
   return (
     <Flex sx={styles.mainContainer}>
@@ -81,10 +94,17 @@ const WelcomeContent: React.FC = () => {
           )}
         </Flex>
         <Flex sx={styles.imageContainer}>
-          <Flex sx={styles.imageWrapper} onClick={() => history.push('/treasury-bills')}>
-            <Box sx={{ ...styles.image, backgroundImage: `url('/images/homepage-${activeSlide}.jpg')` }} />
+          <Flex
+            sx={{ ...styles.imageWrapper, background: activeSlide ? 'none' : 'lvl1' }}
+            onClick={() => history.push('/treasury-bills')}
+          >
+            <Box
+              sx={{
+                ...styles.image,
+                backgroundImage: `url('/images/homepage/${slidesData[activeSlide].title}-${activeSlide}.jpg')`,
+              }}
+            />
           </Flex>
-
           <BackgroundCircles />
         </Flex>
       </Flex>

@@ -294,6 +294,7 @@ export interface HomepageData {
   burntAmount: number
   totalVolume: number
   partnerCount?: number
+  bondingPartnerCount?: number
 }
 
 export interface HomepageTokenStats {
