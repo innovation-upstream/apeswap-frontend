@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@1.1.41":
-  version "1.1.41"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.41.tgz#226f05d057304399cb612a6ceed43286de0c339e"
-  integrity sha512-dxu+JE2iek7lnVCgfe0hLjuapvPPMdg9QKNlkh0W2kqv7VeVh/n7167bsNIKd9qw+7jLkXEu5vxz/ClDle1peQ==
+"@ape.swap/apeswap-lists@1.1.48":
+  version "1.1.48"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.48.tgz#27412d65dc08ed78ce287b6cbdb2ecf0156f77de"
+  integrity sha512-czVziGBovWVsSLQBd97JHbLc4N9lOFpYzGJcTZfcVagbkj7La7LbWv5xnNsX+EgPRnmiAfwZnTjZw+A9VyOiOw==
   dependencies:
     "@ape.swap/sdk" "4.4.0"
     bignumber.js "^9.0.2"
@@ -33,15 +33,15 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/token-lists@1.0.16":
-  version "1.0.16"
-  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.16.tgz#0f9e0cae9cde20c7af24614267b5e048d5d792e1"
-  integrity sha512-nBwvGJfm+tgZqAo8uwodkmw6i49OKkzUSNrx+JP2dGTvvI8mI2NeKuzPmYa3tY8cajP9mTc75dySv7e3n8NZoQ==
+"@ape.swap/token-lists@1.0.19":
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.19.tgz#a97cfe5a6b189df89d050f42658a46b4fd66891f"
+  integrity sha512-ZgyBY9yi8AmTKt2mLWpez/x1McErkuL4xma+2n2ZHyvywGnraPnUJt2w7ZYiWa2Yl22IDY1lwS58mXjuaiZG/Q==
 
-"@ape.swap/uikit@1.3.54":
-  version "1.3.54"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.54.tgz#990f1634de89136376a2edcabf3192e84058c638"
-  integrity sha512-OF/+x+DZLD9o2hgmMr20/YdmKiSkeU9i4+k/XLuhjqxO6tW/f1SwS0Q+OpneeAhVNk79gavo1gcD0zKV+HQ7Rg==
+"@ape.swap/uikit@1.3.56":
+  version "1.3.56"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.56.tgz#13c38775ded4bca7c3c8e82fdfbd95bd4f918b7b"
+  integrity sha512-7+iXGHKIrMzGXM0++yPXV4jGuaoIV/IF6fe64OPsccMcEdjS8GhtWGXeJA8yieGl0BsDt+dA9qBSSjr5P6K6rw==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
