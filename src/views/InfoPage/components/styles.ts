@@ -189,7 +189,7 @@ export const Section = styled.div`
         }
 
         &.arbitrum {
-          background: #2d374a;
+          background: #28a0f0;
         }
       }
     }
