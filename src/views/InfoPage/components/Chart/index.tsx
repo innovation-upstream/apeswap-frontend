@@ -21,6 +21,7 @@ type ChartData = {
   [ChainId.TLOS]?: string
   [ChainId.MAINNET]?: string
   [ChainId.MATIC]?: string
+  [ChainId.ARBITRUM]?: string
 }
 
 const Chart: React.FC<ChartProps> = (props) => {

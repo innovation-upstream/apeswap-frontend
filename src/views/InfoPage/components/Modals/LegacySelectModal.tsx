@@ -1,9 +1,9 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Modal, Flex, Text, IconButton } from '@ape.swap/uikit'
-import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
-import { CHAIN_PARAMS, MAINNET_CHAINS, NETWORK_INFO_LINK } from 'config/constants/chains'
+import { Modal, Flex, Text, IconButton, Svg } from '@ape.swap/uikit'
+import { INFO_PAGE_CHAIN_PARAMS, MAINNET_CHAINS, NETWORK_INFO_LINK } from 'config/constants/chains'
 import useIsMobile from '../../../../hooks/useIsMobile'
+import { ChainId } from '@ape.swap/sdk'
 
 interface LegacySelectModalProps {
   onDismiss: () => void
@@ -39,7 +39,13 @@ const LegacySelectModal: React.FC<LegacySelectModalProps> = ({ onDismiss }) => {
               sx={{ cursor: 'pointer', margin: '0px 20px' }}
             >
               <Flex>
-                <ServiceTokenDisplay token1={CHAIN_PARAMS[chainId].nativeCurrency.symbol} />
+                {chainId !== ChainId.ARBITRUM && (
+                  <Svg
+                    width={30}
+                    height={30}
+                    icon={chainId === ChainId.TLOS ? 'tlos_token' : INFO_PAGE_CHAIN_PARAMS[chainId].icon}
+                  />
+                )}
               </Flex>
             </a>
           )

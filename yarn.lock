@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@1.1.39":
-  version "1.1.39"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.39.tgz#f3b9cf5ce79edd15bea08e15e6e1e8f73b2ee6bb"
-  integrity sha512-7Me59+zv+sJs/q+fBtfCYtjMxCZbUgWbKRyWftDkGnz4DiQJGGbObjAJv41085N+1AzfnLqe7VrmvFPwa7wCZw==
+"@ape.swap/apeswap-lists@1.1.48":
+  version "1.1.48"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.48.tgz#27412d65dc08ed78ce287b6cbdb2ecf0156f77de"
+  integrity sha512-czVziGBovWVsSLQBd97JHbLc4N9lOFpYzGJcTZfcVagbkj7La7LbWv5xnNsX+EgPRnmiAfwZnTjZw+A9VyOiOw==
   dependencies:
     "@ape.swap/sdk" "4.4.0"
     bignumber.js "^9.0.2"
@@ -33,15 +33,15 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/token-lists@1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.15.tgz#dbb0932031fbca2baa5df18538e8e4ac1e4dec31"
-  integrity sha512-nHnRfXoIUhdIb1yw9vYF8ZR9zuuW+LVTr4MwMVDSrLxueNzKZPzamt2pxBXLHDl+sqhXZMdE9CamBQN8jBT0TQ==
+"@ape.swap/token-lists@1.0.19":
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.19.tgz#a97cfe5a6b189df89d050f42658a46b4fd66891f"
+  integrity sha512-ZgyBY9yi8AmTKt2mLWpez/x1McErkuL4xma+2n2ZHyvywGnraPnUJt2w7ZYiWa2Yl22IDY1lwS58mXjuaiZG/Q==
 
-"@ape.swap/uikit@1.3.57-alpha.1":
-  version "1.3.57-alpha.1"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.57-alpha.1.tgz#3bd6fdb9197560eeff306f500a13e451a01dbfa2"
-  integrity sha512-rAt6x++O1AG0uxlJskRsqk28l4wDFK2Ja8xQK+1+ytNT7wQqvOeyfynU16LdFM2JGqipVfLz8b5nGjNLskFCVw==
+"@ape.swap/uikit@1.3.56":
+  version "1.3.56"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.56.tgz#13c38775ded4bca7c3c8e82fdfbd95bd4f918b7b"
+  integrity sha512-7+iXGHKIrMzGXM0++yPXV4jGuaoIV/IF6fe64OPsccMcEdjS8GhtWGXeJA8yieGl0BsDt+dA9qBSSjr5P6K6rw==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
@@ -76,7 +76,7 @@
 
 "@apeswapfinance/uikit@0.11.3":
   version "0.11.3"
-  resolved "https://npm.pkg.github.com/download/@apeswapfinance/uikit/0.11.3/34816976a003ba86c800bfba03f28b4207b61e1fa0d54ac10260a2cebb2e9f0b#147116f12458392a4469b1faa5e6b965d325e991"
+  resolved "https://npm.pkg.github.com/download/@ApeSwapFinance/uikit/0.11.3/147116f12458392a4469b1faa5e6b965d325e991#147116f12458392a4469b1faa5e6b965d325e991"
   integrity sha512-JT9T41yhRq0MBElfNv7NpokpavN0HLJv6207asYx+xmBpTigV1oHLc86GLxrH1qOdbLJ8SHz43yZ/cPjAxc+Gw==
   dependencies:
     "@emotion/react" "^11.7.1"
@@ -90,10 +90,10 @@
     theme-ui "^0.13.1"
     yalc "^1.0.0-pre.53"
 
-"@autonomylabs/limit-stop-orders@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@autonomylabs/limit-stop-orders/-/limit-stop-orders-0.0.6.tgz#af00975fa67da15807fe4d999738b74e9c753f97"
-  integrity sha512-+SBGPi9CL719cB4+9ekmmeYl5AMP4sX0uFQaSKcdgAeOZSclu3t448Tzrgda2IHEXQ4+7d65JsCkWO85Pv8RFQ==
+"@autonomylabs/limit-stop-orders@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@autonomylabs/limit-stop-orders/-/limit-stop-orders-0.0.9.tgz#8af21abba89da3ea18a456f2d8c2b353e7bd46db"
+  integrity sha512-hVF3YoNaGBDsOtYPUsl8SEXhP4Zu2fJK0He8gun74yPB4DeMrTGRd+ZrTOVNx+wXc1YzRQzhHc++r461c9dtBg==
   dependencies:
     "@traderjoe-xyz/core" "^2.2.2"
     "@uniswap/sdk-core" "^3.0.1"

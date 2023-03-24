@@ -2,10 +2,11 @@
 
 import { ChainId, SmartRouter } from '@ape.swap/sdk'
 import BigNumber from 'bignumber.js'
+import { iconTypes } from '@ape.swap/uikit/dist/components/Svg/types'
 
 // List of mainnet chains
 // This is currently used for the info page
-export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET]
+export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.ARBITRUM]
 
 export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS, ChainId.ARBITRUM]
 
@@ -240,7 +241,7 @@ export const BONUS_CUTOFF_AMOUNT: Partial<Record<ChainId, number>> = {
 // Routers in prioirty list must be in here
 export const SMART_PRICE_GETTERS: Partial<Record<ChainId, Partial<Record<SmartRouter, string>>>> = {
   [ChainId.BSC]: {
-    [SmartRouter.APE]: '0x5e545322b83626c745FE46144a15C00C94cBD803',
+    [SmartRouter.APE]: '0xBe87a01F5eC8b809C8c28946d08f50bDB6Def195',
     [SmartRouter.PANCAKE]: '0xF724471B00B5fACBA78D195bD241d090350a04Bd',
     [SmartRouter.BISWAP]: '0x1828e426fF3ec9E037cff888CB13f84d5e95F4eF',
   },
@@ -378,7 +379,15 @@ export const FULL_PRODUCT_NAMES: Record<LIST_VIEW_PRODUCTS | OTHER_PRODUCTS, str
 export const INFO_PAGE_CHAIN_PARAMS: Partial<
   Record<
     ChainId,
-    { graphAddress: string; explorer: string; blockGraph: string; id: string; fee: number; color: string }
+    {
+      graphAddress: string
+      explorer: string
+      blockGraph: string
+      id: string
+      fee: number
+      color: string
+      icon: iconTypes
+    }
   >
 > = {
   [ChainId.BSC]: {
@@ -388,6 +397,7 @@ export const INFO_PAGE_CHAIN_PARAMS: Partial<
     id: '0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6',
     fee: 0.002,
     color: '#FAB701',
+    icon: 'binance_chain',
   },
   [ChainId.MATIC]: {
     graphAddress: 'https://api.thegraph.com/subgraphs/name/prof-sd/as-matic-graft',
@@ -396,6 +406,7 @@ export const INFO_PAGE_CHAIN_PARAMS: Partial<
     id: '0xcf083be4164828f00cae704ec15a36d711491284',
     fee: 0.002,
     color: '#8C3EED',
+    icon: 'polygon_chain',
   },
   [ChainId.MAINNET]: {
     graphAddress: 'https://api.thegraph.com/subgraphs/name/apeswapfinance/ethereum-dex',
@@ -404,5 +415,15 @@ export const INFO_PAGE_CHAIN_PARAMS: Partial<
     id: '0xBAe5dc9B19004883d0377419FeF3c2C8832d7d7B',
     fee: 0.002,
     color: '#637DEA',
+    icon: 'eth_token',
+  },
+  [ChainId.ARBITRUM]: {
+    graphAddress: 'https://api.thegraph.com/subgraphs/name/prof-sd/arbitrum-dex',
+    explorer: BLOCK_EXPLORER[ChainId.ARBITRUM],
+    blockGraph: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
+    id: '0xCf083Be4164828f00cAE704EC15a36D711491284',
+    fee: 0.002,
+    color: '#28A0F0',
+    icon: 'arbitrum_chain',
   },
 }

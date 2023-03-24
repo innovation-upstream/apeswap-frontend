@@ -66,6 +66,12 @@ const ChartItem: React.FC<ChartItemProps> = (props) => {
               <div className="value">${Math.round(data.data[137] ?? 0).toLocaleString()}</div>
             </div>
           )}
+          {(activeChains === null || activeChains.includes(Number(42161))) && (
+            <div className="wrapper">
+              <div className="indicator arbitrum"></div>Arbitrum:
+              <div className="value">${Math.round(data.data[42161] ?? 0).toLocaleString()}</div>
+            </div>
+          )}
         </div>
       </Section>
     )
@@ -75,7 +81,7 @@ const ChartItem: React.FC<ChartItemProps> = (props) => {
     <ChartWrapper>
       <ResponsiveBar
         data={chartData}
-        keys={['1', '137', '40', '56']}
+        keys={['1', '137', '40', '56', '42161']}
         indexBy="date"
         groupMode="stacked"
         padding={0.3}

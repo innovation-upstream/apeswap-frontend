@@ -187,6 +187,10 @@ export const Section = styled.div`
         &.polygon {
           background: #637dea;
         }
+
+        &.arbitrum {
+          background: #28a0f0;
+        }
       }
     }
   }
