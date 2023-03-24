@@ -15,7 +15,6 @@ export const styles: Record<
     width: '100%',
     height: ['620px', '430px', '550px'],
     justifyContent: 'center',
-    overflow: 'hidden',
     position: 'relative',
   },
   yellowShadow: {
