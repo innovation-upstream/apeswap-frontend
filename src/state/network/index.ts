@@ -6,7 +6,6 @@ import { Network, NetworkState } from 'state/types'
 import fetchAndUpdateNetwork from './fetchNetwork'
 
 const chainIdSafeCheck = (): { chainId: number; chainIdFromUrl: boolean } => {
-  console.log('asd')
   const { search } = window.location
   const params = new URLSearchParams(search)
   const paramChainId = params.get('chain')
