@@ -43,7 +43,7 @@ const ApeSwapV3 = () => {
       <Flex sx={styles.buttonContainer}>
         <Button
           variant="secondary"
-          sx={{ ...styles.learnMoreButton }}
+          sx={{ ...styles.learnMoreButton, minWidth: ['140px', '125px', '138px'] }}
           onClick={() =>
             window.open(
               'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity/how-to-add-liquidity',

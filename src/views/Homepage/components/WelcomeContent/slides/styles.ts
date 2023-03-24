@@ -16,7 +16,7 @@ export const styles: Record<
     width: '100%',
     flexDirection: 'column',
     padding: ['0 10px', '0 10px', '0'],
-    maxWidth: ['325px', '325px', 'none'],
+    maxWidth: ['345px', '325px', 'none'],
   },
   slideTitle: {
     fontSize: ['45px', '45px', '64px'],
