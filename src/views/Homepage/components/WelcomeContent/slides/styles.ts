@@ -2,6 +2,7 @@ import { ThemeUIStyleObject } from 'theme-ui'
 
 export const styles: Record<
   | 'slideContainer'
+  | 'slideContent'
   | 'slideTitle'
   | 'slideSubtitle'
   | 'counterText'
@@ -9,14 +10,21 @@ export const styles: Record<
   | 'billImage'
   | 'image'
   | 'buttonContainer'
-  | 'learnMoreButton',
+  | 'learnMoreButton'
+  | 'imageWrapper',
   ThemeUIStyleObject
 > = {
   slideContainer: {
+    width: '95vw',
+    justifyContent: 'center',
+    paddingTop: ['50px', '50px', '65px'],
+    paddingBottom: ['30px', '30px', '35px'],
+  },
+  slideContent: {
     width: '100%',
     flexDirection: 'column',
     padding: ['0 10px', '0 10px', '0'],
-    maxWidth: ['345px', '325px', 'none'],
+    maxWidth: ['325px', '325px', '325px'],
   },
   slideTitle: {
     fontSize: ['45px', '45px', '64px'],
@@ -75,5 +83,34 @@ export const styles: Record<
     background: 'background',
     fontSize: ['14px', '14px', '16px'],
     minWidth: ['125px', '125px', '138px'],
+  },
+  imageWrapper: {
+    display: ['none', 'flex'],
+    marginTop: '50px',
+    zIndex: 10,
+    padding: '10px',
+    borderRadius: '15px',
+    transition: 'all 0.3s ease-out',
+    transform: 'matrix(1, 0.04, -0.34, 0.94, 0, 0)',
+    width: ['256px', '256px'],
+    height: ['153px', '153px'],
+    '@media screen and (min-width: 700px)': {
+      width: '300px',
+      height: '179px',
+    },
+    '@media screen and (min-width: 852px)': {
+      width: '375px',
+      height: '220px',
+    },
+    '@media screen and (min-width: 1024px)': {
+      width: '529px',
+      height: '305px',
+    },
+    '&:hover': {
+      transform: 'none',
+      scale: '1.2',
+      cursor: 'pointer',
+      filter: 'drop-shadow(0px 4px 30px rgba(255, 168, 0, 0.25))',
+    },
   },
 }

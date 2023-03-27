@@ -1,7 +1,6 @@
 /** @jsxImportSource theme-ui */
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Flex } from '@ape.swap/uikit'
-import { Image } from 'theme-ui'
 import { styles } from './styles'
 import BackgroundCircles from './BackgroundCircles'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -11,29 +10,13 @@ import SwiperCore from 'swiper'
 import { getDotPos } from 'utils/getDotPos'
 import ApeSwapV3 from './slides/ApeSwapV3'
 import { Bubble } from '../News/styles'
-import { useHistory } from 'react-router-dom'
 import DefiRedefined from './slides/DefiRedefined'
 
 const slides = [<DefiRedefined key={0} />, <ApeSwapV3 key={1} />]
 
-export const slidesData = [
-  {
-    product: 'treasury-bills',
-    imageCount: 10,
-    format: 'jpg',
-  },
-  {
-    product: 'add-liquidity',
-    imageCount: 0,
-    format: 'png',
-  },
-]
-
 const WelcomeContent: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0)
   const { swiper, setSwiper } = useSwiper()
-  const history = useHistory()
-  const slideData = slidesData[activeSlide]
 
   const handleSlide = (event: SwiperCore) => {
     const slideNumber = getDotPos(event.activeIndex, 2)
@@ -45,17 +28,13 @@ const WelcomeContent: React.FC = () => {
     swiper.slideTo(slides.length + index)
   }
 
-  const randomImage = useMemo(() => {
-    return Math.floor(Math.random() * (slideData.imageCount + 1))
-  }, [slideData.imageCount])
-
   return (
     <Flex sx={styles.mainContainer}>
       <Flex sx={styles.yellowShadow} />
       <Flex sx={styles.centeredContainer}>
         <Flex sx={styles.slideContainer}>
           {slides.length > 1 ? (
-            <Flex sx={{ flexDirection: 'column' }}>
+            <Flex sx={{ flexDirection: 'column', alignItems: 'center' }}>
               <Swiper
                 id="homeSwiper"
                 autoplay={{
@@ -98,13 +77,7 @@ const WelcomeContent: React.FC = () => {
             slides[0]
           )}
         </Flex>
-        <Flex sx={styles.imageContainer}>
-          <Flex
-            sx={{ ...styles.imageWrapper, background: activeSlide ? 'none' : 'lvl1' }}
-            onClick={() => history.push(`/${slidesData[activeSlide]?.product}`)}
-          >
-            <Image src={`/images/homepage/${slideData.product}-${randomImage}.${slideData.format}`} sx={styles.image} />
-          </Flex>
+        <Flex sx={styles.circlesContainer}>
           <BackgroundCircles />
         </Flex>
       </Flex>
