@@ -6,7 +6,7 @@ const BackgroundCircles = () => {
   return (
     <Flex
       sx={{
-        width: '100%',
+        width: '1512px',
         height: '600px',
         position: 'relative',
         margin: '0 auto',
@@ -16,7 +16,7 @@ const BackgroundCircles = () => {
       <Flex
         sx={{
           position: 'absolute',
-          width: '100%',
+          width: '1512px',
           height: '600px',
           overflow: 'hidden',
         }}
@@ -29,7 +29,7 @@ const BackgroundCircles = () => {
             width: ['600px', '900px', '1200px'],
             height: ['600px', '900px', '1200px'],
             top: ['100px', '-100px', '-200px'],
-            left: ['-100px', '200px', '350px'],
+            left: ['-100px', '300px', '500px'],
             background: 'var(--theme-ui-colors-home-c3)',
             boxShadow: 'none',
           }}
@@ -43,7 +43,7 @@ const BackgroundCircles = () => {
             height: ['450px', '675px', '900px'],
             top: ['175px', '12.5px', '-50px'],
             background: 'var(--theme-ui-colors-home-c2)',
-            left: ['-25px', '325px', '500px'],
+            left: ['-25px', '425px', '650px'],
             boxShadow: 'var(--theme-ui-colors-homeCircles-cShadow)',
           }}
         />
@@ -54,7 +54,7 @@ const BackgroundCircles = () => {
             borderRadius: '50%',
             width: ['300px', '450px', '600px'],
             height: ['300px', '450px', '600px'],
-            left: ['50px', '450px', '650px'],
+            left: ['50px', '550px', '800px'],
             top: ['250px', '125px', '100px'],
             background: 'var(--theme-ui-colors-home-c1)',
             boxShadow: 'var(--theme-ui-colors-home-cShadow)',
@@ -63,7 +63,7 @@ const BackgroundCircles = () => {
         <Flex
           sx={{
             position: 'absolute',
-            bottom: '-201px',
+            bottom: ['-201px', '-30px', '-201px'],
             width: '100%',
             height: '200px',
             boxShadow: 'var(--theme-ui-colors-home-hideCircles)',
@@ -75,7 +75,7 @@ const BackgroundCircles = () => {
             position: 'absolute',
             width: '0px',
             height: '1130px',
-            left: '1412px',
+            left: '1512px',
             top: '0px',
             boxShadow: 'var(--theme-ui-colors-home-hideCircles)',
             transform: 'rotate(-180deg)',

@@ -6,7 +6,7 @@ export const styles: Record<
   | 'slideTitle'
   | 'slideSubtitle'
   | 'counterText'
-  | 'availableBills'
+  | 'availableOn'
   | 'billImage'
   | 'image'
   | 'buttonContainer'
@@ -24,7 +24,7 @@ export const styles: Record<
     width: '100%',
     flexDirection: 'column',
     padding: ['0 10px', '0 10px', '0'],
-    maxWidth: ['325px', '325px', '325px'],
+    maxWidth: ['325px', '325px', '500px'],
   },
   slideTitle: {
     fontSize: ['45px', '45px', '64px'],
@@ -36,22 +36,21 @@ export const styles: Record<
     webkitTextFillColor: 'transparent',
     backgroundClip: 'text',
     textFillColor: 'transparent',
-    maxWidth: ['none', 'none', '326px'],
   },
   slideSubtitle: {
     marginTop: '25px',
     fontWeight: 500,
-    minHeight: ['45px', '45px', '100px'],
+    minHeight: ['45px', '45px', '75px'],
     lineHeight: ['15px', '15px', '25px'],
     fontSize: ['12px', '12px', '18px'],
-    maxWidth: ['325px', '325px', 'none'],
+    maxWidth: ['325px', '325px', '500px'],
   },
   counterText: {
     lineHeight: ['15px', '15px', '25px'],
     fontSize: ['12px', '12px', '18px'],
     fontWeight: 700,
   },
-  availableBills: {
+  availableOn: {
     fontWeight: 300,
     fontSize: '12px',
     lineHeight: '18px',
@@ -98,11 +97,11 @@ export const styles: Record<
       width: '300px',
       height: '179px',
     },
-    '@media screen and (min-width: 852px)': {
+    '@media screen and (min-width: 950px)': {
       width: '375px',
       height: '220px',
     },
-    '@media screen and (min-width: 1024px)': {
+    '@media screen and (min-width: 1250px)': {
       width: '529px',
       height: '305px',
     },

@@ -25,14 +25,12 @@ const ApeSwapV3 = () => {
   return (
     <Flex sx={styles.slideContainer}>
       <Flex sx={styles.slideContent}>
-        <Text sx={{ ...styles.slideTitle, fontSize: ['42px', '42px', '54px'], lineHeight: ['48px', '48px', '74px'] }}>
-          {t('Apeswap Liquidity V3')}
-        </Text>
+        <Text sx={{ ...styles.slideTitle }}>{t('Apeswap Liquidity V3')}</Text>
         <Text sx={styles.slideSubtitle}>
           {t('Insert text about Liquidity V3 here, please dont make it super long.')}
         </Text>
-        <Flex sx={{ alignItems: 'center', marginTop: ['25px', '25px', '30px'] }}>
-          <Text sx={styles.availableBills}>{t('AVAILABLE ON')}</Text>
+        <Flex sx={{ alignItems: 'center', marginTop: ['25px', '25px', '0px'] }}>
+          <Text sx={styles.availableOn}>{t('AVAILABLE ON')}</Text>
           <Bnb sx={{ marginRight: '10px', cursor: 'pointer' }} onClick={() => handleNetworkSwitch(ChainId.BSC)} />
           <Poly sx={{ marginRight: '10px', cursor: 'pointer' }} onClick={() => handleNetworkSwitch(ChainId.MATIC)} />
           <Tlos sx={{ marginRight: '10px', cursor: 'pointer' }} onClick={() => handleNetworkSwitch(ChainId.TLOS)} />

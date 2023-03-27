@@ -9,6 +9,7 @@ export const styles: Record<
     height: ['620px', '430px', '550px'],
     justifyContent: 'center',
     position: 'relative',
+    overflow: 'hidden',
   },
   yellowShadow: {
     position: 'absolute',
@@ -37,6 +38,7 @@ export const styles: Record<
   },
   bubbleContainer: {
     justifyContent: ['center', 'flex-start', 'flex-start'],
+    padding: ['0 0', '0 10px', '0 0'],
     alignContent: 'center',
     width: '95vw',
     maxWidth: '1412px',

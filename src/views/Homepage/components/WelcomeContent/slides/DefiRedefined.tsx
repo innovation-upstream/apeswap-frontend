@@ -43,8 +43,8 @@ const DefiRedefined = () => {
           )}
           {t('communities that are building project-owned liquidity through Treasury Bills.')}
         </Text>
-        <Flex sx={{ alignItems: 'center', marginTop: ['25px', '25px', '30px'] }}>
-          <Text sx={styles.availableBills}>{t('BILLS AVAILABLE ON')}</Text>
+        <Flex sx={{ alignItems: 'center', marginTop: ['25px', '25px', '0px'] }}>
+          <Text sx={styles.availableOn}>{t('BILLS AVAILABLE ON')}</Text>
           <Bnb sx={{ marginRight: '10px', cursor: 'pointer' }} onClick={() => handleNetworkSwitch(ChainId.BSC)} />
           <Poly sx={{ marginRight: '10px', cursor: 'pointer' }} onClick={() => handleNetworkSwitch(ChainId.MATIC)} />
           <Tlos sx={{ marginRight: '10px', cursor: 'pointer' }} onClick={() => handleNetworkSwitch(ChainId.TLOS)} />
