@@ -3,7 +3,7 @@ import { ChainId } from '@ape.swap/sdk'
 export * from './rawToPortfolio'
 export * from './rawToProjected'
 
-export const supportedChains = [40, 56, 137] as const
+export const supportedChains = [ChainId.TLOS, ChainId.BSC, ChainId.MATIC, ChainId.ARBITRUM] as const
 
 export const CHAIN_NAME = {
   [ChainId.TLOS]: 'Telos',
