@@ -18,7 +18,7 @@ interface StatsContextData {
   nfts: NftInfo[]
   vestedProducts: Vested[]
   selectedChain: Chain
-  handleChangeSelectedChain: (option: Chain) => void
+  handleChangeSelectedChain: (chain: Chain) => void
   loading: boolean
 }
 
@@ -54,8 +54,8 @@ export function StatsProvider({ children }: StatsProviderProps) {
     }
   }, [account, selectedChain])
 
-  const handleChangeSelectedChain = (option: Chain) => {
-    setSelectedChain(option)
+  const handleChangeSelectedChain = (chain: Chain) => {
+    setSelectedChain(chain)
   }
 
   return (
