@@ -8,6 +8,7 @@ import { ChainIcon } from 'views/Stats/components/ChainIcon'
 
 import { Chain } from 'state/statsPage/types'
 import { AnimatedArrow, ChainDisplay } from '../../styles'
+import { CHAIN_NAME } from 'state/statsPage/mappings'
 
 interface ProductChainListProps {
   chain: Chain
@@ -33,9 +34,7 @@ const ProductChainList: React.FC<ProductChainListProps> = ({ chain, listViews })
             textTransform="uppercase"
             fontSize={isMobile ? '12px' : '16px'}
           >
-            {chain === 40 && 'Telos Chain'}
-            {chain === 56 && 'BNB Chain'}
-            {chain === 137 && 'Polygon Chain'}
+            {CHAIN_NAME[chain]}
           </Text>
         </Flex>
         <AnimatedArrow height={8} isOpen={isOpen} />
