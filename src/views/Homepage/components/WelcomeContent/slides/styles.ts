@@ -18,13 +18,14 @@ export const styles: Record<
     width: '95vw',
     justifyContent: 'center',
     paddingTop: ['50px', '50px', '65px'],
-    paddingBottom: ['30px', '30px', '35px'],
+    paddingBottom: ['30px', '30px', '75px'],
   },
   slideContent: {
     width: '100%',
     flexDirection: 'column',
-    padding: ['0 10px', '0 10px', '0'],
+    padding: ['0 10px', '0 10px 0 0', '0'],
     maxWidth: ['325px', '325px', '500px'],
+    minWidth: '285px',
   },
   slideTitle: {
     fontSize: ['45px', '45px', '64px'],
@@ -85,7 +86,7 @@ export const styles: Record<
   },
   imageWrapper: {
     display: ['none', 'flex'],
-    marginTop: '50px',
+    marginTop: ['50px', '50px', '35px'],
     zIndex: 10,
     padding: '10px',
     borderRadius: '15px',
@@ -109,7 +110,7 @@ export const styles: Record<
       transform: 'none',
       scale: '1.2',
       cursor: 'pointer',
-      filter: 'drop-shadow(0px 4px 30px rgba(255, 168, 0, 0.25))',
+      filter: 'drop-shadow(0px 0px 30px rgba(255, 168, 0, 0.25))',
     },
   },
 }

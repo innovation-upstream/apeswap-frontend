@@ -37,11 +37,9 @@ export const styles: Record<
     justifyContent: 'center',
   },
   bubbleContainer: {
-    justifyContent: ['center', 'flex-start', 'flex-start'],
-    padding: ['0 0', '0 10px', '0 0'],
     alignContent: 'center',
-    width: '95vw',
-    maxWidth: '1412px',
     zIndex: 1,
+    position: 'absolute',
+    top: [0, 0, '-40px'],
   },
 }

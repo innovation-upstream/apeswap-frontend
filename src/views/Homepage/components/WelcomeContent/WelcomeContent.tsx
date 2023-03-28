@@ -67,10 +67,19 @@ const WelcomeContent: React.FC = () => {
                   )
                 })}
               </Swiper>
-              <Flex sx={styles.bubbleContainer}>
-                {[...Array(slides.length)].map((_, i) => {
-                  return <Bubble isActive={i === activeSlide} onClick={() => slideTo(i)} key={i} />
-                })}
+              <Flex
+                sx={{
+                  position: 'relative',
+                  width: '95vw',
+                  maxWidth: '1412px',
+                  justifyContent: ['center', 'flex-start', 'flex-start'],
+                }}
+              >
+                <Flex sx={styles.bubbleContainer}>
+                  {[...Array(slides.length)].map((_, i) => {
+                    return <Bubble isActive={i === activeSlide} onClick={() => slideTo(i)} key={i} />
+                  })}
+                </Flex>
               </Flex>
             </Flex>
           ) : (

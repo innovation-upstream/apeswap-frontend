@@ -1,18 +1,16 @@
 /** @jsxImportSource theme-ui */
 import React, { useMemo } from 'react'
 import { Button, Flex, Text } from '@ape.swap/uikit'
-import Bnb from './grayChains/bnb'
-import Poly from './grayChains/poly'
-import Tlos from './grayChains/Tlos'
-import Arbitrum from './grayChains/Arbitrum'
 import { styles } from './styles'
 import { Box, Image } from 'theme-ui'
 import { useHomepageStats } from 'state/hooks'
 import CountUp from 'react-countup'
 import { useTranslation } from 'contexts/Localization'
 import { Link, useHistory } from 'react-router-dom'
-import { ChainId } from '@ape.swap/sdk'
 import useSelectNetwork from 'hooks/useSelectNetwork'
+import { grayIcons } from './grayChains'
+import { ChainId } from '@ape.swap/sdk'
+import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
 
 const DefiRedefined = () => {
   const rawStats = useHomepageStats()
@@ -45,10 +43,17 @@ const DefiRedefined = () => {
         </Text>
         <Flex sx={{ alignItems: 'center', marginTop: ['25px', '25px', '0px'] }}>
           <Text sx={styles.availableOn}>{t('BILLS AVAILABLE ON')}</Text>
-          <Bnb sx={{ marginRight: '10px', cursor: 'pointer' }} onClick={() => handleNetworkSwitch(ChainId.BSC)} />
-          <Poly sx={{ marginRight: '10px', cursor: 'pointer' }} onClick={() => handleNetworkSwitch(ChainId.MATIC)} />
-          <Tlos sx={{ marginRight: '10px', cursor: 'pointer' }} onClick={() => handleNetworkSwitch(ChainId.TLOS)} />
-          <Arbitrum sx={{ cursor: 'pointer' }} onClick={() => handleNetworkSwitch(ChainId.ARBITRUM)} />
+          {AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS].map((chainId) => {
+            return (
+              <Flex
+                key={chainId}
+                sx={{ marginRight: '10px', cursor: 'pointer' }}
+                onClick={() => handleNetworkSwitch(chainId)}
+              >
+                {grayIcons[chainId]}
+              </Flex>
+            )
+          })}
         </Flex>
         <Link to="/treasury-bills">
           <Flex sx={styles.billImage}>
