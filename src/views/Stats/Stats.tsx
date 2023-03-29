@@ -80,9 +80,7 @@ const Stats: React.FC = () => {
             size="sm"
             width={isMobile ? '100%' : '122px'}
             height="36px"
-            onChange={(e) => {
-              handleChangeSelectedChain(+e.target.value as Chain)
-            }}
+            onChange={(e) => handleChangeSelectedChain(+e.target.value as Chain)}
             active={selectedChain}
           >
             {displayChainOptions.map((option) => {
