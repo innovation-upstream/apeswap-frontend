@@ -30,7 +30,6 @@ const WelcomeContent: React.FC = () => {
 
   return (
     <Flex sx={styles.mainContainer}>
-      <Flex sx={styles.yellowShadow} />
       <Flex sx={styles.centeredContainer}>
         <Flex sx={styles.slideContainer}>
           {slides.length > 1 ? (
@@ -41,7 +40,6 @@ const WelcomeContent: React.FC = () => {
                   delay: 100000,
                   disableOnInteraction: false,
                 }}
-                loop
                 onSwiper={setSwiper}
                 slidesPerView="auto"
                 centeredSlides
@@ -87,6 +85,7 @@ const WelcomeContent: React.FC = () => {
           )}
         </Flex>
         <Flex sx={styles.circlesContainer}>
+          <Flex sx={styles.yellowShadow} />
           <BackgroundCircles />
         </Flex>
       </Flex>

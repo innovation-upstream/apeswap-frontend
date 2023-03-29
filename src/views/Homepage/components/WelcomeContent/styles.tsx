@@ -15,7 +15,7 @@ export const styles: Record<
     position: 'absolute',
     zIndex: 3,
     width: '737px',
-    height: '552px',
+    height: '452px',
     left: '-398px',
     top: '-391px',
     background: 'linear-gradient(99.09deg, #A16552 0%, #FFB300 106.96%)',
