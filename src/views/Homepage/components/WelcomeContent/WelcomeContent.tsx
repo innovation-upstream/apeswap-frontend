@@ -25,7 +25,7 @@ const WelcomeContent: React.FC = () => {
 
   const slideTo = (index: number) => {
     setActiveSlide(index)
-    swiper.slideTo(slides.length + index)
+    swiper.slideTo(index)
   }
 
   return (
