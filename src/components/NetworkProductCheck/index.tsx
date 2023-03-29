@@ -2,12 +2,17 @@
 import React from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Link, useLocation } from 'react-router-dom'
-import { AVAILABLE_CHAINS_ON_PRODUCTS, CHAIN_PARAMS, FULL_PRODUCT_NAMES, NETWORK_LABEL } from 'config/constants/chains'
-import { Flex, Text } from '@ape.swap/uikit'
+import {
+  AVAILABLE_CHAINS_ON_PRODUCTS,
+  FULL_PRODUCT_NAMES,
+  INFO_PAGE_CHAIN_PARAMS,
+  NETWORK_LABEL,
+} from 'config/constants/chains'
+import { Flex, Svg, Text } from '@ape.swap/uikit'
 import MonkeyImage from 'views/Dex/Orders/components/OrderHistoryPanel/MonkeyImage'
 import { useTranslation } from 'contexts/Localization'
 import useSwitchNetwork from 'hooks/useSelectNetwork'
-import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
+import { ChainId } from '@ape.swap/sdk'
 
 const NetworkProductCheck = () => {
   const { chainId } = useActiveWeb3React()
@@ -77,7 +82,11 @@ const NetworkProductCheck = () => {
                     }}
                     onClick={() => switchNetwork(chainId)}
                   >
-                    <ServiceTokenDisplay token1={CHAIN_PARAMS[chainId].nativeCurrency.symbol} size={22.5} />
+                    <Svg
+                      width={22.5}
+                      height={22.5}
+                      icon={chainId === ChainId.TLOS ? 'tlos_token' : INFO_PAGE_CHAIN_PARAMS[chainId].icon}
+                    />
                     <Text ml="10px">{NETWORK_LABEL[chainId]}</Text>
                   </Flex>
                 )
@@ -99,7 +108,11 @@ const NetworkProductCheck = () => {
               }}
               to={'/'}
             >
-              <ServiceTokenDisplay token1={CHAIN_PARAMS[chainId].nativeCurrency.symbol} size={22.5} />
+              <Svg
+                width={22.5}
+                height={22.5}
+                icon={chainId === ChainId.TLOS ? 'tlos_token' : INFO_PAGE_CHAIN_PARAMS[chainId].icon}
+              />
               <Text ml="10px">{NETWORK_LABEL[chainId]}</Text>
             </Flex>
           </Flex>

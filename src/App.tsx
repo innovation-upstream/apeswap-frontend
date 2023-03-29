@@ -32,7 +32,6 @@ import MigrateMasterApeV2 from './views/MigrateMasterApeV2'
 import { useMonitorMigrationPhase } from 'state/migrationTimer/hooks'
 import { CURRENT_MIGRATE_PATH } from 'components/Menu/chains/bscConfig'
 import { useSetInitialMigrateStatus } from 'state/masterApeMigration/hooks'
-import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 
 declare module '@emotion/react' {
   export interface Theme extends ApeSwapTheme {}
@@ -266,7 +265,6 @@ const App: React.FC = () => {
       <GlobalStyle />
       <MarketingModalCheck />
       {loadMenu()}
-      <MigrationRequiredPopup v2Farms={[]} farms={[]} vaults={[]} homepage />
       <FloatingDocs />
       <ToastListener />
     </Router>
