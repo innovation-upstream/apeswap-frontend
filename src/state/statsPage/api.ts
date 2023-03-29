@@ -5,9 +5,11 @@ import { initialStatsData } from './mappings'
 const baseUrl = {
   local: 'http://localhost:3333/stats',
   prod: 'https://apeswap.api.pacoca.io/stats',
+  test: 'https://lionfish-app-gna8l.ondigitalocean.app/stats',
 }
 
-const statsApi = axios.create({ baseURL: baseUrl.prod })
+// TODO change to production before merging into main
+const statsApi = axios.create({ baseURL: baseUrl.test })
 
 axiosRetry(statsApi, {
   retries: 5,
