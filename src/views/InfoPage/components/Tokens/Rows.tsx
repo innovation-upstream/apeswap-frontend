@@ -2,7 +2,7 @@
 import { ChainId } from '@ape.swap/sdk'
 import { Flex, Link, Svg, Text } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
-import { CHAIN_PARAMS } from 'config/constants/chains'
+import { INFO_PAGE_CHAIN_PARAMS } from 'config/constants/chains'
 import { useTranslation } from 'contexts/Localization'
 import useIsMobile from 'hooks/useIsMobile'
 import React from 'react'
@@ -107,9 +107,14 @@ const Rows = ({ tokens, activeIndex }: { tokens: Token[]; activeIndex: number })
                   sx={{
                     marginLeft: '-7px',
                     marginTop: '-12px',
+                    zIndex: 1,
                   }}
                 >
-                  <ServiceTokenDisplay token1={CHAIN_PARAMS[chainId].nativeCurrency.symbol} size={12} />
+                  <Svg
+                    width={12}
+                    height={12}
+                    icon={chainId === ChainId.TLOS ? 'tlos_token' : INFO_PAGE_CHAIN_PARAMS[chainId].icon}
+                  />
                 </Flex>
                 <Text size="14px" weight={400} ml="10px">
                   <Link href={`/info/token/${chainId}/${id}`}>{mobile ? symbol : `${name} (${symbol})`}</Link>

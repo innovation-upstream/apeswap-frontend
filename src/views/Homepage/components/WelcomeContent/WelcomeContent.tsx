@@ -1,79 +1,96 @@
-import React from 'react'
-import { ApeSwapRoundIcon, Flex, Text, useMatchBreakpoints } from '@apeswapfinance/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { BuyBanana, ContentContainer, HeadingText, LearnMore } from './styles'
+/** @jsxImportSource theme-ui */
+import React, { useState } from 'react'
+import { Flex } from '@ape.swap/uikit'
+import { styles } from './styles'
+import BackgroundCircles from './BackgroundCircles'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper.min.css'
+import useSwiper from 'hooks/useSwiper'
+import SwiperCore from 'swiper'
+import { getDotPos } from 'utils/getDotPos'
+import ApeSwapV3 from './slides/ApeSwapV3'
+import { Bubble } from '../News/styles'
+import DefiRedefined from './slides/DefiRedefined'
+
+const slides = [<DefiRedefined key={0} />, <ApeSwapV3 key={1} />]
 
 const WelcomeContent: React.FC = () => {
-  const { isSm, isXs } = useMatchBreakpoints()
-  const { t } = useTranslation()
-  const isMobile = isSm || isXs
+  const [activeSlide, setActiveSlide] = useState(0)
+  const { swiper, setSwiper } = useSwiper()
+
+  const handleSlide = (event: SwiperCore) => {
+    const slideNumber = getDotPos(event.activeIndex, 2)
+    setActiveSlide(slideNumber)
+  }
+
+  const slideTo = (index: number) => {
+    setActiveSlide(index)
+    swiper.slideTo(index)
+  }
 
   return (
-    <Flex justifyContent="center" alignItems="center" style={{ width: '100%' }}>
-      <ContentContainer>
-        <Flex flexDirection="column" style={{ maxWidth: '740px' }}>
-          <HeadingText>{t('Welcome to the Most Connected DeFi Hub')}</HeadingText>
-          {!isMobile && (
-            <>
-              <br />
-              <br />
-              <Text>
-                {t(
-                  'Whether you are new to crypto or you are a DeFi veteran, ApeSwap has the tools, community, and connections to support your decentralized finance needs.',
-                )}
-              </Text>
-            </>
+    <Flex sx={styles.mainContainer}>
+      <Flex sx={styles.centeredContainer}>
+        <Flex sx={styles.slideContainer}>
+          {slides.length > 1 ? (
+            <Flex sx={{ flexDirection: 'column', alignItems: 'center' }}>
+              <Swiper
+                id="homeSwiper"
+                autoplay={{
+                  delay: 100000,
+                  disableOnInteraction: false,
+                }}
+                onSwiper={setSwiper}
+                slidesPerView="auto"
+                centeredSlides
+                lazy
+                preloadImages={false}
+                onSlideChange={handleSlide}
+                style={{ width: '100%' }}
+              >
+                {slides.map((slide, index) => {
+                  return (
+                    <SwiperSlide
+                      style={{
+                        width: '100%',
+                        padding: '1px',
+                        height: 'fit-content',
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                      key={index}
+                    >
+                      {slide}
+                    </SwiperSlide>
+                  )
+                })}
+              </Swiper>
+              <Flex
+                sx={{
+                  position: 'relative',
+                  width: '95vw',
+                  maxWidth: '1412px',
+                  justifyContent: ['center', 'flex-start', 'flex-start'],
+                }}
+              >
+                <Flex sx={styles.bubbleContainer}>
+                  {[...Array(slides.length)].map((_, i) => {
+                    return <Bubble isActive={i === activeSlide} onClick={() => slideTo(i)} key={i} />
+                  })}
+                </Flex>
+              </Flex>
+            </Flex>
+          ) : (
+            slides[0]
           )}
-          <br />
-          <br />
-          <Flex>
-            {isMobile ? (
-              <Flex justifyContent="center" alignItems="center" flexDirection="column" style={{ width: '100%' }}>
-                <a href="/swap" rel="noopener noreferrer" style={{ width: '90%' }}>
-                  <BuyBanana fullWidth>
-                    {t('Ape In')}
-                    <ApeSwapRoundIcon ml="10px" width="27px" height="27px" />
-                  </BuyBanana>
-                </a>
-                <a
-                  href="https://apeswap.gitbook.io/apeswap-finance/welcome/master"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ width: '90%' }}
-                >
-                  <LearnMore>{t('Learn More')}</LearnMore>
-                </a>
-              </Flex>
-            ) : (
-              <Flex justifyContent="space-between" style={{ width: 'auto' }}>
-                <a href="/swap" rel="noopener noreferrer">
-                  <BuyBanana>
-                    {t('Ape In')}
-                    <ApeSwapRoundIcon ml="10px" width="27px" height="27px" />
-                  </BuyBanana>
-                </a>
-                <a
-                  href="https://apeswap.gitbook.io/apeswap-finance/welcome/master"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <LearnMore>{t('Learn More')}</LearnMore>
-                </a>
-              </Flex>
-            )}
-          </Flex>
         </Flex>
-
-        {/*
-         Will be added later
-         {!isMobile && (
-          <Flex alignItems="center" justifyContent="center" paddingBottom="100px">
-            <Spinner size={400} />
-          </Flex>
-        )} */}
-      </ContentContainer>
+        <Flex sx={styles.circlesContainer}>
+          <Flex sx={styles.yellowShadow} />
+          <BackgroundCircles />
+        </Flex>
+      </Flex>
     </Flex>
   )
 }
 
-export default React.memo(WelcomeContent)
+export default WelcomeContent
