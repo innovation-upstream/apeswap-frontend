@@ -5,8 +5,9 @@ import { ChainId } from '@ape.swap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
+import SettingsModal from 'components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
+import SquidBridge from 'components/SquidBridge/SquidBridge'
 
 interface DexNavProps {
   zapSettings?: boolean
@@ -17,6 +18,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const { pathname } = history.location
+  const BRIDGE_SUPPORTED_CHAINS = [ChainId.BSC, ChainId.ARBITRUM, ChainId.MATIC, ChainId.MAINNET]
 
   const onLiquidity =
     pathname?.includes('add-liquidity') ||
@@ -28,7 +30,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
     pathname?.includes('unstake')
 
   const [onPresentSettingsModal] = useModal(<SettingsModal zapSettings={zapSettings} />)
-
+  const [onBridgeModal] = useModal(<SquidBridge />)
   return (
     <Flex sx={styles.dexNavContainer}>
       <Flex
@@ -78,7 +80,14 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
         <Flex sx={styles.iconCover} onClick={() => history.push({ search: `?modal=tutorial` })}>
           <Svg icon="quiz" />
         </Flex>
-        <Flex sx={styles.iconCover} onClick={() => window.open('https://app.multichain.org/#/router', '_blank')}>
+        <Flex
+          sx={styles.iconCover}
+          onClick={
+            BRIDGE_SUPPORTED_CHAINS.includes(chainId)
+              ? onBridgeModal
+              : () => window.open('https://app.multichain.org/#/router', '_blank')
+          }
+        >
           <Svg icon="bridge" />
         </Flex>
         <CogIcon sx={{ cursor: 'pointer' }} width={24} onClick={onPresentSettingsModal} />
