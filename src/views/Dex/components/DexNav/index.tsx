@@ -80,7 +80,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
         </Text>
       </Flex>
       <Flex sx={{ ...styles.navIconContainer }}>
-        {!onOrders && (
+        {!onOrders || (onLiquidity && [ChainId.BSC, ChainId.MATIC].includes(chainId)) || chainId !== ChainId.TLOS ? (
           <Flex
             as={ThemeLink}
             href={v3Link}
@@ -125,6 +125,8 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
               }}
             />
           </Flex>
+        ) : (
+          <></>
         )}
         <Flex sx={styles.iconCover} onClick={() => history.push({ search: `?modal=tutorial` })}>
           <Svg icon="quiz" />
