@@ -28,7 +28,7 @@ const V3SelectModal: React.FC<V3SelectModalProps> = ({ onDismiss }) => {
       </Flex>
       <Flex sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
         <a
-          href="https://v3-info-83unrqr8n-ape-swap-finance.vercel.app/#/bnb"
+          href="https://v3-info.apeswap.finance/#/bnb"
           target="_blank"
           rel="noopener noreferrer"
           key={56}
@@ -39,7 +39,7 @@ const V3SelectModal: React.FC<V3SelectModalProps> = ({ onDismiss }) => {
           </Flex>
         </a>
         <a
-          href="https://v3-info-83unrqr8n-ape-swap-finance.vercel.app/#/polygon"
+          href="https://v3-info.apeswap.finance/#/polygon"
           target="_blank"
           rel="noopener noreferrer"
           key={137}

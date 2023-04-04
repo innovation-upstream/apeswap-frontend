@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Input, Link, Svg, Text, useModal } from '@ape.swap/uikit'
+import { Button, Flex, Input, Link, Svg, Tag, Text, useModal } from '@ape.swap/uikit'
 import { INFO_PAGE_CHAIN_PARAMS, MAINNET_CHAINS } from 'config/constants/chains'
 import React from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
@@ -35,24 +35,22 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
           width: `${mobile ? '95vw' : '100%'}`,
           maxWidth: '1200px',
           height: 'fit-content',
-          justifyContent: 'flex-end',
           marginBottom: '15px',
         }}
       >
-        <Link onClick={onPresentLegacySelectModal}>
-          <Text
-            weight={400}
-            sx={{
-              borderRight: '1px solid #000',
-              paddingRight: '10px',
-              marginRight: '10px',
-            }}
-          >
-            View legacy info pages
+        <Tag variant="success">NEW</Tag>
+        <Link onClick={onPresentV3SelectModal}>
+          <Text weight={400} sx={{ marginLeft: '5px' }}>
+            View V3 info pages
           </Text>
         </Link>
-        <Link onClick={onPresentV3SelectModal}>
-          <Text weight={400}>View V3 info pages</Text>
+        <Link
+          onClick={onPresentLegacySelectModal}
+          sx={{
+            marginLeft: 'auto',
+          }}
+        >
+          <Text weight={400}>View legacy info pages</Text>
         </Link>
       </Flex>
       <Flex
