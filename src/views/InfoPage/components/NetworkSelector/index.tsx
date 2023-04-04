@@ -7,6 +7,7 @@ import { useFetchActiveChains } from '../../../../state/info/hooks'
 import { useHistory, useLocation } from 'react-router-dom'
 import LegacySelectModal from '../Modals/LegacySelectModal'
 import { ChainId } from '@ape.swap/sdk'
+import V3SelectModal from '../Modals/V3SelectModal'
 
 interface NetworkSelectorProps {
   onFilter: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -20,6 +21,7 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
   const history = useHistory()
 
   const [onPresentLegacySelectModal] = useModal(<LegacySelectModal onDismiss={null} />, true, true)
+  const [onPresentV3SelectModal] = useModal(<V3SelectModal onDismiss={null} />, true, true)
 
   function isActive(chain) {
     // If active changes equals null it means all chains should be shown
@@ -38,7 +40,19 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
         }}
       >
         <Link onClick={onPresentLegacySelectModal}>
-          <Text weight={400}>View legacy info pages</Text>
+          <Text
+            weight={400}
+            sx={{
+              borderRight: '1px solid #000',
+              paddingRight: '10px',
+              marginRight: '10px',
+            }}
+          >
+            View legacy info pages
+          </Text>
+        </Link>
+        <Link onClick={onPresentV3SelectModal}>
+          <Text weight={400}>View V3 info pages</Text>
         </Link>
       </Flex>
       <Flex
