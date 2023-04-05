@@ -17,7 +17,7 @@ interface StatsContextData {
   projectedData: ProjectedData[]
   nfts: NftInfo[]
   vestedProducts: Vested[]
-  selectedChain: Chain
+  selectedChain: Chain | 0
   handleChangeSelectedChain: (chain: Chain) => void
   loading: boolean
 }
