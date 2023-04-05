@@ -1,5 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { Button, Flex, Input, Link, Svg, Text, useModal } from '@ape.swap/uikit'
+import { Button, Flex, Input, Link, Svg, Tag, Text, useModal } from '@ape.swap/uikit'
 import { INFO_PAGE_CHAIN_PARAMS, MAINNET_CHAINS } from 'config/constants/chains'
 import React from 'react'
 import useIsMobile from '../../../../hooks/useIsMobile'
@@ -7,6 +7,7 @@ import { useFetchActiveChains } from '../../../../state/info/hooks'
 import { useHistory, useLocation } from 'react-router-dom'
 import LegacySelectModal from '../Modals/LegacySelectModal'
 import { ChainId } from '@ape.swap/sdk'
+import V3SelectModal from '../Modals/V3SelectModal'
 
 interface NetworkSelectorProps {
   onFilter: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -20,6 +21,7 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
   const history = useHistory()
 
   const [onPresentLegacySelectModal] = useModal(<LegacySelectModal onDismiss={null} />, true, true)
+  const [onPresentV3SelectModal] = useModal(<V3SelectModal onDismiss={null} />, true, true)
 
   function isActive(chain) {
     // If active changes equals null it means all chains should be shown
@@ -33,11 +35,21 @@ const NetworkSelector: React.FC<NetworkSelectorProps> = (props) => {
           width: `${mobile ? '95vw' : '100%'}`,
           maxWidth: '1200px',
           height: 'fit-content',
-          justifyContent: 'flex-end',
           marginBottom: '15px',
         }}
       >
-        <Link onClick={onPresentLegacySelectModal}>
+        <Tag variant="success">NEW</Tag>
+        <Link onClick={onPresentV3SelectModal}>
+          <Text weight={400} sx={{ marginLeft: '5px' }}>
+            View V3 info pages
+          </Text>
+        </Link>
+        <Link
+          onClick={onPresentLegacySelectModal}
+          sx={{
+            marginLeft: 'auto',
+          }}
+        >
           <Text weight={400}>View legacy info pages</Text>
         </Link>
       </Flex>
