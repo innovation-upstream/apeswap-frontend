@@ -23,11 +23,11 @@ const ApeSwapV3 = () => {
           <Text sx={styles.availableOn}>{t('AVAILABLE ON')}</Text>
           <Bnb
             sx={{ marginRight: '10px', cursor: 'pointer' }}
-            onClick={() => window.open('https://v3.apeswap.finance/add-liquidity')}
+            onClick={() => window.open('https://v3.apeswap.finance/add-liquidity?chain=56')}
           />
           <Poly
             sx={{ marginRight: '10px', cursor: 'pointer' }}
-            onClick={() => window.open('https://v3.apeswap.finance/add-liquidity')}
+            onClick={() => window.open('https://v3.apeswap.finance/add-liquidity?chain=137')}
           />
         </Flex>
         <Link to="/add-liquidity">
