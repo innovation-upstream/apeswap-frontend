@@ -8,8 +8,7 @@ const baseUrl = {
   test: 'https://lionfish-app-gna8l.ondigitalocean.app/stats',
 }
 
-// TODO change to production before merging into main
-const statsApi = axios.create({ baseURL: baseUrl.test })
+const statsApi = axios.create({ baseURL: baseUrl.prod })
 
 axiosRetry(statsApi, {
   retries: 5,
