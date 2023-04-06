@@ -41,7 +41,7 @@ const ApeSwapV3 = () => {
             sx={{ ...styles.learnMoreButton }}
             onClick={() =>
               window.open(
-                'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity/how-to-add-liquidity',
+                'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/liquidity/how-to-add-liquidity-v3',
                 '_blank',
               )
             }
