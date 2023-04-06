@@ -37,7 +37,7 @@ const WelcomeContent: React.FC = () => {
               <Swiper
                 id="homeSwiper"
                 autoplay={{
-                  delay: 100000,
+                  delay: 10000,
                   disableOnInteraction: false,
                 }}
                 onSwiper={setSwiper}

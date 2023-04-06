@@ -2,7 +2,7 @@
 import React from 'react'
 import { styles } from './styles'
 import { Button, Flex, Text } from '@ape.swap/uikit'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Bnb from './grayChains/bnb'
 import Poly from './grayChains/poly'
 import { Box, Image } from 'theme-ui'
@@ -10,7 +10,6 @@ import { useTranslation } from 'contexts/Localization'
 
 const ApeSwapV3 = () => {
   const { t } = useTranslation()
-  const history = useHistory()
 
   return (
     <Flex sx={styles.slideContainer}>
@@ -57,7 +56,10 @@ const ApeSwapV3 = () => {
         </Flex>
       </Flex>
       <Flex sx={{ width: ['0', '100%'], justifyContent: 'center' }}>
-        <Flex sx={{ ...styles.imageWrapper, background: 'none' }} onClick={() => history.push(`/treasury-bills`)}>
+        <Flex
+          sx={{ ...styles.imageWrapper, background: 'none' }}
+          onClick={() => window.open('https://v3.apeswap.finance/add-liquidity')}
+        >
           <Image src={`/images/homepage/add-liquidity-0.png`} sx={styles.image} />
         </Flex>
       </Flex>
