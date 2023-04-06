@@ -186,5 +186,3 @@ export interface Position {
 }
 
 export type Chain = typeof supportedChains[number]
-
-export type ChainOption = 'all' | 'bnb' | 'polygon' | 'telos'
