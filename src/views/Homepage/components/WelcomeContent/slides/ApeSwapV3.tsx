@@ -14,7 +14,9 @@ const ApeSwapV3 = () => {
   return (
     <Flex sx={styles.slideContainer}>
       <Flex sx={styles.slideContent}>
-        <Text sx={{ ...styles.slideTitle }}>{t('Do More With Your Liquidity')}</Text>
+        <Text sx={{ ...styles.slideTitle, fontSize: ['43px', '38px', '64px'] }}>
+          {t('Do More With Your Liquidity')}
+        </Text>
         <Text sx={styles.slideSubtitle}>
           {t('Leverage ApeSwap’s new V3 capabilities to concentrate your liquidity depth.')}
         </Text>

@@ -25,7 +25,7 @@ export const styles: Record<
     flexDirection: 'column',
     padding: ['0 10px', '0 10px 0 0', '0'],
     maxWidth: ['325px', '325px', '500px'],
-    minWidth: '285px',
+    minWidth: ['285px', '285px', '452px'],
   },
   slideTitle: {
     fontSize: ['45px', '45px', '64px'],
