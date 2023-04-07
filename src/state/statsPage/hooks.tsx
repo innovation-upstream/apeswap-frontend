@@ -1,8 +1,8 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
-import { ApiResponse, ChainOption } from './types'
-import { mapChain, rawToPortfolio, PortfolioData, rawToProjected, ProjectedData } from './mappings'
+import { ApiResponse, Chain } from './types'
+import { rawToPortfolio, PortfolioData, rawToProjected, ProjectedData } from './mappings'
 import { NftInfo, rawToNfts } from './mappings/rawToNfts'
 import { fetchStatsData } from './api'
 import { rawToVested, Vested } from './mappings/rawToVested'
@@ -17,8 +17,8 @@ interface StatsContextData {
   projectedData: ProjectedData[]
   nfts: NftInfo[]
   vestedProducts: Vested[]
-  selectedChain: ChainOption
-  handleChangeSelectedChain: (option: ChainOption) => void
+  selectedChain: Chain | 0
+  handleChangeSelectedChain: (chain: Chain) => void
   loading: boolean
 }
 
@@ -31,16 +31,14 @@ export function StatsProvider({ children }: StatsProviderProps) {
   const [projectedData, setProjectedData] = useState<ProjectedData[]>([])
   const [nfts, setNfts] = useState<NftInfo[]>([])
   const [vestedProducts, setVestedProducts] = useState<Vested[]>([])
-  const [selectedChain, setSelectedChain] = useState<ChainOption>('all')
+  const [selectedChain, setSelectedChain] = useState<Chain | 0>(0)
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchStats = async () => {
       setLoading(true)
 
-      const chain = mapChain(selectedChain)
-
-      const statsData = await fetchStatsData(`${account}${chain ? `?chain=${chain}` : ''}`)
+      const statsData = await fetchStatsData(`${account}${selectedChain ? `?chain=${selectedChain}` : ''}`)
 
       setStats(statsData)
       setPortfolioData(rawToPortfolio(statsData))
@@ -56,8 +54,8 @@ export function StatsProvider({ children }: StatsProviderProps) {
     }
   }, [account, selectedChain])
 
-  const handleChangeSelectedChain = (option: ChainOption) => {
-    setSelectedChain(option)
+  const handleChangeSelectedChain = (chain: Chain) => {
+    setSelectedChain(chain)
   }
 
   return (

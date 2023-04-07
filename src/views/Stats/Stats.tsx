@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { Flex, Text } from '@ape.swap/uikit'
 import { Select, SelectItem } from '@apeswapfinance/uikit'
+import { ChainId } from '@ape.swap/sdk'
 
 import { useTranslation } from 'contexts/Localization'
 
@@ -9,7 +10,7 @@ import useIsMobile from 'hooks/useIsMobile'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 import { useStats } from 'state/statsPage/hooks'
-import { ChainOption } from 'state/statsPage/types'
+import { Chain } from 'state/statsPage/types'
 
 import Page from 'components/layout/Page'
 import ConnectButton from 'components/LiquidityWidget/ConnectButton'
@@ -23,23 +24,28 @@ import { ShareButton } from './components/ShareButton'
 import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
 
 import { Pacoca, PacocaCard, StatsContent, StyledFlex, TopContent } from './styles'
+import { CHAIN_NAME } from 'state/statsPage/mappings'
 
 const displayChainOptions = [
   {
     label: 'All Chains',
-    value: 'all',
+    chain: 0,
   },
   {
-    label: 'BNB Chain',
-    value: 'bnb',
+    label: CHAIN_NAME[ChainId.BSC],
+    chain: ChainId.BSC,
   },
   {
-    label: 'Polygon',
-    value: 'polygon',
+    label: CHAIN_NAME[ChainId.MATIC],
+    chain: ChainId.MATIC,
   },
   {
-    label: 'Telos',
-    value: 'telos',
+    label: CHAIN_NAME[ChainId.TLOS],
+    chain: ChainId.TLOS,
+  },
+  {
+    label: CHAIN_NAME[ChainId.ARBITRUM],
+    chain: ChainId.ARBITRUM,
   },
 ]
 
@@ -74,15 +80,13 @@ const Stats: React.FC = () => {
             size="sm"
             width={isMobile ? '100%' : '122px'}
             height="36px"
-            onChange={(e) => handleChangeSelectedChain(e.target.value as ChainOption)}
+            onChange={(e) => handleChangeSelectedChain(+e.target.value as Chain)}
             active={selectedChain}
           >
             {displayChainOptions.map((option) => {
               return (
-                <SelectItem key={option.label} value={option.value} size="sm">
-                  <Text size="12px" fontWeight={500} style={{ lineHeight: 1.5 }}>
-                    {t(option.label)}
-                  </Text>
+                <SelectItem key={option.chain} value={option.chain} size="sm">
+                  <Text style={{ lineHeight: 1.5, fontSize: 12, fontWeight: 500 }}>{t(option.label)}</Text>
                 </SelectItem>
               )
             })}

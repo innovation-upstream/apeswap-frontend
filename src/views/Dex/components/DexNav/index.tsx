@@ -8,6 +8,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import SettingsModal from 'components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
 import SquidBridge from 'components/SquidBridge/SquidBridge'
+import { Link as ThemeLink, Switch } from 'theme-ui'
 
 interface DexNavProps {
   zapSettings?: boolean
@@ -20,6 +21,8 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
   const { pathname } = history.location
   const BRIDGE_SUPPORTED_CHAINS = [ChainId.BSC, ChainId.ARBITRUM, ChainId.MATIC, ChainId.MAINNET]
 
+  const onOrders = pathname?.includes('orders')
+
   const onLiquidity =
     pathname?.includes('add-liquidity') ||
     pathname?.includes('liquidity') ||
@@ -31,6 +34,10 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
 
   const [onPresentSettingsModal] = useModal(<SettingsModal zapSettings={zapSettings} />)
   const [onBridgeModal] = useModal(<SquidBridge />)
+
+  const v3Link = `${process.env.REACT_APP_APESWAP_URL}${pathname}`
+  const showV3Liquidity = onLiquidity && [ChainId.BSC, ChainId.MATIC].includes(chainId)
+
   return (
     <Flex sx={styles.dexNavContainer}>
       <Flex
@@ -77,6 +84,103 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
         </Text>
       </Flex>
       <Flex sx={{ ...styles.navIconContainer }}>
+        {!onOrders && chainId !== ChainId.TLOS ? (
+          onLiquidity ? (
+            showV3Liquidity && (
+              <Flex
+                as={ThemeLink}
+                href={v3Link}
+                rel="noopener noreferrer"
+                // onClick={() => push(pathname.includes('/v2') ? '/add-liquidity' : '/add-liquidity/v2')}
+                sx={{
+                  position: 'relative',
+                  mr: ['0px', '0px', '10px'],
+                  height: 'fit-content',
+                  minWidth: 'fit-content',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  zIndex: 2,
+                }}
+              >
+                <Text
+                  size="13px"
+                  weight={700}
+                  color="primaryBright"
+                  sx={{ position: 'absolute', zIndex: 1, right: 3, mt: '2px' }}
+                >
+                  V2
+                </Text>
+                <Switch
+                  onClick={() => window.location.replace(v3Link)}
+                  // onChange={() => push(pathname.includes('/v2') ? '/add-liquidity' : '/add-liquidity/v2')}
+                  checked={false}
+                  sx={{
+                    mr: '0px',
+                    width: '50px',
+                    borderRadius: '10px',
+                    backgroundColor: 'yellow',
+                    '& > div': {
+                      transform: 'translateX(0%)',
+                    },
+                    'input:checked ~ &': {
+                      background: 'linear-gradient(90deg, rgba(161, 101, 82, 1) 0%, rgba(255, 179, 0, 1)) 100%',
+                      '> div': {
+                        transform: 'translateX(28px)',
+                      },
+                    },
+                  }}
+                />
+              </Flex>
+            )
+          ) : (
+            <Flex
+              as={ThemeLink}
+              href={v3Link}
+              rel="noopener noreferrer"
+              // onClick={() => push(pathname.includes('/v2') ? '/add-liquidity' : '/add-liquidity/v2')}
+              sx={{
+                position: 'relative',
+                mr: ['0px', '0px', '10px'],
+                height: 'fit-content',
+                minWidth: 'fit-content',
+                alignItems: 'center',
+                cursor: 'pointer',
+                zIndex: 2,
+              }}
+            >
+              <Text
+                size="13px"
+                weight={700}
+                color="primaryBright"
+                sx={{ position: 'absolute', zIndex: 1, right: 3, mt: '2px' }}
+              >
+                V2
+              </Text>
+              <Switch
+                onClick={() => window.location.replace(v3Link)}
+                // onChange={() => push(pathname.includes('/v2') ? '/add-liquidity' : '/add-liquidity/v2')}
+                checked={false}
+                sx={{
+                  mr: '0px',
+                  width: '50px',
+                  borderRadius: '10px',
+                  backgroundColor: 'yellow',
+                  '& > div': {
+                    transform: 'translateX(0%)',
+                  },
+                  'input:checked ~ &': {
+                    background: 'linear-gradient(90deg, rgba(161, 101, 82, 1) 0%, rgba(255, 179, 0, 1)) 100%',
+                    '> div': {
+                      transform: 'translateX(28px)',
+                    },
+                  },
+                }}
+              />
+            </Flex>
+          )
+        ) : (
+          <></>
+        )}
         <Flex sx={styles.iconCover} onClick={() => history.push({ search: `?modal=tutorial` })}>
           <Svg icon="quiz" />
         </Flex>

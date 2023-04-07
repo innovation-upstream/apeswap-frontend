@@ -1,24 +1,15 @@
-import { ChainOption } from '../types'
+import { ChainId } from '@ape.swap/sdk'
 
 export * from './rawToPortfolio'
 export * from './rawToProjected'
 
-export const supportedChains = [40, 56, 137] as const
+export const supportedChains = [ChainId.TLOS, ChainId.BSC, ChainId.MATIC, ChainId.ARBITRUM] as const
 
-export function mapChain(option: ChainOption) {
-  switch (option) {
-    case 'telos':
-      return 40
-
-    case 'bnb':
-      return 56
-
-    case 'polygon':
-      return 137
-
-    default:
-      return null
-  }
+export const CHAIN_NAME = {
+  [ChainId.TLOS]: 'Telos',
+  [ChainId.BSC]: 'BNB Chain',
+  [ChainId.MATIC]: 'Polygon',
+  [ChainId.ARBITRUM]: 'Arbitrum',
 }
 
 export const initialStatsData = {

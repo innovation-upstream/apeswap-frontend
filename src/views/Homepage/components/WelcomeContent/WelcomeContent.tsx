@@ -10,8 +10,9 @@ import SwiperCore from 'swiper'
 import { getDotPos } from 'utils/getDotPos'
 import { Bubble } from '../News/styles'
 import DefiRedefined from './slides/DefiRedefined'
+import ApeSwapV3 from './slides/ApeSwapV3'
 
-const slides = [<DefiRedefined key={0} />]
+const slides = [<DefiRedefined key={0} />, <ApeSwapV3 key={1} />]
 
 const WelcomeContent: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState(0)
@@ -36,7 +37,7 @@ const WelcomeContent: React.FC = () => {
               <Swiper
                 id="homeSwiper"
                 autoplay={{
-                  delay: 100000,
+                  delay: 15000,
                   disableOnInteraction: false,
                 }}
                 onSwiper={setSwiper}
