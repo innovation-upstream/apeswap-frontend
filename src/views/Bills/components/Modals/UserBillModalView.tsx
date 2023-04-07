@@ -52,7 +52,7 @@ const BILL_ATTRIBUTES = ['The Legend', 'The Location', 'The Moment', 'The Trend'
 const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const { token, quoteToken, earnToken, billType, lpToken, index, userOwnedBillsData, userOwnedBillsNftData } = bill
+  const { token, quoteToken, earnToken, lpToken, index, userOwnedBillsData, userOwnedBillsNftData } = bill
   const userOwnedBill = userOwnedBillsData?.find((b) => parseInt(b.id) === parseInt(billId))
   const userOwnedBillNftData = userOwnedBillsNftData?.find((b) => parseInt(b.tokenId) === parseInt(billId))
   const pending = getBalanceNumber(new BigNumber(userOwnedBill?.payout), bill?.earnToken?.decimals[chainId])?.toFixed(4)
@@ -92,7 +92,6 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill, billId })
           <BillDescriptionContainer width="100%">
             <Flex flexDirection="column">
               <BillTitleContainer>
-                <TopDescriptionText>{billType}</TopDescriptionText>
                 <Flex alignItems="center">
                   <ServiceTokenDisplay
                     token1={token.symbol}
