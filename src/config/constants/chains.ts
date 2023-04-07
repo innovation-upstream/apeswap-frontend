@@ -360,7 +360,7 @@ export const AVAILABLE_CHAINS_ON_PRODUCTS: Record<OTHER_PRODUCTS, ChainId[]> = {
 
 // Full product names for readability
 export const FULL_PRODUCT_NAMES: Record<LIST_VIEW_PRODUCTS | OTHER_PRODUCTS, string> = {
-  [LIST_VIEW_PRODUCTS.BILLS]: 'Treasury Bills',
+  [LIST_VIEW_PRODUCTS.BILLS]: 'ApeSwap Bonds',
   [LIST_VIEW_PRODUCTS.MAXIMIZERS]: 'Banana Maximizers',
   [LIST_VIEW_PRODUCTS.JUNGLE_FARMS]: 'Jungle Farms',
   [LIST_VIEW_PRODUCTS.POOLS]: 'Pools',

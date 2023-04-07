@@ -16,8 +16,8 @@ import BillsListView from './components/BillsListView'
 import { styles } from './styles'
 
 export enum BillsView {
-  AVAILABLE_BILLS = 'Available Bills',
-  YOUR_BILLS = 'Your Bills',
+  AVAILABLE_BILLS = 'Available Bonds',
+  YOUR_BILLS = 'Your Bonds',
 }
 
 const Bills: React.FC = () => {
@@ -36,12 +36,11 @@ const Bills: React.FC = () => {
       <Flex sx={styles.billsViewContainer}>
         <ListViewLayout>
           <Banner
-            banner={`${chainId}-treasury-bills` as BannerTypes}
-            title={t('Treasury Bills')}
+            banner={`treasury-bills` as BannerTypes}
+            title={t('ApeSwap Bonds')}
             link="?modal=tutorial"
             listViewBreak
             maxWidth={1130}
-            titleColor="primaryBright"
           />
           {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS].includes(chainId) ? (
             <Flex sx={{ mt: '20px' }}>

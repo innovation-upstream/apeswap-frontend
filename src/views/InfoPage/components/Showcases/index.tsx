@@ -33,8 +33,8 @@ const InfoShowcases = () => {
       imgDay: '/images/info/bills-day.svg',
       imgNight: '/images/info/bills-night.svg',
       alt: 'Maximizers Spotlight',
-      link: '/treasury-bills',
-      title: 'Trending Bills',
+      link: '/bonds',
+      title: 'Trending Bonds',
       type: 'billDetails',
     },
   ]

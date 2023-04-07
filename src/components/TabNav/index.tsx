@@ -61,7 +61,7 @@ export const TabNav: React.FC<TabNavProps> = ({ tabOptions, activeTab, onChangeA
                     </Text>
                   </Flex>
                 )}
-                {tab === 'Your Bills' && ` (${ownedBillsAmount})`}
+                {tab === 'Your Bonds' && ` (${ownedBillsAmount})`}
               </Flex>
             </Tab>
           ))}

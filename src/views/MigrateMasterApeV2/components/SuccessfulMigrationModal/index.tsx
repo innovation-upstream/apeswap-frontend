@@ -99,7 +99,7 @@ const SuccessfulMigrationModal: React.FC<{ migrationCompleteLog: MigrationComple
             </Flex>
           </Flex>
         </Link>
-        <Link href="/treasury-bills" sx={{ width: '100%', color: 'primaryBright' }}>
+        <Link href="/bonds" sx={{ width: '100%', color: 'primaryBright' }}>
           <Flex
             sx={{
               mt: '20px',

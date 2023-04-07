@@ -74,8 +74,8 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     darkIcon: 'OfferingsDarkImage',
     items: [
       {
-        label: t('Treasury Bills'),
-        href: '/treasury-bills',
+        label: t('Bonds'),
+        href: '/bonds',
         isNew: false,
       },
       {

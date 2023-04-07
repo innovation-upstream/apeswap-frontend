@@ -19,7 +19,7 @@ export interface PortfolioData {
   totalEarnings: number
 }
 
-const productTypes = ['farms', 'pools', 'vaults', 'jungleFarms', 'lending', 'maximizers', 'bills', 'iaos'] as const
+const productTypes = ['farms', 'pools', 'vaults', 'jungleFarms', 'lending', 'maximizers', 'bonds', 'iaos'] as const
 
 function initProducts(): PortfolioData[] {
   return productTypes.map((type) => ({
@@ -97,7 +97,7 @@ export function rawToPortfolio({ userStats, bananaPrice }: ApiResponse) {
       const positionData = billToPosition(bill)
       const positionEarnings = positionData.rewardBalance * positionData.rewardToken.price
 
-      const product = products.find((p) => p.type === 'bills')
+      const product = products.find((p) => p.type === 'bonds')
 
       product.chainData[chainId].push(positionData)
       product.totalValue += positionData.value

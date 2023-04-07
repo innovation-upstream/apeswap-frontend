@@ -30,8 +30,8 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     isNew: false,
   },
   {
-    label: t('Bills'),
-    href: '/treasury-bills',
+    label: t('Bonds'),
+    href: '/bonds',
     isNew: true,
   },
   {

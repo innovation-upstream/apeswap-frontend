@@ -61,7 +61,7 @@ const FirstTimeCard = () => {
               </BillGifContainer>
               <DescriptionContainer>
                 <Text fontSize="22px" bold>
-                  {t('Tips for buying bills')}
+                  {t('Tips for buying bonds')}
                 </Text>
                 <BillDiagramContainer>
                   <BillsDiagram />

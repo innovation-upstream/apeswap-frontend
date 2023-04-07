@@ -90,10 +90,10 @@ const Tutorial: React.FC<{
           isConnected: !!account,
         }
       }
-      case '/treasury-bills': {
+      case '/bonds': {
         return {
-          type: 'treasury-bills',
-          title: 'Welcome to Treasury Bills',
+          type: 'bonds',
+          title: 'Welcome to ApeSwap Bonds',
           description: 'Buy tokens at a discount and obtain a unique NFT!',
           slides: account ? BillsSlides() : [<ConnectWalletSlide key={0} />, ...BillsSlides()],
           isConnected: !!account,

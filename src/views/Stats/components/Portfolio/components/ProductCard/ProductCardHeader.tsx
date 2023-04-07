@@ -38,8 +38,8 @@ export const ProductCardHeader: React.FC<ProductCardHeaderProps> = ({
       case 'lending':
         return 'Lending Network'
 
-      case 'bills':
-        return 'Treasury Bills'
+      case 'bonds':
+        return 'ApeSwap Bonds'
 
       case 'jungleFarms':
         return 'Jungle Farms'
