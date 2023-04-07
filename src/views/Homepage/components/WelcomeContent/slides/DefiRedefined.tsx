@@ -39,7 +39,7 @@ const DefiRedefined = () => {
               <CountUp end={rawStats?.bondingPartnerCount} decimals={0} duration={3} separator="," />{' '}
             </Text>
           )}
-          {t('communities that are building project-owned liquidity through ApeSwap Bonds.')}
+          {t('communities building project-owned liquidity through ApeSwap Bonds.')}
         </Text>
         <Flex sx={{ alignItems: 'center', marginTop: ['25px', '25px', '0px'] }}>
           <Text sx={styles.availableOn}>{t('BILLS AVAILABLE ON')}</Text>
