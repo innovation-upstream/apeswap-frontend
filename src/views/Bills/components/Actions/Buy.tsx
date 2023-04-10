@@ -260,7 +260,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
         <BillValueContainer>
           <TextWrapper>
             <Text size="12px" pr={1}>
-              {t('Bill Value')}:{' '}
+              {t('Bond Value')}:{' '}
               <span style={{ fontWeight: 700 }}>
                 {billValue === 'NaN' ? '0' : parseFloat(billValue)?.toLocaleString(undefined)} {earnToken?.symbol}
               </span>
@@ -268,7 +268,7 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
           </TextWrapper>
           <TextWrapper>
             <Text size="12px">
-              {t('Max per Bill')}:{' '}
+              {t('Max per Bond')}:{' '}
               <span style={{ fontWeight: 700 }}>
                 {!available ? '0' : parseFloat(displayAvailable.toFixed(0))?.toLocaleString(undefined)}{' '}
                 {earnToken?.symbol}

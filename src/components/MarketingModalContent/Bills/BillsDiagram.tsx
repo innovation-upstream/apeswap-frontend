@@ -21,16 +21,16 @@ const BillsDiagram: React.FC = () => {
       </Content>
       <Content>
         <BillsM2 width={50} bgColor={theme.theme.colors.white4} color={theme.theme.colors.text} mr={15} />
-        <RightText>{t('Use Zap ⚡ to purchase a Bill with a single token or create an LP.')}</RightText>
+        <RightText>{t('Use Zap ⚡ to purchase a Bond with a single token or create an LP.')}</RightText>
       </Content>
       <Content>
         <BillsM3 width={50} bgColor={theme.theme.colors.white4} color={theme.theme.colors.text} mr={15} />
-        <RightText>{t('To mint a full color NFT, purchase a Bill with a value of $25 or more.')}</RightText>
+        <RightText>{t('To mint a full color NFT, purchase a Bond with a value of $25 or more.')}</RightText>
       </Content>
       <Flex sx={{ margin: '22px 0 0 0', '@media screen and (min-width: 852px)': { margin: '22px 0 0 63px' } }}>
         <Text size="12px" weight={500}>
           <WarningIcon width="15px" mr="5px" color="text" style={{ transform: 'translate(0px, 3px)' }} />
-          {t('Treasury Bills have a limited supply and will sell out. Check out the ')}
+          {t('ApeSwap Bonds have a limited supply and will sell out. Check out the ')}
           <InnerTextButton
             href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills"
             target="_blank"

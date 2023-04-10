@@ -29,7 +29,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ productData }) => {
     setIsOpen(!isOpen)
   }
 
-  const isBillsOrIAOs = productData.type === 'bills' || productData.type === 'iaos'
+  const isBillsOrIAOs = productData.type === 'bonds' || productData.type === 'iaos'
 
   const displayFirstLabel = (type: string) => {
     if (type === 'farms' || type === 'jungleFarms') return 'Liquidity Pool'
@@ -38,7 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ productData }) => {
 
     if (type === 'maximizers') return 'Vault'
 
-    if (type === 'bills') return 'Bill'
+    if (type === 'bonds') return 'Bond'
 
     return ''
   }

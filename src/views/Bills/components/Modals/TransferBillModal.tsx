@@ -24,9 +24,9 @@ const TransferBillModal: React.FC<TransferBillModalProps> = ({ onDismiss, bill, 
   const userOwnedBill = userOwnedBillsData?.find((b) => parseInt(b.id) === parseInt(billId))
   const pending = getBalanceNumber(new BigNumber(userOwnedBill?.payout), bill?.earnToken?.decimals[chainId])?.toFixed(4)
   return (
-    <Modal onDismiss={onDismiss} maxWidth="385px" title="Transfer Bill">
+    <Modal onDismiss={onDismiss} maxWidth="385px" title="Transfer Bond">
       <Flex mt="30px">
-        <Text bold> {t('Transfering')}: </Text>
+        <Text bold> {t('Transferring')}: </Text>
       </Flex>
       <Flex mt="30px" flexDirection="column" alignItems="center" mr="10px">
         <Text bold fontSize="25px">

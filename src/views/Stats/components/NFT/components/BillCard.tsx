@@ -39,7 +39,7 @@ export const BillCard: React.FC<BillProps> = ({ chain, imageUrl, name, type, tok
               tokensMargin={-6}
             />
             <div>
-              <StyledText marginTop="0 !important">{type.toUpperCase()} Bill</StyledText>
+              <StyledText marginTop="0 !important">{type.toUpperCase()} Bond</StyledText>
               <Text fontWeight={700}>{name}</Text>
             </div>
           </Flex>

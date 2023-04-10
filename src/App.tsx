@@ -157,7 +157,7 @@ const App: React.FC = () => {
             <Route path="/maximizers">
               <Vaults />
             </Route>
-            <Route path="/treasury-bills">
+            <Route path="/bonds">
               <Bills />
             </Route>
             <Route path="/admin-pools">

@@ -457,7 +457,7 @@ export const BillsSlides = () => {
       slideContent={
         <>
           <Text>
-            {t('Click or tap BUY on the desired Bill and ENABLE it. Then, approve the transaction in your wallet.')}
+            {t('Click or tap BUY on the desired Bond and ENABLE it. Then, approve the transaction in your wallet.')}
           </Text>
           <Text sx={{ fontStyle: 'italic' }}>{t("You'll see the tokens' discount compared to market price.")}</Text>
         </>
@@ -529,7 +529,7 @@ export const BillsSlides = () => {
             >
               <Text sx={styles.tipTitle}>ZAP</Text>
             </TooltipBubble>{' '}
-            {t('to buy bills with single tokens!')}
+            {t('to buy bonds with single tokens!')}
           </Text>
         </>
       }
@@ -550,14 +550,14 @@ export const BillsSlides = () => {
               transformTip={`translate(${isMobile ? '10%' : '0'}, 2%)`}
               body={
                 <Flex sx={styles.tipBody}>
-                  {t('Transferring a Treasury Bill NFT will also transfer any unclaimed tokens to the new holder.')}
+                  {t('Transferring an ApeSwap Bond NFT will also transfer any unclaimed tokens to the new holder.')}
                 </Flex>
               }
               sx={{ width: ['200px', '200px', '350px'] }}
             >
               <Text sx={styles.tipTitle}>{t('TRANSFER')}</Text>
             </TooltipBubble>{' '}
-            {t('your Bill NFTs to other wallets!')}
+            {t('your Bond NFTs to other wallets!')}
           </Text>
         </>
       }
