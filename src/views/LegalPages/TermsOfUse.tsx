@@ -201,7 +201,7 @@ const TermsOfUse: React.FC = () => {
           Company may assign, transfer, or delegate this Agreement or any right or obligation or remedy hereunder in its
           sole discretion. No waiver by either party of any breach or default hereunder shall be deemed to be a waiver
           of any preceding or subsequent breach or default. Except as explicitly stated otherwise, legal notices shall
-          be served on the Company at legal@ApeSwapfinance.com. Notice to you shall be deemed given 24 hours after the
+          be served on the Company at legal@ApeSwap.finance. Notice to you shall be deemed given 24 hours after the
           e-mail is sent. For just common notices to the platform users in charge, you can you head to the Telegram or
           Discord space. Any heading, caption, or section title contained in this Agreement is inserted only as a matter
           of convenience, and in no way defines or explains any section or provision hereof.
