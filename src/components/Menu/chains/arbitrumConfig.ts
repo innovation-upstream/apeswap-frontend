@@ -25,8 +25,8 @@ const arbitrumConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     ],
   },
   {
-    label: t('Bills'),
-    href: '/treasury-bills',
+    label: t('Bonds'),
+    href: '/bonds',
     isNew: false,
   },
   {

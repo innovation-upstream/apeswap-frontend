@@ -25,7 +25,7 @@ const displayOptions = [
     value: 'NFB',
   },
   {
-    label: 'Bills',
+    label: 'Bonds',
     value: 'Bill',
   },
 ]

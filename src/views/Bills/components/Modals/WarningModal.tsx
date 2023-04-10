@@ -43,8 +43,8 @@ const WarningModal: React.FC<TransferBillModalProps> = ({ onDismiss, bill }) => 
         <Flex flexDirection="column">
           <Flex>
             <Text style={{ fontWeight: 600 }}>
-              The {bill.earnToken.symbol} you recieve from this {bill.token.symbol}-{bill.quoteToken.symbol} Treasury
-              Bill at a <span style={{ color: 'rgba(223, 65, 65, 1)' }}>{bill.discount}%</span> discount rate is priced
+              The {bill.earnToken.symbol} you recieve from this {bill.token.symbol}-{bill.quoteToken.symbol} ApeSwap
+              Bond at a <span style={{ color: 'rgba(223, 65, 65, 1)' }}>{bill.discount}%</span> discount rate is priced
               at <span style={{ textDecoration: 'underline' }}>${bill?.priceUsd}</span>, which is higher than the
               current market rate of{' '}
               <span style={{ textDecoration: 'underline' }}>${bill?.earnTokenPrice?.toFixed(3)} </span>

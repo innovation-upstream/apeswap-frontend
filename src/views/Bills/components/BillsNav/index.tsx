@@ -17,7 +17,7 @@ const BillsNav: React.FC<BillsNavProps> = ({ billsView, setBillsView }) => {
   return (
     <Container>
       <TabNav
-        tabOptions={['Available Bills', 'Your Bills']}
+        tabOptions={['Available Bonds', 'Your Bonds']}
         activeTab={billsView}
         onChangeActiveTab={setBillsView}
         ownedBillsAmount={ownedBillsAmount ? ownedBillsAmount : 0}

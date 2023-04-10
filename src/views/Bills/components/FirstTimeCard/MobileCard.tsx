@@ -23,7 +23,7 @@ const MobileCard = () => {
       <DescriptionContainer>
         <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
           <Text fontSize="22px" bold sx={{ margin: '0 0 5px 10px' }}>
-            {t('Tips for buying bills')}
+            {t('Tips for buying bonds')}
           </Text>
           <span style={{ marginRight: '10px', transform: 'translate(0, -3px)' }}>
             <Svg icon="caret" direction={expanded ? 'up' : 'down'} width="10px" />

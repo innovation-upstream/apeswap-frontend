@@ -47,7 +47,7 @@ export const VestedEarnings: React.FC = () => {
                       <ChainIcon chain={vesting.chain} width={isMobile ? 12 : 14} />
                     </ChainIndicator>
                     {'billId' in vesting
-                      ? `${vesting.type} Bill #${vesting.billId}`
+                      ? `${vesting.type} Bond #${vesting.billId}`
                       : `${vesting.earnToken?.symbol} IAO (${vesting.type})`}
                   </td>
                   <td>

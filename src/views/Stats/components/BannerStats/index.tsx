@@ -30,7 +30,7 @@ export const BannerStats = () => {
   const isMobile = useIsMobile()
 
   const calculateTotalEarnings = (filterBills?: boolean) => {
-    const products = filterBills ? portfolioData.filter((product) => product.type !== 'bills') : portfolioData
+    const products = filterBills ? portfolioData.filter((product) => product.type !== 'bonds') : portfolioData
 
     return products.reduce((acc, curr) => acc + curr.totalEarnings, 0)
   }

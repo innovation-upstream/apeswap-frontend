@@ -26,7 +26,7 @@ export const routeNames: Record<
   | '/limit-orders'
   | '/iao'
   | '/gnana'
-  | '/treasury-bills'
+  | '/bonds'
   | '/nft'
   | '/auction'
   | '/staking'
@@ -52,7 +52,7 @@ export const routeNames: Record<
   '/limit-orders': 'ORDERS',
   '/iao': 'IAO',
   '/gnana': 'GNANA',
-  '/treasury-bills': 'TREASURY_BILL',
+  '/bonds': 'APESWAP_BONDS',
   '/nft': 'NFT',
   '/auction': 'AUCTION',
   '/staking': 'STAKING',
@@ -81,7 +81,7 @@ export const DOC_LINKS = {
   ORDERS: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/exchange/limit-orders',
   IAO: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/initial-ape-offerings-iaos',
   GNANA: 'https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/gnana',
-  TREASURY_BILL: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills',
+  APESWAP_BONDS: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills',
   NFT: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/collect/non-fungible-apes-nfas',
   AUCTION:
     'https://apeswap.gitbook.io/apeswap-finance/product-and-features/collect/non-fungible-apes-nfas/nfa-auction-house',

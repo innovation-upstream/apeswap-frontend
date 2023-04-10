@@ -42,15 +42,15 @@ const EmptyList: React.FC<EmptyListComponentProps> = ({ type, handleBillsViewCha
         <Flex sx={styles.title}>
           <Text color="gray">
             {type === EmptyComponentType.AVAILABLE_BILLS &&
-              t(`All Treasury Bills on ${NETWORK_LABEL[chainId]} are sold out.`)}
-            {type === EmptyComponentType.USER_BILLS && t(`You don't have any bills`)}
+              t(`All ApeSwap Bonds on ${NETWORK_LABEL[chainId]} are sold out.`)}
+            {type === EmptyComponentType.USER_BILLS && t(`You don't have any bonds`)}
             {type === EmptyComponentType.NO_RESULTS && t('No results found')}
-            {type === EmptyComponentType.COMING_SOON && t('Bills coming soon')}
+            {type === EmptyComponentType.COMING_SOON && t('Bonds coming soon')}
           </Text>
         </Flex>
         <Text size="12px" sx={{ marginTop: '15px', opacity: '.5', textAlign: 'center' }}>
           {type === EmptyComponentType.AVAILABLE_BILLS && t('Switch to: ')}
-          {type === EmptyComponentType.USER_BILLS && t('Click below to purchase your first bill')}
+          {type === EmptyComponentType.USER_BILLS && t('Click below to purchase your first bond')}
         </Text>
         <Flex sx={styles.availableBills}>
           {type === EmptyComponentType.AVAILABLE_BILLS &&

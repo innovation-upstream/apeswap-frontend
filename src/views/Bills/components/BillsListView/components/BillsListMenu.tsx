@@ -74,7 +74,7 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
             <Flex>
               <Toggle
                 size="sm"
-                labels={[t('Available'), t('Sold out')]}
+                labels={[t('Available'), t('Sold Out')]}
                 onClick={() => setShowAvailable(!showAvailable)}
                 checked={!showAvailable}
                 sx={{ height: '36px', alignItems: 'center' }}
@@ -105,7 +105,7 @@ const BillsListMenu: React.FC<BillsListMenuProps> = ({
           <Flex sx={{ minWidth: '150px' }}>
             <Toggle
               size="sm"
-              labels={[t('Available'), t('Sold out')]}
+              labels={[t('Available'), t('Sold Out')]}
               onClick={() => setShowAvailable(!showAvailable)}
               checked={!showAvailable}
               sx={{ height: '36px', alignItems: 'center', width: '100%' }}

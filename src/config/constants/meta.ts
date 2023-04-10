@@ -63,8 +63,8 @@ export const customMeta: { [key: string]: PageMeta } = {
   '/staking': {
     title: 'NFA Staking | ApeSwap : Your One-Stop DeFi Hub',
   },
-  '/treasury-bills': {
-    title: 'Treasury Bills | ApeSwap : Your One-Stop DeFi Hub',
+  '/bonds': {
+    title: 'ApeSwap Bonds | ApeSwap : Your One-Stop DeFi Hub',
     description: 'Get BANANA and partner project tokens at a discount using your liquidity provider (LP) tokens.',
   },
   '/limit-orders': {
