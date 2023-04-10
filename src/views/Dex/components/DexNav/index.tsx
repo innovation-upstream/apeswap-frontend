@@ -40,15 +40,13 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
 
   return (
     <Flex sx={styles.dexNavContainer}>
-      <Flex
-        sx={{ ...styles.navLinkContainer, justifyContent: chainId === ChainId.BSC ? 'space-between' : 'flex-start' }}
-      >
+      <Flex sx={styles.navLinkContainer}>
         <Text
           size="14px"
           sx={{
             ...styles.navLink,
             color: !pathname?.includes('swap') && 'textDisabled',
-            mr: chainId === ChainId.BSC ? '0px' : '30px',
+            mr: '30px',
           }}
           as={Link}
           to="/swap"
@@ -57,12 +55,13 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
         >
           {t('Swap')}
         </Text>
-        {chainId === ChainId.BSC && (
+        {onOrders && (
           <Text
             size="14px"
             sx={{
               ...styles.navLink,
               color: !pathname?.includes('orders') && 'textDisabled',
+              mr: '30px',
             }}
             as={Link}
             to="/limit-orders"
@@ -83,7 +82,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
           {t('Liquidity')}
         </Text>
       </Flex>
-      <Flex sx={{ ...styles.navIconContainer }}>
+      <Flex sx={styles.navIconContainer}>
         {!onOrders && chainId !== ChainId.TLOS ? (
           onLiquidity ? (
             showV3Liquidity && (
@@ -94,7 +93,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
                 // onClick={() => push(pathname.includes('/v2') ? '/add-liquidity' : '/add-liquidity/v2')}
                 sx={{
                   position: 'relative',
-                  mr: ['0px', '0px', '10px'],
+                  mr: ['6px', '6px', '10px'],
                   height: 'fit-content',
                   minWidth: 'fit-content',
                   alignItems: 'center',
@@ -140,7 +139,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
               // onClick={() => push(pathname.includes('/v2') ? '/add-liquidity' : '/add-liquidity/v2')}
               sx={{
                 position: 'relative',
-                mr: ['0px', '0px', '10px'],
+                mr: ['6px', '6px', '10px'],
                 height: 'fit-content',
                 minWidth: 'fit-content',
                 alignItems: 'center',

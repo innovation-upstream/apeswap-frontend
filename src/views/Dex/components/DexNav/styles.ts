@@ -15,13 +15,12 @@ export const styles: Record<string, ThemeUIStyleObject> = {
     width: '100%',
     maxWidth: '225px',
     paddingRight: '20px',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
 
   navIconContainer: {
     width: '100%',
-    maxWidth: ['80px', '', 'none'],
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
