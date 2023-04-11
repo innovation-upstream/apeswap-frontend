@@ -64,7 +64,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
           <Tooltip
             tokenContract={bill?.earnToken?.address[chainId]}
             secondURL={billContractURL}
-            secondURLTitle={t('View Bill Contract')}
+            secondURLTitle={t('View Bond Contract')}
             twitter={bill?.twitter}
             projectLink={bill?.projectLink}
             audit={bill?.audit}
