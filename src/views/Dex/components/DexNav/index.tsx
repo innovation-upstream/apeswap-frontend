@@ -5,8 +5,9 @@ import { ChainId } from '@ape.swap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
+import SettingsModal from 'components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
+import SquidBridge from 'components/SquidBridge/SquidBridge'
 import { Link as ThemeLink, Switch } from 'theme-ui'
 
 interface DexNavProps {
@@ -18,6 +19,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const { pathname } = history.location
+  const BRIDGE_SUPPORTED_CHAINS = [ChainId.BSC, ChainId.ARBITRUM, ChainId.MATIC, ChainId.MAINNET]
 
   const onOrders = pathname?.includes('orders')
 
@@ -31,21 +33,20 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
     pathname?.includes('unstake')
 
   const [onPresentSettingsModal] = useModal(<SettingsModal zapSettings={zapSettings} />)
+  const [onBridgeModal] = useModal(<SquidBridge />)
 
   const v3Link = `${process.env.REACT_APP_APESWAP_URL}${pathname}`
   const showV3Liquidity = onLiquidity && [ChainId.BSC, ChainId.MATIC].includes(chainId)
 
   return (
     <Flex sx={styles.dexNavContainer}>
-      <Flex
-        sx={{ ...styles.navLinkContainer, justifyContent: chainId === ChainId.BSC ? 'space-between' : 'flex-start' }}
-      >
+      <Flex sx={styles.navLinkContainer}>
         <Text
           size="14px"
           sx={{
             ...styles.navLink,
             color: !pathname?.includes('swap') && 'textDisabled',
-            mr: chainId === ChainId.BSC ? '0px' : '30px',
+            mr: '30px',
           }}
           as={Link}
           to="/swap"
@@ -54,12 +55,13 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
         >
           {t('Swap')}
         </Text>
-        {chainId === ChainId.BSC && (
+        {onOrders && (
           <Text
             size="14px"
             sx={{
               ...styles.navLink,
               color: !pathname?.includes('orders') && 'textDisabled',
+              mr: '30px',
             }}
             as={Link}
             to="/limit-orders"
@@ -80,7 +82,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
           {t('Liquidity')}
         </Text>
       </Flex>
-      <Flex sx={{ ...styles.navIconContainer }}>
+      <Flex sx={styles.navIconContainer}>
         {!onOrders && chainId !== ChainId.TLOS ? (
           onLiquidity ? (
             showV3Liquidity && (
@@ -91,7 +93,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
                 // onClick={() => push(pathname.includes('/v2') ? '/add-liquidity' : '/add-liquidity/v2')}
                 sx={{
                   position: 'relative',
-                  mr: ['0px', '0px', '10px'],
+                  mr: ['6px', '6px', '10px'],
                   height: 'fit-content',
                   minWidth: 'fit-content',
                   alignItems: 'center',
@@ -137,7 +139,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
               // onClick={() => push(pathname.includes('/v2') ? '/add-liquidity' : '/add-liquidity/v2')}
               sx={{
                 position: 'relative',
-                mr: ['0px', '0px', '10px'],
+                mr: ['6px', '6px', '10px'],
                 height: 'fit-content',
                 minWidth: 'fit-content',
                 alignItems: 'center',
@@ -181,7 +183,14 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
         <Flex sx={styles.iconCover} onClick={() => history.push({ search: `?modal=tutorial` })}>
           <Svg icon="quiz" />
         </Flex>
-        <Flex sx={styles.iconCover} onClick={() => window.open('https://app.multichain.org/#/router', '_blank')}>
+        <Flex
+          sx={styles.iconCover}
+          onClick={
+            BRIDGE_SUPPORTED_CHAINS.includes(chainId)
+              ? onBridgeModal
+              : () => window.open('https://app.multichain.org/#/router', '_blank')
+          }
+        >
           <Svg icon="bridge" />
         </Flex>
         <CogIcon sx={{ cursor: 'pointer' }} width={24} onClick={onPresentSettingsModal} />

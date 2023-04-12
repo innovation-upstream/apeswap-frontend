@@ -18,10 +18,13 @@ import { useTranslation } from 'contexts/Localization'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
 import { styles } from './styles'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { ChainId } from '@ape.swap/sdk'
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
   max-height: 400px;
+
   ${({ theme }) => theme.mediaQueries.sm} {
     max-height: none;
   }
@@ -41,6 +44,7 @@ const SettingsModal: React.FC<Props> = ({ onDismiss, zapSettings }) => {
   const [bonusRouterDisabled, toggleSetBonusRouter] = useBonusRouterManager()
   const { onChangeRecipient } = useSwapActionHandlers()
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
 
   if (showConfirmExpertModal) {
     return (
@@ -122,6 +126,13 @@ const SettingsModal: React.FC<Props> = ({ onDismiss, zapSettings }) => {
               <Switch sx={styles.switch} checked={bonusRouterDisabled} onChange={toggleSetBonusRouter} />
             </Flex>
           </Flex>
+          {chainId === ChainId.BSC && (
+            <Flex sx={{ margin: '5px 0px', textDecoration: 'underline' }}>
+              <a href="/limit-orders">
+                <Text weight={500}>{t('View Limit Orders')}</Text>
+              </a>
+            </Flex>
+          )}
         </ScrollableContainer>
       )}
     </Modal>
