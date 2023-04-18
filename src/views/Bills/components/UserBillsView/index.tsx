@@ -73,11 +73,14 @@ const UserBillsView: React.FC<UserBillsViewProps> = ({ handleBillsViewChange }) 
         return bill.lpToken.symbol.toUpperCase().includes(query.toUpperCase())
       })
     }
-    if (filterOption === 'bananaBill') {
-      billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'BANANA Bill'.toUpperCase())
+    if (filterOption === 'liquidity') {
+      billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'liquidity'.toUpperCase())
     }
-    if (filterOption === 'jungleBill') {
-      billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'JUNGLE Bill'.toUpperCase())
+    if (filterOption === 'reserve') {
+      billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'reserve'.toUpperCase())
+    }
+    if (filterOption === 'launch') {
+      billsToReturn = billsToReturn?.filter((bill) => bill.billType.toUpperCase() === 'launch'.toUpperCase())
     }
     const flatMapBeforeSorting = billsToReturn?.flatMap((bill) => {
       if (!bill?.userOwnedBillsData || bill?.userOwnedBillsData?.length < 0) return []

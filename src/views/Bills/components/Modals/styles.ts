@@ -118,7 +118,7 @@ export const UserActionButtonsContainer = styled(ActionButtonsContainer)`
 
 export const StyledHeadingText = styled(Text)`
   font-size: 12px;
-  align-self: center;
+  align-self: left;
   @media screen and (min-width: 1180px) {
     font-size: 22px;
   }

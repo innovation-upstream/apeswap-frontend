@@ -251,9 +251,9 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
           onUserInput={onHandleValueChange}
           value={typedValue}
           onCurrencySelect={handleCurrencySelect}
-          inputCurrencies={inputCurrencies}
+          inputCurrencies={billType !== 'reserve' ? inputCurrencies : [inputCurrencies[0]]}
           lpList={[billsCurrencies]}
-          enableZap={true}
+          enableZap={billType !== 'reserve'}
         />
       </Flex>
       <Flex sx={styles.detailsContainer}>
@@ -277,13 +277,15 @@ const Buy: React.FC<BuyProps> = ({ bill, onBillId, onTransactionSubmited }) => {
           </TextWrapper>
         </BillValueContainer>
         <Flex sx={{ ...styles.buttonsContainer }}>
-          <Box sx={styles.getLpContainer}>
-            <GetLPButton variant="secondary" onClick={() => onAddLiquidityModal(token, quoteToken, null, null, null)}>
-              <StyledText sx={{ marginRight: '5px' }}>{t('Get LP')}</StyledText>
-              <Svg icon="ZapIcon" color="yellow" />
-            </GetLPButton>
-          </Box>
-          <Box sx={styles.buyButtonContainer}>
+          {billType !== 'reserve' && (
+            <Box sx={styles.getLpContainer}>
+              <GetLPButton variant="secondary" onClick={() => onAddLiquidityModal(token, quoteToken, null, null, null)}>
+                <StyledText sx={{ marginRight: '5px' }}>{t('Get LP')}</StyledText>
+                <Svg icon="ZapIcon" color="yellow" />
+              </GetLPButton>
+            </Box>
+          )}
+          <Box sx={billType !== 'reserve' ? styles.buyButtonContainer : styles.buyButtonContainerFull}>
             <BillActions
               bill={bill}
               zap={zap}

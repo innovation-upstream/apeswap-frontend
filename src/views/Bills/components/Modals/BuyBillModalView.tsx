@@ -42,7 +42,7 @@ interface BillModalProps {
 
 const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
   const { t } = useTranslation()
-  const { token, quoteToken, earnToken, lpToken, discount, earnTokenPrice } = bill
+  const { token, quoteToken, earnToken, lpToken, discount, earnTokenPrice, billType } = bill
   const discountEarnTokenPrice = earnTokenPrice - earnTokenPrice * (parseFloat(discount) / 100)
 
   const [billId, setBillId] = useState('')
@@ -82,10 +82,10 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
                   <Flex alignItems="center">
                     <ServiceTokenDisplay
                       token1={token.symbol}
-                      token2={quoteToken.symbol}
+                      token2={bill.billType === 'reserve' ? earnToken.symbol : quoteToken.symbol}
                       token3={earnToken.symbol}
                       billArrow
-                      stakeLp
+                      stakeLp={billType !== 'reserve'}
                     />
                     <Flex flexDirection="column">
                       <StyledHeadingText ml="10px" bold>

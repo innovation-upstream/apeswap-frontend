@@ -10,6 +10,7 @@ import BillModal from '../../Modals'
 import { BillsToRender } from '../types'
 import ListViewContentMobile from 'components/ListViewV2/ListViewContent'
 import { formatNumberSI } from 'utils/formatNumber'
+import { ListTagVariants } from '@ape.swap/uikit'
 
 const CardView: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender }) => {
   const { chainId } = useActiveWeb3React()
@@ -35,7 +36,7 @@ const CardView: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRender 
           style={{ height: '75px', width: '100%' }}
         >
           <ListViewContentMobile
-            tag="ape"
+            tag={bill.billType as ListTagVariants}
             value={bill.lpToken.symbol}
             style={{ height: '35px', width: '130px', flexDirection: 'column' }}
           />
