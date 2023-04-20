@@ -1,6 +1,8 @@
-import { apiV2BaseUrl } from 'hooks/api'
+//import { apiV2BaseUrl } from 'hooks/api'
 import axiosRetry from 'axios-retry'
 import axios from 'axios'
+
+const apiV2BaseUrl = 'https://apeswap-api-v2-pr-53.herokuapp.com'
 
 const getBillNftData = async (billNftId: string, billNftAddress: string, chainId: number) => {
   try {
