@@ -31,10 +31,10 @@ export const FILTER_OPTIONS: Option[] = [
     label: 'Reserve',
     value: 'reserve',
   },
-  // {
-  //   label: 'Launch',
-  //   value: 'launch',
-  // },
+  {
+    label: 'Launch',
+    value: 'launch',
+  },
 ]
 
 export const SORT_OPTIONS: Option[] = [

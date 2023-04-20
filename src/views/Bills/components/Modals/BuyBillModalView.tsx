@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { Flex } from '@apeswapfinance/uikit'
-import { IconButton, Modal, ModalProvider } from '@ape.swap/uikit'
+import { IconButton, ListTag, ListTagVariants, Modal, ModalProvider } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { Bills } from 'state/types'
 import getTimePeriods from 'utils/getTimePeriods'
@@ -79,6 +79,9 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
             <BillDescriptionContainer p="0">
               <Flex flexDirection="column">
                 <BillTitleContainer>
+                  <Flex sx={{ mb: '5px' }}>
+                    <ListTag variant={billType as ListTagVariants} />
+                  </Flex>
                   <Flex alignItems="center">
                     <ServiceTokenDisplay
                       token1={token.symbol}
