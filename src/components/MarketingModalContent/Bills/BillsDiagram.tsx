@@ -1,9 +1,9 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { BillsM1, BillsM2, BillsM3, Flex, Text, WarningIcon } from '@ape.swap/uikit'
+import { BillsM1, BillsM2, BillsM3, Flex, Text } from '@ape.swap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from 'contexts/Localization'
-import { Content, RightText, InnerTextButton } from './styles'
+import { Content, RightText } from './styles'
 
 const BillsDiagram: React.FC = () => {
   const theme = useTheme()
@@ -28,17 +28,10 @@ const BillsDiagram: React.FC = () => {
         <RightText>{t('To mint a full color NFT, purchase a Bond with a value of $25 or more.')}</RightText>
       </Content>
       <Flex sx={{ margin: '22px 0 0 0', '@media screen and (min-width: 852px)': { margin: '22px 0 0 63px' } }}>
-        <Text size="12px" weight={500}>
-          <WarningIcon width="15px" mr="5px" color="text" style={{ transform: 'translate(0px, 3px)' }} />
-          {t('ApeSwap Bonds have a limited supply and will sell out. Check out the ')}
-          <InnerTextButton
-            href="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {t('documentation')}
-          </InnerTextButton>
-          {t(' for more information.')}
+        <Text style={{ fontSize: 8, fontWeight: '300', lineHeight: 1.25 }}>
+          {t(
+            'ApeSwap Bonds are in no way related to any financial product offered by the US government or any other government or any bank or other financial institution. These products are solely affiliated with the third party projects listed on ApeSwap and are not in any way backed, insured, or guaranteed by ApeSwap. These products are not available to persons that are residents or citizens of the US, or that are currently located in the US.',
+          )}
         </Text>
       </Flex>
     </Flex>
