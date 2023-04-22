@@ -53,15 +53,15 @@ const TermsOfUse: React.FC = () => {
           Use of a virtual private network (e.g., a VPN) or other means by Restricted Persons to access or use the Site
           is prohibited.
           <LineBreak />
-          General. You may not use the Site if you are otherwise barred from using the Site under applicable law.
+          <b>General.</b> You may not use the Site if you are otherwise barred from using the Site under applicable law.
           <LineBreak />
-          U.S. Exception for Unstaking and Withdrawing Assets: Existing U.S. users are allowed to access the Site in
-          order to unstake and withdraw assets only. U.S. users may not swap tokens, add liquidity, purchase new ApeSwap
-          Bonds, or otherwise deposit any assets on the Site or use ApeSwap products.
+          <b>U.S. Exception for Unstaking and Withdrawing Assets</b>: Existing U.S. users are allowed to access the Site
+          in order to unstake and withdraw assets only. U.S. users may not swap tokens, add liquidity, purchase new
+          ApeSwap Bonds, or otherwise deposit any assets on the Site or use ApeSwap products.
           <LineBreak />
-          Legality. You are solely responsible for adhering to all laws and regulations applicable to you and your use
-          or access to the Site. Your use of the Site is prohibited by and otherwise violate or facilitate the violation
-          of any applicable laws or regulations, or contribute to or facilitate any illegal activity.
+          <b>Legality.</b> You are solely responsible for adhering to all laws and regulations applicable to you and
+          your use or access to the Site. Your use of the Site is prohibited by and otherwise violate or facilitate the
+          violation of any applicable laws or regulations, or contribute to or facilitate any illegal activity.
           <LineBreak />
           By using or accessing the Site, you represent to us that you are not subject to the Sanction Lists and you are
           not a Restricted Person, as defined below. “Sanction Lists” means any sanctions designations listed on
@@ -78,7 +78,7 @@ const TermsOfUse: React.FC = () => {
           requirement with, such jurisdiction. We reserve the right to limit the availability of the Site to any person,
           geographic area, or jurisdiction, at any time and our sole and absolute discretion.
           <LineBreak />
-          Prohibited Localities. ApeSwap does not interact with digital wallets located in, established in, or a
+          <b>Prohibited Localities.</b> ApeSwap does not interact with digital wallets located in, established in, or a
           resident of Myanmar (Burma), Cote D’Ivoire (Ivory Coast), Cuba, Crimea and Sevastopol, Democratic Republic of
           Congo, Iran, Iraq, Libya, Mali, Nicaragua, Democratic People’s Republic of Korea (North Korea), Somalia,
           Sudan, Syria, Yemen, Zimbabwe or any other state, country or region that is included in the Sanction Lists.
@@ -86,15 +86,15 @@ const TermsOfUse: React.FC = () => {
           You must not use any software or networking techniques, including the use of a Virtual Private Network (VPN)
           to modify your internet protocol address or otherwise circumvent or attempt to circumvent this prohibition.
           <LineBreak />
-          Restricted Persons. ApeSwap does not interact with digital wallets, which have been previously classified or
-          otherwise identified by international organizations or any state and governmental authorities of any
-          jurisdiction, as belonging or affiliated with the persons specially designated or otherwise included in the
-          Sanction Lists (“Restricted Persons”).
+          <b>Restricted Persons.</b> ApeSwap does not interact with digital wallets, which have been previously
+          classified or otherwise identified by international organizations or any state and governmental authorities of
+          any jurisdiction, as belonging or affiliated with the persons specially designated or otherwise included in
+          the Sanction Lists (“Restricted Persons”).
           <LineBreak />
           For these Terms, Restricted Persons shall also include all persons or entities who reside in, are citizens of,
           are incorporated in, or have a registered office in the Prohibited Localities.
           <LineBreak />
-          Non-Circumvention. You agree not to access the Site using any technology to circumvent these Terms.
+          <b>Non-Circumvention.</b> You agree not to access the Site using any technology to circumvent these Terms.
         </Text>
         <Heading>Section 1: Changes to this Agreement</Heading>
         <Text as="p" variant="sm" sx={styles.text}>
