@@ -8,17 +8,93 @@ const TermsOfUse: React.FC = () => {
       <FlexContainer>
         <Title>Terms of Use</Title>
         <Text as="p" variant="sm" sx={styles.text}>
+          <span style={{ fontStyle: 'italic' }}>Updated April 22nd, 2023</span>
+          <LineBreak />
+          <br />
+        </Text>
+        <Text as="p" variant="sm" sx={styles.text}>
           These Terms of Use (this &quot;Agreement&quot;) constitutes a legally binding contract between ApeSwap
-          Foundation., a Cayman Islands Foundation (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot;
-          &quot;our&quot;) and you with respect to your use of our website at apeswap.finance (collectively, the
-          &quot;Site&quot;). By accessing or using the site, you are accepting these terms of use (the
-          &quot;terms&quot;) (on behalf of yourself or the entity that you represent), and you represent and warrant
-          that you have the right, authority, and capacity to enter into this agreement (on behalf of yourself or the
-          entity that you represent). If you do not agree with all of the provisions of this agreement, do not access
-          and/or use the site.
+          Foundation, a Cayman Islands Foundation (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; &quot;our&quot;)
+          and you with respect to your use of our website at apeswap.finance (collectively, the &quot;Site&quot;). By
+          accessing or using the site, you are accepting these terms of use (the &quot;terms&quot;) (on behalf of
+          yourself or the entity that you represent), and you represent and warrant that you have the right, authority,
+          and capacity to enter into this agreement (on behalf of yourself or the entity that you represent). If you do
+          not agree with all of the provisions of this agreement, do not access and/or use the site.
           <br />
           Be advised that this Agreement contains disclaimers of warranties and limitations on liability that may be
           applicable to you.
+        </Text>
+        <Heading>United States Users - Attention</Heading>
+        <Text as="p" variant="sm" sx={styles.text}>
+          The Site and any and all ApeSwap products are NOT offered to persons or entities who reside in, are citizens
+          of, are incorporated in, or have a registered office in the United States of America (“U.S. users”) or any
+          Prohibited Localities, namely Restricted Persons, as defined below. We do not make exceptions. We explicitly
+          apply the prohibition to the list of countries informed by the{' '}
+          <a
+            style={{ textDecoration: 'underline' }}
+            href="https://ofac.treasury.gov/sanctions-programs-and-country-information"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Office of Foreign Assets Control
+          </a>{' '}
+          and the{' '}
+          <a
+            style={{ textDecoration: 'underline' }}
+            href="https://ofac.treasury.gov/specially-designated-nationals-and-blocked-persons-list-sdn-human-readable-lists"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Specially Designated Nationals And Blocked Persons List (SDN) Human Readable Lists.{' '}
+          </a>
+          <LineBreak />
+          If you are a Restricted Person, then do not attempt to access or use the Site.
+          <LineBreak />
+          Use of a virtual private network (e.g., a VPN) or other means by Restricted Persons to access or use the Site
+          is prohibited.
+          <LineBreak />
+          General. You may not use the Site if you are otherwise barred from using the Site under applicable law.
+          <LineBreak />
+          U.S. Exception for Unstaking and Withdrawing Assets: Existing U.S. users are allowed to access the Site in
+          order to unstake and withdraw assets only. U.S. users may not swap tokens, add liquidity, purchase new ApeSwap
+          Bonds, or otherwise deposit any assets on the Site or use ApeSwap products.
+          <LineBreak />
+          Legality. You are solely responsible for adhering to all laws and regulations applicable to you and your use
+          or access to the Site. Your use of the Site is prohibited by and otherwise violate or facilitate the violation
+          of any applicable laws or regulations, or contribute to or facilitate any illegal activity.
+          <LineBreak />
+          By using or accessing the Site, you represent to us that you are not subject to the Sanction Lists and you are
+          not a Restricted Person, as defined below. “Sanction Lists” means any sanctions designations listed on
+          economic/trade embargo lists and/or specially designated persons/blocked person lists published by
+          international organizations, as well as any state and governmental authorities of any jurisdiction, including,
+          but not limited to the lists of United Nations, European Union and its Member States, United States, and
+          United Kingdom sanctions lists.
+          <LineBreak />
+          We make no representations or warranties that the information, products, or services provided through the
+          Site, are appropriate for access or use in other jurisdictions.
+          <LineBreak />
+          You are not permitted to access or use the Site in any jurisdiction or country if it would be contrary to the
+          law or regulation of that jurisdiction or if it would subject us to the laws of, or any registration
+          requirement with, such jurisdiction. We reserve the right to limit the availability of the Site to any person,
+          geographic area, or jurisdiction, at any time and our sole and absolute discretion.
+          <LineBreak />
+          Prohibited Localities. ApeSwap does not interact with digital wallets located in, established in, or a
+          resident of Myanmar (Burma), Cote D’Ivoire (Ivory Coast), Cuba, Crimea and Sevastopol, Democratic Republic of
+          Congo, Iran, Iraq, Libya, Mali, Nicaragua, Democratic People’s Republic of Korea (North Korea), Somalia,
+          Sudan, Syria, Yemen, Zimbabwe or any other state, country or region that is included in the Sanction Lists.
+          <LineBreak />
+          You must not use any software or networking techniques, including the use of a Virtual Private Network (VPN)
+          to modify your internet protocol address or otherwise circumvent or attempt to circumvent this prohibition.
+          <LineBreak />
+          Restricted Persons. ApeSwap does not interact with digital wallets, which have been previously classified or
+          otherwise identified by international organizations or any state and governmental authorities of any
+          jurisdiction, as belonging or affiliated with the persons specially designated or otherwise included in the
+          Sanction Lists (“Restricted Persons”).
+          <LineBreak />
+          For these Terms, Restricted Persons shall also include all persons or entities who reside in, are citizens of,
+          are incorporated in, or have a registered office in the Prohibited Localities.
+          <LineBreak />
+          Non-Circumvention. You agree not to access the Site using any technology to circumvent these Terms.
         </Text>
         <Heading>Section 1: Changes to this Agreement</Heading>
         <Text as="p" variant="sm" sx={styles.text}>
@@ -330,7 +406,7 @@ const TermsOfUse: React.FC = () => {
           fraud, business failure, hackers or malware, or government-mandated regulation may result in greater
           volatility in the price of the tokens.
         </Text>
-        <Heading>Risks Related to Future Sales or Issuance of BANANA tokens</Heading>
+        <Heading>Risks Related to Future Sales or Issuance of BANANA Tokens</Heading>
         <Text as="p" variant="sm" sx={styles.text}>
           Any future sale or issuance of the BANANA tokens would increase the supply of BANANA tokens in the market and
           this may result in a downward price pressure on the BANANA tokens. The sale or distribution of a significant
