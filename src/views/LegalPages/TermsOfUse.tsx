@@ -50,8 +50,8 @@ const TermsOfUse: React.FC = () => {
           <LineBreak />
           If you are a Restricted Person, then do not attempt to access or use the Site.
           <LineBreak />
-          Use of a virtual private network (e.g., a VPN) or other means by Restricted Persons to access or use the Site
-          is prohibited.
+          Use of a virtual private network (e.g., a VPN) or other means by U.S. users, those in Prohibited Localities,
+          and Restricted Persons to access or use the Site is prohibited.
           <LineBreak />
           <b>General.</b> You may not use the Site if you are otherwise barred from using the Site under applicable law.
           <LineBreak />
