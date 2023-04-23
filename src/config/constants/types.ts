@@ -324,7 +324,7 @@ export type LiveIfo = {
 export interface BillsConfig {
   index: number
   contractAddress: Address
-  billType: string
+  billType: 'liquidity' | 'reserve' | 'launch'
   token: Token
   quoteToken: Token
   lpToken: Token

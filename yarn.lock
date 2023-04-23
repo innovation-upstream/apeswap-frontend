@@ -9,10 +9,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@ape.swap/apeswap-lists@1.1.53-alpha.0":
-  version "1.1.53-alpha.0"
-  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.53-alpha.0.tgz#8f398b7c079eeda147509ab5ace5b53141bd0db7"
-  integrity sha512-G4trCRmCoEP7rOweyVTyFyRc5tERLDoHT+5w0NflgS1gFuK5gABDANBVCXAZE1T8hLb5cjdStAmiTw7VtrvVzQ==
+"@ape.swap/apeswap-lists@1.1.53-alpha.1":
+  version "1.1.53-alpha.1"
+  resolved "https://registry.yarnpkg.com/@ape.swap/apeswap-lists/-/apeswap-lists-1.1.53-alpha.1.tgz#2ac591570e393267834c1d348c8257aea0a271ca"
+  integrity sha512-Wd4wO4F8TIAe43LZc4yH5a8OgpnQNXUkwdUxNBrMl4elIFYG09efA+G/ZQRAGQhwm8NzIq/drqcv/DPuWMVTIg==
   dependencies:
     "@ape.swap/sdk" "4.4.0"
     bignumber.js "^9.0.2"
@@ -38,10 +38,10 @@
   resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.24.tgz#a12b7a4305026b21cea278bc4784dea8a74c8b65"
   integrity sha512-Z64Q+shGvKeh0H5R8L+r3ij1XK/ixGeJn8QWf7XG+hZQ7p/NqG20GBqlqyhZQRPb8YVKnC4/TEyGDshmvBGuVQ==
 
-"@ape.swap/uikit@1.3.58-alpha.3":
-  version "1.3.58-alpha.3"
-  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.58-alpha.3.tgz#384765dca0f8dea7b2d6ebdc8c2f83364922f68c"
-  integrity sha512-x0q8hK3sWbezdokdGPpaScx9oKskPoHYELq+mGFnQvkZX+OOwAODQw45oISFAL50TzdUAa8bGvn61/fL6gpKdg==
+"@ape.swap/uikit@1.3.59":
+  version "1.3.59"
+  resolved "https://registry.yarnpkg.com/@ape.swap/uikit/-/uikit-1.3.59.tgz#11c8db4598167049bf1db23e713ad39f055f77ac"
+  integrity sha512-ww0gJEqabfEjyzehhQgNRBlLA/dPnD9mHNeefHcw2UF9rTsX/CEkbvqtExEbsI2oMIlBppDxcSfFliu67dtmLA==
   dependencies:
     "@emotion/react" "^11.7.1"
     "@emotion/styled" "^11.8.1"
