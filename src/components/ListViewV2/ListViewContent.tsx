@@ -44,7 +44,7 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
         ) : (
           <Flex sx={{ alignItems: 'center' }}>
             {tag ? (
-              <Flex sx={{ mr: '5px' }}>
+              <Flex sx={{ mr: '5px', mb: '2px' }}>
                 <ListTag variant={tag} />
               </Flex>
             ) : (

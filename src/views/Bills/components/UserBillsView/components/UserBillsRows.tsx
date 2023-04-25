@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex } from '@ape.swap/uikit'
+import { Flex, ListTagVariants } from '@ape.swap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import BigNumber from 'bignumber.js'
@@ -30,16 +30,16 @@ const UserBillsRows: React.FC<{ billsToRender: BillsToRender[] }> = ({ billsToRe
     return {
       tokenDisplayProps: {
         token1: token.symbol,
-        token2: quoteToken.symbol,
+        token2: bill.billType === 'reserve' ? earnToken.symbol : quoteToken.symbol,
         token3: earnToken.symbol,
-        stakeLp: true,
+        stakeLp: bill.billType !== 'reserve',
         billArrow: true,
       },
       listProps: {
         id: billToRender.id,
         title: (
           <ListViewContent
-            tag="ape"
+            tag={bill.billType as ListTagVariants}
             value={bill.lpToken.symbol}
             style={{ maxWidth: '150px', height: '35px', flexDirection: 'column' }}
           />

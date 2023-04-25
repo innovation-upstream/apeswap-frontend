@@ -3,7 +3,7 @@ import React from 'react'
 import getTimePeriods from 'utils/getTimePeriods'
 import BigNumber from 'bignumber.js'
 import ListViewContent from 'components/ListViewV2/ListViewContent'
-import { Flex } from '@ape.swap/uikit'
+import { Flex, ListTagVariants } from '@ape.swap/uikit'
 import BillModal from '../../Modals'
 import UnlockButton from 'components/UnlockButton'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -46,16 +46,16 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
     return {
       tokenDisplayProps: {
         token1: token.symbol,
-        token2: quoteToken.symbol,
+        token2: bill.billType === 'reserve' ? earnToken.symbol : quoteToken.symbol,
         token3: earnToken.symbol,
-        stakeLp: true,
+        stakeLp: bill.billType !== 'reserve',
         billArrow: true,
       },
       listProps: {
         id: bill.index,
         title: (
           <ListViewContent
-            tag="ape"
+            tag={bill.billType as ListTagVariants}
             value={bill.lpToken.symbol}
             style={{ maxWidth: '150px', flexDirection: 'column' }}
           />

@@ -24,12 +24,16 @@ export const FILTER_OPTIONS: Option[] = [
     value: 'filter',
   },
   {
-    label: 'ApeSwap',
-    value: 'bananaBill',
+    label: 'Liquidity',
+    value: 'liquidity',
   },
   {
-    label: 'Partner',
-    value: 'jungleBill',
+    label: 'Reserve',
+    value: 'reserve',
+  },
+  {
+    label: 'Launch',
+    value: 'launch',
   },
 ]
 
