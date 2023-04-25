@@ -42,7 +42,7 @@ const DefiRedefined = () => {
           {t('communities building project-owned liquidity through ApeSwap Bonds.')}
         </Text>
         <Flex sx={{ alignItems: 'center', marginTop: ['25px', '25px', '0px'] }}>
-          <Text sx={styles.availableOn}>{t('BILLS AVAILABLE ON')}</Text>
+          <Text sx={styles.availableOn}>{t('BONDS AVAILABLE ON')}</Text>
           {AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS].map((chainId) => {
             return (
               <Flex
