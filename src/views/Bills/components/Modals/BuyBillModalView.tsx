@@ -1,7 +1,7 @@
 /** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { Flex } from '@apeswapfinance/uikit'
-import { IconButton, Modal, ModalProvider } from '@ape.swap/uikit'
+import { IconButton, ListTag, ListTagVariants, Modal, ModalProvider } from '@ape.swap/uikit'
 import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 import { Bills } from 'state/types'
 import getTimePeriods from 'utils/getTimePeriods'
@@ -42,7 +42,7 @@ interface BillModalProps {
 
 const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
   const { t } = useTranslation()
-  const { token, quoteToken, earnToken, lpToken, discount, earnTokenPrice } = bill
+  const { token, quoteToken, earnToken, lpToken, discount, earnTokenPrice, billType } = bill
   const discountEarnTokenPrice = earnTokenPrice - earnTokenPrice * (parseFloat(discount) / 100)
 
   const [billId, setBillId] = useState('')
@@ -79,13 +79,16 @@ const BuyBillModalView: React.FC<BillModalProps> = ({ onDismiss, bill }) => {
             <BillDescriptionContainer p="0">
               <Flex flexDirection="column">
                 <BillTitleContainer>
+                  <Flex sx={{ mb: '5px' }}>
+                    <ListTag variant={billType as ListTagVariants} />
+                  </Flex>
                   <Flex alignItems="center">
                     <ServiceTokenDisplay
                       token1={token.symbol}
-                      token2={quoteToken.symbol}
+                      token2={bill.billType === 'reserve' ? earnToken.symbol : quoteToken.symbol}
                       token3={earnToken.symbol}
                       billArrow
-                      stakeLp
+                      stakeLp={billType !== 'reserve'}
                     />
                     <Flex flexDirection="column">
                       <StyledHeadingText ml="10px" bold>

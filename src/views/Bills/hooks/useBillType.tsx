@@ -7,7 +7,7 @@ export const useBillType = (billAddress: string) => {
   const selectedBill = bills.find(
     (bill) => bill?.contractAddress[chainId]?.toLowerCase() === billAddress?.toLowerCase(),
   )
-  return selectedBill?.billType === 'BANANA Bill' ? 'bill' : selectedBill?.billType
+  return selectedBill?.billType
 }
 
 export const useBillTypes = (billAddresses: string[]) => {
@@ -17,6 +17,6 @@ export const useBillTypes = (billAddresses: string[]) => {
     const selectedBill = bills.find(
       (bill) => bill?.contractAddress[chainId]?.toLowerCase() === billAddress?.toLowerCase(),
     )
-    return selectedBill?.billType === 'BANANA Bill' ? 'bill' : selectedBill?.billType
+    return selectedBill?.billType
   })
 }
