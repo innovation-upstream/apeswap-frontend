@@ -34,8 +34,8 @@ const AssetBreakdown: React.FC<{ activeView: number }> = ({ activeView }) => {
         </Text>
       </Flex>
       <div sx={styles.assetBreakdownContainer}>
-        {activeAssets?.map((token) => (
-          <AssetCard token={token} key={token?.address} />
+        {activeAssets?.map((token, i) => (
+          <AssetCard token={token} key={`${token?.address}-${i}`} />
         ))}
       </div>
     </Flex>
