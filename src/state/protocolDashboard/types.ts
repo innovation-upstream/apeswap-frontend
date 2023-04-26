@@ -24,7 +24,7 @@ export interface OverviewBananaDistributionInterface {
 
 export interface TreasuryAssetOverviewInterface {
   amount: number
-  location: 'Operational Funds' | 'POL'
+  location: 'Operational Funds' | 'POL' | 'POL V3'
   price: number
   symbol: string
   value: number
@@ -43,7 +43,7 @@ export interface ProtocolToken {
   address: string
   amount: number
   chainId: number
-  location: 'Operational Funds' | 'POL'
+  location: 'Operational Funds' | 'POL' | 'POL V3'
   value: number
 }
 
@@ -53,7 +53,7 @@ export interface TreasuryBreakdownInterface {
     type: 'apeswap' | 'partner'
     amount: number
     chainId: number
-    location: 'Operational Funds' | 'POL'
+    location: 'Operational Funds' | 'POL' | 'POL V3'
     token0: ProtocolToken
     token1: ProtocolToken
     value: number

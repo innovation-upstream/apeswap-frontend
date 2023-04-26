@@ -63,7 +63,7 @@ const getMergedAssets = (assets: TreasuryAssetOverviewInterface[]) => {
 const AssetOverview: React.FC<{ activeView: number }> = ({ activeView }) => {
   const assets = useFetchTreasuryAssetOverview()
   const treasuryAssets = assets?.filter((asset) => asset.location === 'Operational Funds')
-  const polAssets = assets?.filter((asset) => asset.location === 'POL')
+  const polAssets = assets?.filter((asset) => ['POL', 'POL V3'].includes(asset.location))
   const mergedAssets = getMergedAssets(assets)
 
   const cleanedAssets = sortAndAddAssets([mergedAssets, treasuryAssets, polAssets][activeView])

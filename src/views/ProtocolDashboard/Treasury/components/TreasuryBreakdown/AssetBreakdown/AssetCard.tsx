@@ -95,7 +95,9 @@ const AssetCard: React.FC<{ token: any }> = ({ token }) => {
                     {t('Location')}:
                   </Text>
                   <Text weight={700} sx={{ lineHeight: '10px' }}>
-                    {token?.location === 'POL' ? `${token?.location} - ${token?.type.toUpperCase()}` : token?.location}
+                    {['POL', 'POL V3'].includes(token?.location)
+                      ? `${token?.location} - ${token?.type.toUpperCase()}`
+                      : token?.location}
                   </Text>
                 </Flex>
                 <Flex sx={styles.assetRow}>
