@@ -25,7 +25,7 @@ Once everything is downloaded & installed, simply run `npm run start` to run the
 
 ### Learn More About ApeSwap
 
-Interested in learning more about ApeSwap.Finance? Head over to our [official documentation](https://apeswap.gitbook.io/apeswap-finance/welcome/master) to read and learn more about our features, functionality, DAO, and ecosystem! :)
+Interested in learning more about ApeSwap.Finance? Head over to our [official documentation](https://apeswap.gitbook.io/apeswap-finance/welcome/master) to read and learn more about our features, functionality, DAO, and ecosystem! 😊
 
 #### Socials
 
