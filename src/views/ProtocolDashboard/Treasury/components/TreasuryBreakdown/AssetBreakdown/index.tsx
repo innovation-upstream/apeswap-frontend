@@ -24,7 +24,7 @@ const AssetBreakdown: React.FC<{ activeView: number }> = ({ activeView }) => {
   )
   const filterLowAmounts = sortedTreasury?.filter((token) => token.value > 500)
   const sortedOpFunds = filterLowAmounts?.filter((token) => token.location === 'Operational Funds')
-  const sortedPolFunds = filterLowAmounts?.filter((token) => token.location === 'POL')
+  const sortedPolFunds = filterLowAmounts?.filter((token) => ['POL', 'POL V3'].includes(token.location))
   const activeAssets = [filterLowAmounts, sortedOpFunds, sortedPolFunds][activeView]
   return (
     <Flex sx={styles.cardContainer}>
@@ -34,8 +34,8 @@ const AssetBreakdown: React.FC<{ activeView: number }> = ({ activeView }) => {
         </Text>
       </Flex>
       <div sx={styles.assetBreakdownContainer}>
-        {activeAssets?.map((token) => (
-          <AssetCard token={token} key={token?.address} />
+        {activeAssets?.map((token, i) => (
+          <AssetCard token={token} key={`${token?.address}-${i}`} />
         ))}
       </div>
     </Flex>
