@@ -29,7 +29,7 @@
     ]
   },
   "dependencies": {
-    "@ape.swap/apeswap-lists": "1.1.59",
+    "@ape.swap/apeswap-lists": "file:.yalc/@ape.swap/apeswap-lists",
     "@ape.swap/sdk": "4.4.0",
     "@ape.swap/token-lists": "1.0.28",
     "@ape.swap/uikit": "1.3.59",
