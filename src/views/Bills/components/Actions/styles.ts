@@ -77,7 +77,6 @@ export const styles = {
     '@media screen and (min-width: 1180px)': {
       width: '100%',
       padding: '0px',
-      marginLeft: '-20px',
     },
   },
   updateSlippage: {
