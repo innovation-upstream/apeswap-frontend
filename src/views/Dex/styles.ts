@@ -43,6 +43,18 @@ export const dexStyles: Record<string, ThemeUIStyleObject> = {
     margin: '0px 10px',
     flexDirection: 'column',
   },
+  dexBannerContainer: {
+    width: 'auto',
+    fontSize: '14px',
+    textAlign: 'center',
+    maxWidth: '420px',
+    height: 'fit-content',
+    background: 'white2',
+    padding: '15px',
+    borderRadius: '10px',
+    margin: '0px 10px 10px 10px',
+    flexDirection: 'column',
+  },
   textWrap: {
     wordBreak: 'break-all',
     lineHeight: '15px',
