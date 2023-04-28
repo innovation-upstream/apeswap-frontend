@@ -95,43 +95,44 @@ const Services: React.FC<{ bab?: boolean }> = ({ bab }) => {
                     paddingLeft: '20px',
                   }}
                 >
-                  {id === 'farmDetails' ? (
-                    <ServiceTokenDisplay
-                      token1={tokenImage[0]}
-                      token2={tokenImage[1]}
-                      token3={stat.rewardToken.name}
-                      stakeLp
-                      iconFill="white"
-                    />
-                  ) : id === 'billDetails' ? (
-                    <ServiceTokenDisplay
-                      token1={tokenImage[0]}
-                      token2={tokenImage[1]}
-                      token3={stat.earnTokenName}
-                      stakeLp
-                      iconFill="white"
-                    />
-                  ) : id === 'poolDetails' ? (
-                    <ServiceTokenDisplay token1={tokenImage[0]} token2={tokenImage[1]} iconFill="white" />
-                  ) : (
-                    <ServiceTokenDisplay token1={tokenImage[0]} />
-                  )}
+                  {tokenImage?.length > 0 &&
+                    (id === 'farmDetails' ? (
+                      <ServiceTokenDisplay
+                        token1={tokenImage[0]}
+                        token2={tokenImage[1]}
+                        token3={stat.rewardToken.name}
+                        stakeLp
+                        iconFill="white"
+                      />
+                    ) : id === 'billDetails' && tokenImage?.length > 0 ? (
+                      <ServiceTokenDisplay
+                        token1={tokenImage[0]}
+                        token2={tokenImage[1]}
+                        token3={stat.earnTokenName}
+                        stakeLp
+                        iconFill="white"
+                      />
+                    ) : id === 'poolDetails' ? (
+                      <ServiceTokenDisplay token1={tokenImage[0]} token2={tokenImage[1]} iconFill="white" />
+                    ) : (
+                      <ServiceTokenDisplay token1={tokenImage[0]} />
+                    ))}
                   <Flex sx={{ paddingLeft: '15px', justifyContent: 'center', flexDirection: 'column' }}>
                     <Text sx={{ width: '100%', color: 'white', fontWeight: 700 }}>{name}</Text>
                     {id === 'lendingDetails' ? (
                       <Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
-                        APY: {stat.apy.toFixed(2)}%
+                        APY: {stat?.apy?.toFixed(2)}%
                       </Text>
                     ) : id === 'billDetails' ? (
                       <Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
                         Discount:{' '}
-                        <span style={{ color: stat.discount > 0 ? 'white' : '#DF4141' }}>
-                          {stat.discount.toFixed(2)}%
+                        <span style={{ color: stat?.discount > 0 ? 'white' : '#DF4141' }}>
+                          {stat?.discount?.toFixed(2)}%
                         </span>
                       </Text>
                     ) : (
                       <Text sx={{ width: '100%', color: 'primaryBright', fontWeight: 400 }}>
-                        APR: {(stat.apr * 100).toFixed(2)}%
+                        APR: {(stat?.apr * 100).toFixed(2)}%
                       </Text>
                     )}
                   </Flex>
