@@ -57,7 +57,7 @@ const Risk = ({ chainId, currency }: { chainId: number; currency: Currency }) =>
                   <Text sx={styles.title}>
                     {t('Risk scan results are provided by a third party')}{' '}
                     <Text sx={styles.yellow}>
-                      <a href="https://www.avengerdao.org/" target="_blank" rel="noreferrer noopener">
+                      <a href="https://www.avengerdao.org/riskScanner" target="_blank" rel="noreferrer noopener">
                         Avenger DAO
                       </a>
                     </Text>
