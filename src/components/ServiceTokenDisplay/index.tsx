@@ -60,7 +60,7 @@ const ServiceTokenDisplay: React.FC<ServiceTokenDisplayProps> = ({
       <TokenWrapper>
         <TokenContainer srcs={token1Urls} size={size} />
       </TokenWrapper>
-      <EarnIcon color={iconFill} />
+      {billArrow ? <BillsArrow /> : <EarnIcon color={iconFill} />}
       <TokenWrapper>
         <TokenContainer srcs={token2Urls} size={size} />
       </TokenWrapper>

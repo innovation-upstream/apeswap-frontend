@@ -56,7 +56,7 @@ const BillsRows: React.FC<BillsRowsProps> = ({ billsToRender, noResults }) => {
         title: (
           <ListViewContent
             tag={bill.billType as ListTagVariants}
-            value={bill.lpToken.symbol}
+            value={bill.billType === 'reserve' ? bill.earnToken.symbol : bill.lpToken.symbol}
             style={{ maxWidth: '150px', flexDirection: 'column' }}
           />
         ),
