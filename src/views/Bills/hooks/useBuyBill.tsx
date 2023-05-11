@@ -23,7 +23,7 @@ const useBuyBill = (
   const handleBuyBill = useCallback(async () => {
     const tx = await userBuyBill(billContract, account, amount, maxPrice.toFixed(0))
     track({
-      event: billType,
+      event: `${billType.toUpperCase()}-bond`,
       chain: chainId,
       data: {
         cat: 'buy',
