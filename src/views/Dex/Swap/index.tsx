@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAllTokens, useCurrency } from 'hooks/Tokens'
 import { Field, SwapDelay } from 'state/swap/actions'
-import { Flex, Text, useModal } from '@ape.swap/uikit'
+import { Flex, useModal } from '@ape.swap/uikit'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { computeTradePriceBreakdown } from 'utils/prices'
@@ -248,7 +248,7 @@ const Swap: React.FC = () => {
   return (
     <Flex sx={dexStyles.pageContainer}>
       <Flex sx={{ flexDirection: 'column' }}>
-        {(inputCurrency?.symbol === 'KKC' || outputCurrency?.symbol === 'KKC') && (
+        {/*(inputCurrency?.symbol === 'KKC' || outputCurrency?.symbol === 'KKC') && (
           <Flex sx={dexStyles.dexBannerContainer}>
             <Text>
               Swapping KKC for Knoknok’s Launch Bonds? Make sure to use{' '}
@@ -260,8 +260,7 @@ const Swap: React.FC = () => {
               </Text>
             </Text>
           </Flex>
-        )}
-
+        )*/}
         <Flex sx={dexStyles.dexContainer}>
           <DexNav />
           <Flex sx={{ margin: '25px 0px', maxWidth: '100%', width: '420px' }} />
