@@ -6,6 +6,9 @@ import { StyledButton } from '../styles'
 import UserBillModalView from './UserBillModalView'
 import { BillsImage } from '../UserBillsView/styles'
 import WarningModal from './WarningModal'
+import ReflectModal from './ReflectModal'
+
+const REFLECT_BONDS = ['NOOT']
 
 interface BillModalProps {
   bill: Bills
@@ -46,11 +49,19 @@ const BillModal: React.FC<BillModalProps> = ({
     true,
     `billsWarningModal${id}`,
   )
+  const [onPresentReflectModal] = useModal(
+    <ReflectModal bill={bill} onDismiss={null} />,
+    true,
+    true,
+    `billsWarningModal${id}`,
+  )
   return !billCardImage ? (
     <StyledButton
       onClick={
         buyFlag
-          ? parseFloat(bill?.discount) < 0
+          ? REFLECT_BONDS.includes(bill?.earnToken.symbol)
+            ? onPresentReflectModal
+            : parseFloat(bill?.discount) < 0
             ? onPresentBuyWarning
             : onPresentBuyBillsModal
           : onPresentUserBillModal
