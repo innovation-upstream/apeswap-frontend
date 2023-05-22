@@ -43,7 +43,7 @@ const ReflectModal: React.FC<TransferBillModalProps> = ({ onDismiss, bill }) => 
             <Text style={{ fontWeight: 600 }}>
               Please note, this ApeSwap Bond includes a reflect token which cannot be whitelisted on our smart
               contracts. This means the reflect mechanic will impact your purchases & claims of this bond, and you will
-              recieve less than expected.
+              receive less than expected.
             </Text>
           </Flex>
         </Flex>
