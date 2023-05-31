@@ -53,7 +53,7 @@ const BillModal: React.FC<BillModalProps> = ({
     <ReflectModal bill={bill} onDismiss={null} />,
     true,
     true,
-    `billsWarningModal${id}`,
+    `billsReflectWarningModal${id}`,
   )
   return !billCardImage ? (
     <StyledButton
