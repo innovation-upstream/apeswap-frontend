@@ -33,10 +33,10 @@
     toformat "^2.0.0"
     yalc "^1.0.0-pre.53"
 
-"@ape.swap/token-lists@1.0.41":
-  version "1.0.41"
-  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.41.tgz#b932d8ced7df7a938eb1a5496dbca5cabdacd1da"
-  integrity sha512-TemzWq9ar+LHIFeH6z8NmQB1XkjxRn1+jfzMZrfO0XzdLtD/qaYKufw9I8PMeV34dXcA+Fpuwe+nknVg3d3fsg==
+"@ape.swap/token-lists@1.0.42":
+  version "1.0.42"
+  resolved "https://registry.yarnpkg.com/@ape.swap/token-lists/-/token-lists-1.0.42.tgz#f95cdd0b3657a0c18821e0736c54aa4cb64a70e5"
+  integrity sha512-W9549H8YsfJAB6n7dYuQuQaAPVoJ7JfraPqpfauFLlXb1q+pR7y8Zy7FF9Bg8ODjAwgaowP2mVgkrXpU2ep9+A==
 
 "@ape.swap/uikit@1.3.59":
   version "1.3.59"
