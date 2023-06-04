@@ -18,6 +18,8 @@ export interface TooltipProps {
   tokenContract: string
   secondURL?: string
   secondURLTitle?: string
+  thirdURL?: string
+  thirdURLTitle?: string
   projectLink?: string
   twitter?: string
   audit?: string
@@ -33,6 +35,8 @@ const Tooltip: React.FunctionComponent<TooltipProps> = ({
   tokenContract,
   secondURL,
   secondURLTitle,
+  thirdURL,
+  thirdURLTitle,
   projectLink,
   twitter,
   audit,
@@ -74,6 +78,13 @@ const Tooltip: React.FunctionComponent<TooltipProps> = ({
             <Flex sx={styles.linkRow}>
               <LinkExternal href={secondURL} sx={{ fontSize: '12px', lineHeight: '14px' }}>
                 {secondURLTitle}
+              </LinkExternal>
+            </Flex>
+          )}
+          {thirdURL && (
+            <Flex sx={styles.linkRow}>
+              <LinkExternal href={thirdURL} sx={{ fontSize: '12px', lineHeight: '14px' }}>
+                {thirdURLTitle}
               </LinkExternal>
             </Flex>
           )}
