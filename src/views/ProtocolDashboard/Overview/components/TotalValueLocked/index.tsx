@@ -147,7 +147,7 @@ const TotalValueLocked: React.FC = () => {
                   <Flex sx={{ alignItems: 'center' }}>
                     <Flex sx={{ background: COLORS[i], width: '8px', height: '8px', borderRadius: '4px' }} />
                     <Text ml="10px" weight={500} sx={{ textTransform: 'capitalize' }}>
-                      {data[0]}
+                      {data[0] === 'other' ? 'Other Liq.' : data[0]}
                     </Text>
                   </Flex>
                   <Flex
