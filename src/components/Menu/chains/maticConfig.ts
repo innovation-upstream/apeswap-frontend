@@ -9,12 +9,12 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     items: [
       {
         label: t('Swap'),
-        href: '/swap',
+        href: 'https://dex.apeswap.finance/swap',
         isNew: false,
       },
       {
         label: t('Liquidity'),
-        href: '/zap',
+        href: 'https://dex.apeswap.finance/zap',
         isNew: false,
       },
       {
@@ -26,12 +26,12 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   },
   {
     label: t('Farms'),
-    href: '/farms',
+    href: 'https://apeswap.finance/farms',
     isNew: false,
   },
   {
     label: t('Bonds'),
-    href: '/bonds',
+    href: 'https://apeswap.finance/bonds',
     isNew: true,
   },
   {
@@ -46,7 +46,7 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Dashboard'),
-        href: 'protocol-dashboard',
+        href: 'https://apeswap.finance/protocol-dashboard',
         isNew: false,
       },
       {

@@ -9,6 +9,7 @@ import SettingsModal from 'components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
 import SquidBridge from 'components/SquidBridge/SquidBridge'
 import { Link as ThemeLink, Switch } from 'theme-ui'
+import { AVAILABLE_CHAINS_ON_PRODUCTS, OTHER_PRODUCTS } from '../../../../config/constants/chains'
 
 interface DexNavProps {
   zapSettings?: boolean
@@ -35,8 +36,21 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
   const [onPresentSettingsModal] = useModal(<SettingsModal zapSettings={zapSettings} />)
   const [onBridgeModal] = useModal(<SquidBridge />)
 
-  const v3Link = `${process.env.REACT_APP_APESWAP_URL}${pathname}`
+  const pathToV3 = pathname === '/zap' || pathname === 'migrate' ? 'add-liquidity' : pathname?.replace('/', '')
+
+  const v3Link = `${process.env.REACT_APP_APESWAP_URL ?? 'https://apeswap.finance/'}v3-${pathToV3}`
   const showV3Liquidity = onLiquidity && [ChainId.BSC, ChainId.MATIC].includes(chainId)
+  const handleSwitch = () => {
+    if (showV3Liquidity) {
+      history.push(
+        pathname.includes('/swap')
+          ? 'https://apeswap.finance/v3-swap'
+          : pathname.includes('/add-liquidity')
+          ? 'https://apeswap.finance/v3-add-liquidity'
+          : 'https://apeswap.finance/v3-liquidity',
+      )
+    }
+  }
 
   return (
     <Flex sx={styles.dexNavContainer}>
@@ -110,7 +124,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
                   V2
                 </Text>
                 <Switch
-                  onClick={() => window.location.replace(v3Link)}
+                  onClick={handleSwitch}
                   // onChange={() => push(pathname.includes('/v2') ? '/add-liquidity' : '/add-liquidity/v2')}
                   checked={false}
                   sx={{
@@ -156,7 +170,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
                 V2
               </Text>
               <Switch
-                onClick={() => window.location.replace(v3Link)}
+                onClick={handleSwitch}
                 // onChange={() => push(pathname.includes('/v2') ? '/add-liquidity' : '/add-liquidity/v2')}
                 checked={false}
                 sx={{

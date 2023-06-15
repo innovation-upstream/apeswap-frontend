@@ -9,12 +9,12 @@ const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     items: [
       {
         label: t('Swap'),
-        href: '/swap',
+        href: 'https://legacy.apeswap.finance/swap',
         isNew: false,
       },
       {
         label: t('Liquidity'),
-        href: '/zap',
+        href: 'https://legacy.apeswap.finance/zap',
         isNew: false,
       },
       {
@@ -26,12 +26,12 @@ const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   },
   {
     label: t('Farms'),
-    href: '/farms',
+    href: 'https://legacy.apeswap.finance/farms',
     isNew: false,
   },
   {
     label: t('Bonds'),
-    href: '/bonds',
+    href: 'https://legacy.apeswap.finance/bonds',
     isNew: false,
   },
   {
@@ -41,12 +41,12 @@ const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     items: [
       {
         label: t('ApeStats'),
-        href: '/apestats',
+        href: 'https://legacy.apeswap.finance/apestats',
         isNew: false,
       },
       {
         label: t('Dashboard'),
-        href: 'protocol-dashboard',
+        href: 'https://apeswap.finance/protocol-dashboard',
         isNew: false,
       },
       {
@@ -56,7 +56,7 @@ const tlosConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Charts'),
-        href: '/info',
+        href: 'https://legacy.apeswap.finance/info',
         isNew: false,
       },
       {
