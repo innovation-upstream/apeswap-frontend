@@ -11,17 +11,17 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     items: [
       {
         label: t('Swap'),
-        href: '/swap',
+        href: 'https://dex.apeswap.finance/swap',
         isNew: false,
       },
       {
         label: t('Orders'),
-        href: '/limit-orders',
+        href: 'https://dex.apeswap.finance/limit-orders',
         isNew: false,
       },
       {
         label: t('Liquidity'),
-        href: '/zap',
+        href: 'https://dex.apeswap.finance/add-liquidity',
         isNew: false,
       },
       {
@@ -31,7 +31,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('GNANA'),
-        href: '/gnana',
+        href: 'https://apeswap.finance/gnana',
         isNew: false,
       },
     ],
@@ -42,28 +42,23 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     darkIcon: 'StakeDarkImage',
     items: [
       {
-        label: t('Migrate'),
-        href: '/' + CURRENT_MIGRATE_PATH,
+        label: t('Pools'),
+        href: 'https://apeswap.finance/pools',
         isNew: true,
       },
       {
-        label: t('Staking Pools'),
-        href: '/pools',
+        label: t('Farms'),
+        href: 'https://apeswap.finance/farms',
         isNew: false,
       },
       {
-        label: t('BANANA Maximizers'),
+        label: t('Maximizers'),
         href: '/maximizers',
         isNew: false,
       },
       {
-        label: t('BANANA Farms'),
-        href: '/farms',
-        isNew: false,
-      },
-      {
-        label: t('Jungle Farms'),
-        href: '/jungle-farms',
+        label: t('Migrate'),
+        href: '/' + CURRENT_MIGRATE_PATH,
         isNew: false,
       },
     ],
@@ -75,7 +70,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     items: [
       {
         label: t('Bonds'),
-        href: '/bonds',
+        href: 'https://apeswap.finance/bonds',
         isNew: false,
       },
       {
@@ -134,7 +129,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Dashboard'),
-        href: 'protocol-dashboard',
+        href: 'https://apeswap.finance/protocol-dashboard',
         isNew: false,
       },
       {

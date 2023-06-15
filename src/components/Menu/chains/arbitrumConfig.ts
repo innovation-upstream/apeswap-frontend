@@ -9,12 +9,12 @@ const arbitrumConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     items: [
       {
         label: t('Swap'),
-        href: '/swap',
+        href: 'https://dex.apeswap.finance/swap',
         isNew: false,
       },
       {
         label: t('Liquidity'),
-        href: '/zap',
+        href: 'https://dex.apeswap.finance/add-liquidity',
         isNew: false,
       },
       {
@@ -26,7 +26,7 @@ const arbitrumConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   },
   {
     label: t('Bonds'),
-    href: '/bonds',
+    href: 'https://apeswap.finance/bonds',
     isNew: false,
   },
   {
@@ -41,7 +41,7 @@ const arbitrumConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Dashboard'),
-        href: 'protocol-dashboard',
+        href: 'https://apeswap.finance/protocol-dashboard',
         isNew: false,
       },
       {
