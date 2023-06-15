@@ -38,7 +38,7 @@ const DexNav: React.FC<DexNavProps> = ({ zapSettings }) => {
 
   const pathToV3 = pathname === '/zap' || pathname === 'migrate' ? 'add-liquidity' : pathname?.replace('/', '')
 
-  const v3Link = `${process.env.REACT_APP_APESWAP_URL ?? 'https://apeswap.finance/'}v3-${pathToV3}`
+  const v3Link = `https://apeswap.finance/v3-${pathToV3}`
   const showV3Liquidity = onLiquidity && [ChainId.BSC, ChainId.MATIC].includes(chainId)
   const handleSwitch = () => {
     if (showV3Liquidity) {
