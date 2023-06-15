@@ -15,11 +15,6 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         isNew: false,
       },
       {
-        label: t('Orders'),
-        href: 'https://dex.apeswap.finance/limit-orders',
-        isNew: false,
-      },
-      {
         label: t('Liquidity'),
         href: 'https://dex.apeswap.finance/add-liquidity',
         isNew: false,
