@@ -1,8 +1,8 @@
-import { InjectedConnector } from '@web3-react/injected-connector'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import { TorusConnector } from '@web3-react/torus-connector'
-import { BscConnector } from '@binance-chain/bsc-connector'
+// import { InjectedConnector } from '@web3-react/injected-connector'
+// import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+// import { WalletLinkConnector } from '@web3-react/walletlink-connector'
+// import { TorusConnector } from '@web3-react/torus-connector'
+// import { BscConnector } from '@binance-chain/bsc-connector'
 import { ConnectorNames } from '@ape.swap/uikit'
 import getRpcUrl from 'utils/getRpcUrl'
 import { Web3Provider } from '@ethersproject/providers'
@@ -24,46 +24,48 @@ const supportedChains = [
   ChainId.ARBITRUM,
 ]
 
-const injected = new InjectedConnector({
-  supportedChainIds: supportedChains,
-})
+// const injected = new InjectedConnector({
+//   supportedChainIds: supportedChains,
+// })
 
-const walletconnect = new WalletConnectConnector({
-  rpc: { [ChainId.BSC]: getRpcUrl(ChainId.BSC) },
-  supportedChainIds: supportedChains,
-  bridge: 'https://bridge.walletconnect.org',
-  qrcode: true,
-  pollingInterval: POLLING_INTERVAL,
-})
+// const walletconnect = new WalletConnectConnector({
+//   rpc: { [ChainId.BSC]: getRpcUrl(ChainId.BSC) },
+//   supportedChainIds: supportedChains,
+//   bridge: 'https://bridge.walletconnect.org',
+//   qrcode: true,
+//   pollingInterval: POLLING_INTERVAL,
+// })
 
-const bscConnector = new BscConnector({ supportedChainIds: [ChainId.BSC] })
-const torus = new TorusConnector({ chainId: ChainId.BSC, initOptions: { network: { host: 'bsc_mainnet' } } })
+// const bscConnector = new BscConnector({ supportedChainIds: [ChainId.BSC] })
+// const torus = new TorusConnector({ chainId: ChainId.BSC, initOptions: { network: { host: 'bsc_mainnet' } } })
 
-export const walletlink = new WalletLinkConnector({
-  url: getRpcUrl(ChainId.BSC),
-  supportedChainIds: supportedChains,
-  appName: 'Apeswap',
-  darkMode: true,
-  appLogoUrl: 'https://apeswap.finance/logo.png',
-})
+// export const walletlink = new WalletLinkConnector({
+//   url: getRpcUrl(ChainId.BSC),
+//   supportedChainIds: supportedChains,
+//   appName: 'Apeswap',
+//   darkMode: true,
+//   appLogoUrl: 'https://apeswap.finance/logo.png',
+// })
 
-export const uauth = new UAuthConnector({
-  uauth: new UAuth({
-    clientID: process.env.REACT_APP_UD_CLIENT_ID,
-    redirectUri: process.env.REACT_APP_UD_REDIRECT_URI,
-    scope: 'openid wallet',
-  }),
-  connectors: { injected, walletconnect },
-})
+// export const uauth = new UAuthConnector({
+//   uauth: new UAuth({
+//     clientID: process.env.REACT_APP_UD_CLIENT_ID,
+//     redirectUri: process.env.REACT_APP_UD_REDIRECT_URI,
+//     scope: 'openid wallet',
+//   }),
+//   connectors: { injected, walletconnect },
+// })
 
-export const connectorsByName: { [connectorName in ConnectorNames]: any } = {
-  [ConnectorNames.Injected]: injected,
-  [ConnectorNames.WalletConnect]: walletconnect,
-  [ConnectorNames.BSC]: bscConnector,
-  [ConnectorNames.Walletlink]: walletlink,
-  [ConnectorNames.Torus]: torus,
-  [ConnectorNames.Unstoppable]: uauth,
-}
+// export const connectorsByName: { [connectorName in ConnectorNames]: any } = {
+//   [ConnectorNames.Injected]: injected,
+//   [ConnectorNames.WalletConnect]: walletconnect,
+//   [ConnectorNames.BSC]: bscConnector,
+//   [ConnectorNames.Walletlink]: walletlink,
+//   [ConnectorNames.Torus]: torus,
+//   [ConnectorNames.Unstoppable]: uauth,
+// }
+
+export const connectorsByName = {}
 
 export const getLibrary = (provider: any): Web3Provider => {
   const library = new Web3Provider(provider, 'any')

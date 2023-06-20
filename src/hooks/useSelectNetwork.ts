@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useDispatch } from 'react-redux'
 import { fetchChainIdFromUrl, fetchUserNetwork } from 'state/network'
-import { TorusConnector } from '@web3-react/torus-connector'
+// import { TorusConnector } from '@web3-react/torus-connector'
 import { CHAIN_PARAMS } from 'config/constants/chains'
 import { hexStripZeros } from '@autonomylabs/limit-stop-orders/node_modules/@ethersproject/bytes'
 import { BigNumber } from 'ethers'
@@ -14,25 +14,31 @@ import { SmartRouter } from '@ape.swap/sdk'
 import track from '../utils/track'
 
 const useSwitchNetwork = () => {
-  const { chainId, account, library, connector } = useWeb3React()
-  const provider = library?.provider
+  const {
+    chainId,
+    account,
+    // library,
+    connector,
+  } = useWeb3React()
+  // const provider = library?.provider
   const dispatch = useDispatch()
   const { toastError } = useToast()
   const { t } = useTranslation()
 
   const switchNetwork = useCallback(
     async (userChainId: number) => {
-      if (connector instanceof TorusConnector) {
-        toastError(t('Chain Select Error: Torus Wallet is only available on BNB Chain.'))
-        return
-      }
+      // if (connector instanceof TorusConnector) {
+      //   toastError(t('Chain Select Error: Torus Wallet is only available on BNB Chain.'))
+      //   return
+      // }
       if (account && userChainId !== chainId) {
         const formattedChainId = hexStripZeros(BigNumber.from(userChainId).toHexString())
         try {
-          await provider.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: formattedChainId }],
-          })
+          // await provider.request({
+          //   method: 'wallet_switchEthereumChain',
+          //   params: [{ chainId: formattedChainId }],
+          // })
+          console.log('called provider.request')
           dispatch(fetchChainIdFromUrl(false))
           dispatch(
             replaceSwapState({
@@ -52,17 +58,19 @@ const useSwitchNetwork = () => {
           })
         } catch {
           // If the user doesn't have the chain add it
-          await provider.request({
-            method: 'wallet_addEthereumChain',
-            params: [CHAIN_PARAMS[userChainId]],
-          })
+          // await provider.request({
+          //   method: 'wallet_addEthereumChain',
+          //   params: [CHAIN_PARAMS[userChainId]],
+          // })
+          console.log('called provider.request')
           dispatch(fetchChainIdFromUrl(false))
           try {
             // Prompt the user to switch after adding the chain
-            await provider.request({
-              method: 'wallet_switchEthereumChain',
-              params: [{ chainId: formattedChainId }],
-            })
+            // await provider.request({
+            //   method: 'wallet_switchEthereumChain',
+            //   params: [{ chainId: formattedChainId }],
+            // })
+            console.log('called provider.request')
             dispatch(fetchChainIdFromUrl(false))
             track({
               event: 'switch_network',
@@ -89,7 +97,15 @@ const useSwitchNetwork = () => {
         }),
       )
     },
-    [chainId, account, provider, dispatch, connector, t, toastError],
+    [
+      chainId,
+      account,
+      //  provider,
+      dispatch,
+      connector,
+      t,
+      toastError,
+    ],
   )
   return { switchNetwork }
 }

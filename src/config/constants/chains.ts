@@ -1,14 +1,26 @@
 // Network chain ids
-
+import { SupportedChainId } from '@ape.swap/sdk-core'
 import { ChainId, SmartRouter } from '@ape.swap/sdk'
 import BigNumber from 'bignumber.js'
 import { iconTypes } from '@ape.swap/uikit/dist/components/Svg/types'
+
+export const AVERAGE_L1_BLOCK_TIME = 12000
 
 // List of mainnet chains
 // This is currently used for the info page
 export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.ARBITRUM]
 
 export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS, ChainId.ARBITRUM]
+
+export const CHAIN_NAMES: Record<SupportedChainId, string> = {
+  [SupportedChainId.BSC]: 'bnb_chain',
+  [SupportedChainId.BSC_TESTNET]: 'bnb_chain_testnet',
+  [SupportedChainId.POLYGON]: 'polygon',
+  [SupportedChainId.POLYGON_MUMBAI]: 'polygon_mumbai',
+  [SupportedChainId.MAINNET]: 'mainnet',
+  [SupportedChainId.TLOS]: 'telos',
+  [SupportedChainId.ARBITRUM_ONE]: 'arbitrum_one',
+}
 
 // Network labels
 export const NETWORK_LABEL: Partial<Record<ChainId, string>> = {

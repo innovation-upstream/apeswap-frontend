@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { Navbar as UikitMenu, useModal } from '@ape.swap/uikit'
 import { ChainId } from '@ape.swap/sdk'
-import { uauth } from 'utils/web3React'
+// import { uauth } from 'utils/web3React'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
 import useAuth from 'hooks/useAuth'
@@ -79,12 +79,12 @@ const Menu = (props) => {
     }
   }, [getSidOwner, account, chainId])
 
-  useEffect(() => {
-    uauth.uauth
-      .user()
-      .then((user) => setUDName(user.sub))
-      .catch(() => null)
-  }, [fastRefresh])
+  // useEffect(() => {
+  //   uauth.uauth
+  //     .user()
+  //     .then((user) => setUDName(user.sub))
+  //     .catch(() => null)
+  // }, [fastRefresh])
 
   return (
     <UikitMenu
