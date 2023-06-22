@@ -1,20 +1,14 @@
 import React from 'react'
 import { ModalProvider } from '@ape.swap/uikit'
 import { ModalProvider as OldModalProvider } from '@apeswapfinance/uikit'
-import {
-  Web3ReactProvider,
-  // createWeb3ReactRoot
-} from '@web3-react/core'
 import { HelmetProvider } from 'react-helmet-async'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
-import { getLibrary } from 'utils/web3React'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
 import { BlockNumberProvider } from 'lib/hooks/useBlockNumber'
 import NftProvider from 'views/Nft/contexts/NftProvider'
-import { NetworkContextName } from 'config/constants'
 import { LanguageProvider } from './contexts/Localization'
 import Blocklist from 'components/Blocklist'
 import Web3Provider from 'contexts/Web3Provider'
@@ -25,9 +19,6 @@ const queryClient = new QueryClient()
 
 const Providers: React.FC = ({ children }) => {
   return (
-    // <Web3ReactProvider getLibrary={getLibrary}>
-    // <Web3ReactProvider connectors={[]}>
-    //   <Web3ProviderNetwork getLibrary={getLibrary}>
     <Web3Provider>
       <Provider store={store}>
         <BlockNumberProvider>
