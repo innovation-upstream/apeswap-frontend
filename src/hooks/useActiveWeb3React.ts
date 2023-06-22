@@ -1,51 +1,30 @@
-import { useState, useRef, useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
-// import { Web3Provider } from '@ethersproject/providers'
-// eslint-disable-next-line import/no-unresolved
-// import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
+import { useRef, useEffect } from 'react'
+import { useWeb3React, Web3ContextType } from '@web3-react/core'
+import { Web3Provider } from '@ethersproject/providers'
 import { useSelector } from 'react-redux'
-import getProvider from 'utils/getProvider'
 import { State } from 'state/types'
 
-const useActiveWeb3React = () =>
-  // : Web3ReactContextInterface<Web3Provider>
-  {
-    const {
-      account,
-      //  library,
-      chainId,
-      ...web3React
-    } = useWeb3React()
-    const appChainId = useSelector((state: State) => state.network.data.chainId)
-    const appProvider = getProvider(appChainId)
-    const currChainId = chainId || appChainId
-    const refChainId = useRef(currChainId)
-    // const refEth = useRef(library || appProvider)
-    const refEth = useRef(appProvider)
-    // const [provider, setProvider] = useState(library || appProvider)
-    const [provider, setProvider] = useState(appProvider)
+interface IActiveWeb3React extends Web3ContextType<Web3Provider> {
+  library: Web3Provider
+  provider: Web3Provider
+}
 
-    useEffect(() => {
-      // if (library !== refEth.current || appProvider !== refEth.current) {
-      if (appProvider !== refEth.current) {
-        // setProvider(library || appProvider)
-        setProvider(appProvider)
-        // refEth.current = library || appProvider
-        refEth.current = appProvider
-        refChainId.current = currChainId
-      }
-    }, [
-      // library,
-      appProvider,
-      currChainId,
-    ])
+const useActiveWeb3React = (): IActiveWeb3React => {
+  const { account, chainId, provider, ...web3React } = useWeb3React()
+  const appChainId = useSelector((state: State) => state.network.data.chainId)
+  const currChainId = chainId || appChainId
+  const refChainId = useRef(currChainId)
 
-    // To allow the app to update before passing a chainId !== provider
-    if (currChainId !== refChainId.current) {
-      return { library: refEth.current, chainId: refChainId.current, account, ...web3React }
-    }
+  useEffect(() => {
+    refChainId.current = currChainId
+  }, [currChainId])
 
-    return { library: provider, chainId: currChainId, account, ...web3React }
+  // To allow the app to update before passing a chainId !== provider
+  if (currChainId !== refChainId.current) {
+    return { library: provider, provider: provider, chainId: refChainId.current, account, ...web3React }
   }
+
+  return { library: provider, provider: provider, chainId: currChainId, account, ...web3React }
+}
 
 export default useActiveWeb3React
