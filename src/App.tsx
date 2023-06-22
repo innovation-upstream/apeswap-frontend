@@ -2,7 +2,6 @@
 import React, { useEffect, Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useEagerConnect from 'hooks/useEagerConnect'
 import { ResetCSS, ApeSwapTheme } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import MarketingModalCheck from 'components/MarketingModalCheck'
@@ -111,7 +110,6 @@ const App: React.FC = () => {
 
   usePollBlockNumber()
   useUpdateNetwork()
-  useEagerConnect()
   useFetchBananaPrice()
   useFetchProfile()
   useFetchLiveIfoStatus()
