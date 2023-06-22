@@ -2,9 +2,9 @@ import { Connector } from '@web3-react/types'
 import { Web3ReactHooks } from '@web3-react/core'
 
 export enum ConnectionType {
-  INJECTED = 'INJECTED',
-  COINBASE_WALLET = 'COINBASE_WALLET',
-  WALLET_CONNECT = 'WALLET_CONNECT',
+  INJECTED = 'injected',
+  COINBASE_WALLET = 'walletlink',
+  WALLET_CONNECT = 'walletconnect',
   NETWORK = 'NETWORK',
   GNOSIS_SAFE = 'GNOSIS_SAFE',
 }

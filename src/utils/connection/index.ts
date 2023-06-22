@@ -52,7 +52,7 @@ export const [web3WalletConnectV2, web3WalletConnectHooksV2] = initializeConnect
     new WalletConnectV2({
       actions,
       options: {
-        projectId: process.env.walletConnectProjectId!,
+        projectId: process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID!,
         chains: [mainnet],
         optionalChains,
         showQrModal: true,
@@ -94,3 +94,11 @@ export const listOfConnections: Connection[] = [
   gnosisSafeConnection,
   networkConnection,
 ]
+
+export const connectionByType: Record<ConnectionType, Connection> = {
+  [ConnectionType.INJECTED]: injectedConnection,
+  [ConnectionType.COINBASE_WALLET]: coinbaseWalletConnection,
+  [ConnectionType.WALLET_CONNECT]: walletConnectConnection,
+  [ConnectionType.GNOSIS_SAFE]: gnosisSafeConnection,
+  [ConnectionType.NETWORK]: networkConnection,
+}
