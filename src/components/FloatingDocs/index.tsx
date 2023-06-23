@@ -9,11 +9,15 @@ import { DOC_LINKS, Farms, routeNames } from '../../config/constants/tutorials'
 export const FloatingDocs = () => {
   const history = useHistory()
   const { chainId } = useActiveWeb3React()
+  let { pathname } = history.location
+
   const getDocsLink = () => {
-    const { pathname } = history.location
     const networkLabel = NETWORK_LABEL[chainId]
     const farmTypes = Farms[networkLabel]
     DOC_LINKS['FARMS'] = `https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms/${farmTypes}`
+    if (pathname.includes('remove')) {
+      pathname = '/remove'
+    }
     return DOC_LINKS[routeNames[pathname]]
   }
 
