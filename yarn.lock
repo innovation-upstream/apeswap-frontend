@@ -5769,7 +5769,7 @@
     "@ethersproject/providers" "^5"
     "@web3-react/types" "^8.2.0"
 
-"@web3-react/walletconnect-v2@^8.3.4":
+"@web3-react/walletconnect-v2@^8.3.3":
   version "8.3.4"
   resolved "https://registry.yarnpkg.com/@web3-react/walletconnect-v2/-/walletconnect-v2-8.3.4.tgz#30ea1e7edb9075f265bbf778a443eb7191f402de"
   integrity sha512-A7lFzxvqLFql6LBxAQLAmO+53FydyZdr8XfY2Xxq6gjZjm1GrQwIr6uibFDyXeRBKMHWJO+RglZL4fm0O8/NsQ==
