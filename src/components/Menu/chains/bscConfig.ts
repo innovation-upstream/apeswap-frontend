@@ -39,7 +39,7 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       {
         label: t('Pools'),
         href: 'https://apeswap.finance/pools',
-        isNew: true,
+        isNew: false,
       },
       {
         label: t('Farms'),
@@ -51,29 +51,14 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
         href: '/maximizers',
         isNew: false,
       },
-      {
-        label: t('Migrate'),
-        href: '/' + CURRENT_MIGRATE_PATH,
-        isNew: false,
-      },
     ],
   },
   {
-    label: t('Raise'),
+    label: t('Bonds'),
     lightIcon: 'OfferingsLightImage',
     darkIcon: 'OfferingsDarkImage',
-    items: [
-      {
-        label: t('Bonds'),
-        href: 'https://apeswap.finance/bonds',
-        isNew: false,
-      },
-      {
-        label: t('Official IAO'),
-        href: '/iao',
-        isNew: false,
-      },
-    ],
+    href: 'https://apeswap.finance/bonds',
+    isNew: false,
   },
   {
     label: t('Collect'),

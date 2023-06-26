@@ -9,7 +9,6 @@ import SettingsModal from 'components/Menu/GlobalSettings/SettingsModal'
 import { styles } from './styles'
 import SquidBridge from 'components/SquidBridge/SquidBridge'
 import { Link as ThemeLink, Switch } from 'theme-ui'
-import { AVAILABLE_CHAINS_ON_PRODUCTS, OTHER_PRODUCTS } from '../../../../config/constants/chains'
 
 interface DexNavProps {
   zapSettings?: boolean

@@ -1,5 +1,4 @@
 // Network chain ids
-import { SupportedChainId } from '@ape.swap/sdk-core'
 import { ChainId, SmartRouter } from '@ape.swap/sdk'
 import BigNumber from 'bignumber.js'
 import { iconTypes } from '@ape.swap/uikit/dist/components/Svg/types'
@@ -13,14 +12,14 @@ export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAIN
 
 export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS, ChainId.ARBITRUM]
 
-export const CHAIN_NAMES: Record<SupportedChainId, string> = {
-  [SupportedChainId.BSC]: 'bnb_chain',
-  [SupportedChainId.BSC_TESTNET]: 'bnb_chain_testnet',
-  [SupportedChainId.POLYGON]: 'polygon',
-  [SupportedChainId.POLYGON_MUMBAI]: 'polygon_mumbai',
-  [SupportedChainId.MAINNET]: 'mainnet',
-  [SupportedChainId.TLOS]: 'telos',
-  [SupportedChainId.ARBITRUM_ONE]: 'arbitrum_one',
+export const CHAIN_NAMES: Record<ChainId, string> = {
+  [ChainId.BSC]: 'bnb_chain',
+  [ChainId.BSC_TESTNET]: 'bnb_chain_testnet',
+  [ChainId.MATIC]: 'polygon',
+  [ChainId.MATIC_TESTNET]: 'polygon_mumbai',
+  [ChainId.MAINNET]: 'mainnet',
+  [ChainId.TLOS]: 'telos',
+  [ChainId.ARBITRUM]: 'arbitrum_one',
 }
 
 // Network labels
