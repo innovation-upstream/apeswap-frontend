@@ -7,7 +7,6 @@ import { RouterTypes } from 'config/constants'
 import { SmartRouter } from '@ape.swap/sdk'
 import track from '../utils/track'
 import { getAddChainParameters } from 'config/constants/chains'
-import { walletConnectConnection, networkConnection } from 'utils/connection'
 
 const useSwitchNetwork = () => {
   const { chainId, account, connector } = useWeb3React()
@@ -17,11 +16,7 @@ const useSwitchNetwork = () => {
     async (userChainId: number) => {
       if (account && userChainId !== chainId) {
         try {
-          if (connector === walletConnectConnection.connector || connector === networkConnection.connector) {
-            await connector.activate(userChainId)
-          } else {
-            connector.activate(getAddChainParameters(userChainId))
-          }
+          connector.activate(getAddChainParameters(userChainId))
           dispatch(fetchChainIdFromUrl(false))
           dispatch(
             replaceSwapState({
