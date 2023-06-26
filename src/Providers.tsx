@@ -13,8 +13,6 @@ import { LanguageProvider } from './contexts/Localization'
 import Blocklist from 'components/Blocklist'
 import Web3Provider from 'contexts/Web3Provider'
 
-// const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
-
 const queryClient = new QueryClient()
 
 const Providers: React.FC = ({ children }) => {
