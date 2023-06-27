@@ -1,14 +1,26 @@
 // Network chain ids
-
 import { ChainId, SmartRouter } from '@ape.swap/sdk'
 import BigNumber from 'bignumber.js'
 import { iconTypes } from '@ape.swap/uikit/dist/components/Svg/types'
+import type { AddEthereumChainParameter } from '@web3-react/types'
+
+export const AVERAGE_L1_BLOCK_TIME = 12000
 
 // List of mainnet chains
 // This is currently used for the info page
 export const MAINNET_CHAINS_INFOPAGE = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.ARBITRUM]
 
 export const MAINNET_CHAINS = [ChainId.BSC, ChainId.MATIC, ChainId.MAINNET, ChainId.TLOS, ChainId.ARBITRUM]
+
+export const CHAIN_NAMES: Record<ChainId, string> = {
+  [ChainId.BSC]: 'bnb_chain',
+  [ChainId.BSC_TESTNET]: 'bnb_chain_testnet',
+  [ChainId.MATIC]: 'polygon',
+  [ChainId.MATIC_TESTNET]: 'polygon_mumbai',
+  [ChainId.MAINNET]: 'mainnet',
+  [ChainId.TLOS]: 'telos',
+  [ChainId.ARBITRUM]: 'arbitrum_one',
+}
 
 // Network labels
 export const NETWORK_LABEL: Partial<Record<ChainId, string>> = {
@@ -62,7 +74,7 @@ export const CHAIN_PARAMS: Partial<
     {
       chainId: string
       chainName: string
-      nativeCurrency: { name: string; symbol: string; decimals: number }
+      nativeCurrency: AddEthereumChainParameter['nativeCurrency']
       rpcUrls: string[]
       blockExplorerUrls: string[]
     }
@@ -426,4 +438,74 @@ export const INFO_PAGE_CHAIN_PARAMS: Partial<
     color: '#28A0F0',
     icon: 'arbitrum_chain',
   },
+}
+
+interface BasicChainInformation {
+  urls: string[]
+  name: string
+}
+
+interface ExtendedChainInformation extends BasicChainInformation {
+  nativeCurrency: AddEthereumChainParameter['nativeCurrency']
+  blockExplorerUrls: AddEthereumChainParameter['blockExplorerUrls']
+}
+
+type ChainConfig = {
+  [chainId: number]: BasicChainInformation | ExtendedChainInformation
+}
+
+export const MAINNET_CHAINS_TO_ADD: ChainConfig = {
+  [ChainId.MAINNET]: {
+    urls: NETWORK_RPC[ChainId.MAINNET],
+    name: 'Ethereum',
+  },
+  [ChainId.BSC]: {
+    urls: NETWORK_RPC[ChainId.BSC],
+    name: 'Binance Smart Chain',
+    nativeCurrency: CHAIN_PARAMS[ChainId.BSC].nativeCurrency,
+    blockExplorerUrls: [BLOCK_EXPLORER[ChainId.BSC]],
+  },
+  [ChainId.MATIC]: {
+    urls: NETWORK_RPC[ChainId.MATIC],
+    name: 'Polygon',
+    nativeCurrency: CHAIN_PARAMS[ChainId.MATIC].nativeCurrency,
+    blockExplorerUrls: [BLOCK_EXPLORER[ChainId.MATIC]],
+  },
+  [ChainId.ARBITRUM]: {
+    urls: NETWORK_RPC[ChainId.ARBITRUM],
+    name: 'Arbitrum One',
+    nativeCurrency: CHAIN_PARAMS[ChainId.ARBITRUM].nativeCurrency,
+    blockExplorerUrls: [BLOCK_EXPLORER[ChainId.ARBITRUM]],
+  },
+  [ChainId.TLOS]: {
+    urls: NETWORK_RPC[ChainId.TLOS],
+    name: 'Telos',
+    nativeCurrency: CHAIN_PARAMS[ChainId.TLOS].nativeCurrency,
+    blockExplorerUrls: [BLOCK_EXPLORER[ChainId.TLOS]],
+  },
+}
+
+export const CHAINS: ChainConfig = {
+  ...MAINNET_CHAINS_TO_ADD,
+}
+
+function isExtendedChainInformation(
+  chainInformation: BasicChainInformation | ExtendedChainInformation,
+): chainInformation is ExtendedChainInformation {
+  return !!(chainInformation as ExtendedChainInformation).nativeCurrency
+}
+
+export function getAddChainParameters(chainId: number): AddEthereumChainParameter | number {
+  const chainInformation = CHAINS[chainId]
+  if (isExtendedChainInformation(chainInformation)) {
+    return {
+      chainId,
+      chainName: chainInformation.name,
+      nativeCurrency: chainInformation.nativeCurrency,
+      rpcUrls: chainInformation.urls,
+      blockExplorerUrls: chainInformation.blockExplorerUrls,
+    }
+  } else {
+    return chainId
+  }
 }

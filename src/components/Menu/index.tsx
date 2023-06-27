@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { Navbar as UikitMenu, useModal } from '@ape.swap/uikit'
 import { ChainId } from '@ape.swap/sdk'
-import { uauth } from 'utils/web3React'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useRefresh from 'hooks/useRefresh'
 import useAuth from 'hooks/useAuth'
 import useTheme from 'hooks/useTheme'
 import { ContextApi } from 'contexts/Localization/types'
@@ -37,8 +35,6 @@ const Menu = (props) => {
   const { profile } = useProfile()
   const { t, setLanguage, currentLanguage } = useTranslation()
   const { liveIfos } = useLiveIfoStatus()
-  const { fastRefresh } = useRefresh()
-  const [uDName, setUDName] = useState(null)
   const [sidOwner, setSidOwner] = useState(null)
 
   const bananaPriceUsd = useBananaPrice()
@@ -79,17 +75,9 @@ const Menu = (props) => {
     }
   }, [getSidOwner, account, chainId])
 
-  useEffect(() => {
-    uauth.uauth
-      .user()
-      .then((user) => setUDName(user.sub))
-      .catch(() => null)
-  }, [fastRefresh])
-
   return (
     <UikitMenu
       sidName={sidOwner?.name}
-      uDName={uDName}
       account={account}
       login={login}
       logout={logout}
