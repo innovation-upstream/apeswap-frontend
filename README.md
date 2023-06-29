@@ -1,6 +1,6 @@
 # 🍌 ApeSwap Frontend
 
-The `apeswap-frontend` repo is the primary frontend repository for [ApeSwap.Finance](https://apeswap.finance), which is a multichain DeFi Hub offering an accessible, transparent, and secure experience for everyone.
+The `apeswap-frontend` repo is the LEGACY frontend repository for ApeSwap.Finance, which is a multichain DeFi Hub offering an accessible, transparent, and secure experience for everyone.
 
 ## Contributions
 
