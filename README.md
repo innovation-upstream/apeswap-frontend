@@ -2,6 +2,10 @@
 
 The `apeswap-frontend` repo is the LEGACY frontend repository for ApeSwap.Finance, which is a multichain DeFi Hub offering an accessible, transparent, and secure experience for everyone.
 
+The new official repository for our frontend can be found here:
+
+https://github.com/ApeSwapFinance/frontend
+
 ## Contributions
 
 If you want to contribute to this repo, please refer to the [contributing guidelines](./CONTRIBUTING.md).
@@ -20,6 +24,8 @@ git clone https://github.com/ApeSwapFinance/apeswap-frontend.git
 cd apeswap-frontend
 yarn
 ```
+
+Please, bear in mind that to successfully install the dependencies you'll need to create a personal access token through Github.
 
 Once everything is downloaded & installed, simply run `npm run start` to run the repo locally.
 
