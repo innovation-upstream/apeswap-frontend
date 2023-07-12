@@ -52,7 +52,7 @@ export const NETWORK_RPC: Partial<Record<ChainId, string[]>> = {
   [ChainId.BSC_TESTNET]: ['https://data-seed-prebsc-2-s3.binance.org:8545/'],
   [ChainId.MATIC]: ['https://polygon-rpc.com/'],
   [ChainId.MATIC_TESTNET]: ['https://matic-mumbai.chainstacklabs.com'],
-  [ChainId.MAINNET]: ['https://eth-mainnet.nodereal.io/v1/43f9100965104de49b580d1fa1ab28c0'],
+  [ChainId.MAINNET]: ['https://www.ankr.com/rpc/eth/'],
   [ChainId.TLOS]: ['https://mainnet.telos.net/evm'],
   [ChainId.ARBITRUM]: ['https://arb1.arbitrum.io/rpc'],
 }

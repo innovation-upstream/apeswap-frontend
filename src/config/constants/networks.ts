@@ -14,10 +14,6 @@ export const RPC_URLS: Record<ChainId, string[]> = {
     'https://matic-mainnet.chainstacklabs.com',
   ],
   [ChainId.MATIC_TESTNET]: ['https://matic-mumbai.chainstacklabs.com'],
-  [ChainId.MAINNET]: [
-    'https://eth-mainnet.nodereal.io/v1/43f9100965104de49b580d1fa1ab28c0',
-    'https://rpc.ankr.com/eth',
-    'https://eth-mainnet.public.blastapi.io',
-  ],
+  [ChainId.MAINNET]: ['https://rpc.ankr.com/eth', 'https://eth-mainnet.public.blastapi.io'],
   [ChainId.TLOS]: ['https://mainnet.telos.net/evm'],
 }
