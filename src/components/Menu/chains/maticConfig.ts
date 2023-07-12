@@ -32,7 +32,12 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
   {
     label: t('Bonds'),
     href: 'https://apeswap.finance/bonds',
-    isNew: true,
+    isNew: false,
+  },
+  {
+    label: t('Liquidity Health'),
+    href: 'https://apeswap.finance/liquidity-health',
+    isNew: false,
   },
   {
     label: t('Explore'),

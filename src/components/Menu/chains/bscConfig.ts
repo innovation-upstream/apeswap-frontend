@@ -54,11 +54,21 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     ],
   },
   {
-    label: t('Bonds'),
+    label: t('Raise'),
     lightIcon: 'OfferingsLightImage',
     darkIcon: 'OfferingsDarkImage',
-    href: 'https://apeswap.finance/bonds',
-    isNew: false,
+    items: [
+      {
+        label: t('Bonds'),
+        href: 'https://apeswap.finance/bonds',
+        isNew: false,
+      },
+      {
+        label: t('Liquidity Health'),
+        href: 'https://apeswap.finance/liquidity-health',
+        isNew: false,
+      },
+    ],
   },
   {
     label: t('Collect'),

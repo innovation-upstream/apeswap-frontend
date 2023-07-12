@@ -25,6 +25,11 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     ],
   },
   {
+    label: t('Liquidity Health'),
+    href: 'https://apeswap.finance/liquidity-health',
+    isNew: false,
+  },
+  {
     label: t('Explore'),
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',

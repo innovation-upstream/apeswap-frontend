@@ -30,6 +30,11 @@ const arbitrumConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     isNew: false,
   },
   {
+    label: t('Liquidity Health'),
+    href: 'https://apeswap.finance/liquidity-health',
+    isNew: false,
+  },
+  {
     label: t('Explore'),
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',
