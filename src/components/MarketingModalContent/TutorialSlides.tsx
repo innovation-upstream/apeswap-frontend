@@ -25,7 +25,7 @@ export const SwapSlides = () => {
           <Text sx={{ fontStyle: 'italic' }}>
             {t(`New to ${NETWORK_LABEL[chainId]} Chain? You might need to`)}
             <Text sx={{ ...styles.yellow, mx: '3px' }}>
-              <a href="https://app.multichain.org/#/router" target="_blank" rel="noreferrer noopener">
+              <a href="https://jumper.exchange/" target="_blank" rel="noreferrer noopener">
                 {t('bridge tokens')}
               </a>
             </Text>
