@@ -32,7 +32,15 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     ],
   },
   {
-    label: t('Stake'),
+    label: t('Bonds'),
+    href: 'https://apeswap.finance/bonds',
+  },
+  {
+    label: t('Liquidity Health'),
+    href: 'https://apeswap.finance/liquidity-health',
+  },
+  {
+    label: t('Staking'),
     lightIcon: 'StakeLightImage',
     darkIcon: 'StakeDarkImage',
     items: [
@@ -48,99 +56,43 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
       },
       {
         label: t('Maximizers'),
-        href: '/maximizers',
+        href: 'https://legacy.apeswap.finance/maximizers',
         isNew: false,
       },
     ],
   },
   {
-    label: t('Raise'),
-    lightIcon: 'OfferingsLightImage',
-    darkIcon: 'OfferingsDarkImage',
-    items: [
-      {
-        label: t('Bonds'),
-        href: 'https://apeswap.finance/bonds',
-        isNew: false,
-      },
-      {
-        label: t('Liquidity Health'),
-        href: 'https://apeswap.finance/liquidity-health',
-        isNew: false,
-      },
-    ],
-  },
-  {
-    label: t('Collect'),
-    lightIcon: 'NfaLightImage',
-    darkIcon: 'NfaDarkImage',
-    items: [
-      {
-        label: t('NFA Collection'),
-        href: '/nft',
-        isNew: false,
-      },
-      {
-        label: t('NFA Auction'),
-        href: '/auction',
-        isNew: false,
-      },
-      {
-        label: t('NFA Liquidity'),
-        href: 'https://liquidcollectibles.io/collection/0x6afc012783e3a6ef8c5f05f8eee2edef6a052ec4',
-        isNew: false,
-      },
-      {
-        label: t('NFB Collection'),
-        href: 'https://nftkey.app/collections/nfbs/',
-        isNew: false,
-      },
-      {
-        label: t('NFB Liquidity'),
-        href: 'https://liquidcollectibles.io/collection/0x9f707a412302a3ad64028a9f73f354725c992081',
-        isNew: false,
-      },
-    ],
-  },
-  {
-    label: t('Lend'),
-    href: 'https://lending.apeswap.finance/',
-    isNew: false,
-  },
-  {
-    label: t('Explore'),
+    label: t('More'),
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',
     items: [
       {
         label: t('ApeStats'),
-        href: '/apestats',
+        href: 'https://legacy.apeswap.finance/apestats',
         isNew: false,
       },
       {
-        label: t('Dashboard'),
+        label: t('Protocol Data'),
         href: 'https://apeswap.finance/protocol-dashboard',
         isNew: false,
       },
       {
-        label: t('Documentation'),
-        href: 'https://apeswap.gitbook.io/apeswap-finance/',
+        label: t('Charts'),
+        href: 'https://legacy.apeswap.finance/info',
         isNew: false,
       },
       {
-        label: t('Charts'),
-        href: '/info',
-        isNew: false,
+        label: 'Lend',
+        href: 'https://lending.apeswap.finance/',
+      },
+      {
+        label: 'ApeSwap NFTs',
+        href: 'https://apeswap.finance/nft',
       },
       {
         label: t('Governance'),
         href: 'https://discuss.apeswap.finance',
         isNew: false,
-      },
-      {
-        label: t('Newsletter'),
-        href: '?modal=newsletter',
-        isNew: true,
       },
     ],
   },

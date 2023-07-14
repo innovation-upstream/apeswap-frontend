@@ -35,39 +35,37 @@ const arbitrumConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     isNew: false,
   },
   {
-    label: t('Explore'),
+    label: t('More'),
     lightIcon: 'MoreLightImage',
     darkIcon: 'MoreDarkImage',
     items: [
       {
         label: t('ApeStats'),
-        href: '/apestats',
+        href: 'https://legacy.apeswap.finance/apestats',
         isNew: false,
       },
       {
-        label: t('Dashboard'),
+        label: t('Protocol Data'),
         href: 'https://apeswap.finance/protocol-dashboard',
         isNew: false,
       },
       {
-        label: t('Documentation'),
-        href: 'https://apeswap.gitbook.io/apeswap-finance/',
+        label: t('Charts'),
+        href: 'https://legacy.apeswap.finance/info',
         isNew: false,
       },
       {
-        label: t('Charts'),
-        href: '/info',
-        isNew: false,
+        label: 'Lend',
+        href: 'https://lending.apeswap.finance/',
+      },
+      {
+        label: 'ApeSwap NFTs',
+        href: 'https://apeswap.finance/nft',
       },
       {
         label: t('Governance'),
         href: 'https://discuss.apeswap.finance',
         isNew: false,
-      },
-      {
-        label: t('Newsletter'),
-        href: '?modal=newsletter',
-        isNew: true,
       },
     ],
   },
