@@ -9,12 +9,12 @@ const maticConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     items: [
       {
         label: t('Swap'),
-        href: 'https://dex.apeswap.finance/swap',
+        href: 'https://apeswap.finance/swap',
         isNew: false,
       },
       {
         label: t('Liquidity'),
-        href: 'https://dex.apeswap.finance/zap',
+        href: 'https://apeswap.finance/zap',
         isNew: false,
       },
       {

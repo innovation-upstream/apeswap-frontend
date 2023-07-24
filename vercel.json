@@ -1,5 +1,9 @@
 {
   "redirects": [
+    { "source": "/swap", "destination": "https://apeswap.finance/swap" },
+    { "source": "/zap", "destination": "https://apeswap.finance/zap" },
+    { "source": "/liquidity", "destination": "https://apeswap.finance/liquidity" },
+    { "source": "/add-liquidity", "destination": "https://apeswap.finance/add-liquidity" },
     { "source": "/home", "destination": "/", "permanent": true },
     { "source": "/about", "destination": "https://apeswap.gitbook.io/apeswap-finance/" },
     { "source": "/about-us", "destination": "https://apeswap.gitbook.io/apeswap-finance/" },
