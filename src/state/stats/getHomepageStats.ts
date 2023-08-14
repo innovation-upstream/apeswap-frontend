@@ -1,9 +1,9 @@
-import { apiBaseUrl } from 'hooks/api'
+import { apiV2BaseUrl } from 'hooks/api'
 import { HomepageData } from 'state/types'
 
 const getHomepageStats = async (): Promise<HomepageData> => {
   try {
-    const response = await fetch(`${apiBaseUrl}/stats/tvl`)
+    const response = await fetch(`${apiV2BaseUrl}/stats/overall`)
     const statRes = await response.json()
     if (statRes.statusCode === 500) {
       return null
