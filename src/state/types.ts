@@ -295,6 +295,8 @@ export interface HomepageData {
   totalVolume: number
   partnerCount?: number
   bondingPartnerCount?: number
+  bondsCount?: number
+  totalBondedValue?: number
 }
 
 export interface HomepageTokenStats {
