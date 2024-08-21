@@ -1,4 +1,4 @@
-import { CHAIN_ID } from 'config/constants/chains'
+import { ChainId } from '@ape.swap/sdk'
 import SwiperProvider from 'contexts/SwiperProvider'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import React from 'react'
@@ -9,21 +9,21 @@ import StatCards from './components/StatCards/StatCards'
 import TrendingTokens from './components/TrendingTokens/TrendingTokens'
 import Values from './components/Values/Values'
 import WelcomeContent from './components/WelcomeContent/WelcomeContent'
-import { Banner } from './styles'
 
 const Home: React.FC = () => {
   const { chainId } = useActiveWeb3React()
 
   return (
     <>
-      <Banner />
-      <WelcomeContent />
+      <SwiperProvider>
+        <WelcomeContent />
+      </SwiperProvider>
       <StatCards />
       <TrendingTokens />
       <SwiperProvider>
         <News />
       </SwiperProvider>
-      {chainId === CHAIN_ID.BSC && (
+      {chainId === ChainId.BSC && (
         <SwiperProvider>
           <Services />
         </SwiperProvider>

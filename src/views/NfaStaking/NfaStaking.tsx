@@ -4,12 +4,13 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Text, Card, Checkbox } from '@apeswapfinance/uikit'
 import { partition } from 'lodash'
-import { useNfaStakingPools, usePollNfaStakingData } from 'state/hooks'
+import { useSetNfaStakingPools, usePollNfaStakingData, useNfaStakingPools } from 'state/nfaStakingPools/hooks'
 import Page from 'components/layout/Page'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
 import SearchInput from '../PoolsLegacy/components/SearchInput'
 import PoolCard from './components/PoolCard/PoolCard'
+import { CenterCard, InnerContentText, PaddedCard, TopCon, WarningHeader } from 'views/ApeZone/styles'
 
 const ControlContainer = styled(Card)`
   display: flex;
@@ -171,6 +172,7 @@ const FlexLayout = styled.div`
 `
 
 const NfaStaking: React.FC = () => {
+  useSetNfaStakingPools()
   usePollNfaStakingData()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -226,6 +228,23 @@ const NfaStaking: React.FC = () => {
           margin="0 0 20px 0px"
           titleColor="primaryBright"
         />
+        <PaddedCard style={{ marginBottom: '20px' }}>
+          <TopCon>
+            <CenterCard>
+              <WarningHeader as="h1">{t('HEADS UP, APES!')}</WarningHeader>
+              <InnerContentText>
+                NFA Staking has ended. Learn about what`s next from{' '}
+                <a
+                  style={{ textDecoration: 'underline' }}
+                  href="https://ape-swap.medium.com/meet-apeswap-nft-2f0cf5ac6b59"
+                >
+                  ApeSwap NFT here
+                </a>
+                , including the new community wallet.
+              </InnerContentText>
+            </CenterCard>
+          </TopCon>
+        </PaddedCard>
         <ControlContainer>
           <ViewControls>
             <LabelWrapper>

@@ -1,5 +1,7 @@
+import { SmartRouter } from '@ape.swap/sdk'
+import { RouterTypes } from 'config/constants'
 import { parse } from 'qs'
-import { Field } from './actions'
+import { Field, SwapDelay } from './actions'
 import { queryParametersToSwapState } from './hooks'
 
 describe('hooks', () => {
@@ -18,6 +20,11 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: 'ETH' },
         typedValue: '20.5',
         independentField: Field.OUTPUT,
+        swapDelay: SwapDelay.INIT,
+        bestRoute: {
+          routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE,
+        },
         recipient: null,
       })
     })
@@ -33,6 +40,11 @@ describe('hooks', () => {
         [Field.OUTPUT]: { currencyId: 'ETH' },
         typedValue: '',
         independentField: Field.INPUT,
+        swapDelay: SwapDelay.INIT,
+        bestRoute: {
+          routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE,
+        },
         recipient: null,
       })
     })
@@ -48,6 +60,11 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
+        swapDelay: SwapDelay.INIT,
+        bestRoute: {
+          routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE,
+        },
         recipient: null,
       })
     })
@@ -63,6 +80,11 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
+        swapDelay: SwapDelay.INIT,
+        bestRoute: {
+          routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE,
+        },
         recipient: null,
       })
     })
@@ -81,6 +103,11 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
+        swapDelay: SwapDelay.INIT,
+        bestRoute: {
+          routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE,
+        },
         recipient: '0x0fF2D1eFd7A57B7562b2bf27F3f37899dB27F4a5',
       })
     })
@@ -98,6 +125,11 @@ describe('hooks', () => {
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
         independentField: Field.INPUT,
+        swapDelay: SwapDelay.INIT,
+        bestRoute: {
+          routerType: RouterTypes.APE,
+          smartRouter: SmartRouter.APE,
+        },
         recipient: 'bob.argent.xyz',
       })
     })

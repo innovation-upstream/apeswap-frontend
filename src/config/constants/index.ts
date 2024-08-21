@@ -1,8 +1,12 @@
-import { JSBI, Percent, Token, ChainId, WETH } from '@apeswapfinance/sdk'
+import { JSBI, Percent, Token, ChainId, WETH } from '@ape.swap/sdk'
 
-import farms from './farms'
+export const mailChimpUrl = `https://finance.us10.list-manage.com/subscribe/post?u=${process.env.REACT_APP_MAILCHIMP_U}&id=${process.env.REACT_APP_MAILCHIMP_ID}`
 
-export const CHAIN_ID = parseInt(process.env.REACT_APP_CHAIN_ID)
+export enum RouterTypes {
+  APE = 'APE',
+  SMART = 'SMART',
+  BONUS = 'BONUS',
+}
 
 export const NetworkContextName = 'NETWORK'
 
@@ -10,27 +14,12 @@ export const BIG_INT_ZERO = JSBI.BigInt(0)
 
 export const WRAPPED_NATIVE_ONLY: ChainTokenList = {
   [ChainId.MAINNET]: [WETH[ChainId.MAINNET]],
-  [ChainId.ROPSTEN]: [WETH[ChainId.ROPSTEN]],
-  [ChainId.RINKEBY]: [WETH[ChainId.RINKEBY]],
-  [ChainId.GÖRLI]: [WETH[ChainId.GÖRLI]],
-  [ChainId.KOVAN]: [WETH[ChainId.KOVAN]],
-  [ChainId.FANTOM]: [WETH[ChainId.FANTOM]],
-  [ChainId.FANTOM_TESTNET]: [WETH[ChainId.FANTOM_TESTNET]],
   [ChainId.MATIC]: [WETH[ChainId.MATIC]],
   [ChainId.MATIC_TESTNET]: [WETH[ChainId.MATIC_TESTNET]],
-  [ChainId.XDAI]: [WETH[ChainId.XDAI]],
   [ChainId.BSC]: [WETH[ChainId.BSC]],
   [ChainId.BSC_TESTNET]: [WETH[ChainId.BSC_TESTNET]],
+  [ChainId.TLOS]: [WETH[ChainId.TLOS]],
   [ChainId.ARBITRUM]: [WETH[ChainId.ARBITRUM]],
-  [ChainId.MOONBASE]: [WETH[ChainId.MOONBASE]],
-  [ChainId.AVALANCHE]: [WETH[ChainId.AVALANCHE]],
-  [ChainId.FUJI]: [WETH[ChainId.FUJI]],
-  [ChainId.HECO]: [WETH[ChainId.HECO]],
-  [ChainId.HECO_TESTNET]: [WETH[ChainId.HECO_TESTNET]],
-  [ChainId.HARMONY]: [WETH[ChainId.HARMONY]],
-  [ChainId.HARMONY_TESTNET]: [WETH[ChainId.HARMONY_TESTNET]],
-  [ChainId.OKEX]: [WETH[ChainId.OKEX]],
-  [ChainId.OKEX_TESTNET]: [WETH[ChainId.OKEX_TESTNET]],
 }
 
 export const MIN_BNB: JSBI = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(16)) // .01 BNB
@@ -56,13 +45,6 @@ export const BSC: { [key: string]: Token } = {
   FRMX: new Token(ChainId.BSC, '0x8523518001ad5d24b2a04e8729743c0643a316c0', 18, 'FRMX', 'FRMx Token'),
 }
 
-export const FANTOM: { [key: string]: Token } = {
-  USDC: new Token(ChainId.FANTOM, '0x04068DA6C83AFCFA0e13ba15A6696662335D5B75', 6, 'USDC', 'USD Coin'),
-  WBTC: new Token(ChainId.FANTOM, '0x321162Cd933E2Be498Cd2267a90534A804051b11', 8, 'WBTC', 'Wrapped Bitcoin'),
-  DAI: new Token(ChainId.FANTOM, '0x8D11eC38a3EB5E956B052f67Da8Bdc9bef8Abf3E', 18, 'DAI', 'Dai Stablecoin'),
-  WETH: new Token(ChainId.FANTOM, '0x74b23882a30290451A17c44f4F05243b6b58C76d', 18, 'WETH', 'Wrapped Ether'),
-}
-
 export const MATIC: { [key: string]: Token } = {
   USDC: new Token(ChainId.MATIC, '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', 6, 'USDC', 'USD Coin'),
   WBTC: new Token(ChainId.MATIC, '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6', 8, 'WBTC', 'Wrapped Bitcoin'),
@@ -77,10 +59,20 @@ export const MATIC: { [key: string]: Token } = {
   FXS: new Token(ChainId.MATIC, '0x3e121107F6F22DA4911079845a470757aF4e1A1b', 18, 'FXS', 'Frax Share'),
 }
 
+export const TLOS: { [key: string]: Token } = {
+  WTLOS: new Token(ChainId.TLOS, '0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E', 18, 'WTLOS', 'WTLOS'),
+  WETH: new Token(ChainId.TLOS, '0xfa9343c3897324496a05fc75abed6bac29f8a40f', 18, 'WETH', 'Ethereum'),
+  USDC: new Token(ChainId.TLOS, '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b', 6, 'USDC', 'USD Coin'),
+  USDT: new Token(ChainId.TLOS, '0xefaeee334f0fd1712f9a8cc375f427d9cdd40d73', 6, 'USDT', 'Tether USD'),
+  WBTC: new Token(ChainId.TLOS, '0xf390830df829cf22c53c8840554b98eafc5dcbc2', 8, 'WBTC', 'Bitcoin'),
+  // BANANA: new Token(ChainId.TLOS, '', 18, 'BANANA', 'ApeSwapFinance BANANA'),
+}
+
 export const CHAIN_USD: { [key: number]: Token } = {
   [ChainId.BSC]: BSC.USD,
   [ChainId.MATIC]: MATIC.USDC,
   [ChainId.MAINNET]: USDC,
+  [ChainId.TLOS]: TLOS.USDC,
 }
 
 export const ZERO_PERCENT = new Percent('0')
@@ -91,7 +83,8 @@ type ChainTokenList = {
   readonly [chainId in ChainId]: Token[]
 }
 
-export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(JSBI.BigInt(50), JSBI.BigInt(10000))
+export const BIPS_BASE = JSBI.BigInt(10000)
+export const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(JSBI.BigInt(50), BIPS_BASE)
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.MAINNET]: [
@@ -107,7 +100,10 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   ...WRAPPED_NATIVE_ONLY,
+  [ChainId.BSC]: [...WRAPPED_NATIVE_ONLY[ChainId.BSC], BSC.USD, BSC.USDT],
+  [ChainId.MATIC]: [...WRAPPED_NATIVE_ONLY[ChainId.MATIC], MATIC.USDC],
   [ChainId.MAINNET]: [...WRAPPED_NATIVE_ONLY[ChainId.MAINNET], DAI],
+  [ChainId.TLOS]: [...WRAPPED_NATIVE_ONLY[ChainId.TLOS], TLOS.USDC, TLOS.USDT],
 }
 
 // used to construct intermediary pairs for trading
@@ -126,6 +122,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     BSC.FRMX,
   ],
   [ChainId.MAINNET]: [...WRAPPED_NATIVE_ONLY[ChainId.MAINNET], DAI, USDC, USDT, WBTC],
+  [ChainId.TLOS]: [...WRAPPED_NATIVE_ONLY[ChainId.TLOS], TLOS.USDC, TLOS.USDT, TLOS.WETH, TLOS.WBTC],
 }
 
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
@@ -158,16 +155,17 @@ export const SUGGESTED_BASES: ChainTokenList = {
   ],
   [ChainId.BSC]: [...WRAPPED_NATIVE_ONLY[ChainId.BSC], BSC.DAI, BSC.USD, BSC.USDC, BSC.USDT, BSC.BTCB],
   [ChainId.MAINNET]: [...WRAPPED_NATIVE_ONLY[ChainId.MAINNET], DAI, USDC, USDT, WBTC],
+  [ChainId.TLOS]: [...WRAPPED_NATIVE_ONLY[ChainId.TLOS], TLOS.USDC, TLOS.USDT, TLOS.WETH, TLOS.WBTC],
 }
 
 // default allowed slippage, in bips
 export const INITIAL_ALLOWED_SLIPPAGE = 50
+export const INITIAL_ZAP_SLIPPAGE = 100
 // 20 minutes, denominated in seconds
 export const DEFAULT_DEADLINE_FROM_NOW = 60 * 20
 
 // one basis point
 export const ONE_BIPS = new Percent(JSBI.BigInt(1), JSBI.BigInt(10000))
-export const BIPS_BASE = JSBI.BigInt(10000)
 
 export const ALLOWED_PRICE_IMPACT_LOW: Percent = new Percent(JSBI.BigInt(100), BIPS_BASE) // 1%
 export const ALLOWED_PRICE_IMPACT_MEDIUM: Percent = new Percent(JSBI.BigInt(300), BIPS_BASE) // 3%
@@ -177,12 +175,94 @@ export const PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN: Percent = new Percent(JSBI.Bi
 // for non expert mode disable swaps above this
 export const BLOCKED_PRICE_IMPACT_NON_EXPERT: Percent = new Percent(JSBI.BigInt(1500), BIPS_BASE) // 15%
 
-const communityFarms = farms.filter((farm) => farm.isCommunity).map((farm) => farm.tokenSymbol)
-const farmsConfig = farms
-
-export { farmsConfig, communityFarms }
-export { default as poolsConfig } from './pools'
-export { default as vaultsConfig } from './vaults'
 export { default as ifosConfig } from './ifo'
-export { default as dualFarmsConfig } from './dualFarms'
-export { default as jungleFarmsConfig } from './jungleFarms'
+
+// DEFAULT MODAL CONSTANTS
+export const SHOW_DEFAULT_MODAL_KEY = 'SHOW_DEFAULT_MODAL'
+export const SET_DEFAULT_MODAL_KEY = 'SET_DEFAULT_MODAL'
+export const SET_DEF_MOD_KEY = 'SET_DEF_MOD_KEY'
+export const SHOW_DEF_MOD_KEY = 'SHOW_DEF_MOD_KEY'
+
+// MODALS CONSTANTS
+export const MODAL_INFO = {
+  sellModal: {
+    title: 'Selling BANANA?',
+    supporting: 'Before You Sell...',
+    description: 'Have you tried these products?',
+  },
+  buyModal: {
+    title: "You've Got BANANA!",
+    supporting: "Now You're Ready...",
+    description: 'Put your new BANANA to work!',
+  },
+  generalHarvestModal: {
+    title: "You've Earned BANANA!",
+    supporting: 'Did You Know?',
+    description: 'You can use your BANANA to earn more rewards:',
+  },
+  poolHarvestModal: {
+    title: "You've Earned BANANA!",
+    supporting: 'Did You Know?',
+    description: 'You can use your BANANA to earn more rewards:',
+  },
+}
+
+// CTA CARDS INFO
+export const CTA_CARD_INFO = {
+  maximizers: {
+    title: 'Maximizers',
+    description: 'Maximize your yields automatically',
+    destination: 'https://apeswap.finance/maximizers',
+  },
+  pools: {
+    title: 'Pools',
+    description: 'Discover the next gem',
+    destination: 'https://apeswap.finance/pools',
+  },
+  lending: {
+    title: 'Lending',
+    description: 'Supply, borrow, and earn',
+    destination: 'https://lending.apeswap.finance',
+  },
+  gnana: {
+    title: 'Gnana',
+    description: 'Unlock exclusive utility',
+    destination: 'https://apeswap.finance/gnana',
+  },
+  compound: {
+    title: 'Compound',
+    description: 'Stake your rewards to earn more',
+    destination: 'https://apeswap.finance/pools',
+  },
+}
+
+// CTA TYPES ENUM
+export enum CTA_TYPE {
+  MAXIMIZERS = 'maximizers',
+  LENDING = 'lending',
+  POOLS = 'pools',
+  GNANA = 'gnana',
+  COMPOUND = 'compound',
+}
+
+// MODAL TYPES ENUM
+export enum MODAL_TYPE {
+  SELLING = 'sellModal',
+  BUYING = 'buyModal',
+  GENERAL_HARVEST = 'generalHarvestModal',
+  POOL_HARVEST = 'poolHarvestModal',
+}
+
+// SHOW MODAL TYPES IN STATE
+export enum SHOW_MODAL_TYPES {
+  sellModal = 'showSellModal',
+  buyModal = 'showBuyModal',
+  poolHarvestModal = 'showPoolHarvestModal',
+  generalHarvestModal = 'showGeneralHarvestModal',
+}
+
+export enum PRODUCT {
+  FARM,
+  JUNGLE_FARM,
+  DUAL_FARM,
+}

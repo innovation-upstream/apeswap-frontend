@@ -1,19 +1,32 @@
 import { parseUnits } from '@ethersproject/units'
-import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade, ChainId } from '@apeswapfinance/sdk'
+import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount, Trade, ChainId, SmartRouter } from '@ape.swap/sdk'
 import { ParsedQs } from 'qs'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import tokens from 'config/constants/tokens'
 import useENS from 'hooks/ENS/useENS'
 import { useCurrency } from 'hooks/Tokens'
-import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
+import { useAllCommonPairs } from 'hooks/Trades'
 import useParsedQueryString from 'hooks/useParsedQueryString'
+import contracts from 'config/constants/contracts'
+import useFindBestRoute from 'hooks/useFindBestRoute'
 import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
-import { AppDispatch, AppState } from '../index'
+import { RouterTypes } from 'config/constants'
+import { AppDispatch, AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
-import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
+import {
+  Field,
+  replaceSwapState,
+  selectCurrency,
+  setRecipient,
+  switchCurrencies,
+  typeInput,
+  setSwapDelay,
+  SwapDelay,
+  RouterTypeParams,
+  setBestRoute,
+} from './actions'
 
 import { SwapState } from './reducer'
 import { useUserSlippageTolerance } from '../user/hooks'
@@ -24,33 +37,70 @@ export function useSwapState(): AppState['swap'] {
 }
 
 export function useSwapActionHandlers(): {
-  onCurrencySelection: (field: Field, currency: Currency) => void
+  onCurrencySelection: (field: Field, currency: Currency, typedValue?: string) => void
   onSwitchTokens: () => void
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
+  onSetSwapDelay: (swapDelay: SwapDelay) => void
+  onBestRoute: (bestRoute: RouterTypeParams) => void
 } {
-  const dispatch = useDispatch<AppDispatch>()
-  const onCurrencySelection = useCallback(
-    (field: Field, currency: Currency) => {
-      dispatch(
-        selectCurrency({
-          field,
-          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
-        }),
-      )
+  const dispatch = useAppDispatch()
+  const timer = useRef(null)
+
+  const onSetSwapDelay = useCallback(
+    (swapDelay: SwapDelay) => {
+      dispatch(setSwapDelay({ swapDelay }))
     },
     [dispatch],
   )
 
   const onSwitchTokens = useCallback(() => {
     dispatch(switchCurrencies())
-  }, [dispatch])
+    // Set input to complete to recalculate the best path
+    onSetSwapDelay(SwapDelay.USER_INPUT_COMPLETE)
+  }, [dispatch, onSetSwapDelay])
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
       dispatch(typeInput({ field, typedValue }))
+      if (!typedValue) {
+        onSetSwapDelay(SwapDelay.INIT)
+        return
+      }
+      // Set state as user input delay
+      onSetSwapDelay(SwapDelay.USER_INPUT)
+      // Reset previous timer on user input
+      clearTimeout(timer.current)
+      // Set new timer to check wallchain router
+      timer.current = setTimeout(() => {
+        // Set state that user has finished inputing
+        onSetSwapDelay(SwapDelay.USER_INPUT_COMPLETE)
+      }, 300)
     },
-    [dispatch],
+    [dispatch, onSetSwapDelay, timer],
+  )
+
+  const onCurrencySelection = useCallback(
+    (field: Field, currency: Currency, typedValue?: string) => {
+      // We dont need to timeout if their is no typed value
+      dispatch(
+        selectCurrency({
+          field,
+          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
+        }),
+      )
+      // Set input to complete to recalculate the best path
+      if (!typedValue) {
+        onSetSwapDelay(SwapDelay.USER_INPUT_COMPLETE)
+      } else {
+        onSetSwapDelay(SwapDelay.USER_INPUT)
+        timer.current = setTimeout(() => {
+          // Set state that user has finished inputing
+          onSetSwapDelay(SwapDelay.USER_INPUT_COMPLETE)
+        }, 1000)
+      }
+    },
+    [dispatch, onSetSwapDelay],
   )
 
   const onChangeRecipient = useCallback(
@@ -60,11 +110,20 @@ export function useSwapActionHandlers(): {
     [dispatch],
   )
 
+  const onBestRoute = useCallback(
+    (bestRoute: RouterTypeParams) => {
+      dispatch(setBestRoute({ bestRoute }))
+    },
+    [dispatch],
+  )
+
   return {
     onSwitchTokens,
     onCurrencySelection,
     onUserInput,
     onChangeRecipient,
+    onSetSwapDelay,
+    onBestRoute,
   }
 }
 
@@ -116,6 +175,7 @@ export function useDerivedSwapInfo(): {
   v1Trade: Trade | undefined
 } {
   const { account, chainId } = useActiveWeb3React()
+
   const { t } = useTranslation()
 
   const {
@@ -125,9 +185,10 @@ export function useDerivedSwapInfo(): {
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
     recipient,
   } = useSwapState()
-
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
+  useAllCommonPairs(inputCurrency, outputCurrency)
+  const { v2Trade, bestTradeExactIn, bestTradeExactOut } = useFindBestRoute()
   const recipientLookup = useENS(recipient ?? undefined)
   const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
 
@@ -139,20 +200,21 @@ export function useDerivedSwapInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
-  const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
+  const currencyBalances = useMemo(
+    () => ({
+      [Field.INPUT]: relevantTokenBalances[0],
+      [Field.OUTPUT]: relevantTokenBalances[1],
+    }),
+    [relevantTokenBalances],
+  )
 
-  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
-
-  const currencyBalances = {
-    [Field.INPUT]: relevantTokenBalances[0],
-    [Field.OUTPUT]: relevantTokenBalances[1],
-  }
-
-  const currencies: { [field in Field]?: Currency } = {
-    [Field.INPUT]: inputCurrency ?? undefined,
-    [Field.OUTPUT]: outputCurrency ?? undefined,
-  }
+  const currencies: { [field in Field]?: Currency | null } = useMemo(
+    () => ({
+      [Field.INPUT]: inputCurrency ?? undefined,
+      [Field.OUTPUT]: outputCurrency ?? undefined,
+    }),
+    [inputCurrency, outputCurrency],
+  )
 
   let inputError: string | undefined
   if (!account) {
@@ -181,6 +243,7 @@ export function useDerivedSwapInfo(): {
   const [allowedSlippage] = useUserSlippageTolerance()
 
   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+  // const swapCalls = useSwapCallArguments(v2Trade, allowedSlippage, recipient)
 
   // compare input balance to max input based on version
   const [balanceIn, amountIn] = [
@@ -236,7 +299,7 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency)
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency)
 
-  const chainAddress = tokens.banana.address[chainId]
+  const chainAddress = contracts.banana[chainId]
 
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
@@ -247,6 +310,8 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
   }
 
   const recipient = validatedRecipient(parsedQs.recipient)
+  const swapDelay = SwapDelay.INIT
+  const bestRoute = { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE }
 
   return {
     [Field.INPUT]: {
@@ -258,6 +323,8 @@ export function queryParametersToSwapState(parsedQs: ParsedQs, chainId: ChainId)
     typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
     independentField: parseIndependentFieldURLParameter(parsedQs.exactField),
     recipient,
+    swapDelay,
+    bestRoute,
   }
 }
 
@@ -268,27 +335,29 @@ export function useDefaultsFromURLSearch():
   const { chainId } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
-  const [result, setResult] = useState<
-    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
-  >()
-
+  const parsed = useMemo(() => {
+    return queryParametersToSwapState(parsedQs, chainId)
+  }, [parsedQs, chainId])
+  const swapDelay = SwapDelay.INIT
+  const bestRoute = { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE }
   useEffect(() => {
     if (!chainId) return
-    const parsed = queryParametersToSwapState(parsedQs, chainId)
+    const inputCurrencyId = parsed[Field.INPUT].currencyId ?? undefined
+    const outputCurrencyId = parsed[Field.OUTPUT].currencyId ?? undefined
 
     dispatch(
       replaceSwapState({
         typedValue: parsed.typedValue,
         field: parsed.independentField,
-        inputCurrencyId: parsed[Field.INPUT].currencyId,
-        outputCurrencyId: parsed[Field.OUTPUT].currencyId,
+        inputCurrencyId,
+        outputCurrencyId,
         recipient: parsed.recipient,
+        swapDelay,
+        bestRoute,
       }),
     )
-
-    setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, chainId])
 
-  return result
+  return { inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId }
 }

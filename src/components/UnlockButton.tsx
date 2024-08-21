@@ -1,4 +1,5 @@
 /** @jsxImportSource theme-ui */
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { Button, useWalletModal } from '@ape.swap/uikit'
 import useAuth from 'hooks/useAuth'
@@ -24,7 +25,7 @@ const UnlockButton = (props) => {
         }}
         {...props}
       >
-        {t('UNLOCK WALLET')}
+        {t('Connect')}
       </Button>
     )
   }
@@ -42,7 +43,7 @@ const UnlockButton = (props) => {
         }}
         {...props}
       >
-        {t('UNLOCK WALLET')}
+        {t('Connect')}
       </Button>
     )
   }
@@ -54,10 +55,10 @@ const UnlockButton = (props) => {
   ) : (
     <Button
       onClick={onPresentConnectModal}
-      sx={{ fontSize: '16px', padding: '0 24px', height: '44px', fontWeight: 600 }}
+      sx={{ fontSize: '16px', padding: '0 24px', height: '44px', fontWeight: 700 }}
       {...props}
     >
-      {t('UNLOCK WALLET')}
+      {t('Connect')}
     </Button>
   )
 }

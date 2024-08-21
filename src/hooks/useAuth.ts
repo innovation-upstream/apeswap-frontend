@@ -1,74 +1,47 @@
-import { useCallback } from 'react'
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
-import { NoBscProviderError } from '@binance-chain/bsc-connector'
-import {
-  NoEthereumProviderError,
-  UserRejectedRequestError as UserRejectedRequestErrorInjected,
-} from '@web3-react/injected-connector'
-import {
-  UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
-  WalletConnectConnector,
-} from '@web3-react/walletconnect-connector'
-import { ConnectorNames, localStorageKey } from '@ape.swap/uikit'
-import { connectorsByName } from 'utils/web3React'
-import { setupNetwork } from 'utils/wallet'
-import { useNetworkChainId, useToast } from 'state/hooks'
+import { ConnectorNames } from '@ape.swap/uikit'
+import { connectionByType } from 'utils/connection'
+import { useWeb3React } from '@web3-react/core'
 import { profileClear } from 'state/profile'
+import { WalletConnect } from '@web3-react/walletconnect-v2'
 
 import { useDispatch } from 'react-redux'
-import { useTranslation } from 'contexts/Localization'
+
+function deleteWc2LocalStorageItems(): void {
+  const prefix = 'wc@2'
+  for (let i = localStorage.length - 1; i >= 0; i--) {
+    const key = localStorage.key(i)
+    if (key && key.startsWith(prefix)) {
+      localStorage.removeItem(key)
+    }
+  }
+}
 
 const useAuth = () => {
-  const { activate, deactivate } = useWeb3React()
-  const chainId = useNetworkChainId()
-  const { toastError } = useToast()
+  const { connector } = useWeb3React()
   const dispatch = useDispatch()
-  const { t } = useTranslation()
 
-  const login = useCallback((connectorID: ConnectorNames) => {
-    const connector = connectorsByName[connectorID]
-    if (connector) {
-      activate(connector, async (error: Error) => {
-        if (error instanceof UnsupportedChainIdError) {
-          const hasSetup = await setupNetwork(chainId)
-          if (hasSetup) {
-            activate(connector)
-          }
-        } else {
-          window.localStorage.removeItem(localStorageKey)
-          if (error instanceof NoEthereumProviderError || error instanceof NoBscProviderError) {
-            toastError(t('Use a crypto wallet app’s browser to connect to ApeSwap.'), {
-              text: 'Learn More',
-              url: 'https://apeswap.gitbook.io/apeswap-finance/product-and-features/wallets/how-to-use-apeswap-on-mobile-devices',
-            })
-          } else if (
-            error instanceof UserRejectedRequestErrorInjected ||
-            error instanceof UserRejectedRequestErrorWalletConnect
-          ) {
-            if (connector instanceof WalletConnectConnector) {
-              const walletConnector = connector as WalletConnectConnector
-              walletConnector.walletConnectProvider = null
-            }
-            toastError(t('Authorization Error, Please authorize to access your account'))
-          } else {
-            toastError(`${error.name}, ${error.message}`)
-          }
-        }
-      })
-    } else {
-      console.info('Unable to find connector', 'The connector config is wrong')
+  const login = async (connectorType?: ConnectorNames) => {
+    if (connectorType) {
+      const { connector } = connectionByType[connectorType]
+      try {
+        await connector.activate()
+      } catch (error) {
+        console.debug(error)
+        console.error(`connection error: ${error}`)
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }
 
-  const logout = useCallback(() => {
+  const logout = () => {
+    if (connector && connector.deactivate) {
+      connector.deactivate()
+    }
+    connector.resetState()
     dispatch(profileClear())
-    deactivate()
-    if (window.localStorage.getItem('walletconnect')) {
-      connectorsByName.walletconnect.close()
-      connectorsByName.walletconnect.walletConnectProvider = null
+    if (connector instanceof WalletConnect) {
+      deleteWc2LocalStorageItems()
     }
-  }, [deactivate, dispatch])
+  }
 
   return { login, logout }
 }

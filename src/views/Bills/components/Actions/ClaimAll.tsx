@@ -12,7 +12,7 @@ import { StyledButton } from '../styles'
 const ClaimAll: React.FC<{
   userOwnedBills: { billAddress: string; billIds: string[] }[]
   ownedBillsAmount: number
-  buttonSize?: number
+  buttonSize?: string
 }> = ({ userOwnedBills, ownedBillsAmount, buttonSize }) => {
   const { onClaimBill } = useClaimAll(userOwnedBills)
   const { chainId, account } = useActiveWeb3React()
@@ -34,7 +34,7 @@ const ClaimAll: React.FC<{
       })
       .catch((e) => {
         console.error(e)
-        toastError(e?.data?.message || t('Something went wrong please try again'))
+        toastError(e?.data?.message || t('Error: Please try again.'))
         setPendingTrx(false)
       })
     dispatch(fetchUserOwnedBillsDataAsync(chainId, account))

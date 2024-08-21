@@ -1,35 +1,56 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
+import { Button, Flex } from '@ape.swap/uikit'
+import { useHistory } from 'react-router-dom'
 import { useSousHarvest } from 'hooks/useHarvest'
-import useIsMobile from 'hooks/useIsMobile'
 import { useToast } from 'state/hooks'
-import { getEtherscanLink } from 'utils'
+import { getEtherscanLink, showCircular } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSousStake } from 'hooks/useStake'
 import { fetchPoolsUserDataAsync, updateUserPendingReward } from 'state/pools'
-import ListViewContent from 'components/ListViewContent'
+import { useCurrency } from 'hooks/Tokens'
+import { useBananaAddress } from 'hooks/useAddress'
+import { useIsModalShown } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
-import { StyledButton } from '../styles'
-import { ActionContainer } from './styles'
+import { poolStyles } from '../styles'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
+import ServiceTokenDisplay from 'components/ServiceTokenDisplay'
 
 interface HarvestActionsProps {
   sousId: number
   userEarnings: number
   earnTokenSymbol: string
+  earnTokenValueUsd: number
   disabled: boolean
 }
 
-const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol, disabled, userEarnings }) => {
+const HarvestAction: React.FC<HarvestActionsProps> = ({
+  sousId,
+  earnTokenSymbol,
+  disabled,
+  userEarnings,
+  earnTokenValueUsd,
+}) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingTrx, setPendingTrx] = useState(false)
   const [pendingApeHarderTrx, setPendingApeHarderTrx] = useState(false)
   const { onHarvest } = useSousHarvest(sousId)
-  const { onStake } = useSousStake(sousId)
+  const { onStake } = useSousStake(sousId, earnTokenValueUsd)
+  const bananaToken = useCurrency(useBananaAddress())
+  const { showPoolHarvestModal } = useIsModalShown()
+  const history = useHistory()
+  const isBananaBanana = sousId === 0
 
   const { toastSuccess } = useToast()
-  const isMobile = useIsMobile()
   const { t } = useTranslation()
+
+  const harvestBanana = earnTokenSymbol === bananaToken.symbol
+  const displayPHCircular = () =>
+    showPoolHarvestModal && harvestBanana && showCircular(chainId, history, '?modal=circular-ph')
+
+  const userTokenBalanceUsd = (userEarnings * earnTokenValueUsd).toFixed(2)
 
   const handleHarvest = async () => {
     setPendingTrx(true)
@@ -40,6 +61,7 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
           text: t('View Transaction'),
           url: getEtherscanLink(trxHash, 'transaction', chainId),
         })
+        if (trxHash) displayPHCircular()
       })
       .catch((e) => {
         console.error(e)
@@ -68,45 +90,42 @@ const HarvestAction: React.FC<HarvestActionsProps> = ({ sousId, earnTokenSymbol,
   }
 
   return (
-    <ActionContainer>
-      {isMobile && (
-        <ListViewContent
-          title={`${t('Earned')} ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(4)}
-          width={100}
-          height={50}
-          ml={10}
-        />
-      )}
-      {sousId === 0 && (
-        <StyledButton
-          disabled={disabled || pendingApeHarderTrx}
-          onClick={handleApeHarder}
-          load={pendingApeHarderTrx}
-          mr={isMobile ? '0px' : '10px'}
-          style={{ minWidth: isMobile && '100px', width: isMobile && '115px', padding: '0px' }}
-        >
-          {t('Compound')}
-        </StyledButton>
-      )}
-      <StyledButton
+    <Flex sx={{ ...poolStyles.actionContainer, minWidth: isBananaBanana && ['', '', '380px'] }}>
+      <ListViewContent
+        title={t('Earned')}
+        value={userEarnings?.toFixed(4)}
+        valueIcon={
+          <Flex sx={{ height: '16px', alignItems: 'center', mr: '3px' }}>
+            <ServiceTokenDisplay token1={earnTokenSymbol} size={13} />
+          </Flex>
+        }
+        value2={`$${userTokenBalanceUsd}`}
+        value2Secondary
+        value2Direction="column"
+        style={poolStyles.columnView}
+      />
+      <Button
         disabled={disabled || pendingTrx}
         onClick={handleHarvest}
         load={pendingTrx}
-        style={{ minWidth: isMobile && sousId === 0 && '100px', width: isMobile && sousId === 0 && '100px' }}
+        sx={isBananaBanana ? poolStyles.fixedSizedBtn : poolStyles.styledBtn}
       >
         {t('HARVEST')}
-      </StyledButton>
-      {!isMobile && (
-        <ListViewContent
-          title={`${t('Earned')} ${earnTokenSymbol}`}
-          value={userEarnings?.toFixed(4)}
-          width={150}
-          height={50}
-          ml={10}
-        />
+      </Button>
+      {isBananaBanana && (
+        <Flex sx={{ width: ['100%', '100%', 'unset'], margin: ['15px 0 0 0', '15px 0 0 0', '0 10px'] }}>
+          <Button
+            size="md"
+            disabled={disabled || pendingApeHarderTrx}
+            onClick={handleApeHarder}
+            load={pendingApeHarderTrx}
+            sx={poolStyles.apeHarder}
+          >
+            {t('APE HARDER')}
+          </Button>
+        </Flex>
       )}
-    </ActionContainer>
+    </Flex>
   )
 }
 

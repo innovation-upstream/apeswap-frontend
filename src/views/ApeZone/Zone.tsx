@@ -19,6 +19,7 @@ import {
   ReadMore,
   WarningHeader,
 } from './styles'
+import SwiperProvider from '../../contexts/SwiperProvider'
 
 const Zone = () => {
   const [readingMore, setReadingMore] = useState(false)
@@ -33,7 +34,7 @@ const Zone = () => {
       <Page width="1130px">
         <Banner
           banner="gnana"
-          link="https://apeswap.gitbook.io/apeswap-finance/welcome/apeswap-tokens/gnana"
+          link="?modal=tutorial"
           title={t('Golden Banana')}
           margin="0px 0px 20px 0px"
           maxWidth={1130}
@@ -68,7 +69,9 @@ const Zone = () => {
           <ReturnCard fromToken="GNANA" toToken="BANANA" />
         </Cards>
 
-        <GnanaUtility />
+        <SwiperProvider>
+          <GnanaUtility />
+        </SwiperProvider>
         <GnanaDisclaimers />
 
         <Spacer size="lg" />

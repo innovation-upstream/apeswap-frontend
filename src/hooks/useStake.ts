@@ -7,10 +7,8 @@ import {
   updateNfaStakingUserBalance,
   updateUserNfaStakingStakedBalance,
 } from 'state/actions'
-import { stake, sousStake, nfaStake, stakeVault, miniChefStake, jungleStake } from 'utils/callHelpers'
+import { stake, sousStake, nfaStake, miniChefStake, jungleStake, stakeMasterChefV2 } from 'utils/callHelpers'
 import track from 'utils/track'
-import { CHAIN_ID } from 'config/constants'
-import { updateVaultUserBalance, updateVaultUserStakedBalance } from 'state/vaults'
 import {
   updateDualFarmUserEarnings,
   updateDualFarmUserStakedBalances,
@@ -20,20 +18,24 @@ import { useNetworkChainId } from 'state/hooks'
 import {
   useJungleChef,
   useMasterchef,
+  useMasterChefV2Contract,
   useMiniChefContract,
   useNfaStakingChef,
   useSousChef,
-  useVaultApe,
 } from './useContract'
 import useActiveWeb3React from './useActiveWeb3React'
+import { ChainId } from '@ape.swap/sdk'
 
-const useStake = (pid: number) => {
+const useStake = (pid: number, v2Flag: boolean, lpValue: number) => {
   const { chainId } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
+  const masterChefContractV2 = useMasterChefV2Contract()
 
   const handleStake = useCallback(
     async (amount: string) => {
-      const trxHash = await stake(masterChefContract, pid, amount)
+      const trxHash = (await v2Flag)
+        ? stakeMasterChefV2(masterChefContractV2, pid, amount)
+        : stake(masterChefContract, pid, amount)
       track({
         event: 'farm',
         chain: chainId,
@@ -41,27 +43,30 @@ const useStake = (pid: number) => {
           cat: 'stake',
           amount,
           pid,
+          usdAmount: parseFloat(amount) * lpValue,
         },
       })
       return trxHash
     },
-    [masterChefContract, pid, chainId],
+    [masterChefContract, masterChefContractV2, v2Flag, pid, lpValue, chainId],
   )
 
   return { onStake: handleStake }
 }
 
-export const useSousStake = (sousId) => {
+export const useSousStake = (sousId, tokenValue: number) => {
   const dispatch = useDispatch()
-  // TODO switch to useActiveWeb3React. useWeb3React is legacy hook and useActiveWeb3React should be used going forward
-  const { account, chainId } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const masterChefContract = useMasterchef()
   const sousChefContract = useSousChef(sousId)
+  const masterChefContractV2 = useMasterChefV2Contract()
 
   const handleStake = useCallback(
     async (amount: string) => {
       let trxHash
       if (sousId === 0) {
+        trxHash = await stakeMasterChefV2(masterChefContractV2, 0, amount)
+      } else if (sousId === 999) {
         trxHash = await stake(masterChefContract, 0, amount)
       } else {
         trxHash = await sousStake(sousChefContract, amount)
@@ -69,11 +74,12 @@ export const useSousStake = (sousId) => {
 
       track({
         event: 'pool',
-        chain: CHAIN_ID,
+        chain: 56,
         data: {
           cat: 'stake',
           amount,
           pid: sousId,
+          usdAmount: parseFloat(amount) * tokenValue,
         },
       })
 
@@ -81,32 +87,33 @@ export const useSousStake = (sousId) => {
       dispatch(updateUserBalance(chainId, sousId, account))
       return trxHash
     },
-    [account, dispatch, masterChefContract, sousChefContract, sousId, chainId],
+    [account, dispatch, masterChefContract, sousChefContract, sousId, masterChefContractV2, tokenValue, chainId],
   )
 
   return { onStake: handleStake }
 }
 
-export const useJungleStake = (jungleId) => {
+export const useJungleStake = (jungleId, lpValue: number) => {
   const jungleChefContract = useJungleChef(jungleId)
 
   const handleStake = useCallback(
-    async (amount: string) => {
+    async (amount: string, chainId: ChainId) => {
       const trxHash = await jungleStake(jungleChefContract, amount)
 
       track({
         event: 'jungle_farm',
-        chain: CHAIN_ID,
+        chain: chainId,
         data: {
           cat: 'stake',
           amount,
           pid: jungleId,
+          usdAmount: parseFloat(amount) * lpValue,
         },
       })
 
       return trxHash
     },
-    [jungleChefContract, jungleId],
+    [jungleChefContract, jungleId, lpValue],
   )
 
   return { onStake: handleStake }
@@ -135,41 +142,6 @@ export const useNfaStake = (sousId) => {
       })
     },
     [account, dispatch, nfaStakeChefContract, sousId, chainId],
-  )
-
-  return { onStake: handleStake }
-}
-
-export const useVaultStake = (pid: number) => {
-  // TODO switch to useActiveWeb3React. useWeb3React is legacy hook and useActiveWeb3React should be used going forward
-  const { account } = useWeb3React()
-  const vaultApeContract = useVaultApe()
-  const dispatch = useDispatch()
-  const chainId = useNetworkChainId()
-
-  const handleStake = useCallback(
-    async (amount: string) => {
-      try {
-        const txHash = await stakeVault(vaultApeContract, pid, amount)
-        track({
-          event: 'vault',
-          chain: chainId,
-          data: {
-            cat: 'stake',
-            amount,
-            pid,
-          },
-        })
-        dispatch(updateVaultUserBalance(account, chainId, pid))
-        dispatch(updateVaultUserStakedBalance(account, chainId, pid))
-        console.info(txHash)
-        return txHash
-      } catch (e) {
-        console.error(e)
-      }
-      return null
-    },
-    [account, vaultApeContract, dispatch, pid, chainId],
   )
 
   return { onStake: handleStake }

@@ -29,6 +29,8 @@ export interface Props {
   refunded: boolean
   isActive?: boolean
   isFinished?: boolean
+  vestedValueDollar?: string
+  tokenValue?: number
 }
 
 const IfoCardContribute: React.FC<Props> = ({
@@ -40,6 +42,8 @@ const IfoCardContribute: React.FC<Props> = ({
   isFinished,
   isActive,
   userTokenStatus,
+  vestedValueDollar,
+  tokenValue,
 }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const contract = useSafeIfoContract(address, true)
@@ -47,7 +51,7 @@ const IfoCardContribute: React.FC<Props> = ({
   const allowance = useIfoAllowance(currencyAddress, address, pendingTx)
   const onApprove = useIfoApprove(currencyAddress, address)
   const tokenBalance = useTokenBalance(currencyAddress)
-  const onClaim = useLinearIAOHarvest(contract, setPendingTx)
+  const onClaim = useLinearIAOHarvest(contract, setPendingTx, tokenValue)
   const { t } = useTranslation()
 
   if (currencyAddress !== ZERO_ADDRESS && allowance === null) {
@@ -71,6 +75,7 @@ const IfoCardContribute: React.FC<Props> = ({
           }
           setPendingTx(false)
         }}
+        style={{ marginTop: '20px' }}
       >
         APPROVE
       </ApproveButton>
@@ -87,17 +92,16 @@ const IfoCardContribute: React.FC<Props> = ({
             tokenBalance={tokenBalance}
             currencyAddress={currencyAddress}
             disabled={pendingTx}
+            tokenValue={tokenValue}
           />
-          {amountContributed > 0 && (
-            <TextWrapRow>
-              <Text fontSize="14px" fontWeight={700}>
-                {t('Your contributions')}:
-              </Text>
-              <Text fontSize="14px" fontWeight={700}>
-                {amountContributed.toFixed(4)} {currency}
-              </Text>
-            </TextWrapRow>
-          )}
+          <TextWrapRow>
+            <Text fontSize="14px" fontWeight={700}>
+              {t('Your contributions')}:
+            </Text>
+            <Text fontSize="14px" fontWeight={700}>
+              {amountContributed.toFixed(3)} {currency} {`(~$${vestedValueDollar})`}
+            </Text>
+          </TextWrapRow>
         </>
       )}
       {isFinished && amountContributed > 0 && (

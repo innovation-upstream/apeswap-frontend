@@ -9,9 +9,9 @@ import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import MenuTabButtons from 'components/ListViewMenu/MenuTabButtons'
 import useWindowSize, { Size } from 'hooks/useDimensions'
-import { useBlock } from 'state/block/hooks'
+import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePollPools, usePools } from 'state/hooks'
+import { usePollPools, usePools } from 'state/pools/hooks'
 import { Pool } from 'state/types'
 import Page from 'components/layout/Page'
 import ToggleView from './components/ToggleView/ToggleView'
@@ -503,7 +503,7 @@ const Pools: React.FC = () => {
   const size: Size = useWindowSize()
   const allPools = usePools(account)
   const { t } = useTranslation()
-  const { currentBlock } = useBlock()
+  const currentBlock = useBlockNumber()
   const isActive = !pathname.includes('history')
   const [sortDirection, setSortDirection] = useState<boolean | 'desc' | 'asc'>('desc')
   const tableWrapperEl = useRef<HTMLDivElement>(null)

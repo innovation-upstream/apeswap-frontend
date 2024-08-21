@@ -1,3 +1,5 @@
+import { ChainId } from '@ape.swap/sdk'
+
 export type IfoStatus = 'coming_soon' | 'live' | 'finished'
 
 export interface Ifo {
@@ -44,20 +46,51 @@ export enum QuoteToken {
   'TWT' = 'TWT',
   'UST' = 'UST',
   'ETH' = 'ETH',
+  'USDT' = 'USDT',
 }
 
 export enum PoolCategory {
   'COMMUNITY' = 'Community',
   'APEZONE' = 'ApeZone',
   'CORE' = 'Core',
+  'REAL_YIELD' = 'Real Yield',
   'JUNGLE' = 'Jungle',
   'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
 }
 
+export enum VaultVersion {
+  'V1' = 'V1',
+  'V2' = 'V2',
+  'V3' = 'V3',
+}
+
+export interface Decimals {
+  [ChainId.MAINNET]?: number
+  [ChainId.BSC_TESTNET]?: number
+  [ChainId.BSC]?: number
+  [ChainId.MATIC]?: number
+  [ChainId.TLOS]?: number
+}
+
 export interface Address {
-  97?: string
-  56?: string
-  137?: string
+  [ChainId.BSC_TESTNET]?: string
+  [ChainId.BSC]?: string
+  [ChainId.MATIC]?: string
+  [ChainId.TLOS]?: string
+}
+
+export interface ChainToNumber {
+  [ChainId.BSC_TESTNET]?: number
+  [ChainId.BSC]?: number
+  [ChainId.MATIC]?: number
+  [ChainId.TLOS]?: number
+}
+
+export interface ChainToString {
+  [ChainId.BSC_TESTNET]?: string
+  [ChainId.BSC]?: string
+  [ChainId.MATIC]?: string
+  [ChainId.TLOS]?: string
 }
 
 export interface FarmStyles {
@@ -130,10 +163,11 @@ export interface NfaStakingPoolConfig {
 export interface Token {
   symbol: string
   address?: Address
-  decimals?: number
+  decimals?: Decimals
   dontFetch?: boolean
   lpToken?: boolean
   price?: number
+  active?: boolean
 }
 
 export type Images = {
@@ -204,29 +238,29 @@ export type PageMeta = {
 
 // Interfaces used in Vaults
 export interface MasterChef {
-  pid: number
-  address: string
-  rewardsPerBlock: string
-  rewardToken: string
+  pid: ChainToNumber
+  address: Address
+  rewardsPerBlock: ChainToString
+  rewardToken: Token
 }
 
 export interface VaultConfig {
+  id: number
   pid: number
-  network: number
-  strat: string
-  stakeTokenAddress: string
+  type: 'MAX' | 'AUTO' | 'BURN'
+  version: VaultVersion
+  availableChains: number[]
+  stratAddress: Address
   platform: string
-  token0: Token
-  image?: string
-  token1?: Token
-  isPair: boolean
+  token: Token
+  quoteToken?: Token
+  stakeToken: Token
+  rewardToken: Token
   masterchef: MasterChef
-  totalFees: number
-  withdrawFee: number
-  burning: boolean
   inactive?: boolean
   depositFee?: number
   rewardsInSeconds?: boolean
+  fee?: string
 }
 
 export interface DualFarmConfig {
@@ -256,7 +290,7 @@ export interface JungleFarmConfig {
   contractAddress: Address
   projectLink: string
   twitter?: string
-  tokenPerBlock: string
+  tokenPerBlock?: string
   sortOrder?: number
   harvest?: boolean
   reflect?: boolean
@@ -271,7 +305,10 @@ export interface JungleFarmConfig {
   forAdmins?: boolean
   emergencyWithdraw?: boolean
   isEarnTokenLp?: boolean
+  // With the switching of rewards per block to seconds
+  rewardsPerSecond?: string
   network: number
+  unZapable?: boolean
 }
 
 // Types used to check for live IAOs
@@ -288,10 +325,12 @@ export type LiveIfo = {
 export interface BillsConfig {
   index: number
   contractAddress: Address
-  billType: string
+  billType: 'liquidity' | 'reserve' | 'launch'
   token: Token
   quoteToken: Token
   lpToken: Token
   earnToken: Token
   inactive?: boolean
+  projectLink?: string
+  twitter?: string
 }

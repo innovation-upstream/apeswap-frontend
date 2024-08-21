@@ -1,15 +1,31 @@
 import BigNumber from 'bignumber.js'
 import erc20ABI from 'config/abi/erc20.json'
-import vaultApeABI from 'config/abi/vaultApe.json'
+import vaultApeV2ABI from 'config/abi/vaultApeV2.json'
 import multicall from 'utils/multicall'
-import { vaultsConfig } from 'config/constants'
-import { getVaultApeAddress } from 'utils/addressHelper'
+import { getBananaAddress, getVaultApeAddressV1, getVaultApeAddressV2, getVaultApeAddressV3 } from 'utils/addressHelper'
+import { Vault } from 'state/types'
+import { VaultVersion } from '@ape.swap/apeswap-lists'
 
-export const fetchVaultUserAllowances = async (account: string, chainId: number) => {
-  const vaultApeAddress = getVaultApeAddress(chainId)
-  const filteredVaultsToFetch = vaultsConfig.filter((vault) => vault.network === chainId)
-  const calls = filteredVaultsToFetch.map((vault) => {
-    return { address: vault.stakeTokenAddress, name: 'allowance', params: [account, vaultApeAddress] }
+// TODO: Do the same vault refactoring as farms
+
+export const fetchVaultUserAllowances = async (account: string, chainId: number, vaultsConfig: Vault[]) => {
+  const vaultApeAddressV1 = getVaultApeAddressV1(chainId)
+  const vaultApeAddressV2 = getVaultApeAddressV2(chainId)
+  const vaultApeAddressV3 = getVaultApeAddressV3(chainId)
+  const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
+  const calls = filteredVaults.map((vault) => {
+    return {
+      address: vault.stakeToken.address[chainId],
+      name: 'allowance',
+      params: [
+        account,
+        vault.version === VaultVersion.V1
+          ? vaultApeAddressV1
+          : vault.version === VaultVersion.V2
+          ? vaultApeAddressV2
+          : vaultApeAddressV3,
+      ],
+    }
   })
   const rawStakeAllowances = await multicall(chainId, erc20ABI, calls)
   const parsedStakeAllowances = rawStakeAllowances.map((stakeBalance) => {
@@ -18,11 +34,11 @@ export const fetchVaultUserAllowances = async (account: string, chainId: number)
   return parsedStakeAllowances
 }
 
-export const fetchVaultUserTokenBalances = async (account: string, chainId: number) => {
-  const filteredVaultsToFetch = vaultsConfig.filter((vault) => vault.network === chainId)
-  const calls = filteredVaultsToFetch.map((vault) => {
+export const fetchVaultUserTokenBalances = async (account: string, chainId: number, vaultsConfig: Vault[]) => {
+  const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
+  const calls = filteredVaults.map((vault) => {
     return {
-      address: vault.stakeTokenAddress,
+      address: vault.stakeToken.address[chainId],
       name: 'balanceOf',
       params: [account],
     }
@@ -34,20 +50,39 @@ export const fetchVaultUserTokenBalances = async (account: string, chainId: numb
   return parsedTokenBalances
 }
 
-export const fetchVaultUserStakedBalances = async (account: string, chainId: number) => {
-  const vaultApeAddress = getVaultApeAddress(chainId)
-  const filteredVaultsToFetch = vaultsConfig.filter((vault) => vault.network === chainId)
-  const calls = filteredVaultsToFetch.map((vault) => {
-    return {
-      address: vaultApeAddress,
-      name: 'stakedWantTokens',
-      params: [vault.pid, account],
-    }
+export const fetchVaultUserStakedAndPendingBalances = async (
+  account: string,
+  chainId: number,
+  vaultsConfig: Vault[],
+) => {
+  const vaultApeAddressV1 = getVaultApeAddressV1(chainId)
+  const vaultApeAddressV2 = getVaultApeAddressV2(chainId)
+  const vaultApeAddressV3 = getVaultApeAddressV3(chainId)
+  const filteredVaults = vaultsConfig.filter((vault) => vault.availableChains.includes(chainId))
+  const calls = filteredVaults.map((vault) => {
+    return vault.version === VaultVersion.V1
+      ? {
+          address: vaultApeAddressV1,
+          name: 'stakedWantTokens',
+          params: [vault.pid, account],
+        }
+      : {
+          address: vault.version === VaultVersion.V2 ? vaultApeAddressV2 : vaultApeAddressV3,
+          name: 'balanceOf',
+          params: [vault.pid, account],
+        }
   })
 
-  const rawStakedBalances = await multicall(chainId, vaultApeABI, calls)
-  const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
-    return new BigNumber(stakedBalance[0]._hex).toJSON()
+  const rawStakedBalances = await multicall(chainId, vaultApeV2ABI, calls)
+  const parsedStakedBalances = rawStakedBalances.map((stakedBalance, i) => {
+    const isBanana =
+      vaultsConfig[i].stakeToken.address[chainId].toLowerCase() === getBananaAddress(chainId).toLowerCase()
+    const rawStakedBalance = new BigNumber(stakedBalance[0]._hex)
+    // Dont display dust as it is confusing for the migration
+    return rawStakedBalance.gt(isBanana ? 10000000000000 : 10) ? rawStakedBalance.toJSON() : '0'
   })
-  return parsedStakedBalances
+  const parsePendingBalances = rawStakedBalances.map((stakedBalance, index) => {
+    return filteredVaults[index].version === VaultVersion.V1 ? '0' : new BigNumber(stakedBalance[1]._hex).toJSON()
+  })
+  return { stakedBalances: parsedStakedBalances, pendingRewards: parsePendingBalances }
 }

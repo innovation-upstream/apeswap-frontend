@@ -1,3 +1,6 @@
+import React from 'react'
+import { CSSProperties } from 'theme-ui'
+
 export interface ListViewProps {
   tag?: React.ReactNode
   title: React.ReactNode
@@ -7,8 +10,19 @@ export interface ListViewProps {
   cardContent: React.ReactNode
   expandedContent?: React.ReactNode
   expandedContentSize?: number
+  expandedContentJustified?: string
   billArrow?: boolean
   stakeLp?: boolean
+  earnLp?: boolean
+  titleContainerWidth?: number
+  alignServiceTokens?: boolean
+  toolTipIconWidth?: string
+  toolTipStyle?: CSSProperties
+  ttWidth?: string
+  noEarnToken?: boolean
+  backgroundColor?: string
+  beforeTokenContent?: React.ReactNode
+  forMigrationList?: boolean
 }
 
 export interface ListCardProps extends ListViewProps {

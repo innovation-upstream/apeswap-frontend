@@ -1,18 +1,21 @@
 import React from 'react'
-import { useModal } from '@apeswapfinance/uikit'
+import { useModal } from '@ape.swap/uikit'
 import { Bills } from 'state/types'
 import BuyBillModalView from './BuyBillModalView'
 import { StyledButton } from '../styles'
 import UserBillModalView from './UserBillModalView'
-import { BillsImage } from '../UserBillViews/styles'
+import { BillsImage } from '../UserBillsView/styles'
 import WarningModal from './WarningModal'
+import ReflectModal from './ReflectModal'
+
+const REFLECT_BONDS = ['NOOT']
 
 interface BillModalProps {
   bill: Bills
   buttonText?: string
   id?: number
   billId?: string
-  buttonSize?: number
+  buttonSize?: string
   buyFlag?: boolean
   billCardImage?: string
   disabled?: boolean
@@ -46,11 +49,19 @@ const BillModal: React.FC<BillModalProps> = ({
     true,
     `billsWarningModal${id}`,
   )
+  const [onPresentReflectModal] = useModal(
+    <ReflectModal bill={bill} onDismiss={null} />,
+    true,
+    true,
+    `billsReflectWarningModal${id}`,
+  )
   return !billCardImage ? (
     <StyledButton
       onClick={
         buyFlag
-          ? parseFloat(bill?.discount) < 0
+          ? REFLECT_BONDS.includes(bill?.earnToken.symbol)
+            ? onPresentReflectModal
+            : parseFloat(bill?.discount) < 0
             ? onPresentBuyWarning
             : onPresentBuyBillsModal
           : onPresentUserBillModal

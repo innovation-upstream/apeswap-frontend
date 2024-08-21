@@ -1,82 +1,62 @@
-import { Flex } from '@apeswapfinance/uikit'
-import { useLocation } from 'react-router-dom'
-import React, { useState } from 'react'
-import { usePollBills, useBills, usePollUserBills } from 'state/bills/hooks'
-import { Bills as BillType } from 'state/types'
+/** @jsxImportSource theme-ui */
+import { Flex } from '@ape.swap/uikit'
+import React, { useCallback, useState } from 'react'
+import { usePollBills, usePollUserBills } from 'state/bills/hooks'
 import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
+import UserBillsView from './components/UserBillsView'
+import { BannerTypes } from 'components/Banner/types'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import ListView404 from 'components/ListView404'
+import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
+import FirstTimeCard from './components/FirstTimeCard/FirstTimeCard'
+import BillsNav from './components/BillsNav'
 import BillsListView from './components/BillsListView'
-import UserBillViews from './components/UserBillViews'
-import BillMenu from './components/Menu'
+import { styles } from './styles'
+
+export enum BillsView {
+  AVAILABLE_BILLS = 'Available Bonds',
+  YOUR_BILLS = 'Your Bonds',
+}
 
 const Bills: React.FC = () => {
   usePollBills()
   usePollUserBills()
-  const bills = useBills()
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const [query, setQuery] = useState('')
-  const [sortOption, setSortOption] = useState('all')
-  const location = useLocation()
+  const [billsView, setBillsView] = useState<string>(BillsView.AVAILABLE_BILLS)
 
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value)
-  }
-
-  const renderBills = (showNonPurchaseable: boolean): BillType[] => {
-    let billsToReturn = []
-    bills?.forEach((bill) => {
-      if (bill.inactive && !showNonPurchaseable) return
-      if (location.search.includes(`id=${bill.index}`)) {
-        billsToReturn.unshift(bill)
-      } else {
-        billsToReturn.push(bill)
-      }
-    })
-
-    if (query) {
-      billsToReturn = billsToReturn?.filter((bill) => {
-        return bill.lpToken.symbol.toUpperCase().includes(query.toUpperCase())
-      })
-    }
-
-    if (sortOption === 'bananaBill') {
-      billsToReturn = billsToReturn?.filter((bill) => bill.billType === 'BANANA Bill')
-    }
-    if (sortOption === 'jungleBill') {
-      billsToReturn = billsToReturn?.filter((bill) => bill.billType === 'JUNGLE Bill')
-    }
-
-    return billsToReturn
-  }
+  const handleBillsViewChange = useCallback((newBillsView: string) => {
+    setBillsView(newBillsView)
+  }, [])
 
   return (
     <>
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        mb="80px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
-      >
+      <Flex sx={styles.billsViewContainer}>
         <ListViewLayout>
           <Banner
-            banner="treasury-bills"
-            title={t('Treasury Bills')}
-            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/raise/treasury-bills"
+            banner={`treasury-bills` as BannerTypes}
+            title={t('ApeSwap Bonds')}
+            link="?modal=tutorial"
             listViewBreak
             maxWidth={1130}
-            titleColor="primaryBright"
           />
-          <BillMenu
-            bills={bills}
-            onHandleQueryChange={handleChangeQuery}
-            onSetSortOption={setSortOption}
-            activeOption={sortOption}
-            query={query}
-          />
-          <UserBillViews bills={renderBills(true)} />
-          <BillsListView bills={renderBills(false)} />
+          {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.BILLS].includes(chainId) ? (
+            <Flex sx={{ mt: '20px' }}>
+              <ListView404 product={LIST_VIEW_PRODUCTS.BILLS} />
+            </Flex>
+          ) : (
+            <>
+              <FirstTimeCard />
+              <BillsNav billsView={billsView} setBillsView={handleBillsViewChange} />
+              {billsView === BillsView.AVAILABLE_BILLS ? (
+                <BillsListView />
+              ) : (
+                <UserBillsView handleBillsViewChange={handleBillsViewChange} />
+              )}
+            </>
+          )}
         </ListViewLayout>
       </Flex>
     </>

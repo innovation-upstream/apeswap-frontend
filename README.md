@@ -1,10 +1,14 @@
 # 🍌 ApeSwap Frontend
 
-The `apeswap-frontend` repo is the primary frontend repository for [ApeSwap.Finance](https://apeswap.finance), which is a leading DeFi Hub on BNB Chain, Polygon, and Ethereum focused on offering a premier trading experience.
+The `apeswap-frontend` repo is the LEGACY frontend repository for ApeSwap.Finance, which is a multichain DeFi Hub offering an accessible, transparent, and secure experience for everyone.
+
+The new official repository for our frontend can be found here:
+
+https://github.com/ApeSwapFinance/frontend
 
 ## Contributions
 
-If you want to contribute to this repo, please refer to the [contributing guidelines](./CONTRIBUTING.md) of this project or jump directly over to the [Github Issues](https://github.com/ApeSwapFinance/apeswap-frontend/issues) page to explore issues, tasks, and grants to pick up and get started with today. Some even have financial bounties and incentives for your contributions!
+If you want to contribute to this repo, please refer to the [contributing guidelines](./CONTRIBUTING.md).
 
 ## Getting Started
 
@@ -21,13 +25,15 @@ cd apeswap-frontend
 yarn
 ```
 
+Please, bear in mind that to successfully install the dependencies you'll need to create a personal access token through Github.
+
 Once everything is downloaded & installed, simply run `npm run start` to run the repo locally.
 
 ### Learn More About ApeSwap
 
-Interested in learning more about ApeSwap.Finance? Head over to our [official documentation](https://apeswap.gitbook.io/apeswap-finance/welcome/master) to read and learn more about our features, functionality, DAO, and ecosystem!
+Interested in learning more about ApeSwap.Finance? Head over to our [official documentation](https://apeswap.gitbook.io/apeswap-finance/welcome/master) to read and learn more about our features, functionality, DAO, and ecosystem! 😊
 
-Socials
+#### Socials
 
 - 📰 Medium (Our Blog): https://ape-swap.medium.com
 - 🐦 Twitter: https://twitter.com/ape_swap
@@ -36,4 +42,4 @@ Socials
 - 🖥 GitHub: https://github.com/ApeSwapFinance
 - 🤳 Instagram: https://instagram.com/apeswap.finance
 - 🤩 Reddit: https://www.reddit.com/r/Apeswap/
-- 👾 Discord: https://discord.gg/ApeSwap
+- 👾 Discord: https://discord.gg/apeswap

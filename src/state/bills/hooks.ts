@@ -1,13 +1,15 @@
+import { bills } from '@ape.swap/apeswap-lists'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useTokenPrices } from 'state/hooks'
+import { useFetchTokenPrices, useTokenPrices } from 'state/tokenPrices/hooks'
 import { Bills, State } from 'state/types'
 import { fetchBillsPublicDataAsync, fetchBillsUserDataAsync, fetchUserOwnedBillsDataAsync } from '.'
 
 export const usePollBills = () => {
+  useFetchTokenPrices()
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { tokenPrices } = useTokenPrices()
@@ -26,11 +28,11 @@ export const usePollUserBills = (): Bills[] => {
       dispatch(fetchUserOwnedBillsDataAsync(chainId, account))
     }
   }, [account, dispatch, slowRefresh, chainId])
-  const bills = useSelector((state: State) => state.bills.data)
   return bills
 }
 
 export const useBills = (): Bills[] => {
-  const bills = useSelector((state: State) => state.bills.data)
+  const { chainId } = useActiveWeb3React()
+  const bills = useSelector((state: State) => state.bills.data[chainId])
   return bills
 }

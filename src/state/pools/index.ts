@@ -1,6 +1,4 @@
-/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
-import poolsConfig from 'config/constants/pools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,
@@ -9,9 +7,10 @@ import {
 } from './fetchPoolsUser'
 import { PoolsState, Pool, TokenPrices, AppThunk } from '../types'
 import fetchPools from './fetchPools'
+import { pools } from '@ape.swap/apeswap-lists'
 
 const initialState: PoolsState = {
-  data: [...poolsConfig],
+  data: pools,
 }
 
 export const PoolsSlice = createSlice({
@@ -44,11 +43,13 @@ export const PoolsSlice = createSlice({
 export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData } = PoolsSlice.actions
 
 // Thunks
+
 export const fetchPoolsPublicDataAsync =
   (chainId: number, tokenPrices: TokenPrices[]): AppThunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
-      const pools = await fetchPools(chainId, tokenPrices)
+      const poolsConfig = getState().pools.data
+      const pools = await fetchPools(chainId, tokenPrices, poolsConfig)
       dispatch(setPoolsPublicData(pools))
     } catch (error) {
       console.warn(error)
@@ -57,14 +58,14 @@ export const fetchPoolsPublicDataAsync =
 
 export const fetchPoolsUserDataAsync =
   (chainId: number, account): AppThunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
-      const allowances = await fetchPoolsAllowance(chainId, account)
-      const stakingTokenBalances = await fetchUserBalances(chainId, account)
-      const stakedBalances = await fetchUserStakeBalances(chainId, account)
-      const pendingRewards = await fetchUserPendingRewards(chainId, account)
-
-      const userData = poolsConfig.map((pool) => ({
+      const pools = getState().pools.data
+      const allowances = await fetchPoolsAllowance(chainId, account, pools)
+      const stakingTokenBalances = await fetchUserBalances(chainId, account, pools)
+      const stakedBalances = await fetchUserStakeBalances(chainId, account, pools)
+      const pendingRewards = await fetchUserPendingRewards(chainId, account, pools)
+      const userData = pools.map((pool) => ({
         sousId: pool.sousId,
         allowance: allowances[pool.sousId],
         stakingTokenBalance: stakingTokenBalances[pool.sousId],
@@ -79,29 +80,33 @@ export const fetchPoolsUserDataAsync =
 
 export const updateUserAllowance =
   (chainId: number, sousId: number, account: string): AppThunk =>
-  async (dispatch) => {
-    const allowances = await fetchPoolsAllowance(chainId, account)
+  async (dispatch, getState) => {
+    const pools = getState().pools.data
+    const allowances = await fetchPoolsAllowance(chainId, account, pools)
     dispatch(updatePoolsUserData({ sousId, field: 'allowance', value: allowances[sousId] }))
   }
 
 export const updateUserBalance =
   (chainId: number, sousId: number, account: string): AppThunk =>
-  async (dispatch) => {
-    const tokenBalances = await fetchUserBalances(chainId, account)
+  async (dispatch, getState) => {
+    const pools = getState().pools.data
+    const tokenBalances = await fetchUserBalances(chainId, account, pools)
     dispatch(updatePoolsUserData({ sousId, field: 'stakingTokenBalance', value: tokenBalances[sousId] }))
   }
 
 export const updateUserStakedBalance =
   (chainId: number, sousId: number, account: string): AppThunk =>
-  async (dispatch) => {
-    const stakedBalances = await fetchUserStakeBalances(chainId, account)
+  async (dispatch, getState) => {
+    const pools = getState().pools.data
+    const stakedBalances = await fetchUserStakeBalances(chainId, account, pools)
     dispatch(updatePoolsUserData({ sousId, field: 'stakedBalance', value: stakedBalances[sousId] }))
   }
 
 export const updateUserPendingReward =
   (chainId: number, sousId: number, account: string): AppThunk =>
-  async (dispatch) => {
-    const pendingRewards = await fetchUserPendingRewards(chainId, account)
+  async (dispatch, getState) => {
+    const pools = getState().pools.data
+    const pendingRewards = await fetchUserPendingRewards(chainId, account, pools)
     dispatch(updatePoolsUserData({ sousId, field: 'pendingReward', value: pendingRewards[sousId] }))
   }
 

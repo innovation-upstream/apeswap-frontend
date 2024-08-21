@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { Contract, ethers } from 'ethers'
 import {
-  VaultApe,
+  VaultApeV1,
   Iazo,
   SousChef,
   Masterchef,
@@ -12,8 +12,10 @@ import {
   IazoFactory,
   Bill,
   BillNft,
+  VaultApeV2,
   JungleChef,
 } from 'config/abi/types'
+import { MasterChefV2 } from 'config/abi/types/MasterChefV2'
 
 export const approve = async (lpContract: Erc20, masterChefContract: Contract) => {
   return lpContract.approve(masterChefContract.address, ethers.constants.MaxUint256).then((trx) => {
@@ -30,6 +32,14 @@ export const stake = async (masterChefContract: Masterchef, pid, amount) => {
       })
   }
 
+  return masterChefContract
+    .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+    .then((trx) => {
+      return trx.wait()
+    })
+}
+
+export const stakeMasterChefV2 = async (masterChefContract: MasterChefV2, pid, amount) => {
   return masterChefContract
     .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .then((trx) => {
@@ -70,6 +80,21 @@ export const unstake = async (masterChefContract: Masterchef, pid, amount) => {
     })
 }
 
+export const unstakeWithoutWait = async (masterChefContract: Masterchef, pid, amount) => {
+  if (pid === 0) {
+    return masterChefContract.leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+  }
+  return masterChefContract.withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+}
+
+export const unstakeMasterChefV2 = async (masterChefContract: MasterChefV2, pid, amount) => {
+  return masterChefContract
+    .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+    .then((trx) => {
+      return trx.wait()
+    })
+}
+
 export const sousUnstake = async (sousChefContract: SousChef, amount) => {
   return sousChefContract.withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()).then((trx) => {
     return trx.wait()
@@ -94,6 +119,12 @@ export const harvest = async (masterChefContract: Masterchef, pid) => {
       return trx.wait()
     })
   }
+  return masterChefContract.deposit(pid, '0').then((trx) => {
+    return trx.wait()
+  })
+}
+
+export const harvestMasterChefV2 = async (masterChefContract: MasterChefV2, pid) => {
   return masterChefContract.deposit(pid, '0').then((trx) => {
     return trx.wait()
   })
@@ -170,7 +201,13 @@ export const nfaUnstake = async (nfaStakingChefContract: NfaStaking, ids) => {
   })
 }
 
-export const stakeVault = async (vaultApeContract: VaultApe, pid, amount) => {
+export const harvestMaximizer = async (vaultApeContract: VaultApeV2, pid) => {
+  return vaultApeContract.harvestAll(pid).then((trx) => {
+    return trx.wait()
+  })
+}
+
+export const stakeVaultV1 = async (vaultApeContract: VaultApeV1, pid, amount) => {
   return vaultApeContract['deposit(uint256,uint256)'](
     pid,
     new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -179,7 +216,7 @@ export const stakeVault = async (vaultApeContract: VaultApe, pid, amount) => {
   })
 }
 
-export const vaultUnstake = async (vaultApeContract: VaultApe, pid, amount) => {
+export const vaultUnstakeV1 = async (vaultApeContract: VaultApeV1, pid, amount) => {
   return vaultApeContract['withdraw(uint256,uint256)'](
     pid,
     new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(),
@@ -188,18 +225,30 @@ export const vaultUnstake = async (vaultApeContract: VaultApe, pid, amount) => {
   })
 }
 
-export const vaultUnstakeAll = async (vaultApeContract: VaultApe, pid) => {
+export const stakeVaultV2 = async (vaultApeContract: VaultApeV2, pid, amount) => {
+  return vaultApeContract
+    .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+    .then((trx) => {
+      return trx.wait()
+    })
+}
+
+export const vaultUnstakeV2 = async (vaultApeContract: VaultApeV2, pid, amount) => {
+  return vaultApeContract
+    .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+    .then((trx) => {
+      return trx.wait()
+    })
+}
+
+export const vaultUnstakeAll = async (vaultApeContract: VaultApeV1 | VaultApeV2, pid) => {
   return vaultApeContract.withdrawAll(pid).then((trx) => {
     return trx.wait()
   })
 }
 
 export const miniChefStake = async (miniChefContract: MiniApeV2, pid, amount, account) => {
-  return miniChefContract
-    .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(), account)
-    .then((trx) => {
-      return trx.wait()
-    })
+  return miniChefContract.deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString(), account)
 }
 
 export const miniChefHarvest = async (miniChefContract: MiniApeV2, pid, account) => {
@@ -270,13 +319,9 @@ export const withdrawOfferTokensOnFailure = async (iazoContract: Iazo) => {
   })
 }
 
-export const userBuyBill = async (billContract: Bill, user: string, lpAmount: string, slippage: string) => {
+export const userBuyBill = async (billContract: Bill, user: string, lpAmount: string, maxPrice: string) => {
   return billContract
-    .deposit(
-      new BigNumber(lpAmount).times(new BigNumber(10).pow(18)).toString(),
-      new BigNumber(slippage).times(new BigNumber(10).pow(18)).toString(),
-      user,
-    )
+    .deposit(new BigNumber(lpAmount).times(new BigNumber(10).pow(18)).toString(), maxPrice, user)
     .then((trx) => {
       return trx.wait()
     })

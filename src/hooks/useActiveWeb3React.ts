@@ -1,28 +1,30 @@
-import { useEffect, useState, useRef } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useRef, useEffect } from 'react'
+import { useWeb3React, Web3ContextType } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers'
-// eslint-disable-next-line import/no-unresolved
-import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
 import { useSelector } from 'react-redux'
-import getProvider from 'utils/getProvider'
 import { State } from 'state/types'
 
-const useActiveWeb3React = (): Web3ReactContextInterface<Web3Provider> => {
-  const { account, library, chainId, ...web3React } = useWeb3React()
-  const appChainId = useSelector((state: State) => state.network.data.chainId)
-  const appProvider = getProvider(appChainId)
+interface IActiveWeb3React extends Web3ContextType<Web3Provider> {
+  library: Web3Provider
+  provider: Web3Provider
+}
 
-  const refEth = useRef(library)
-  const [provider, setProvider] = useState(library || appProvider)
+const useActiveWeb3React = (): IActiveWeb3React => {
+  const { account, chainId, provider, ...web3React } = useWeb3React()
+  const appChainId = useSelector((state: State) => state.network.data.chainId)
+  const currChainId = chainId || appChainId
+  const refChainId = useRef(currChainId)
 
   useEffect(() => {
-    if (library !== refEth.current) {
-      setProvider(library || appProvider)
-      refEth.current = library
-    }
-  }, [library, appProvider])
+    refChainId.current = currChainId
+  }, [currChainId])
 
-  return { library: provider, chainId: chainId || appChainId, account, ...web3React }
+  // To allow the app to update before passing a chainId !== provider
+  if (currChainId !== refChainId.current) {
+    return { library: provider, provider: provider, chainId: refChainId.current, account, ...web3React }
+  }
+
+  return { library: provider, provider: provider, chainId: currChainId, account, ...web3React }
 }
 
 export default useActiveWeb3React

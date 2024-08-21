@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, ETHER, WETH } from '@apeswapfinance/sdk'
+import { Currency, currencyEquals, ETHER, WETH } from '@ape.swap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { tryParseAmount } from '../state/swap/hooks'
@@ -34,6 +34,8 @@ export default function useWrapCallback(
   const addTransaction = useTransactionAdder()
 
   return useMemo(() => {
+    const inputSymbol = inputCurrency?.getSymbol(chainId)
+    const outputSymbol = outputCurrency?.getSymbol(chainId)
     if (!wethContract || !chainId || !inputCurrency || !outputCurrency) return NOT_APPLICABLE
 
     const sufficientBalance = inputAmount && balance && !balance.lessThan(inputAmount)
@@ -48,7 +50,9 @@ export default function useWrapCallback(
                   const txReceipt = await callWithGasPrice(wethContract, 'deposit', undefined, {
                     value: `0x${inputAmount.raw.toString(16)}`,
                   })
-                  addTransaction(txReceipt, { summary: `Wrap ${inputAmount.toSignificant(6)} BNB to WBNB` })
+                  addTransaction(txReceipt, {
+                    summary: `Wrap ${inputAmount.toSignificant(6)} ${inputSymbol} to ${outputSymbol}`,
+                  })
                 } catch (error) {
                   console.error('Could not deposit', error)
                 }
@@ -67,7 +71,9 @@ export default function useWrapCallback(
                   const txReceipt = await callWithGasPrice(wethContract, 'withdraw', [
                     `0x${inputAmount.raw.toString(16)}`,
                   ])
-                  addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WBNB to BNB` })
+                  addTransaction(txReceipt, {
+                    summary: `Unwrap ${inputAmount.toSignificant(6)} ${inputSymbol} to ${outputSymbol}`,
+                  })
                 } catch (error) {
                   console.error('Could not withdraw', error)
                 }

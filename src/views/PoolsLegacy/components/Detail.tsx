@@ -3,10 +3,11 @@ import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Text, Flex, Link, LinkExternal } from '@apeswapfinance/uikit'
 import { registerToken } from 'utils/wallet'
+import { Address, Decimals } from '../../../config/constants/types'
 
 interface RewardToken {
-  address?: any
-  decimals?: number
+  address?: Address
+  decimals?: Decimals
   symbol?: string
 }
 interface Time {
@@ -143,7 +144,7 @@ const Detail: React.FC<ExpandableSectionProps> = ({
             registerToken(
               rewardToken?.address[chainId],
               rewardToken?.symbol,
-              rewardToken?.decimals,
+              rewardToken?.decimals[chainId],
               `${URLactual.origin}/images/tokens/${imageToken || `${rewardToken?.symbol}.svg`}`,
             )
           }

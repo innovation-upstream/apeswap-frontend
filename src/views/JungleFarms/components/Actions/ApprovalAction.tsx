@@ -1,5 +1,6 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Skeleton } from '@apeswapfinance/uikit'
+import { AutoRenewIcon, Button, Skeleton } from '@ape.swap/uikit'
 import { useJungleApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
@@ -8,7 +9,7 @@ import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useToast } from 'state/hooks'
 import { useTranslation } from 'contexts/Localization'
-import { StyledButton } from '../styles'
+import { styles } from '../styles'
 
 interface ApprovalActionProps {
   stakingTokenContractAddress: string
@@ -34,8 +35,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({
       {isLoading ? (
         <Skeleton width="100%" height="52px" />
       ) : (
-        <StyledButton
-          sx={{ minWidth: '227px', width: '227px', textAlign: 'center' }}
+        <Button
           className="noClick"
           disabled={pendingTrx}
           onClick={async () => {
@@ -53,13 +53,14 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({
                 setPendingTrx(false)
               })
             dispatch(updateJungleFarmsUserAllowance(chainId, jungleId, account))
-
             setPendingTrx(false)
           }}
           load={pendingTrx}
+          endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
+          sx={styles.styledBtn}
         >
           {t('ENABLE')}
-        </StyledButton>
+        </Button>
       )}
     </>
   )

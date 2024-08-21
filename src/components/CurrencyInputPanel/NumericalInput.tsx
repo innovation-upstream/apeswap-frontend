@@ -1,17 +1,28 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Text } from '@apeswapfinance/uikit'
+import { Flex } from '@ape.swap/uikit'
+import styled from '@emotion/styled'
 import { useTranslation } from 'contexts/Localization'
 import { escapeRegExp } from '../../utils'
 
-const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
+const StyledInput = styled.input<{
+  error?: boolean
+  fontSize?: string
+  align?: string
+  removeLiquidity?: boolean
+  disabledText?: boolean
+}>`
   color: ${({ error, theme }) => (error ? theme.colors.error : theme.colors.text)};
-  width: 0;
+  opacity: ${({ disabledText }) => disabledText && 0.4};
+  display: inline-block;
+  width: inherit;
   height: 100%;
   position: relative;
-  font-weight: 500;
-  outline: none;
+  font-weight: 700;
+  minwidth: auto;
+  width: auto;
+  maxwidth: auto;
   border: none;
+  outline: none;
   flex: 1 1 auto;
   background-color: transparent;
   font-size: ${({ fontSize }) => fontSize || '16px'};
@@ -19,8 +30,8 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0px;
-  margin-left: ${({ align }) => (align === 'left' ? '20px' : '0px')};
+  content: '%';
+  padding: 0 0 0 0px;
   -webkit-appearance: textfield;
 
   ::-webkit-search-decoration {
@@ -39,9 +50,8 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   ::placeholder {
     color: ${({ theme }) => theme.colors.text};
   }
-
-  :disabled {
-    opacity: 0.5;
+  ::after {
+    content: '%';
   }
 `
 
@@ -52,6 +62,8 @@ export const Input = React.memo(function InnerInput({
   onUserInput,
   placeholder,
   removeLiquidity,
+  fontSize,
+  disabledText,
   ...rest
 }: {
   value: string | number
@@ -59,6 +71,7 @@ export const Input = React.memo(function InnerInput({
   removeLiquidity?: boolean
   error?: boolean
   fontSize?: string
+  disabledText?: boolean
   align?: 'right' | 'left'
 } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'as'>) {
   const { t } = useTranslation()
@@ -69,13 +82,14 @@ export const Input = React.memo(function InnerInput({
   }
 
   return (
-    <>
+    <Flex>
       <StyledInput
         {...rest}
         value={value}
         onChange={(event) => {
           // replace commas with periods, because we exclusively uses period as the decimal separator
           enforcer(event.target.value.replace(/,/g, '.'))
+          enforcer(event.target.value.replace(/%/g, ''))
         }}
         // universal input options
         inputMode="decimal"
@@ -89,17 +103,12 @@ export const Input = React.memo(function InnerInput({
         minLength={1}
         maxLength={79}
         spellCheck="false"
-        fontSize="22px"
-        style={{ marginRight: removeLiquidity ? '2.5px' : '10px' }}
+        fontSize={fontSize || '22px'}
+        style={{ marginRight: removeLiquidity ? '0px' : '10px' }}
+        removeLiquidity={removeLiquidity}
+        disabledText={disabledText}
       />
-      {removeLiquidity && (
-        <div style={{ marginRight: '10px' }}>
-          <Text fontSize="22px" mt=".55px" bold>
-            %
-          </Text>
-        </div>
-      )}
-    </>
+    </Flex>
   )
 })
 

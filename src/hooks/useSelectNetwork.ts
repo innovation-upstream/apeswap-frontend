@@ -2,57 +2,64 @@ import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useDispatch } from 'react-redux'
 import { fetchChainIdFromUrl, fetchUserNetwork } from 'state/network'
-import { TorusConnector } from '@web3-react/torus-connector'
-import { CHAIN_PARAMS } from 'config/constants/chains'
-import { hexStripZeros } from '@autonomylabs/limit-stop-orders/node_modules/@ethersproject/bytes'
-import { BigNumber } from 'ethers'
-import { useToast } from 'state/hooks'
-import { useTranslation } from 'contexts/Localization'
+import { replaceSwapState, SwapDelay } from 'state/swap/actions'
+import { RouterTypes } from 'config/constants'
+import { SmartRouter } from '@ape.swap/sdk'
+import track from '../utils/track'
+import { getAddChainParameters } from 'config/constants/chains'
+import { walletConnectConnection, networkConnection } from 'utils/connection'
 
 const useSwitchNetwork = () => {
-  const { chainId, account, library, connector } = useWeb3React()
-  const provider = library?.provider
+  const { chainId, account, connector } = useWeb3React()
   const dispatch = useDispatch()
-  const { toastError } = useToast()
-  const { t } = useTranslation()
 
   const switchNetwork = useCallback(
     async (userChainId: number) => {
-      if (connector instanceof TorusConnector) {
-        toastError(t('Torus wallet is only available on BNB chain'))
-        return
-      }
       if (account && userChainId !== chainId) {
-        const formattedChainId = hexStripZeros(BigNumber.from(userChainId).toHexString())
         try {
-          await provider.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: formattedChainId }],
-          })
-          dispatch(fetchChainIdFromUrl(false))
-        } catch {
-          // If the user doesn't have the chain add it
-          await provider.request({
-            method: 'wallet_addEthereumChain',
-            params: [CHAIN_PARAMS[userChainId]],
-          })
-          dispatch(fetchChainIdFromUrl(false))
-          try {
-            // Prompt the user to switch after adding the chain
-            await provider.request({
-              method: 'wallet_switchEthereumChain',
-              params: [{ chainId: formattedChainId }],
-            })
-            dispatch(fetchChainIdFromUrl(false))
-          } catch (error) {
-            console.warn(error)
+          if (connector === walletConnectConnection.connector || connector === networkConnection.connector) {
+            await connector.activate(userChainId)
+          } else {
+            connector.activate(getAddChainParameters(userChainId))
           }
+          dispatch(fetchChainIdFromUrl(false))
+          dispatch(
+            replaceSwapState({
+              typedValue: null,
+              field: null,
+              inputCurrencyId: null,
+              outputCurrencyId: null,
+              recipient: null,
+              swapDelay: SwapDelay.INIT,
+              bestRoute: { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE },
+            }),
+          )
+          track({
+            event: 'switch_network',
+            chain: userChainId,
+            data: {},
+          })
+        } catch (err) {
+          console.error({ err })
+          dispatch(fetchChainIdFromUrl(false))
         }
       } else {
         dispatch(fetchUserNetwork(chainId, account, userChainId))
       }
+      // TODO: Better implementation. This is a hotfix to reset the swap state on network change to not send previous addresses to the wrong multicall state
+      dispatch(
+        replaceSwapState({
+          typedValue: null,
+          field: null,
+          inputCurrencyId: null,
+          outputCurrencyId: null,
+          recipient: null,
+          swapDelay: SwapDelay.INIT,
+          bestRoute: { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE },
+        }),
+      )
     },
-    [chainId, account, provider, dispatch, connector, t, toastError],
+    [account, chainId, dispatch, connector],
   )
   return { switchNetwork }
 }

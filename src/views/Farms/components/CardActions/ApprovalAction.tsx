@@ -1,27 +1,34 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
-import { Skeleton, AutoRenewIcon } from '@apeswapfinance/uikit'
+import { Skeleton, AutoRenewIcon, Button } from '@ape.swap/uikit'
 import { useApprove } from 'hooks/useApprove'
-import { updateFarmUserAllowances } from 'state/farms'
 import { useAppDispatch } from 'state'
 import { useERC20 } from 'hooks/useContract'
 import { getEtherscanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { useToast } from 'state/hooks'
-import { StyledButton } from './styles'
+import { styles } from '../styles'
+import { updateFarmV2UserAllowances } from 'state/farmsV2'
 
 interface ApprovalActionProps {
   stakingTokenContractAddress: string
   pid: number
+  v2Flag?: boolean
   isLoading?: boolean
 }
 
-const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAddress, pid, isLoading = false }) => {
+const ApprovalAction: React.FC<ApprovalActionProps> = ({
+  stakingTokenContractAddress,
+  pid,
+  isLoading = false,
+  v2Flag,
+}) => {
   const { chainId, account } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const stakingTokenContract = useERC20(stakingTokenContractAddress)
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onApprove } = useApprove(stakingTokenContract)
+  const { onApprove } = useApprove(stakingTokenContract, v2Flag)
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
 
@@ -30,7 +37,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAdd
       {isLoading ? (
         <Skeleton width="100%" height="52px" />
       ) : (
-        <StyledButton
+        <Button
           className="noClick"
           disabled={pendingTrx}
           onClick={async () => {
@@ -47,13 +54,14 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ stakingTokenContractAdd
                 console.error(e)
                 setPendingTrx(false)
               })
-            dispatch(updateFarmUserAllowances(chainId, pid, account))
+            dispatch(updateFarmV2UserAllowances(chainId, pid, account))
             setPendingTrx(false)
           }}
           endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
+          sx={styles.styledBtn}
         >
           {t('ENABLE')}
-        </StyledButton>
+        </Button>
       )}
     </>
   )

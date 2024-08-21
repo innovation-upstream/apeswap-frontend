@@ -3,19 +3,22 @@ import { AnyAction } from '@reduxjs/toolkit'
 import { Toast } from '@apeswapfinance/uikit'
 import BigNumber from 'bignumber.js'
 import {
-  Address,
   FarmConfig,
-  Nft,
-  Nfb,
   PoolConfig,
   NfaStakingPoolConfig,
-  Team,
   VaultConfig,
   DualFarmConfig,
   JungleFarmConfig,
-  LiveIfo,
   BillsConfig,
-} from 'config/constants/types'
+  Token,
+} from '@ape.swap/apeswap-lists'
+import { Address, Nft, Nfb, Team, LiveIfo, Decimals } from 'config/constants/types'
+import { ProtocolDashboardState } from './protocolDashboard/types'
+import { ApiResponse } from './statsPage/types'
+import { InfoState } from './info/types'
+import { MigrationTimerState } from './migrationTimer/types'
+import { ChainId } from '@ape.swap/sdk'
+import { MasterApeMigrationInterface } from './masterApeMigration/types'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -110,6 +113,7 @@ export interface UserBill {
   truePricePaid: string
   lastBlockTimestamp: string
   pendingRewards: string
+  billNftAddress: string
   nftData?: UserBillNft
 }
 
@@ -139,14 +143,20 @@ export interface Bills extends BillsConfig {
   }
   userOwnedBillsData?: UserBill[]
   userOwnedBillsNftData?: UserBillNft[]
+  maxTotalPayOut?: string
+  lpPrice?: number
+  maxPayoutTokens?: string
 }
 
 export interface Vault extends VaultConfig {
   totalStaked?: string
   totalAllocPoint?: string
+  keeperFee?: string
+  withdrawFee?: string
   allocPoint?: string
   weight?: number
   stakeTokenPrice?: number
+  rewardTokenPrice?: number
   strategyPairBalance?: string
   strategyPairBalanceFixed?: string
   totalInQuoteToken?: string
@@ -162,6 +172,7 @@ export interface Vault extends VaultConfig {
     tokenBalance: string
     stakedBalance: string
     stakedWantBalance: string
+    pendingRewards: string
   }
 }
 
@@ -283,6 +294,9 @@ export interface HomepageData {
   burntAmount: number
   totalVolume: number
   partnerCount?: number
+  bondingPartnerCount?: number
+  bondsCount?: number
+  totalBondedValue?: number
 }
 
 export interface HomepageTokenStats {
@@ -300,6 +314,7 @@ export interface NewsCardType {
   CardLink: string
   StartTime: string
   EndTime: string
+  isModal: boolean
 }
 
 export interface FarmLpAprsType {
@@ -307,6 +322,7 @@ export interface FarmLpAprsType {
   lpAprs: {
     pid: number
     lpApr: number
+    lpAddress?: string
   }[]
 }
 
@@ -482,7 +498,7 @@ export interface TokenPrices {
   symbol: string
   address: Address
   price: number
-  decimals: number
+  decimals: Decimals
 }
 
 export interface LpTokenPrices {
@@ -503,6 +519,8 @@ export interface FarmsState {
   data: Farm[]
 }
 
+export interface FarmsV2State extends FarmsState {}
+
 export interface PoolsState {
   data: Pool[]
 }
@@ -518,11 +536,11 @@ export interface DualFarmsState {
 }
 
 export interface JungleFarmsState {
-  data: JungleFarm[]
+  data: Partial<Record<ChainId, JungleFarm[]>>
 }
 
 export interface BillsState {
-  data: Bills[]
+  data: Partial<Record<ChainId, Bills[]>>
 }
 
 export interface NetworkState {
@@ -536,6 +554,8 @@ export interface VaultsState {
   userDataLoaded: boolean
   data: Vault[]
 }
+
+export interface VaultsV3State extends VaultsState {}
 
 export interface NfaStakingPoolsState {
   data: NfaStakingPool[]
@@ -551,6 +571,10 @@ export interface TagsType {
   [key: string]: any
 }
 
+export interface OrderingType {
+  [key: string]: any
+}
+
 export interface StatsState {
   isInitialized: boolean
   isLoading: boolean
@@ -561,6 +585,7 @@ export interface StatsState {
   HomepageServiceStats: ServiceData[]
   FarmLpAprs: FarmLpAprsType
   Tags: TagsType
+  Ordering: OrderingType
   LiveIfo: LiveIfo[]
   data: Stats
 }
@@ -572,8 +597,11 @@ export interface AuctionsState {
 }
 
 export interface TokenPricesState {
+  isTokensInitialized: boolean
   isInitialized: boolean
   isLoading: boolean
+  tokens: Token[]
+  bananaPrice: string
   data: TokenPrices[]
 }
 export interface LpTokenPricesState {
@@ -617,6 +645,7 @@ export interface TeamsState {
 
 export interface State {
   farms: FarmsState
+  farmsV2: FarmsV2State
   block: BlockState
   toasts: ToastsState
   pools: PoolsState
@@ -626,6 +655,7 @@ export interface State {
   teams: TeamsState
   auctions: AuctionsState
   vaults: VaultsState
+  vaultsV3: VaultsV3State
   tokenPrices: TokenPricesState
   lpTokenPrices: LpTokenPricesState
   iazos: IazosState
@@ -635,4 +665,9 @@ export interface State {
   jungleFarms: JungleFarmsState
   bills: BillsState
   nfas: NfaState
+  protocolDashboard: ProtocolDashboardState
+  userStats: ApiResponse
+  info: InfoState
+  migrationTimer: MigrationTimerState
+  masterApeMigration: MasterApeMigrationInterface
 }

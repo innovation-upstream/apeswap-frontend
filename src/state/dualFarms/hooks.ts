@@ -1,15 +1,19 @@
+import { ChainId } from '@ape.swap/sdk'
 import BigNumber from 'bignumber.js'
-import { CHAIN_ID } from 'config/constants/chains'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useRefresh from 'hooks/useRefresh'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { useFarmLpAprs, usePriceBananaBusd, useTokenPrices } from 'state/hooks'
+import { useFarmLpAprs } from 'state/hooks'
+import { useFetchLpTokenPrices } from 'state/lpPrices/hooks'
+import { useFetchTokenPrices, usePriceBananaBusd, useTokenPrices } from 'state/tokenPrices/hooks'
 import { DualFarm, State } from 'state/types'
 import { fetchDualFarmsPublicDataAsync, fetchDualFarmUserDataAsync } from '.'
 
 export const usePollDualFarms = () => {
+  useFetchTokenPrices()
+  useFetchLpTokenPrices()
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { tokenPrices } = useTokenPrices()
@@ -19,7 +23,7 @@ export const usePollDualFarms = () => {
 
   useEffect(() => {
     const fetchFarms = () => {
-      if (chainId === CHAIN_ID.MATIC) {
+      if (chainId === ChainId.MATIC) {
         dispatch(fetchDualFarmsPublicDataAsync(chainId, tokenPrices, new BigNumber(bananaPrice), farmLpAprs))
       }
     }
@@ -31,12 +35,12 @@ export const useDualFarms = (account): DualFarm[] => {
   const { slowRefresh } = useRefresh()
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
+  const farms = useSelector((state: State) => state.dualFarms.data)
   useEffect(() => {
-    if (account && (chainId === CHAIN_ID.MATIC || chainId === CHAIN_ID.MATIC_TESTNET)) {
+    if (account && (chainId === ChainId.MATIC || chainId === ChainId.MATIC_TESTNET)) {
       dispatch(fetchDualFarmUserDataAsync(chainId, account))
     }
   }, [account, dispatch, slowRefresh, chainId])
-  const farms = useSelector((state: State) => state.dualFarms.data)
   return farms
 }
 

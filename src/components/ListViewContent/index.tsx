@@ -1,4 +1,6 @@
-import { Flex, HelpIcon, TooltipBubble } from '@apeswapfinance/uikit'
+/** @jsxImportSource theme-ui */
+import { Flex, HelpIcon } from '@apeswapfinance/uikit'
+import { TooltipBubble } from '@ape.swap/uikit'
 import React from 'react'
 import { TitleText, ListViewContentContainer, ValueText, ValueSkeleton } from './styles'
 import { ListViewContentProps } from './types'
@@ -32,6 +34,7 @@ const ListViewContent: React.FC<ListViewContentProps> = ({
                 placement={toolTipPlacement || 'topLeft'}
                 transformTip={toolTipTransform}
                 body={<Flex>{toolTip}</Flex>}
+                width="180px"
               >
                 <TitleText lineHeight={lineHeight}>
                   {title}

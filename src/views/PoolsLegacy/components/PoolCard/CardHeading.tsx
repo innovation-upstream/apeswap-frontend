@@ -2,14 +2,13 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from '@emotion/styled'
-import { Flex, Skeleton, Text, Image, useMatchBreakpoints } from '@apeswapfinance/uikit'
+import { Flex, Skeleton, Text, Image, useMatchBreakpoints, CalculateIcon } from '@apeswapfinance/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { Pool } from 'state/types'
 import UnlockButton from 'components/UnlockButton'
 import { useNetworkChainId } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import ApyButton from '../../../../components/ApyCalculator/ApyButton'
 import ExpandableSectionButton from './ExpandableSectionButton'
 import HarvestActions from './CardActions/HarvestActions'
 import ApprovalAction from './CardActions/ApprovalAction'
@@ -31,7 +30,6 @@ export interface ExpandableSectionProps {
   earnTokenImage?: string
   showExpandableSection?: boolean
   stakingTokenAddress?: string
-  rewardTokenPrice?: number
 }
 
 const StyledBackground = styled.div`
@@ -243,6 +241,16 @@ const Container = styled.div`
   align-items: center;
 `
 
+const StyledCalculateIcon = styled(CalculateIcon)`
+  width: 13px;
+  height: 13px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    width: 15px;
+    height: 15px;
+  }
+`
+
 const CardHeading: React.FC<ExpandableSectionProps> = ({
   pool,
   apr,
@@ -253,7 +261,6 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   sousId,
   earnTokenImage,
   showExpandableSection,
-  rewardTokenPrice,
 }) => {
   const { t } = useTranslation()
   const { userData, tokenDecimals, stakingToken } = pool
@@ -376,13 +383,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
               <StyledText1>APR:</StyledText1>
               {apr ? (
                 <FlexSwitch className="noClick">
-                  <ApyButton
-                    lpLabel={stakeToken}
-                    rewardTokenName={earnToken}
-                    addLiquidityUrl="https://apeswap.finance/swap"
-                    rewardTokenPrice={rewardTokenPrice}
-                    apy={apr.div(100)?.toNumber()}
-                  />
+                  <StyledCalculateIcon />
                   <StyledAPRText>{poolAPR}%</StyledAPRText>
                 </FlexSwitch>
               ) : (

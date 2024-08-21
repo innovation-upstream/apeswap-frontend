@@ -1,9 +1,10 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import { useAllHarvest } from 'hooks/useHarvest'
-import { AutoRenewIcon, Button } from '@apeswapfinance/uikit'
+import { AutoRenewIcon, Button } from '@ape.swap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
-import { ActionContainer } from './styles'
+import { styles } from '../styles'
 
 interface HarvestActionsProps {
   pids: number[]
@@ -14,27 +15,26 @@ const HarvestAllAction: React.FC<HarvestActionsProps> = ({ pids, disabled }) => 
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const [pendingTrx, setPendingTrx] = useState(false)
-  const { onReward } = useAllHarvest(pids, chainId)
+  const { onReward } = useAllHarvest(pids, chainId, false)
 
   return (
-    <ActionContainer>
-      <Button
-        size="mds"
-        className="noClick"
-        disabled={disabled || pendingTrx}
-        onClick={async () => {
-          setPendingTrx(true)
-          await onReward().catch((e) => {
-            console.error(e)
-            setPendingTrx(false)
-          })
+    <Button
+      size="sm"
+      className="noClick"
+      disabled={disabled || pendingTrx}
+      onClick={async () => {
+        setPendingTrx(true)
+        await onReward().catch((e) => {
+          console.error(e)
           setPendingTrx(false)
-        }}
-        endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
-      >
-        {t('HARVEST ALL')} ({pids.length})
-      </Button>
-    </ActionContainer>
+        })
+        setPendingTrx(false)
+      }}
+      endIcon={pendingTrx && <AutoRenewIcon spin color="currentColor" />}
+      sx={styles.harvestAllBtn}
+    >
+      {t('HARVEST ALL')} ({pids.length})
+    </Button>
   )
 }
 

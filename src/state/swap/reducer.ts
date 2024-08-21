@@ -1,5 +1,18 @@
+import { SmartRouter } from '@ape.swap/sdk'
 import { createReducer } from '@reduxjs/toolkit'
-import { Field, replaceSwapState, selectCurrency, setRecipient, switchCurrencies, typeInput } from './actions'
+import { RouterTypes } from 'config/constants'
+import {
+  Field,
+  replaceSwapState,
+  selectCurrency,
+  setBestRoute,
+  setRecipient,
+  setSwapDelay,
+  SwapDelay,
+  switchCurrencies,
+  typeInput,
+  RouterTypeParams,
+} from './actions'
 
 export interface SwapState {
   readonly independentField: Field
@@ -12,6 +25,8 @@ export interface SwapState {
   }
   // the typed recipient address or ENS name, or null if swap should go to sender
   readonly recipient: string | null
+  readonly swapDelay: SwapDelay
+  readonly bestRoute: RouterTypeParams
 }
 
 const initialState: SwapState = {
@@ -24,13 +39,18 @@ const initialState: SwapState = {
     currencyId: '',
   },
   recipient: null,
+  swapDelay: SwapDelay.INIT,
+  bestRoute: { routerType: RouterTypes.APE, smartRouter: SmartRouter.APE },
 }
 
 export default createReducer<SwapState>(initialState, (builder) =>
   builder
     .addCase(
       replaceSwapState,
-      (state, { payload: { typedValue, recipient, field, inputCurrencyId, outputCurrencyId } }) => {
+      (
+        state,
+        { payload: { typedValue, recipient, field, inputCurrencyId, outputCurrencyId, swapDelay, bestRoute } },
+      ) => {
         return {
           [Field.INPUT]: {
             currencyId: inputCurrencyId,
@@ -41,6 +61,8 @@ export default createReducer<SwapState>(initialState, (builder) =>
           independentField: field,
           typedValue,
           recipient,
+          swapDelay,
+          bestRoute,
         }
       },
     )
@@ -78,5 +100,11 @@ export default createReducer<SwapState>(initialState, (builder) =>
     })
     .addCase(setRecipient, (state, { payload: { recipient } }) => {
       state.recipient = recipient
+    })
+    .addCase(setSwapDelay, (state, { payload: { swapDelay } }) => {
+      state.swapDelay = swapDelay
+    })
+    .addCase(setBestRoute, (state, { payload: { bestRoute } }) => {
+      state.bestRoute = bestRoute
     }),
 )

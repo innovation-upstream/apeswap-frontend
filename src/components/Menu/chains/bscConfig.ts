@@ -1,105 +1,65 @@
 import { MenuEntry } from '@ape.swap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
-import { CHAIN_ID, NETWORK_INFO_LINK } from 'config/constants/chains'
-import { EXCHANGE } from '../constants'
+
+export const CURRENT_MIGRATE_PATH = 'the-migration'
 
 const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
-  EXCHANGE(t),
   {
-    label: t('Stake'),
-    lightIcon: 'StakeLightImage',
-    darkIcon: 'StakeDarkImage',
+    label: t('Exchange'),
+    lightIcon: 'ExchangeLightImage',
+    darkIcon: 'ExchangeDarkImage',
     items: [
       {
-        label: t('BANANA Farms'),
-        href: '/farms',
+        label: t('Swap'),
+        href: 'https://apeswap.finance/swap',
         isNew: false,
       },
       {
-        label: t('Staking Pools'),
-        href: '/pools',
+        label: t('Liquidity'),
+        href: 'https://apeswap.finance/add-liquidity',
         isNew: false,
       },
       {
-        label: t('Jungle Farms'),
-        href: '/jungle-farms',
-        isNew: false,
-      },
-      {
-        label: t('Vaults'),
-        href: '/vaults',
+        label: t('Pro Trading'),
+        href: 'https://pro.apeswap.finance',
         isNew: false,
       },
       {
         label: t('GNANA'),
-        href: '/gnana',
+        href: 'https://apeswap.finance/gnana',
         isNew: false,
       },
     ],
   },
   {
-    label: t('Raise'),
-    lightIcon: 'OfferingsLightImage',
-    darkIcon: 'OfferingsDarkImage',
+    label: t('Bonds'),
+    href: 'https://apeswap.finance/bonds',
+  },
+  {
+    label: t('Liquidity Health'),
+    href: 'https://apeswap.finance/liquidity-health',
+  },
+  {
+    label: t('Staking'),
+    lightIcon: 'StakeLightImage',
+    darkIcon: 'StakeDarkImage',
     items: [
       {
-        label: t('Treasury Bills'),
-        href: '/treasury-bills',
-        isNew: true,
-      },
-      {
-        label: t('Official IAO'),
-        href: '/iao',
+        label: t('Pools'),
+        href: 'https://apeswap.finance/pools',
         isNew: false,
       },
       {
-        label: t('Self-Serve IAO'),
-        href: '/ss-iao',
-        isNew: false,
-      },
-    ],
-  },
-  {
-    label: t('Collect'),
-    lightIcon: 'NfaLightImage',
-    darkIcon: 'NfaDarkImage',
-    items: [
-      {
-        label: t('NFA Collection'),
-        href: '/nft',
+        label: t('Farms'),
+        href: 'https://apeswap.finance/farms',
         isNew: false,
       },
       {
-        label: t('NFA Auction'),
-        href: '/auction',
-        isNew: false,
-      },
-      {
-        label: t('NFA Staking'),
-        href: '/staking',
-        isNew: false,
-      },
-      {
-        label: t('NFA Liquidity'),
-        href: 'https://liquidcollectibles.io/collection/0x6afc012783e3a6ef8c5f05f8eee2edef6a052ec4',
-        isNew: false,
-      },
-      {
-        label: t('NFB Collection'),
-        href: 'https://nftkey.app/collections/nfbs/',
-        isNew: false,
-      },
-      {
-        label: t('NFB Liquidity'),
-        href: 'https://liquidcollectibles.io/collection/0x9f707a412302a3ad64028a9f73f354725c992081',
+        label: t('Maximizers'),
+        href: 'https://legacy.apeswap.finance/maximizers',
         isNew: false,
       },
     ],
-  },
-  {
-    label: t('Lend'),
-    href: 'https://lending.apeswap.finance/',
-    isNew: false,
   },
   {
     label: t('More'),
@@ -107,55 +67,35 @@ const bscConfig: (t: ContextApi['t']) => MenuEntry[] = (t) => [
     darkIcon: 'MoreDarkImage',
     items: [
       {
-        label: t('Documentation'),
-        href: 'https://apeswap.gitbook.io/apeswap-finance/',
+        label: t('ApeStats'),
+        href: 'https://legacy.apeswap.finance/apestats',
+        isNew: false,
+      },
+      {
+        label: t('Protocol Data'),
+        href: 'https://apeswap.finance/protocol-dashboard',
         isNew: false,
       },
       {
         label: t('Charts'),
-        href: NETWORK_INFO_LINK[CHAIN_ID.BSC],
+        href: 'https://legacy.apeswap.finance/info',
         isNew: false,
+      },
+      {
+        label: 'Lend',
+        href: 'https://lending.apeswap.finance/',
+      },
+      {
+        label: 'ApeSwap NFTs',
+        href: 'https://apeswap.finance/nft',
       },
       {
         label: t('Governance'),
-        href: 'https://vote.apeswap.finance',
-        isNew: false,
-      },
-      {
-        label: t('Education'),
-        href: 'https://www.apelabs.education/',
+        href: 'https://discuss.apeswap.finance',
         isNew: false,
       },
     ],
   },
-
-  // {
-  //   label: 'Burn',
-  //   icon: 'GameBurnIcon',
-  //   href: '/burn',
-  // },
-  // {
-  //   label: 'Info',
-  //   icon: 'InfoIcon',
-  //   items: [
-  //     {
-  //       label: 'Overview',
-  //       href: NETWORK_INFO_LINK[CHAIN_ID.BSC],
-  //     },
-  //     {
-  //       label: 'Tokens',
-  //       href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/tokens`,
-  //     },
-  //     {
-  //       label: 'Pairs',
-  //       href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/pairs`,
-  //     },
-  //     {
-  //       label: 'Accounts',
-  //       href: `${NETWORK_INFO_LINK[CHAIN_ID.BSC]}/accounts`,
-  //     },
-  //   ],
-  // },
 ]
 
 export default bscConfig

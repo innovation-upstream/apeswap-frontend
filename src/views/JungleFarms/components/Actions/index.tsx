@@ -1,57 +1,46 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Flex } from '@ape.swap/uikit'
 import BigNumber from 'bignumber.js'
-import { CenterContainer } from './styles'
-import ApprovalAction from './ApprovalAction'
-import StakeAction from './StakeActions'
-import UnlockButton from '../../../../components/UnlockButton'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { useTranslation } from 'contexts/Localization'
+import { JungleFarm } from 'state/types'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
+import { styles } from '../styles'
+import StakeActions from './StakeActions'
 
-// Changed props to type string because BigNumbers cause re-renders
-
-interface CardActionProps {
-  allowance: string
-  stakingTokenBalance: string
-  stakedTokenSymbol: string
-  stakedBalance: string
-  stakeTokenValueUsd: number
-  stakeTokenAddress: string
-  jungleId: number
+interface StakeActionsProps {
+  farm: JungleFarm
 }
 
-const Actions: React.FC<CardActionProps> = ({
-  allowance,
-  stakingTokenBalance,
-  stakedBalance,
-  stakeTokenValueUsd,
-  stakeTokenAddress,
-  jungleId,
-}) => {
-  const { account } = useActiveWeb3React()
-  const actionToRender = () => {
-    if (!account) {
-      return (
-        <CenterContainer>
-          <UnlockButton table />
-        </CenterContainer>
-      )
-    }
-    if (!new BigNumber(allowance)?.gt(0)) {
-      return (
-        <CenterContainer>
-          <ApprovalAction stakingTokenContractAddress={stakeTokenAddress} jungleId={jungleId} />
-        </CenterContainer>
-      )
-    }
-    return (
-      <StakeAction
-        stakedBalance={stakedBalance}
-        stakingTokenBalance={stakingTokenBalance}
-        stakeTokenValueUsd={stakeTokenValueUsd}
-        jungleId={jungleId}
+const Actions: React.FC<StakeActionsProps> = ({ farm }) => {
+  const { t } = useTranslation()
+  const rawStakedBalance = getBalanceNumber(farm?.userData?.stakedBalance)
+  const userStakedBalanceUsd = `$${(
+    getBalanceNumber(farm?.userData?.stakedBalance || new BigNumber(0)) * farm?.stakingToken?.price
+  ).toFixed(2)}`
+
+  return (
+    <Flex sx={styles.actionContainer}>
+      <ListViewContent
+        title={`${t('Staked')}`}
+        value={
+          rawStakedBalance > 0
+            ? rawStakedBalance.toFixed(2) === '0.00'
+              ? '> 0 LP'
+              : `${rawStakedBalance.toFixed(2)} LP`
+            : '0.00 LP'
+        }
+        value2={userStakedBalanceUsd}
+        value2Secondary
+        value2Direction="column"
+        style={styles.columnView}
       />
-    )
-  }
-  return actionToRender()
+      <Flex sx={styles.depositContainer}>
+        <StakeActions farm={farm} />
+      </Flex>
+    </Flex>
+  )
 }
 
 export default React.memo(Actions)

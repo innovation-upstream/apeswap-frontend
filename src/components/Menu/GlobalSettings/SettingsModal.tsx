@@ -1,35 +1,50 @@
+/** @jsxImportSource theme-ui */
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Modal, ModalProps, ButtonMenu, ButtonMenuItem } from '@apeswapfinance/uikit'
+import { Text, Flex, ModalProps } from '@ape.swap/uikit'
+import { Modal } from '@apeswapfinance/uikit'
+import { Switch } from 'theme-ui'
+
 import {
   useExpertModeManager,
   useUserExpertModeAcknowledgementShow,
   useUserSingleHopOnly,
   useUserRecentTransactions,
   useUserAutonomyPrepay,
+  useBonusRouterManager,
 } from 'state/user/hooks'
 import { useSwapActionHandlers } from 'state/swap/hooks'
 import { useTranslation } from 'contexts/Localization'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
+import { styles } from './styles'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { ChainId } from '@ape.swap/sdk'
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
   max-height: 400px;
+
   ${({ theme }) => theme.mediaQueries.sm} {
     max-height: none;
   }
 `
 
-const SettingsModal: React.FC<ModalProps> = ({ onDismiss }) => {
+interface Props extends ModalProps {
+  zapSettings?: boolean
+}
+
+const SettingsModal: React.FC<Props> = ({ onDismiss, zapSettings }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgementShow()
   const [expertMode, toggleExpertMode] = useExpertModeManager()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
   const [recentTransactions, setRecentTransactions] = useUserRecentTransactions()
   const [autonomyPrepay, setAutonomyPrepay] = useUserAutonomyPrepay()
+  const [bonusRouterDisabled, toggleSetBonusRouter] = useBonusRouterManager()
   const { onChangeRecipient } = useSwapActionHandlers()
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
 
   if (showConfirmExpertModal) {
     return (
@@ -54,86 +69,73 @@ const SettingsModal: React.FC<ModalProps> = ({ onDismiss }) => {
   }
 
   return (
-    <div style={{ zIndex: 101, width: '360px' }}>
-      <Modal title={t('Transaction Settings')} onDismiss={onDismiss}>
+    <Modal title={t('Settings')} onDismiss={onDismiss} maxWidth="420px">
+      {zapSettings ? (
+        <TransactionSettings zapSettings={zapSettings} />
+      ) : (
         <ScrollableContainer>
+          <Text size="18px" weight={700} margin="10px 0px">
+            {t('Swap')}
+          </Text>
           <TransactionSettings />
-          <Flex justifyContent="space-between" alignItems="center" mb="24px" mt="5px">
-            <Flex alignItems="center">
-              <Text>{t('Recent Transactions')}</Text>
+          <Flex sx={{ justifyContent: 'space-between', margin: '5px 0px' }}>
+            <Text weight={500}>{t('Recent Transactions')}</Text>
+            <Flex>
+              <Switch
+                sx={styles.switch}
+                checked={recentTransactions}
+                onChange={() => {
+                  setRecentTransactions(!recentTransactions)
+                }}
+              />
             </Flex>
-            <ButtonMenu
-              activeIndex={recentTransactions ? 0 : 1}
-              size="sm"
-              variant="yellow"
-              onClick={() => {
-                setRecentTransactions(!recentTransactions)
-              }}
-            >
-              <ButtonMenuItem id="toggle-expert-mode-button" fontSize="12px">
-                {t('YES')}
-              </ButtonMenuItem>
-              <ButtonMenuItem id="toggle-expert-mode-button" fontSize="12px">
-                {t('NO')}
-              </ButtonMenuItem>
-            </ButtonMenu>
           </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>{t('Expert Mode')}</Text>
+          <Flex sx={{ justifyContent: 'space-between', margin: '5px 0px' }}>
+            <Text>{t('Expert Mode')}</Text>
+            <Flex>
+              <Switch sx={styles.switch} checked={expertMode} onChange={handleExpertModeToggle} />
             </Flex>
-            <ButtonMenu activeIndex={expertMode ? 0 : 1} size="sm" variant="yellow" onClick={handleExpertModeToggle}>
-              <ButtonMenuItem id="toggle-expert-mode-button" fontSize="12px">
-                {t('YES')}
-              </ButtonMenuItem>
-              <ButtonMenuItem id="toggle-expert-mode-button" fontSize="12px">
-                {t('NO')}
-              </ButtonMenuItem>
-            </ButtonMenu>
           </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="22px">
-            <Flex alignItems="center">
-              <Text>{t('Disable Multihops')}</Text>
+          <Flex sx={{ justifyContent: 'space-between', margin: '5px 0px' }}>
+            <Text weight={500}>{t('Disable Multihops')}</Text>
+            <Flex>
+              <Switch
+                sx={styles.switch}
+                checked={singleHopOnly}
+                onChange={() => {
+                  setSingleHopOnly(!singleHopOnly)
+                }}
+              />
             </Flex>
-            <ButtonMenu
-              activeIndex={singleHopOnly ? 0 : 1}
-              size="sm"
-              variant="yellow"
-              onClick={() => {
-                setSingleHopOnly(!singleHopOnly)
-              }}
-            >
-              <ButtonMenuItem id="toggle-disable-multihop-button" fontSize="12px">
-                {t('YES')}
-              </ButtonMenuItem>
-              <ButtonMenuItem id="toggle-disable-multihop-button" fontSize="12px">
-                {t('NO')}
-              </ButtonMenuItem>
-            </ButtonMenu>
           </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="22px">
-            <Flex alignItems="center">
-              <Text>{t('Autonomy Prepay')}</Text>
+          <Flex sx={{ justifyContent: 'space-between', margin: '5px 0px' }}>
+            <Text weight={500}>{t('Autonomy Prepay')}</Text>
+            <Flex>
+              <Switch
+                sx={styles.switch}
+                checked={autonomyPrepay}
+                onChange={() => {
+                  setAutonomyPrepay(!autonomyPrepay)
+                }}
+              />
             </Flex>
-            <ButtonMenu
-              activeIndex={autonomyPrepay ? 0 : 1}
-              size="sm"
-              variant="yellow"
-              onClick={() => {
-                setAutonomyPrepay(!autonomyPrepay)
-              }}
-            >
-              <ButtonMenuItem id="toggle-disable-multihop-button" fontSize="12px">
-                {t('YES')}
-              </ButtonMenuItem>
-              <ButtonMenuItem id="toggle-disable-multihop-button" fontSize="12px">
-                {t('NO')}
-              </ButtonMenuItem>
-            </ButtonMenu>
           </Flex>
+          <Flex sx={{ justifyContent: 'space-between', margin: '5px 0px' }}>
+            <Text weight={500}>{t('Disable Bonus Router')}</Text>
+            <Flex>
+              <Switch sx={styles.switch} checked={bonusRouterDisabled} onChange={toggleSetBonusRouter} />
+            </Flex>
+          </Flex>
+          {chainId === ChainId.BSC && (
+            <Flex sx={{ margin: '5px 0px', textDecoration: 'underline' }}>
+              <a href="/limit-orders">
+                <Text weight={500}>{t('View Limit Orders')}</Text>
+              </a>
+            </Flex>
+          )}
         </ScrollableContainer>
-      </Modal>
-    </div>
+      )}
+    </Modal>
   )
 }
 

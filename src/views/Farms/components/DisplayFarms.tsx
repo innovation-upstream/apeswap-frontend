@@ -1,43 +1,37 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
-import { Flex, Text, LinkExternal, Svg, useModal } from '@apeswapfinance/uikit'
-import { TagVariants } from '@ape.swap/uikit'
-import { Box } from 'theme-ui'
-import ListView from 'components/ListView'
-import { ExtendedListViewProps } from 'components/ListView/types'
-import { LiquidityModal } from 'components/LiquidityWidget'
-import ListViewContent from 'components/ListViewContent'
+import { Button, Flex, ListTagVariants, useModal } from '@ape.swap/uikit'
+import ListView from 'components/ListViewV2/ListView'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
 import { Farm, Tag } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ApyButton from 'components/ApyCalculator/ApyButton'
+import CalcButton from 'components/RoiCalculator/CalcButton'
 import { useTranslation } from 'contexts/Localization'
-import useIsMobile from 'hooks/useIsMobile'
 import { Field, selectCurrency } from 'state/swap/actions'
 import { useAppDispatch } from 'state'
 import CardActions from './CardActions'
-import { Container, FarmButton, NextArrow } from './styles'
+import { styles } from './styles'
 import HarvestAction from './CardActions/HarvestAction'
-import { ActionContainer, StyledTag } from './CardActions/styles'
+import DualLiquidityModal from 'components/DualAddLiquidity/DualLiquidityModal'
+import { selectOutputCurrency } from 'state/zap/actions'
+import { Svg } from '@ape.swap/uikit'
+import Tooltip from 'components/Tooltip/Tooltip'
 
-const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] }> = ({ farms, openPid, farmTags }) => {
+const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[]; v2Flag: boolean }> = ({
+  farms,
+  openPid,
+  farmTags,
+  v2Flag,
+}) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const isMobile = useIsMobile()
   const dispatch = useAppDispatch()
 
-  // TODO: clean up this code
-  // Hack to get the close modal function from the provider
-  // Need to export ModalContext from uikit to clean up the code
-  const [, closeModal] = useModal(<></>)
-  const [onPresentAddLiquidityWidgetModal] = useModal(
-    <LiquidityModal handleClose={closeModal} />,
-    true,
-    true,
-    'liquidityWidgetModal',
-  )
+  const [onPresentAddLiquidityModal] = useModal(<DualLiquidityModal />, true, true, 'liquidityWidgetModal')
 
-  const showLiquidity = (token, quoteToken) => {
+  const showLiquidity = (token, quoteToken, farm) => {
     dispatch(
       selectCurrency({
         field: Field.INPUT,
@@ -50,16 +44,17 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
         currencyId: quoteToken,
       }),
     )
-    onPresentAddLiquidityWidgetModal()
+    dispatch(
+      selectOutputCurrency({
+        currency1: farm.tokenAddresses[chainId],
+        currency2: farm.quoteTokenAdresses[chainId],
+      }),
+    )
+    onPresentAddLiquidityModal()
   }
 
   const farmsListView = farms.map((farm) => {
     const [token1, token2] = farm.lpSymbol.split('-')
-    const bscScanUrl = `https://bscscan.com/address/${farm.lpAddresses[chainId]}`
-    const liquidityUrl = `https://apeswap.finance/add/${
-      farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId]
-    }/${farm.tokenAddresses[chainId]}`
-    const { projectLink } = farm
     const userAllowance = farm?.userData?.allowance
     const userEarnings = getBalanceNumber(farm?.userData?.earnings || new BigNumber(0))?.toFixed(2)
     const userEarningsUsd = `$${(
@@ -70,170 +65,188 @@ const DisplayFarms: React.FC<{ farms: Farm[]; openPid?: number; farmTags: Tag[] 
       getBalanceNumber(farm?.userData?.tokenBalance || new BigNumber(0)) * farm?.lpValueUsd
     ).toFixed(2)}`
     const fTag = farmTags?.find((tag) => tag.pid === farm.pid)
-    const tagColor = fTag?.color as TagVariants
 
     return {
-      tag: (
-        <>
-          {fTag?.pid === farm.pid && (
-            <Box sx={{ marginRight: '5px', marginTop: ['0px', '2px'] }}>
-              <StyledTag key={fTag?.pid} variant={tagColor}>
-                {fTag?.text}
-              </StyledTag>
-            </Box>
-          )}
-        </>
-      ),
-      tokens: { token1: farm.pid === 184 ? 'NFTY2' : token1, token2, token3: 'BANANA' },
-      stakeLp: true,
-      title: <Text bold>{farm.lpSymbol}</Text>,
-      open: farm.pid === openPid,
-      id: farm.pid,
-      infoContent: (
-        <>
-          <Flex flexDirection="column">
-            <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
-              <Text style={{ fontSize: '12px' }}>{t('Multiplier')}</Text>
-              <Text bold style={{ fontSize: '12px' }}>
-                {Math.round(parseFloat(farm.multiplier) * 1000) / 100}X
-              </Text>
-            </Flex>
-            <Flex alignItems="space-between" justifyContent="space-between" style={{ width: '100%' }}>
-              <Text style={{ fontSize: '12px' }}>{t('Stake')}</Text>
-              <Text bold style={{ fontSize: '12px' }}>
-                {farm.lpSymbol} {t('LP')}
-              </Text>
-            </Flex>
-            <Flex alignItems="center" justifyContent="center" mt="15px">
-              <LinkExternal href={bscScanUrl} style={{ fontSize: '14px' }}>
-                {t('View on BscScan')}
-              </LinkExternal>
-            </Flex>
-            {projectLink && (
-              <Flex alignItems="center" justifyContent="center" mt="15px">
-                <LinkExternal href={projectLink} style={{ fontSize: '14px' }}>
-                  {t('Learn More')}
-                </LinkExternal>
-              </Flex>
-            )}
-          </Flex>
-        </>
-      ),
-      infoContentPosition: 'translate(-81.5%, 32%)',
-      cardContent: (
-        <>
+      tokenDisplayProps: {
+        token1: farm.pid === 184 ? 'NFTY2' : token1,
+        token2,
+        token3: 'BANANA',
+        stakeLp: true,
+      },
+      listProps: {
+        id: farm.pid,
+        open: farm.pid === openPid,
+        title: (
           <ListViewContent
-            title={t('APY')}
-            value={parseFloat(farm?.apy) > 1000000 ? `>1,000,000%` : `${farm?.apy}%`}
-            width={isMobile ? 90 : 150}
-            ml={20}
-            toolTip={t(
-              'APY includes annualized BANANA rewards and rewards for providing liquidity (DEX swap fees), compounded daily.',
-            )}
-            toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 50%)"
+            tag={fTag?.pid === farm.pid ? (fTag?.text.toLowerCase() as ListTagVariants) : null}
+            value={farm?.lpSymbol}
+            style={{ maxWidth: '170px' }}
           />
-          <ListViewContent
-            title={t('APR')}
-            value={`${farm?.apr}%`}
-            value2={`${farm?.lpApr}%`}
-            value2Icon={
-              <span style={{ marginRight: '7px' }}>
-                <Svg icon="swap" width={13} color="text" />
-              </span>
-            }
-            valueIcon={
-              <span style={{ marginRight: '5px' }}>
-                <Svg icon="banana_token" width={15} color="text" />
-              </span>
-            }
-            width={isMobile ? 100 : 180}
-            toolTip={t(
-              'BANANA reward APRs are calculated in real time. DEX swap fee APRs are calculated based on previous 24 hours of trading volume. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
-            )}
-            toolTipPlacement="bottomLeft"
-            toolTipTransform="translate(0, 38%)"
-            aprCalculator={
-              <ApyButton
-                lpLabel={farm.lpSymbol}
-                rewardTokenName="BANANA"
-                rewardTokenPrice={farm.bananaPrice}
-                apy={parseFloat(farm?.apr) / 100 + parseFloat(farm?.lpApr) / 100}
-                addLiquidityUrl={liquidityUrl}
-              />
-            }
+        ),
+        titleWidth: '290px',
+        infoContent: (
+          <Tooltip
+            valueTitle={t('Multiplier')}
+            valueContent={farm?.multiplier}
+            secondURL={farm?.projectLink}
+            secondURLTitle={t('Learn More')}
+            tokenContract={farm?.lpAddresses[chainId]}
           />
-          <ListViewContent
-            title={t('Liquidity')}
-            value={`$${Number(farm?.totalLpStakedUsd).toLocaleString(undefined)}`}
-            width={isMobile ? 100 : 180}
-            toolTip={t('The total value of the LP tokens currently staked in this farm.')}
-            toolTipPlacement={isMobile ? 'bottomRight' : 'bottomLeft'}
-            toolTipTransform={isMobile ? 'translate(-75%, 75%)' : 'translate(0%, 75%)'}
-          />
-          <ListViewContent title={t('Earned')} value={userEarnings} width={isMobile ? 65 : 120} />
-        </>
-      ),
-      expandedContent: (
-        <>
-          <ActionContainer>
-            {isMobile && (
-              <ListViewContent
-                title={t('Available LP')}
-                value={userTokenBalance}
-                value2={userTokenBalanceUsd}
-                value2Secondary
-                width={100}
-                height={50}
-                lineHeight={15}
-                ml={10}
-              />
-            )}
-
-            <FarmButton
-              onClick={() =>
-                showLiquidity(
-                  farm.tokenAddresses[chainId],
-                  farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId],
-                )
+        ),
+        cardContent: (
+          <Flex sx={styles.cardContent}>
+            <ListViewContent
+              title={t('APY')}
+              value={parseFloat(farm?.apy) > 1000000 ? `>1,000,000%` : `${farm?.apy}%`}
+              toolTip={t(
+                'APY includes annualized BANANA rewards and rewards for providing liquidity (DEX swap fees), compounded daily.',
+              )}
+              toolTipPlacement="bottomLeft"
+              toolTipTransform="translate(8%, 0%)"
+              aprCalculator={
+                <CalcButton
+                  label={farm.lpSymbol}
+                  rewardTokenName="BANANA"
+                  rewardTokenPrice={farm.bananaPrice}
+                  apr={parseFloat(farm?.apr)}
+                  lpApr={parseFloat(farm?.lpApr)}
+                  apy={parseFloat(farm?.apy)}
+                  lpAddress={farm.lpAddresses[chainId]}
+                  isLp
+                  tokenAddress={farm.tokenAddresses[chainId]}
+                  quoteTokenAddress={farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId]}
+                  lpCurr1={farm?.tokenAddresses[chainId]}
+                  lpCurr2={farm?.quoteTokenAdresses[chainId]}
+                />
               }
-            >
-              {t('GET LP')}
-            </FarmButton>
-            {!isMobile && (
+              style={styles.apyInfo}
+            />
+            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '180px', width: '100%' }}>
               <ListViewContent
-                title={t('Available LP')}
+                title={t('APR')}
+                value={`${farm?.apr}%`}
+                value2={`${farm?.lpApr}%`}
+                value2Icon={
+                  <span style={{ marginRight: '7px', transform: 'rotate(45deg)' }}>
+                    <Svg icon="swapArrows" width={13} color="text" />
+                  </span>
+                }
+                valueIcon={
+                  <span style={{ marginRight: '5px' }}>
+                    <Svg icon="banana_token" width={15} color="text" />
+                  </span>
+                }
+                toolTip={t(
+                  'BANANA reward APRs are calculated in real time. DEX swap fee APRs are calculated based on previous 24 hours of trading volume. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
+                )}
+                toolTipPlacement="bottomLeft"
+                toolTipTransform="translate(8%, 0%)"
+                value2Direction="column"
+                style={styles.farmInfo}
+              />
+            </Flex>
+            <Flex sx={{ ...styles.onlyDesktop, maxWidth: '180px', width: '100%' }}>
+              <ListViewContent
+                title={t('Liquidity')}
+                value={`$${Number(farm?.totalLpStakedUsd).toLocaleString(undefined)}`}
+                toolTip={t('The total value of the LP tokens currently staked in this farm.')}
+                toolTipPlacement={'bottomLeft'}
+                toolTipTransform={'translate(23%, 0%)'}
+                style={styles.farmInfo}
+              />
+            </Flex>
+            <ListViewContent title={t('Earned')} value={userEarningsUsd} style={styles.earnedInfo} />
+          </Flex>
+        ),
+        expandedContent: (
+          <Flex sx={styles.expandedContent}>
+            <Flex sx={{ ...styles.onlyMobile, width: '100%' }}>
+              <ListViewContent
+                title={t('APR')}
+                value={`${farm?.lpApr}%`}
+                valueIcon={
+                  <span style={{ marginRight: '7px', transform: 'rotate(45deg)' }}>
+                    <Svg icon="swapArrows" width={13} color="text" />
+                  </span>
+                }
+                value2={`${farm?.apr}%`}
+                value2Icon={
+                  <span style={{ marginRight: '5px' }}>
+                    <Svg icon="banana_token" width={15} color="text" />
+                  </span>
+                }
+                toolTip={t(
+                  'BANANA reward APRs are calculated in real time. DEX swap fee APRs are calculated based on previous 24 hours of trading volume. Note: APRs are provided for your convenience. APRs are constantly changing and do not represent guaranteed returns.',
+                )}
+                toolTipPlacement="bottomLeft"
+                toolTipTransform="translate(8%, 0%)"
+                style={styles.farmInfo}
+              />
+              <ListViewContent
+                title={t('Liquidity')}
+                value={`$${Number(farm?.totalLpStakedUsd).toLocaleString(undefined)}`}
+                toolTip={t('The total value of the LP tokens currently staked in this farm.')}
+                toolTipPlacement={'bottomLeft'}
+                toolTipTransform={'translate(23%, 0%)'}
+                style={styles.farmInfo}
+              />
+            </Flex>
+            <Flex sx={styles.actionContainer}>
+              <ListViewContent
+                title={t('Available')}
                 value={userTokenBalance}
                 value2={userTokenBalanceUsd}
                 value2Secondary
-                width={100}
-                height={50}
-                lineHeight={15}
-                ml={10}
+                value2Direction="column"
+                style={{ maxWidth: '50%', flexDirection: 'column' }}
               />
-            )}
-          </ActionContainer>
-          {!isMobile && <NextArrow />}
-          <CardActions
-            allowance={userAllowance?.toString()}
-            stakedBalance={farm?.userData?.stakedBalance?.toString()}
-            stakingTokenBalance={farm?.userData?.tokenBalance?.toString()}
-            stakeLpAddress={farm.lpAddresses[chainId]}
-            lpValueUsd={farm.lpValueUsd}
-            pid={farm.pid}
-          />
-          {!isMobile && <NextArrow />}
-          <HarvestAction pid={farm.pid} disabled={userEarnings === '0.00'} userEarningsUsd={userEarningsUsd} />
-        </>
-      ),
-    } as ExtendedListViewProps
+              <Flex sx={{ width: '100%', maxWidth: ['130px', '130px', '140px'] }}>
+                <Button
+                  onClick={() =>
+                    showLiquidity(
+                      farm.tokenAddresses[chainId],
+                      farm.quoteTokenSymbol === 'BNB' ? 'ETH' : farm.quoteTokenAdresses[chainId],
+                      farm,
+                    )
+                  }
+                  sx={styles.styledBtn}
+                >
+                  {t('GET LP')}
+                  <Flex sx={{ ml: '5px' }}>
+                    <Svg icon="ZapIcon" color="primaryBright" />
+                  </Flex>
+                </Button>
+              </Flex>
+            </Flex>
+            <Flex sx={{ ...styles.onlyDesktop, mx: '10px' }}>
+              <Svg icon="caret" direction="right" width="50px" />
+            </Flex>
+            <CardActions
+              allowance={userAllowance?.toString()}
+              stakedBalance={farm?.userData?.stakedBalance?.toString()}
+              stakingTokenBalance={farm?.userData?.tokenBalance?.toString()}
+              stakeLpAddress={farm.lpAddresses[chainId]}
+              lpValueUsd={farm.lpValueUsd}
+              pid={farm.pid}
+              v2Flag={v2Flag}
+            />
+            <Flex sx={{ ...styles.onlyDesktop, mx: '10px' }}>
+              <Svg icon="caret" direction="right" width="50px" />
+            </Flex>
+            <HarvestAction
+              pid={farm.pid}
+              disabled={userEarnings === '0.00'}
+              userEarnings={userEarnings}
+              userEarningsUsd={userEarningsUsd}
+              v2Flag={v2Flag}
+            />
+          </Flex>
+        ),
+      },
+    }
   })
 
-  return (
-    <Container>
-      <ListView listViews={farmsListView} />
-    </Container>
-  )
+  return <ListView listViews={farmsListView} />
 }
 
 export default React.memo(DisplayFarms)

@@ -1,6 +1,8 @@
 import { ThemeUIStyleObject } from 'theme-ui'
 import { ArrowDropDownIcon, Flex, Text } from '@apeswapfinance/uikit'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
+
+// TODO: Change everything to theme ui
 
 export const styles: Record<string, ThemeUIStyleObject> = {
   titleContainer: {
@@ -11,50 +13,35 @@ export const styles: Record<string, ThemeUIStyleObject> = {
   },
 }
 
-const ExpandLargeAnimation = keyframes`
-    0%{height: 0;}
-    100%{height: 100px;}
-`
-
-const ExpandSmallAnimation = (size?: number) => keyframes`
-    0%{height: 0;}
-    100%{height: ${size || 234}px;}
-`
-
-export const ListExpandedContainer = styled(Flex)<{ size?: number }>`
+export const ListExpandedContainer = styled(Flex)<{ size?: number; justifyContent?: string }>`
   height: ${({ size }) => size || 234}px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${({ justifyContent }) => justifyContent || 'space-between'};
   flex-wrap: wrap;
-  animation: ${({ size }) => ExpandSmallAnimation(size)} 0.3s ease;
-  overflow: hidden;
-  margin: 0px 10px 0px 10px;
   padding: 10px;
   background: ${({ theme }) => theme.colors.white3};
-  max-width: 500px;
-  min-width: 300px;
-  width: 100%;
+  min-width: 100%;
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 0px 30px 0px 30px;
-    animation: ${ExpandLargeAnimation} 0.3s ease;
     height: 100px;
     max-width: 100%;
     flex-wrap: no-wrap;
   }
 `
 
-export const ListCardContainer = styled(Flex)`
-  height: 130px;
+export const ListCardContainer = styled(Flex)<{ backgroundColor: string; forMigrationList?: boolean }>`
   border-radius: 0;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background: ${({ theme }) => theme.colors.white2};
-  border-bottom: 1px solid rgba(226, 226, 226, 0.2);
-  padding: 10px;
+  background: ${({ theme, backgroundColor }) =>
+    backgroundColor === 'white3' ? theme.colors.white3 : theme.colors.white2};
+  border-bottom: ${({ backgroundColor }) =>
+    `1px solid ${backgroundColor === 'white3' ? 'rgba(226, 226, 226, .7)' : 'rgba(226, 226, 226, .2)'}`};
+  padding: 10px 20px 10px 20px;
   margin: 0px 10px 0px 10px;
   max-width: 500px;
-  min-width: 300px;
+  min-width: ${({ forMigrationList }) => (forMigrationList ? '250px' : '300px')};
   width: 100%;
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
@@ -68,6 +55,7 @@ export const ListViewContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  z-index: 1;
   & ${ListCardContainer}:first-child {
     border-radius: 10px 10px 0px 0px;
   }
@@ -75,32 +63,36 @@ export const ListViewContainer = styled.div`
     border-radius: 0px 0px 10px 10px;
     border: none;
   }
+  & ${ListCardContainer}:first-child:last-child {
+    border-radius: 10px 10px 10px 10px;
+    border: none;
+  }
 `
 
-export const DropDownIcon = styled(ArrowDropDownIcon)<{ open: boolean }>`
-  width: 15px;
+export const DropDownIcon = styled(ArrowDropDownIcon)<{ open: boolean; width?: string }>`
+  width: ${({ width }) => width || '10px'};
   transform: ${({ open }) => (open ? 'rotate(-180deg)' : '')};
   transition: transform 0.3s ease;
   right: 0;
   cursor: pointer;
 `
 
-export const TagContainer = styled(Flex)`
+export const TagContainer = styled(Flex)<{ backgroundColor: string }>`
   align-items: center;
   justify-content: center;
-  width: 31px;
   height: 15px;
   border-radius: 7px;
   color: white;
+  font-weight: 800;
   line-height: 0px;
   font-size: 10px;
-  background-color: red;
+  padding: 9px 5px;
+  background-color: ${({ backgroundColor }) => backgroundColor};
 `
 
 export const ContentContainer = styled(Flex)`
   position: relative;
   width: 100%;
-  height: 62.5px;
   align-items: flex-end;
   justify-content: space-between;
   ${({ theme }) => theme.mediaQueries.md} {

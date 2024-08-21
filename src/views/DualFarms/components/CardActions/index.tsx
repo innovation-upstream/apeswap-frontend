@@ -1,56 +1,40 @@
+/** @jsxImportSource theme-ui */
 import React from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import BigNumber from 'bignumber.js'
-import { CenterContainer } from './styles'
-import ApprovalAction from './ApprovalAction'
 import StakeAction from './StakeActions'
-import UnlockButton from '../../../../components/UnlockButton'
-
-// Changed props to type string because BigNumbers cause re-renders
+import { DualFarm } from 'state/types'
+import { getBalanceNumber } from 'utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { useTranslation } from 'contexts/Localization'
+import { Flex } from '@ape.swap/uikit'
+import ListViewContent from 'components/ListViewV2/ListViewContent'
+import { styles } from '../styles'
 
 interface CardActionProps {
-  allowance: string
-  stakingTokenBalance: string
-  stakedBalance: string
   lpValueUsd: number
-  stakeLpAddress: string
-  pid: number
+  farm: DualFarm
 }
 
-const CardActions: React.FC<CardActionProps> = ({
-  allowance,
-  stakingTokenBalance,
-  stakedBalance,
-  lpValueUsd,
-  stakeLpAddress,
-  pid,
-}) => {
-  const { account } = useActiveWeb3React()
-  const actionToRender = () => {
-    if (!account) {
-      return (
-        <CenterContainer>
-          <UnlockButton table />
-        </CenterContainer>
-      )
-    }
-    if (!new BigNumber(allowance)?.gt(0)) {
-      return (
-        <CenterContainer>
-          <ApprovalAction stakingTokenContractAddress={stakeLpAddress} pid={pid} />
-        </CenterContainer>
-      )
-    }
-    return (
-      <StakeAction
-        stakedBalance={stakedBalance}
-        stakingTokenBalance={stakingTokenBalance}
-        lpValueUsd={lpValueUsd}
-        pid={pid}
+const CardActions: React.FC<CardActionProps> = ({ lpValueUsd, farm }) => {
+  const stakedBalance = farm?.userData?.stakedBalance?.toString()
+  const rawStakedBalance = getBalanceNumber(new BigNumber(stakedBalance))
+  const userStakedBalanceUsd = `$${(getBalanceNumber(new BigNumber(stakedBalance || 0)) * lpValueUsd).toFixed(2)}`
+  const { t } = useTranslation()
+
+  return (
+    <Flex sx={styles.actionContainer}>
+      <ListViewContent
+        title={t('Staked')}
+        value={`${rawStakedBalance ? rawStakedBalance.toFixed(6) : '0.000'} LP`}
+        value2={userStakedBalanceUsd}
+        value2Secondary
+        value2Direction="column"
+        style={styles.columnView}
       />
-    )
-  }
-  return actionToRender()
+      <Flex sx={styles.depositContainer}>
+        <StakeAction lpValueUsd={lpValueUsd} farm={farm} />
+      </Flex>
+    </Flex>
+  )
 }
 
 export default React.memo(CardActions)

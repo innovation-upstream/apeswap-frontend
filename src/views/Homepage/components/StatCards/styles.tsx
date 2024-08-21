@@ -22,24 +22,26 @@ export const CardWrapper = styled.div`
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
-  margin: 0px 40px 0px 40px;
+  margin: 0px 30px;
   align-items: center;
   max-width: 1412px;
   z-index: 2;
   width: 95vw;
   border-radius: 10px;
-  ${StyledCard}:nth-child(1) {
-    border-radius: 10px 10px 0px 0px;
-    border-bottom: ${({ theme }) => `1px solid ${theme.colors.white4}`};
-  }
-  ${StyledCard}:nth-child(2), ${StyledCard}:nth-child(3) {
-    border-radius: 0px;
-    border-bottom: ${({ theme }) => `1px solid ${theme.colors.white4}`};
-    border-top: ${({ theme }) => `1px solid ${theme.colors.white4}`};
-  }
-  ${StyledCard}:nth-child(4) {
-    border-radius: 0px 0px 10px 10px;
-    border-top: ${({ theme }) => `1px solid ${theme.colors.white4}`};
+  @media screen and (max-width: 575px) {
+    ${StyledCard}:nth-child(1) {
+      border-radius: 10px 10px 0px 0px;
+      border-bottom: ${({ theme }) => `1px solid ${theme.colors.white4}`};
+    }
+    ${StyledCard}:nth-child(2), ${StyledCard}:nth-child(3) {
+      border-radius: 0px;
+      border-bottom: ${({ theme }) => `1px solid ${theme.colors.white4}`};
+      border-top: ${({ theme }) => `1px solid ${theme.colors.white4}`};
+    }
+    ${StyledCard}:nth-child(4) {
+      border-radius: 0px 0px 10px 10px;
+      border-top: ${({ theme }) => `1px solid ${theme.colors.white4}`};
+    }
   }
   @media screen and (min-width: 575px) and (max-width: 1200px) {
     display: grid;

@@ -1,37 +1,45 @@
+/** @jsxImportSource theme-ui */
 import React, { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Flex } from '@apeswapfinance/uikit'
-import { useFarmTags, useFetchFarmLpAprs, useFetchLpTokenPrices } from 'state/hooks'
-import ListViewMenu from 'components/ListViewMenu'
+import { Flex } from '@ape.swap/uikit'
+import { useFetchFarmLpAprs } from 'state/hooks'
 import { orderBy } from 'lodash'
-import ListViewLayout from 'components/layout/ListViewLayout'
 import Banner from 'components/Banner'
 import { useTranslation } from 'contexts/Localization'
 import { Farm } from 'state/types'
-import { useFarms, usePollFarms } from 'state/farms/hooks'
+import { useFarmOrderings, useFarms, usePollFarms } from 'state/farms/hooks'
 import DisplayFarms from './components/DisplayFarms'
-import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, STABLES } from './constants'
+import { BLUE_CHIPS, NUMBER_OF_FARMS_VISIBLE, SORT_OPTIONS, STABLES } from './constants'
 import HarvestAllAction from './components/CardActions/HarvestAllAction'
+import { useSetZapOutputList } from 'state/zap/hooks'
+import ListView404 from 'components/ListView404'
+import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
+import { useFarmsV2, usePollFarmsV2 } from 'state/farmsV2/hooks'
+import MigrationRequiredPopup from 'components/MigrationRequiredPopup'
+import { styles } from './styles'
+import ListViewLayout from '../../components/ListViewV2/ListViewLayout'
+import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
 
 const Farms: React.FC = () => {
-  useFetchLpTokenPrices()
-  usePollFarms()
   const { account, chainId } = useActiveWeb3React()
   useFetchFarmLpAprs(chainId)
+  usePollFarms()
+  usePollFarmsV2()
   const { pathname } = useLocation()
   const { t } = useTranslation()
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
-  const farmsLP = useFarms(account)
+  const farmsLP = useFarmsV2(account)
+  const legacyFarms = useFarms(account)
   const { search } = window.location
   const params = new URLSearchParams(search)
   const urlSearchedFarm = parseInt(params.get('pid'))
   const [query, setQuery] = useState('')
   const [sortOption, setSortOption] = useState('all')
   const loadMoreRef = useRef<HTMLDivElement>(null)
-  const { farmTags } = useFarmTags(chainId)
+  const { farmOrderings } = useFarmOrderings(chainId)
 
   useEffect(() => {
     const showMoreFarms = (entries) => {
@@ -54,8 +62,8 @@ const Farms: React.FC = () => {
   const [stakedOnly, setStakedOnly] = useState(false)
   const isActive = !pathname.includes('history')
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const activeFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
   const stakedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
@@ -105,17 +113,22 @@ const Farms: React.FC = () => {
       })
     }
 
+    // TODO: Refactor this to be a helper function outside of this file
     switch (sortOption) {
       case 'all':
-        return farms.slice(0, numberOfFarmsVisible)
+        return farmOrderings
+          ? orderBy(
+              farms,
+              (farm: Farm) => farmOrderings.find((ordering) => ordering.pid === farm.pid)?.order,
+              'asc',
+            ).slice(0, numberOfFarmsVisible)
+          : farms.slice(0, numberOfFarmsVisible)
       case 'stables':
         return farms
           .filter((farm) => STABLES.includes(farm.tokenSymbol) && STABLES.includes(farm.quoteTokenSymbol))
           .slice(0, numberOfFarmsVisible)
       case 'apr':
         return orderBy(farms, (farm) => parseFloat(farm.apy), 'desc').slice(0, numberOfFarmsVisible)
-      case 'new':
-        return farms
       case 'blueChips':
         return farms
           .filter((farm) => BLUE_CHIPS.includes(farm.tokenSymbol) || BLUE_CHIPS.includes(farm.quoteTokenSymbol))
@@ -123,43 +136,77 @@ const Farms: React.FC = () => {
       case 'liquidity':
         return orderBy(farms, (farm: Farm) => parseFloat(farm.totalLpStakedUsd), 'desc').slice(0, numberOfFarmsVisible)
       default:
-        return farms.slice(0, numberOfFarmsVisible)
+        return farmOrderings
+          ? orderBy(
+              farms,
+              (farm: Farm) => farmOrderings.find((ordering) => ordering.pid === farm.pid)?.order,
+              'asc',
+            ).slice(0, numberOfFarmsVisible)
+          : farms.slice(0, numberOfFarmsVisible)
     }
   }
 
+  const renderLegacyFarms = () => {
+    let farms = legacyFarms
+
+    if (stakedOnly) {
+      farms = legacyFarms.filter((farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0))
+    }
+
+    if (query) {
+      farms = legacyFarms.filter((farm) => {
+        return farm.lpSymbol.toUpperCase().includes(query.toUpperCase())
+      })
+    }
+    return farms.slice(1, numberOfFarmsVisible)
+  }
+
+  // Set zap output list to match farms
+  useSetZapOutputList(
+    activeFarms?.map((farm) => {
+      return { currencyIdA: farm?.tokenAddresses[chainId], currencyIdB: farm?.quoteTokenAdresses[chainId] }
+    }),
+  )
+
   return (
-    <>
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
-      >
-        <ListViewLayout>
-          <Banner
-            banner="banana-farms"
-            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
-            title={t('Banana Farms')}
-            listViewBreak
-            maxWidth={1130}
+    <Flex sx={styles.farmContainer}>
+      <MigrationRequiredPopup v2Farms={farmsLP} farms={legacyFarms} vaults={[]} />
+      <ListViewLayout>
+        <Banner banner="banana-farms" link="?modal=tutorial" title={t('Banana Farms')} listViewBreak maxWidth={1130} />
+        <Flex sx={{ alignItems: 'center', justifyContent: 'center', mt: '20px' }}>
+          <ListViewMenu
+            query={query}
+            onHandleQueryChange={handleChangeQuery}
+            setSortOption={setSortOption}
+            sortOption={sortOption}
+            checkboxLabel="Staked"
+            showOnlyCheckbox={stakedOnly}
+            setShowOnlyCheckbox={setStakedOnly}
+            toogleLabels={['ACTIVE', 'INACTIVE']}
+            sortOptions={SORT_OPTIONS}
+            actionButton={
+              <HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} v2Flag={true} />
+            }
+            showMonkeyImage
           />
-          <Flex alignItems="center" justifyContent="center" mt="20px">
-            <ListViewMenu
-              onHandleQueryChange={handleChangeQuery}
-              onSetSortOption={setSortOption}
-              onSetStake={setStakedOnly}
-              harvestAll={<HarvestAllAction pids={hasHarvestPids} disabled={hasHarvestPids.length === 0} />}
-              stakedOnly={stakedOnly}
-              query={query}
-              activeOption={sortOption}
-              showMonkeyImage
-            />
+        </Flex>
+        {!AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.FARMS].includes(chainId) ? (
+          <Flex mt="20px">
+            <ListView404 product={LIST_VIEW_PRODUCTS.FARMS} />
           </Flex>
-          <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={farmTags} />
-        </ListViewLayout>
-      </Flex>
-      <div ref={loadMoreRef} />
-    </>
+        ) : (
+          <>
+            <Flex sx={{ mt: '20px' }}>
+              <DisplayFarms farms={renderFarms()} openPid={urlSearchedFarm} farmTags={null} v2Flag={true} />
+            </Flex>
+            {!isActive && (
+              <DisplayFarms farms={renderLegacyFarms()} openPid={urlSearchedFarm} farmTags={null} v2Flag={false} />
+            )}
+          </>
+        )}
+        <div ref={loadMoreRef} />
+      </ListViewLayout>
+    </Flex>
   )
 }
 

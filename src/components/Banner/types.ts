@@ -13,6 +13,9 @@ export enum banners {
   TREASURY_BILL = 'treasury-bills',
   SSIAO = 'ssiao',
   GNANA = 'gnana',
+  PROTOCOL_DASHBOARD = 'protocol-dashboard',
+  BABbanner = 'BABbanner',
+  MIGRATE = 'migrate',
 }
 
 export type BannerTypes = `${banners}`

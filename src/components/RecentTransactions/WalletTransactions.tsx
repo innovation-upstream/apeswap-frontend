@@ -6,7 +6,6 @@ import { AppDispatch } from 'state'
 import { isTransactionRecent, useAllTransactions } from 'state/transactions/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { clearAllTransactions } from 'state/transactions/actions'
-import { Wrapper } from 'views/Swap/components/styled'
 import { orderBy } from 'lodash'
 import { AppBody } from 'components/App'
 import { useTranslation } from 'contexts/Localization'
@@ -36,7 +35,7 @@ const WalletTransactions: React.FC = () => {
   return (
     <div style={{ marginTop: '10px' }}>
       <AppBody>
-        <Wrapper>
+        <Flex>
           <Flex alignItems="center" justifyContent="space-between" mb="24px">
             <Title textTransform="uppercase" bold>
               {t('Recent Transactions')}
@@ -52,7 +51,7 @@ const WalletTransactions: React.FC = () => {
           ) : (
             <Text textAlign="center">{t('No recent transactions')}</Text>
           )}
-        </Wrapper>
+        </Flex>
       </AppBody>
     </div>
   )

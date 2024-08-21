@@ -1,25 +1,35 @@
+/** @jsxImportSource theme-ui */
 import React, { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Flex } from '@apeswapfinance/uikit'
+import { Flex } from '@ape.swap/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import { useBlock } from 'state/block/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePollJungleFarms, useJungleFarms } from 'state/jungleFarms/hooks'
-import ListViewLayout from 'components/layout/ListViewLayout'
+import { usePollJungleFarms, useJungleFarms, useJungleFarmTags, useJungleFarmOrderings } from 'state/jungleFarms/hooks'
 import Banner from 'components/Banner'
 import { JungleFarm } from 'state/types'
 import DisplayJungleFarms from './components/DisplayJungleFarms'
-import ListViewMenu from '../../components/ListViewMenu'
 import HarvestAll from './components/Actions/HarvestAll'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { useSetZapOutputList } from 'state/zap/hooks'
+import useCurrentTime from 'hooks/useTimer'
+import ListView404 from 'components/ListView404'
+import { AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS, LIST_VIEW_PRODUCTS } from 'config/constants/chains'
+import { BannerTypes } from 'components/Banner/types'
+import { styles } from './styles'
+import ListViewLayout from 'components/ListViewV2/ListViewLayout'
+import ListViewMenu from '../../components/ListViewV2/ListViewMenu/ListViewMenu'
+import { SORT_OPTIONS } from './constants'
 
 const NUMBER_OF_FARMS_VISIBLE = 10
 
 const JungleFarms: React.FC = () => {
   usePollJungleFarms()
+  const { chainId } = useActiveWeb3React()
   const [stakedOnly, setStakedOnly] = useState(false)
   const [observerIsSet, setObserverIsSet] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -34,7 +44,11 @@ const JungleFarms: React.FC = () => {
   const params = new URLSearchParams(search)
   const urlSearchedFarm = parseInt(params.get('id'))
   const isActive = !pathname.includes('history')
+  const isJungleFarms = pathname.includes('jungle-farms')
   const loadMoreRef = useRef<HTMLDivElement>(null)
+  const { jungleFarmTags } = useJungleFarmTags(chainId)
+  const { jungleFarmOrderings } = useJungleFarmOrderings(chainId)
+  const currentTime = useCurrentTime()
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
   }
@@ -58,7 +72,11 @@ const JungleFarms: React.FC = () => {
   }, [observerIsSet])
 
   const currJungleFarms = allJungleFarms.map((farm) => {
-    return { ...farm, isFinished: farm.jungleId === 0 ? false : farm.isFinished || currentBlock > farm.endBlock }
+    return {
+      ...farm,
+      isFinished:
+        farm.isFinished || farm.rewardsPerSecond ? currentTime / 1000 > farm.endBlock : currentBlock > farm.endBlock,
+    }
   })
 
   const farmsWithHarvestAvailable = currJungleFarms.filter((farm) =>
@@ -98,8 +116,32 @@ const JungleFarms: React.FC = () => {
           },
           'desc',
         )
+      case 'hot':
+        return jungleFarmTags
+          ? orderBy(
+              farmsToSort,
+              (farm: JungleFarm) =>
+                jungleFarmTags?.find((tag) => tag.pid === farm.jungleId && tag.text.toLowerCase() === 'hot'),
+              'asc',
+            )
+          : farmsToSort
+      case 'new':
+        return jungleFarmTags
+          ? orderBy(
+              farmsToSort,
+              (farm: JungleFarm) =>
+                jungleFarmTags?.find((tag) => tag.pid === farm.jungleId && tag.text.toLowerCase() === 'new'),
+              'asc',
+            )
+          : farmsToSort
       default:
-        return orderBy(farmsToSort, (farm: JungleFarm) => farm.sortOrder, 'asc')
+        return jungleFarmOrderings
+          ? orderBy(
+              farmsToSort,
+              (farm: JungleFarm) => jungleFarmOrderings?.find((ordering) => ordering.pid === farm.jungleId)?.order,
+              'asc',
+            )
+          : farmsToSort
     }
   }
 
@@ -133,40 +175,69 @@ const JungleFarms: React.FC = () => {
     return sortJungleFarms(chosenJungleFarms).slice(0, numberOfFarmsVisible)
   }
 
+  // Set zap output list to match dual farms
+  useSetZapOutputList(
+    openFarms?.map((farm) => {
+      return {
+        currencyIdA: farm?.lpTokens.token.address[chainId],
+        currencyIdB: farm?.lpTokens.quoteToken.address[chainId],
+      }
+    }),
+  )
+
   return (
-    <>
-      <Flex
-        flexDirection="column"
-        justifyContent="center"
-        mb="100px"
-        style={{ position: 'relative', top: '30px', width: '100%' }}
-      >
-        <ListViewLayout>
-          <Banner
-            banner="jungle-farms"
-            title={t('Jungle Farms')}
-            link="https://apeswap.gitbook.io/apeswap-finance/product-and-features/stake/farms"
-            listViewBreak
-            maxWidth={1130}
-          />
-          <Flex alignItems="center" justifyContent="center" mt="20px">
+    <Flex sx={styles.farmContainer}>
+      <ListViewLayout>
+        <Banner
+          banner={`${chainId}-jungle-farms` as BannerTypes}
+          title={chainId === 40 ? t('Telos Farms') : t('Jungle Farms')}
+          link={`?modal=tutorial`}
+          listViewBreak
+          maxWidth={1130}
+        />
+        <Flex sx={styles.farmContent}>
+          <Flex sx={{ my: '20px' }}>
             <ListViewMenu
-              onHandleQueryChange={handleChangeQuery}
-              onSetSortOption={setSortOption}
-              onSetStake={setStakedOnly}
-              harvestAll={<HarvestAll jungleIds={harvestJungleIds} disabled={harvestJungleIds.length === 0} />}
-              stakedOnly={stakedOnly}
               query={searchQuery}
-              activeOption={sortOption}
+              onHandleQueryChange={handleChangeQuery}
+              setSortOption={setSortOption}
+              sortOption={sortOption}
+              sortOptions={SORT_OPTIONS}
+              checkboxLabel="Staked"
+              showOnlyCheckbox={stakedOnly}
+              setShowOnlyCheckbox={setStakedOnly}
+              toogleLabels={['ACTIVE', 'INACTIVE']}
+              actionButton={<HarvestAll jungleIds={harvestJungleIds} disabled={harvestJungleIds.length === 0} />}
               showMonkeyImage
-              isJungle
             />
           </Flex>
-          <DisplayJungleFarms jungleFarms={renderJungleFarms()} openId={urlSearchedFarm} />
-        </ListViewLayout>
-      </Flex>
-      <div ref={loadMoreRef} />
-    </>
+          {isJungleFarms ? (
+            !AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.JUNGLE_FARMS].includes(chainId) ? (
+              <Flex mt="20px">
+                <ListView404 product={LIST_VIEW_PRODUCTS.JUNGLE_FARMS} />
+              </Flex>
+            ) : (
+              <DisplayJungleFarms
+                jungleFarms={renderJungleFarms()}
+                openId={urlSearchedFarm}
+                jungleFarmTags={jungleFarmTags}
+              />
+            )
+          ) : !AVAILABLE_CHAINS_ON_LIST_VIEW_PRODUCTS[LIST_VIEW_PRODUCTS.FARMS].includes(chainId) ? (
+            <Flex mt="20px">
+              <ListView404 product={LIST_VIEW_PRODUCTS.FARMS} />
+            </Flex>
+          ) : (
+            <DisplayJungleFarms
+              jungleFarms={renderJungleFarms()}
+              openId={urlSearchedFarm}
+              jungleFarmTags={jungleFarmTags}
+            />
+          )}
+          <div ref={loadMoreRef} />
+        </Flex>
+      </ListViewLayout>
+    </Flex>
   )
 }
 

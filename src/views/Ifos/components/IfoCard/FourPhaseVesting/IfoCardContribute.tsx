@@ -33,6 +33,7 @@ export interface Props {
   tokenDecimals: number
   isActive?: boolean
   isFinished?: boolean
+  tokenValue?: number
 }
 
 const formatTime = (time: any): string => {
@@ -47,6 +48,7 @@ const IfoCardContribute: React.FC<Props> = ({
   tokenDecimals,
   isFinished,
   isActive,
+  tokenValue,
 }) => {
   const [pendingTx, setPendingTx] = useState(false)
 
@@ -116,6 +118,7 @@ const IfoCardContribute: React.FC<Props> = ({
             tokenBalance={tokenBalance}
             currencyAddress={currencyAddress}
             disabled={pendingTx}
+            tokenValue={tokenValue}
           />
           {amountContributed > 0 && (
             <TextWrapRow>

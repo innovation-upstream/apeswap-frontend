@@ -1,8 +1,15 @@
-import bills from 'config/constants/bills'
+import { BillsConfig } from 'config/constants/types'
 import { TokenPrices } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { getFirstNonZeroDigits } from 'utils/roundNumber'
 
-const cleanBillsData = (billIds: number[], chunkedBills: any[], tokenPrices: TokenPrices[], chainId: number) => {
+const cleanBillsData = (
+  billIds: number[],
+  chunkedBills: any[],
+  tokenPrices: TokenPrices[],
+  chainId: number,
+  bills: BillsConfig[],
+) => {
   const data = chunkedBills.map((chunk, index) => {
     const billConfig = bills.find((bill) => bill.index === billIds[index])
     const lpPrice = tokenPrices?.find((token) => token.address[chainId] === billConfig.lpToken.address[chainId])?.price
@@ -20,14 +27,17 @@ const cleanBillsData = (billIds: number[], chunkedBills: any[], tokenPrices: Tok
       totalPrincipalBilled,
       billNft,
       terms,
+      maxTotalPayout,
+      maxPayoutTokens,
     ] = chunk
     const [controlVariable, vestingTerm, minimumPrice, maxPayout, maxDebt] = terms
     const priceUsd = getBalanceNumber(trueBillPrice) * lpPrice
     const discount = ((earnTokenPrice - priceUsd) / earnTokenPrice) * 100
+    const formatedPrice = priceUsd ? getFirstNonZeroDigits(priceUsd) : undefined
     return {
       ...billConfig,
       price: trueBillPrice.toString(),
-      priceUsd: priceUsd?.toFixed(3),
+      priceUsd: formatedPrice,
       vestingTime: vestingTerm.toString(),
       discount: discount.toFixed(2),
       trueBillPrice: trueBillPrice.toString(),
@@ -37,6 +47,7 @@ const cleanBillsData = (billIds: number[], chunkedBills: any[], tokenPrices: Tok
       debtRatio: debtRatio.toString(),
       totalDebt: totalDebt.toString(),
       totalPayoutGiven: totalPayoutGiven.toString(),
+      maxTotalPayOut: maxTotalPayout.toString(),
       totalPrincipalBilled: totalPrincipalBilled.toString(),
       controlVariable: controlVariable.toString(),
       minimumPrice: minimumPrice.toString(),
@@ -45,6 +56,7 @@ const cleanBillsData = (billIds: number[], chunkedBills: any[], tokenPrices: Tok
       billNftAddress: billNft.toString(),
       earnTokenPrice,
       lpPrice,
+      maxPayoutTokens: maxPayoutTokens.toString(),
     }
   })
   return data

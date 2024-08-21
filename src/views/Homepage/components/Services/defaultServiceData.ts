@@ -28,10 +28,10 @@ export const defaultServiceData: (t: ContextApi['t']) => DefaultServiceData[] = 
   },
   {
     id: 'billDetails',
-    title: t('Treasury Bills'),
+    title: t('ApeSwap Bonds'),
     description: t('Create protocol-owned liquidity with yield-generating NFTs'),
     backgroundImg: 'images/homepage-bills',
-    link: '/treasury-bills',
+    link: '/bonds',
     stats: [],
   },
 ]
