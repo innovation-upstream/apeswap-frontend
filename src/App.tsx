@@ -58,6 +58,9 @@ const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
 const RedirectOldRemoveLiquidityPathStructure = lazy(() => import('./views/RemoveLiquidity/redirects'))
 const TermsOfUse = lazy(() => import('./views/LegalPages/TermsOfUse'))
 const PrivacyPolicy = lazy(() => import('./views/LegalPages/PrivacyPolicy'))
+const Vote = lazy(() => import('./views/Vote'))
+const Proposal = lazy(() => import('./views/Vote/Proposal'))
+const CreateProposal = lazy(() => import('./views/Vote/CreateProposal'))
 
 const redirectSwap = () => import('./views/Swap/redirects')
 const RedirectPathToSwapOnly = lazy(async () =>
@@ -373,6 +376,13 @@ const App: React.FC = () => {
             </Route>
             <Route path="/privacy">
               <PrivacyPolicy />
+            </Route>
+            <Route path="/vote/create">
+              <CreateProposal />
+            </Route>
+            <Route path="/vote/proposal/:id" component={Proposal} />
+            <Route path="/vote">
+              <Vote />
             </Route>
             {/* Redirect */}
             <Route path="/staking">
